@@ -2,11 +2,9 @@ package io
 
 import (
 	"fmt"
-	"golang.org/x/sys/unix"
 	"io"
 	"os"
 	"path/filepath"
-	"syscall"
 )
 
 // Mode indicates whether to use hardlink or copy content
@@ -35,71 +33,37 @@ func CopyDir(srcDir, dstDir string, copyMode Mode) (err error) {
 
 		return CopyPath(srcPath, dstPath, f, copyMode)
 	})
-
 }
 
-func CopyPath(srcPath, dstPath string, f os.FileInfo, copyMode Mode) error {
-	stat, ok := f.Sys().(*syscall.Stat_t)
-	if !ok {
-		return fmt.Errorf("Unable to get raw syscall.Stat_t data for %s", srcPath)
+func CopyRegular(srcPath, dstPath string, fileInfo os.FileInfo) error {
+	srcFile, err := os.Open(srcPath)
+	if err != nil {
+		return err
 	}
+	defer srcFile.Close()
 
-	isHardlink := false
-
-	switch mode := f.Mode(); {
-	case mode.IsRegular():
-
-	case mode.IsDir():
-		if err := os.Mkdir(dstPath, f.Mode()); err != nil && !os.IsExist(err) {
-			return err
-		}
-	case mode&os.ModeSymlink != 0:
-		link, err := os.Readlink(srcPath)
-		if err != nil {
-			return err
-		}
-
-		if err := os.Symlink(link, dstPath); err != nil {
-			return err
-		}
-
-	case mode&os.ModeNamedPipe != 0:
-		fallthrough
-
-	case mode&os.ModeSocket != 0:
-		if err := unix.Mkfifo(dstPath, uint32(stat.Mode)); err != nil {
-			return err
-		}
-	case mode&os.ModeDevice != 0:
-		if err := unix.Mknod(dstPath, uint32(stat.Mode), int(stat.Rdev)); err != nil {
-			return err
-		}
-
-	default:
-		return fmt.Errorf("unknown file type (%d / %s) for %s", f.Mode(), f.Mode().String(), srcPath)
-
+	// If the destination file already exists, we shouldn't blow it away
+	dstFile, err := os.OpenFile(dstPath, os.O_WRONLY|os.O_CREATE|os.O_EXCL, fileInfo.Mode())
+	if err != nil {
+		return err
 	}
+	defer dstFile.Close()
 
-	// Everything below is copying metadata from src to dst. All this metadata
-	// already shares an inode for hardlinks.
-	if isHardlink {
+	if err = doCopyWithFileClone(srcFile, dstFile); err == nil {
 		return nil
 	}
 
-	if err := os.Lchown(dstPath, int(stat.Uid), int(stat.Gid)); err != nil {
-		return err
+	if err = doCopyWithFileRange(srcFile, dstFile, fileInfo); err == nil {
+		return nil
 	}
 
-	isSymlink := f.Mode()&os.ModeSymlink != 0
-	// There is no LChmod, so ignore mode for symlink. Also, this
-	// must happen after chown, as that can modify the file mode
-	if !isSymlink {
-		if err := os.Chmod(dstPath, f.Mode()); err != nil {
-			return err
-		}
-	}
+	return legacyCopy(srcFile, dstFile)
+}
 
-	return nil
+func legacyCopy(srcFile io.Reader, dstFile io.Writer) error {
+	_, err := io.Copy(dstFile, srcFile)
+
+	return err
 }
 
 func CopyFile(src, dst string) (err error) {
