@@ -35,6 +35,10 @@ func AesCbcDecrypt(cipherText, key []byte) ([]byte, error) {
 		return nil, ErrKeyLength
 	}
 
+	if len(cipherText) < aes.BlockSize {
+		return nil, ErrCipherTextLength
+	}
+
 	block, err := aes.NewCipher(key)
 	if err != nil {
 		return nil, err
@@ -50,7 +54,6 @@ func AesCbcDecrypt(cipherText, key []byte) ([]byte, error) {
 	}
 
 	return plainText, nil
-
 }
 
 func pad(plainText []byte, blockSize int) []byte {
