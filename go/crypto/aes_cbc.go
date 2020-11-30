@@ -113,7 +113,7 @@ func pad(plainText []byte, blockSize int) []byte {
 func unpad(plainText []byte) ([]byte, error) {
 	length := len(plainText)
 	unpadding := int(plainText[length-1])
-	if unpadding >= length {
+	if unpadding > length {
 		return nil, ErrPaddingSize
 	}
 
