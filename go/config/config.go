@@ -1,22 +1,22 @@
 package config
 
 import (
-	"context"
 	"log"
 )
 
 type Config struct {
 	// options
 	opts struct {
+		Path     string
 		ErrorLog *log.Logger
 	}
 }
 
-func New(ctx context.Context, options ...ConfigOption) (*Config, error) {
+func New(options ...ConfigOption) *Config {
 	c := &Config{}
 	c.ApplyOptions(options...)
 
-	return c, nil
+	return c
 }
 
 func (c *Config) logf(format string, args ...interface{}) {
