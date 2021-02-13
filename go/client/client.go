@@ -1,10 +1,10 @@
-package config
+package client
 
 import (
 	"log"
 )
 
-type Config struct {
+type Client struct {
 	// options
 	opts struct {
 		Path     string
@@ -12,14 +12,14 @@ type Config struct {
 	}
 }
 
-func New(options ...ConfigOption) *Config {
-	c := &Config{}
+func New(options ...ClientOption) *Client {
+	c := &Client{}
 	c.ApplyOptions(options...)
 
 	return c
 }
 
-func (c *Config) logf(format string, args ...interface{}) {
+func (c *Client) logf(format string, args ...interface{}) {
 	if c.opts.ErrorLog != nil {
 		c.opts.ErrorLog.Printf(format, args...)
 	} else {
