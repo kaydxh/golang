@@ -16,7 +16,7 @@ func TestNew(t *testing.T) {
 */
 
 func TestInit(t *testing.T) {
-	logger.InitLog(logger.Log_json, logger.Log_info)
+	logger.InitLog(logger.Log_text, logger.Log_info)
 	l := logger.Log.WithField("key1", 1)
 	l.Infof("test: %v", "test info")
 	l.Infof("test2: %v", "test info2")
