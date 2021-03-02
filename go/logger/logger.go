@@ -2,6 +2,9 @@ package logger
 
 import (
 	"context"
+	"fmt"
+	"log"
+	"os"
 	"path"
 	"runtime"
 	"strings"
@@ -21,19 +24,23 @@ const (
 type Log_Level int32
 
 const (
-	Log_panic   Log_Level = 0
-	Log_fatal   Log_Level = 1
-	Log_error   Log_Level = 2
-	Log_warn    Log_Level = 3
-	Log_warning Log_Level = 3
-	Log_info    Log_Level = 4
-	Log_debug   Log_Level = 5
-	Log_trace   Log_Level = 6
+	Log_panic Log_Level = iota //0
+	Log_fatal                  // 1
+	Log_error                  // 2
+	Log_warn                   // 3
+	Log_info                   // 4
+	Log_debug                  // 5
+	Log_trace                  // 6
 )
 
 type loggerContextKeyType int
 
 const loggerContextKey loggerContextKeyType = 0
+
+// Logger is a wrapper for logrus.Entry.
+type Logger struct {
+	*logrus.Entry
+}
 
 // ContextLogger interface for components which support
 // logging with context, via setting a logger to an exisiting one,
@@ -42,9 +49,18 @@ type ContextLogger interface {
 	UseLog(l *Logger)
 }
 
+// InitLog initializes logs
+func InitLog(log_format Log_Format, log_level Log_Level) {
+	log.SetPrefix(fmt.Sprintf("[%s] ", os.Args[0]))
+	log.SetFlags(log.Lshortfile | log.LstdFlags)
+	updateLogger(log_format, log_level)
+}
+
+/*
 func Logger() *logrus.Logger {
 	return Log.StandardLogger()
 }
+*/
 
 func updateLogger(log_format Log_Format, log_level Log_Level) {
 	if log_format == Log_json {
@@ -53,10 +69,10 @@ func updateLogger(log_format Log_Format, log_level Log_Level) {
 		}
 	} else {
 		Log.Formatter = &logrus.JSONFormatter{
-			FullTimestamp: true,
+			//		FullTimestamp: true,
 		}
 	}
-	Log.Level = log_level
+	Log.Level = logrus.Level(log_level)
 	Log.Hooks.Add(ContextHook{})
 }
 
