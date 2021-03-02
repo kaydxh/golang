@@ -56,20 +56,10 @@ func InitLog(log_format Log_Format, log_level Log_Level) {
 	updateLogger(log_format, log_level)
 }
 
-/*
-func Logger() *logrus.Logger {
-	return Log.StandardLogger()
-}
-*/
-
 func updateLogger(log_format Log_Format, log_level Log_Level) {
-	if log_format == Log_json {
+	if log_format == Log_text {
 		Log.Formatter = &logrus.TextFormatter{
 			FullTimestamp: true,
-		}
-	} else {
-		Log.Formatter = &logrus.JSONFormatter{
-			//		FullTimestamp: true,
 		}
 	}
 	Log.Level = logrus.Level(log_level)
