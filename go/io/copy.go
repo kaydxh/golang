@@ -108,7 +108,11 @@ func CopyFile(src, dst string) (err error) {
 	}
 
 	if !sfi.Mode().IsRegular() {
-		return fmt.Errorf("CopyFile: non-regular source file %s (%q)", sfi.Name(), sfi.Mode().String())
+		return fmt.Errorf(
+			"CopyFile: non-regular source file %s (%q)",
+			sfi.Name(),
+			sfi.Mode().String(),
+		)
 	}
 
 	// open dest file
