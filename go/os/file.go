@@ -49,3 +49,17 @@ func OpenAll(path string, flag int, perm os.FileMode) (*os.File, error) {
 
 	return os.OpenFile(path, flag, perm)
 }
+
+// SameFile reports whether fi1 and fi2 describe the same file.
+func SameFile(fi1, fi2 string) bool {
+	stat1, err := os.Stat(fi1)
+	if err != nil {
+		return false
+	}
+
+	stat2, err := os.Stat(fi2)
+	if err != nil {
+		return false
+	}
+	return os.SameFile(stat1, stat2)
+}
