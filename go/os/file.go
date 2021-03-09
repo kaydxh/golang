@@ -50,6 +50,17 @@ func OpenAll(path string, flag int, perm os.FileMode) (*os.File, error) {
 	return os.OpenFile(path, flag, perm)
 }
 
+func OpenAllAt(path string, appended bool) (file *os.File, err error) {
+	if !appended {
+		file, err = OpenAll(path, os.O_CREATE|os.O_TRUNC|os.O_RDWR, 0666)
+	} else {
+		file, err = OpenAll(path, os.O_CREATE|os.O_RDWR|os.O_APPEND, 0666)
+	}
+
+	return file, err
+
+}
+
 // SameFile reports whether fi1 and fi2 describe the same file.
 func SameFile(fi1, fi2 string) bool {
 	stat1, err := os.Stat(fi1)
