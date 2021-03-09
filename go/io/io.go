@@ -1,26 +1,41 @@
 package io
 
 import (
+	"bufio"
 	"bytes"
-	"os"
 
 	os_ "github.com/kaydxh/golang/go/os"
 )
 
-func WriteLines(filePath string, words []string, appended bool) (err error) {
+// WriteLine join all line to file.
+func WriteFileLines(filePath string, lines []string, appended bool) (err error) {
 
-	var file *os.File
+	file, err := os_.OpenAllAt(filePath, appended)
+	if err != nil {
+		return err
+	}
+	defer file.Close()
 
-	if !appended {
-		file, err = os_.OpenAll(filePath, os.O_CREATE|os.O_TRUNC|os.O_RDWR, 0666)
-		if err != nil {
+	buf := bufio.NewWriter(file)
+	for i := range lines {
+		if _, err = buf.WriteString(lines[i] + "\n"); err != nil {
 			return err
 		}
-	} else {
-		file, err = os_.OpenAll(filePath, os.O_CREATE|os.O_RDWR|os.O_APPEND, 0666)
-		if err != nil {
-			return err
-		}
+	}
+
+	if err := buf.Flush(); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// WriteLine join all words with spaces, terminate with newline and
+// write to file.
+func WriteFileLine(filePath string, words []string, appended bool) (err error) {
+	file, err := os_.OpenAllAt(filePath, appended)
+	if err != nil {
+		return err
 	}
 	defer file.Close()
 
