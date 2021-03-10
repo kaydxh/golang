@@ -7,6 +7,76 @@ import (
 	os_ "github.com/kaydxh/golang/go/os"
 )
 
+/*
+func ReadFileLines(byteArray []byte) []string {
+
+}
+*/
+
+func ReadLines(byteArray []byte) []string {
+	var lines []string
+	index := 0
+	readIndex := 0
+	for ; readIndex < len(byteArray); index++ {
+		line, n := ReadLineAt(readIndex, byteArray)
+		readIndex = n
+
+		lines = append(lines, string(line))
+	}
+
+	return lines
+}
+
+func ReadLineAt(readIndex int, byteArray []byte) ([]byte, int) {
+	currentReadIndex := readIndex
+
+	// consume left spaces
+	for currentReadIndex < len(byteArray) {
+		if byteArray[currentReadIndex] == ' ' {
+			currentReadIndex++
+		} else {
+			break
+		}
+	}
+
+	// leftTrimIndex stores the left index of the line after the line is left-trimmed
+	leftTrimIndex := currentReadIndex
+
+	// rightTrimIndex stores the right index of the line after the line is right-trimmed
+	// it is set to -1 since the correct value has not yet been determined.
+	rightTrimIndex := -1
+
+	for ; currentReadIndex < len(byteArray); currentReadIndex++ {
+		if byteArray[currentReadIndex] == ' ' {
+			// set rightTrimIndex
+			if rightTrimIndex == -1 {
+				rightTrimIndex = currentReadIndex
+			}
+		} else if (byteArray[currentReadIndex] == '\n') || (currentReadIndex == (len(byteArray) - 1)) {
+			// end of line or byte buffer is reached
+			if currentReadIndex <= leftTrimIndex {
+				return nil, currentReadIndex + 1
+			}
+			// set the rightTrimIndex
+			if rightTrimIndex == -1 {
+				rightTrimIndex = currentReadIndex
+				if currentReadIndex == (len(byteArray)-1) && (byteArray[currentReadIndex] != '\n') {
+					// ensure that the last character is part of the returned string,
+					// unless the last character is '\n'
+					rightTrimIndex = currentReadIndex + 1
+				}
+			}
+			// Avoid unnecessary allocation.
+			return byteArray[leftTrimIndex:rightTrimIndex], currentReadIndex + 1
+		} else {
+			// unset rightTrimIndex
+			rightTrimIndex = -1
+		}
+	}
+
+	return nil, currentReadIndex
+}
+
 // WriteLine join all line to file.
 func WriteFileLines(filePath string, lines []string, appended bool) (err error) {
 
@@ -39,7 +109,6 @@ func WriteFileLine(filePath string, words []string, appended bool) (err error) {
 	}
 	defer file.Close()
 
-	//buf := bufio.NewWriter(file)
 	buf := bytes.NewBuffer(nil)
 	err = WriteLine(buf, words...)
 	if err != nil {
@@ -49,19 +118,6 @@ func WriteFileLine(filePath string, words []string, appended bool) (err error) {
 	if err != nil {
 		return err
 	}
-	/*
-		for i := range lines {
-			if _, err = buf.WriteString(lines[i] + "\n"); err != nil {
-				return err
-			}
-		}
-	*/
-
-	/*
-		if err := buf.Flush(); err != nil {
-			return err
-		}
-	*/
 
 	return nil
 }
