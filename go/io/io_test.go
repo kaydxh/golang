@@ -2,6 +2,7 @@ package io_test
 
 import (
 	"bytes"
+	"fmt"
 	"path/filepath"
 	"strings"
 	"testing"
@@ -11,7 +12,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestWriteLine(t *testing.T) {
+func TestWriteReadLine(t *testing.T) {
 	testCases := []struct {
 		name     string
 		words    []string
@@ -57,7 +58,7 @@ func TestWriteLine(t *testing.T) {
 
 }
 
-func TestWriteFileLine(t *testing.T) {
+func TestWriteReadFileLine(t *testing.T) {
 	testCases := []struct {
 		name     string
 		words    []string
@@ -104,6 +105,13 @@ func TestWriteFileLine(t *testing.T) {
 			*/
 		})
 	}
+
+	lines, err := io_.ReadFileLines(testFileAppend)
+	if err != nil {
+		t.Errorf("expect nil, got %v", err)
+	}
+
+	fmt.Println("read lines:", lines)
 }
 
 func TestWriteFileLines(t *testing.T) {
