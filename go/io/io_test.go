@@ -51,6 +51,10 @@ func TestWriteLine(t *testing.T) {
 			}
 		})
 	}
+
+	lines := io_.ReadLines(testBuffer.Bytes())
+	assert.Equal(t, "test1 test2 test3", lines[0])
+
 }
 
 func TestWriteFileLine(t *testing.T) {
