@@ -3,15 +3,36 @@ package io
 import (
 	"bufio"
 	"bytes"
+	"errors"
+	"io"
+	"os"
 
 	os_ "github.com/kaydxh/golang/go/os"
 )
 
-/*
-func ReadFileLines(byteArray []byte) []string {
+func ReadFileLines(filepath string) ([]string, error) {
+	file, err := os_.OpenAll(filepath, os.O_RDONLY, 0)
+	if err != nil {
+		return nil, err
+	}
+	defer file.Close()
 
+	var lines []string
+	buf := bufio.NewReader(file)
+	for {
+		line, err := buf.ReadBytes('\n')
+		if err != nil {
+			if errors.Is(err, io.EOF) { //文件已经结束
+				break
+			}
+
+			return nil, err
+		}
+		lines = append(lines, string(line))
+	}
+
+	return lines, nil
 }
-*/
 
 func ReadLines(byteArray []byte) []string {
 	var lines []string
