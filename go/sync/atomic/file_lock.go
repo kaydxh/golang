@@ -9,9 +9,9 @@ import (
 	os_ "github.com/kaydxh/golang/go/os"
 )
 
-type File string
+type FileLock string
 
-func (m *File) TryLock() error {
+func (m *FileLock) TryLock() error {
 	if m == nil {
 		return fmt.Errorf("nil pointer")
 	}
@@ -37,7 +37,7 @@ func (m *File) TryLock() error {
 	return f.Close()
 }
 
-func (m *File) TryUnLock() error {
+func (m *FileLock) TryUnLock() error {
 	if m == nil || *m == "" {
 		return nil
 	}

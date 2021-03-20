@@ -8,7 +8,7 @@ import (
 )
 
 func TestTryLock(t *testing.T) {
-	var mu atomic_.File = atomic.File("test_lockfile")
+	var mu atomic_.FileLock = atomic.FileLock("test_lockfile")
 	err := mu.TryLock()
 	if err != nil {
 		t.Errorf("expect nil, got %v", err)
