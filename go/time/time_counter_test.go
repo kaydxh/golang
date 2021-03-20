@@ -9,9 +9,8 @@ import (
 )
 
 func TestAll(t *testing.T) {
-	var tc time_.TimeCounter
-	tc.Tick("start")
-
+	//var tc time_.TimeCounter
+	tc := time_.New(true)
 	func(module string) {
 		time.Sleep(time.Second)
 	}("module1")
