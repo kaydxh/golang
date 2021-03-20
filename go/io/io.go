@@ -10,6 +10,7 @@ import (
 	os_ "github.com/kaydxh/golang/go/os"
 )
 
+// ReadFileLines read line from file divide with \n
 func ReadFileLines(filepath string) ([]string, error) {
 	file, err := os_.OpenAll(filepath, os.O_RDONLY, 0)
 	if err != nil {
@@ -34,6 +35,7 @@ func ReadFileLines(filepath string) ([]string, error) {
 	return lines, nil
 }
 
+// ReadLines read line from byteArray divide with \n
 func ReadLines(byteArray []byte) []string {
 	var lines []string
 	index := 0
