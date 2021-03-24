@@ -22,12 +22,34 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-package crypto
+package aes_test
 
-import "errors"
+import (
+	"fmt"
+	"testing"
 
-var (
-	ErrKeyLength        = errors.New("err key lenght")
-	ErrPaddingSize      = errors.New("err padding size")
-	ErrCipherTextLength = errors.New("err cipherText lenght")
+	aes_ "github.com/kaydxh/golang/go/crypto/aes"
 )
+
+func TestAesCbcEncryptDecrypt(t *testing.T) {
+	plainText := []byte("Hello World")
+	fmt.Println("plainText: ", string(plainText))
+
+	key := []byte("daW3eDgPEa9TjknE")
+	cryptText, err := aes_.AesCbcEncrypt(plainText, key)
+	if err != nil {
+		t.Errorf("expect nil, got %v", err)
+	}
+
+	fmt.Println("cryptText: ", string(cryptText))
+
+	newplainText, err := aes_.AesCbcDecrypt(cryptText, key)
+	if err != nil {
+		t.Errorf("expect nil, got %v", err)
+	}
+
+	fmt.Println("newplainText: ", string(newplainText))
+	if string(newplainText) != string(plainText) {
+		t.Errorf("newplainText not equal plainText")
+	}
+}
