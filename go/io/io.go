@@ -183,17 +183,17 @@ func WriteBytesLine(buf *bytes.Buffer, bytes []byte) error {
 }
 
 func WriteBytesAt(filepath string, bytes []byte, offset int64) error {
-	file, err := os_.OpenAll(filepath, os.O_CREATE|os.O_RDWR|os.O_APPEND, os.ModePerm)
+	file, err := os_.OpenAll(filepath, os.O_CREATE|os.O_RDWR, os.ModePerm)
 	if err != nil {
 		return err
 	}
 	defer file.Close()
 
-	_, err = file.Seek(offset, io.SeekStart)
+	n, err := file.Seek(offset, io.SeekStart)
 	if err != nil {
 		return err
 	}
-	_, err = file.Write(bytes)
+	_, err = file.WriteAt(bytes, n)
 	if err != nil {
 		return err
 	}
