@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"path/filepath"
 	"strings"
+	"sync"
 	"testing"
 
 	io_ "github.com/kaydxh/golang/go/io"
@@ -161,4 +162,48 @@ func TestWriteFileLines(t *testing.T) {
 			*/
 		})
 	}
+}
+
+func TestWriteAt(t *testing.T) {
+	testCases := []struct {
+		name     string
+		words    []byte
+		expected string
+	}{
+		{
+			name:     "write no word",
+			words:    []byte{},
+			expected: "",
+		},
+		{
+			name:     "write one word",
+			words:    []byte("test1"),
+			expected: "test1\n",
+		},
+
+		{
+			name:     "write multi words",
+			words:    []byte("test2 test3 test4"),
+			expected: "test1 test2 test3\n",
+		},
+	}
+
+	workDir, _ := os_.Getwd()
+	testFileOffset := filepath.Join(workDir, "test-file-offset")
+	wg := sync.WaitGroup{}
+	for i, testCase := range testCases {
+		wg.Add(1)
+		go func(index int) {
+			defer wg.Done()
+			t.Run(testCase.name, func(t *testing.T) {
+				var offset int64
+				for j := 0; j < index; j++ {
+					offset += int64(j * len(testCases[j].words))
+				}
+				err := io_.WriteBytesAt(testFileOffset, testCases[index].words, offset)
+				assert.Nil(t, err)
+			})
+		}(i)
+	}
+	wg.Wait()
 }
