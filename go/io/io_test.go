@@ -164,27 +164,68 @@ func TestWriteFileLines(t *testing.T) {
 	}
 }
 
-func TestWriteAt(t *testing.T) {
+func TestWriteAtOneThread(t *testing.T) {
 	testCases := []struct {
 		name     string
 		words    []byte
 		expected string
 	}{
 		{
-			name:     "write no word",
-			words:    []byte{},
-			expected: "",
+			name:     "write one word",
+			words:    []byte("test1"),
+			expected: "test1",
 		},
 		{
 			name:     "write one word",
-			words:    []byte("test1"),
-			expected: "test1\n",
+			words:    []byte("test2"),
+			expected: "test2",
 		},
 
 		{
-			name:     "write multi words",
-			words:    []byte("test2 test3 test4"),
-			expected: "test1 test2 test3\n",
+			name:     "write one word",
+			words:    []byte("test3"),
+			expected: "test3",
+		},
+	}
+
+	var offsets []int64 = []int64{10, 0, 5}
+	workDir, _ := os_.Getwd()
+	testFileOffset := filepath.Join(workDir, "test-file-offset")
+	for i, testCase := range testCases {
+		t.Run(testCase.name, func(t *testing.T) {
+			var offset int64
+			if i > 0 {
+				offset += int64(i * len(testCases[i-1].words))
+			}
+			fmt.Println("offset: ", offsets[i])
+			//err := io_.WriteBytesAt(testFileOffset, testCases[i].words, offset)
+			err := io_.WriteBytesAt(testFileOffset, testCases[i].words, offsets[i])
+			assert.Nil(t, err)
+		})
+	}
+}
+
+func TestWriteAtMutilThreads(t *testing.T) {
+	testCases := []struct {
+		name     string
+		words    []byte
+		expected string
+	}{
+		{
+			name:     "write one word",
+			words:    []byte("test1"),
+			expected: "test1",
+		},
+		{
+			name:     "write one word",
+			words:    []byte("test2"),
+			expected: "test2",
+		},
+
+		{
+			name:     "write one word",
+			words:    []byte("test3"),
+			expected: "test3",
 		},
 	}
 
@@ -198,8 +239,9 @@ func TestWriteAt(t *testing.T) {
 			t.Run(testCase.name, func(t *testing.T) {
 				var offset int64
 				for j := 0; j < index; j++ {
-					offset += int64(j * len(testCases[j].words))
+					offset += int64(len(testCases[j].words))
 				}
+				fmt.Printf("write: %s, offset: %d", testCases[index].words, offset)
 				err := io_.WriteBytesAt(testFileOffset, testCases[index].words, offset)
 				assert.Nil(t, err)
 			})
