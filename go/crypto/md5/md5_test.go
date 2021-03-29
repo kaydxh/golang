@@ -1,6 +1,7 @@
 package md5_test
 
 import (
+	"encoding/hex"
 	"fmt"
 	"io/ioutil"
 	"os"
@@ -31,4 +32,55 @@ func TestMd5File(t *testing.T) {
 		t.Errorf("expect nil, got %v", err)
 	}
 	assert.Equal(t, sum, md5_.SumString(strContext))
+}
+
+func TestMd5FileAt(t *testing.T) {
+	file, err := ioutil.TempFile(".", "file")
+	if err != nil {
+		t.Errorf("expect nil, got %v", err)
+	}
+	//defer os.RemoveAll(file.Name())
+
+	testCases := []struct {
+		name     string
+		words    []byte
+		expected string
+	}{
+		{
+			name:     "write one word",
+			words:    []byte("test1"),
+			expected: "test1",
+		},
+		{
+			name:     "write one word",
+			words:    []byte("test2"),
+			expected: "test2",
+		},
+
+		{
+			name:     "write one word",
+			words:    []byte("test3"),
+			expected: "test3",
+		},
+	}
+
+	var offset int64
+	for i, testCase := range testCases {
+		_, err := file.Write(testCase.words)
+		if err != nil {
+			t.Errorf("expect nil, got %v", err)
+		}
+
+		if i > 0 {
+			offset += int64(len(testCases[i-1].words))
+		}
+		fmt.Printf("i: %d, offset: %v, testCase: %s\n", i, offset, testCase.words)
+		sum, err := md5_.SumFileAt(file.Name(), offset, int64(len(testCase.words)))
+		if err != nil {
+			t.Errorf("expect nil, got %v", err)
+		}
+		fmt.Println("sum: ", hex.EncodeToString([]byte(sum)))
+		assert.Equal(t, sum, md5_.SumBytes(testCase.words))
+	}
+
 }
