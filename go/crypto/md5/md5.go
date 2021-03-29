@@ -1,8 +1,11 @@
 package md5
 
 import (
+	"bytes"
 	"crypto/md5"
+	"fmt"
 	"io"
+	"os"
 
 	os_ "github.com/kaydxh/golang/go/os"
 )
@@ -26,6 +29,41 @@ func SumReader(r io.Reader) (string, error) {
 	return string(h.Sum(nil)), nil
 }
 
+func SumReaderN(r io.Reader, n int64) (string, error) {
+	h := md5.New()
+	if _, err := io.CopyN(h, r, n); err != nil {
+		return "", err
+	}
+
+	return string(h.Sum(nil)), nil
+}
+
+func SumReaderAt(r io.ReaderAt, offset, length int64) (string, error) {
+	h := md5.New()
+	buf := make([]byte, 1)
+	var total int64
+	fmt.Println(" SumReaderAt ")
+	for total < length {
+		n, err := r.ReadAt(buf, offset)
+		if err != nil {
+			return "", err
+		}
+		offset += int64(n)
+		total += int64(n)
+
+		// On return, written == n if and only if err == nil.
+		fmt.Println("buf: ", string(buf))
+		_, err = io.CopyN(h, bytes.NewReader(buf), int64(n))
+		if err != nil {
+			return "", err
+
+		}
+
+	}
+
+	return string(h.Sum(nil)), nil
+}
+
 func SumFile(fileName string) (string, error) {
 	file, err := os_.OpenAllAt(fileName, true)
 	if err != nil {
@@ -34,4 +72,14 @@ func SumFile(fileName string) (string, error) {
 	defer file.Close()
 
 	return SumReader(file)
+}
+
+func SumFileAt(fileName string, offset int64, length int64) (string, error) {
+	file, err := os_.OpenAll(fileName, os.O_RDWR, os.ModePerm)
+	if err != nil {
+		return "", err
+	}
+	defer file.Close()
+
+	return SumReaderN(file, length)
 }
