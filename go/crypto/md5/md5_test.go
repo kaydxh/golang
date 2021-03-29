@@ -1,7 +1,6 @@
 package md5_test
 
 import (
-	"encoding/hex"
 	"fmt"
 	"io/ioutil"
 	"os"
@@ -79,7 +78,7 @@ func TestMd5FileAt(t *testing.T) {
 		if err != nil {
 			t.Errorf("expect nil, got %v", err)
 		}
-		fmt.Println("sum: ", hex.EncodeToString([]byte(sum)))
+		fmt.Println("sum: ", sum)
 		assert.Equal(t, sum, md5_.SumBytes(testCase.words))
 	}
 
