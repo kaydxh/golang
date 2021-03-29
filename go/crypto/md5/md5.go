@@ -3,7 +3,7 @@ package md5
 import (
 	"bytes"
 	"crypto/md5"
-	"fmt"
+	"encoding/hex"
 	"io"
 	"os"
 
@@ -13,7 +13,7 @@ import (
 func SumBytes(b []byte) string {
 	h := md5.New()
 	h.Write(b)
-	return string(h.Sum(nil))
+	return hex.EncodeToString(h.Sum(nil))
 }
 
 func SumString(s string) string {
@@ -26,7 +26,7 @@ func SumReader(r io.Reader) (string, error) {
 		return "", err
 	}
 
-	return string(h.Sum(nil)), nil
+	return hex.EncodeToString(h.Sum(nil)), nil
 }
 
 func SumReaderN(r io.Reader, n int64) (string, error) {
@@ -35,33 +35,35 @@ func SumReaderN(r io.Reader, n int64) (string, error) {
 		return "", err
 	}
 
-	return string(h.Sum(nil)), nil
+	return hex.EncodeToString(h.Sum(nil)), nil
 }
 
 func SumReaderAt(r io.ReaderAt, offset, length int64) (string, error) {
 	h := md5.New()
-	buf := make([]byte, 1)
+	buf := make([]byte, 1024)
 	var total int64
-	fmt.Println(" SumReaderAt ")
+
 	for total < length {
 		n, err := r.ReadAt(buf, offset)
-		if err != nil {
-			return "", err
-		}
-		offset += int64(n)
-		total += int64(n)
+		if err == nil || err == io.EOF {
+			offset += int64(n)
+			total += int64(n)
+			_, tmpErr := io.CopyN(h, bytes.NewReader(buf), int64(n))
+			if tmpErr != nil {
+				return "", tmpErr
+			}
 
-		// On return, written == n if and only if err == nil.
-		fmt.Println("buf: ", string(buf))
-		_, err = io.CopyN(h, bytes.NewReader(buf), int64(n))
-		if err != nil {
-			return "", err
+			if err == io.EOF {
+				break
+			}
 
+		} else {
+			return "", err
 		}
 
 	}
 
-	return string(h.Sum(nil)), nil
+	return hex.EncodeToString(h.Sum(nil)), nil
 }
 
 func SumFile(fileName string) (string, error) {
@@ -81,5 +83,5 @@ func SumFileAt(fileName string, offset int64, length int64) (string, error) {
 	}
 	defer file.Close()
 
-	return SumReaderN(file, length)
+	return SumReaderAt(file, offset, length)
 }
