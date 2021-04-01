@@ -50,7 +50,7 @@ func OpenAll(path string, flag int, perm os.FileMode) (*os.File, error) {
 	return os.OpenFile(path, flag, perm)
 }
 
-func OpenAllAt(path string, appended bool) (file *os.File, err error) {
+func OpenFile(path string, appended bool) (file *os.File, err error) {
 	if !appended {
 		file, err = OpenAll(path, os.O_CREATE|os.O_TRUNC|os.O_RDWR, 0666)
 	} else {

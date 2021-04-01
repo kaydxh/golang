@@ -67,7 +67,7 @@ func SumReaderAt(r io.ReaderAt, offset, length int64) (string, error) {
 }
 
 func SumFile(fileName string) (string, error) {
-	file, err := os_.OpenAllAt(fileName, true)
+	file, err := os_.OpenFile(fileName, true)
 	if err != nil {
 		return "", err
 	}
