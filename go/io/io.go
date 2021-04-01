@@ -103,7 +103,7 @@ func ReadLineAt(readIndex int, byteArray []byte) ([]byte, int) {
 // WriteLine join all line to file.
 func WriteFileLines(filePath string, lines []string, appended bool) (err error) {
 
-	file, err := os_.OpenAllAt(filePath, appended)
+	file, err := os_.OpenFile(filePath, appended)
 	if err != nil {
 		return err
 	}
@@ -126,7 +126,7 @@ func WriteFileLines(filePath string, lines []string, appended bool) (err error) 
 // WriteLine join all words with spaces, terminate with newline and
 // write to file.
 func WriteFileLine(filePath string, words []string, appended bool) (err error) {
-	file, err := os_.OpenAllAt(filePath, appended)
+	file, err := os_.OpenFile(filePath, appended)
 	if err != nil {
 		return err
 	}
