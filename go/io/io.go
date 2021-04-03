@@ -203,6 +203,7 @@ func WriteBytesAt(filepath string, bytes []byte, offset int64) error {
 
 func WriteReaderAt(filepath string, r io.Reader, offset, length int64) error {
 	file, err := os_.OpenAll(filepath, os.O_CREATE|os.O_RDWR, os.ModePerm)
+	//	file, err := os_.OpenFile(filepath, true)
 	if err != nil {
 		return err
 	}
@@ -219,7 +220,7 @@ func WriteReaderAt(filepath string, r io.Reader, offset, length int64) error {
 				if err != nil {
 					return err
 				}
-				_, err = file.WriteAt(buf, n)
+				_, err = file.WriteAt(buf[:nr], n)
 				if err != nil {
 					return err
 				}
