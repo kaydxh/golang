@@ -200,3 +200,43 @@ func WriteBytesAt(filepath string, bytes []byte, offset int64) error {
 
 	return nil
 }
+
+func WriteReaderAt(filepath string, r io.Reader, offset, length int64) error {
+	file, err := os_.OpenAll(filepath, os.O_CREATE|os.O_RDWR, os.ModePerm)
+	if err != nil {
+		return err
+	}
+	defer file.Close()
+
+	buf := make([]byte, 1024)
+	var total int64
+
+	for total < length {
+		nr, err := r.Read(buf)
+		if err == nil || err == io.EOF {
+			if nr > 0 {
+				n, err := file.Seek(offset, io.SeekStart)
+				if err != nil {
+					return err
+				}
+				_, err = file.WriteAt(buf, n)
+				if err != nil {
+					return err
+				}
+
+				offset += int64(nr)
+				total += int64(nr)
+			}
+
+			if err == io.EOF {
+				break
+			}
+
+		} else {
+			return err
+		}
+
+	}
+
+	return nil
+}
