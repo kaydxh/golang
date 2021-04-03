@@ -8,6 +8,7 @@ import (
 	"sync"
 	"testing"
 
+	md5_ "github.com/kaydxh/golang/go/crypto/md5"
 	io_ "github.com/kaydxh/golang/go/io"
 	os_ "github.com/kaydxh/golang/go/os"
 	"github.com/stretchr/testify/assert"
@@ -248,4 +249,67 @@ func TestWriteAtMutilThreads(t *testing.T) {
 		}(i)
 	}
 	wg.Wait()
+}
+
+func TestWriteReaderAtOneThread(t *testing.T) {
+	testCases := []struct {
+		name     string
+		words    []string
+		expected string
+	}{
+		{
+			name:     "write one word",
+			words:    []string{"test1"},
+			expected: "test1",
+		},
+		{
+			name:     "write one word",
+			words:    []string{"test2"},
+			expected: "test2",
+		},
+
+		{
+			name:     "write one word",
+			words:    []string{"test3"},
+			expected: "test3",
+		},
+	}
+
+	workDir, _ := os_.Getwd()
+	testFile := filepath.Join(workDir, "test-file")
+	for _, testCase := range testCases {
+		t.Run(testCase.name, func(t *testing.T) {
+			err := io_.WriteFileLine(testFile, testCase.words, true)
+			assert.Nil(t, err)
+		})
+	}
+
+	file, err := os_.OpenFile(testFile, true)
+	if err != nil {
+		return
+	}
+	defer file.Close()
+
+	/*
+		fileInfo, err := file.Stat()
+		if err != nil {
+			return
+		}
+	*/
+
+	testFileCopy := filepath.Join(workDir, "test-file-copy")
+	var offset int64
+
+	for _, testCase := range testCases {
+
+		err = io_.WriteReaderAt(testFileCopy, file, offset, int64(len(testCase.words[0])+1))
+		offset += int64(len(testCase.words[0]) + 1)
+		assert.Nil(t, err)
+	}
+
+	sumTestFile, _ := md5_.SumFile(testFile)
+	sumTestFileCopy, _ := md5_.SumFile(testFileCopy)
+
+	assert.Equal(t, sumTestFile, sumTestFileCopy)
+
 }
