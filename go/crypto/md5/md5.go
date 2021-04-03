@@ -46,17 +46,19 @@ func SumReaderAt(r io.ReaderAt, offset, length int64) (string, error) {
 	for total < length {
 		n, err := r.ReadAt(buf, offset)
 		if err == nil || err == io.EOF {
-			offset += int64(n)
-			total += int64(n)
-			_, tmpErr := io.CopyN(h, bytes.NewReader(buf), int64(n))
-			if tmpErr != nil {
-				return "", tmpErr
+			if n > 0 {
+				_, tmpErr := io.CopyN(h, bytes.NewReader(buf), int64(n))
+				if tmpErr != nil {
+					return "", tmpErr
+				}
+				offset += int64(n)
+				total += int64(n)
+
 			}
 
 			if err == io.EOF {
 				break
 			}
-
 		} else {
 			return "", err
 		}
