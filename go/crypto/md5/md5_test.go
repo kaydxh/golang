@@ -38,7 +38,7 @@ func TestMd5FileAt(t *testing.T) {
 	if err != nil {
 		t.Errorf("expect nil, got %v", err)
 	}
-	//defer os.RemoveAll(file.Name())
+	defer os.RemoveAll(file.Name())
 
 	testCases := []struct {
 		name     string
