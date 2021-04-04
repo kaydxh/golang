@@ -21,6 +21,8 @@ type UploadPartInput struct {
 	Md5Sum string
 }
 
+const tmpFileSuffix = "_.tmp"
+
 func UploadMultipart(
 	file *multipart.FileHeader,
 	partInput *UploadPartInput,
@@ -78,7 +80,7 @@ func UploadMultipart(
 
 	}
 
-	tmpFilePath := filePath + ".tmp"
+	tmpFilePath := filePath + tmpFileSuffix
 	err = io_.WriteReaderAt(tmpFilePath, srcFile, partInput.Offset, partInput.Length)
 	if err != nil {
 		return err
@@ -94,7 +96,7 @@ func CompleteMultipartUpload(
 		return fmt.Errorf("invalid filePath")
 	}
 
-	tmpFilePath := filePath + ".tmp"
+	tmpFilePath := filePath + tmpFileSuffix
 	if md5Sum != "" {
 		sum, err := md5_.SumFile(tmpFilePath)
 		if err != nil {
