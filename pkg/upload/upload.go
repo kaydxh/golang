@@ -9,6 +9,8 @@ import (
 
 	md5_ "github.com/kaydxh/golang/go/crypto/md5"
 	io_ "github.com/kaydxh/golang/go/io"
+	"github.com/kaydxh/golang/go/sync/atomic"
+	atomic_ "github.com/kaydxh/golang/go/sync/atomic"
 )
 
 type UploadPartInput struct {
@@ -40,6 +42,22 @@ func UploadMultipart(
 		err = fmt.Errorf("invalid filePath: %v", absFilePath)
 		return err
 	}
+
+	var mu atomic_.FileLock = atomic.FileLock(filepath.Join("./", absFilePath))
+	err = mu.TryLock()
+	if err != nil {
+		return err
+	}
+
+	unlockFun := func() error {
+		err = mu.TryUnLock()
+		if err != nil {
+			return err
+		}
+		return nil
+	}
+	defer unlockFun()
+
 	srcFile, err := file.Open()
 	if err != nil {
 		return err
@@ -60,7 +78,8 @@ func UploadMultipart(
 
 	}
 
-	err = io_.WriteReaderAt(filePath, srcFile, partInput.Offset, partInput.Length)
+	tmpFilePath := filePath + ".tmp"
+	err = io_.WriteReaderAt(tmpFilePath, srcFile, partInput.Offset, partInput.Length)
 	if err != nil {
 		return err
 	}
@@ -75,8 +94,9 @@ func CompleteMultipartUpload(
 		return fmt.Errorf("invalid filePath")
 	}
 
+	tmpFilePath := filePath + ".tmp"
 	if md5Sum != "" {
-		sum, err := md5_.SumFile(filePath)
+		sum, err := md5_.SumFile(tmpFilePath)
 		if err != nil {
 			return err
 		}
@@ -87,13 +107,16 @@ func CompleteMultipartUpload(
 		if gotSum != expectSum {
 			return fmt.Errorf("failed to check md5Sum, got: %v, expect: %v", gotSum, expectSum)
 		}
-
-		return nil
 	}
 
-	_, err := os.Stat(filePath)
+	_, err := os.Stat(tmpFilePath)
 	if err != nil {
-		return fmt.Errorf("file: %v is not existed", filePath)
+		return fmt.Errorf("file: %v is not existed", tmpFilePath)
+	}
+
+	err = os.Rename(tmpFilePath, filePath)
+	if err != nil {
+		return fmt.Errorf("failed to Rename: %v to %v", tmpFilePath, filePath)
 	}
 
 	return nil
