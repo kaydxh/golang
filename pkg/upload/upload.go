@@ -46,6 +46,20 @@ func UploadMultipart(
 	}
 	defer srcFile.Close()
 
+	if partInput.Md5Sum != "" {
+		sum, err := md5_.SumReader(srcFile)
+		if err != nil {
+			return err
+		}
+		gotSum := strings.ToLower(sum)
+		expectSum := strings.ToLower(partInput.Md5Sum)
+
+		if gotSum != expectSum {
+			return fmt.Errorf("failed to check md5Sum, got: %v, expect: %v", gotSum, expectSum)
+		}
+
+	}
+
 	err = io_.WriteReaderAt(filePath, srcFile, partInput.Offset, partInput.Length)
 	if err != nil {
 		return err
