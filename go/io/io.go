@@ -201,6 +201,18 @@ func WriteBytesAt(filepath string, bytes []byte, offset int64) error {
 	return nil
 }
 
+func WriteReader(filepath string, r io.Reader) error {
+	file, err := os_.OpenAll(filepath, os.O_CREATE|os.O_RDWR, os.ModePerm)
+	//	file, err := os_.OpenFile(filepath, true)
+	if err != nil {
+		return err
+	}
+	defer file.Close()
+
+	_, err = io.Copy(file, r)
+	return err
+}
+
 func WriteReaderAt(filepath string, r io.Reader, offset, length int64) error {
 	file, err := os_.OpenAll(filepath, os.O_CREATE|os.O_RDWR, os.ModePerm)
 	//	file, err := os_.OpenFile(filepath, true)
