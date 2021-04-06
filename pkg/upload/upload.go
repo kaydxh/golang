@@ -23,6 +23,68 @@ type UploadPartInput struct {
 
 const tmpFileSuffix = "_.tmp"
 
+func UploadFile(
+	file *multipart.FileHeader,
+	filePath string,
+	Md5Sum string,
+) error {
+	if file == nil {
+		return fmt.Errorf("invalid multipart FileHeader")
+	}
+	if filePath == "" {
+		return fmt.Errorf("invalid filePath")
+	}
+
+	//check path
+	absFilePath, err := filepath.Abs(filePath)
+	if strings.Contains(absFilePath, "..") {
+		err = fmt.Errorf("invalid filePath: %v", absFilePath)
+		return err
+	}
+
+	var mu atomic_.FileLock = atomic.FileLock(filepath.Join("./", absFilePath))
+	err = mu.TryLock()
+	if err != nil {
+		return err
+	}
+
+	unlockFun := func() error {
+		err = mu.TryUnLock()
+		if err != nil {
+			return err
+		}
+		return nil
+	}
+	defer unlockFun()
+
+	srcFile, err := file.Open()
+	if err != nil {
+		return err
+	}
+	defer srcFile.Close()
+
+	if Md5Sum != "" {
+		sum, err := md5_.SumReader(srcFile)
+		if err != nil {
+			return err
+		}
+		gotSum := strings.ToLower(sum)
+		expectSum := strings.ToLower(Md5Sum)
+
+		if gotSum != expectSum {
+			return fmt.Errorf("failed to check md5Sum, got: %v, expect: %v", gotSum, expectSum)
+		}
+
+	}
+
+	err = io_.WriteReader(filePath, srcFile)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func UploadMultipart(
 	file *multipart.FileHeader,
 	partInput *UploadPartInput,
