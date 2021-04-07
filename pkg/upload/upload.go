@@ -15,7 +15,6 @@ import (
 
 type UploadPartInput struct {
 	PartId uint32
-	FileId int64
 	Offset int64
 	Length int64
 	Md5Sum string
