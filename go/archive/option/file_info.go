@@ -8,6 +8,6 @@ type FileInfo struct {
 }
 
 type ExtractMsg struct {
-	FileInfo FileInfo
-	Err      error
+	FileInfo *FileInfo
+	Error    error
 }
