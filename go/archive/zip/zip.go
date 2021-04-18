@@ -21,7 +21,7 @@ type COPY_TYPE int
 type Zip struct {
 }
 
-func (z *Zip) Extract(srcFile, destDir string) ([]*option.FileInfo, error) {
+func (z Zip) Extract(srcFile, destDir string) ([]*option.FileInfo, error) {
 	r, err := zip.OpenReader(srcFile)
 	if err != nil {
 		return nil, err
@@ -46,7 +46,7 @@ func (z *Zip) Extract(srcFile, destDir string) ([]*option.FileInfo, error) {
 	return extractedFiles, nil
 }
 
-func (z *Zip) ExtractStream(
+func (z Zip) ExtractStream(
 	srcFile, destDir string,
 ) <-chan option.ExtractMsg {
 
@@ -68,14 +68,14 @@ func (z *Zip) ExtractStream(
 		for _, f := range r.File {
 			fileInfo, err := z.extractAndWriteFile(destDir, f)
 			if err != nil {
-				fileInfoCH <- option.ExtractMsg{
+				fileInfoCh <- option.ExtractMsg{
 					Error: err,
 				}
 				return err
 			}
 
 			if fileInfo != nil {
-				fileInfoCH <- option.ExtractMsg{
+				fileInfoCh <- option.ExtractMsg{
 					FileInfo: fileInfo,
 					Error:    err,
 				}
@@ -89,7 +89,7 @@ func (z *Zip) ExtractStream(
 	return fileInfoCh
 }
 
-func (z *Zip) extractAndWriteFile(
+func (z Zip) extractAndWriteFile(
 	destDir string,
 	f *zip.File,
 ) (*option.FileInfo, error) {
@@ -144,6 +144,8 @@ func (z *Zip) extractAndWriteFile(
 	if err != nil {
 		return nil, err
 	}
+	defer fn.Close()
+
 	_, err = io.Copy(fn, rc)
 	if err != nil {
 		return nil, err
