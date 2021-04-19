@@ -10,16 +10,21 @@ import (
 )
 
 func TestUploadMultipart(t *testing.T) {
-	var file *multipart.FileHeader
+	var file multipart.FileHeader
+	srcFile, err := file.Open()
+	if err != nil {
+		return
+	}
+	defer srcFile.Close()
+
 	workDir, _ := os_.Getwd()
 	testFilePath := filepath.Join(workDir, "test-file-upload")
 	partInput := &upload_.UploadPartInput{
 		PartId: 1,
-		FileId: 1,
 		Offset: 0,
 		Length: 18,
 	}
-	err := upload_.UploadMultipart(file,
+	err = upload_.UploadMultipart(srcFile,
 		partInput,
 		testFilePath)
 	if err != nil {
