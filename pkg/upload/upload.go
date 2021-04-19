@@ -2,7 +2,7 @@ package upload
 
 import (
 	"fmt"
-	"mime/multipart"
+	"io"
 	"os"
 	"path/filepath"
 	"strings"
@@ -23,13 +23,10 @@ type UploadPartInput struct {
 const tmpFileSuffix = "_.tmp"
 
 func UploadFile(
-	file *multipart.FileHeader,
+	r io.Reader,
 	filePath string,
-	Md5Sum string,
+	md5Sum string,
 ) error {
-	if file == nil {
-		return fmt.Errorf("invalid multipart FileHeader")
-	}
 	if filePath == "" {
 		return fmt.Errorf("invalid filePath")
 	}
@@ -56,27 +53,25 @@ func UploadFile(
 	}
 	defer unlockFun()
 
-	srcFile, err := file.Open()
-	if err != nil {
-		return err
-	}
-	defer srcFile.Close()
-
-	if Md5Sum != "" {
-		sum, err := md5_.SumReader(srcFile)
+	if md5Sum != "" {
+		sum, err := md5_.SumReader(r)
 		if err != nil {
 			return err
 		}
 		gotSum := strings.ToLower(sum)
-		expectSum := strings.ToLower(Md5Sum)
+		expectSum := strings.ToLower(md5Sum)
 
 		if gotSum != expectSum {
-			return fmt.Errorf("failed to check md5Sum, got: %v, expect: %v", gotSum, expectSum)
+			return fmt.Errorf(
+				"failed to check md5Sum, got: %v, expect: %v",
+				gotSum,
+				expectSum,
+			)
 		}
 
 	}
 
-	err = io_.WriteReader(filePath, srcFile)
+	err = io_.WriteReader(filePath, r)
 	if err != nil {
 		return err
 	}
@@ -85,13 +80,10 @@ func UploadFile(
 }
 
 func UploadMultipart(
-	file *multipart.FileHeader,
+	r io.Reader,
 	partInput *UploadPartInput,
 	filePath string,
 ) error {
-	if file == nil {
-		return fmt.Errorf("invalid multipart FileHeader")
-	}
 	if partInput == nil {
 		return fmt.Errorf("invalid partInput")
 	}
@@ -121,14 +113,8 @@ func UploadMultipart(
 	}
 	defer unlockFun()
 
-	srcFile, err := file.Open()
-	if err != nil {
-		return err
-	}
-	defer srcFile.Close()
-
 	if partInput.Md5Sum != "" {
-		sum, err := md5_.SumReader(srcFile)
+		sum, err := md5_.SumReader(r)
 		if err != nil {
 			return err
 		}
@@ -136,13 +122,22 @@ func UploadMultipart(
 		expectSum := strings.ToLower(partInput.Md5Sum)
 
 		if gotSum != expectSum {
-			return fmt.Errorf("failed to check md5Sum, got: %v, expect: %v", gotSum, expectSum)
+			return fmt.Errorf(
+				"failed to check md5Sum, got: %v, expect: %v",
+				gotSum,
+				expectSum,
+			)
 		}
 
 	}
 
 	tmpFilePath := filePath + tmpFileSuffix
-	err = io_.WriteReaderAt(tmpFilePath, srcFile, partInput.Offset, partInput.Length)
+	err = io_.WriteReaderAt(
+		tmpFilePath,
+		r,
+		partInput.Offset,
+		partInput.Length,
+	)
 	if err != nil {
 		return err
 	}
@@ -168,7 +163,11 @@ func CompleteMultipartUpload(
 		expectSum := strings.ToLower(md5Sum)
 
 		if gotSum != expectSum {
-			return fmt.Errorf("failed to check md5Sum, got: %v, expect: %v", gotSum, expectSum)
+			return fmt.Errorf(
+				"failed to check md5Sum, got: %v, expect: %v",
+				gotSum,
+				expectSum,
+			)
 		}
 	}
 
