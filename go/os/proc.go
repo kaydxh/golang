@@ -2,33 +2,35 @@ package os
 
 import (
 	"fmt"
-	"os/exec"
 	"strconv"
 	"strings"
+	"time"
+
+	exec_ "github.com/kaydxh/golang/go/os/exec"
 )
 
-func GetPidByName(
-	name string,
-) ([]int, error) {
+func GetPidsByName(
+	timeout time.Duration,
+	name string) ([]int, string, error) {
 	cmd := fmt.Sprintf(
 		`ps ux | grep '%s'| grep -v grep | awk '{print $2}'`,
 		name,
 	)
-	result, err := exec.Command("/bin/sh", "-c", cmd).Output()
+	result, msg, err := exec_.Exec(timeout, cmd)
 	if err != nil {
-		return nil, err
+		return nil, msg, err
 	}
 
 	pids := strings.TrimSpace(string(result))
 	sPids := strings.Split(pids, "\n")
-	nPids := make([]int, 0)
+	var nPids []int
 	for _, pid := range sPids {
 		nPid, err := strconv.Atoi(pid)
 		if err != nil {
-			return nil, err
+			return nil, msg, err
 		}
 		nPids = append(nPids, nPid)
 	}
 
-	return nPids, nil
+	return nPids, msg, nil
 }
