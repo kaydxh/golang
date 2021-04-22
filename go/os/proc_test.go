@@ -1,17 +1,18 @@
 package os
 
 import (
-	"fmt"
 	"testing"
+	"time"
 
 	os_ "github.com/kaydxh/golang/go/os"
 )
 
-func TestGetPidByName(t *testing.T) {
-	pids, err := os_.GetPidByName("kayxhding")
+func TestGetPidsByName(t *testing.T) {
+	timeout := 3000
+	pids, msg, err := os_.GetPidsByName(time.Duration(timeout), "kayxhding")
 	if err != nil {
-		t.Errorf("expect nil, got %v", err)
+		t.Errorf("expect nil, got %v, msg: %v", err, msg)
 	}
 
-	fmt.Println(pids)
+	t.Logf("pids: %v", pids)
 }
