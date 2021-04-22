@@ -39,7 +39,8 @@ func Exec(
 	defer cancel()
 
 	var stdout, stderr bytes.Buffer
-	cmd := exec.CommandContext(ctx, name, args...)
+	args = append([]string{"-c", name}, args...)
+	cmd := exec.CommandContext(ctx, "/bin/sh", args...)
 	cmd.Stdout, cmd.Stderr = &stdout, &stderr
 	cmd.SysProcAttr = &syscall.SysProcAttr{Setpgid: true}
 	if err := cmd.Start(); err != nil {
