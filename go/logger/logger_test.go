@@ -17,9 +17,10 @@ func TestNew(t *testing.T) {
 
 func TestInit(t *testing.T) {
 	logger.InitLog(logger.Log_text, logger.Log_info)
-	l := logger.Log.WithField("key1", 1)
-	l.Infof("test: %v", "test info")
-	l.Infof("test2: %v", "test info2")
+	l := logger.Log.WithField("func", "init")
+	l.Infof("info test: %v", "test info")
+	l.Warnf("warn test: %v", "test info")
+	l.Errorf("error test: %v", "test info")
 	/*
 		baselog.Level = logrus.PanicLevel
 		baselog.Out = ioutil.Discard
