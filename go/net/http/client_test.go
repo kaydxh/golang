@@ -28,7 +28,7 @@ func TestHttpClientGet(t *testing.T) {
 	}
 
 	for _, test := range testCases {
-		resp, err := client.Get(test.url)
+		data, err := client.Get(test.url)
 		if test.expected {
 			assert.NilError(t, err)
 		} else {
@@ -36,6 +36,6 @@ func TestHttpClientGet(t *testing.T) {
 			t.Logf("got %v", err)
 		}
 
-		t.Logf("response: %v", resp)
+		t.Logf("response data: %v", string(data))
 	}
 }
