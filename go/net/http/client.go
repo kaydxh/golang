@@ -1,6 +1,9 @@
 package http
 
 import (
+	"bytes"
+	"io"
+	"io/ioutil"
 	"log"
 	"net"
 	"net/http"
@@ -61,17 +64,48 @@ func NewClient(options ...ClientOption) (*Client, error) {
 	}
 	c.Transport = transport
 
-	/*
-		cli := &http.Client{
-			Transport: transport,
-		}
-	*/
-
 	return c, nil
 }
 
-func (c *Client) Get(url string) (resp *http.Response, err error) {
-	return c.Client.Get(url)
+func (c *Client) Get(url string) ([]byte, error) {
+	r, err := c.Client.Get(url)
+	if err != nil {
+		return nil, err
+	}
+	defer r.Body.Close()
+
+	data, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	return data, nil
+}
+
+func (c *Client) Post(
+	url, contentType string,
+	body []byte,
+) ([]byte, error) {
+	bodyReader := bytes.NewReader(body)
+	return c.PostReader(url, contentType, bodyReader)
+}
+
+func (c *Client) PostReader(
+	url, contentType string,
+	body io.Reader,
+) ([]byte, error) {
+	r, err := c.Client.Post(url, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	defer r.Body.Close()
+
+	data, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	return data, nil
 }
 
 func (c *Client) logf(format string, args ...interface{}) {
