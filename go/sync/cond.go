@@ -13,20 +13,29 @@ func NewCond() *Cond {
 	return c
 }
 
-func (c *Cond) WaitCond(pred func() bool, do func()) {
+func (c *Cond) WaitCondDo(pred func() bool, do func() error) {
 	c.cond.L.Lock()
 	for !pred() {
 		c.cond.Wait()
 	}
 	do()
 	c.cond.L.Unlock()
+
 }
 
-func (c *Cond) SignalDo(do func()) {
+func (c *Cond) SignalDo(do func() error) {
 	c.cond.L.Lock()
 	do()
 	c.Signal()
 	c.cond.L.Unlock()
+}
+
+func (c *Cond) BroadcastDo(do func() error) {
+	c.cond.L.Lock()
+	do()
+	c.Broadcast()
+	c.cond.L.Unlock()
+
 }
 
 func (c *Cond) Signal() {
