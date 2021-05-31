@@ -2,7 +2,6 @@ package pool
 
 import (
 	"context"
-	"fmt"
 	"sync"
 )
 
@@ -41,6 +40,10 @@ func (p *Pool) Wait() error {
 	return p.err
 }
 
+func (p *Pool) Stop() {
+	close(p.taskChan)
+}
+
 func (p *Pool) Error() error {
 	p.errMu.Lock()
 	defer p.errMu.Unlock()
@@ -73,6 +76,7 @@ func (p *Pool) run(ctx context.Context) (doneC <-chan struct{}) {
 		defer p.wg.Done()
 
 		ctx, cancel := context.WithCancel(ctx)
+		_ = cancel
 
 		for {
 
@@ -111,7 +115,6 @@ func (p *Pool) run(ctx context.Context) (doneC <-chan struct{}) {
 				}(task)
 
 			case <-ctx.Done():
-				fmt.Println("done")
 				return
 			}
 
