@@ -2,70 +2,72 @@ package sync_test
 
 import (
 	"fmt"
+	"sync"
 	"testing"
 	"time"
-
-	"sync"
 
 	sync_ "github.com/kaydxh/golang/go/sync"
 	"github.com/stretchr/testify/assert"
 )
 
-func TestSignal(t *testing.T) {
+func TestWaitForDo(t *testing.T) {
 	assert := assert.New(t)
 
-	cond := sync_.NewCond()
+	l := new(sync.Mutex)
+	cond := sync_.NewCond(l)
 	a := 5
+	timout := 2
+
+	var wg sync.WaitGroup
+	wg.Add(1)
+	go func() {
+		defer wg.Done()
+		err := cond.WaitFoDo(timout+2, func() bool {
+			return a == 3
+		}, func() error {
+			a += 100
+			fmt.Printf("a: %v\n", a)
+			assert.Equal(103, a)
+			return nil
+		})
+		assert.Equal(nil, err)
+	}()
 
 	go func() {
 		for {
-			time.Sleep(time.Second)
 			cond.SignalDo(func() error {
 				a--
+				time.Sleep(time.Duration(timout) * time.Second)
 				fmt.Printf("a: %v\n", a)
 				return nil
 			})
 		}
 	}()
 
-	cond.WaitCondDo(func() bool {
-		return a == 3
-	}, func() error {
-		a += 100
-		fmt.Printf("a: %v\n", a)
-		assert.Equal(103, a)
-		return nil
-	})
-
+	wg.Wait()
 }
 
 func TestBroadCast(t *testing.T) {
 	assert := assert.New(t)
 
-	cond := sync_.NewCond()
+	l := new(sync.Mutex)
+	cond := sync_.NewCond(l)
 
-	testCases := []struct {
-		threads  int
-		init     int
-		expected int
-	}{
-		{
-			threads:  5,
-			init:     10,
-			expected: 3,
-		},
-	}
+	initValue := 10
+	expected := 3
+	threads := 5
 
 	var wg sync.WaitGroup
 
-	for i, testCase := range testCases {
+	for i := 0; i < threads; i++ {
 		wg.Add(1)
 		go func() {
 			defer wg.Done()
-			cond.WaitCondDo(func() bool {
-				return testCase.expected == testCases[i].init
+			cond.WaitFoDo(10, func() bool {
+				return expected == initValue
 			}, func() error {
-				assert.Equal(testCases[i].init, testCase.expected)
+				assert.Equal(initValue, expected)
+				t.Logf("wait done")
 				return nil
 			})
 		}()
@@ -75,8 +77,8 @@ func TestBroadCast(t *testing.T) {
 		for {
 			time.Sleep(time.Second)
 			cond.BroadcastDo(func() error {
-				testCases[0].init--
-				fmt.Printf("init: %v\n", testCases[0].init)
+				initValue--
+				t.Logf("init: %v\n", initValue)
 				return nil
 			})
 		}
