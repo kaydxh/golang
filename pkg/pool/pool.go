@@ -3,6 +3,8 @@ package pool
 import (
 	"context"
 	"sync"
+
+	sync_ "github.com/kaydxh/golang/go/sync"
 )
 
 type Pool struct {
@@ -11,6 +13,7 @@ type Pool struct {
 
 	taskChan chan interface{}
 	err      error
+	cond     *sync_.Cond
 
 	wg      sync.WaitGroup
 	burstMu sync.Mutex
@@ -24,6 +27,7 @@ func New(burst int32, taskFunc TaskHandler) *Pool {
 		TaskFunc: taskFunc,
 		taskChan: make(chan interface{}, 0),
 	}
+	p.cond = sync_.NewCond(&p.burstMu)
 	go p.run(context.Background())
 
 	return p
@@ -69,8 +73,6 @@ func (p *Pool) run(ctx context.Context) (doneC <-chan struct{}) {
 
 	p.wg.Add(1)
 	//	context.Background().Done()
-
-	c := sync.NewCond(&p.burstMu)
 	go func() {
 		defer close(done)
 		defer p.wg.Done()
@@ -80,13 +82,18 @@ func (p *Pool) run(ctx context.Context) (doneC <-chan struct{}) {
 
 		for {
 
-			c.L.Lock()
-			for burst <= 0 {
-				c.Wait()
+			for {
+				err := p.cond.WaitForDo(1, func() bool {
+					return burst > 0
+				}, func() error {
+					burst--
+					return nil
+				})
+				if err == nil {
+					break
+				}
+				p.cond.Signal()
 			}
-			burst--
-			//fmt.Printf("burst: %v\n", burst)
-			c.L.Unlock()
 
 			select {
 			case task, ok := <-p.taskChan:
@@ -96,21 +103,16 @@ func (p *Pool) run(ctx context.Context) (doneC <-chan struct{}) {
 				p.wg.Add(1)
 
 				go func(t interface{}) {
-					cleanfunc := func() {
-						c.L.Lock()
-						burst++
-						c.Signal()
-						c.L.Unlock()
 
-						p.wg.Done()
-
-					}
-					defer cleanfunc()
-
+					defer p.wg.Done()
 					if err := p.TaskFunc(t); err != nil {
-						cancel()
+						//cancel()
 						return
 					}
+					p.cond.SignalDo(func() error {
+						burst++
+						return nil
+					})
 
 				}(task)
 
