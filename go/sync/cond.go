@@ -39,13 +39,14 @@ func (c *Cond) waitFor(timeout int) error {
 
 }
 
-func (c *Cond) WaitFoDo(timeout int, pred func() bool, do func() error) error {
+func (c *Cond) WaitForDo(timeout int, pred func() bool, do func() error) error {
 	c.L.Lock()
 	defer c.L.Unlock()
 
 	for !pred() {
 		err := c.waitFor(timeout)
 		if err != nil {
+			fmt.Printf("err: %v\n", err)
 			return err
 		}
 	}
@@ -70,20 +71,22 @@ func (c *Cond) WaitUntilDo(timeout int, pred func() bool, do func() error) error
 
 func (c *Cond) SignalDo(do func() error) {
 	c.L.Lock()
-	c.Signal()
 	if do != nil {
 		do()
 	}
 	c.L.Unlock()
+
+	c.Signal()
 }
 
 func (c *Cond) BroadcastDo(do func() error) {
 	c.L.Lock()
-	c.Broadcast()
 	if do != nil {
 		do()
 	}
 	c.L.Unlock()
+
+	c.Broadcast()
 }
 
 func (c *Cond) Signal() {
