@@ -22,7 +22,7 @@ func TestWaitForDo(t *testing.T) {
 	wg.Add(1)
 	go func() {
 		defer wg.Done()
-		err := cond.WaitFoDo(timout+2, func() bool {
+		err := cond.WaitForDo(timout+2, func() bool {
 			return a == 3
 		}, func() error {
 			a += 100
@@ -63,7 +63,7 @@ func TestBroadCast(t *testing.T) {
 		wg.Add(1)
 		go func() {
 			defer wg.Done()
-			cond.WaitFoDo(10, func() bool {
+			cond.WaitForDo(10, func() bool {
 				return expected == initValue
 			}, func() error {
 				assert.Equal(initValue, expected)
