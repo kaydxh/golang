@@ -5,6 +5,8 @@ go 1.15
 require (
 	github.com/gin-gonic/gin v1.6.3
 	github.com/hashicorp/consul/api v1.8.1
+	github.com/jmoiron/sqlx v1.3.1
+	github.com/ory/viper v1.7.5
 	github.com/searKing/golang v1.0.116
 	github.com/searKing/sole v0.0.7
 	github.com/sirupsen/logrus v1.8.0
