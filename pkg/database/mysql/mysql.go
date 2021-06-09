@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/jmoiron/sqlx"
+	time_ "github.com/kaydxh/golang/go/time"
 )
 
 type DBConfig struct {
@@ -65,14 +66,24 @@ func (d *DB) GetDatabase() (*sqlx.DB, error) {
 	return d.db, nil
 }
 
-//todo
 func (d *DB) GetDatabaseUntil(maxWaitInterval time.Duration, failAfter time.Duration) (*sqlx.DB, error) {
+
+	exp := time_.NewExponentialBackOff(
+		time_.WithExponentialBackOffOptionMaxInterval(maxWaitInterval),
+		time_.WithExponentialBackOffOptionMaxElapsedTime(failAfter),
+	)
 	for {
 		db, err := d.GetDatabase()
 		if err != nil {
 			continue
-
 		}
+
+		actualInterval, over := exp.NextBackOff()
+		if over {
+			return nil, fmt.Errorf("get datqabase fail after: %v", failAfter)
+		}
+
+		time.Sleep(actualInterval)
 		return db, nil
 	}
 }
