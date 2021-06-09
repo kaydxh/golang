@@ -84,17 +84,40 @@ func (c *Client) Get(url string) ([]byte, error) {
 
 func (c *Client) Post(
 	url, contentType string,
+	headers map[string]string,
 	body []byte,
 ) ([]byte, error) {
 	bodyReader := bytes.NewReader(body)
-	return c.PostReader(url, contentType, bodyReader)
+	return c.PostReader(url, contentType, headers, bodyReader)
+}
+
+func (c *Client) PostJson(
+	url string,
+	headers map[string]string,
+	body []byte,
+) ([]byte, error) {
+	bodyReader := bytes.NewReader(body)
+	return c.PostReader(url, "application/json", headers, bodyReader)
 }
 
 func (c *Client) PostReader(
 	url, contentType string,
+	headers map[string]string,
 	body io.Reader,
 ) ([]byte, error) {
-	r, err := c.Client.Post(url, contentType, body)
+	req, err := http.NewRequest("POST", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	if contentType != "" {
+		req.Header.Set("Content-Type", contentType)
+	}
+	for key, value := range headers {
+		req.Header.Set(key, value)
+	}
+
+	r, err := c.Do(req)
 	if err != nil {
 		return nil, err
 	}
