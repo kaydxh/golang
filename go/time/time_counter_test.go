@@ -22,4 +22,5 @@ func TestAll(t *testing.T) {
 	tc.Tick("module2")
 
 	fmt.Println(tc.String())
+
 }
