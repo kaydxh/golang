@@ -64,7 +64,7 @@ func TestHttpClientPost(t *testing.T) {
 	}
 
 	for _, test := range testCases {
-		data, err := client.Post(test.url, "application/text", test.data)
+		data, err := client.Post(test.url, "application/text", nil, test.data)
 		if test.expected {
 			assert.NilError(t, err)
 		} else {
