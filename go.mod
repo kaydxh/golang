@@ -7,7 +7,8 @@ require (
 	github.com/hashicorp/consul/api v1.8.1
 	github.com/jmoiron/sqlx v1.3.1
 	github.com/ory/viper v1.7.5
-	github.com/searKing/golang v1.0.116
+	github.com/robfig/cron v1.2.0
+	github.com/searKing/golang v1.0.175
 	github.com/searKing/sole v0.0.7
 	github.com/sirupsen/logrus v1.8.0
 	github.com/stretchr/testify v1.6.1
@@ -16,6 +17,7 @@ require (
 	golang.org/x/sys v0.0.0-20210124154548-22da62e12c0c
 	golang.org/x/text v0.3.5
 	golang.org/x/time v0.0.0-20210220033141-f8bda1e9f3ba
+	google.golang.org/api v0.30.0
 	gotest.tools v2.2.0+incompatible
 	gotest.tools/v3 v3.0.3
 )
