@@ -9,7 +9,7 @@ require (
 	github.com/ory/viper v1.7.5
 	github.com/robfig/cron v1.2.0
 	github.com/searKing/golang v1.0.175
-	github.com/searKing/sole v0.0.7
+	github.com/searKing/sole v0.0.39
 	github.com/sirupsen/logrus v1.8.0
 	github.com/stretchr/testify v1.6.1
 	go.uber.org/atomic v1.7.0
