@@ -100,6 +100,26 @@ func ReadLineAt(readIndex int, byteArray []byte) ([]byte, int) {
 	return nil, currentReadIndex
 }
 
+func WriteFile(filePath string, content []byte, appended bool) error {
+	file, err := os_.OpenFile(filePath, appended)
+	if err != nil {
+		return err
+	}
+	defer file.Close()
+
+	buf := bufio.NewWriter(file)
+	_, err = buf.Write(content)
+	if err != nil {
+		return err
+	}
+
+	if err := buf.Flush(); err != nil {
+		return err
+	}
+
+	return nil
+}
+
 // WriteLine join all line to file.
 func WriteFileLines(filePath string, lines []string, appended bool) (err error) {
 
