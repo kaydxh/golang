@@ -14,6 +14,31 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+func TestWriteFile(t *testing.T) {
+	testCases := []struct {
+		name     string
+		words    []byte
+		expected string
+	}{
+		{
+			name:     "./tmp/1.txt",
+			words:    []byte("hello world"),
+			expected: "",
+		},
+	}
+
+	for _, testCase := range testCases {
+		t.Run(testCase.name, func(t *testing.T) {
+			err := io_.WriteFile(testCase.name, testCase.words, false)
+			if err != nil {
+				t.Fatalf("failed to write file: %v, got : %s", testCase.name, err)
+
+			}
+
+		})
+	}
+}
+
 func TestWriteReadLine(t *testing.T) {
 	testCases := []struct {
 		name     string
