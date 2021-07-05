@@ -13,11 +13,11 @@ import (
 type Client struct {
 	http.Client
 	opts struct {
-		timeout               int
-		dialTimeout           int
-		responseHeaderTimeout int
+		timeout               time.Duration
+		dialTimeout           time.Duration
+		responseHeaderTimeout time.Duration
+		idleConnTimeout       time.Duration
 		maxIdleConns          int
-		idleConnTimeout       int
 		disableKeepAlives     bool
 
 		ErrorLog *log.Logger
@@ -30,14 +30,14 @@ func NewClient(options ...ClientOption) (*Client, error) {
 	//	var transport *http.Transport = http.DefaultTransport
 	transport := &http.Transport{}
 	if c.opts.timeout != 0 {
-		c.Client.Timeout = time.Duration(c.opts.timeout) * time.Second
+		c.Client.Timeout = c.opts.timeout
 	}
 	if c.opts.dialTimeout != 0 {
 		transport.Dial = func(network, addr string) (net.Conn, error) {
 			conn, err := net.DialTimeout(
 				network,
 				addr,
-				time.Duration(c.opts.dialTimeout)*time.Second,
+				c.opts.dialTimeout,
 			)
 			if nil != err {
 				return nil, err
@@ -47,17 +47,13 @@ func NewClient(options ...ClientOption) (*Client, error) {
 	}
 
 	if c.opts.responseHeaderTimeout != 0 {
-		transport.ResponseHeaderTimeout = time.Duration(
-			c.opts.responseHeaderTimeout,
-		) * time.Second
+		transport.ResponseHeaderTimeout = c.opts.responseHeaderTimeout
 	}
 	if c.opts.maxIdleConns != 0 {
 		transport.MaxIdleConns = c.opts.maxIdleConns
 	}
 	if c.opts.idleConnTimeout != 0 {
-		transport.IdleConnTimeout = time.Duration(
-			c.opts.idleConnTimeout,
-		) * time.Second
+		transport.IdleConnTimeout = c.opts.idleConnTimeout
 	}
 	if c.opts.disableKeepAlives {
 		transport.DisableKeepAlives = c.opts.disableKeepAlives

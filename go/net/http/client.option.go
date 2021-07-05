@@ -2,15 +2,16 @@ package http
 
 import (
 	"log"
+	"time"
 )
 
-func WithTimeout(timeout int) ClientOption {
+func WithTimeout(timeout time.Duration) ClientOption {
 	return ClientOptionFunc(func(c *Client) {
 		c.opts.timeout = timeout
 	})
 }
 
-func WithResonseHeaderTimeout(responseHeaderTimeout int) ClientOption {
+func WithResonseHeaderTimeout(responseHeaderTimeout time.Duration) ClientOption {
 	// https://cos.ap-beijing.myqcloud.com
 	return ClientOptionFunc(func(c *Client) {
 		c.opts.responseHeaderTimeout = responseHeaderTimeout
@@ -23,7 +24,7 @@ func WithMaxIdleConns(maxIdleConns int) ClientOption {
 	})
 }
 
-func WithIdleConnTimeout(idleConnTimeout int) ClientOption {
+func WithIdleConnTimeout(idleConnTimeout time.Duration) ClientOption {
 	return ClientOptionFunc(func(c *Client) {
 		c.opts.idleConnTimeout = idleConnTimeout
 	})
