@@ -2,13 +2,14 @@ package http_test
 
 import (
 	"testing"
+	"time"
 
 	http_ "github.com/kaydxh/golang/go/net/http"
 	"gotest.tools/v3/assert"
 )
 
 func TestHttpClientGet(t *testing.T) {
-	client, err := http_.NewClient(http_.WithTimeout(5))
+	client, err := http_.NewClient(http_.WithTimeout(5 * time.Second))
 	if err != nil {
 		t.Errorf("expect nil, got %v", err)
 	}
@@ -41,7 +42,7 @@ func TestHttpClientGet(t *testing.T) {
 }
 
 func TestHttpClientPost(t *testing.T) {
-	client, err := http_.NewClient(http_.WithTimeout(5))
+	client, err := http_.NewClient(http_.WithTimeout(5 * time.Second))
 	if err != nil {
 		t.Errorf("expect nil, got %v", err)
 	}
