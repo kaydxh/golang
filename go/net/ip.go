@@ -11,7 +11,7 @@ func GetLocalFirstIP() (string, error) {
 		return "", err
 	}
 	if len(ips) == 0 {
-		return "", fmt.Errorf("no invalid ip")
+		return "", fmt.Errorf("no valid ip")
 	}
 
 	return ips[0], nil
