@@ -6,6 +6,11 @@ import (
 	time_ "github.com/kaydxh/golang/go/time"
 )
 
+func TestNowString(t *testing.T) {
+	now := time_.NowString("")
+	t.Logf(now)
+}
+
 func TestBeginningOfDayString(t *testing.T) {
 	beginTime := time_.BeginningOfDayString(-1, "")
 	t.Logf(beginTime)
