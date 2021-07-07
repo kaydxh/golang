@@ -2,6 +2,7 @@ package http
 
 import (
 	"bytes"
+	"fmt"
 	"io"
 	"io/ioutil"
 	"log"
@@ -122,6 +123,9 @@ func (c *Client) PostReader(
 	data, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		return nil, err
+	}
+	if r.StatusCode >= 300 {
+		return nil, fmt.Errorf("http status code: %v", r.StatusCode)
 	}
 
 	return data, nil
