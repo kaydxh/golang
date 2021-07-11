@@ -4,16 +4,22 @@ import (
 	"fmt"
 	"time"
 
+	_ "github.com/go-sql-driver/mysql"
+
 	"github.com/jmoiron/sqlx"
 	time_ "github.com/kaydxh/golang/go/time"
 )
 
+var (
+	sqlDB  SQLDB
+	sqlDBs map[DBConfig]SQLDB
+)
+
 type DBConfig struct {
-	Address    string
-	DataName   string
-	UserName   string
-	Password   string
-	DriverName string
+	Address  string
+	DataName string
+	UserName string
+	Password string
 }
 
 type DB struct {
@@ -28,14 +34,18 @@ type DB struct {
 	}
 }
 
-func NewDB(conf DBConfig, opts ...DBOption) (*DB, error) {
+func NewDB(conf DBConfig, opts ...DBOption) *DB {
 	conn := &DB{
 		Conf: conf,
 	}
 
 	conn.ApplyOptions(opts...)
 
-	return conn, nil
+	return conn
+}
+
+func Get() *sqlx.DB {
+	return sqlDB.Load()
 }
 
 func (d *DB) GetDatabase() (*sqlx.DB, error) {
@@ -43,26 +53,28 @@ func (d *DB) GetDatabase() (*sqlx.DB, error) {
 		return d.db, nil
 	}
 	dsn := fmt.Sprintf(
-		"%s:%s@tcp(%s)/%s?charset=utf8&loc=%s&parseTime=true",
+		"%s:%s@tcp(%s)/%s?charset=utf8&loc=Local&parseTime=true",
 		d.Conf.UserName,
 		d.Conf.Password,
 		d.Conf.Address,
 		d.Conf.DataName,
 	)
+	fmt.Printf("dsn: %v", dsn)
 
-	db, err := sqlx.Open(d.Conf.DriverName, dsn)
+	db, err := sqlx.Open("mysql", dsn)
 	if err != nil {
 		return nil, err
 	}
-	if err := d.db.Ping(); err != nil {
+	if err := db.Ping(); err != nil {
 		return nil, err
 	}
 
-	d.db.SetMaxOpenConns(d.opts.MaxConns)
-	d.db.SetMaxIdleConns(d.opts.MaxIdleConns)
-	d.db.SetConnMaxLifetime(d.opts.ConnMaxLifetime)
+	db.SetMaxOpenConns(d.opts.MaxConns)
+	db.SetMaxIdleConns(d.opts.MaxIdleConns)
+	db.SetConnMaxLifetime(d.opts.ConnMaxLifetime)
 
 	d.db = db
+	sqlDB.Store(db)
 	return d.db, nil
 }
 
@@ -86,4 +98,11 @@ func (d *DB) GetDatabaseUntil(maxWaitInterval time.Duration, failAfter time.Dura
 		time.Sleep(actualInterval)
 		return db, nil
 	}
+}
+
+func (d *DB) Close() error {
+	if d.db == nil {
+		return fmt.Errorf("no database pool")
+	}
+	return d.db.Close()
 }
