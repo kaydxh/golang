@@ -59,7 +59,6 @@ func (d *DB) GetDatabase() (*sqlx.DB, error) {
 		d.Conf.Address,
 		d.Conf.DataName,
 	)
-	fmt.Printf("dsn: %v", dsn)
 
 	db, err := sqlx.Open("mysql", dsn)
 	if err != nil {
@@ -86,17 +85,17 @@ func (d *DB) GetDatabaseUntil(maxWaitInterval time.Duration, failAfter time.Dura
 	)
 	for {
 		db, err := d.GetDatabase()
-		if err != nil {
-			continue
-		}
+		if err == nil {
+			return db, nil
 
-		actualInterval, over := exp.NextBackOff()
-		if over {
-			return nil, fmt.Errorf("get datqabase fail after: %v", failAfter)
-		}
+		} else {
+			actualInterval, ok := exp.NextBackOff()
+			if !ok {
+				return nil, fmt.Errorf("get database fail after: %v", failAfter)
+			}
 
-		time.Sleep(actualInterval)
-		return db, nil
+			time.Sleep(actualInterval)
+		}
 	}
 }
 
