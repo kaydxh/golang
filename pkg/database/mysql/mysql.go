@@ -2,6 +2,7 @@ package mysql
 
 import (
 	"fmt"
+	"sync"
 	"time"
 
 	_ "github.com/go-sql-driver/mysql"
@@ -13,6 +14,13 @@ import (
 var (
 	sqlDB  SQLDB
 	sqlDBs map[DBConfig]SQLDB
+	mu     sync.Mutex
+)
+
+// Default values for Mysql.
+const (
+	DefaultMaxConns     = 100
+	DefaultMaxIdleConns = 10
 )
 
 type DBConfig struct {
@@ -38,14 +46,56 @@ func NewDB(conf DBConfig, opts ...DBOption) *DB {
 	conn := &DB{
 		Conf: conf,
 	}
+	conn.opts.MaxConns = DefaultMaxConns
+	conn.opts.MaxIdleConns = DefaultMaxIdleConns
 
 	conn.ApplyOptions(opts...)
 
 	return conn
 }
 
-func Get() *sqlx.DB {
+func GetDB() *sqlx.DB {
 	return sqlDB.Load()
+}
+
+func GetTheDB(conf DBConfig) (*sqlx.DB, error) {
+	mu.Lock()
+	defer mu.Unlock()
+
+	sqlDB, ok := sqlDBs[conf]
+	if !ok {
+		return nil, fmt.Errorf("not found the db in cache")
+	}
+	return sqlDB.Load(), nil
+}
+
+func CloseDB() error {
+	if sqlDB.Load() == nil {
+		return nil
+	}
+
+	return sqlDB.Load().Close()
+}
+
+func CloseTheDB(conf DBConfig) error {
+	mu.Lock()
+	defer mu.Unlock()
+
+	sqlDB, ok := sqlDBs[conf]
+	if !ok {
+		return fmt.Errorf("not found the db in cache")
+	}
+	if sqlDB.Load() == nil {
+		return nil
+	}
+
+	err := sqlDB.Load().Close()
+	if err != nil {
+		return err
+	}
+
+	delete(sqlDBs, conf)
+	return nil
 }
 
 func (d *DB) GetDatabase() (*sqlx.DB, error) {
@@ -74,6 +124,13 @@ func (d *DB) GetDatabase() (*sqlx.DB, error) {
 
 	d.db = db
 	sqlDB.Store(db)
+
+	mu.Lock()
+	defer mu.Unlock()
+	if sqlDBs == nil {
+		sqlDBs = make(map[DBConfig]SQLDB)
+	}
+	sqlDBs[d.Conf] = sqlDB
 	return d.db, nil
 }
 
