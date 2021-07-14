@@ -85,7 +85,7 @@ func (c *Client) Post(
 	body []byte,
 ) ([]byte, error) {
 	bodyReader := bytes.NewReader(body)
-	return c.PostReader(url, contentType, headers, bodyReader)
+	return c.PostReader(url, contentType, headers, nil, bodyReader)
 }
 
 func (c *Client) PostJson(
@@ -94,12 +94,23 @@ func (c *Client) PostJson(
 	body []byte,
 ) ([]byte, error) {
 	bodyReader := bytes.NewReader(body)
-	return c.PostReader(url, "application/json", headers, bodyReader)
+	return c.PostReader(url, "application/json", headers, nil, bodyReader)
+}
+
+func (c *Client) PostJsonWithAuthorize(
+	url string,
+	headers map[string]string,
+	auth func(r *http.Request) error,
+	body []byte,
+) ([]byte, error) {
+	bodyReader := bytes.NewReader(body)
+	return c.PostReader(url, "application/json", headers, auth, bodyReader)
 }
 
 func (c *Client) PostReader(
 	url, contentType string,
 	headers map[string]string,
+	auth func(r *http.Request) error,
 	body io.Reader,
 ) ([]byte, error) {
 	req, err := http.NewRequest("POST", url, body)
@@ -112,6 +123,13 @@ func (c *Client) PostReader(
 	}
 	for key, value := range headers {
 		req.Header.Set(key, value)
+	}
+
+	if auth != nil {
+		err = auth(req)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	r, err := c.Do(req)
