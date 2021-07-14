@@ -1,4 +1,4 @@
-package signal
+package os
 
 import (
 	"os"
