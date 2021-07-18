@@ -7,40 +7,46 @@ import (
 	"github.com/pkg/profile"
 )
 
-//const ()
-
-//type noprofie struct{}
-
-//func (p *noprofie) Stop() {}
-
-//type Profile struct {
-//}
-
-func StartWithEnv() {
-	profileEnv := os_.GetEnvAsStringOrFallback("PROFILING", "")
-	profiles := strings.Split(profileEnv, ",")
-	for _, pf := range profiles {
-		start(pf)
-	}
+//no profile
+type nop struct {
 }
 
-func start(pf string) {
+func (p *nop) Stop() {
+}
+
+func StartWithEnv() interface {
+	Stop()
+} {
+	profileEnv := os_.GetEnvAsStringOrFallback("PROFILING", "")
+	return start(profileEnv)
+	//	profiles := strings.Split(profileEnv, ",")
+	/*
+		for _, pf := range profiles {
+			start(pf)
+		}
+	*/
+}
+
+func start(pf string) interface {
+	Stop()
+} {
 	switch strings.ToLower(pf) {
 	case "cpu":
-		defer profile.Start(profile.CPUProfile, profile.NoShutdownHook).Stop()
+		return profile.Start(profile.CPUProfile, profile.NoShutdownHook)
 	case "mem":
-		defer profile.Start(profile.MemProfile, profile.NoShutdownHook).Stop()
+		return profile.Start(profile.MemProfile, profile.NoShutdownHook)
 	case "mutex":
-		defer profile.Start(profile.MutexProfile, profile.NoShutdownHook).Stop()
+		return profile.Start(profile.MutexProfile, profile.NoShutdownHook)
 	case "block":
-		defer profile.Start(profile.BlockProfile, profile.NoShutdownHook).Stop()
+		return profile.Start(profile.BlockProfile, profile.NoShutdownHook)
 	case "trace":
-		defer profile.Start(profile.TraceProfile, profile.NoShutdownHook).Stop()
+		return profile.Start(profile.TraceProfile, profile.NoShutdownHook)
 	case "thread_create":
-		defer profile.Start(profile.ThreadcreationProfile, profile.NoShutdownHook).Stop()
+		return profile.Start(profile.ThreadcreationProfile, profile.NoShutdownHook)
 	case "goroutine":
-		defer profile.Start(profile.GoroutineProfile, profile.NoShutdownHook).Stop()
+		return profile.Start(profile.GoroutineProfile, profile.NoShutdownHook)
 	default:
 		//do nothing
+		return new(nop)
 	}
 }
