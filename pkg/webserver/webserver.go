@@ -7,7 +7,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/kaydxh/golang/pkg/consul"
-	"github.com/searKing/golang/third_party/github.com/grpc-ecosystem/grpc-gateway/grpc"
+	"github.com/searKing/golang/third_party/github.com/grpc-ecosystem/grpc-gateway/v2/grpc"
 	"github.com/searKing/sole/pkg/webserver/healthz"
 )
 
