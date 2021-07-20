@@ -46,3 +46,9 @@ func (c *completedConfig) New() (*GenericWebServer, error) {
 		readinessStopCh: make(chan struct{}),
 	}, nil
 }
+
+func NewConfig() *Config {
+	return &Config{
+		ShutdownDelayDuration: time.Duration(0),
+	}
+}
