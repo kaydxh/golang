@@ -26,7 +26,7 @@ type GenericWebServer struct {
 	// with no guarantee of ordering between them.  The map key is a name used for error reporting.
 	// It may kill the process with a panic if it wishes to by returning an error.
 	postStartHookLock sync.Mutex
-	//	postStartHooks       map[string]postStartHookEntry
+	//postStartHooks       map[string]postStartHookEntry
 	postStartHooksCalled bool
 
 	preShutdownHookLock sync.Mutex

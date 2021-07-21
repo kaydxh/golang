@@ -8,18 +8,15 @@ import (
 )
 
 type Config struct {
-	InternalAddress string
+	Proto       Web
+	BindAddress string
 	// ExternalAddress is the address (hostname or IP and port) that should be used in
-	// external (public internet) URLs for this GenericAPIServer.
+	// external (public internet) URLs for this GenericWebServer.
 	ExternalAddress string
 	// ShutdownDelayDuration allows to block shutdown for some time, e.g. until endpoints pointing to this API server
 	// have converged on all node. During this time, the API server keeps serving, /healthz will return 200,
 	// but /readyz will return failure.
 	ShutdownDelayDuration time.Duration
-
-	// The limit on the request body size that would be accepted and decoded in a write request.
-	// 0 means no limit.
-	maxRequestBodyBytes int64
 }
 
 type completedConfig struct {
@@ -31,13 +28,8 @@ type CompletedConfig struct {
 	*completedConfig
 }
 
-// Complete set default ServerRunOptions.
-func (c *Config) Complete() CompletedConfig {
-	return CompletedConfig{&completedConfig{c}}
-}
-
 func (c *completedConfig) New() (*GenericWebServer, error) {
-	grpcBackend := grpc.NewGateway(c.InternalAddress)
+	grpcBackend := grpc.NewGateway(c.BindAddress)
 	ginBackend := gin.New()
 
 	return &GenericWebServer{
@@ -47,8 +39,24 @@ func (c *completedConfig) New() (*GenericWebServer, error) {
 	}, nil
 }
 
+// Complete set default ServerRunOptions.
+func (c *Config) Complete() CompletedConfig {
+	c.parseViper()
+	return CompletedConfig{&completedConfig{c}}
+}
+
+func (c *Config) parseViper() {
+	c.BindAddress = c.Proto.GetBindHostPort()
+}
+
+// default bind port 80
 func NewConfig() *Config {
 	return &Config{
 		ShutdownDelayDuration: time.Duration(0),
+		Proto: Web{
+			BindAddress: &Web_Net{
+				Port: 80,
+			},
+		},
 	}
 }
