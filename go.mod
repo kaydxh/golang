@@ -6,6 +6,7 @@ require (
 	github.com/gin-gonic/gin v1.6.3
 	github.com/go-redis/redis v6.15.9+incompatible
 	github.com/go-sql-driver/mysql v1.5.0
+	github.com/golang/protobuf v1.5.0 // indirect
 	github.com/hashicorp/consul/api v1.8.1
 	github.com/jmoiron/sqlx v1.3.1
 	github.com/pkg/profile v1.6.0
@@ -21,6 +22,7 @@ require (
 	golang.org/x/time v0.0.0-20210220033141-f8bda1e9f3ba
 	google.golang.org/api v0.30.0
 	google.golang.org/grpc v1.35.0
+	google.golang.org/protobuf v1.26.0 // indirect
 	gotest.tools v2.2.0+incompatible
 	gotest.tools/v3 v3.0.3
 )
