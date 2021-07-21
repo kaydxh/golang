@@ -32,3 +32,12 @@ func TestGetLocalFirstIP(t *testing.T) {
 	}
 	t.Logf("ip: %v", ip)
 }
+
+func TestGetHostIP(t *testing.T) {
+	ip, err := net_.GetHostIP()
+	if err != nil {
+		t.Fatalf("failed to get host ip, err: %v", err)
+		return
+	}
+	t.Logf("ip: %v", ip)
+}
