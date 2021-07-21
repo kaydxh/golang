@@ -25,12 +25,12 @@ type GenericWebServer struct {
 	// PostStartHooks are each called after the server has started listening, in a separate go func for each
 	// with no guarantee of ordering between them.  The map key is a name used for error reporting.
 	// It may kill the process with a panic if it wishes to by returning an error.
-	postStartHookLock sync.Mutex
-	//postStartHooks       map[string]postStartHookEntry
+	postStartHookLock    sync.Mutex
+	postStartHooks       map[string]postStartHookEntry
 	postStartHooksCalled bool
 
-	preShutdownHookLock sync.Mutex
-	//	preShutdownHooks       map[string]preShutdownHookEntry
+	preShutdownHookLock    sync.Mutex
+	preShutdownHooks       map[string]preShutdownHookEntry
 	preShutdownHooksCalled bool
 
 	// healthz checks
@@ -69,10 +69,6 @@ type preparedGenericWebServer struct {
 	*GenericWebServer
 }
 
-func (s *GenericWebServer) PrepareRun() (preparedGenericWebServer, error) {
-	return preparedGenericWebServer{s}, nil
-}
-
 func (s preparedGenericWebServer) NonBlockingRun(ctx context.Context) (context.Context, error) {
 
 	ctx, cancel := context.WithCancel(ctx)
@@ -95,10 +91,22 @@ func (s preparedGenericWebServer) Run(ctx context.Context) error {
 	if err != nil {
 		return err
 	}
+	s.RunPostStartHooks(ctx)
+
+	<-ctx.Done()
+	// run shutdown hooks directly. This includes deregistering from the kubernetes endpoint in case of kube-apiserver.
+	err = s.RunPreShutdownHooks()
+	if err != nil {
+		return err
+	}
 
 	<-ctx.Done()
 
 	return nil
+}
+
+func (s *GenericWebServer) PrepareRun() (preparedGenericWebServer, error) {
+	return preparedGenericWebServer{s}, nil
 }
 
 func (s *GenericWebServer) InstallWebHandlers(handlers ...WebHandler) {

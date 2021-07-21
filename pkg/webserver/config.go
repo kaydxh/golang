@@ -33,9 +33,11 @@ func (c *completedConfig) New() (*GenericWebServer, error) {
 	ginBackend := gin.New()
 
 	return &GenericWebServer{
-		ginBackend:      ginBackend,
-		grpcBackend:     grpcBackend,
-		readinessStopCh: make(chan struct{}),
+		ginBackend:       ginBackend,
+		grpcBackend:      grpcBackend,
+		postStartHooks:   map[string]postStartHookEntry{},
+		preShutdownHooks: map[string]preShutdownHookEntry{},
+		readinessStopCh:  make(chan struct{}),
 	}, nil
 }
 
