@@ -142,7 +142,7 @@ func (c *Client) PostReader(
 	if err != nil {
 		return nil, err
 	}
-	if r.StatusCode >= 300 {
+	if r.StatusCode >= http.StatusBadRequest {
 		return nil, fmt.Errorf("http status code: %v", r.StatusCode)
 	}
 
