@@ -5,7 +5,6 @@ import (
 	"time"
 
 	"github.com/go-redis/redis"
-	_ "github.com/go-sql-driver/mysql"
 
 	time_ "github.com/kaydxh/golang/go/time"
 )
