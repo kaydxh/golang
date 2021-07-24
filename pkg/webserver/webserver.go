@@ -100,8 +100,6 @@ func (s preparedGenericWebServer) Run(ctx context.Context) error {
 		return err
 	}
 
-	<-ctx.Done()
-
 	return nil
 }
 
