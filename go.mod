@@ -9,6 +9,7 @@ require (
 	github.com/golang/protobuf v1.5.0 // indirect
 	github.com/hashicorp/consul/api v1.8.1
 	github.com/jmoiron/sqlx v1.3.1
+	github.com/ory/viper v1.7.5 // indirect
 	github.com/pkg/profile v1.6.0
 	github.com/robfig/cron v1.2.0
 	github.com/searKing/golang v1.0.175
