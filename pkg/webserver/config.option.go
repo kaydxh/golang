@@ -6,9 +6,9 @@ import (
 	"github.com/ory/viper"
 )
 
-func WithGetViper(f func() *viper.Viper) ConfigOption {
+func WithViper(v *viper.Viper) ConfigOption {
 	return ConfigOptionFunc(func(c *Config) {
-		c.opts.getViper = f
+		c.opts.viper = v
 	})
 }
 
