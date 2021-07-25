@@ -1,0 +1,3 @@
+web:
+  bind_address:
+    port: 10000

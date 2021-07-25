@@ -4,6 +4,8 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
+	viper_ "github.com/kaydxh/golang/pkg/viper"
+
 	"github.com/ory/viper"
 	"github.com/searKing/golang/third_party/github.com/grpc-ecosystem/grpc-gateway/v2/grpc"
 )
@@ -72,7 +74,7 @@ func (c *Config) parseViper() {
 
 func (c *Config) loadViper() error {
 	if c.opts.getViper != nil {
-		c.opts.getViper().Unmarshal(&c.Proto)
+		return viper_.UnmarshalProtoMessageWithJsonPb(c.opts.getViper(), &c.Proto)
 	}
 
 	return nil
