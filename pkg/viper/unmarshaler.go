@@ -3,6 +3,7 @@ package viper
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"reflect"
 
 	"github.com/gogo/protobuf/jsonpb"
@@ -12,6 +13,9 @@ import (
 )
 
 func UnmarshalProtoMessageWithJsonPb(v *viper.Viper, msg proto.Message, options ...viper.DecoderConfigOption) error {
+	if v == nil {
+		return fmt.Errorf("viper is nil")
+	}
 
 	var opts []viper.DecoderConfigOption
 	opts = append(opts, func(decoderConfig *mapstructure.DecoderConfig) {
