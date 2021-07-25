@@ -1,13 +1,12 @@
 package webserver_test
 
 import (
-	"fmt"
 	"testing"
 
 	"context"
 
+	viper_ "github.com/kaydxh/golang/pkg/viper"
 	webserver_ "github.com/kaydxh/golang/pkg/webserver"
-	"github.com/ory/viper"
 )
 
 func TestNew(t *testing.T) {
@@ -16,19 +15,18 @@ func TestNew(t *testing.T) {
 		viper.SetConfigType("yaml")
 		viper.AddConfigPath(".")
 	*/
-	viper.SetConfigFile("./webserver.yaml")
-	err := viper.ReadInConfig()
-	if err != nil {
-		t.Errorf("failed to read config err: %v", err)
-		return
-	}
-	subv := viper.Sub("web")
-	config := webserver_.NewConfig(webserver_.WithGetViper(func() *viper.Viper {
-		return subv //viper.GetViper()
-	}))
+	/*
+		viper.SetConfigFile("./webserver.yaml")
+		err := viper.ReadInConfig()
+		if err != nil {
+			t.Errorf("failed to read config err: %v", err)
+			return
+		}
+		subv := viper.Sub("web")
+	*/
 
-	//fmt.Println(viper.GetViper())
-	fmt.Println(subv)
+	cfgFile := "./webserver.yaml"
+	config := webserver_.NewConfig(webserver_.WithViper(viper_.GetViper(cfgFile, "web")))
 
 	s, err := config.Complete().New()
 	if err != nil {

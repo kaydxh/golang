@@ -1,31 +1,29 @@
 package viper
 
 import (
-	"fmt"
-
 	"github.com/ory/viper"
 )
 
-func GetViper(configFile string, subKey string) (*viper.Viper, error) {
+func GetViper(configFile string, subKey string) *viper.Viper {
 
 	if configFile == "" {
 		v := viper.GetViper()
 		if v == nil {
-			return nil, fmt.Errorf("failed to get viper without config file")
+			return nil
 		}
 
-		return v, nil
+		return v
 	}
 
 	viper.SetConfigFile(configFile)
 	err := viper.ReadInConfig()
 	if err != nil {
-		return nil, fmt.Errorf("failed to read config err: %v", err)
+		return nil
 	}
 
 	if subKey == "" {
-		return viper.GetViper(), nil
+		return viper.GetViper()
 	}
 
-	return viper.Sub(subKey), nil
+	return viper.Sub(subKey)
 }

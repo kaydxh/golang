@@ -1,6 +1,7 @@
 package webserver
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -20,7 +21,7 @@ type Config struct {
 	Proto Web
 	opts  struct {
 		// If set, overrides params below
-		getViper    func() *viper.Viper
+		viper       *viper.Viper
 		bindAddress string
 		// ExternalAddress is the address (hostname or IP and port) that should be used in
 		// external (public internet) URLs for this GenericWebServer.
@@ -45,6 +46,7 @@ type CompletedConfig struct {
 func (c *completedConfig) New() (*GenericWebServer, error) {
 	grpcBackend := grpc.NewGateway(c.opts.bindAddress)
 	ginBackend := gin.New()
+	fmt.Printf(" - listen address[%s]\n", c.opts.bindAddress)
 
 	return &GenericWebServer{
 		ginBackend:       ginBackend,
@@ -73,8 +75,8 @@ func (c *Config) parseViper() {
 }
 
 func (c *Config) loadViper() error {
-	if c.opts.getViper != nil {
-		return viper_.UnmarshalProtoMessageWithJsonPb(c.opts.getViper(), &c.Proto)
+	if c.opts.viper != nil {
+		return viper_.UnmarshalProtoMessageWithJsonPb(c.opts.viper, &c.Proto)
 	}
 
 	return nil
