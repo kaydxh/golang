@@ -1,0 +1,43 @@
+# The configuration schema is defined by service.proto file
+# https://github.com/googleapis/googleapis/blob/master/google/api/service.proto
+type: google.api.Service
+config_version: 3
+
+#
+# Name of the service configuration.
+#
+name: sea.date.com
+
+#
+# API title to appear in the user interface (Swagger).
+#
+title: Sea Service Date API
+
+#
+# API usage restrictions.
+#
+usage:
+  rules:
+    # Allow unregistered calls for all methods.
+    - selector: "*"
+      allow_unregistered_calls: true
+
+#
+# HTTP rules define translation from HTTP/REST/JSON to gRPC. With these rules
+# HTTP/REST/JSON clients will be able to call the DeviceManage service.
+#
+http:
+  rules:
+    #
+    # HTTP/REST/JSON clients can call the 'ListShelves' method of the Bookstore
+    # service using the GET HTTP verb and the '/shelves' URL path. The response
+    # will the JSON representation of the 'ListShelvesResponse' message.
+    #
+    # Client example (Assuming your service is hosted at the given 'DOMAIN_NAME'):
+    #   curl http://DOMAIN_NAME/v1/shelves
+    #
+    - selector: sea.api.v1.date.DateService.Now
+      # just for gin, ignore this path for grpc_gateway
+      additional_bindings:
+        - post: '/Now'
+          body: "*"
