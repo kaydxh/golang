@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package sea.api.v1.date;
+import "google/protobuf/descriptor.proto";
+// import
+// "github.com/grpc-ecosystem/grpc-gateway/protoc-gen-swagger/options/annotations.proto";
+// import "github.com/mwitkow/go-proto-validators/validator.proto";
+
+option go_package = "github.com/kaydxh/sea/openapi-spec/v1/date;date";
+
+service DateService {
+  rpc Now(DateRequest) returns (DateResponse) {
+    // option (grpc.gateway.protoc_gen_swagger.options.openapiv2_operation) = {
+    // tags: "query date"
+    // consumes: ""
+    // produces: "application/json"
+    // description: "return date of the node\n"
+    //  };
+  };
+}
+
+message DateRequest {
+  string request_id = 1;
+}
+
+message DateResponse {
+  string request_id = 1 [json_name = "RequestId"];
+  string date = 2;
+}
