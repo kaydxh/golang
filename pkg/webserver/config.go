@@ -7,8 +7,8 @@ import (
 	"github.com/gin-gonic/gin"
 	viper_ "github.com/kaydxh/golang/pkg/viper"
 
+	gw_ "github.com/kaydxh/golang/pkg/grpc-gateway"
 	"github.com/ory/viper"
-	"github.com/searKing/golang/third_party/github.com/grpc-ecosystem/grpc-gateway/v2/grpc"
 )
 
 const (
@@ -44,7 +44,7 @@ type CompletedConfig struct {
 }
 
 func (c *completedConfig) New() (*GenericWebServer, error) {
-	grpcBackend := grpc.NewGateway(c.opts.bindAddress)
+	grpcBackend := gw_.NewGRPCGateWay(c.opts.bindAddress)
 	ginBackend := gin.New()
 	fmt.Printf(" - listen address[%s]\n", c.opts.bindAddress)
 
