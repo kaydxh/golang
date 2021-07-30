@@ -1,6 +1,8 @@
 package grpcgateway
 
 import (
+	"context"
+	"net"
 	"net/http"
 	"sync"
 
@@ -48,16 +50,49 @@ func (g *GRPCGateway) initOnce() {
 	})
 }
 
-func (g *GRPCGateway) ListenAndServe() {
+func (g *GRPCGateway) ListenAndServe() error {
 	g.initOnce()
-	g.Server.ListenAndServe()
+	//	g.Server.ListenAndServe()
+	/*
+		if g.Server.shuttingDown() {
+			return http.ErrServerClosed
+		}
+	*/
+	addr := g.Server.Addr
+	if addr == "" {
+		addr = ":http"
+	}
+	ln, err := net.Listen("tcp", addr)
+	if err != nil {
+		return err
+	}
+
+	mux := http.NewServeMux()
+	mux.Handle("/", g.gatewayMux)
+	srv := &http.Server{
+		Addr:    addr,
+		Handler: grpcHandlerFunc(g.grpcServer, mux),
+	}
+	return srv.Serve(ln)
+
 }
 
-func (g *GRPCGateway) register(h GRPCHandler) {
+func (g *GRPCGateway) registerGRPCFunc(h GRPCHandler) {
 	h.Register(g.grpcServer)
 }
 
-func (g *GRPCGateway) RegisterGrpcHandler(h func(srv *grpc.Server)) {
+func (g *GRPCGateway) RegisterGRPCHandler(h func(srv *grpc.Server)) {
 	g.initOnce()
-	g.register(GRPCHandlerFunc(h))
+	g.registerGRPCFunc(GRPCHandlerFunc(h))
+}
+
+func (g *GRPCGateway) registerHTTPFunc(ctx context.Context, h HTTPHandler) error {
+	return h.Register(ctx, g.gatewayMux, g.Server.Addr, g.opts.clientDialOptions)
+}
+
+func (g *GRPCGateway) RegisterHTTPHandler(ctx context.Context,
+	h func(ctx context.Context, mux *runtime.ServeMux, endpoint string, opts []grpc.DialOption) error,
+) error {
+	g.initOnce()
+	return g.registerHTTPFunc(ctx, HTTPHandlerFunc(h))
 }

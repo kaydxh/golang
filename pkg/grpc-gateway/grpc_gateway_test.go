@@ -6,8 +6,11 @@ import (
 	"testing"
 	"time"
 
+	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	gw_ "github.com/kaydxh/golang/pkg/grpc-gateway"
+
 	"github.com/kaydxh/golang/pkg/grpc-gateway/date"
+	//"github.com/kaydxh/sea/api/openapi-spec/v1/date"
 	"google.golang.org/grpc"
 )
 
@@ -31,17 +34,21 @@ func (c *Controller) Now(
 
 func TestGRPCGateway(t *testing.T) {
 	s := Controller{}
-	gwServer := gw_.NewGRPCGateWay(":10000")
-	gwServer.RegisterGrpcHandler(func(srv *grpc.Server) {
+	gwServer := gw_.NewGRPCGateWay(":10002")
+	gwServer.RegisterGRPCHandler(func(srv *grpc.Server) {
 		date.RegisterDateServiceServer(srv, &s)
 	})
 
-	/*
-		_ = gwServer.RegisterHTTPFunc(
-			context.Background(),
-			func(ctx context.Context, mux *runtime.ServeMux, endpoint string, opts []grpc_.DialOption) error {
-				return date.RegisterDateServiceHandlerFromEndpoint(ctx, mux, endpoint, opts)
-			},
-		)
-	*/
+	err := gwServer.RegisterHTTPHandler(
+		context.Background(),
+		func(ctx context.Context, mux *runtime.ServeMux, endpoint string, opts []grpc.DialOption) error {
+			return date.RegisterDateServiceHandlerFromEndpoint(ctx, mux, endpoint, opts)
+		},
+	)
+
+	if err != nil {
+		t.Fatalf("failed to RegisterHTTPHandler got: %s", err)
+	}
+
+	gwServer.ListenAndServe()
 }
