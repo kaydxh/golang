@@ -7,12 +7,11 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/kaydxh/golang/pkg/consul"
-	"github.com/searKing/golang/third_party/github.com/grpc-ecosystem/grpc-gateway/v2/grpc"
-	"github.com/searKing/sole/pkg/webserver/healthz"
+	gw_ "github.com/kaydxh/golang/pkg/grpc-gateway"
 )
 
 type WebHandler interface {
-	SetRoutes(ginRouter gin.IRouter, grpcRouter *grpc.Gateway)
+	SetRoutes(ginRouter gin.IRouter, grpcRouter *gw_.GRPCGateway)
 }
 
 type GenericWebServer struct {
@@ -20,7 +19,7 @@ type GenericWebServer struct {
 	ServiceRegistryBackend *consul.ServiceRegistryServer
 
 	ginBackend  *gin.Engine
-	grpcBackend *grpc.Gateway
+	grpcBackend *gw_.GRPCGateway
 
 	// PostStartHooks are each called after the server has started listening, in a separate go func for each
 	// with no guarantee of ordering between them.  The map key is a name used for error reporting.
@@ -34,18 +33,18 @@ type GenericWebServer struct {
 	preShutdownHooksCalled bool
 
 	// healthz checks
-	healthzLock            sync.Mutex
-	healthzChecks          []healthz.HealthCheck
-	healthzChecksInstalled bool
+	//	healthzLock            sync.Mutex
+	//	healthzChecks          []healthz.HealthCheck
+	//	healthzChecksInstalled bool
 	// livez checks
-	livezLock            sync.Mutex
-	livezChecks          []healthz.HealthCheck
-	livezChecksInstalled bool
+	//	livezLock            sync.Mutex
+	//	livezChecks          []healthz.HealthCheck
+	//	livezChecksInstalled bool
 	// readyz checks
-	readyzLock            sync.Mutex
-	readyzChecks          []healthz.HealthCheck
-	readyzChecksInstalled bool
-	livezGracePeriod      time.Duration
+	//	readyzLock            sync.Mutex
+	//	readyzChecks          []healthz.HealthCheck
+	//	readyzChecksInstalled bool
+	//	livezGracePeriod      time.Duration
 
 	// the readiness stop channel is used to signal that the apiserver has initiated a shutdown sequence, this
 	// will cause readyz to return unhealthy.
