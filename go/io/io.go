@@ -5,6 +5,7 @@ import (
 	"bytes"
 	"errors"
 	"io"
+	"io/ioutil"
 	"os"
 
 	os_ "github.com/kaydxh/golang/go/os"
@@ -98,6 +99,16 @@ func ReadLineAt(readIndex int, byteArray []byte) ([]byte, int) {
 	}
 
 	return nil, currentReadIndex
+}
+
+//ReadFile read data from file
+func ReadFile(filePath string) ([]byte, error) {
+	data, err := ioutil.ReadFile(filePath)
+	if err != nil {
+		return nil, err
+	}
+
+	return data, err
 }
 
 func WriteFile(filePath string, content []byte, appended bool) error {
