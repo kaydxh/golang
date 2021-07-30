@@ -6,7 +6,7 @@ import "google/protobuf/descriptor.proto";
 // "github.com/grpc-ecosystem/grpc-gateway/protoc-gen-swagger/options/annotations.proto";
 // import "github.com/mwitkow/go-proto-validators/validator.proto";
 
-option go_package = "github.com/kaydxh/sea/openapi-spec/v1/date;date";
+option go_package = "github.com/kaydxh/golang/pkg/grpc-gateway/date;date";
 
 service DateService {
   rpc Now(DateRequest) returns (DateResponse) {
