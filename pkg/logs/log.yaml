@@ -1,0 +1,5 @@
+log:
+  formatter: text
+  level: info
+  filepath: ./log/test.log
+  report_caller: true
