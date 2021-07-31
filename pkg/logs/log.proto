@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package api.v1.viper.logs;
+
+// import "google/protobuf/duration.proto";
+
+option go_package = "github.com/kaydxh/golang/pkg/logs;logs";
+
+message Log {
+  Level level = 1;
+  Formatter formatter = 2;
+  string filepath = 3;
+  bool report_caller = 4;
+
+  enum Level {
+    panic = 0;
+    fatal = 1;
+    error = 2;
+    warn = 3;
+    info = 4;
+    debug = 5;
+    trace = 6;
+  }
+
+  enum Formatter {
+    text = 0;
+    json = 1;
+  }
+}
