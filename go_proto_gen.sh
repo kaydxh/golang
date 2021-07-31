@@ -43,8 +43,8 @@ done
 
 
 echo "==> Generating proto..."
-proto_headers="-I ${SCRIPT_PATH}/../../third_party"
-proto_headers="${proto_headers} -I ${SCRIPT_PATH}/../../third_party/github.com/grpc-ecosystem/grpc-gateway"
+proto_headers="-I ${SCRIPT_PATH}/third_party"
+proto_headers="${proto_headers} -I ${SCRIPT_PATH}/third_party/github.com/grpc-ecosystem/grpc-gateway"
 source_relative_option="paths=source_relative:."
 go_tag_option="--go-tag_out=${source_relative_option}"
 go_grpc_option="--go-grpc_out=${source_relative_option}"
@@ -56,7 +56,12 @@ for proto in $(find ${PROTOC_FILE_DIR} -type f -name '*.proto' -print0 | xargs -
   api_conf_yaml_base_name="$(basename ${proto} .proto).yaml"
   api_conf_yaml_dir="$(dirname ${proto})"
   api_conf_yaml="${api_conf_yaml_dir}/$api_conf_yaml_base_name"
-  grpc_api_yaml_option="grpc_api_configuration=${api_conf_yaml},${source_relative_option}"
+
+  grpc_api_yaml_option="${source_relative_option}"
+  if [[ -f "${api_conf_yaml}" ]]; then
+      grpc_api_yaml_option="grpc_api_configuration=${api_conf_yaml},${source_relative_option}"
+  fi
+  #grpc_api_yaml_option="grpc_api_configuration=${api_conf_yaml},${source_relative_option}"
 
   grpc_option="${grpc_gateway_out_option},${grpc_api_yaml_option} ${grpc_gateway_delete_option}"
   protoc -I . ${proto_headers} ${go_tag_option} ${go_grpc_option} ${grpc_option} "${proto}"
