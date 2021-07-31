@@ -6,8 +6,8 @@ import (
 	"fmt"
 	"reflect"
 
-	"github.com/gogo/protobuf/jsonpb"
 	"github.com/gogo/protobuf/proto"
+	jsonpb_ "github.com/kaydxh/golang/pkg/protobuf/jsonpb"
 	"github.com/mitchellh/mapstructure"
 	"github.com/ory/viper"
 )
@@ -35,7 +35,7 @@ func UnmarshalProtoMessageWithJsonpbHookFunc(v proto.Message) mapstructure.Decod
 			return nil, err
 		}
 
-		err = jsonpb.Unmarshal(bytes.NewReader(dataBytes), v)
+		err = jsonpb_.UnmarshalWithAllowUnknownFields(bytes.NewReader(dataBytes), v)
 		if err != nil {
 			return data, err
 		}
