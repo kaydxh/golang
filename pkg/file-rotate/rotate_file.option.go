@@ -21,3 +21,15 @@ func WithRotateInterval(rotateInterval time.Duration) RotateFilerOption {
 		c.opts.rotateInterval = rotateInterval
 	})
 }
+
+func WithPrefixName(prefixName string) RotateFilerOption {
+	return RotateFilerOptionFunc(func(c *RotateFiler) {
+		c.opts.prefixName = prefixName
+	})
+}
+
+func WithSuffixName(subfixName string) RotateFilerOption {
+	return RotateFilerOptionFunc(func(c *RotateFiler) {
+		c.opts.subfixName = subfixName
+	})
+}
