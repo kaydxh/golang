@@ -30,3 +30,9 @@ func TestTruncateToUTCString(t *testing.T) {
 	thr := time_.TruncateToUTCString(now, time.Hour, time_.DefaultTimeMsFormat)
 	t.Logf("TruncateToUTC Millisecond: %v, Second: %v, Minute: %v, Hour: %v", tms, tsc, tmt, thr)
 }
+
+func TestNowFormat(t *testing.T) {
+	now := time.Now()
+	tm := now.Format(time_.ShortDashTimeFormat)
+	t.Logf("Now: %v", tm)
+}
