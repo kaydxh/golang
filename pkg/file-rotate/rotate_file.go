@@ -15,13 +15,14 @@ import (
 const (
 	defaultRotateSize                   = 100 * 1024 * 1024 //100MB
 	defaultrotateInterval time.Duration = time.Hour
+	//defaultSuffixName     string        = ".log"
 )
 
 type RotateFiler struct {
-	file     *os.File
-	filename string
-	mu       sync.Mutex
-	opts     struct {
+	file    *os.File
+	filedir string
+	mu      sync.Mutex
+	opts    struct {
 		prefixName string
 		subfixName string
 		//maxSize int64
@@ -35,12 +36,11 @@ type RotateFiler struct {
 	}
 }
 
-func NewRotateFiler(filename string, options ...RotateFilerOption) (*RotateFiler, error) {
+func NewRotateFiler(filedir string, options ...RotateFilerOption) (*RotateFiler, error) {
 	r := &RotateFiler{
-		filename: filename,
+		filedir: filedir,
 	}
 	//	r.opts.rotateInterval = defaultrotateInterval
-
 	r.ApplyOptions(options...)
 
 	return r, nil
@@ -61,17 +61,17 @@ func (f *RotateFiler) Write(p []byte) (n int, err error) {
 
 func (f *RotateFiler) generateRotateFilename() string {
 	now := time.Now()
-	return time_.TruncateToUTCString(now, f.opts.rotateInterval, time_.ShortDashTimeHourFormat)
+	return time_.TruncateToUTCString(now, f.opts.rotateInterval, time_.ShortTimeFormat)
 }
 
 func (f *RotateFiler) getWriterNolock(length int64) (io.Writer, error) {
 	basename := f.generateRotateFilename()
-	filename := filepath.Join(f.filename, basename)
-	fmt.Println("filename: ", filename)
+	filename := f.opts.prefixName + basename + f.opts.subfixName
+	filepath := filepath.Join(f.filedir, filename)
 
-	fi, err := os.Stat(filename)
+	fi, err := os.Stat(filepath)
 	if os.IsNotExist(err) {
-		return os_.OpenFile(filename, false)
+		return os_.OpenFile(filepath, false)
 	}
 	if err != nil {
 		return nil, fmt.Errorf("failed to get file info, err: %v", err)
@@ -79,9 +79,9 @@ func (f *RotateFiler) getWriterNolock(length int64) (io.Writer, error) {
 
 	//rotate file by size, todo
 	if f.opts.rotateSize > 0 && (f.opts.rotateSize+length) <= fi.Size() {
-		return os_.OpenFile(filename, true)
+		return os_.OpenFile(filepath, true)
 	}
 
 	//file exist, and rotate file by interval
-	return os_.OpenFile(filename, true)
+	return os_.OpenFile(filepath, true)
 }
