@@ -13,9 +13,9 @@ import (
 )
 
 const (
-	defaultRotateSize                   = 100 * 1024 * 1024 //100MB
-	defaultrotateInterval time.Duration = time.Hour
-	//defaultSuffixName     string        = ".log"
+	defaultRotateSize = 100 * 1024 * 1024 //100MB
+//	defaultrotateInterval time.Duration = time.Hour
+//defaultSuffixName     string        = ".log"
 )
 
 type RotateFiler struct {
@@ -60,13 +60,19 @@ func (f *RotateFiler) Write(p []byte) (n int, err error) {
 }
 
 func (f *RotateFiler) generateRotateFilename() string {
-	now := time.Now()
-	return time_.TruncateToUTCString(now, f.opts.rotateInterval, time_.ShortTimeFormat)
+	if f.opts.rotateInterval > 0 {
+		now := time.Now()
+		return time_.TruncateToUTCString(now, f.opts.rotateInterval, time_.ShortTimeFormat)
+	}
+	return ""
 }
 
 func (f *RotateFiler) getWriterNolock(length int64) (io.Writer, error) {
 	basename := f.generateRotateFilename()
 	filename := f.opts.prefixName + basename + f.opts.subfixName
+	if filename == "" {
+		filename = "default.log"
+	}
 	filepath := filepath.Join(f.filedir, filename)
 
 	var err error
@@ -113,6 +119,7 @@ func (f *RotateFiler) getWriterNolock(length int64) (io.Writer, error) {
 	return f.file, nil
 }
 
+//filename like foo foo.1 foo.2 ...
 func (f *RotateFiler) generateNextSeqFilename(filepath string) (string, error) {
 
 	var newFilepath string
