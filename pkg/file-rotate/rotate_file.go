@@ -69,19 +69,71 @@ func (f *RotateFiler) getWriterNolock(length int64) (io.Writer, error) {
 	filename := f.opts.prefixName + basename + f.opts.subfixName
 	filepath := filepath.Join(f.filedir, filename)
 
+	var err error
+	rotated := false
+
 	fi, err := os.Stat(filepath)
-	if os.IsNotExist(err) {
-		return os_.OpenFile(filepath, false)
-	}
 	if err != nil {
-		return nil, fmt.Errorf("failed to get file info, err: %v", err)
+		if !os.IsNotExist(err) {
+			return nil, fmt.Errorf("failed to get file info, err: %v", err)
+		}
+		//file is not exist, think just like rotating file
+		rotated = true
 	}
 
-	//rotate file by size, todo
-	if f.opts.rotateSize > 0 && (f.opts.rotateSize+length) <= fi.Size() {
-		return os_.OpenFile(filepath, true)
+	//rotate file by size
+	if err == nil && f.opts.rotateSize > 0 && (fi.Size()+length) > f.opts.rotateSize {
+		/*
+			fmt.Printf(
+				"generateNextSeqFilename ffi.Size()+length: %v, rotateSize: %v\n",
+				fi.Size()+length,
+				f.opts.rotateSize,
+			)
+		*/
+		filepath, err = f.generateNextSeqFilename(filepath)
+		if err != nil {
+			return nil, fmt.Errorf("failed to generate rotate file name by seq, err: %v", err)
+		}
+
+		rotated = true
 	}
 
-	//file exist, and rotate file by interval
-	return os_.OpenFile(filepath, true)
+	if rotated {
+		fn, err := os_.OpenFile(filepath, true)
+		if err != nil {
+			return nil, fmt.Errorf("failed to create file: %v, err: %v", filepath, err)
+		}
+
+		if f.file != nil {
+			f.file.Close()
+		}
+		f.file = fn
+	}
+
+	return f.file, nil
+}
+
+func (f *RotateFiler) generateNextSeqFilename(filepath string) (string, error) {
+
+	var newFilepath string
+	seq := 0
+
+	for {
+		if seq == 0 {
+			newFilepath = filepath
+		} else {
+			newFilepath = fmt.Sprintf("%s.%d", filepath, seq)
+		}
+
+		_, err := os.Stat(newFilepath)
+		if os.IsNotExist(err) {
+			return newFilepath, nil
+		}
+		if err != nil {
+			return "", err
+		}
+		//file exist, need to get next seq filename
+		seq++
+	}
+
 }
