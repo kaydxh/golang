@@ -30,3 +30,26 @@ func TestRotateFileWithInterval(t *testing.T) {
 
 	//t.Logf("successed to write %v bytes", n)
 }
+
+func TestRotateFileWithSize(t *testing.T) {
+
+	filename := "/Users/kayxhding/workspace/studyspace/git-kayxhding/github.com/kaydxh/golang/pkg/file-rotate/log/"
+	rotateFiler, _ := rotate_.NewRotateFiler(
+		filename,
+		rotate_.WithRotateInterval(time.Hour),
+		rotate_.WithRotateSize(15),
+		rotate_.WithSuffixName(".log"),
+		rotate_.WithPrefixName(filepath.Base(os.Args[0])),
+	)
+
+	for i := 0; i < 10; i++ {
+		n, err := rotateFiler.Write([]byte("hello word"))
+		if err != nil {
+			t.Errorf("faild to write, err: %v", err)
+		}
+		time.Sleep(time.Second)
+		t.Logf("successed to write %v bytes", n)
+	}
+
+	//t.Logf("successed to write %v bytes", n)
+}
