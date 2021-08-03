@@ -78,6 +78,7 @@ func SameFile(fi1, fi2 string) bool {
 
 //oldname and newname is full path
 func SymLink(oldname, newname string) error {
+
 	_, err := os.Stat(oldname)
 	if err != nil {
 		return fmt.Errorf("failed to stat oldname: %v, err: %v", oldname, err)
@@ -89,13 +90,22 @@ func SymLink(oldname, newname string) error {
 		return fmt.Errorf("failed to make dir: %v, err: %v", linkdir, err)
 	}
 
-	_, err = os.Stat(newname)
-	if err != nil {
-		if os.IsNotExist(err) {
-			os.Remove(newname)
-		}
+	// check link file is valid
+	_, err = os.Readlink(newname)
+	if err == nil {
+		return nil
 	}
 
+	//link file is invalid
+	os.Remove(newname)
+	/*
+		_, err = os.Stat(newname)
+		if err != nil {
+			if os.IsNotExist(err) {
+				os.Remove(newname)
+			}
+		}
+	*/
 	err = os.Symlink(oldname, newname)
 	if err != nil {
 		return fmt.Errorf("failed to symlink err: %v", err)
