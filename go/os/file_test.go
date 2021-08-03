@@ -8,6 +8,7 @@ import (
 	"path/filepath"
 	"testing"
 
+	io_ "github.com/kaydxh/golang/go/io"
 	os_ "github.com/kaydxh/golang/go/os"
 	"github.com/stretchr/testify/assert"
 )
@@ -71,4 +72,45 @@ func TestSameFile(t *testing.T) {
 	ok = os_.SameFile(fileNames[0], fileNames[1])
 	assert.Falsef(t, ok, "fileName %s is not the same of %s", fileNames[0], fileNames[1])
 
+}
+
+func TestSymLink(t *testing.T) {
+	dir, err := ioutil.TempDir("", "dir")
+	if err != nil {
+		t.Errorf("expect nil, got %v", err)
+	}
+	defer os.RemoveAll(dir)
+
+	oldname := filepath.Join(dir, "oldname")
+
+	buf := []byte("hello world")
+	err = ioutil.WriteFile(oldname, buf, 0777)
+	if err != nil {
+		t.Errorf("expect nil, got %v", err)
+	}
+
+	newname := "test.link"
+	err = os_.SymLink(oldname, newname)
+	if err != nil {
+		t.Fatalf("expect nil, got %v", err)
+	}
+
+	data, err := io_.ReadFile(newname)
+	if err != nil {
+		t.Errorf("expect nil, got %v", err)
+	}
+
+	assert.Equal(t, buf, data)
+
+}
+
+func TestPath(t *testing.T) {
+
+	filename := "./workspace/studyspace/.././11.jpg"
+	///Users/kayxhding/workspace/studyspace/git-kayxhding/github.com/kaydxh/golang/go/os/workspace/11.jpg
+	fmt.Println(filepath.Abs(filename))
+	//workspace/11.jpg
+	fmt.Println(filepath.Clean(filename))
+	//../11.jpg
+	fmt.Println(filepath.Rel("./workspace/22", filename))
 }
