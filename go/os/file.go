@@ -1,6 +1,7 @@
 package os
 
 import (
+	"fmt"
 	"os"
 	"path/filepath"
 )
@@ -73,4 +74,37 @@ func SameFile(fi1, fi2 string) bool {
 		return false
 	}
 	return os.SameFile(stat1, stat2)
+}
+
+//oldname and newname is full path
+func SymLink(oldname, newname string) error {
+	_, err := os.Stat(oldname)
+	if err != nil {
+		return fmt.Errorf("failed to stat oldname: %v, err: %v", oldname, err)
+	}
+
+	linkdir := filepath.Dir(newname)
+	err = MakeDirAll(linkdir)
+	if err != nil {
+		return fmt.Errorf("failed to make dir: %v, err: %v", linkdir, err)
+	}
+
+	_, err = os.Stat(newname)
+	if err != nil {
+		if os.IsNotExist(err) {
+			os.Remove(newname)
+		}
+	}
+
+	err = os.Symlink(oldname, newname)
+	if err != nil {
+		return fmt.Errorf("failed to symlink err: %v", err)
+	}
+
+	_, err = os.Stat(newname)
+	if err != nil {
+		return fmt.Errorf("failed to stat newname: %v, err: %v", newname, err)
+	}
+
+	return err
 }
