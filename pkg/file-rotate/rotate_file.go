@@ -19,10 +19,12 @@ const (
 )
 
 type RotateFiler struct {
-	file    *os.File
-	filedir string
-	mu      sync.Mutex
-	opts    struct {
+	file     *os.File
+	filedir  string
+	linkpath string
+	seq      int64
+	mu       sync.Mutex
+	opts     struct {
 		prefixName string
 		subfixName string
 		//maxSize int64
@@ -123,7 +125,7 @@ func (f *RotateFiler) getWriterNolock(length int64) (io.Writer, error) {
 func (f *RotateFiler) generateNextSeqFilename(filepath string) (string, error) {
 
 	var newFilepath string
-	seq := 0
+	seq := f.seq
 
 	for {
 		if seq == 0 {
@@ -134,6 +136,7 @@ func (f *RotateFiler) generateNextSeqFilename(filepath string) (string, error) {
 
 		_, err := os.Stat(newFilepath)
 		if os.IsNotExist(err) {
+			f.seq = seq
 			return newFilepath, nil
 		}
 		if err != nil {
