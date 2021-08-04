@@ -100,9 +100,11 @@ func SymLink(oldname, newname string) error {
 	}
 
 	// check link file is valid
-	_, err = os.Readlink(newname)
+	targetname, err := os.Readlink(newname)
 	if err == nil {
-		return nil
+		if targetname == oldname {
+			return nil
+		}
 	}
 	//link file is invalid
 	os.Remove(newname)
@@ -119,7 +121,7 @@ func SymLink(oldname, newname string) error {
 		return fmt.Errorf("failed to symlink err: %v", err)
 	}
 
-	_, err = os.Stat(newname)
+	_, err = os.Lstat(newname)
 	if err != nil {
 		return fmt.Errorf("failed to stat newname: %v, err: %v", newname, err)
 	}
