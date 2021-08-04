@@ -22,6 +22,12 @@ func WithMaxAge(maxAge time.Duration) RotateFilerOption {
 	})
 }
 
+func WithMaxRotateCount(maxRotateCount int64) RotateFilerOption {
+	return RotateFilerOptionFunc(func(c *RotateFiler) {
+		c.opts.maxRotateCount = maxRotateCount
+	})
+}
+
 func WithRotateSize(rotateSize int64) RotateFilerOption {
 	return RotateFilerOptionFunc(func(c *RotateFiler) {
 		c.opts.rotateSize = rotateSize

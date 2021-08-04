@@ -25,9 +25,10 @@ type RotateFiler struct {
 	opts     struct {
 		prefixName string
 		subfixName string
-		//maxSize int64
-		//maxAge is the maximum number of days to retain old files
+		//maxAge is the maximum number of time to retain old files, 0 is unlimited
 		maxAge time.Duration
+		//maxRotateCount is the maximum number to retain old files, 0 is unlimited
+		maxRotateCount int64
 
 		//rotate file when file size larger than rotateSize
 		rotateSize int64
