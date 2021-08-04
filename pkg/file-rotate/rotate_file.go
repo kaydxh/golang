@@ -14,8 +14,6 @@ import (
 
 const (
 	defaultRotateSize = 100 * 1024 * 1024 //100MB
-	//defaultLinkpath =
-//defaultSuffixName     string        = ".log"
 )
 
 type RotateFiler struct {
@@ -61,7 +59,6 @@ func (f *RotateFiler) Write(p []byte) (n int, err error) {
 	}
 
 	return out.Write(p)
-
 }
 
 func (f *RotateFiler) generateRotateFilename() string {
@@ -94,13 +91,6 @@ func (f *RotateFiler) getWriterNolock(length int64) (io.Writer, error) {
 
 	//rotate file by size
 	if err == nil && f.opts.rotateSize > 0 && (fi.Size()+length) > f.opts.rotateSize {
-		/*
-			fmt.Printf(
-				"generateNextSeqFilename ffi.Size()+length: %v, rotateSize: %v\n",
-				fi.Size()+length,
-				f.opts.rotateSize,
-			)
-		*/
 		filepath, err = f.generateNextSeqFilename(filepath)
 		if err != nil {
 			return nil, fmt.Errorf("failed to generate rotate file name by seq, err: %v", err)
@@ -109,7 +99,7 @@ func (f *RotateFiler) getWriterNolock(length int64) (io.Writer, error) {
 		rotated = true
 	}
 
-	if rotated {
+	if f.file == nil || rotated {
 		fn, err := os_.OpenFile(filepath, true)
 		if err != nil {
 			return nil, fmt.Errorf("failed to create file: %v, err: %v", filepath, err)
