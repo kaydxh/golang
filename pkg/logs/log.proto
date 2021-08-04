@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package api.v1.viper.logs;
 
-// import "google/protobuf/duration.proto";
+import "google/protobuf/duration.proto";
 
 option go_package = "github.com/kaydxh/golang/pkg/logs;logs";
 
@@ -10,7 +10,10 @@ message Log {
   Level level = 1;
   Formatter formatter = 2;
   string filepath = 3;
-  bool report_caller = 4;
+  google.protobuf.Duration max_age = 4;
+  google.protobuf.Duration rotate_interval = 5;
+  int64 rotate_size = 6;
+  bool report_caller = 7;
 
   enum Level {
     panic = 0;

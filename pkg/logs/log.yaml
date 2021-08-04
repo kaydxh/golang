@@ -1,5 +1,9 @@
 log:
   formatter: text
   level: info
-  filepath: ./log/test.log
+  filepath: ./log
+  max_age: 10h
+  rotate_interval: 1h
+  rotate_size: 104857600
+
   report_caller: true
