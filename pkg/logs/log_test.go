@@ -3,6 +3,7 @@ package logs_test
 import (
 	"os"
 	"testing"
+	"time"
 
 	viper_ "github.com/kaydxh/golang/pkg/viper"
 
@@ -15,9 +16,8 @@ func TestInit(t *testing.T) {
 	config := logs_.NewConfig(logs_.WithViper(viper_.GetViper(cfgFile, "log")))
 	err := config.Complete().Apply()
 	if err != nil {
-		t.Errorf("failed to apply log config err: %v", err)
+		t.Fatalf("failed to apply log config err: %v", err)
 	}
-
 	logrus.WithField(
 		"module",
 		os.Args,
@@ -27,5 +27,10 @@ func TestInit(t *testing.T) {
 	).Infof(
 		"successed to apply log config",
 	)
+
+	for i := 1; i <= 10; i++ {
+		logrus.Infof("test time: %v", i)
+		time.Sleep(time.Second)
+	}
 
 }
