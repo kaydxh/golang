@@ -14,7 +14,7 @@ import (
 
 const (
 	defaultRotateSize = 100 * 1024 * 1024 //100MB
-//	defaultrotateInterval time.Duration = time.Hour
+	//defaultLinkpath =
 //defaultSuffixName     string        = ".log"
 )
 
@@ -42,8 +42,11 @@ func NewRotateFiler(filedir string, options ...RotateFilerOption) (*RotateFiler,
 	r := &RotateFiler{
 		filedir: filedir,
 	}
-	//	r.opts.rotateInterval = defaultrotateInterval
 	r.ApplyOptions(options...)
+
+	if r.linkpath == "" {
+		r.linkpath = filepath.Base(os.Args[0]) + ".log"
+	}
 
 	return r, nil
 }
@@ -116,6 +119,8 @@ func (f *RotateFiler) getWriterNolock(length int64) (io.Writer, error) {
 			f.file.Close()
 		}
 		f.file = fn
+
+		os_.SymLink(filepath, f.linkpath)
 	}
 
 	return f.file, nil

@@ -4,6 +4,18 @@ import (
 	"time"
 )
 
+func WithPrefixName(prefixName string) RotateFilerOption {
+	return RotateFilerOptionFunc(func(c *RotateFiler) {
+		c.opts.prefixName = prefixName
+	})
+}
+
+func WithSuffixName(subfixName string) RotateFilerOption {
+	return RotateFilerOptionFunc(func(c *RotateFiler) {
+		c.opts.subfixName = subfixName
+	})
+}
+
 func WithMaxAge(maxAge time.Duration) RotateFilerOption {
 	return RotateFilerOptionFunc(func(c *RotateFiler) {
 		c.opts.maxAge = maxAge
@@ -19,17 +31,5 @@ func WithRotateSize(rotateSize int64) RotateFilerOption {
 func WithRotateInterval(rotateInterval time.Duration) RotateFilerOption {
 	return RotateFilerOptionFunc(func(c *RotateFiler) {
 		c.opts.rotateInterval = rotateInterval
-	})
-}
-
-func WithPrefixName(prefixName string) RotateFilerOption {
-	return RotateFilerOptionFunc(func(c *RotateFiler) {
-		c.opts.prefixName = prefixName
-	})
-}
-
-func WithSuffixName(subfixName string) RotateFilerOption {
-	return RotateFilerOptionFunc(func(c *RotateFiler) {
-		c.opts.subfixName = subfixName
 	})
 }
