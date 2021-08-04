@@ -3,19 +3,12 @@ package logs
 import (
 	"os"
 	"path/filepath"
-	"time"
 
 	"github.com/go-playground/validator/v10"
 	viper_ "github.com/kaydxh/golang/pkg/viper"
 	"github.com/sirupsen/logrus"
 
 	"github.com/ory/viper"
-)
-
-const (
-	defaultBindAddress           = ":80"
-	defaultExternalAddress       = ":80"
-	defaultShutdownDelayDuration = time.Duration(0)
 )
 
 type Config struct {
@@ -67,6 +60,29 @@ func (c *completedConfig) install() error {
 	}
 	logrus.SetLevel(level)
 	logrus.SetReportCaller(c.Proto.GetReportCaller())
+
+	err = WithRotate(
+		logrus.StandardLogger(),
+		c.Proto.GetFilepath(),
+		WithRotateSize(c.Proto.GetRotateSize()),
+		WithRotateInterval(c.Proto.GetRotateInterval().AsDuration()),
+		WithPrefixName(filepath.Base(os.Args[0])),
+		WithSuffixName(".log"),
+	)
+	if err != nil {
+		return err
+	}
+
+	logrus.WithField(
+		"path",
+		c.Proto.GetFilepath(),
+	).WithField(
+		"rotate_interval", c.Proto.GetRotateInterval().AsDuration(),
+	).WithField(
+		"rotate_size", c.Proto.GetRotateSize(),
+	).Infof(
+		"successed to install log",
+	)
 
 	return nil
 }
