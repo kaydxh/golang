@@ -3,6 +3,7 @@ log:
   level: info
   filepath: ./log
   max_age: 10h
+  max_count: 0
   rotate_interval: 1h
   rotate_size: 104857600
 
