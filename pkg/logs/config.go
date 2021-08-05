@@ -64,6 +64,8 @@ func (c *completedConfig) install() error {
 	err = WithRotate(
 		logrus.StandardLogger(),
 		c.Proto.GetFilepath(),
+		WithMaxAge(c.Proto.GetMaxAge().AsDuration()),
+		WithMaxCount(c.Proto.GetMaxCount()),
 		WithRotateSize(c.Proto.GetRotateSize()),
 		WithRotateInterval(c.Proto.GetRotateInterval().AsDuration()),
 		WithPrefixName(filepath.Base(os.Args[0])),

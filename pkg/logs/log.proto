@@ -11,9 +11,10 @@ message Log {
   Formatter formatter = 2;
   string filepath = 3;
   google.protobuf.Duration max_age = 4;
-  google.protobuf.Duration rotate_interval = 5;
-  int64 rotate_size = 6;
-  bool report_caller = 7;
+  int64 max_count = 5;
+  google.protobuf.Duration rotate_interval = 6;
+  int64 rotate_size = 7;
+  bool report_caller = 8;
 
   enum Level {
     panic = 0;
