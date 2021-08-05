@@ -10,6 +10,12 @@ func WithPrefixName(prefixName string) RotateFilerOption {
 	})
 }
 
+func WithFileTimeLayout(fileTimeLayout string) RotateFilerOption {
+	return RotateFilerOptionFunc(func(c *RotateFiler) {
+		c.opts.fileTimeLayout = fileTimeLayout
+	})
+}
+
 func WithSuffixName(subfixName string) RotateFilerOption {
 	return RotateFilerOptionFunc(func(c *RotateFiler) {
 		c.opts.subfixName = subfixName
