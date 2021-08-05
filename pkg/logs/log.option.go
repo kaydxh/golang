@@ -20,6 +20,12 @@ func WithMaxAge(maxAge time.Duration) RotateOption {
 	})
 }
 
+func WithMaxCount(maxCount int64) RotateOption {
+	return RotateOptionFunc(func(c *Rotate) {
+		c.maxCount = maxCount
+	})
+}
+
 func WithRotateSize(rotateSize int64) RotateOption {
 	return RotateOptionFunc(func(c *Rotate) {
 		c.rotateSize = rotateSize

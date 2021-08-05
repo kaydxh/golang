@@ -10,6 +10,7 @@ import (
 
 type Rotate struct {
 	maxAge         time.Duration
+	maxCount       int64
 	rotateSize     int64
 	rotateInterval time.Duration
 	prefixName     string
@@ -26,8 +27,10 @@ func WithRotate(log *logrus.Logger, filedir string, options ...RotateOption) err
 
 	rotateFiler, _ := rotate_.NewRotateFiler(
 		filedir,
-		rotate_.WithRotateSize(rotate.rotateSize),
+		rotate_.WithMaxAge(rotate.maxAge),
+		rotate_.WithMaxCount(rotate.maxCount),
 		rotate_.WithRotateInterval(rotate.rotateInterval),
+		rotate_.WithRotateSize(rotate.rotateSize),
 		rotate_.WithPrefixName(rotate.prefixName),
 		rotate_.WithSuffixName(rotate.suffixName),
 	)
