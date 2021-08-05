@@ -5,15 +5,13 @@ import (
 	"io"
 	"os"
 	"path/filepath"
+	"regexp"
 	"sync"
 	"time"
 
 	os_ "github.com/kaydxh/golang/go/os"
 	time_ "github.com/kaydxh/golang/go/time"
-)
-
-const (
-	defaultRotateSize = 100 * 1024 * 1024 //100MB
+	cleanup_ "github.com/kaydxh/golang/pkg/file-cleanup"
 )
 
 type RotateFiler struct {
@@ -23,7 +21,9 @@ type RotateFiler struct {
 	seq      int64
 	mu       sync.Mutex
 	opts     struct {
-		prefixName string
+		prefixName     string
+		fileTimeLayout string //default "20060102150405" ,take effect if rotateInterval  > 0
+
 		subfixName string
 		//maxAge is the maximum number of time to retain old files, 0 is unlimited
 		maxAge time.Duration
@@ -47,7 +47,27 @@ func NewRotateFiler(filedir string, options ...RotateFilerOption) (*RotateFiler,
 		r.linkpath = filepath.Base(os.Args[0]) + ".log"
 	}
 
+	// if need rotate file with rotateInterval, set default timelayout
+	if r.opts.rotateInterval > 0 {
+		if r.opts.fileTimeLayout == "" {
+			r.opts.fileTimeLayout = time_.ShortTimeFormat
+		}
+	}
+
 	return r, nil
+}
+
+// /data/log/1%%%AA20160304 -> /data/log/1*A20160304*
+func globFromFileTimeLayout(filepath string) string {
+	regexps := []*regexp.Regexp{
+		regexp.MustCompile(`%[%+A-Za-z]`),
+		regexp.MustCompile(`\*+`),
+	}
+
+	for _, re := range regexps {
+		filepath = re.ReplaceAllString(filepath, "*")
+	}
+	return filepath + "*"
 }
 
 func (f *RotateFiler) Write(p []byte) (n int, err error) {
@@ -65,7 +85,7 @@ func (f *RotateFiler) Write(p []byte) (n int, err error) {
 func (f *RotateFiler) generateRotateFilename() string {
 	if f.opts.rotateInterval > 0 {
 		now := time.Now()
-		return time_.TruncateToUTCString(now, f.opts.rotateInterval, time_.ShortTimeFormat)
+		return time_.TruncateToUTCString(now, f.opts.rotateInterval, f.opts.fileTimeLayout)
 	}
 	return ""
 }
@@ -77,6 +97,7 @@ func (f *RotateFiler) getWriterNolock(length int64) (io.Writer, error) {
 		filename = "default.log"
 	}
 	filepath := filepath.Join(f.filedir, filename)
+	globPath := filepath
 
 	var err error
 	rotated := false
@@ -112,6 +133,10 @@ func (f *RotateFiler) getWriterNolock(length int64) (io.Writer, error) {
 		f.file = fn
 
 		os_.SymLink(filepath, f.linkpath)
+
+		globFile := globFromFileTimeLayout(globPath)
+
+		go cleanup_.FileCleanup(globFile, cleanup_.WithMaxAge(f.opts.maxAge), cleanup_.WithMaxCount(f.opts.maxCount))
 	}
 
 	return f.file, nil

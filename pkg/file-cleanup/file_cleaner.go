@@ -5,6 +5,7 @@ import (
 	"sort"
 	"time"
 
+	errors_ "github.com/kaydxh/golang/go/errors"
 	filepath_ "github.com/kaydxh/golang/go/path/filepath"
 )
 
@@ -39,22 +40,27 @@ func FileCleanup(pattern string, options ...FileCleanerOption) error {
 			continue
 		}
 
-		if cleaner.maxAge == 0 {
-			continue
-		}
-
 		removeMatches = append(removeMatches, path)
 	}
 
 	if cleaner.maxCount > 0 {
-		if cleaner.maxCount > int64(len(removeMatches)) {
+		if cleaner.maxCount < int64(len(removeMatches)) {
 			sort.Sort(CleanupFiles(removeMatches))
-			removeMatches = removeMatches[:cleaner.maxCount]
+			removeMatches = removeMatches[:len(removeMatches)-int(cleaner.maxCount)]
 		}
 
 	}
 
-	return nil
+	//clean
+	var errs []error
+	for _, file := range removeMatches {
+		err = os.Remove(file)
+		if err != nil {
+			errs = append(errs, err)
+		}
+	}
+
+	return errors_.NewAggregate(errs)
 }
 
 type CleanupFiles []string
