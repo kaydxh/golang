@@ -10,7 +10,6 @@ import (
 	gw_ "github.com/kaydxh/golang/pkg/grpc-gateway"
 
 	"github.com/kaydxh/golang/pkg/grpc-gateway/date"
-	//"github.com/kaydxh/sea/api/openapi-spec/v1/date"
 	"google.golang.org/grpc"
 )
 

@@ -15,3 +15,9 @@ func WithClientDialOptions(opts []grpc.DialOption) GRPCGatewayOption {
 		c.opts.clientDialOptions = opts
 	})
 }
+
+func WithServerUnaryInterceptorsOptions(opts ...grpc.UnaryServerInterceptor) GRPCGatewayOption {
+	return GRPCGatewayOptionFunc(func(c *GRPCGateway) {
+		c.opts.interceptionOptions.grpcServerOpts.unaryInterceptors = opts
+	})
+}
