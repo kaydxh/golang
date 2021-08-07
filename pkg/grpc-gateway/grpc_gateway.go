@@ -58,6 +58,7 @@ func (g *GRPCGateway) initOnce() {
 		serverOptions = append(
 			g.opts.serverOptions,
 			grpc.ChainUnaryInterceptor(g.opts.interceptionOptions.grpcServerOpts.unaryInterceptors...),
+			grpc.ChainStreamInterceptor(g.opts.interceptionOptions.grpcServerOpts.streamInterceptors...),
 		)
 		g.grpcServer = grpc.NewServer(serverOptions...)
 		g.gatewayMux = runtime.NewServeMux(g.opts.gatewayMuxOptions...)
