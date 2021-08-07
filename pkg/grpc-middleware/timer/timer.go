@@ -2,9 +2,9 @@ package interceptortimer
 
 import (
 	"context"
-	"fmt"
 
 	time_ "github.com/kaydxh/golang/go/time"
+	"github.com/sirupsen/logrus"
 
 	"google.golang.org/grpc"
 )
@@ -15,8 +15,8 @@ func UnaryServerInterceptor() grpc.UnaryServerInterceptor {
 
 		tc := time_.New(true)
 		summary := func() {
-			tc.Tick("handler")
-			fmt.Println(tc.String())
+			tc.Tick(info.FullMethod)
+			logrus.Infof(tc.String())
 		}
 		defer summary()
 		return handler(ctx, req)

@@ -6,6 +6,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	viper_ "github.com/kaydxh/golang/pkg/viper"
+	"github.com/sirupsen/logrus"
 
 	gw_ "github.com/kaydxh/golang/pkg/grpc-gateway"
 	interceptortimer_ "github.com/kaydxh/golang/pkg/grpc-middleware/timer"
@@ -48,6 +49,11 @@ func (c *completedConfig) New() (*GenericWebServer, error) {
 	//	opts := []grpc.UnaryServerInterceptor{}
 	opts := []gw_.GRPCGatewayOption{}
 	opts = append(opts, gw_.WithServerUnaryInterceptorsOptions(interceptortimer_.UnaryServerInterceptor()))
+
+	opts = append(
+		opts,
+		gw_.WithServerUnaryInterceptorsLogrusOptions(logrus.StandardLogger()),
+	)
 	grpcBackend := gw_.NewGRPCGateWay(c.opts.bindAddress, opts...)
 	ginBackend := gin.New()
 	fmt.Printf(" - listen address[%s]\n", c.opts.bindAddress)
