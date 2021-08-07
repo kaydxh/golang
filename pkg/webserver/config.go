@@ -8,6 +8,7 @@ import (
 	viper_ "github.com/kaydxh/golang/pkg/viper"
 
 	gw_ "github.com/kaydxh/golang/pkg/grpc-gateway"
+	interceptortimer_ "github.com/kaydxh/golang/pkg/grpc-middleware/timer"
 	"github.com/ory/viper"
 )
 
@@ -44,7 +45,10 @@ type CompletedConfig struct {
 }
 
 func (c *completedConfig) New() (*GenericWebServer, error) {
-	grpcBackend := gw_.NewGRPCGateWay(c.opts.bindAddress)
+	//	opts := []grpc.UnaryServerInterceptor{}
+	opts := []gw_.GRPCGatewayOption{}
+	opts = append(opts, gw_.WithServerUnaryInterceptorsOptions(interceptortimer_.UnaryServerInterceptor()))
+	grpcBackend := gw_.NewGRPCGateWay(c.opts.bindAddress, opts...)
 	ginBackend := gin.New()
 	fmt.Printf(" - listen address[%s]\n", c.opts.bindAddress)
 

@@ -11,6 +11,13 @@ import (
 	"google.golang.org/grpc"
 )
 
+type InterceptorOption struct {
+	grpcServerOpts struct {
+		unaryInterceptors  []grpc.UnaryServerInterceptor
+		streamInterceptors []grpc.StreamServerInterceptor
+	}
+}
+
 type GRPCGateway struct {
 	grpcServer *grpc.Server
 	http.Server
@@ -24,9 +31,10 @@ type GRPCGateway struct {
 				opts []grpc.ServerOption
 			}
 		*/
-		serverOptions     []grpc.ServerOption
-		gatewayMuxOptions []runtime.ServeMuxOption
-		clientDialOptions []grpc.DialOption
+		interceptionOptions InterceptorOption
+		serverOptions       []grpc.ServerOption
+		gatewayMuxOptions   []runtime.ServeMuxOption
+		clientDialOptions   []grpc.DialOption
 	}
 }
 
@@ -44,7 +52,14 @@ func NewGRPCGateWay(addr string, options ...GRPCGatewayOption) *GRPCGateway {
 func (g *GRPCGateway) initOnce() {
 	g.once.Do(func() {
 		//now not support tls
-		g.grpcServer = grpc.NewServer(g.opts.serverOptions...)
+		//g.grpcServer = grpc.NewServer(g.opts.serverOptions...)
+
+		serverOptions := []grpc.ServerOption{}
+		serverOptions = append(
+			g.opts.serverOptions,
+			grpc.ChainUnaryInterceptor(g.opts.interceptionOptions.grpcServerOpts.unaryInterceptors...),
+		)
+		g.grpcServer = grpc.NewServer(serverOptions...)
 		g.gatewayMux = runtime.NewServeMux(g.opts.gatewayMuxOptions...)
 		g.opts.clientDialOptions = append(g.opts.clientDialOptions, grpc_.ClientDialOptions()...)
 	})
