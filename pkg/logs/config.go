@@ -5,6 +5,7 @@ import (
 	"path/filepath"
 
 	"github.com/go-playground/validator/v10"
+	time_ "github.com/kaydxh/golang/go/time"
 	viper_ "github.com/kaydxh/golang/pkg/viper"
 	"github.com/sirupsen/logrus"
 
@@ -51,7 +52,18 @@ func (c *completedConfig) install() error {
 		logrus.SetFormatter(&logrus.JSONFormatter{})
 
 	} else {
-		logrus.SetFormatter(&logrus.TextFormatter{})
+		//DisableColors set true, out format:
+		//time="2021-08-07 20:21:46.468" level=info msg="Installing WebHandler" func="options.(*CompletedServerRunOptions).Run()" file="options.go:59"
+		//DisableColors set false, out format:
+		//INFO[2021-08-07T19:53:42+08:00]options.go:59 options.(*CompletedServerRunOptions).Run() Installing WebHandler
+		logrus.SetFormatter(&logrus.TextFormatter{
+			//ForceQuote:       true,
+			DisableColors: true,
+			//DisableQuote:     true,
+			//FullTimestamp:    true,
+			TimestampFormat:  time_.DefaultTimeMsFormat,
+			CallerPrettyfier: GenShortCallPrettyfier(),
+		})
 	}
 
 	level, err := logrus.ParseLevel(c.Proto.GetLevel().String())

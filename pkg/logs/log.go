@@ -35,28 +35,16 @@ func WithRotate(log *logrus.Logger, filedir string, options ...RotateOption) err
 		rotate_.WithSuffixName(rotate.suffixName),
 	)
 	log.AddHook(HookHandler(func(entry *logrus.Entry) error {
-		//	var msg []byte
-		//	var err error
+		var (
+			msg []byte
+			err error
+		)
 
-		msg, err := entry.String()
-		/*
-			if log.Formatter == nil {
-				msg_, err_ := entry.String()
-				msg, err = []byte(msg_), err_
-			} else {
-				switch f := log.Formatter.(type) {
-				case *logrus.TextFormatter:
-					var disableColors = f.DisableColors
-					// disable colors in log file
-					f.DisableColors = true
-					msg, err = log.Formatter.Format(entry)
-					f.DisableColors = disableColors
-				default:
-					msg, err = log.Formatter.Format(entry)
-				}
-			}
-		*/
-
+		if log.Formatter == nil {
+			msg, err = entry.Bytes()
+		} else {
+			msg, err = log.Formatter.Format(entry)
+		}
 		if err != nil {
 			return err
 		}

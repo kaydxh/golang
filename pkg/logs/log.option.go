@@ -1,6 +1,11 @@
 package logs
 
-import "time"
+import (
+	"fmt"
+	"path"
+	"runtime"
+	"time"
+)
 
 func WithPrefixName(prefixName string) RotateOption {
 	return RotateOptionFunc(func(c *Rotate) {
@@ -36,4 +41,14 @@ func WithRotateInterval(rotateInterval time.Duration) RotateOption {
 	return RotateOptionFunc(func(c *Rotate) {
 		c.rotateInterval = rotateInterval
 	})
+}
+
+type CallerPrettyfierFunc func(f *runtime.Frame) (function string, file string)
+
+func GenShortCallPrettyfier() CallerPrettyfierFunc {
+	return func(f *runtime.Frame) (function string, file string) {
+		funcname := path.Base(f.Function)
+		filename := path.Base(f.File)
+		return fmt.Sprintf("%s()", funcname), fmt.Sprintf("%s:%d", filename, f.Line)
+	}
 }
