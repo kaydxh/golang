@@ -16,7 +16,7 @@ func UnaryServerInterceptor() grpc.UnaryServerInterceptor {
 		tc := time_.New(true)
 		summary := func() {
 			tc.Tick(info.FullMethod)
-			logrus.Infof(tc.String())
+			logrus.WithField("method", info.FullMethod).Infof(tc.String())
 		}
 		defer summary()
 		return handler(ctx, req)
