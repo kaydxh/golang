@@ -1,15 +1,20 @@
 package sysycall
 
-import "syscall"
+import (
+	"syscall"
+
+	errors_ "github.com/kaydxh/golang/go/errors"
+)
 
 func KillBatch(pids []int, sig syscall.Signal) (errorPids []int, err error) {
+	var errs []error
 	for _, pid := range pids {
-		errIn := syscall.Kill(pid, sig)
-		if errIn != nil {
+		err = syscall.Kill(pid, sig)
+		if err != nil {
 			errorPids = append(errorPids, pid)
-			err = errIn
+			errs = append(errs, err)
 		}
 	}
 
-	return errorPids, err
+	return errorPids, errors_.NewAggregate(errs)
 }
