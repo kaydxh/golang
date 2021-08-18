@@ -2,6 +2,8 @@ package grpcgateway
 
 import (
 	interceptorlogrus_ "github.com/grpc-ecosystem/go-grpc-middleware/logging/logrus"
+	interceptortcloud_ "github.com/kaydxh/golang/pkg/grpc-middleware/api/tcloud/v3.0"
+	interceptortimer_ "github.com/kaydxh/golang/pkg/grpc-middleware/timer"
 	"github.com/sirupsen/logrus"
 	"google.golang.org/grpc"
 )
@@ -41,5 +43,19 @@ func WithServerUnaryInterceptorsLogrusOptions(
 		l := logrus.NewEntry(logger)
 		WithServerUnaryInterceptorsOptions(interceptorlogrus_.UnaryServerInterceptor(l))
 		WithServerStreamInterceptorsOptions(interceptorlogrus_.StreamServerInterceptor(l))
+	})
+}
+
+func WithServerUnaryInterceptorsTimerOptions() GRPCGatewayOption {
+	return GRPCGatewayOptionFunc(func(c *GRPCGateway) {
+		WithServerUnaryInterceptorsOptions(interceptortimer_.UnaryServerInterceptor())
+		//		WithServerStreamInterceptorsOptions(interceptorlogrus_.StreamServerInterceptor(l))
+	})
+}
+
+func WithServerUnaryInterceptorsRequestIdOptions() GRPCGatewayOption {
+	return GRPCGatewayOptionFunc(func(c *GRPCGateway) {
+		WithServerUnaryInterceptorsOptions(interceptortcloud_.UnaryServerInterceptorOfRequestId())
+		//		WithServerStreamInterceptorsOptions(interceptorlogrus_.StreamServerInterceptor(l))
 	})
 }
