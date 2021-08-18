@@ -9,7 +9,6 @@ import (
 	"github.com/sirupsen/logrus"
 
 	gw_ "github.com/kaydxh/golang/pkg/grpc-gateway"
-	interceptortimer_ "github.com/kaydxh/golang/pkg/grpc-middleware/timer"
 	"github.com/ory/viper"
 )
 
@@ -32,6 +31,7 @@ type Config struct {
 		// have converged on all node. During this time, the API server keeps serving, /healthz will return 200,
 		// but /readyz will return failure.
 		shutdownDelayDuration time.Duration
+		gatewayOptions        []gw_.GRPCGatewayOption
 	}
 }
 
@@ -46,13 +46,15 @@ type CompletedConfig struct {
 }
 
 func (c *completedConfig) New() (*GenericWebServer, error) {
-	//	opts := []grpc.UnaryServerInterceptor{}
-	opts := []gw_.GRPCGatewayOption{}
-	opts = append(opts, gw_.WithServerUnaryInterceptorsOptions(interceptortimer_.UnaryServerInterceptor()))
-
+	opts := c.opts.gatewayOptions //[]gw_.GRPCGatewayOption{}
+	opts = append(opts, gw_.WithServerUnaryInterceptorsTimerOptions())
 	opts = append(
 		opts,
 		gw_.WithServerUnaryInterceptorsLogrusOptions(logrus.StandardLogger()),
+	)
+	opts = append(
+		opts,
+		gw_.WithServerUnaryInterceptorsRequestIdOptions(),
 	)
 	grpcBackend := gw_.NewGRPCGateWay(c.opts.bindAddress, opts...)
 	ginBackend := gin.New()
