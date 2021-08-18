@@ -41,21 +41,21 @@ func WithServerUnaryInterceptorsLogrusOptions(
 ) GRPCGatewayOption {
 	return GRPCGatewayOptionFunc(func(c *GRPCGateway) {
 		l := logrus.NewEntry(logger)
-		WithServerUnaryInterceptorsOptions(interceptorlogrus_.UnaryServerInterceptor(l))
-		WithServerStreamInterceptorsOptions(interceptorlogrus_.StreamServerInterceptor(l))
+		WithServerUnaryInterceptorsOptions(interceptorlogrus_.UnaryServerInterceptor(l)).apply(c)
+		WithServerStreamInterceptorsOptions(interceptorlogrus_.StreamServerInterceptor(l)).apply(c)
 	})
 }
 
 func WithServerUnaryInterceptorsTimerOptions() GRPCGatewayOption {
 	return GRPCGatewayOptionFunc(func(c *GRPCGateway) {
-		WithServerUnaryInterceptorsOptions(interceptortimer_.UnaryServerInterceptor())
+		WithServerUnaryInterceptorsOptions(interceptortimer_.UnaryServerInterceptor()).apply(c)
 		//		WithServerStreamInterceptorsOptions(interceptorlogrus_.StreamServerInterceptor(l))
 	})
 }
 
 func WithServerUnaryInterceptorsRequestIdOptions() GRPCGatewayOption {
 	return GRPCGatewayOptionFunc(func(c *GRPCGateway) {
-		WithServerUnaryInterceptorsOptions(interceptortcloud_.UnaryServerInterceptorOfRequestId())
+		WithServerUnaryInterceptorsOptions(interceptortcloud_.UnaryServerInterceptorOfRequestId()).apply(c)
 		//		WithServerStreamInterceptorsOptions(interceptorlogrus_.StreamServerInterceptor(l))
 	})
 }

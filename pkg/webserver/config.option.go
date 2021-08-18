@@ -3,6 +3,7 @@ package webserver
 import (
 	"time"
 
+	gw_ "github.com/kaydxh/golang/pkg/grpc-gateway"
 	"github.com/ory/viper"
 )
 
@@ -15,5 +16,11 @@ func WithViper(v *viper.Viper) ConfigOption {
 func WithShutdownDelayDuration(shutdownDelayDuration time.Duration) ConfigOption {
 	return ConfigOptionFunc(func(c *Config) {
 		c.opts.shutdownDelayDuration = shutdownDelayDuration
+	})
+}
+
+func WithGRPCGatewayOptions(opts ...gw_.GRPCGatewayOption) ConfigOption {
+	return ConfigOptionFunc(func(c *Config) {
+		c.opts.gatewayOptions = append(c.opts.gatewayOptions, opts...)
 	})
 }
