@@ -26,11 +26,6 @@ type GRPCGateway struct {
 	once       sync.Once
 
 	opts struct {
-		/*
-			ServerOptions struct {
-				opts []grpc.ServerOption
-			}
-		*/
 		interceptionOptions InterceptorOption
 		serverOptions       []grpc.ServerOption
 		gatewayMuxOptions   []runtime.ServeMuxOption

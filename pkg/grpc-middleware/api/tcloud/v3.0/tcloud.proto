@@ -1,0 +1,46 @@
+syntax = "proto3";
+
+package api.tcloud.v3;
+
+import "google/protobuf/duration.proto";
+
+option go_package = "github.com/kaydxh/golang/pkg/grpc-middleware/api/tcloud/v3.0;tcloud";
+
+// github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common/http/request.go
+message TCloudBaseRequest {
+  string http_method = 1 [json_name = "httpMethod"];
+  string scheme = 2 [json_name = "scheme"];
+  string root_domain = 3 [json_name = "rootDomain"];
+  string domain = 4 [json_name = "domain"];
+  string path = 5 [json_name = "path"];
+  map<string, string> params = 6 [json_name = "params"];
+  map<string, string> form_params = 7 [json_name = "formParams"];
+
+  string service = 8 [json_name = "service"];
+  string version = 9 [json_name = "Version"];
+  string action = 10 [json_name = "Action"];
+}
+
+// https://github.com/TencentCloud/tencentcloud-sdk-go/blob/master/tencentcloud/common/http/response.go
+message TCloudErrorResponse {
+  // ErrorResponse
+  ErrorResponse response = 1 [json_name = "Response"];
+}
+
+/*
+message QCloudResponse {
+  // QCloudErrorResponse
+  google.protobuf.Struct response = 1 [json_name = "Response"];
+}
+*/
+
+// ErrorResponse
+message ErrorResponse {
+  TCloudError error = 1 [json_name = "Error"];
+  string request_id = 2 [json_name = "RequestId"];
+}
+
+message TCloudError {
+  string code = 1 [json_name = "Code"];
+  string message = 2 [json_name = "Message"];
+}
