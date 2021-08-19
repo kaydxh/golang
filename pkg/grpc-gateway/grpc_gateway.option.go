@@ -59,3 +59,10 @@ func WithServerUnaryInterceptorsRequestIdOptions() GRPCGatewayOption {
 		//		WithServerStreamInterceptorsOptions(interceptorlogrus_.StreamServerInterceptor(l))
 	})
 }
+
+func WithServerUnaryInterceptorsErrorOptions() GRPCGatewayOption {
+	return GRPCGatewayOptionFunc(func(c *GRPCGateway) {
+		WithServerUnaryInterceptorsOptions(interceptortcloud_.UnaryServerInterceptorOfError()).apply(c)
+		//		WithServerStreamInterceptorsOptions(interceptorlogrus_.StreamServerInterceptor(l))
+	})
+}
