@@ -2,7 +2,6 @@ package tcloud
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/google/uuid"
 	"github.com/sirupsen/logrus"
@@ -18,7 +17,6 @@ func UnaryServerInterceptorOfRequestId() grpc.UnaryServerInterceptor {
 	return func(ctx context.Context, req interface{},
 		info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (interface{}, error) {
 		// retrieve requestId from request
-		fmt.Printf("UnaryServerInterceptorOfRequestId, req: %v", req)
 		id := retrieveRequestId(req)
 		if id == "" {
 			//if id is empty, set new uuid to request
