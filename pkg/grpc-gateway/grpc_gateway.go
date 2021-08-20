@@ -21,7 +21,8 @@ type InterceptorOption struct {
 type GRPCGateway struct {
 	grpcServer *grpc.Server
 	http.Server
-	handler    http.Handler
+	handler http.Handler
+	//gatewayMux for http handler
 	gatewayMux *runtime.ServeMux
 	once       sync.Once
 
