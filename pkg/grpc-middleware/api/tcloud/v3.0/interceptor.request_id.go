@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/google/uuid"
+	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"github.com/sirupsen/logrus"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/metadata"
@@ -11,6 +12,15 @@ import (
 
 // RequestIdKey is metadata key name for request ID
 var RequestIdKey = "X-Request-ID"
+
+func GetMetadata(ctx context.Context, key string) []string {
+	md, ok := runtime.ServerMetadataFromContext(ctx)
+	if !ok || md.HeaderMD == nil {
+		return nil
+	}
+
+	return md.HeaderMD.Get(key)
+}
 
 // UnaryServerInterceptorOfRequestId returns a new unary server interceptors with tags in context with request_id.
 func UnaryServerInterceptorOfRequestId() grpc.UnaryServerInterceptor {
@@ -23,6 +33,8 @@ func UnaryServerInterceptorOfRequestId() grpc.UnaryServerInterceptor {
 			id = uuid.NewString()
 			trySetRequestId(req, id)
 		}
+
+		//set "X-Request-ID" to context
 		ctx = context.WithValue(ctx, RequestIdKey, id)
 		resp, err := handler(ctx, req)
 		// try set requestId to response
