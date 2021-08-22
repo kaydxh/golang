@@ -10,9 +10,10 @@ import (
 )
 
 type Client struct {
+	mutex  sync.Mutex
+	buffer *bytes.Buffer
+
 	opts struct {
-		buffer         *bytes.Buffer
-		mutex          sync.Mutex
 		needEmptyValue bool
 		urlCodec       UrlCodec
 	}
@@ -26,11 +27,12 @@ func New(ctx context.Context, options ...ClientOption) (*Client, error) {
 	return c, nil
 }
 
+//can convert struct to url encode for url paratment
 func (c *Client) Encode(data interface{}) (string, error) {
-	c.opts.mutex.Lock()
-	defer c.opts.mutex.Unlock()
+	c.mutex.Lock()
+	defer c.mutex.Unlock()
 
-	c.opts.buffer = new(bytes.Buffer)
+	c.buffer = new(bytes.Buffer)
 	rv := reflect.ValueOf(data)
 
 	err := c.build(rv, "", reflect.Interface)
@@ -38,8 +40,8 @@ func (c *Client) Encode(data interface{}) (string, error) {
 		return "", err
 	}
 
-	buf := c.opts.buffer.Bytes()
-	c.opts.buffer = nil
+	buf := c.buffer.Bytes()
+	c.buffer = nil
 
 	return string(buf[0 : len(buf)-1]), nil
 
@@ -147,7 +149,7 @@ func (c *Client) appendKeyValue(key string, rv reflect.Value, parentKind reflect
 		return err
 	}
 
-	_, err = c.opts.buffer.WriteString(
+	_, err = c.buffer.WriteString(
 		c.opts.urlCodec.Escape(key) + "=" + c.opts.urlCodec.Escape(s) + "&",
 	)
 
