@@ -44,7 +44,7 @@ func WithServerStreamInterceptorsOptions(opts ...grpc.StreamServerInterceptor) G
 	})
 }
 
-func WithServerUnaryInterceptorsLogrusOptions(
+func WithServerInterceptorsLogrusOptions(
 	logger *logrus.Logger,
 ) GRPCGatewayOption {
 	return GRPCGatewayOptionFunc(func(c *GRPCGateway) {
@@ -57,44 +57,45 @@ func WithServerUnaryInterceptorsLogrusOptions(
 func WithServerUnaryInterceptorsTimerOptions() GRPCGatewayOption {
 	return GRPCGatewayOptionFunc(func(c *GRPCGateway) {
 		WithServerUnaryInterceptorsOptions(interceptortimer_.UnaryServerInterceptor()).apply(c)
-		//		WithServerStreamInterceptorsOptions(interceptorlogrus_.StreamServerInterceptor(l))
 	})
 }
 
 func WithServerUnaryInterceptorsRequestIdOptions() GRPCGatewayOption {
 	return GRPCGatewayOptionFunc(func(c *GRPCGateway) {
 		WithServerUnaryInterceptorsOptions(interceptortcloud_.UnaryServerInterceptorOfRequestId()).apply(c)
-		//		WithServerStreamInterceptorsOptions(interceptorlogrus_.StreamServerInterceptor(l))
 	})
 }
 
 func WithServerUnaryInterceptorsErrorOptions() GRPCGatewayOption {
 	return GRPCGatewayOptionFunc(func(c *GRPCGateway) {
 		WithServerUnaryInterceptorsOptions(interceptortcloud_.UnaryServerInterceptorOfError()).apply(c)
-		//		WithServerStreamInterceptorsOptions(interceptorlogrus_.StreamServerInterceptor(l))
+		//WithServerStreamInterceptorsOptions(interceptortcloud_.StreamServerInterceptor()).apply(c)
 	})
 }
 
-//HTTP
+//HTTP, only called by failed response
 func WithServerInterceptorsHttpErrorOptions() GRPCGatewayOption {
 	return GRPCGatewayOptionFunc(func(c *GRPCGateway) {
 		WithGatewayMuxOptions(runtime.WithErrorHandler(interceptortcloud_.HTTPError)).apply(c)
 	})
 }
 
+//now unused, only called by successed response
 func WithServerInterceptorsHTTPForwardResponseOptions() GRPCGatewayOption {
 	return GRPCGatewayOptionFunc(func(c *GRPCGateway) {
 		WithGatewayMuxOptions(runtime.WithForwardResponseOption(interceptortcloud_.HTTPForwardResponse)).apply(c)
 	})
 }
 
-func WithServerInterceptorsTCloudHTTPResponseOptions() GRPCGatewayOption {
+//tcloud api3.0 http response formatter
+func WithServerInterceptorsTCloud30HTTPResponseOptions() GRPCGatewayOption {
 	return GRPCGatewayOptionFunc(func(c *GRPCGateway) {
 		WithGatewayMuxOptions(
 			runtime.WithMarshalerOption(runtime.MIMEWildcard, interceptortcloud_.NewDefaultJSONPb()),
 		).apply(
 			c,
 		)
+
 		WithGatewayMuxOptions(
 			runtime.WithMarshalerOption(binding.MIMEJSON, interceptortcloud_.NewDefaultJSONPb()),
 		).apply(

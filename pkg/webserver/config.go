@@ -50,7 +50,7 @@ func (c *completedConfig) New() (*GenericWebServer, error) {
 	opts = append(opts, gw_.WithServerUnaryInterceptorsTimerOptions())
 	opts = append(
 		opts,
-		gw_.WithServerUnaryInterceptorsLogrusOptions(logrus.StandardLogger()),
+		gw_.WithServerInterceptorsLogrusOptions(logrus.StandardLogger()),
 	)
 	opts = append(
 		opts,

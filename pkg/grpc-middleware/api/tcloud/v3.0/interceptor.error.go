@@ -2,7 +2,6 @@ package tcloud
 
 import (
 	"context"
-	"fmt"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
@@ -52,7 +51,6 @@ func UnaryServerInterceptorOfError() grpc.UnaryServerInterceptor {
 			},
 			RequestId: retrieveRequestId(req),
 		}
-		fmt.Printf("errResponse :%v", errResponse)
 
 		return errResponse, nil
 	}
