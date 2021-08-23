@@ -1,6 +1,7 @@
 package grpcgateway
 
 import (
+	"github.com/gin-gonic/gin/binding"
 	interceptorlogrus_ "github.com/grpc-ecosystem/go-grpc-middleware/logging/logrus"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	interceptortcloud_ "github.com/kaydxh/golang/pkg/grpc-middleware/api/tcloud/v3.0"
@@ -74,8 +75,30 @@ func WithServerUnaryInterceptorsErrorOptions() GRPCGatewayOption {
 	})
 }
 
+//HTTP
 func WithServerInterceptorsHttpErrorOptions() GRPCGatewayOption {
 	return GRPCGatewayOptionFunc(func(c *GRPCGateway) {
 		WithGatewayMuxOptions(runtime.WithErrorHandler(interceptortcloud_.HTTPError)).apply(c)
+	})
+}
+
+func WithServerInterceptorsHTTPForwardResponseOptions() GRPCGatewayOption {
+	return GRPCGatewayOptionFunc(func(c *GRPCGateway) {
+		WithGatewayMuxOptions(runtime.WithForwardResponseOption(interceptortcloud_.HTTPForwardResponse)).apply(c)
+	})
+}
+
+func WithServerInterceptorsTCloudHTTPResponseOptions() GRPCGatewayOption {
+	return GRPCGatewayOptionFunc(func(c *GRPCGateway) {
+		WithGatewayMuxOptions(
+			runtime.WithMarshalerOption(runtime.MIMEWildcard, interceptortcloud_.NewDefaultJSONPb()),
+		).apply(
+			c,
+		)
+		WithGatewayMuxOptions(
+			runtime.WithMarshalerOption(binding.MIMEJSON, interceptortcloud_.NewDefaultJSONPb()),
+		).apply(
+			c,
+		)
 	})
 }
