@@ -3,6 +3,7 @@ syntax = "proto3";
 package api.tcloud.v3;
 
 import "google/protobuf/duration.proto";
+import "google/protobuf/struct.proto";
 
 option go_package = "github.com/kaydxh/golang/pkg/grpc-middleware/api/tcloud/v3.0;tcloud";
 
@@ -22,17 +23,14 @@ message TCloudBaseRequest {
 }
 
 // https://github.com/TencentCloud/tencentcloud-sdk-go/blob/master/tencentcloud/common/http/response.go
+message TCloudResponse {
+  google.protobuf.Struct response = 1 [json_name = "Response"];
+}
+
 message TCloudErrorResponse {
   // ErrorResponse
   ErrorResponse response = 1 [json_name = "Response"];
 }
-
-/*
-message QCloudResponse {
-  // QCloudErrorResponse
-  google.protobuf.Struct response = 1 [json_name = "Response"];
-}
-*/
 
 // ErrorResponse
 message ErrorResponse {
