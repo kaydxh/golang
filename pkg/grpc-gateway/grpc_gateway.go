@@ -49,7 +49,6 @@ func (g *GRPCGateway) initOnce() {
 	g.once.Do(func() {
 		//now not support tls
 		//g.grpcServer = grpc.NewServer(g.opts.serverOptions...)
-
 		serverOptions := []grpc.ServerOption{}
 		serverOptions = append(
 			g.opts.serverOptions,
