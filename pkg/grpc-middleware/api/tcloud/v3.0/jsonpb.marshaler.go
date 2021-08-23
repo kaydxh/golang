@@ -1,29 +1,34 @@
 package tcloud
 
 import (
-	"fmt"
-
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	jsonpb_ "github.com/kaydxh/golang/pkg/protobuf/jsonpb"
 )
 
 type JSONPb struct {
 	runtime.JSONPb
-	/*
-		opts struct {
-			useProtoNames   bool
-			useEnumNumbers  bool
-			emitUnpopulated bool
-		}
-	*/
+	opts struct {
+		useProtoNames   bool
+		useEnumNumbers  bool
+		emitUnpopulated bool
+		discardUnknown  bool
+		indent          string
+	}
 }
 
-func NewJSONPb() *JSONPb {
+func NewDefaultJSONPb() *JSONPb {
+	return NewJSONPb(
+		WithUseProtoNames(false),
+		WithUseEnumNumbers(false),
+		WithEmitUnpopulated(true),
+		WithDiscardUnknown(true),
+		WithIndent("\t"),
+	)
+}
+
+func NewJSONPb(options ...JSONPbOption) *JSONPb {
 	j := &JSONPb{}
-	j.UseProtoNames = false
-	j.EmitUnpopulated = true
-	j.DiscardUnknown = true
-	j.Indent = "\t"
+	j.ApplyOptions(options...)
 	return j
 }
 
@@ -36,21 +41,6 @@ func (j *JSONPb) Marshal(v interface{}) ([]byte, error) {
 	body := &TCloudResponse{
 		Response: respStruct,
 	}
-
-	fmt.Println("jsonpb: ", j.JSONPb)
-	errResponse := &ErrorResponse{
-		Error: &TCloudError{},
-	}
-	data, _ := j.JSONPb.Marshal(errResponse)
-	fmt.Println("data: ", string(data))
-
-	/*
-		mash := &jsonpb.Marshaler{}
-
-		data, err := mash.MarshalToString(body)
-		fmt.Println("data ", data)
-		return []byte(data), err
-	*/
 
 	return j.JSONPb.Marshal(body)
 }
