@@ -12,22 +12,24 @@ import (
 type MatchRouterFunc func(*http.Request) string
 
 type ReverseProxy struct {
-	router     gin.IRouter
-	targetUrls []string
-	opts       struct {
+	router gin.IRouter
+	opts   struct {
 		routerPatterns []string
 		matchRouter    MatchRouterFunc
+		targetUrl      string
 	}
 }
 
-func NewReverseProxy(router gin.IRouter, targetUrls []string, options ...ReverseProxyOption) *ReverseProxy {
+func NewReverseProxy(router gin.IRouter, options ...ReverseProxyOption) (*ReverseProxy, error) {
 	p := &ReverseProxy{
-		router:     router,
-		targetUrls: targetUrls,
+		router: router,
 	}
 	p.ApplyOptions(options...)
+	if p.opts.targetUrl == "" && p.opts.matchRouter == nil {
+		return nil, fmt.Errorf("target url and match router both nil")
+	}
 
-	return p
+	return p, nil
 }
 
 func (p *ReverseProxy) ProxyHandler() gin.HandlerFunc {
@@ -35,7 +37,7 @@ func (p *ReverseProxy) ProxyHandler() gin.HandlerFunc {
 		fmt.Println("--ProxyHandler")
 		req := c.Request
 
-		var targetUrl string
+		targetUrl := p.opts.targetUrl
 		if p.opts.matchRouter != nil {
 			targetUrl = p.opts.matchRouter(req)
 		}
@@ -51,7 +53,6 @@ func (p *ReverseProxy) ProxyHandler() gin.HandlerFunc {
 		rp := httputil.NewSingleHostReverseProxy(serviceTargetUrl)
 		rp.ServeHTTP(c.Writer, c.Request)
 	}
-
 }
 
 func (p *ReverseProxy) SetProxy() {
