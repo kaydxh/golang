@@ -57,6 +57,7 @@ func (c *completedConfig) New() (*GenericWebServer, error) {
 		gw_.WithServerUnaryInterceptorsRequestIdOptions(),
 	)
 	grpcBackend := gw_.NewGRPCGateWay(c.opts.bindAddress, opts...)
+	//grpcBackend.ApplyOptions()
 	ginBackend := gin.New()
 	fmt.Printf(" - listen address[%s]\n", c.opts.bindAddress)
 
