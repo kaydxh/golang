@@ -103,6 +103,11 @@ func (s preparedGenericWebServer) Run(ctx context.Context) error {
 }
 
 func (s *GenericWebServer) PrepareRun() (preparedGenericWebServer, error) {
+	if s.grpcBackend != nil {
+		// assgined ginBackend to grpc handler
+		s.grpcBackend.Handler = s.ginBackend
+	}
+
 	return preparedGenericWebServer{s}, nil
 }
 
