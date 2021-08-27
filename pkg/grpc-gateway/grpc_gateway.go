@@ -2,7 +2,6 @@ package grpcgateway
 
 import (
 	"context"
-	"fmt"
 	"net/http"
 	"sync"
 
@@ -49,7 +48,6 @@ func NewGRPCGateWay(addr string, options ...GRPCGatewayOption) *GRPCGateway {
 
 func (g *GRPCGateway) initOnce() {
 	g.once.Do(func() {
-		fmt.Println("-- initOnce")
 		//now not support tls
 		g.opts.clientDialOptions = append(g.opts.clientDialOptions, grpc_.ClientDialOptions()...)
 
