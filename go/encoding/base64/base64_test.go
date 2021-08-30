@@ -48,3 +48,32 @@ func TestString(t *testing.T) {
 	*/
 	//assert.Equal(t, content, decoded)
 }
+
+func TestURL(t *testing.T) {
+	testCases := []struct {
+		name     string
+		expected string
+	}{
+		{
+			name:     `http://baidu.com?a=10&b="hello"`,
+			expected: "",
+		},
+		{
+			name:     "http://12306.com?a=%b",
+			expected: "",
+		},
+	}
+
+	for _, testCase := range testCases {
+		t.Run(testCase.name, func(t *testing.T) {
+			encoded := base64_.EncodeURL(testCase.name)
+			t.Logf("base64 encode : %v", encoded)
+			decoded, err := base64_.DecodeURL(encoded)
+			if err != nil {
+				t.Fatalf("failed to decode url, err: %v", err)
+			}
+
+			assert.Equal(t, testCase.name, decoded)
+		})
+	}
+}
