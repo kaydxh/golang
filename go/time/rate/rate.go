@@ -59,7 +59,7 @@ func (lim *Limiter) AllowFor(timeout time.Duration) bool {
 // Use this method if you intend to drop / skip events that exceed the rate limit.
 // Otherwise use Reserve or Wait.
 func (lim *Limiter) AllowN(now time.Time, n int, timeout time.Duration) bool {
-	ok := lim.reserveN(now, n, timeout).ok
+	ok := lim.reserveN(now, n).ok
 	if ok {
 		return true
 	}
@@ -97,7 +97,7 @@ func (lim *Limiter) PutN(n int) bool {
 // reserveN is a helper method for AllowN, ReserveN, and WaitN.
 // maxFutureReserve specifies the maximum reservation wait duration allowed.
 // reserveN returns Reservation, not *Reservation, to avoid allocation in AllowN and WaitN.
-func (lim *Limiter) reserveN(now time.Time, n int, timeout time.Duration) Reservation {
+func (lim *Limiter) reserveN(now time.Time, n int) Reservation {
 	lim.mu.Lock()
 	defer lim.mu.Unlock()
 
@@ -124,7 +124,7 @@ func (lim *Limiter) reserveN(now time.Time, n int, timeout time.Duration) Reserv
 //     // Not allowed to act! Did you remember to set lim.burst to be > 0 ?
 //     return
 //   }
-//   time.Sleep(r.Delay())
+//	err := lim.WaitFor(timeout)
 //   Act()
 // Use this method if you wish to wait and slow down in accordance with the rate limit without dropping events.
 // If you need to respect a deadline or cancel the delay, use Wait instead.
@@ -149,6 +149,7 @@ func (lim *Limiter) WaitN(timeout time.Duration, n int) (err error) {
 		return fmt.Errorf("rate: Wait(n=%d) exceeds limiter's burst %d", n, burst)
 	}
 
+	//guarantee triggle wait
 	lim.cond.Signal()
 	return lim.cond.WaitForDo(timeout, func() bool {
 		return lim.tokens >= n
