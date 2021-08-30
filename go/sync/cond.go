@@ -26,27 +26,26 @@ func (c *Cond) wait() error {
 	return nil
 }
 
-func (c *Cond) waitFor(timeout int) error {
+func (c *Cond) waitFor(timeout time.Duration) error {
 	c.L.Unlock()
 	defer c.L.Lock()
 
 	select {
 	case <-c.ch:
 		return nil
-	case <-time.After(time.Duration(timeout) * time.Second):
-		return fmt.Errorf("wait timeout: %vs\n", timeout)
+	case <-time.After(timeout):
+		return fmt.Errorf("wait timeout: %v\n", timeout)
 	}
 
 }
 
-func (c *Cond) WaitForDo(timeout int, pred func() bool, do func() error) error {
+func (c *Cond) WaitForDo(timeout time.Duration, pred func() bool, do func() error) error {
 	c.L.Lock()
 	defer c.L.Unlock()
 
 	for !pred() {
 		err := c.waitFor(timeout)
 		if err != nil {
-			fmt.Printf("err: %v\n", err)
 			return err
 		}
 	}
@@ -56,7 +55,7 @@ func (c *Cond) WaitForDo(timeout int, pred func() bool, do func() error) error {
 	return nil
 }
 
-func (c *Cond) WaitUntilDo(timeout int, pred func() bool, do func() error) error {
+func (c *Cond) WaitUntilDo(timeout time.Duration, pred func() bool, do func() error) error {
 	c.L.Lock()
 	defer c.L.Unlock()
 

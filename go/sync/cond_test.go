@@ -16,13 +16,13 @@ func TestWaitForDo(t *testing.T) {
 	l := new(sync.Mutex)
 	cond := sync_.NewCond(l)
 	a := 5
-	timout := 2
+	timout := 2 * time.Second
 
 	var wg sync.WaitGroup
 	wg.Add(1)
 	go func() {
 		defer wg.Done()
-		err := cond.WaitForDo(timout+2, func() bool {
+		err := cond.WaitForDo(timout+2*time.Second, func() bool {
 			return a == 3
 		}, func() error {
 			a += 100
@@ -37,7 +37,7 @@ func TestWaitForDo(t *testing.T) {
 		for {
 			cond.SignalDo(func() error {
 				a--
-				time.Sleep(time.Duration(timout) * time.Second)
+				time.Sleep(timout)
 				fmt.Printf("a: %v\n", a)
 				return nil
 			})
@@ -63,7 +63,7 @@ func TestBroadCast(t *testing.T) {
 		wg.Add(1)
 		go func() {
 			defer wg.Done()
-			cond.WaitForDo(10, func() bool {
+			cond.WaitForDo(10*time.Second, func() bool {
 				return expected == initValue
 			}, func() error {
 				assert.Equal(initValue, expected)
