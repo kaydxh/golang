@@ -3,6 +3,7 @@ package pool
 import (
 	"context"
 	"sync"
+	"time"
 
 	sync_ "github.com/kaydxh/golang/go/sync"
 )
@@ -83,7 +84,7 @@ func (p *Pool) run(ctx context.Context) (doneC <-chan struct{}) {
 		for {
 
 			for {
-				err := p.cond.WaitForDo(1, func() bool {
+				err := p.cond.WaitForDo(time.Second, func() bool {
 					return burst > 0
 				}, func() error {
 					burst--
