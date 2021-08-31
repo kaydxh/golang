@@ -80,6 +80,15 @@ func (c *Config) Complete() CompletedConfig {
 		}}
 	}
 	c.parseViper()
+
+	c.opts.gatewayOptions = append(
+		c.opts.gatewayOptions,
+		gw_.WithServerInterceptorsLimitRateOptions(
+			int(c.Proto.GetMaxConcurrencyUnary()),
+			int(c.Proto.GetMaxConcurrencyStream()),
+		),
+	)
+
 	return CompletedConfig{&completedConfig{Config: c}}
 }
 

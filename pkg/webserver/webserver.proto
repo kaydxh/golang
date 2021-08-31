@@ -8,6 +8,8 @@ option go_package = "github.com/kaydxh/golang/pkg/webserver;webserver";
 
 message Web {
   Net bind_address = 1;
+  int32 max_concurrency_unary = 2;
+  int32 max_concurrency_stream = 3;
 
   message Net {
     string host = 1;
