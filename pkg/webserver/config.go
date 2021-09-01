@@ -46,6 +46,10 @@ type CompletedConfig struct {
 }
 
 func (c *completedConfig) New() (*GenericWebServer, error) {
+	if c.completeError != nil {
+		return nil, c.completeError
+	}
+
 	opts := c.opts.gatewayOptions //[]gw_.GRPCGatewayOption{}
 	opts = append(opts, gw_.WithServerUnaryInterceptorsTimerOptions())
 	opts = append(
