@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package go.pkg.database.mysql;
+import "google/protobuf/duration.proto";
+
+option go_package = "github.com/kaydxh/go.pkg.database.mysql;mysql";
+
+message Mysql {
+  bool enabled = 1;
+  string address = 2;
+  string username = 3;
+  string password = 4;
+  string db_name = 5;
+
+  int32 max_connections = 6;
+  int32 max_idle_connections = 7;
+
+  google.protobuf.Duration dial_timeout = 8;
+  google.protobuf.Duration read_timeout = 9;
+  // https://github.com/go-sql-driver/mysql#writetimeout
+  google.protobuf.Duration write_timeout = 10;
+  google.protobuf.Duration max_life_time = 11;
+
+  google.protobuf.Duration max_wait_duration = 12;
+  google.protobuf.Duration fail_after_duration = 13;
+}
