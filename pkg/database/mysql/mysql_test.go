@@ -5,6 +5,7 @@ import (
 	"time"
 
 	mysql_ "github.com/kaydxh/golang/pkg/database/mysql"
+	viper_ "github.com/kaydxh/golang/pkg/viper"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -72,6 +73,19 @@ func TestGetDatabaseUntil(t *testing.T) {
 		})
 	}
 
+}
+
+func TestNew(t *testing.T) {
+
+	cfgFile := "./mysql.yaml"
+	config := mysql_.NewConfig(mysql_.WithViper(viper_.GetViper(cfgFile, "database.mysql")))
+
+	db, err := config.Complete().New()
+	if err != nil {
+		t.Errorf("failed to new config err: %v", err)
+	}
+
+	t.Logf("db: %#v", db)
 }
 
 func TestGetTheDBAndClose(t *testing.T) {
