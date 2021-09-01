@@ -63,12 +63,8 @@ func (c *Config) Complete() CompletedConfig {
 			completeError: err,
 		}}
 	}
-	c.parseViper()
 
 	return CompletedConfig{&completedConfig{Config: c}}
-}
-
-func (c *Config) parseViper() {
 }
 
 func (c *Config) loadViper() error {
