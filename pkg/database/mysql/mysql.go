@@ -36,9 +36,13 @@ type DB struct {
 	db   *sqlx.DB
 
 	opts struct {
-		MaxConns        int
-		MaxIdleConns    int
-		ConnMaxLifetime time.Duration
+		maxConns     int
+		maxIdleConns int
+		dialTimeout  time.Duration
+		readTimeout  time.Duration
+		writeTimeout time.Duration
+		// connection reused time, 0 means never expired
+		connMaxLifetime time.Duration
 	}
 }
 
@@ -46,8 +50,8 @@ func NewDB(conf DBConfig, opts ...DBOption) *DB {
 	conn := &DB{
 		Conf: conf,
 	}
-	conn.opts.MaxConns = DefaultMaxConns
-	conn.opts.MaxIdleConns = DefaultMaxIdleConns
+	conn.opts.maxConns = DefaultMaxConns
+	conn.opts.maxIdleConns = DefaultMaxIdleConns
 
 	conn.ApplyOptions(opts...)
 
@@ -102,6 +106,7 @@ func (d *DB) GetDatabase() (*sqlx.DB, error) {
 	if d.db != nil {
 		return d.db, nil
 	}
+
 	dsn := fmt.Sprintf(
 		"%s:%s@tcp(%s)/%s?charset=utf8&loc=Local&parseTime=true",
 		d.Conf.UserName,
@@ -110,7 +115,25 @@ func (d *DB) GetDatabase() (*sqlx.DB, error) {
 		d.Conf.DataName,
 	)
 
-	db, err := sqlx.Open("mysql", dsn)
+	dsnFull := fmt.Sprintf("%s%s", dsn, func() string {
+		var params string
+		if d.opts.dialTimeout > 0 {
+			params += fmt.Sprintf("&timeout=%fs", d.opts.dialTimeout.Seconds())
+		}
+
+		if d.opts.readTimeout > 0 {
+			params += fmt.Sprintf("&readTimeout=%fs", d.opts.readTimeout.Seconds())
+		}
+
+		if d.opts.writeTimeout > 0 {
+			params += fmt.Sprintf("&writeTimeout=%fs", d.opts.writeTimeout.Seconds())
+		}
+
+		return params
+
+	}())
+
+	db, err := sqlx.Open("mysql", dsnFull)
 	if err != nil {
 		return nil, err
 	}
@@ -118,9 +141,9 @@ func (d *DB) GetDatabase() (*sqlx.DB, error) {
 		return nil, err
 	}
 
-	db.SetMaxOpenConns(d.opts.MaxConns)
-	db.SetMaxIdleConns(d.opts.MaxIdleConns)
-	db.SetConnMaxLifetime(d.opts.ConnMaxLifetime)
+	db.SetMaxOpenConns(d.opts.maxConns)
+	db.SetMaxIdleConns(d.opts.maxIdleConns)
+	db.SetConnMaxLifetime(d.opts.connMaxLifetime)
 
 	d.db = db
 	sqlDB.Store(db)
@@ -152,6 +175,7 @@ func (d *DB) GetDatabaseUntil(maxWaitInterval time.Duration, failAfter time.Dura
 			}
 
 			time.Sleep(actualInterval)
+			fmt.Println("actualInterval: ", actualInterval)
 		}
 	}
 }
