@@ -25,19 +25,8 @@ func GetByQuery(ctx context.Context, db *sqlx.DB, query string, arg interface{})
 	return dest, nil
 }
 
-/*
-type SqlCompare int
+const dbTag = "db"
 
-const (
-	SqlCompareEqual      SqlCompare = iota //=
-	SqlCompareNotEqual   SqlCompare = iota //<>
-	SqlCompareGreater    SqlCompare = iota //>
-	SqlCompareLessThan   SqlCompare = iota //<
-	SqlCompareGreatEqual SqlCompare = iota //>=
-	SqlCompareLessEqual  SqlCompare = iota //<=
-	SqlCompareLike       SqlCompare = iota //LIKE
-)
-*/
 type SqlCompare string
 
 const (
@@ -58,21 +47,23 @@ const (
 	SqlOperatorNot SqlOperator = "NOT"
 )
 
-func GenerateCondition(cmp SqlCompare, query string, arg interface{}) string {
-	condFields := reflect_.NonzeroFields(arg)
-	return JoinNamedTableColumnsValues(cmp, condFields...)
+func GenerateCondition(cmp SqlCompare, oper SqlOperator, query string, arg interface{}) string {
+	condFields := reflect_.NonzeroFieldTags(arg, dbTag)
+	return fmt.Sprintf("%s %s", query, func() string {
+		if len(condFields) == 0 {
+			return ""
+		}
+		return fmt.Sprintf(" WHERE %s", joinNamedTableColumnsValues(cmp, oper, condFields...))
+	}())
 }
 
-//  "foo=:foo, bar=:bar"
-func JoinNamedTableColumnsValues(cmp SqlCompare, cols ...string) string {
-	return strings.Join(NamedTableColumnsValues(SqlCompareEqual, cols...), ",")
+// "foo=:foo AND bar=:bar"
+func joinNamedTableColumnsValues(cmp SqlCompare, oper SqlOperator, cols ...string) string {
+	return strings.Join(namedTableColumnsValues(cmp, cols...), fmt.Sprintf(" %s ", oper))
 }
 
-// NamedColumnsValues returns the []string{table.value1=:value1, table.value2=:value2 ...}
-// query := NamedColumnsValues("table", "foo", "bar")
-// // []string{"table.foo=:table.foo", "table.bar=:table.bar"}
-func NamedTableColumnsValues(cmp SqlCompare, cols ...string) []string {
-
+// []string{"foo=:foo",  "bar=:bar"}
+func namedTableColumnsValues(cmp SqlCompare, cols ...string) []string {
 	var namedCols []string
 	for _, col := range cols {
 		namedCols = append(namedCols, fmt.Sprintf("%[1]s %[2]s :%[1]s", col, cmp))
