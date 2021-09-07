@@ -1,7 +1,6 @@
 package reflect
 
 import (
-	"fmt"
 	"reflect"
 )
 
@@ -55,6 +54,7 @@ func TrySetStructFiled(req interface{}, name, value string) {
 }
 
 // req must be struct(Not pointer to struct), or return nil(tt.Field() will panic)
+// key for tag , db or json, if key is empyt, use field name instead
 func NonzeroFieldTags(req interface{}, key string) []string {
 	if req == nil {
 		return nil
@@ -67,7 +67,6 @@ func NonzeroFieldTags(req interface{}, key string) []string {
 
 	tt := reflect.TypeOf(req)
 	if tt.Kind() != reflect.Struct {
-		fmt.Println("kind", tt.Kind())
 		return nil
 	}
 
@@ -75,7 +74,6 @@ func NonzeroFieldTags(req interface{}, key string) []string {
 	for i := 0; i < tt.NumField(); i++ {
 		property := string(tt.Field(i).Name)
 		f := v.FieldByName(property)
-		fmt.Printf("property: %v, f: %v\n", property, f)
 		if !IsZeroValue(f) {
 			if len(key) == 0 {
 				fields = append(fields, property)
