@@ -39,3 +39,19 @@ func TestTrySetStructField(t *testing.T) {
 	t.Logf("requestId: %v", req.RequestId)
 	assert.Equal(t, id, req.RequestId)
 }
+
+func TestNonzeroFieldTags(t *testing.T) {
+	type HttpRequest struct {
+		RequestId string `db:"request_id"`
+		Username  string `db:"username"`
+	}
+
+	id := uuid.NewString()
+	req := HttpRequest{
+		RequestId: id,
+		//	Username:  "username 1",
+	}
+	fields := reflect_.NonzeroFieldTags(req, "db")
+	t.Logf("fields: %v", fields)
+	assert.Equal(t, []string{"request_id"}, fields)
+}
