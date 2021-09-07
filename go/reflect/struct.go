@@ -55,7 +55,7 @@ func TrySetStructFiled(req interface{}, name, value string) {
 }
 
 // req must be struct(Not pointer to struct), or return nil(tt.Field() will panic)
-func NonzeroFields(req interface{}) []string {
+func NonzeroFieldTags(req interface{}, key string) []string {
 	if req == nil {
 		return nil
 	}
@@ -73,13 +73,16 @@ func NonzeroFields(req interface{}) []string {
 
 	var fields []string
 	for i := 0; i < tt.NumField(); i++ {
-		property := tt.Field(i).Name
+		property := string(tt.Field(i).Name)
 		f := v.FieldByName(property)
 		fmt.Printf("property: %v, f: %v\n", property, f)
 		if !IsZeroValue(f) {
-			fields = append(fields, property)
+			if len(key) == 0 {
+				fields = append(fields, property)
+			} else {
+				fields = append(fields, string(tt.Field(i).Tag.Get(key)))
+			}
 		}
-
 	}
 
 	return fields
