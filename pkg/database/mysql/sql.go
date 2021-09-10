@@ -29,18 +29,34 @@ const (
 	SqlOperatorNot SqlOperator = "NOT"
 )
 
+// "WHERE foo=:foo AND bar=:bar"
 func GenerateCondition(cmp SqlCompare, oper SqlOperator, query string, arg interface{}) string {
 	condFields := reflect_.NonzeroFieldTags(arg, dbTag)
 	return fmt.Sprintf("%s %s", query, func() string {
 		if len(condFields) == 0 {
 			return ""
 		}
-		return fmt.Sprintf(" WHERE %s", joinNamedTableColumnsValues(cmp, oper, condFields...))
+		return fmt.Sprintf(" WHERE %s", JoinNamedColumnsValuesWithOperator(cmp, oper, condFields...))
 	}())
 }
 
-// "foo=:foo AND bar=:bar"
-func joinNamedTableColumnsValues(cmp SqlCompare, oper SqlOperator, cols ...string) string {
+// "WHERE foo=:foo AND bar=:bar"
+func GenerateNameColumsCondition(cmp SqlCompare, oper SqlOperator, condFields ...string) string {
+	return fmt.Sprintf(" %s ", func() string {
+		if len(condFields) == 0 {
+			return ""
+		}
+		return fmt.Sprintf(" WHERE %s", JoinNamedColumnsValuesWithOperator(cmp, oper, condFields...))
+	}())
+}
+
+//foo=:foo,bar=:bar,  for update set
+func JoinNamedColumnsValues(cols ...string) string {
+	return strings.Join(namedTableColumnsValues(SqlCompareEqual, cols...), ",")
+}
+
+// "foo=:foo AND bar=:bar" , for where condition
+func JoinNamedColumnsValuesWithOperator(cmp SqlCompare, oper SqlOperator, cols ...string) string {
 	return strings.Join(namedTableColumnsValues(cmp, cols...), fmt.Sprintf(" %s ", oper))
 }
 
