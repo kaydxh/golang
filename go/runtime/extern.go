@@ -2,7 +2,9 @@ package runtime
 
 import (
 	"fmt"
+	"path"
 	"runtime"
+	"strings"
 )
 
 // GetCaller returns the caller of the function that calls it.
@@ -20,4 +22,9 @@ func GetCallerWithSkip(skip int) string {
 func GetCaller() string {
 	//4 skip, 1 GetCaller, 1 GetCallerWithSkip, 1 runtime.Callers, 1 caller of  GetCaller
 	return GetCallerWithSkip(3)
+}
+
+func GetShortCaller() string {
+	fn := GetCallerWithSkip(3)
+	return strings.TrimPrefix(path.Ext(fn), ".")
 }
