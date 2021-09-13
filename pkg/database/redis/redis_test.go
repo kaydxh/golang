@@ -17,7 +17,7 @@ func TestGetDataBase(t *testing.T) {
 	}{
 		{
 			TestName:  "test1",
-			Addresses: []string{"127.0.0.1:3306"},
+			Addresses: []string{"127.0.0.1:6379"},
 			DB:        0,
 			UserName:  "root",
 			Password:  "123456",
