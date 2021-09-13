@@ -20,36 +20,35 @@ const (
 	DefaultWriteTimeout = 5 * time.Second
 )
 
-type Config struct {
+type DBConfig struct {
 	Addresses []string
-	DataName  string
 	UserName  string
 	Password  string
 	DB        int
 }
 
 type RedisClient struct {
-	Conf Config
+	Conf DBConfig
 	db   *redis.Client
 
 	opts struct {
-		PoolSize     int
-		MinIdleConns int
-		DialTimeout  time.Duration
-		ReadTimeout  time.Duration
-		WriteTimeout time.Duration
+		poolSize     int
+		minIdleConns int
+		dialTimeout  time.Duration
+		readTimeout  time.Duration
+		writeTimeout time.Duration
 	}
 }
 
-func NewRedisClient(conf Config, opts ...RedisOption) *RedisClient {
+func NewRedisClient(conf DBConfig, opts ...RedisOption) *RedisClient {
 	c := &RedisClient{
 		Conf: conf,
 	}
-	c.opts.PoolSize = DefaultPoolSize
-	c.opts.MinIdleConns = DefaultMinIdleConns
-	c.opts.DialTimeout = DefaultDialTimeout
-	c.opts.ReadTimeout = DefaultReadTimeout
-	c.opts.WriteTimeout = DefaultWriteTimeout
+	c.opts.poolSize = DefaultPoolSize
+	c.opts.minIdleConns = DefaultMinIdleConns
+	c.opts.dialTimeout = DefaultDialTimeout
+	c.opts.readTimeout = DefaultReadTimeout
+	c.opts.writeTimeout = DefaultWriteTimeout
 
 	c.ApplyOptions(opts...)
 
@@ -75,12 +74,12 @@ func (r *RedisClient) GetRedis() (*redis.Client, error) {
 			Addr:         r.Conf.Addresses[0],
 			Password:     r.Conf.Password,
 			DB:           r.Conf.DB,
-			PoolSize:     r.opts.PoolSize,
-			MinIdleConns: r.opts.MinIdleConns,
+			PoolSize:     r.opts.poolSize,
+			MinIdleConns: r.opts.minIdleConns,
 			//	MaxRetries:   config.MaxRetries,
-			DialTimeout:  r.opts.DialTimeout,
-			ReadTimeout:  r.opts.ReadTimeout,
-			WriteTimeout: r.opts.WriteTimeout,
+			DialTimeout:  r.opts.dialTimeout,
+			ReadTimeout:  r.opts.readTimeout,
+			WriteTimeout: r.opts.writeTimeout,
 		})
 	}
 
@@ -90,12 +89,12 @@ func (r *RedisClient) GetRedis() (*redis.Client, error) {
 			SentinelAddrs: r.Conf.Addresses,
 			Password:      r.Conf.Password,
 			DB:            r.Conf.DB,
-			PoolSize:      r.opts.PoolSize,
-			MinIdleConns:  r.opts.MinIdleConns,
+			PoolSize:      r.opts.poolSize,
+			MinIdleConns:  r.opts.minIdleConns,
 			//MaxRetries:    config.MaxRetries,
-			DialTimeout:  r.opts.DialTimeout,
-			ReadTimeout:  r.opts.ReadTimeout,
-			WriteTimeout: r.opts.WriteTimeout,
+			DialTimeout:  r.opts.dialTimeout,
+			ReadTimeout:  r.opts.readTimeout,
+			WriteTimeout: r.opts.writeTimeout,
 		})
 	}
 	_, err := db.Ping().Result()
@@ -109,7 +108,7 @@ func (r *RedisClient) GetRedis() (*redis.Client, error) {
 	return r.db, nil
 }
 
-func (r *RedisClient) GetRedisUntil(maxWaitInterval time.Duration, failAfter time.Duration) (*redis.Client, error) {
+func (r *RedisClient) GetDatabaseUntil(maxWaitInterval time.Duration, failAfter time.Duration) (*redis.Client, error) {
 
 	exp := time_.NewExponentialBackOff(
 		time_.WithExponentialBackOffOptionMaxInterval(maxWaitInterval),
