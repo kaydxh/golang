@@ -18,6 +18,7 @@ const (
 	DefaultDialTimeout  = 5 * time.Second
 	DefaultReadTimeout  = 5 * time.Second
 	DefaultWriteTimeout = 5 * time.Second
+	DefaultMasterName   = "mymaster"
 )
 
 type DBConfig struct {
@@ -37,6 +38,7 @@ type RedisClient struct {
 		dialTimeout  time.Duration
 		readTimeout  time.Duration
 		writeTimeout time.Duration
+		masterName   string
 	}
 }
 
@@ -49,6 +51,7 @@ func NewRedisClient(conf DBConfig, opts ...RedisOption) *RedisClient {
 	c.opts.dialTimeout = DefaultDialTimeout
 	c.opts.readTimeout = DefaultReadTimeout
 	c.opts.writeTimeout = DefaultWriteTimeout
+	c.opts.masterName = DefaultMasterName
 
 	c.ApplyOptions(opts...)
 
@@ -85,7 +88,7 @@ func (r *RedisClient) GetRedis() (*redis.Client, error) {
 
 	if len(r.Conf.Addresses) > 1 {
 		db = redis.NewFailoverClient(&redis.FailoverOptions{
-			MasterName:    "mymaster",
+			MasterName:    r.opts.masterName,
 			SentinelAddrs: r.Conf.Addresses,
 			Password:      r.Conf.Password,
 			DB:            r.Conf.DB,

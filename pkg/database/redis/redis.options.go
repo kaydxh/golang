@@ -31,3 +31,9 @@ func WithWriteTimeout(writeTimeout time.Duration) RedisOption {
 		c.opts.writeTimeout = writeTimeout
 	})
 }
+
+func WithMasterName(masterName string) RedisOption {
+	return RedisOptionFunc(func(c *RedisClient) {
+		c.opts.masterName = masterName
+	})
+}
