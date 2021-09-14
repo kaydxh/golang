@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	redis_ "github.com/kaydxh/golang/pkg/database/redis"
+	viper_ "github.com/kaydxh/golang/pkg/viper"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -17,10 +18,10 @@ func TestGetDataBase(t *testing.T) {
 	}{
 		{
 			TestName:  "test1",
-			Addresses: []string{"127.0.0.1:6379"},
+			Addresses: []string{"9.135.232.102:6380"},
 			DB:        0,
 			UserName:  "root",
-			Password:  "123456",
+			Password:  "HXufW*3569FShs",
 		},
 	}
 
@@ -40,6 +41,19 @@ func TestGetDataBase(t *testing.T) {
 		})
 	}
 
+}
+
+func TestNew(t *testing.T) {
+
+	cfgFile := "./redis.yaml"
+	config := redis_.NewConfig(redis_.WithViper(viper_.GetViper(cfgFile, "database.redis")))
+
+	db, err := config.Complete().New()
+	if err != nil {
+		t.Errorf("failed to new config err: %v", err)
+	}
+
+	t.Logf("db: %#v", db)
 }
 
 /*
