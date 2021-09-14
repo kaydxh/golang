@@ -1,9 +1,9 @@
 database:
   redis:
     enabled: true
-    address: "localhost:6379"
-    username: ""
-    password: "12345"
+    addresses: 
+      - "localhost:6379"
+    password: "123456"
     db: 0 
     max_connections: 100
     max_idle_connections: 10
