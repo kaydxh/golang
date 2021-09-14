@@ -63,6 +63,7 @@ func GetDB() *redis.Client {
 }
 
 func (r *RedisClient) GetRedis() (*redis.Client, error) {
+	fmt.Println("reids: ", r.Conf)
 	if r.db != nil {
 		return r.db, nil
 	}
@@ -79,7 +80,6 @@ func (r *RedisClient) GetRedis() (*redis.Client, error) {
 			DB:           r.Conf.DB,
 			PoolSize:     r.opts.poolSize,
 			MinIdleConns: r.opts.minIdleConns,
-			//	MaxRetries:   config.MaxRetries,
 			DialTimeout:  r.opts.dialTimeout,
 			ReadTimeout:  r.opts.readTimeout,
 			WriteTimeout: r.opts.writeTimeout,
@@ -94,10 +94,9 @@ func (r *RedisClient) GetRedis() (*redis.Client, error) {
 			DB:            r.Conf.DB,
 			PoolSize:      r.opts.poolSize,
 			MinIdleConns:  r.opts.minIdleConns,
-			//MaxRetries:    config.MaxRetries,
-			DialTimeout:  r.opts.dialTimeout,
-			ReadTimeout:  r.opts.readTimeout,
-			WriteTimeout: r.opts.writeTimeout,
+			DialTimeout:   r.opts.dialTimeout,
+			ReadTimeout:   r.opts.readTimeout,
+			WriteTimeout:  r.opts.writeTimeout,
 		})
 	}
 	_, err := db.Ping().Result()
@@ -129,15 +128,14 @@ func (r *RedisClient) GetDatabaseUntil(maxWaitInterval time.Duration, failAfter 
 			}
 
 			time.Sleep(actualInterval)
+			fmt.Println("actualInterval: ", actualInterval)
 		}
 	}
 }
 
-/*
 func (r *RedisClient) Close() error {
-	if r.rc == nil {
+	if r.db == nil {
 		return fmt.Errorf("no redis client")
 	}
-	return d.db.Close()
+	return r.db.Close()
 }
-*/
