@@ -125,7 +125,7 @@ func TestSet(t *testing.T) {
 
 }
 
-func TestKeys(t *testing.T) {
+func TestGetValues(t *testing.T) {
 
 	db := GetDBOrDie()
 	defer db.Close()
@@ -135,22 +135,11 @@ func TestKeys(t *testing.T) {
 		t.Fatalf("failed to get all keys , err: %v", err)
 	}
 
-	for _, key := range keys {
-		typ, err := db.Type(key).Result()
-		if err != nil {
-			t.Fatalf("failed to get type of key: %v, err: %v", key, err)
-		}
-
-		if typ == "string" {
-			data, err := db.Get(key).Result()
-			if err != nil {
-				t.Fatalf("failed to get value of key: %v, err: %v", key, err)
-			}
-
-			t.Logf(" key %v, value: %v ", key, data)
-		}
-
+	values, err := redis_.GetValues(db, keys...)
+	if err != nil {
+		t.Fatalf("failed to get values, err: %v", err)
 	}
+	t.Logf("keys: %v, values: %v", keys, values)
 }
 
 /*
