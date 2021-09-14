@@ -1,8 +1,11 @@
 package redis_test
 
 import (
+	"sync"
 	"testing"
+	"time"
 
+	"github.com/go-redis/redis"
 	redis_ "github.com/kaydxh/golang/pkg/database/redis"
 	viper_ "github.com/kaydxh/golang/pkg/viper"
 	"github.com/stretchr/testify/assert"
@@ -43,17 +46,111 @@ func TestGetDataBase(t *testing.T) {
 
 }
 
+func GetDBOrDie() *redis.Client {
+
+	var (
+		once sync.Once
+		db   *redis.Client
+		err  error
+	)
+
+	once.Do(func() {
+		cfgFile := "./redis.yaml"
+		config := redis_.NewConfig(redis_.WithViper(viper_.GetViper(cfgFile, "database.redis")))
+
+		db, err = config.Complete().New()
+		if err != nil {
+			panic(err)
+		}
+		if db == nil {
+			panic("db is not enable")
+		}
+	})
+
+	return db
+
+}
+
 func TestNew(t *testing.T) {
-
-	cfgFile := "./redis.yaml"
-	config := redis_.NewConfig(redis_.WithViper(viper_.GetViper(cfgFile, "database.redis")))
-
-	db, err := config.Complete().New()
-	if err != nil {
-		t.Errorf("failed to new config err: %v", err)
-	}
+	db := GetDBOrDie()
+	defer db.Close()
 
 	t.Logf("db: %#v", db)
+}
+
+// set string
+// Redis `SET key value [expiration]` command.
+//
+// Use expiration for `SETEX`-like behavior.
+// Zero expiration means the key has no expiration time.
+func TestSet(t *testing.T) {
+
+	db := GetDBOrDie()
+	defer db.Close()
+
+	testCases := []struct {
+		key      string
+		value    string
+		expire   time.Duration
+		expected string
+	}{
+		{
+			key:      "test1",
+			value:    "test1-1, test1-2",
+			expected: "test1",
+		},
+		{
+			key:      "test2",
+			value:    "test2-1, test2-2",
+			expected: "test2",
+		},
+
+		{
+			key:      "test3-tmp",
+			value:    "test3-1, test3-2",
+			expire:   time.Minute,
+			expected: "test3",
+		},
+	}
+
+	for _, testCase := range testCases {
+
+		result, err := db.Set(testCase.key, testCase.value, testCase.expire).Result()
+		if err != nil {
+			t.Fatalf("failed to set string, err: %v", err)
+		}
+
+		t.Logf("result of %v: %v", testCase.key, result)
+	}
+
+}
+
+func TestKeys(t *testing.T) {
+
+	db := GetDBOrDie()
+	defer db.Close()
+
+	keys, err := db.Keys("*").Result()
+	if err != nil {
+		t.Fatalf("failed to get all keys , err: %v", err)
+	}
+
+	for _, key := range keys {
+		typ, err := db.Type(key).Result()
+		if err != nil {
+			t.Fatalf("failed to get type of key: %v, err: %v", key, err)
+		}
+
+		if typ == "string" {
+			data, err := db.Get(key).Result()
+			if err != nil {
+				t.Fatalf("failed to get value of key: %v, err: %v", key, err)
+			}
+
+			t.Logf(" key %v, value: %v ", key, data)
+		}
+
+	}
 }
 
 /*
