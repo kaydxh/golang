@@ -143,6 +143,7 @@ func TestGetValues(t *testing.T) {
 	t.Logf("keys: %v, values: %v", keys, values)
 }
 
+//get range of value with key
 func TestGetRange(t *testing.T) {
 
 	db := GetDBOrDie()
