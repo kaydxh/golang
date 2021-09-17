@@ -125,6 +125,7 @@ func TestSet(t *testing.T) {
 
 }
 
+//get values with keys
 func TestGetValues(t *testing.T) {
 
 	db := GetDBOrDie()
@@ -142,82 +143,36 @@ func TestGetValues(t *testing.T) {
 	t.Logf("keys: %v, values: %v", keys, values)
 }
 
-/*
-func TestGetDatabaseUntil(t *testing.T) {
+func TestGetRange(t *testing.T) {
+
+	db := GetDBOrDie()
+	defer db.Close()
+
 	testCases := []struct {
-		Address  string
-		DataName string
-		UserName string
-		Password string
+		key      string
+		start    int64
+		end      int64
+		expected string
 	}{
 		{
-			Address:  "127.0.0.1:3306",
-			DataName: "test",
-			UserName: "root",
-			Password: "123456",
+			key:      "test1",
+			start:    0,
+			end:      -1, // get all range
+			expected: "test1-1",
+		},
+		{
+			key:      "test2",
+			start:    0,
+			end:      int64(len("test1-1")) - 1, //include end
+			expected: "test2-1",
 		},
 	}
 
 	for _, testCase := range testCases {
-		t.Run(testCase.Address+testCase.DataName, func(t *testing.T) {
-			db := mysql_.NewDB(mysql_.DBConfig{
-				Address:  testCase.Address,
-				DataName: testCase.DataName,
-				UserName: testCase.UserName,
-				Password: testCase.Password,
-			})
-			sqlDB, err := db.GetDatabaseUntil(5*time.Second, 20*time.Second)
-			if err != nil {
-				t.Fatalf("failed to get database: %v, got : %s", testCase.DataName, err)
-			}
-			assert.NotNil(t, sqlDB)
-		})
+		value, err := db.GetRange(testCase.key, testCase.start, testCase.end).Result()
+		if err != nil {
+			t.Fatalf("failed to get range, err: %v", err)
+		}
+		t.Logf("key: %v, range [%d:%d] value: %v", testCase.key, testCase.start, testCase.end, value)
 	}
-
 }
-
-func TestGetTheDBAndClose(t *testing.T) {
-	testCases := []struct {
-		Address  string
-		DataName string
-		UserName string
-		Password string
-	}{
-		{
-			Address:  "127.0.0.1:3306",
-			DataName: "test",
-			UserName: "root",
-			Password: "123456",
-		},
-	}
-
-	for _, testCase := range testCases {
-		t.Run(testCase.Address+testCase.DataName, func(t *testing.T) {
-			conf := mysql_.DBConfig{
-				Address:  testCase.Address,
-				DataName: testCase.DataName,
-				UserName: testCase.UserName,
-				Password: testCase.Password,
-			}
-			db := mysql_.NewDB(conf)
-			sqlDB, err := db.GetDatabaseUntil(5*time.Second, 20*time.Second)
-			if err != nil {
-				t.Fatalf("failed to get database: %v, got : %s", testCase.DataName, err)
-			}
-			assert.NotNil(t, sqlDB)
-
-			theDB, err := mysql_.GetTheDB(conf)
-			assert.Nil(t, err)
-
-			assert.Equal(t, sqlDB, mysql_.GetDB())
-			t.Logf("GetDB got sqlDB: %v, expect %v", sqlDB, mysql_.GetDB())
-			t.Logf("GetTheDB got sqlDB: %v, expect %v", sqlDB, theDB)
-			err = mysql_.CloseTheDB(conf)
-			assert.Nil(t, err)
-			err = mysql_.CloseDB()
-			assert.Nil(t, err)
-		})
-	}
-
-}
-*/
