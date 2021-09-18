@@ -1,6 +1,7 @@
 package mysql_test
 
 import (
+	"context"
 	"testing"
 	"time"
 
@@ -65,7 +66,7 @@ func TestGetDatabaseUntil(t *testing.T) {
 				UserName: testCase.UserName,
 				Password: testCase.Password,
 			})
-			sqlDB, err := db.GetDatabaseUntil(5*time.Second, 20*time.Second)
+			sqlDB, err := db.GetDatabaseUntil(context.Background(), 5*time.Second, 20*time.Second)
 			if err != nil {
 				t.Fatalf("failed to get database: %v, got : %s", testCase.DataName, err)
 			}
@@ -80,7 +81,7 @@ func TestNew(t *testing.T) {
 	cfgFile := "./mysql.yaml"
 	config := mysql_.NewConfig(mysql_.WithViper(viper_.GetViper(cfgFile, "database.mysql")))
 
-	db, err := config.Complete().New()
+	db, err := config.Complete().New(context.Background())
 	if err != nil {
 		t.Errorf("failed to new config err: %v", err)
 	}
@@ -112,7 +113,7 @@ func TestGetTheDBAndClose(t *testing.T) {
 				Password: testCase.Password,
 			}
 			db := mysql_.NewDB(conf)
-			sqlDB, err := db.GetDatabaseUntil(5*time.Second, 20*time.Second)
+			sqlDB, err := db.GetDatabaseUntil(context.Background(), 5*time.Second, 20*time.Second)
 			if err != nil {
 				t.Fatalf("failed to get database: %v, got : %s", testCase.DataName, err)
 			}

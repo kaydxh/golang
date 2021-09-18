@@ -1,7 +1,7 @@
 database:
   mysql:
     enabled: true
-    address: "127.0.0.2:3306"
+    address: "localhost:3306"
     username: "root"
     password: "12345"
     db_name: "test"
