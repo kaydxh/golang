@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/go-redis/redis"
+	"github.com/sirupsen/logrus"
 
 	time_ "github.com/kaydxh/golang/go/time"
 )
@@ -134,8 +135,8 @@ func (r *RedisClient) GetDatabaseUntil(
 					return nil, fmt.Errorf("get database fail after: %v", failAfter)
 				}
 
+				logrus.Infof("delay %v, try again", actualInterval)
 				time.Sleep(actualInterval)
-				fmt.Println("actualInterval: ", actualInterval)
 			}
 		}
 	}
