@@ -58,16 +58,16 @@ func NewRotateFiler(filedir string, options ...RotateFilerOption) (*RotateFiler,
 }
 
 // /data/log/1%%%AA20160304 -> /data/log/1*A20160304*
-func globFromFileTimeLayout(filepath string) string {
+func globFromFileTimeLayout(filePath string) string {
 	regexps := []*regexp.Regexp{
 		regexp.MustCompile(`%[%+A-Za-z]`),
 		regexp.MustCompile(`\*+`),
 	}
 
 	for _, re := range regexps {
-		filepath = re.ReplaceAllString(filepath, "*")
+		filePath = re.ReplaceAllString(filePath, "*")
 	}
-	return filepath + "*"
+	return filePath + "*"
 }
 
 func (f *RotateFiler) Write(p []byte) (n int, err error) {
@@ -96,13 +96,23 @@ func (f *RotateFiler) getWriterNolock(length int64) (io.Writer, error) {
 	if filename == "" {
 		filename = "default.log"
 	}
-	filepath := filepath.Join(f.filedir, filename)
-	globPath := filepath
 
-	var err error
+	//var err error
+	useFilename, err := f.generateNextSeqFilename(filename)
+	if err != nil {
+		return nil, fmt.Errorf("failed to generate rotate file name by seq, err: %v", err)
+	}
+
+	// first rotate log file, maybe /data/logs/logs.test20210917230000.log
+	filePath := filepath.Join(f.filedir, filename)
+	globPath := filePath
+
+	// current log file, maybe /data/logs/logs.test20210917230000.log.1
+	useFilepath := filepath.Join(f.filedir, useFilename)
+
 	rotated := false
 
-	fi, err := os.Stat(filepath)
+	fi, err := os.Stat(useFilepath)
 	if err != nil {
 		if !os.IsNotExist(err) {
 			return nil, fmt.Errorf("failed to get file info, err: %v", err)
@@ -113,7 +123,8 @@ func (f *RotateFiler) getWriterNolock(length int64) (io.Writer, error) {
 
 	//rotate file by size
 	if err == nil && f.opts.rotateSize > 0 && (fi.Size()+length) > f.opts.rotateSize {
-		filepath, err = f.generateNextSeqFilename(filepath)
+
+		filePath, err = f.generateNextSeqFilename(filePath)
 		if err != nil {
 			return nil, fmt.Errorf("failed to generate rotate file name by seq, err: %v", err)
 		}
@@ -122,9 +133,9 @@ func (f *RotateFiler) getWriterNolock(length int64) (io.Writer, error) {
 	}
 
 	if f.file == nil || rotated {
-		fn, err := os_.OpenFile(filepath, true)
+		fn, err := os_.OpenFile(filePath, true)
 		if err != nil {
-			return nil, fmt.Errorf("failed to create file: %v, err: %v", filepath, err)
+			return nil, fmt.Errorf("failed to create file: %v, err: %v", filePath, err)
 		}
 
 		if f.file != nil {
@@ -132,7 +143,7 @@ func (f *RotateFiler) getWriterNolock(length int64) (io.Writer, error) {
 		}
 		f.file = fn
 
-		os_.SymLink(filepath, f.linkpath)
+		os_.SymLink(filePath, f.linkpath)
 
 		globFile := globFromFileTimeLayout(globPath)
 
@@ -143,22 +154,22 @@ func (f *RotateFiler) getWriterNolock(length int64) (io.Writer, error) {
 }
 
 //filename like foo foo.1 foo.2 ...
-func (f *RotateFiler) generateNextSeqFilename(filepath string) (string, error) {
+func (f *RotateFiler) generateNextSeqFilename(filePath string) (string, error) {
 
-	var newFilepath string
+	var newFilePath string
 	seq := f.seq
 
 	for {
 		if seq == 0 {
-			newFilepath = filepath
+			newFilePath = filePath
 		} else {
-			newFilepath = fmt.Sprintf("%s.%d", filepath, seq)
+			newFilePath = fmt.Sprintf("%s.%d", filePath, seq)
 		}
 
-		_, err := os.Stat(newFilepath)
+		_, err := os.Stat(newFilePath)
 		if os.IsNotExist(err) {
 			f.seq = seq
-			return newFilepath, nil
+			return newFilePath, nil
 		}
 		if err != nil {
 			return "", err
