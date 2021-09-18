@@ -48,6 +48,8 @@ func (c *completedConfig) Apply() error {
 }
 
 func (c *completedConfig) install() error {
+	logrus.Infof("Installing Logs")
+
 	if c.Proto.GetFormatter() == Log_json {
 		logrus.SetFormatter(&logrus.JSONFormatter{})
 
@@ -95,7 +97,7 @@ func (c *completedConfig) install() error {
 	).WithField(
 		"rotate_size", c.Proto.GetRotateSize(),
 	).Infof(
-		"successed to install log",
+		"installed log",
 	)
 
 	return nil
