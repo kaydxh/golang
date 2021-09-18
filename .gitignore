@@ -6,13 +6,12 @@
 # Temp files (e.g. editors).
 *~
 *.sw[op]
-.DS_Store
 
 # Compiled objects.
-*.a
+#*.a
 *.o
 *.l[ao]
-*.so
+#*.so
 *.exe
 
 *.d
@@ -32,8 +31,8 @@
 *.test
 
 # Protobuf files.
-*.pb.cc
-*.pb.h
+# *.pb.cc
+# *.pb.h
 
 # Python files.
 *.pyc
@@ -64,9 +63,13 @@ target/
 
 # VSCode source dirs
 .vscode/
+
 # Intellij project dirs
 .idea
 
 # clangd cache dir
 .clangd
 .cache
+
+# Other
+.DS_Store
