@@ -8,6 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/kaydxh/golang/pkg/consul"
 	gw_ "github.com/kaydxh/golang/pkg/grpc-gateway"
+	"github.com/sirupsen/logrus"
 )
 
 type WebHandler interface {
@@ -112,10 +113,12 @@ func (s *GenericWebServer) PrepareRun() (preparedGenericWebServer, error) {
 }
 
 func (s *GenericWebServer) InstallWebHandlers(handlers ...WebHandler) {
+	logrus.Infof("Installing  WebHandler")
 	for _, h := range handlers {
 		if h == nil {
 			continue
 		}
 		h.SetRoutes(s.ginBackend, s.grpcBackend)
 	}
+	logrus.Infof("Installed  WebHandler")
 }
