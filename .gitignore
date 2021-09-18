@@ -1,5 +1,72 @@
-*.swp
-*.swo
-*.swa
-*.tmp
+#
+# NOTE! Please use 'git ls-files -i --exclude-standard'
+# command after changing this file, to see if there are
+# any tracked files which get ignored after the change.
+#
+# Temp files (e.g. editors).
+*~
+*.sw[op]
 .DS_Store
+
+# Compiled objects.
+*.a
+*.o
+*.l[ao]
+*.so
+*.exe
+
+*.d
+!**/tmpfiles.d
+!crosh/dev.d
+*.depends
+.deps
+.libs
+
+*.gch
+*.gcda
+*.gcno
+
+# Common output files.
+*.dump
+*.out
+*.test
+
+# Protobuf files.
+*.pb.cc
+*.pb.h
+
+# Python files.
+*.pyc
+
+# Debug (e.g. gdb).
+.gdb_history
+.gdbinit
+
+core
+cscope.*
+tags
+tags_sorted_by_file
+
+# Patch files.
+*.diff
+*.patch
+*.orig
+*.rej
+
+# Nested git repos.
+/glbench/images/
+
+# Cargo lock file.
+Cargo.lock
+
+# Cargo build directories.
+target/
+
+# VSCode source dirs
+.vscode/
+# Intellij project dirs
+.idea
+
+# clangd cache dir
+.clangd
+.cache
