@@ -9,6 +9,7 @@ import (
 	redis_ "github.com/kaydxh/golang/pkg/database/redis"
 	viper_ "github.com/kaydxh/golang/pkg/viper"
 	"github.com/stretchr/testify/assert"
+	"golang.org/x/net/context"
 )
 
 func TestGetDataBase(t *testing.T) {
@@ -58,7 +59,7 @@ func GetDBOrDie() *redis.Client {
 		cfgFile := "./redis.yaml"
 		config := redis_.NewConfig(redis_.WithViper(viper_.GetViper(cfgFile, "database.redis")))
 
-		db, err = config.Complete().New()
+		db, err = config.Complete().New(context.Background())
 		if err != nil {
 			panic(err)
 		}

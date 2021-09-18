@@ -1,6 +1,7 @@
 package redis
 
 import (
+	"context"
 	"fmt"
 	"time"
 
@@ -63,7 +64,6 @@ func GetDB() *redis.Client {
 }
 
 func (r *RedisClient) GetRedis() (*redis.Client, error) {
-	fmt.Println("reids: ", r.Conf)
 	if r.db != nil {
 		return r.db, nil
 	}
@@ -110,25 +110,33 @@ func (r *RedisClient) GetRedis() (*redis.Client, error) {
 	return r.db, nil
 }
 
-func (r *RedisClient) GetDatabaseUntil(maxWaitInterval time.Duration, failAfter time.Duration) (*redis.Client, error) {
+func (r *RedisClient) GetDatabaseUntil(
+	ctx context.Context,
+	maxWaitInterval time.Duration, failAfter time.Duration) (*redis.Client, error) {
 
 	exp := time_.NewExponentialBackOff(
 		time_.WithExponentialBackOffOptionMaxInterval(maxWaitInterval),
 		time_.WithExponentialBackOffOptionMaxElapsedTime(failAfter),
 	)
 	for {
-		rc, err := r.GetRedis()
-		if err == nil {
-			return rc, nil
+		select {
+		case <-ctx.Done():
+			return nil, fmt.Errorf("cancel get database: %v", ctx.Err())
 
-		} else {
-			actualInterval, ok := exp.NextBackOff()
-			if !ok {
-				return nil, fmt.Errorf("get database fail after: %v", failAfter)
+		default:
+			rc, err := r.GetRedis()
+			if err == nil {
+				return rc, nil
+
+			} else {
+				actualInterval, ok := exp.NextBackOff()
+				if !ok {
+					return nil, fmt.Errorf("get database fail after: %v", failAfter)
+				}
+
+				time.Sleep(actualInterval)
+				fmt.Println("actualInterval: ", actualInterval)
 			}
-
-			time.Sleep(actualInterval)
-			fmt.Println("actualInterval: ", actualInterval)
 		}
 	}
 }
