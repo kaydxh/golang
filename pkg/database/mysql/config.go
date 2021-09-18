@@ -1,9 +1,12 @@
 package mysql
 
 import (
+	"context"
+
 	"github.com/jmoiron/sqlx"
 	viper_ "github.com/kaydxh/golang/pkg/viper"
 	"github.com/ory/viper"
+	"github.com/sirupsen/logrus"
 )
 
 type Config struct {
@@ -24,7 +27,10 @@ type CompletedConfig struct {
 	*completedConfig
 }
 
-func (c *completedConfig) New() (*sqlx.DB, error) {
+func (c *completedConfig) New(ctx context.Context) (*sqlx.DB, error) {
+
+	logrus.Infof("Installing Mysql")
+
 	if c.completeError != nil {
 		return nil, c.completeError
 	}
@@ -33,6 +39,16 @@ func (c *completedConfig) New() (*sqlx.DB, error) {
 		return nil, nil
 	}
 
+	sqlxDB, err := c.install(ctx)
+	if err != nil {
+		return nil, err
+	}
+	logrus.Infof("Installed Mysql")
+
+	return sqlxDB, nil
+}
+
+func (c *completedConfig) install(ctx context.Context) (*sqlx.DB, error) {
 	db := NewDB(
 		DBConfig{
 			Address:  c.Proto.GetAddress(),
@@ -49,6 +65,7 @@ func (c *completedConfig) New() (*sqlx.DB, error) {
 	)
 
 	return db.GetDatabaseUntil(
+		ctx,
 		c.Proto.GetMaxWaitDuration().AsDuration(),
 		c.Proto.GetFailAfterDuration().AsDuration(),
 	)

@@ -1,6 +1,7 @@
 package mysql
 
 import (
+	"context"
 	"fmt"
 	"sync"
 	"time"
@@ -157,25 +158,35 @@ func (d *DB) GetDatabase() (*sqlx.DB, error) {
 	return d.db, nil
 }
 
-func (d *DB) GetDatabaseUntil(maxWaitInterval time.Duration, failAfter time.Duration) (*sqlx.DB, error) {
+func (d *DB) GetDatabaseUntil(
+	ctx context.Context,
+	maxWaitInterval time.Duration,
+	failAfter time.Duration,
+) (*sqlx.DB, error) {
 
 	exp := time_.NewExponentialBackOff(
 		time_.WithExponentialBackOffOptionMaxInterval(maxWaitInterval),
 		time_.WithExponentialBackOffOptionMaxElapsedTime(failAfter),
 	)
 	for {
-		db, err := d.GetDatabase()
-		if err == nil {
-			return db, nil
+		select {
+		case <-ctx.Done():
+			return nil, fmt.Errorf("cancel get database: %v", ctx.Err())
 
-		} else {
-			actualInterval, ok := exp.NextBackOff()
-			if !ok {
-				return nil, fmt.Errorf("get database fail after: %v", failAfter)
+		default:
+			db, err := d.GetDatabase()
+			if err == nil {
+				return db, nil
+
+			} else {
+				actualInterval, ok := exp.NextBackOff()
+				if !ok {
+					return nil, fmt.Errorf("get database fail after: %v", failAfter)
+				}
+
+				time.Sleep(actualInterval)
+				fmt.Println("actualInterval: ", actualInterval)
 			}
-
-			time.Sleep(actualInterval)
-			fmt.Println("actualInterval: ", actualInterval)
 		}
 	}
 }
