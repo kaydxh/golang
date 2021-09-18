@@ -7,6 +7,7 @@ import (
 	"time"
 
 	_ "github.com/go-sql-driver/mysql"
+	"github.com/sirupsen/logrus"
 
 	"github.com/jmoiron/sqlx"
 	time_ "github.com/kaydxh/golang/go/time"
@@ -184,8 +185,8 @@ func (d *DB) GetDatabaseUntil(
 					return nil, fmt.Errorf("get database fail after: %v", failAfter)
 				}
 
+				logrus.Infof("delay %v, try again", actualInterval)
 				time.Sleep(actualInterval)
-				fmt.Println("actualInterval: ", actualInterval)
 			}
 		}
 	}
