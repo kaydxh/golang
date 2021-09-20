@@ -5,10 +5,7 @@ import (
 	"time"
 
 	"github.com/jmoiron/sqlx"
-)
-
-var (
-	ExecuteTimeout = time.Minute
+	database_ "github.com/kaydxh/golang/pkg/database"
 )
 
 func ExecContext(
@@ -21,16 +18,8 @@ func ExecContext(
 	if h == nil {
 		return nil
 	}
-	ctx, cancel := WithDatabaseExecuteTimeout(ctx, timeout)
+	ctx, cancel := database_.WithDatabaseExecuteTimeout(ctx, timeout)
 	defer cancel()
 
 	return h(ctx, db, query)
-}
-
-func WithDatabaseExecuteTimeout(ctx context.Context, timeout time.Duration) (context.Context, context.CancelFunc) {
-
-	if timeout > 0 {
-		return context.WithTimeout(ctx, timeout)
-	}
-	return ctx, func() {}
 }
