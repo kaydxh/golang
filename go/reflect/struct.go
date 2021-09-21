@@ -53,9 +53,20 @@ func TrySetStructFiled(req interface{}, name, value string) {
 	}
 }
 
+func AllFieldTags(req interface{}, key string) []string {
+	return fieldTags(req, key, false)
+}
+
 // req must be struct(Not pointer to struct), or return nil(tt.Field() will panic)
-// key for tag , db or json, if key is empyt, use field name instead
+// key for tag , db or json, if key is empty, use field name instead
 func NonzeroFieldTags(req interface{}, key string) []string {
+	return fieldTags(req, key, true)
+}
+
+// req must be struct(Not pointer to struct), or return nil(tt.Field() will panic)
+// key for tag , db or json, if key is empty, use field name instead
+//nonzere true, noly return field tags for values that nonzero
+func fieldTags(req interface{}, key string, nonzero bool) []string {
 	if req == nil {
 		return nil
 	}
@@ -74,13 +85,18 @@ func NonzeroFieldTags(req interface{}, key string) []string {
 	for i := 0; i < tt.NumField(); i++ {
 		property := string(tt.Field(i).Name)
 		f := v.FieldByName(property)
-		if !IsZeroValue(f) {
-			if len(key) == 0 {
-				fields = append(fields, property)
-			} else {
-				fields = append(fields, string(tt.Field(i).Tag.Get(key)))
+		if nonzero {
+			if IsZeroValue(f) {
+				continue
 			}
 		}
+
+		if len(key) == 0 {
+			fields = append(fields, property)
+		} else {
+			fields = append(fields, string(tt.Field(i).Tag.Get(key)))
+		}
+
 	}
 
 	return fields
