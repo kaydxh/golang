@@ -5,11 +5,12 @@ import (
 	"testing"
 	"time"
 
-	"github.com/go-redis/redis"
+	"context"
+
+	"github.com/go-redis/redis/v8"
 	redis_ "github.com/kaydxh/golang/pkg/database/redis"
 	viper_ "github.com/kaydxh/golang/pkg/viper"
 	"github.com/stretchr/testify/assert"
-	"golang.org/x/net/context"
 )
 
 func TestGetDataBase(t *testing.T) {
@@ -37,7 +38,7 @@ func TestGetDataBase(t *testing.T) {
 				Password:  testCase.Password,
 				DB:        testCase.DB,
 			})
-			redisDB, err := db.GetRedis()
+			redisDB, err := db.GetRedis(context.Background())
 			if err != nil {
 				t.Fatalf("failed to get redis database: %v, got : %s", testCase.Addresses, err)
 			}
@@ -47,14 +48,13 @@ func TestGetDataBase(t *testing.T) {
 
 }
 
+var (
+	once sync.Once
+	db   *redis.Client
+	err  error
+)
+
 func GetDBOrDie() *redis.Client {
-
-	var (
-		once sync.Once
-		db   *redis.Client
-		err  error
-	)
-
 	once.Do(func() {
 		cfgFile := "./redis.yaml"
 		config := redis_.NewConfig(redis_.WithViper(viper_.GetViper(cfgFile, "database.redis")))
@@ -74,7 +74,7 @@ func GetDBOrDie() *redis.Client {
 
 func TestNew(t *testing.T) {
 	db := GetDBOrDie()
-	defer db.Close()
+	//defer db.Close()
 
 	t.Logf("db: %#v", db)
 }
@@ -87,7 +87,7 @@ func TestNew(t *testing.T) {
 func TestSet(t *testing.T) {
 
 	db := GetDBOrDie()
-	defer db.Close()
+	//defer db.Close()
 
 	testCases := []struct {
 		key      string
@@ -114,9 +114,10 @@ func TestSet(t *testing.T) {
 		},
 	}
 
+	ctx := context.Background()
 	for _, testCase := range testCases {
 
-		result, err := db.Set(testCase.key, testCase.value, testCase.expire).Result()
+		result, err := db.Set(ctx, testCase.key, testCase.value, testCase.expire).Result()
 		if err != nil {
 			t.Fatalf("failed to set string, err: %v", err)
 		}
@@ -130,14 +131,17 @@ func TestSet(t *testing.T) {
 func TestGetValues(t *testing.T) {
 
 	db := GetDBOrDie()
-	defer db.Close()
+	//	defer db.Close()
 
-	keys, err := db.Keys("*").Result()
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	keys, err := db.Keys(ctx, "*").Result()
 	if err != nil {
 		t.Fatalf("failed to get all keys , err: %v", err)
 	}
 
-	values, err := redis_.GetValues(db, keys...)
+	values, err := redis_.GetValues(ctx, db, keys...)
 	if err != nil {
 		t.Fatalf("failed to get values, err: %v", err)
 	}
@@ -148,7 +152,7 @@ func TestGetValues(t *testing.T) {
 func TestGetRange(t *testing.T) {
 
 	db := GetDBOrDie()
-	defer db.Close()
+	//	defer db.Close()
 
 	testCases := []struct {
 		key      string
@@ -170,8 +174,11 @@ func TestGetRange(t *testing.T) {
 		},
 	}
 
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
 	for _, testCase := range testCases {
-		value, err := db.GetRange(testCase.key, testCase.start, testCase.end).Result()
+		value, err := db.GetRange(ctx, testCase.key, testCase.start, testCase.end).Result()
 		if err != nil {
 			t.Fatalf("failed to get range, err: %v", err)
 		}
