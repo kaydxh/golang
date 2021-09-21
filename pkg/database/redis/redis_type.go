@@ -3,7 +3,7 @@ package redis
 import (
 	"sync/atomic"
 
-	"github.com/go-redis/redis"
+	"github.com/go-redis/redis/v8"
 )
 
 type RedisDB atomic.Value

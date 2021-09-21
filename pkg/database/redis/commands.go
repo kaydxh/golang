@@ -1,12 +1,13 @@
 package redis
 
 import (
+	"context"
 	"fmt"
 
-	"github.com/go-redis/redis"
+	"github.com/go-redis/redis/v8"
 )
 
-func GetValue(db *redis.Client, key string) ([]string, error) {
+func GetValue(ctx context.Context, db *redis.Client, key string) ([]string, error) {
 
 	if db == nil {
 		return nil, fmt.Errorf("redis client is nil")
@@ -14,27 +15,27 @@ func GetValue(db *redis.Client, key string) ([]string, error) {
 
 	var values []string
 
-	typ, err := db.Type(key).Result()
+	typ, err := db.Type(ctx, key).Result()
 	if err != nil {
 		return nil, fmt.Errorf("failed to get type of key: %v, err: %v", key, err)
 	}
 
 	switch typ {
 	case "string":
-		data, err := db.Get(key).Result()
+		data, err := db.Get(ctx, key).Result()
 		if err != nil {
 			return nil, fmt.Errorf("failed to get value of key: %v, err: %v", key, err)
 		}
 		values = append(values, data)
 	case "list":
-		llen, err := db.LLen(key).Result()
+		llen, err := db.LLen(ctx, key).Result()
 		if err != nil {
 			return nil, fmt.Errorf("failed to get len of key: %v, err: %v", key, err)
 		}
 
 		var i int64
 		for i = 0; i < llen; i++ {
-			data, err := db.LIndex(key, i).Result()
+			data, err := db.LIndex(ctx, key, i).Result()
 			if err != nil {
 				return nil, fmt.Errorf("failed to get list data of key: %v, err: %v", key, err)
 			}
@@ -42,7 +43,7 @@ func GetValue(db *redis.Client, key string) ([]string, error) {
 		}
 
 	case "set":
-		members, err := db.SMembers(key).Result()
+		members, err := db.SMembers(ctx, key).Result()
 		if err != nil {
 			return nil, fmt.Errorf("failed to get members of key: %v, err: %v", key, err)
 		}
@@ -56,7 +57,7 @@ func GetValue(db *redis.Client, key string) ([]string, error) {
 
 }
 
-func GetValues(db *redis.Client, keys ...string) ([][]string, error) {
+func GetValues(ctx context.Context, db *redis.Client, keys ...string) ([][]string, error) {
 	if db == nil {
 		return nil, fmt.Errorf("redis client is nil")
 	}
@@ -65,7 +66,7 @@ func GetValues(db *redis.Client, keys ...string) ([][]string, error) {
 
 	for _, key := range keys {
 
-		value, err := GetValue(db, key)
+		value, err := GetValue(ctx, db, key)
 		if err != nil {
 			return nil, err
 		}

@@ -3,7 +3,7 @@ package redis
 import (
 	"context"
 
-	"github.com/go-redis/redis"
+	"github.com/go-redis/redis/v8"
 	viper_ "github.com/kaydxh/golang/pkg/viper"
 	"github.com/ory/viper"
 	"github.com/sirupsen/logrus"

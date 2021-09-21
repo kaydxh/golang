@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/go-redis/redis"
+	"github.com/go-redis/redis/v8"
 	"github.com/sirupsen/logrus"
 
 	time_ "github.com/kaydxh/golang/go/time"
@@ -64,7 +64,7 @@ func GetDB() *redis.Client {
 	return redisDB.Load()
 }
 
-func (r *RedisClient) GetRedis() (*redis.Client, error) {
+func (r *RedisClient) GetRedis(ctx context.Context) (*redis.Client, error) {
 	if r.db != nil {
 		return r.db, nil
 	}
@@ -100,7 +100,7 @@ func (r *RedisClient) GetRedis() (*redis.Client, error) {
 			WriteTimeout:  r.opts.writeTimeout,
 		})
 	}
-	_, err := db.Ping().Result()
+	_, err := db.Ping(ctx).Result()
 	if err != nil {
 		return nil, err
 	}
@@ -125,7 +125,7 @@ func (r *RedisClient) GetDatabaseUntil(
 			return nil, fmt.Errorf("cancel get database: %v", ctx.Err())
 
 		default:
-			rc, err := r.GetRedis()
+			rc, err := r.GetRedis(ctx)
 			if err == nil {
 				return rc, nil
 
