@@ -55,3 +55,19 @@ func TestNonzeroFieldTags(t *testing.T) {
 	t.Logf("fields: %v", fields)
 	assert.Equal(t, []string{"request_id"}, fields)
 }
+
+func TestAllFieldTags(t *testing.T) {
+	type HttpRequest struct {
+		RequestId string `db:"request_id"`
+		Username  string `db:"username"`
+	}
+
+	id := uuid.NewString()
+	req := HttpRequest{
+		RequestId: id,
+		//	Username:  "username 1",
+	}
+	fields := reflect_.AllFieldTags(req, "db")
+	t.Logf("fields: %v", fields)
+	//assert.Equal(t, []string{"request_id"}, fields)
+}
