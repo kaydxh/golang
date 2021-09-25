@@ -67,6 +67,24 @@ func NonzeroFieldTags(req interface{}, key string) []string {
 // key for tag , db or json, if key is empty, use field name instead
 //nonzere true, noly return field tags for values that nonzero
 func fieldTags(req interface{}, key string, nonzero bool) []string {
+	var tags []string
+
+	tagsValues := fieldTagsValues(req, key, nonzero)
+	for tag := range tagsValues {
+		tags = append(tags, tag)
+	}
+
+	return tags
+}
+
+func AllTagsValues(req interface{}, key string) map[string]interface{} {
+	return fieldTagsValues(req, key, false)
+}
+
+// req must be struct(Not pointer to struct), or return nil(tt.Field() will panic)
+// key for tag , db or json, if key is empty, use field name instead
+//nonzere true, noly return field tags for values that nonzero
+func fieldTagsValues(req interface{}, key string, nonzero bool) map[string]interface{} {
 	if req == nil {
 		return nil
 	}
@@ -81,9 +99,10 @@ func fieldTags(req interface{}, key string, nonzero bool) []string {
 		return nil
 	}
 
-	var fields []string
+	tagsValues := make(map[string]interface{})
 	for i := 0; i < tt.NumField(); i++ {
-		property := string(tt.Field(i).Name)
+		field := tt.Field(i)
+		property := string(field.Name)
 		f := v.FieldByName(property)
 		if nonzero {
 			if IsZeroValue(f) {
@@ -91,13 +110,14 @@ func fieldTags(req interface{}, key string, nonzero bool) []string {
 			}
 		}
 
-		if len(key) == 0 {
-			fields = append(fields, property)
-		} else {
-			fields = append(fields, string(tt.Field(i).Tag.Get(key)))
+		if len(key) > 0 {
+			property = string(field.Tag.Get(key))
 		}
+
+		// field.Type.Name() -> "string", "int64" ...
+		tagsValues[property] = f.Interface()
 
 	}
 
-	return fields
+	return tagsValues
 }
