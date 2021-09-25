@@ -16,7 +16,7 @@ func HSetStruct(ctx context.Context, db *redis.Client, key string, arg interface
 		return fmt.Errorf("redis client is nil")
 	}
 
-	tagsValues := reflect_.AllTagsValues(arg, "db")
+	tagsValues := reflect_.AllTagsValues(arg, "redis")
 	_, err := db.HSet(ctx, key, tagsValues).Result()
 	if err != nil {
 		return fmt.Errorf("failed to HSet key: %v, err: %v", key, err)
