@@ -77,6 +77,7 @@ func fieldTags(req interface{}, key string, nonzero bool) []string {
 	return tags
 }
 
+// only get export Fields
 func AllTagsValues(req interface{}, key string) map[string]interface{} {
 	return fieldTagsValues(req, key, false)
 }
@@ -104,6 +105,11 @@ func fieldTagsValues(req interface{}, key string, nonzero bool) map[string]inter
 		field := tt.Field(i)
 		property := string(field.Name)
 		f := v.FieldByName(property)
+
+		if !f.CanInterface() {
+			continue
+		}
+
 		if nonzero {
 			if IsZeroValue(f) {
 				continue
@@ -116,7 +122,6 @@ func fieldTagsValues(req interface{}, key string, nonzero bool) map[string]inter
 
 		// field.Type.Name() -> "string", "int64" ...
 		tagsValues[property] = f.Interface()
-
 	}
 
 	return tagsValues
