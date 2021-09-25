@@ -105,7 +105,7 @@ func (f *RotateFiler) getWriterNolock(length int64) (io.Writer, error) {
 
 	// first rotate log file, maybe /data/logs/logs.test20210917230000.log
 	filePath := filepath.Join(f.filedir, filename)
-	globPath := filePath
+	globPath := filepath.Join(filepath.Dir(filePath), f.opts.prefixName)
 
 	// current log file, maybe /data/logs/logs.test20210917230000.log.1
 	useFilepath := filepath.Join(f.filedir, useFilename)
