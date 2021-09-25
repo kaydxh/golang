@@ -83,8 +83,8 @@ func AllTagsValues(req interface{}, key string) map[string]interface{} {
 }
 
 // req must be struct(Not pointer to struct), or return nil(tt.Field() will panic)
-// key for tag , db or json, if key is empty, use field name instead
-//nonzere true, noly return field tags for values that nonzero
+// key for tag , db or json ..., if key is empty or tag is empty, ignore it
+// nonzere true, noly return field tags for values that nonzero
 func fieldTagsValues(req interface{}, key string, nonzero bool) map[string]interface{} {
 	if req == nil {
 		return nil
@@ -116,12 +116,15 @@ func fieldTagsValues(req interface{}, key string, nonzero bool) map[string]inter
 			}
 		}
 
-		if len(key) > 0 {
-			property = string(field.Tag.Get(key))
+		if key == "" {
+			continue
 		}
 
-		// field.Type.Name() -> "string", "int64" ...
-		tagsValues[property] = f.Interface()
+		tag := field.Tag.Get(key)
+		if len(tag) > 0 {
+			// field.Type.Name() -> "string", "int64" ...
+			tagsValues[tag] = f.Interface()
+		}
 	}
 
 	return tagsValues
