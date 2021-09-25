@@ -71,3 +71,19 @@ func TestAllFieldTags(t *testing.T) {
 	t.Logf("fields: %v", fields)
 	//assert.Equal(t, []string{"request_id"}, fields)
 }
+
+func TestAllTagsValues(t *testing.T) {
+	type HttpRequest struct {
+		RequestId string `db:"request_id"`
+		Username  string `db:"username"`
+	}
+
+	id := uuid.NewString()
+	req := HttpRequest{
+		RequestId: id,
+		Username:  "admin",
+	}
+	tagsValues := reflect_.AllTagsValues(req, "db")
+	t.Logf("tagsValues: %v", tagsValues)
+	//assert.Equal(t, []string{"request_id"}, fields)
+}
