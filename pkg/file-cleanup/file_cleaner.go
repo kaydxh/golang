@@ -44,9 +44,12 @@ func FileCleanup(pattern string, options ...FileCleanerOption) error {
 	}
 
 	if cleaner.maxCount > 0 {
-		if cleaner.maxCount < int64(len(removeMatches)) {
-			sort.Sort(CleanupFiles(removeMatches))
-			removeMatches = removeMatches[:len(removeMatches)-int(cleaner.maxCount)]
+		if cleaner.maxCount < int64(len(matches)) {
+			sort.Sort(CleanupFiles(matches))
+			removeMatches = append(
+				removeMatches,
+				matches[len(removeMatches):len(matches)-int(cleaner.maxCount)-len(removeMatches)]...,
+			)
 		}
 
 	}
