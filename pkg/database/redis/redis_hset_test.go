@@ -14,16 +14,16 @@ func TestHSetStruct(t *testing.T) {
 
 	// only get export Fields from testCases
 	testCases := []struct {
-		Key string `db:"db_key"`
-		iD  int64  `db:"db_id"`
+		Key string `redis:"reids_key"`
+		ID  int64  `redis:"redis_id"`
 	}{
 		{
 			Key: "hset-test1",
-			iD:  1,
+			ID:  1,
 		},
 		{
 			Key: "hset-test2",
-			iD:  2,
+			ID:  2,
 		},
 	}
 
