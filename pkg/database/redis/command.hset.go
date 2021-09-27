@@ -13,7 +13,7 @@ import (
 func HSetStruct(ctx context.Context, db *redis.Client, key string, arg interface{}) error {
 
 	if db == nil {
-		return fmt.Errorf("redis client is nil")
+		return fmt.Errorf("found unexpected nil redis client")
 	}
 
 	tagsValues := reflect_.AllTagsValues(arg, "redis")
