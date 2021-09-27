@@ -97,7 +97,7 @@ func (c *completedConfig) install() error {
 	).WithField(
 		"rotate_size", c.Proto.GetRotateSize(),
 	).Infof(
-		"installed log",
+		"Installed log",
 	)
 
 	return nil
