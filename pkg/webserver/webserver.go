@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
+	context_ "github.com/kaydxh/golang/go/context"
 	"github.com/kaydxh/golang/pkg/consul"
 	gw_ "github.com/kaydxh/golang/pkg/grpc-gateway"
 	"github.com/sirupsen/logrus"
@@ -56,6 +57,8 @@ type GenericWebServer struct {
 	// but /readyz will return failure.
 	ShutdownDelayDuration time.Duration
 
+	ShutdownTimeoutDuration time.Duration
+
 	// The limit on the request body size that would be accepted and decoded in a write request.
 	// 0 means no limit.
 	maxRequestBodyBytes int64
@@ -87,19 +90,32 @@ func (s preparedGenericWebServer) Run(ctx context.Context) error {
 	ctx, cancel := context.WithCancel(ctx)
 	defer cancel()
 
+	logrus.Infof("Installing http server on %s", s.grpcBackend.Addr)
 	ctx, err := s.NonBlockingRun(ctx)
 	if err != nil {
 		return err
 	}
 	s.RunPostStartHooks(ctx)
+	logrus.Infof("Installed http server on %s", s.grpcBackend.Addr)
 
 	<-ctx.Done()
 	// run shutdown hooks directly. This includes deregistering from the kubernetes endpoint in case of kube-apiserver.
 	err = s.RunPreShutdownHooks()
 	if err != nil {
+		logrus.Errorf("failed to run pre shutted down hook, err: %v", err)
 		return err
 	}
 
+	//shutdown
+	shutDownCtx, shutDownCancel := context_.WithTimeout(context.Background(), s.ShutdownTimeoutDuration)
+	defer shutDownCancel()
+
+	err = s.grpcBackend.Shutdown(shutDownCtx)
+	if err != nil {
+		logrus.Errorf("failed to shutted down http server on %s, err: %v", s.grpcBackend.Addr, err)
+		return err
+	}
+	logrus.Infof("Shutted down http server on %s", s.grpcBackend.Addr)
 	return nil
 }
 
