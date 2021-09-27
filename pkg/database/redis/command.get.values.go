@@ -10,7 +10,7 @@ import (
 func GetValue(ctx context.Context, db *redis.Client, key string) ([]string, error) {
 
 	if db == nil {
-		return nil, fmt.Errorf("redis client is nil")
+		return nil, fmt.Errorf("found unexpected nil redis client")
 	}
 
 	var values []string
@@ -59,7 +59,7 @@ func GetValue(ctx context.Context, db *redis.Client, key string) ([]string, erro
 
 func GetValues(ctx context.Context, db *redis.Client, keys ...string) ([][]string, error) {
 	if db == nil {
-		return nil, fmt.Errorf("redis client is nil")
+		return nil, fmt.Errorf("found unexpected nil redis client")
 	}
 
 	var values [][]string
