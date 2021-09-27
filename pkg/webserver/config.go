@@ -13,9 +13,10 @@ import (
 )
 
 const (
-	defaultBindAddress           = ":80"
-	defaultExternalAddress       = ":80"
-	defaultShutdownDelayDuration = time.Duration(0)
+	defaultBindAddress             = ":80"
+	defaultExternalAddress         = ":80"
+	defaultShutdownDelayDuration   = time.Duration(0)
+	defaultShutdownTimeoutDuration = 5 * time.Second
 )
 
 type Config struct {
@@ -31,7 +32,9 @@ type Config struct {
 		// have converged on all node. During this time, the API server keeps serving, /healthz will return 200,
 		// but /readyz will return failure.
 		shutdownDelayDuration time.Duration
-		gatewayOptions        []gw_.GRPCGatewayOption
+		//shutdownTimeoutDuration force shutdonw server after some time
+		shutdownTimeoutDuration time.Duration
+		gatewayOptions          []gw_.GRPCGatewayOption
 	}
 }
 
