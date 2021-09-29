@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package go.pkg.monitor.prometheus;
+
+import "google/protobuf/duration.proto";
+
+option go_package = "github.com/kaydxh/golang/pkg/monitor/prometheus;prometheus";
+
+message Prometheus {
+  bool enabled = 1;
+}
