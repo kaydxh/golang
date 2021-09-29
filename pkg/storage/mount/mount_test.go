@@ -3,7 +3,7 @@ package mount_test
 import (
 	"testing"
 
-	mount_ "github.com/kaydxh/golang/pkg/mount"
+	mount_ "github.com/kaydxh/golang/pkg/storage/mount"
 )
 
 func TestMountCeph(t *testing.T) {
