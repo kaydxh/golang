@@ -34,7 +34,6 @@ func NewReverseProxy(router gin.IRouter, options ...ReverseProxyOption) (*Revers
 
 func (p *ReverseProxy) ProxyHandler() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		fmt.Println("--ProxyHandler")
 		req := c.Request
 
 		targetUrl := p.opts.targetUrl
