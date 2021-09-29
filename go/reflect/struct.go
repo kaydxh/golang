@@ -33,6 +33,10 @@ func RetrieveStructField(req interface{}, name string) string {
 		return ""
 	}
 
+	if !v.IsValid() {
+		return ""
+	}
+
 	//nested field: reflect.Indirect(v).FieldByName("layout1").Index(0).FieldByName("layout2")
 	f := v.FieldByName(name)
 	if f.IsValid() && f.Kind() == reflect.String {
@@ -47,6 +51,11 @@ func TrySetStructFiled(req interface{}, name, value string) {
 	if !ok {
 		return
 	}
+
+	if !v.IsValid() {
+		return
+	}
+
 	f := v.FieldByName(name)
 	if f.IsValid() && f.Kind() == reflect.String {
 		f.SetString(value)
@@ -92,6 +101,9 @@ func fieldTagsValues(req interface{}, key string, nonzero bool) map[string]inter
 
 	v, ok := indirectStruct(req)
 	if !ok {
+		return nil
+	}
+	if !v.IsValid() {
 		return nil
 	}
 
