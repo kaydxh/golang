@@ -11,6 +11,7 @@ import (
 
 // UnaryServerInterceptor returns a new unary server interceptors that timing request
 func UnaryServerInterceptor() grpc.UnaryServerInterceptor {
+
 	return func(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (interface{}, error) {
 
 		tc := time_.New(true)
@@ -19,6 +20,7 @@ func UnaryServerInterceptor() grpc.UnaryServerInterceptor {
 			logrus.WithField("method", info.FullMethod).Infof(tc.String())
 		}
 		defer summary()
+
 		return handler(ctx, req)
 	}
 }
