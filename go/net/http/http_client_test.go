@@ -11,7 +11,7 @@ import (
 func TestHttpClientGet(t *testing.T) {
 	client, err := http_.NewClient(http_.WithTimeout(5 * time.Second))
 	if err != nil {
-		t.Errorf("expect nil, got %v", err)
+		t.Fatalf("expect nil, got %v", err)
 	}
 
 	testCases := []struct {
@@ -44,7 +44,7 @@ func TestHttpClientGet(t *testing.T) {
 func TestHttpClientPost(t *testing.T) {
 	client, err := http_.NewClient(http_.WithTimeout(5 * time.Second))
 	if err != nil {
-		t.Errorf("expect nil, got %v", err)
+		t.Fatalf("expect nil, got %v", err)
 	}
 
 	testCases := []struct {

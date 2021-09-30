@@ -63,11 +63,13 @@ func (g *GRPCGateway) initOnce() {
 				func(ctx context.Context, mux *runtime.ServeMux,
 					marshaler runtime.Marshaler,
 					w http.ResponseWriter, r *http.Request, code int) {
+
 					//g.Handler is gin handler
 					httpHandler := g.Handler
 					if httpHandler == nil {
 						httpHandler = http.DefaultServeMux
 					}
+
 					// NotFound and NotAllowed, use gin handler
 					if code == http.StatusNotFound || code == http.StatusMethodNotAllowed {
 						httpHandler.ServeHTTP(w, r)

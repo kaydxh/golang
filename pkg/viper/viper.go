@@ -8,7 +8,6 @@ import (
 
 //keys delim with dot(.), eg: "database.mysql"
 func GetViper(configFile string, subKeys string) *viper.Viper {
-
 	if configFile == "" {
 		v := viper.GetViper()
 		if v == nil {

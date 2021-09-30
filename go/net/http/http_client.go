@@ -14,6 +14,21 @@ import (
 type Client struct {
 	http.Client
 	opts struct {
+		// Timeout specifies a time limit for requests made by this
+		// Client. The timeout includes connection time, any
+		// redirects, and reading the response body. The timer remains
+		// running after Get, Head, Post, or Do return and will
+		// interrupt reading of the Response.Body.
+		//
+		// A Timeout of zero means no timeout.
+		//
+		// The Client cancels requests to the underlying Transport
+		// as if the Request's Context ended.
+		//
+		// For compatibility, the Client will also use the deprecated
+		// CancelRequest method on Transport if found. New
+		// RoundTripper implementations should use the Request's Context
+		// for cancellation instead of implementing CancelRequest.
 		timeout               time.Duration
 		dialTimeout           time.Duration
 		responseHeaderTimeout time.Duration
