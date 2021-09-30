@@ -8,8 +8,8 @@ import (
 	"google.golang.org/grpc"
 )
 
-// UnaryServerInterceptor returns a new unary server interceptors that timing request
-func UnaryServerInterceptor(enabledMetric bool) grpc.UnaryServerInterceptor {
+// UnaryServerInterceptorOfTimer returns a new unary server interceptors that timing request
+func UnaryServerInterceptorOfTimer(enabledMetric bool) grpc.UnaryServerInterceptor {
 
 	return func(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (interface{}, error) {
 
