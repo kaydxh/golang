@@ -6,8 +6,8 @@ import (
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	rate_ "github.com/kaydxh/golang/go/time/rate"
 	interceptortcloud_ "github.com/kaydxh/golang/pkg/grpc-middleware/api/tcloud/v3.0"
+	interceptorprometheus_ "github.com/kaydxh/golang/pkg/grpc-middleware/monitor/prometheus"
 	interceptorratelimit_ "github.com/kaydxh/golang/pkg/grpc-middleware/ratelimit"
-	interceptortimer_ "github.com/kaydxh/golang/pkg/grpc-middleware/timer"
 	"github.com/sirupsen/logrus"
 	"google.golang.org/grpc"
 )
@@ -56,9 +56,17 @@ func WithServerInterceptorsLogrusOptions(
 	})
 }
 
+/*
 func WithServerUnaryInterceptorsTimerOptions() GRPCGatewayOption {
 	return GRPCGatewayOptionFunc(func(c *GRPCGateway) {
 		WithServerUnaryInterceptorsOptions(interceptortimer_.UnaryServerInterceptor()).apply(c)
+	})
+}
+*/
+
+func WithServerUnaryInterceptorsTimerOptions(enabledMetric bool) GRPCGatewayOption {
+	return GRPCGatewayOptionFunc(func(c *GRPCGateway) {
+		WithServerUnaryInterceptorsOptions(interceptorprometheus_.UnaryServerInterceptorOfTimer(enabledMetric)).apply(c)
 	})
 }
 
