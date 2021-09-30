@@ -31,6 +31,18 @@ func (t *TimeCounter) Tick(msg string) {
 	}
 }
 
+func (t *TimeCounter) Elapse() time.Duration {
+	if !t.effect {
+		return time.Duration(0)
+	}
+
+	if len(t.starts) == 0 {
+		return time.Duration(0)
+	}
+
+	return time.Now().Sub(t.starts[0])
+}
+
 func (t *TimeCounter) String() string {
 	if !t.effect {
 		return ""
