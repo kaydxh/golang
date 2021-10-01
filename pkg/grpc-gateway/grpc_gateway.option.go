@@ -70,10 +70,10 @@ func WithServerUnaryInterceptorsTimerOptions(enabledMetric bool) GRPCGatewayOpti
 	})
 }
 
-func WithServerUnaryInterceptorsMethodCalledOptions(enabledMetric bool) GRPCGatewayOption {
+func WithServerUnaryInterceptorsCodeMessageOptions(enabledMetric bool) GRPCGatewayOption {
 	return GRPCGatewayOptionFunc(func(c *GRPCGateway) {
 		WithServerUnaryInterceptorsOptions(
-			interceptorprometheus_.UnaryServerInterceptorOfMethodCalled(enabledMetric),
+			interceptorprometheus_.UnaryServerInterceptorOfCodeMessage(enabledMetric),
 		).apply(
 			c,
 		)

@@ -34,8 +34,8 @@ func UnaryServerInterceptorOfTimer(enabledMetric bool) grpc.UnaryServerIntercept
 	}
 }
 
-// UnaryServerInterceptorOfError returns a new unary server interceptors that timing request
-func UnaryServerInterceptorOfMethodCalled(enabledMetric bool) grpc.UnaryServerInterceptor {
+// UnaryServerInterceptorOfCodeMessage returns a new unary server interceptors that timing request
+func UnaryServerInterceptorOfCodeMessage(enabledMetric bool) grpc.UnaryServerInterceptor {
 
 	return func(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (interface{}, error) {
 
