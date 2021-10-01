@@ -1,4 +1,4 @@
-package prometheus
+package monitor
 
 import (
 	"github.com/ory/viper"

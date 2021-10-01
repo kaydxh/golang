@@ -1,4 +1,4 @@
-package prometheus
+package monitor
 
 // A ConfigOption sets options.
 type ConfigOption interface {
