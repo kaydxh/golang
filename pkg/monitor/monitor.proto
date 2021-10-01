@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package go.pkg.monitor;
+
+import "google/protobuf/duration.proto";
+
+option go_package = "github.com/kaydxh/golang/pkg/monitor;monitor";
+
+message Monitor {
+  Prometheus prometheus = 1;
+
+  message Prometheus {
+    bool enabled_metric_timer_cost = 1;
+    bool enabled_metric_code_message = 2;
+  }
+}

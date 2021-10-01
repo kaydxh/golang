@@ -1,4 +1,4 @@
-package prometheus
+package monitor
 
 import (
 	"context"
@@ -9,7 +9,7 @@ import (
 )
 
 type Config struct {
-	Proto Prometheus
+	Proto Monitor
 	opts  struct {
 		// If set, overrides params below
 		viper *viper.Viper
@@ -28,21 +28,23 @@ type CompletedConfig struct {
 
 func (c *completedConfig) Apply(ctx context.Context) error {
 
-	logrus.Infof("Installing Prometheus")
+	logrus.Infof("Installing Monitor")
 
 	if c.completeError != nil {
 		return c.completeError
 	}
 
-	if !c.Proto.GetEnabled() {
-		return nil
-	}
+	/*
+		if !c.Proto.GetEnabled() {
+			return nil
+		}
+	*/
 
 	err := c.install(ctx)
 	if err != nil {
 		return err
 	}
-	logrus.Infof("Installed Prometheus")
+	logrus.Infof("Installed Monitor")
 
 	return nil
 }
