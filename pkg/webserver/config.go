@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/go-playground/validator/v10"
 	viper_ "github.com/kaydxh/golang/pkg/viper"
 	"github.com/sirupsen/logrus"
 
@@ -20,8 +21,9 @@ const (
 )
 
 type Config struct {
-	Proto Web
-	opts  struct {
+	Proto     Web
+	Validator *validator.Validate
+	opts      struct {
 		// If set, overrides params below
 		viper       *viper.Viper
 		bindAddress string
@@ -48,13 +50,39 @@ type CompletedConfig struct {
 	*completedConfig
 }
 
+// Validate checks Config.
+func (c *completedConfig) Validate() error {
+	return c.Validator.Struct(c)
+}
+
 func (c *completedConfig) New() (*GenericWebServer, error) {
 	if c.completeError != nil {
 		return nil, c.completeError
 	}
+	err := c.Validate()
+	if err != nil {
+		return nil, err
+	}
 
+	return c.install()
+}
+
+func (c *completedConfig) install() (*GenericWebServer, error) {
 	opts := c.opts.gatewayOptions //[]gw_.GRPCGatewayOption{}
-	opts = append(opts, gw_.WithServerUnaryInterceptorsTimerOptions())
+	//opts = append(opts, gw_.WithServerUnaryInterceptorsTimerOptions())
+
+	opts = append(
+		opts,
+		gw_.WithServerUnaryInterceptorsTimerOptions(c.Proto.GetMonitor().GetPrometheus().GetEnabledMetricTimerCost()),
+	)
+
+	opts = append(
+		opts,
+		gw_.WithServerUnaryInterceptorsCodeMessageOptions(
+			c.Proto.GetMonitor().GetPrometheus().GetEnabledMetricCodeMessage(),
+		),
+	)
+
 	opts = append(
 		opts,
 		gw_.WithServerInterceptorsLogrusOptions(logrus.StandardLogger()),
@@ -63,6 +91,7 @@ func (c *completedConfig) New() (*GenericWebServer, error) {
 		opts,
 		gw_.WithServerUnaryInterceptorsRequestIdOptions(),
 	)
+
 	grpcBackend := gw_.NewGRPCGateWay(c.opts.bindAddress, opts...)
 	//grpcBackend.ApplyOptions()
 	ginBackend := gin.New()
@@ -95,6 +124,10 @@ func (c *Config) Complete() CompletedConfig {
 			int(c.Proto.GetMaxConcurrencyStream()),
 		),
 	)
+
+	if c.Validator == nil {
+		c.Validator = validator.New()
+	}
 
 	return CompletedConfig{&completedConfig{Config: c}}
 }

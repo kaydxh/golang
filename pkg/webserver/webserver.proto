@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package api.v1.viper.webServer;
+package go.pkg.webserver;
 
 import "google/protobuf/duration.proto";
 
@@ -11,8 +11,19 @@ message Web {
   int32 max_concurrency_unary = 2;
   int32 max_concurrency_stream = 3;
 
+  Monitor monitor = 4;
+
   message Net {
     string host = 1;
     int32 port = 2;
+  }
+
+  message Monitor {
+    Prometheus prometheus = 1;
+
+    message Prometheus {
+      bool enabled_metric_timer_cost = 1;
+      bool enabled_metric_code_message = 2;
+    }
   }
 }
