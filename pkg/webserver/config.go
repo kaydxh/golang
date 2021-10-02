@@ -89,6 +89,10 @@ func (c *completedConfig) install() (*GenericWebServer, error) {
 	)
 	opts = append(
 		opts,
+		gw_.WithServerInterceptorsRecoveryOptions(),
+	)
+	opts = append(
+		opts,
 		gw_.WithServerUnaryInterceptorsRequestIdOptions(),
 	)
 
