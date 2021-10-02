@@ -33,6 +33,7 @@ require (
 	github.com/ory/viper v1.7.5
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/pkg/profile v1.6.0
+	github.com/prometheus/client_golang v0.9.2
 	github.com/robfig/cron v1.2.0
 	github.com/sirupsen/logrus v1.8.0
 	github.com/smartystreets/assertions v0.0.0-20190116191733-b6c0e53d7304 // indirect
