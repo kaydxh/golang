@@ -4,32 +4,24 @@ import (
 	"testing"
 
 	syscall_ "github.com/kaydxh/golang/go/syscall"
-	"gotest.tools/assert"
 )
 
 func TestGetNumFiles(t *testing.T) {
 
-	curOpenFiles, err := syscall_.GetNumFiles()
+	curOpenFiles, maxOpenFiles, err := syscall_.GetNumFiles()
 	if err != nil {
 		t.Fatalf("failed to get num files, err: %v", err)
 	}
 
-	t.Logf("curOpenFiles: %v", curOpenFiles)
+	t.Logf("curOpenFiles: %v,  maxOpenFiles: %v", curOpenFiles, maxOpenFiles)
 }
 
-func TestSetNumFiles(t *testing.T) {
+func TestSetMaxNumFiles(t *testing.T) {
 
-	var maxOpenFiles uint64 = 100000
-	err := syscall_.SetNumFiles(maxOpenFiles)
+	curOpenFiles, err := syscall_.SetMaxNumFiles()
 	if err != nil {
-		t.Fatalf("failed to set num files, err: %v", err)
+		t.Fatalf("failed to set max num files, err: %v", err)
 	}
-
-	curOpenFiles, err := syscall_.GetNumFiles()
-	if err != nil {
-		t.Fatalf("failed to get num files, err: %v", err)
-	}
-	assert.Equal(t, maxOpenFiles, curOpenFiles)
 
 	t.Logf("curOpenFiles: %v", curOpenFiles)
 }
