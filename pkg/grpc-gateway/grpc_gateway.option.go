@@ -1,8 +1,11 @@
 package grpcgateway
 
 import (
+	"runtime/debug"
+
 	"github.com/gin-gonic/gin/binding"
 	interceptorlogrus_ "github.com/grpc-ecosystem/go-grpc-middleware/logging/logrus"
+	interceptorrecovery_ "github.com/grpc-ecosystem/go-grpc-middleware/recovery"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	rate_ "github.com/kaydxh/golang/go/time/rate"
 	interceptortcloud_ "github.com/kaydxh/golang/pkg/grpc-middleware/api/tcloud/v3.0"
@@ -10,6 +13,8 @@ import (
 	interceptorratelimit_ "github.com/kaydxh/golang/pkg/grpc-middleware/ratelimit"
 	"github.com/sirupsen/logrus"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 )
 
 func WithServerOptions(opts ...grpc.ServerOption) GRPCGatewayOption {
@@ -53,6 +58,25 @@ func WithServerInterceptorsLogrusOptions(
 		l := logrus.NewEntry(logger)
 		WithServerUnaryInterceptorsOptions(interceptorlogrus_.UnaryServerInterceptor(l)).apply(c)
 		WithServerStreamInterceptorsOptions(interceptorlogrus_.StreamServerInterceptor(l)).apply(c)
+	})
+}
+
+// recover
+func WithServerInterceptorsRecoveryOptions() GRPCGatewayOption {
+	opts := []interceptorrecovery_.Option{
+		interceptorrecovery_.WithRecoveryHandler(func(p interface{}) (err error) {
+			logrus.WithError(
+				status.Errorf(codes.Internal, "panic triggered: %v at %v", p, string(debug.Stack())),
+			).Errorf(
+				"recovered in grpc",
+			)
+			return status.Errorf(codes.Internal, "panic triggered: %v", p)
+		}),
+	}
+
+	return GRPCGatewayOptionFunc(func(c *GRPCGateway) {
+		WithServerUnaryInterceptorsOptions(interceptorrecovery_.UnaryServerInterceptor(opts...)).apply(c)
+		WithServerStreamInterceptorsOptions(interceptorrecovery_.StreamServerInterceptor(opts...)).apply(c)
 	})
 }
 
