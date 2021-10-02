@@ -7,6 +7,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	context_ "github.com/kaydxh/golang/go/context"
+	syscall_ "github.com/kaydxh/golang/go/syscall"
 	"github.com/kaydxh/golang/pkg/consul"
 	gw_ "github.com/kaydxh/golang/pkg/grpc-gateway"
 	"github.com/sirupsen/logrus"
@@ -125,6 +126,12 @@ func (s *GenericWebServer) PrepareRun() (preparedGenericWebServer, error) {
 		s.grpcBackend.Handler = s.ginBackend
 	}
 
+	curOpenFiles, err := syscall_.SetMaxNumFiles()
+	if err != nil {
+		logrus.Errorf("failed to set max num files, err: %v", err)
+		return preparedGenericWebServer{}, err
+	}
+	logrus.Infof("set %v num files", curOpenFiles)
 	return preparedGenericWebServer{s}, nil
 }
 
