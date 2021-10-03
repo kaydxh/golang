@@ -24,10 +24,10 @@ func TestEndOfDayString(t *testing.T) {
 
 func TestTruncateToUTCString(t *testing.T) {
 	now := time.Now()
-	tms := time_.TruncateToUTCString(now, time.Millisecond, time_.DefaultTimeMsFormat)
-	tsc := time_.TruncateToUTCString(now, time.Second, time_.DefaultTimeMsFormat)
-	tmt := time_.TruncateToUTCString(now, time.Minute, time_.DefaultTimeMsFormat)
-	thr := time_.TruncateToUTCString(now, time.Hour, time_.DefaultTimeMsFormat)
+	tms := time_.TruncateToUTCString(now, time.Millisecond, time_.DefaultTimeMillFormat)
+	tsc := time_.TruncateToUTCString(now, time.Second, time_.DefaultTimeMillFormat)
+	tmt := time_.TruncateToUTCString(now, time.Minute, time_.DefaultTimeMillFormat)
+	thr := time_.TruncateToUTCString(now, time.Hour, time_.DefaultTimeMillFormat)
 	t.Logf("TruncateToUTC Millisecond: %v, Second: %v, Minute: %v, Hour: %v", tms, tsc, tmt, thr)
 }
 

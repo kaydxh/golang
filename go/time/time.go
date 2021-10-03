@@ -3,11 +3,12 @@ package time
 import "time"
 
 const (
-	DayFormat           = "20060102"
-	ShortTimeFormat     = "20060102150405"
-	ShortDashTimeFormat = "2006-01-02-15:04:05"
-	DefaultTimeFormat   = "2006-01-02 15:04:05"
-	DefaultTimeMsFormat = "2006-01-02 15:04:05.000"
+	DayFormat             = "20060102"
+	TimeMillFormat        = "20060102150405.000"
+	ShortTimeFormat       = "20060102150405"
+	ShortDashTimeFormat   = "2006-01-02-15:04:05"
+	DefaultTimeFormat     = "2006-01-02 15:04:05"
+	DefaultTimeMillFormat = "2006-01-02 15:04:05.000"
 )
 
 func Now() time.Time {
