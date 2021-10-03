@@ -64,7 +64,7 @@ func doMountCmd(
 	mountPoint = filepath.Join("/", prefixMountPath, workDir)
 	if !forceMount {
 		labelFilePath := filepath.Join(mountPoint, mountLabelFileName)
-		exist, err := os_.PathExists(labelFilePath)
+		exist, err := os_.PathExist(labelFilePath)
 		if err == nil && exist {
 			return mountPoint, nil
 		}
