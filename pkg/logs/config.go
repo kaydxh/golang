@@ -63,7 +63,7 @@ func (c *completedConfig) install() error {
 			DisableColors: true,
 			//DisableQuote:     true,
 			//FullTimestamp:    true,
-			TimestampFormat:  time_.DefaultTimeMsFormat,
+			TimestampFormat:  time_.DefaultTimeMillFormat,
 			CallerPrettyfier: GenShortCallPrettyfier(),
 		})
 	}
