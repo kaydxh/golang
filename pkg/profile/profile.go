@@ -25,7 +25,7 @@ func StartWithEnv() interface {
 	profileEnv := os_.GetEnvAsStringOrFallback("PROFILING", "")
 	profilePath := os_.GetEnvAsStringOrFallback("PROFILEPATH", "")
 	if profilePath != "" {
-		profilePath = filepath.Join(profilePath, "profile"+time.Now().Format(time_.TimeMillsFormat))
+		profilePath = filepath.Join(profilePath, "profile"+time.Now().Format(time_.TimeMillFormat))
 	}
 
 	return start(profileEnv, profilePath)
