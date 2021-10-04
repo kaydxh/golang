@@ -20,12 +20,7 @@ func UnaryServerInterceptorOfTimer(enabledMetric bool) grpc.UnaryServerIntercept
 		summary := func() {
 			tc.Tick(info.FullMethod)
 			if enabledMetric {
-				/*
-					metircLabels := map[string]string{
-						MetircLabelMethod: info.FullMethod,
-					}
-				*/
-				durationCost.WithLabelValues(info.FullMethod).Observe(float64(tc.Elapse().Milliseconds()))
+				M.durationCost.WithLabelValues(info.FullMethod).Observe(float64(tc.Elapse().Milliseconds()))
 			}
 
 			logrus.WithField("method", info.FullMethod).Infof(tc.String())
@@ -57,7 +52,7 @@ func UnaryServerInterceptorOfCodeMessage(enabledMetric bool) grpc.UnaryServerInt
 					MetircLabelClientIP:    peerAddr.String(),
 					MetircLabelCodeMessage: codeMessage,
 				}
-				calledTotal.With(metircLabels).Inc()
+				M.calledTotal.With(metircLabels).Inc()
 			}
 
 			logrus.WithField(
