@@ -20,10 +20,12 @@ func UnaryServerInterceptorOfTimer(enabledMetric bool) grpc.UnaryServerIntercept
 		summary := func() {
 			tc.Tick(info.FullMethod)
 			if enabledMetric {
-				metircLabels := map[string]string{
-					MetircLabelMethod: info.FullMethod,
-				}
-				cost.With(metircLabels).Set(float64(tc.Elapse().Milliseconds()))
+				/*
+					metircLabels := map[string]string{
+						MetircLabelMethod: info.FullMethod,
+					}
+				*/
+				durationCost.WithLabelValues(info.FullMethod).Observe(float64(tc.Elapse().Milliseconds()))
 			}
 
 			logrus.WithField("method", info.FullMethod).Infof(tc.String())
