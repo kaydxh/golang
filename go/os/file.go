@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"strings"
 )
 
 func PathExist(path string) (bool, error) {
@@ -16,6 +17,15 @@ func PathExist(path string) (bool, error) {
 	}
 	return false, err
 
+}
+
+func IsDir(path string) (bool, error) {
+	fi, err := os.Stat(path)
+	if err != nil {
+		return false, err
+	}
+
+	return fi.IsDir(), nil
 }
 
 // MkdirAll creates a directory named path,
@@ -127,4 +137,76 @@ func SymLink(oldname, newname string) error {
 	}
 
 	return err
+}
+
+// include subdir, file and hidden file
+func ReadDirNames(path string, filterHiddenFile bool) ([]string, error) {
+	file, err := os.Open(path)
+	if err != nil {
+		return nil, err
+	}
+	defer file.Close()
+
+	names, err := file.Readdirnames(-1)
+	if err != nil {
+		return nil, err
+	}
+
+	if !filterHiddenFile {
+		return names, nil
+	}
+
+	noHiddenFiles := []string{}
+
+	for _, name := range names {
+		if strings.HasPrefix(filepath.Base(name), ".") {
+			continue
+		}
+
+		noHiddenFiles = append(noHiddenFiles, name)
+
+	}
+
+	return noHiddenFiles, nil
+
+}
+
+// only inlcude subdir
+// filterHiddenFile  is true, then filter hidden files from result
+func ReadDirSubDirNames(path string, filterHiddenFile bool) ([]string, error) {
+	names, err := ReadDirNames(path, filterHiddenFile)
+	if err != nil {
+		return nil, err
+	}
+
+	dirs := []string{}
+	for _, name := range names {
+
+		filePath := filepath.Join(path, name)
+		ok, _ := IsDir(filePath)
+		if ok {
+			dirs = append(dirs, name)
+		}
+	}
+
+	return dirs, nil
+}
+
+func ReadDirFileNames(path string, filterHiddenFile bool) ([]string, error) {
+	names, err := ReadDirNames(path, filterHiddenFile)
+	if err != nil {
+		return nil, err
+	}
+
+	dirs := []string{}
+	for _, name := range names {
+
+		filePath := filepath.Join(path, name)
+		ok, err := IsDir(filePath)
+		if err == nil && !ok {
+			dirs = append(dirs, name)
+		}
+	}
+
+	return dirs, nil
 }
