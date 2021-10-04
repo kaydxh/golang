@@ -2,8 +2,10 @@ package interceptorprometheus
 
 import (
 	"github.com/prometheus/client_golang/prometheus"
-	"github.com/prometheus/client_golang/prometheus/promauto"
 )
+
+// M is the Metrics instance
+var M = newMetrics()
 
 const (
 	MetircLabelMethod      = "method"
@@ -11,24 +13,43 @@ const (
 	MetircLabelCodeMessage = "code_message"
 )
 
-var (
-	calledTotal = promauto.NewCounterVec(prometheus.CounterOpts{
-		Name: "method_called_total",
-		Help: "the total number of method called.",
-	},
-		[]string{MetircLabelMethod, MetircLabelClientIP, MetircLabelCodeMessage},
+type Metrics struct {
+	calledTotal           *prometheus.CounterVec
+	durationCostHistogram *prometheus.HistogramVec
+	durationCost          *prometheus.SummaryVec
+}
+
+func newMetrics() *Metrics {
+
+	return &Metrics{
+		calledTotal: newCounterVec(
+			"method_called_total",
+			"the total number of method called.",
+			MetircLabelMethod,
+			MetircLabelClientIP,
+			MetircLabelCodeMessage,
+		),
+
+		durationCost: newSummaryVec(
+			"method_cost_duration_milliseconds",
+			"the duration of method cost in milliseconds.",
+			MetircLabelMethod,
+		),
+	}
+}
+
+//var (
+/*
+	cost = promauto.NewGaugeVec(
+		prometheus.GaugeOpts{
+			Name: "method_cost_duration_milliseconds",
+			Help: "the duration of method now cost in milliseconds.",
+		},
+		[]string{MetircLabelMethod},
 	)
+*/
 
-	/*
-		cost = promauto.NewGaugeVec(
-			prometheus.GaugeOpts{
-				Name: "method_cost_duration_milliseconds",
-				Help: "the duration of method now cost in milliseconds.",
-			},
-			[]string{MetircLabelMethod},
-		)
-	*/
-
+/*
 	durationCostHistogram = prometheus.NewHistogramVec(
 		prometheus.HistogramOpts{
 			Name: "method_cost_duration_histogram_milliseconds",
@@ -54,13 +75,37 @@ var (
 		},
 		[]string{MetircLabelMethod},
 	)
+*/
 
-	durationCost = prometheus.NewSummaryVec(
+//)
+
+func newCounterVec(name, help string, labels ...string) *prometheus.CounterVec {
+	vec := prometheus.NewCounterVec(
+		prometheus.CounterOpts{
+			Name: name,
+			Help: help,
+		}, labels)
+	prometheus.MustRegister(vec)
+	return vec
+}
+
+func newGaugeVec(name, help string, labels ...string) *prometheus.GaugeVec {
+	vec := prometheus.NewGaugeVec(
+		prometheus.GaugeOpts{
+			Name: name,
+			Help: help,
+		}, labels)
+	prometheus.MustRegister(vec)
+	return vec
+}
+
+func newSummaryVec(name, help string, labels ...string) *prometheus.SummaryVec {
+	vec := prometheus.NewSummaryVec(
 		prometheus.SummaryOpts{
-			Name:       "method_cost_duration_milliseconds",
-			Help:       "the duration of method cost in milliseconds.",
+			Name:       name,
+			Help:       help,
 			Objectives: map[float64]float64{0.5: 0.05, 0.9: 0.01, 0.99: 0.001},
-		},
-		[]string{MetircLabelMethod},
-	)
-)
+		}, labels)
+	prometheus.MustRegister(vec)
+	return vec
+}
