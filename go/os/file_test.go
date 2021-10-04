@@ -114,3 +114,36 @@ func TestPath(t *testing.T) {
 	//../11.jpg
 	fmt.Println(filepath.Rel("./workspace/22", filename))
 }
+
+func TestReadDirNames(t *testing.T) {
+	dir := "/usr/local"
+	allFiles, err := os_.ReadDirNames(dir, true)
+	if err != nil {
+		t.Errorf("expect nil, got %v", err)
+	}
+
+	t.Logf("got sub dirs: %v", allFiles)
+
+}
+
+func TestReadSubDirs(t *testing.T) {
+	dir := "/usr/local"
+	subDirs, err := os_.ReadDirSubDirNames(dir, true)
+	if err != nil {
+		t.Errorf("expect nil, got %v", err)
+	}
+
+	t.Logf("got sub dirs: %v", subDirs)
+
+}
+
+func TestReadDirFileNames(t *testing.T) {
+	dir := "/usr/local"
+	fileNames, err := os_.ReadDirFileNames(dir, true)
+	if err != nil {
+		t.Errorf("expect nil, got %v", err)
+	}
+
+	t.Logf("got filenames: %v", fileNames)
+
+}
