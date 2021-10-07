@@ -3,13 +3,23 @@ package logs
 import (
 	"os"
 	"path/filepath"
+	"time"
 
 	"github.com/go-playground/validator/v10"
 	time_ "github.com/kaydxh/golang/go/time"
 	viper_ "github.com/kaydxh/golang/pkg/viper"
 	"github.com/sirupsen/logrus"
+	"google.golang.org/protobuf/types/known/durationpb"
 
 	"github.com/ory/viper"
+)
+
+const (
+	DefaultMaxAge         = 72 * time.Hour
+	DefaultMaxCount       = 72
+	DefaultRotateInterval = time.Hour
+	//100MB
+	DefaultRotateSize = 104857600
 )
 
 type Config struct {
@@ -131,9 +141,14 @@ func (c *Config) loadViper() error {
 func NewConfig(options ...ConfigOption) *Config {
 	c := &Config{
 		Proto: Log{
-			Level:     Log_info,
-			Formatter: Log_text,
-			Filepath:  "./log/" + filepath.Base(os.Args[0]),
+			Level:          Log_info,
+			Formatter:      Log_text,
+			MaxAge:         durationpb.New(DefaultMaxAge),
+			MaxCount:       DefaultMaxCount,
+			RotateInterval: durationpb.New(DefaultRotateInterval),
+			RotateSize:     DefaultRotateSize,
+
+			Filepath: "./log/" + filepath.Base(os.Args[0]),
 		},
 	}
 
