@@ -25,7 +25,7 @@ func TestInit(t *testing.T) {
 		"log_dir",
 		config.Proto.GetFilepath(),
 	).Infof(
-		"successed to apply log config",
+		"successed to apply log config: %#v", config.Proto.String(),
 	)
 
 	for i := 1; i <= 10; i++ {
