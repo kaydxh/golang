@@ -196,7 +196,7 @@ func (f *RotateFiler) getCurSeqFilename(globPath string) (string, error) {
 		return globPath, nil
 	}
 
-	sort.Sort(cleanup_.CleanupFiles(matches))
+	sort.Sort(cleanup_.RotatedFiles(matches))
 	return matches[len(matches)-1], nil
 }
 

@@ -45,7 +45,7 @@ func FileCleanup(pattern string, options ...FileCleanerOption) error {
 
 	if cleaner.maxCount > 0 {
 		if cleaner.maxCount < int64(len(matches)) {
-			sort.Sort(CleanupFiles(matches))
+			sort.Sort(RotatedFiles(matches))
 			removeMatches = append(
 				removeMatches,
 				matches[len(removeMatches):len(matches)-int(cleaner.maxCount)-len(removeMatches)]...,
@@ -66,17 +66,17 @@ func FileCleanup(pattern string, options ...FileCleanerOption) error {
 	return errors_.NewAggregate(errs)
 }
 
-type CleanupFiles []string
+type RotatedFiles []string
 
-func (f CleanupFiles) Len() int {
+func (f RotatedFiles) Len() int {
 	return len(f)
 }
 
-func (f CleanupFiles) Swap(i, j int) {
+func (f RotatedFiles) Swap(i, j int) {
 	f[i], f[j] = f[j], f[i]
 }
 
-func (f CleanupFiles) Less(i, j int) bool {
+func (f RotatedFiles) Less(i, j int) bool {
 	fi, err := os.Stat(f[i])
 	if err != nil {
 		return false
