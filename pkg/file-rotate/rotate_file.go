@@ -8,6 +8,7 @@ import (
 	"regexp"
 	"sort"
 	"strconv"
+	"strings"
 	"sync"
 	"time"
 
@@ -111,6 +112,12 @@ func (f *RotateFiler) getWriterNolock(length int64) (io.Writer, error) {
 		f.seq = f.extractSeq(f.curFilepath)
 	}
 
+	// if curFilePath is different rotated time with filename, need reset curFilePath
+	if !strings.Contains(f.curFilepath, filename) {
+		f.curFilepath = filePath
+		f.seq = 0
+	}
+
 	rotated := false
 
 	fi, err := os.Stat(f.curFilepath)
@@ -125,7 +132,7 @@ func (f *RotateFiler) getWriterNolock(length int64) (io.Writer, error) {
 	//rotate file by size
 	if err == nil && f.opts.rotateSize > 0 && (fi.Size()+length) > f.opts.rotateSize {
 
-		filePath, err = f.generateNextSeqFilename(filePath)
+		f.curFilepath, err = f.generateNextSeqFilename(filePath)
 		if err != nil {
 			return nil, fmt.Errorf("failed to generate rotate file name by seq, err: %v", err)
 		}
@@ -134,19 +141,19 @@ func (f *RotateFiler) getWriterNolock(length int64) (io.Writer, error) {
 	}
 
 	if f.file == nil || rotated {
-		fn, err := os_.OpenFile(filePath, true)
+		fn, err := os_.OpenFile(f.curFilepath, true)
 		if err != nil {
-			return nil, fmt.Errorf("failed to create file: %v, err: %v", filePath, err)
+			return nil, fmt.Errorf("failed to create file: %v, err: %v", f.curFilepath, err)
 		}
 
 		if f.file != nil {
 			f.file.Close()
 		}
 		f.file = fn
-		f.curFilepath = filePath
+
 		f.seq = f.extractSeq(f.curFilepath)
 
-		os_.SymLink(filePath, f.linkpath)
+		os_.SymLink(f.curFilepath, f.linkpath)
 
 		globFile := globFromFileTimeLayout(globPath)
 
