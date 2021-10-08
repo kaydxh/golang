@@ -6,21 +6,25 @@ import (
 	"os"
 	"path/filepath"
 	"regexp"
+	"sort"
+	"strconv"
 	"sync"
 	"time"
 
 	os_ "github.com/kaydxh/golang/go/os"
+	filepath_ "github.com/kaydxh/golang/go/path/filepath"
 	time_ "github.com/kaydxh/golang/go/time"
 	cleanup_ "github.com/kaydxh/golang/pkg/file-cleanup"
 )
 
 type RotateFiler struct {
-	file     *os.File
-	filedir  string
-	linkpath string
-	seq      int64
-	mu       sync.Mutex
-	opts     struct {
+	file        *os.File
+	filedir     string
+	curFilepath string
+	seq         uint64
+	linkpath    string
+	mu          sync.Mutex
+	opts        struct {
 		prefixName     string
 		fileTimeLayout string //default "20060102150405" ,take effect if rotateInterval  > 0
 
@@ -97,22 +101,19 @@ func (f *RotateFiler) getWriterNolock(length int64) (io.Writer, error) {
 		filename = "default.log"
 	}
 
-	//var err error
-	useFilename, err := f.generateNextSeqFilename(filename)
-	if err != nil {
-		return nil, fmt.Errorf("failed to generate rotate file name by seq, err: %v", err)
-	}
-
 	// first rotate log file, maybe /data/logs/logs.test20210917230000.log
 	filePath := filepath.Join(f.filedir, filename)
 	globPath := filepath.Join(filepath.Dir(filePath), f.opts.prefixName)
 
 	// current log file, maybe /data/logs/logs.test20210917230000.log.1
-	useFilepath := filepath.Join(f.filedir, useFilename)
+	if f.curFilepath == "" {
+		f.curFilepath, _ = f.getCurSeqFilename(globPath)
+		f.seq = f.extractSeq(f.curFilepath)
+	}
 
 	rotated := false
 
-	fi, err := os.Stat(useFilepath)
+	fi, err := os.Stat(f.curFilepath)
 	if err != nil {
 		if !os.IsNotExist(err) {
 			return nil, fmt.Errorf("failed to get file info, err: %v", err)
@@ -142,6 +143,8 @@ func (f *RotateFiler) getWriterNolock(length int64) (io.Writer, error) {
 			f.file.Close()
 		}
 		f.file = fn
+		f.curFilepath = filePath
+		f.seq = f.extractSeq(f.curFilepath)
 
 		os_.SymLink(filePath, f.linkpath)
 
@@ -177,5 +180,41 @@ func (f *RotateFiler) generateNextSeqFilename(filePath string) (string, error) {
 		//file exist, need to get next seq filename
 		seq++
 	}
+
+}
+
+// globPath: log/logs.test
+// globFile: [log/logs.test20211008081908.log log/logs.test20211008081908.log.1 log/logs.test20211008081908.log.2]
+func (f *RotateFiler) getCurSeqFilename(globPath string) (string, error) {
+
+	globFile := globFromFileTimeLayout(globPath)
+	matches, err := filepath_.Glob(globFile)
+	if err != nil {
+		return "", err
+	}
+	if len(matches) == 0 {
+		return globPath, nil
+	}
+
+	sort.Sort(cleanup_.CleanupFiles(matches))
+	return matches[len(matches)-1], nil
+}
+
+func (f *RotateFiler) extractSeq(filePath string) uint64 {
+	if filePath == "" {
+		return 0
+	}
+
+	ext := filepath.Ext(filePath)
+	if ext == "" {
+		return 0
+	}
+
+	seq, err := strconv.ParseUint(ext[1:], 10, 64)
+	if err != nil {
+		return 0
+	}
+
+	return seq
 
 }
