@@ -18,11 +18,11 @@ func TestHSetStruct(t *testing.T) {
 		ID  int64  `redis:"redis_id"`
 	}{
 		{
-			Key: "hset-test1",
+			Key: "hset-test-1",
 			ID:  1,
 		},
 		{
-			Key: "hset-test2",
+			Key: "hset-test-2",
 			ID:  2,
 		},
 	}
@@ -36,5 +36,34 @@ func TestHSetStruct(t *testing.T) {
 			t.Fatalf("failed to hset, err: %v", err)
 		}
 		t.Logf("key: %v,  value: %v", testCase.Key, testCase)
+	}
+}
+
+//get all field-value by hash key
+func TestHGetAll(t *testing.T) {
+
+	db := GetDBOrDie()
+
+	testCases := []struct {
+		Key string
+	}{
+		{
+			Key: "hset-test-1",
+		},
+		{
+			Key: "hset-test-2",
+		},
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	for _, testCase := range testCases {
+		result, err := db.HGetAll(ctx, testCase.Key).Result()
+		if err != nil {
+			t.Fatalf("failed to hGetAll, err: %v", err)
+		}
+		t.Logf("key: %v,  result: %v", testCase.Key, result)
+
 	}
 }
