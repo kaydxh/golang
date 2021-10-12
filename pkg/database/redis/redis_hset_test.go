@@ -362,3 +362,41 @@ func TestHSetNX(t *testing.T) {
 
 	}
 }
+
+// set values by fields and  hash key when field is not exist
+/*
+   redis_hset_test.go:397: key: hset-test-1, values: [10 hset-test-1]
+   redis_hset_test.go:397: key: hset-test-2, values: [hset-test-2 20 new field new field_1]
+   redis_hset_test.go:397: key: hset-test-no-exist-1, values: [30]
+*/
+func TestHVals(t *testing.T) {
+
+	db := GetDBOrDie()
+
+	testCases := []struct {
+		Key string
+	}{
+		{
+			Key: "hset-test-1",
+		},
+		{
+			Key: "hset-test-2",
+		},
+		{
+			Key: "hset-test-no-exist-1",
+		},
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	for _, testCase := range testCases {
+		// count is the number of field by hash key
+		vals, err := db.HVals(ctx, testCase.Key).Result()
+		if err != nil {
+			t.Fatalf("failed to HVals, err: %v", err)
+		}
+		t.Logf("key: %v, values: %v", testCase.Key, vals)
+
+	}
+}
