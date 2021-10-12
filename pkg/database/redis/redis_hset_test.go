@@ -200,3 +200,165 @@ func TestHIncrBy(t *testing.T) {
 
 	}
 }
+
+// get fields num by hash key
+func TestHLen(t *testing.T) {
+
+	db := GetDBOrDie()
+
+	testCases := []struct {
+		Key string
+	}{
+		{
+			Key: "hset-test-1",
+		},
+		{
+			Key: "hset-test-2",
+		},
+		{
+			Key: "hset-test-no-exist",
+		},
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	for _, testCase := range testCases {
+		// count is the number of field by hash key
+		count, err := db.HLen(ctx, testCase.Key).Result()
+		if err != nil {
+			t.Fatalf("failed to HLen, err: %v", err)
+		}
+		t.Logf("key: %v, field count: %v", testCase.Key, count)
+
+	}
+}
+
+// get values by fields and  hash key
+func TestHMGet(t *testing.T) {
+
+	db := GetDBOrDie()
+
+	testCases := []struct {
+		Key   string
+		Field string
+	}{
+		{
+			Key:   "hset-test-1",
+			Field: "redis_id",
+		},
+		{
+			Key:   "hset-test-2",
+			Field: "redis_id",
+		},
+		{
+			Key:   "hset-test-no-exist",
+			Field: "redis_id",
+		},
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	for _, testCase := range testCases {
+		// vals is value of field by hash key
+		vals, err := db.HMGet(ctx, testCase.Key, testCase.Field).Result()
+		if err != nil {
+			t.Fatalf("failed to HMGet, err: %v", err)
+		}
+		t.Logf("key: %v, field: %v, vals: %v", testCase.Key, testCase.Field, vals)
+
+	}
+}
+
+// set values by fields and  hash key
+func TestHMSet(t *testing.T) {
+
+	db := GetDBOrDie()
+
+	testCases := []struct {
+		Key   string
+		Field string
+		Value interface{}
+	}{
+		{
+			Key:   "hset-test-1",
+			Field: "redis_id",
+			Value: 10,
+		},
+		{
+			Key:   "hset-test-2",
+			Field: "redis_id",
+			Value: 20,
+		},
+		{
+			Key:   "hset-test-2",
+			Field: "redis_id_new",
+			Value: "new field",
+		},
+		{
+			Key:   "hset-test-no-exist",
+			Field: "redis_id",
+			Value: 30,
+		},
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	for _, testCase := range testCases {
+		// count is the number of field by hash key
+		ok, err := db.HMSet(ctx, testCase.Key, testCase.Field, testCase.Value).Result()
+		if err != nil {
+			t.Fatalf("failed to HMSet, err: %v", err)
+		}
+		t.Logf("key: %v, field: %v, ok: %v", testCase.Key, testCase.Field, ok)
+
+	}
+}
+
+// set values by fields and  hash key when field is not exist
+func TestHSetNX(t *testing.T) {
+
+	db := GetDBOrDie()
+
+	testCases := []struct {
+		Key   string
+		Field string
+		Value interface{}
+	}{
+		{
+			Key:   "hset-test-1",
+			Field: "redis_id",
+			Value: 10,
+		},
+		{
+			Key:   "hset-test-2",
+			Field: "redis_id",
+			Value: 20,
+		},
+		{
+			Key:   "hset-test-2",
+			Field: "redis_id_new_1",
+			Value: "new field_1",
+		},
+		{
+			Key:   "hset-test-no-exist-1",
+			Field: "redis_id",
+			Value: 30,
+		},
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	for _, testCase := range testCases {
+		// count is the number of field by hash key
+		ok, err := db.HSetNX(ctx, testCase.Key, testCase.Field, testCase.Value).Result()
+		if err != nil {
+			t.Fatalf("failed to HSetNX, err: %v", err)
+		}
+		t.Logf("key: %v, field: %v, ok: %v", testCase.Key, testCase.Field, ok)
+
+	}
+}
