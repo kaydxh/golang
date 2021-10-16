@@ -186,3 +186,30 @@ func TestSInterStore(t *testing.T) {
 		t.Logf("sets: %v, SInterStore values: %v", testCase.Keys, vals)
 	}
 }
+
+//delete values from set
+func TestSRem(t *testing.T) {
+	db := GetDBOrDie()
+
+	testCases := []struct {
+		Key    string
+		Values []string
+	}{
+		{
+			Key:    "set-test-1",
+			Values: []string{"values-set-test-1-2"},
+		},
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	for _, testCase := range testCases {
+		//err: CROSSSLOT Keys in request don't hash to the same slot
+		vals, err := db.SRem(ctx, testCase.Key, testCase.Values).Result()
+		if err != nil {
+			t.Fatalf("failed to SRem, err: %v", err)
+		}
+		t.Logf("sets: %v, SRem values: %v", testCase.Key, vals)
+	}
+}
