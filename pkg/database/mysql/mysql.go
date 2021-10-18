@@ -205,15 +205,15 @@ func (d *DB) TxPipelined(ctx context.Context, fn func() error) error {
 
 	defer func() {
 		if err != nil {
-			if errInner := tx.Rollback(); errInner != nil {
-				logrus.WithError(err).Errorf("failed to rollback, err: %v", errInner)
+			if txErr := tx.Rollback(); txErr != nil {
+				logrus.WithError(err).Errorf("failed to rollback, err: %v", txErr)
 				return
 			}
 			return
 		}
 
-		if errInner := tx.Commit(); errInner != nil {
-			logrus.WithError(err).Errorf("failed to rollback, err: %v", errInner)
+		if txErr := tx.Commit(); txErr != nil {
+			logrus.WithError(err).Errorf("failed to commit, err: %v", txErr)
 			return
 		}
 

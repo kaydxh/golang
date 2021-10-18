@@ -14,7 +14,7 @@ type TxDao struct {
 
 func (d *TxDao) Begin(ctx context.Context, db *sqlx.DB, opts *sql.TxOptions) error {
 	if db == nil {
-		return fmt.Errorf("db is nil")
+		return fmt.Errorf("unexpected err: db is nil")
 	}
 
 	tx, err := db.BeginTxx(ctx, opts)
@@ -29,7 +29,7 @@ func (d *TxDao) Begin(ctx context.Context, db *sqlx.DB, opts *sql.TxOptions) err
 
 func (d *TxDao) Commit() error {
 	if d.Tx == nil {
-		return fmt.Errorf("tx is nil")
+		return fmt.Errorf("unexpected err: tx is nil")
 	}
 
 	err := d.Tx.Commit()
@@ -42,7 +42,7 @@ func (d *TxDao) Commit() error {
 // Rollback ...
 func (d *TxDao) Rollback() error {
 	if d.Tx == nil {
-		return fmt.Errorf("tx is nil")
+		return fmt.Errorf("unexpected err: tx is nil")
 	}
 
 	err := d.Tx.Rollback()
