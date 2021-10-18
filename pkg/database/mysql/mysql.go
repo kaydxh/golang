@@ -192,6 +192,41 @@ func (d *DB) GetDatabaseUntil(
 	}
 }
 
+func (d *DB) TxPipelined(ctx context.Context, fn func() error) error {
+	if d.db == nil {
+		return fmt.Errorf("no database pool")
+	}
+
+	var tx TxDao
+	err := tx.Begin(ctx, d.db, nil)
+	if err != nil {
+		return err
+	}
+
+	defer func() {
+		if err != nil {
+			if errInner := tx.Rollback(); errInner != nil {
+				logrus.WithError(err).Errorf("failed to rollback, err: %v", errInner)
+				return
+			}
+			return
+		}
+
+		if errInner := tx.Commit(); errInner != nil {
+			logrus.WithError(err).Errorf("failed to rollback, err: %v", errInner)
+			return
+		}
+
+	}()
+
+	err = fn()
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func (d *DB) Close() error {
 	if d.db == nil {
 		return fmt.Errorf("no database pool")
