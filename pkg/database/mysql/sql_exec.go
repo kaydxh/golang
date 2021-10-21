@@ -4,8 +4,9 @@ import (
 	"context"
 	"time"
 
+	context_ "github.com/kaydxh/golang/go/context"
+
 	"github.com/jmoiron/sqlx"
-	database_ "github.com/kaydxh/golang/pkg/database"
 )
 
 func ExecContext(
@@ -18,7 +19,7 @@ func ExecContext(
 	if h == nil {
 		return nil
 	}
-	ctx, cancel := database_.WithDatabaseExecuteTimeout(ctx, timeout)
+	ctx, cancel := context_.WithTimeout(ctx, timeout)
 	defer cancel()
 
 	return h(ctx, db, query)
