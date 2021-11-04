@@ -57,6 +57,9 @@ func JoinNamedColumnsValues(cols ...string) string {
 
 // "foo=:foo AND bar=:bar" , for where condition
 func JoinNamedColumnsValuesWithOperator(cmp SqlCompare, oper SqlOperator, cols ...string) string {
+	if len(cols) == 0 {
+		return "TRUE"
+	}
 	return strings.Join(namedTableColumnsValues(cmp, cols...), fmt.Sprintf(" %s ", oper))
 }
 
