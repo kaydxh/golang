@@ -108,6 +108,10 @@ func fieldTagsValues(req interface{}, key string, nonzero bool) map[string]inter
 	}
 
 	tt := reflect.TypeOf(req)
+	if tt.Kind() == reflect.Ptr {
+		tt = tt.Elem()
+	}
+
 	if tt.Kind() != reflect.Struct {
 		return nil
 	}
