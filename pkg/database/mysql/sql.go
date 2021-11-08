@@ -50,6 +50,10 @@ func GenerateNameColumsCondition(cmp SqlCompare, oper SqlOperator, condFields ..
 	}())
 }
 
+func GenerateNonzeroFields(arg interface{}) []string {
+	return reflect_.NonzeroFieldTags(arg, dbTag)
+}
+
 //foo=:foo,bar=:bar,  for update set
 func JoinNamedColumnsValues(cols ...string) string {
 	return strings.Join(namedTableColumnsValues(SqlCompareEqual, cols...), ",")
