@@ -192,13 +192,13 @@ func (d *DB) GetDatabaseUntil(
 	}
 }
 
-func (d *DB) TxPipelined(ctx context.Context, fn func() error) error {
+func (d *DB) TxPipelined(ctx context.Context, fn func(*sqlx.Tx) error) (err error) {
 	if d.db == nil {
 		return fmt.Errorf("no database pool")
 	}
 
 	var tx TxDao
-	err := tx.Begin(ctx, d.db, nil)
+	err = tx.Begin(ctx, d.db, nil)
 	if err != nil {
 		return err
 	}
@@ -212,19 +212,14 @@ func (d *DB) TxPipelined(ctx context.Context, fn func() error) error {
 			return
 		}
 
-		if txErr := tx.Commit(); txErr != nil {
-			logrus.WithError(err).Errorf("failed to commit, err: %v", txErr)
+		if err = tx.Commit(); err != nil {
+			logrus.WithError(err).Errorf("failed to commit, err: %v", err)
 			return
 		}
 
 	}()
 
-	err = fn()
-	if err != nil {
-		return err
-	}
-
-	return nil
+	return fn(tx.Tx)
 }
 
 func (d *DB) Close() error {
