@@ -50,8 +50,10 @@ func OpenAll(path string, flag int, perm os.FileMode) (*os.File, error) {
 	}
 
 	// mkdir -p dir
-	if err := os.MkdirAll(dir, perm); err != nil {
-		return nil, err
+	if dir != "" {
+		if err := os.MkdirAll(dir, perm); err != nil {
+			return nil, err
+		}
 	}
 
 	if file == "" {
