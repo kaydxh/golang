@@ -34,7 +34,7 @@ func GenerateCondition(cmp SqlCompare, oper SqlOperator, query string, arg inter
 	condFields := reflect_.NonzeroFieldTags(arg, dbTag)
 	return fmt.Sprintf("%s %s", query, func() string {
 		if len(condFields) == 0 {
-			return ""
+			return "WHERE TRUE"
 		}
 		return fmt.Sprintf(" WHERE %s", JoinNamedColumnsValuesWithOperator(cmp, oper, condFields...))
 	}())
@@ -44,7 +44,7 @@ func GenerateCondition(cmp SqlCompare, oper SqlOperator, query string, arg inter
 func GenerateNameColumsCondition(cmp SqlCompare, oper SqlOperator, condFields ...string) string {
 	return fmt.Sprintf(" %s ", func() string {
 		if len(condFields) == 0 {
-			return ""
+			return "WHERE TRUE"
 		}
 		return fmt.Sprintf(" WHERE %s", JoinNamedColumnsValuesWithOperator(cmp, oper, condFields...))
 	}())
