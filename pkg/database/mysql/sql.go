@@ -65,7 +65,6 @@ func JoinNamedColumnsValuesWithOperator(cmp SqlCompare, oper SqlOperator, cols .
 	if len(cols) == 0 || conds == "" {
 		return "TRUE"
 	}
-
 	return conds
 }
 
@@ -79,7 +78,6 @@ func namedTableColumnsValues(cmp SqlCompare, cols ...string) []string {
 				namedCols = append(namedCols, fmt.Sprintf(`%[1]s %[2]s concat("%%",:%[1]s,"%%")`, col, cmp))
 			default:
 				namedCols = append(namedCols, fmt.Sprintf("%[1]s %[2]s :%[1]s", col, cmp))
-
 			}
 		}
 	}
