@@ -1,6 +1,7 @@
 package strings_test
 
 import (
+	"fmt"
 	"testing"
 
 	strings_ "github.com/kaydxh/golang/go/strings"
@@ -33,6 +34,26 @@ func TestStringIntersection(t *testing.T) {
 			if len(intersection) != len(testCase.expected) {
 				t.Fatalf("Expected Intersection len: %v, got : %v", len(testCase.expected), len(intersection))
 			}
+			t.Logf("intersection :%v", intersection)
+		})
+	}
+}
+
+func TestRemoveEmpty(t *testing.T) {
+	testCases := []struct {
+		s []string
+	}{
+		{
+			s: []string{"1", "", "3", "4"},
+		},
+		{
+			s: []string{"", "", "", ""},
+		},
+	}
+
+	for i, testCase := range testCases {
+		t.Run(fmt.Sprintf("case-%d", i), func(t *testing.T) {
+			intersection := strings_.RemoveEmpty(testCase.s)
 			t.Logf("intersection :%v", intersection)
 		})
 	}
