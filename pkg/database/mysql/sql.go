@@ -54,6 +54,21 @@ func GenerateNonzeroFields(arg interface{}) []string {
 	return reflect_.NonzeroFieldTags(arg, dbTag)
 }
 
+func GenerateInCondition(cond string, values ...string) string {
+	if cond == "" || len(values) == 0 {
+		return "TRUE"
+	}
+
+	return fmt.Sprintf(`%s IN (%s)`, cond, func() string {
+		var msg string
+		for _, v := range values {
+			msg += fmt.Sprintf(`"%s",`, v)
+		}
+		msg = strings.TrimRight(msg, ",")
+		return msg
+	}())
+}
+
 //foo=:foo,bar=:bar,  for update set
 func JoinNamedColumnsValues(cols ...string) string {
 	return strings.Join(namedTableColumnsValues(SqlCompareEqual, cols...), ",")
