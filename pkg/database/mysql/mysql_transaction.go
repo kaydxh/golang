@@ -6,6 +6,7 @@ import (
 	"fmt"
 
 	"github.com/jmoiron/sqlx"
+	"github.com/sirupsen/logrus"
 )
 
 type TxDao struct {
@@ -50,4 +51,31 @@ func (d *TxDao) Rollback() error {
 		return err
 	}
 	return nil
+}
+
+func TxPipelined(ctx context.Context, db *sqlx.DB, fn func(*sqlx.Tx) error) (err error) {
+	var tx TxDao
+	err = tx.Begin(ctx, db, nil)
+	if err != nil {
+		logrus.WithError(err).Errorf("failed to transaction begin")
+		return err
+	}
+
+	defer func() {
+		if err != nil {
+			if txErr := tx.Rollback(); txErr != nil {
+				logrus.WithError(err).Errorf("failed to rollback, err: %v", txErr)
+				return
+			}
+			return
+		}
+
+		if err = tx.Commit(); err != nil {
+			logrus.WithError(err).Errorf("failed to commit")
+			return
+		}
+
+	}()
+
+	return fn(tx.Tx)
 }
