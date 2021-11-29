@@ -29,9 +29,6 @@ func GetViper(configFile string, subKeys string) *viper.Viper {
 
 	v := viper.GetViper()
 	keys := strings.Split(subKeys, ".")
-	if len(keys) == 1 {
-		return v
-	}
 
 	for _, k := range keys {
 		v = v.Sub(k)
