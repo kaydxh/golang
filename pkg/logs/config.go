@@ -1,8 +1,11 @@
 package logs
 
 import (
+	"fmt"
 	"os"
+	"path"
 	"path/filepath"
+	"runtime"
 	"time"
 
 	"github.com/go-playground/validator/v10"
@@ -61,7 +64,14 @@ func (c *completedConfig) install() error {
 	logrus.Infof("Installing Logs")
 
 	if c.Proto.GetFormatter() == Log_json {
-		logrus.SetFormatter(&logrus.JSONFormatter{})
+		logrus.SetFormatter(&logrus.JSONFormatter{
+			CallerPrettyfier: func(f *runtime.Frame) (function string, file string) {
+				funcname := path.Base(f.Function)
+				dir := path.Dir(f.File)
+				filename := filepath.Join(path.Base(dir), path.Base(f.File))
+				return fmt.Sprintf("%s()", funcname), fmt.Sprintf("%s:%d", filename, f.Line)
+			},
+		})
 
 	} else {
 		//DisableColors set true, out format:
