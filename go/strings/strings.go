@@ -20,15 +20,14 @@ func Replace(s string, old string, news []string, n int) string {
 		return s
 	}
 
-	// if len(news) < n , padding news use last element in news
-	for i := 0; i < n-len(news); i++ {
-		news = append(news, news[len(news)-1])
-	}
-
 	if m := strings.Count(s, old); m == 0 {
 		return s // avoid allocation
 	} else if n < 0 || m < n {
 		n = m
+	}
+	// if len(news) < n , padding news use last element in news
+	for i := 0; i < n-len(news); i++ {
+		news = append(news, news[len(news)-1])
 	}
 
 	incLen := 0
@@ -57,4 +56,8 @@ func Replace(s string, old string, news []string, n int) string {
 	b.WriteString(s[start:])
 	return b.String()
 
+}
+
+func ReplaceAll(s, old string, news []string) string {
+	return Replace(s, old, news, -1)
 }
