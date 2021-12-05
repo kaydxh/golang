@@ -11,21 +11,21 @@ func TestReplace(t *testing.T) {
 	testCases := []struct {
 		s        string
 		old      string
-		news     []string
+		news     []interface{}
 		n        int
 		expected string
 	}{
 		{
 			s:        "task_id in (?)",
 			old:      "?",
-			news:     []string{`"a"`},
+			news:     []interface{}{"a"},
 			n:        1,
 			expected: `task_id in ("a")`,
 		},
 		{
 			s:        "task_id in (?, ?, ?, ?, ?)",
 			old:      "?",
-			news:     []string{`"a"`, `"a"`, `"a"`, `"a"`},
+			news:     []interface{}{"a", "a", "a", "a"},
 			n:        5,
 			expected: `task_id in ("a", "a", "a", "a", "a")`,
 		},
@@ -33,7 +33,7 @@ func TestReplace(t *testing.T) {
 
 	for _, testCase := range testCases {
 		t.Run(testCase.s, func(t *testing.T) {
-			newStr := strings_.Replace(testCase.s, testCase.old, testCase.news, testCase.n)
+			newStr := strings_.Replace(testCase.s, testCase.old, testCase.news, true, testCase.n)
 			t.Logf("newStr: %v", newStr)
 			assert.Equal(t, testCase.expected, newStr)
 
@@ -46,26 +46,26 @@ func TestReplaceAll(t *testing.T) {
 	testCases := []struct {
 		s        string
 		old      string
-		news     []string
+		news     []interface{}
 		expected string
 	}{
 		{
 			s:        "task_id in (?)",
 			old:      "?",
-			news:     []string{`"a"`},
+			news:     []interface{}{"a"},
 			expected: `task_id in ("a")`,
 		},
 		{
 			s:        "task_id in (?, ?, ?, ?, ?)",
 			old:      "?",
-			news:     []string{`"a"`, `"a"`, `"a"`, `"a"`},
+			news:     []interface{}{"a", "a", "a", "a"},
 			expected: `task_id in ("a", "a", "a", "a", "a")`,
 		},
 	}
 
 	for _, testCase := range testCases {
 		t.Run(testCase.s, func(t *testing.T) {
-			newStr := strings_.ReplaceAll(testCase.s, testCase.old, testCase.news)
+			newStr := strings_.ReplaceAll(testCase.s, testCase.old, testCase.news, true)
 			t.Logf("newStr: %v", newStr)
 			assert.Equal(t, testCase.expected, newStr)
 
