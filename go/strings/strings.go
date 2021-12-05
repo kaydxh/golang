@@ -1,6 +1,7 @@
 package strings
 
 import (
+	"fmt"
 	"strings"
 	"unicode/utf8"
 )
@@ -15,6 +16,7 @@ func GetStringOrFallback(values []string, defaultValue string) string {
 	return defaultValue
 }
 
+/*
 func Replace(s string, old string, news []string, n int) string {
 	if len(news) == 0 || n == 0 {
 		return s
@@ -57,7 +59,54 @@ func Replace(s string, old string, news []string, n int) string {
 	return b.String()
 
 }
+*/
 
+/*
 func ReplaceAll(s, old string, news []string) string {
 	return Replace(s, old, news, -1)
+}
+*/
+
+func Replace(s string, old string, news []interface{}, useQuote bool, n int) string {
+	if len(news) == 0 || n == 0 {
+		return s
+	}
+
+	if m := strings.Count(s, old); m == 0 {
+		return s // avoid allocation
+	} else if n < 0 || m < n {
+		n = m
+	}
+	// if len(news) < n , padding news use last element in news
+	for i := 0; i < n-len(news); i++ {
+		news = append(news, news[len(news)-1])
+	}
+
+	var b strings.Builder
+	start := 0
+	for i := 0; i < n; i++ {
+		j := start
+		if len(old) == 0 {
+			if i > 0 {
+				_, wid := utf8.DecodeRuneInString(s[start:])
+				j += wid
+			}
+		} else {
+			j += strings.Index(s[start:], old)
+		}
+		b.WriteString(s[start:j])
+		if useQuote {
+			b.WriteString(fmt.Sprintf(`"%v"`, news[i]))
+		} else {
+			b.WriteString(fmt.Sprintf("%v", news[i]))
+		}
+		start = j + len(old)
+	}
+	b.WriteString(s[start:])
+	return b.String()
+
+}
+
+func ReplaceAll(s, old string, news []interface{}, useQuote bool) string {
+	return Replace(s, old, news, useQuote, -1)
 }
