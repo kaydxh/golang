@@ -1,6 +1,7 @@
 package mysql_test
 
 import (
+	"fmt"
 	"testing"
 
 	mysql_ "github.com/kaydxh/golang/pkg/database/mysql"
@@ -49,3 +50,63 @@ func TestGenerateInCondition(t *testing.T) {
 		})
 	}
 }
+
+func TestNamedInCondition(t *testing.T) {
+
+	testCases := []struct {
+		cols []string
+		arg  interface{}
+	}{
+		{
+			cols: []string{"task_id"},
+			arg: struct {
+				TaskId []string `db:"task_id"`
+			}{
+				TaskId: []string{"task_id_1", "task_id_2"},
+			},
+		},
+		{
+			cols: []string{"task_id"},
+			arg: struct {
+				TaskId []int `db:"task_id"`
+			}{
+				TaskId: []int{0, 1},
+			},
+		},
+	}
+
+	for i, testCase := range testCases {
+		t.Run(fmt.Sprintf("%v", i), func(t *testing.T) {
+			query, err := mysql_.NamedInCondition(mysql_.SqlOperatorAnd, testCase.cols, testCase.arg)
+			if err != nil {
+				t.Fatalf("err: %v", err)
+			}
+			t.Logf("sql: %v", query)
+		})
+	}
+}
+
+/*
+func TestGenerateSQL(t *testing.T) {
+	arg := struct {
+		TaskId string   `db:"task_id"`
+		Name   []string `db:"name"`
+	}{
+		TaskId: "task-id",
+		Name:   []string{"name1", "name2"},
+	}
+	//sql := "SELECT *FROM t_task where task_id=:task_id and name In(:name)"
+	sql := "SELECT *FROM t_task where task_id=:task_id"
+	query, args, err := sqlx.Named(sql, arg)
+	if err != nil {
+		t.Fatalf("falied to named, err: %v", err)
+	}
+	query, args, err = sqlx.In(query, args...)
+	if err != nil {
+		t.Fatalf("falied to In, err: %v", err)
+	}
+
+	// ns, err := d.db.PrepareNamedContext(ctx, query)
+	t.Logf("query: %v, args: %v", query, args)
+}
+*/

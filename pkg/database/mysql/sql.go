@@ -4,7 +4,9 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/jmoiron/sqlx"
 	reflect_ "github.com/kaydxh/golang/go/reflect"
+	strings_ "github.com/kaydxh/golang/go/strings"
 )
 
 const dbTag = "db"
@@ -19,6 +21,7 @@ const (
 	SqlCompareGreatEqual SqlCompare = ">="
 	SqlCompareLessEqual  SqlCompare = "<="
 	SqlCompareLike       SqlCompare = "LIKE"
+	SqlCompareIn         SqlCompare = "IN"
 )
 
 type SqlOperator string
@@ -69,6 +72,20 @@ func GenerateInCondition(cond string, values ...string) string {
 	}())
 }
 
+func NamedInCondition(oper SqlOperator, cols []string, arg interface{}) (string, error) {
+	query := JoinNamedColumnsValuesWithOperator(SqlCompareIn, oper, cols...)
+	query, args, err := sqlx.Named(query, arg)
+	if err != nil {
+		return "", err
+	}
+	query, args, err = sqlx.In(query, args...)
+	if err != nil {
+		return "", err
+	}
+
+	return strings_.ReplaceAll(query, "?", args, true), nil
+}
+
 //foo=:foo,bar=:bar,  for update set
 func JoinNamedColumnsValues(cols ...string) string {
 	return strings.Join(namedTableColumnsValues(SqlCompareEqual, cols...), ",")
@@ -80,6 +97,7 @@ func JoinNamedColumnsValuesWithOperator(cmp SqlCompare, oper SqlOperator, cols .
 	if len(cols) == 0 || conds == "" {
 		return "TRUE"
 	}
+
 	return conds
 }
 
@@ -91,6 +109,8 @@ func namedTableColumnsValues(cmp SqlCompare, cols ...string) []string {
 			switch cmp {
 			case SqlCompareLike:
 				namedCols = append(namedCols, fmt.Sprintf(`%[1]s %[2]s concat("%%",:%[1]s,"%%")`, col, cmp))
+			case SqlCompareIn:
+				namedCols = append(namedCols, fmt.Sprintf("%[1]s %[2]s (:%[1]s)", col, cmp))
 			default:
 				namedCols = append(namedCols, fmt.Sprintf("%[1]s %[2]s :%[1]s", col, cmp))
 			}
