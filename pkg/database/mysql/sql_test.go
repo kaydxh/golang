@@ -28,7 +28,7 @@ func TestJoinNamedColumnsValuesWithOperator(t *testing.T) {
 	}
 }
 
-func TestGenerateInCondition(t *testing.T) {
+func TestInCondition(t *testing.T) {
 	testCases := []struct {
 		cond   string
 		values []string
@@ -45,7 +45,7 @@ func TestGenerateInCondition(t *testing.T) {
 
 	for _, testCase := range testCases {
 		t.Run(string(testCase.cond), func(t *testing.T) {
-			query := mysql_.GenerateInCondition(testCase.cond, testCase.values...)
+			query := mysql_.InCondition(testCase.cond, testCase.values...)
 			t.Logf("sql: %v", query)
 		})
 	}

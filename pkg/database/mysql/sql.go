@@ -32,32 +32,32 @@ const (
 	SqlOperatorNot SqlOperator = "NOT"
 )
 
-// "WHERE foo=:foo AND bar=:bar"
-func GenerateCondition(cmp SqlCompare, oper SqlOperator, query string, arg interface{}) string {
+// "foo=:foo AND bar=:bar"
+func ArgCondition(cmp SqlCompare, oper SqlOperator, arg interface{}) string {
 	condFields := reflect_.NonzeroFieldTags(arg, dbTag)
-	return fmt.Sprintf("%s %s", query, func() string {
-		if len(condFields) == 0 {
-			return "WHERE TRUE"
-		}
-		return fmt.Sprintf(" WHERE %s", JoinNamedColumnsValuesWithOperator(cmp, oper, condFields...))
-	}())
-}
-
-// "WHERE foo=:foo AND bar=:bar"
-func GenerateNameColumsCondition(cmp SqlCompare, oper SqlOperator, condFields ...string) string {
 	return fmt.Sprintf(" %s ", func() string {
 		if len(condFields) == 0 {
-			return "WHERE TRUE"
+			return "TRUE"
 		}
-		return fmt.Sprintf(" WHERE %s", JoinNamedColumnsValuesWithOperator(cmp, oper, condFields...))
+		return fmt.Sprintf("%s", JoinNamedColumnsValuesWithOperator(cmp, oper, condFields...))
 	}())
 }
 
-func GenerateNonzeroFields(arg interface{}) []string {
+// "foo=:foo AND bar=:bar"
+func NameColumsCondition(cmp SqlCompare, oper SqlOperator, condFields ...string) string {
+	return fmt.Sprintf(" %s ", func() string {
+		if len(condFields) == 0 {
+			return "TRUE"
+		}
+		return fmt.Sprintf("%s", JoinNamedColumnsValuesWithOperator(cmp, oper, condFields...))
+	}())
+}
+
+func NonzeroFields(arg interface{}) []string {
 	return reflect_.NonzeroFieldTags(arg, dbTag)
 }
 
-func GenerateInCondition(cond string, values ...string) string {
+func InCondition(cond string, values ...string) string {
 	if cond == "" || len(values) == 0 {
 		return "TRUE"
 	}
