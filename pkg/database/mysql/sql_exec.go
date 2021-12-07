@@ -2,9 +2,14 @@ package mysql
 
 import (
 	"context"
+	"database/sql"
+	"fmt"
 	"time"
 
 	context_ "github.com/kaydxh/golang/go/context"
+	runtime_ "github.com/kaydxh/golang/go/runtime"
+	time_ "github.com/kaydxh/golang/go/time"
+	"github.com/sirupsen/logrus"
 
 	"github.com/jmoiron/sqlx"
 )
@@ -23,4 +28,69 @@ func ExecContext(
 	defer cancel()
 
 	return h(ctx, db, query)
+}
+
+func GetCountContext(ctx context.Context, query string, arg interface{}, db *sqlx.DB) (count uint32, err error) {
+	tc := time_.New(true)
+	caller := runtime_.GetShortCaller()
+	logger := logrus.WithField("caller", caller)
+
+	clean := func() {
+		tc.Tick(caller)
+		logger.WithField("cost", tc.String()).Infof("SQL EXECL")
+		if err != nil {
+			logger.WithError(err).Errorf("sql: %s", query)
+		}
+	}
+	defer clean()
+
+	ns, err := db.PrepareNamedContext(ctx, query)
+	if err != nil {
+		return 0, err
+	}
+	defer ns.Close()
+
+	err = ns.QueryRowContext(ctx, arg).Scan(&count)
+	if err != nil {
+		return 0, err
+	}
+
+	return count, nil
+
+}
+
+func NamedExecContext(
+	ctx context.Context,
+	query string,
+	arg interface{},
+	tx *sqlx.Tx,
+	db *sqlx.DB,
+) (sql.Result, error) {
+
+	if tx != nil {
+		return tx.NamedExecContext(ctx, query, arg)
+	}
+
+	if db != nil {
+		return db.NamedExecContext(ctx, query, arg)
+	}
+
+	return nil, fmt.Errorf("db is nil")
+}
+
+func PrepareNamedContext(ctx context.Context,
+	query string,
+	tx *sqlx.Tx,
+	db *sqlx.DB,
+) (*sqlx.NamedStmt, error) {
+
+	if tx != nil {
+		return tx.PrepareNamedContext(ctx, query)
+	}
+
+	if db != nil {
+		return db.PrepareNamedContext(ctx, query)
+	}
+
+	return nil, fmt.Errorf("db is nil")
 }
