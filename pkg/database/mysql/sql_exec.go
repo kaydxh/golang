@@ -64,29 +64,6 @@ func ExecContext(
 	return nil
 }
 
-func GetContext(ctx context.Context, query string, arg interface{}, db *sqlx.DB, results interface{}) (err error) {
-	tc := time_.New(true)
-	caller := runtime_.GetShortCaller()
-	logger := logrus.WithField("caller", caller)
-
-	clean := func() {
-		tc.Tick(caller)
-		logger.WithField("cost", tc.String()).Infof("SQL EXECL")
-		if err != nil {
-			logger.WithError(err).Errorf("sql: %s", query)
-		}
-	}
-	defer clean()
-
-	ns, err := db.PrepareNamedContext(ctx, query)
-	if err != nil {
-		return err
-	}
-	defer ns.Close()
-
-	return ns.SelectContext(ctx, &results, arg)
-}
-
 func GetCountContext(ctx context.Context, query string, arg interface{}, db *sqlx.DB) (count uint32, err error) {
 	tc := time_.New(true)
 	caller := runtime_.GetShortCaller()
