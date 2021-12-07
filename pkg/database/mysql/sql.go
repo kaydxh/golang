@@ -43,16 +43,6 @@ func NonzeroCondition(cmp SqlCompare, oper SqlOperator, arg interface{}) string 
 	}())
 }
 
-// "foo=:foo AND bar=:bar"
-func NameColumsCondition(cmp SqlCompare, oper SqlOperator, condFields ...string) string {
-	return fmt.Sprintf(" %s ", func() string {
-		if len(condFields) == 0 {
-			return "TRUE"
-		}
-		return fmt.Sprintf("%s", JoinNamedColumnsValuesWithOperator(cmp, oper, condFields...))
-	}())
-}
-
 func NonzeroFields(arg interface{}) []string {
 	return reflect_.NonzeroFieldTags(arg, dbTag)
 }
