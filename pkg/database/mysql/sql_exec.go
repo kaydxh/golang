@@ -4,9 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
-	"time"
 
-	context_ "github.com/kaydxh/golang/go/context"
 	runtime_ "github.com/kaydxh/golang/go/runtime"
 	time_ "github.com/kaydxh/golang/go/time"
 	"github.com/sirupsen/logrus"
@@ -14,6 +12,7 @@ import (
 	"github.com/jmoiron/sqlx"
 )
 
+/*
 func ExecContext(
 	ctx context.Context,
 	timeout time.Duration,
@@ -28,6 +27,64 @@ func ExecContext(
 	defer cancel()
 
 	return h(ctx, db, query)
+}
+*/
+
+func ExecContext(
+	ctx context.Context,
+	query string,
+	arg interface{},
+	tx *sqlx.Tx,
+	db *sqlx.DB,
+) (err error) {
+	tc := time_.New(true)
+	caller := runtime_.GetShortCaller()
+	logger := logrus.WithField("caller", caller)
+
+	clean := func() {
+		tc.Tick(caller)
+		logger.WithField("cost", tc.String()).Infof("SQL EXECL")
+		if err != nil {
+			logger.WithError(err).Errorf("sql: %s", query)
+		}
+	}
+	defer clean()
+
+	result, err := NamedExecContext(ctx, query, arg, tx, db)
+	if err != nil {
+		return err
+	}
+
+	rows, err := result.RowsAffected()
+	if err != nil {
+		return err
+	}
+	logger.Infof("affected rows: %v", rows)
+
+	return nil
+}
+
+func GetContext(ctx context.Context, query string, arg interface{}, db *sqlx.DB, results interface{}) (err error) {
+	tc := time_.New(true)
+	caller := runtime_.GetShortCaller()
+	logger := logrus.WithField("caller", caller)
+
+	clean := func() {
+		tc.Tick(caller)
+		logger.WithField("cost", tc.String()).Infof("SQL EXECL")
+		if err != nil {
+			logger.WithError(err).Errorf("sql: %s", query)
+		}
+	}
+	defer clean()
+
+	ns, err := db.PrepareNamedContext(ctx, query)
+	if err != nil {
+		return err
+	}
+	defer ns.Close()
+
+	return ns.SelectContext(ctx, &results, arg)
 }
 
 func GetCountContext(ctx context.Context, query string, arg interface{}, db *sqlx.DB) (count uint32, err error) {
