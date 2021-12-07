@@ -33,7 +33,7 @@ const (
 )
 
 // "foo=:foo AND bar=:bar"
-func ArgCondition(cmp SqlCompare, oper SqlOperator, arg interface{}) string {
+func NonzeroCondition(cmp SqlCompare, oper SqlOperator, arg interface{}) string {
 	condFields := reflect_.NonzeroFieldTags(arg, dbTag)
 	return fmt.Sprintf(" %s ", func() string {
 		if len(condFields) == 0 {
