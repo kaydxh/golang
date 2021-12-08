@@ -86,6 +86,33 @@ func TestNamedInCondition(t *testing.T) {
 	}
 }
 
+func TestOrderCondition(t *testing.T) {
+
+	testCases := []struct {
+		orders map[string]bool
+	}{
+
+		{
+			orders: map[string]bool{
+				"task_id": true,
+			},
+		},
+		{
+			orders: map[string]bool{
+				"task_id": false,
+				"score":   false,
+			},
+		},
+	}
+
+	for i, testCase := range testCases {
+		t.Run(fmt.Sprintf("%v", i), func(t *testing.T) {
+			query := mysql_.OrderCondition(testCase.orders)
+			t.Logf("sql: %v", query)
+		})
+	}
+}
+
 /*
 func TestGenerateSQL(t *testing.T) {
 	arg := struct {

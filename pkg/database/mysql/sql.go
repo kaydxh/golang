@@ -47,6 +47,29 @@ func NonzeroFields(arg interface{}) []string {
 	return reflect_.NonzeroFieldTags(arg, dbTag)
 }
 
+// "ORDER BY create_time DESC, id DESC"
+func OrderCondition(orders map[string]bool) string {
+	if len(orders) == 0 {
+		return ""
+	}
+
+	return fmt.Sprintf(" ORDER BY %s", func() string {
+		var msg string
+		for k, v := range orders {
+			msg += fmt.Sprintf("%s %s,", k, func() string {
+				if v {
+					return "DESC"
+				}
+				return "ASC"
+			}())
+		}
+
+		msg = strings.TrimRight(msg, ",")
+		return msg
+	}())
+
+}
+
 func InCondition(cond string, values ...string) string {
 	if cond == "" || len(values) == 0 {
 		return "TRUE"
