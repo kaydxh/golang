@@ -47,6 +47,10 @@ func NonzeroFields(arg interface{}) []string {
 	return reflect_.NonzeroFieldTags(arg, dbTag)
 }
 
+func ConditionWithEqualAnd(condFields ...string) string {
+	return JoinNamedColumnsValuesWithOperator(SqlCompareEqual, SqlOperatorAnd, condFields...)
+}
+
 // "ORDER BY create_time DESC, id DESC"
 func OrderCondition(orders map[string]bool) string {
 	if len(orders) == 0 {
