@@ -1,0 +1,6 @@
+error_template:
+  - error_code: InternalError.DeadlineExceeded
+    error_desc: #
+    error_message:
+      zh: 内部错误，超出请求时限
+      en: Internal error, deadline exceeded
