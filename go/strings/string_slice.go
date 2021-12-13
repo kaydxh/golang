@@ -45,6 +45,16 @@ func RemoveEmpty(s []string) []string {
 	return ss
 }
 
+func ContainsString(val string, vals []string) bool {
+	for _, v := range vals {
+		if val == v {
+			return true
+		}
+	}
+
+	return false
+}
+
 /*
 func SliceIntersectionInt(s1 []int, s2 []int) []int {
 	ss1 := set_.NewObject(set_.GenerateArray([...]int(s1...)))
