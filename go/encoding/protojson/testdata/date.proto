@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package golang.go.encoding.date.v1;
+import "google/protobuf/descriptor.proto";
+
+option go_package = "github.com/kaydxh/golang/go/encoding/v1;date";
+
+
+message DateRequest {
+  string request_id = 1[json_name = "RequestId"];
+}
+
+message DateResponse {
+  string request_id = 1 [json_name = "RequestId"];
+  string date = 2 [json_name = "Date"];
+}
