@@ -2,7 +2,6 @@ package time
 
 import (
 	"context"
-	"fmt"
 	"time"
 )
 
@@ -76,7 +75,7 @@ func BackOffUntilWithContext(
 		}
 
 		remain = t - tc.Elapse()
-		fmt.Printf("remain: %v, data: %v\n", remain, time.Now().String())
+		//	fmt.Printf("remain: %v, data: %v\n", remain, time.Now().String())
 
 		func() {
 			if remain <= 0 {
