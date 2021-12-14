@@ -2,10 +2,45 @@ package time
 
 import (
 	"context"
+	"fmt"
 	"time"
 )
 
-func BackOffUntilWithContext(ctx context.Context, f func(), backoff Backoff, sliding bool, stopCh <-chan struct{}) {
+// Until loops until stop channel is closed, running f every period.
+//
+// Until is syntactic sugar on top of JitterUntil with zero jitter factor and
+// with sliding = true (which means the timer for period starts after the f
+// completes).
+func UntilWithContxt(
+	ctx context.Context,
+	f func(ctx context.Context), period time.Duration) {
+	JitterUntilWithContext(ctx, f, period, nil)
+}
+
+func JitterUntilWithContext(
+	ctx context.Context,
+	f func(ctx context.Context),
+	period time.Duration,
+	stopCh <-chan struct{},
+) {
+	BackOffUntilWithContext(ctx, f,
+		NewExponentialBackOff(
+			// forever run
+			WithExponentialBackOffOptionMaxElapsedTime(0),
+			WithExponentialBackOffOptionInitialInterval(period),
+			WithExponentialBackOffOptionMultiplier(1),
+			WithExponentialBackOffOptionRandomizationFactor(0),
+		), true, stopCh)
+
+}
+
+func BackOffUntilWithContext(
+	ctx context.Context,
+	f func(ctx context.Context),
+	backoff Backoff,
+	sliding bool,
+	stopCh <-chan struct{},
+) {
 	var (
 		t      time.Duration
 		remain time.Duration
@@ -14,6 +49,8 @@ func BackOffUntilWithContext(ctx context.Context, f func(), backoff Backoff, sli
 
 	for {
 		select {
+		case <-ctx.Done():
+			return
 		case <-stopCh:
 			return
 		default:
@@ -26,7 +63,7 @@ func BackOffUntilWithContext(ctx context.Context, f func(), backoff Backoff, sli
 		}
 
 		func() {
-			f()
+			f(ctx)
 		}()
 
 		if sliding {
@@ -39,7 +76,7 @@ func BackOffUntilWithContext(ctx context.Context, f func(), backoff Backoff, sli
 		}
 
 		remain = t - tc.Elapse()
-		//	fmt.Printf("remain: %v, data: %v\n", remain, time.Now().String())
+		fmt.Printf("remain: %v, data: %v\n", remain, time.Now().String())
 
 		func() {
 			if remain <= 0 {
@@ -55,6 +92,8 @@ func BackOffUntilWithContext(ctx context.Context, f func(), backoff Backoff, sli
 			// of every loop to prevent extra executions of f().
 
 			select {
+			case <-ctx.Done():
+				return
 			case <-stopCh:
 				return
 			case <-timer.C:
