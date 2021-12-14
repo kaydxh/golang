@@ -14,13 +14,13 @@ func TestBackOffUntilWithContext(t *testing.T) {
 		name    string
 		period  time.Duration
 		sliding bool
-		f       func()
+		f       func(context.Context)
 	}{
 		{
 			name:    "test-sliding",
 			period:  5 * time.Second,
 			sliding: true,
-			f: func() {
+			f: func(context.Context) {
 				time.Sleep(time.Second)
 				fmt.Println("test-sliding")
 			},
@@ -29,7 +29,7 @@ func TestBackOffUntilWithContext(t *testing.T) {
 			name:    "test-nonsliding",
 			sliding: false,
 			period:  5 * time.Second,
-			f: func() {
+			f: func(context.Context) {
 				fmt.Println("test-nonsliding")
 			},
 		},
@@ -38,8 +38,11 @@ func TestBackOffUntilWithContext(t *testing.T) {
 	for _, testCase := range testCases {
 		t.Run(testCase.name, func(t *testing.T) {
 			var stopCh chan struct{}
+			ctx, cancel := context.WithTimeout(context.Background(), 20*time.Second)
+			defer cancel()
+
 			time_.BackOffUntilWithContext(
-				context.Background(),
+				ctx,
 				testCase.f,
 				time_.NewExponentialBackOff(
 					// forever run
