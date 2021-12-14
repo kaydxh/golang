@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-// Until loops until stop channel is closed, running f every period.
+// Until loops until context timout, running f every period.
 //
 // Until is syntactic sugar on top of JitterUntil with zero jitter factor and
 // with sliding = true (which means the timer for period starts after the f
