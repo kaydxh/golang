@@ -64,6 +64,38 @@ func ExecContext(
 	return nil
 }
 
+// pointer struct model for dest
+func SelectNamedContext(
+	ctx context.Context,
+	query string,
+	arg interface{},
+	dest interface{},
+	db *sqlx.DB,
+) (err error) {
+	tc := time_.New(true)
+	caller := runtime_.GetShortCaller()
+	logger := logrus.WithField("caller", caller)
+
+	clean := func() {
+		tc.Tick(caller)
+		logger.WithField("cost", tc.String()).Infof("SQL EXECL")
+		if err != nil {
+			logger.WithError(err).Errorf("sql: %s", query)
+		}
+	}
+	defer clean()
+
+	// prepare
+	ns, err := db.PrepareNamedContext(ctx, query)
+	if err != nil {
+		return err
+	}
+	defer ns.Close()
+
+	// query
+	return ns.SelectContext(ctx, dest, arg)
+}
+
 func GetCountContext(ctx context.Context, query string, arg interface{}, db *sqlx.DB) (count uint32, err error) {
 	tc := time_.New(true)
 	caller := runtime_.GetShortCaller()
