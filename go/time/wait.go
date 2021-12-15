@@ -6,7 +6,6 @@ import (
 )
 
 // Until loops until context timout, running f every period.
-//
 // Until is syntactic sugar on top of JitterUntil with zero jitter factor and
 // with sliding = true (which means the timer for period starts after the f
 // completes).
@@ -41,9 +40,9 @@ func BackOffUntilWithContext(
 	stopCh <-chan struct{},
 ) {
 	var (
-		t      time.Duration
-		remain time.Duration
-		ok     bool
+		t       time.Duration
+		remain  time.Duration
+		expired bool
 	)
 
 	for {
@@ -58,7 +57,7 @@ func BackOffUntilWithContext(
 		tc := New(true)
 		if !sliding {
 			// If it is false then period includes the runtime for f
-			t, ok = backoff.NextBackOff()
+			t, expired = backoff.NextBackOff()
 		}
 
 		func() {
@@ -68,9 +67,9 @@ func BackOffUntilWithContext(
 		if sliding {
 			// If sliding is true, the period is computed after f runs
 			tc.Reset()
-			t, ok = backoff.NextBackOff()
+			t, expired = backoff.NextBackOff()
 		}
-		if !ok {
+		if !expired {
 			return
 		}
 
