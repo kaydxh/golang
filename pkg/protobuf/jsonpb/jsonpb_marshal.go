@@ -23,7 +23,7 @@ func MarshaToStructpb(v interface{}) (*structpb.Struct, error) {
 		m := jsonpb.Marshaler{EmitDefaults: true}
 		data, err := m.MarshalToString(v)
 		if err != nil {
-			return nil, fmt.Errorf("jsonpb.Marshal: %v", err)
+			return nil, fmt.Errorf("failed to Marshal json: %v", err)
 		}
 		jb = []byte(data)
 
@@ -39,7 +39,7 @@ func MarshaToStructpb(v interface{}) (*structpb.Struct, error) {
 		var err error
 		jb, err = json.Marshal(v)
 		if err != nil {
-			return nil, fmt.Errorf("jsonpb.Marshal: %v", err)
+			return nil, fmt.Errorf("failed to Marshal json: %v", err)
 		}
 	}
 
