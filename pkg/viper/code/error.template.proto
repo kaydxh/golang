@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+// 错误码
+package youtu.ocr.api.code;
+import "google/protobuf/descriptor.proto";
+// import "github.com/googleapis/googleapis/google/rpc/code.proto";
+
+option go_package = "git.code.oa.com/yt-industry-ocr/yt-industry-ocr-backend/protobuf-spec/"
+                    "code;code";
+
+message ErrorTemplate {
+  repeated ErrorItem error_template = 1;
+
+  message ErrorItem {
+    string error_code = 1;
+    string error_desc = 2;
+    map<string, string> error_message = 3;
+  }
+}
+
