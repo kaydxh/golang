@@ -8,6 +8,7 @@ import (
 	"github.com/go-playground/validator/v10"
 	viper_ "github.com/kaydxh/golang/pkg/viper"
 	"github.com/sirupsen/logrus"
+	"google.golang.org/grpc"
 
 	gw_ "github.com/kaydxh/golang/pkg/grpc-gateway"
 	"github.com/ory/viper"
@@ -134,6 +135,10 @@ func (c *Config) Complete() CompletedConfig {
 	}
 
 	return CompletedConfig{&completedConfig{Config: c}}
+}
+
+func (c *Config) WithGRPCGatewayOptions(opts ...grpc.UnaryServerInterceptor) {
+	c.opts.gatewayOptions = append(c.opts.gatewayOptions, gw_.WithServerUnaryInterceptorsOptions(opts...))
 }
 
 func (c *Config) parseViper() {
