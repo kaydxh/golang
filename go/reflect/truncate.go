@@ -21,14 +21,11 @@ func TruncateBytes(req interface{}) interface{} {
 		tt = tt.Elem()
 	}
 	if tt.Kind() != reflect.Struct {
-		truncateToLen(v)
-		/*
-			_, ok := v.Interface().([]byte)
-			if ok {
-				req = []byte("abc")
-			}
-		*/
-		return v
+		vv, ok := v.Interface().([]byte)
+		if ok {
+			req = fmt.Sprintf("bytes len: %v", len(vv))
+		}
+		return req
 	}
 
 	for i := 0; i < tt.NumField(); i++ {
@@ -52,13 +49,6 @@ func TruncateBytes(req interface{}) interface{} {
 			TruncateBytes(valueValue.Interface())
 		}
 		truncateToLen(f)
-		/*
-			_, ok := f.Interface().([]byte)
-			if ok {
-				f.SetBytes([]byte("abc"))
-			}
-		*/
-
 	}
 
 	return req
