@@ -9,6 +9,7 @@ import (
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	rate_ "github.com/kaydxh/golang/go/time/rate"
 	interceptortcloud_ "github.com/kaydxh/golang/pkg/grpc-middleware/api/tcloud/v3.0"
+	interceptormonitor_ "github.com/kaydxh/golang/pkg/grpc-middleware/monitor"
 	interceptorprometheus_ "github.com/kaydxh/golang/pkg/grpc-middleware/monitor/prometheus"
 	interceptorratelimit_ "github.com/kaydxh/golang/pkg/grpc-middleware/ratelimit"
 	"github.com/sirupsen/logrus"
@@ -160,5 +161,11 @@ func WithServerInterceptorsLimitRateOptions(burstUnary, burstStream int) GRPCGat
 			limiterStream := rate_.NewLimiter(burstStream)
 			WithServerStreamInterceptorsOptions(interceptorratelimit_.StreamServerInterceptor(limiterStream)).apply(c)
 		}
+	})
+}
+
+func WithServerUnaryInterceptorsInOutPacketOptions() GRPCGatewayOption {
+	return GRPCGatewayOptionFunc(func(c *GRPCGateway) {
+		WithServerUnaryInterceptorsOptions(interceptormonitor_.UnaryServerInterceptorOfInOutPacket()).apply(c)
 	})
 }
