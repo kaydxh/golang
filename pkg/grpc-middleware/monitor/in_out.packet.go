@@ -23,6 +23,7 @@ func (j *JsonpbMarshaller) MarshalJson() ([]byte, error) {
 	return data, nil
 }
 
+// UnaryServerInterceptorOfInOutPacket log in-output packet
 func UnaryServerInterceptorOfInOutPacket() grpc.UnaryServerInterceptor {
 
 	return func(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (interface{}, error) {
