@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"testing"
 
+	//	"github.com/google/uuid"
 	"github.com/google/uuid"
 	reflect_ "github.com/kaydxh/golang/go/reflect"
 )
@@ -11,6 +12,8 @@ import (
 func TestTruncateBytes(t *testing.T) {
 
 	tmp := []byte("12345678")
+	tmp2 := [][]byte{[]byte("12345678"), []byte("12345678")}
+	_ = tmp
 	testCases := []struct {
 		req interface{}
 	}{
@@ -36,6 +39,32 @@ func TestTruncateBytes(t *testing.T) {
 		},
 		{
 			req: &tmp,
+		},
+		{
+			req: [][]byte{[]byte("12345678"), []byte("12345678")},
+		},
+		{
+			req: &tmp2,
+		},
+		{
+			req: &struct {
+				Images [][]byte
+			}{
+				Images: [][]byte{
+					[]byte("12345678"),
+					[]byte("12345678"),
+				},
+			},
+		},
+		{
+			req: &struct {
+				Images [][][]byte
+			}{
+				Images: [][][]byte{
+					[][]byte{[]byte("12345678")},
+					[][]byte{[]byte("12345678")},
+				},
+			},
 		},
 	}
 
