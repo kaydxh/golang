@@ -7,6 +7,8 @@ import (
 )
 
 //https://stackoverflow.com/questions/6395076/using-reflect-how-do-you-set-the-value-of-a-struct-field
+// truncate []byte, [][]byte, not support others, eg: [][][]byte
+// struct must use pointer of sturct, or not rewrite it
 func TruncateBytes(req interface{}) interface{} {
 	v, ok := indirectStruct(req)
 	if !ok {
@@ -21,11 +23,7 @@ func TruncateBytes(req interface{}) interface{} {
 		tt = tt.Elem()
 	}
 	if tt.Kind() != reflect.Struct {
-		vv, ok := v.Interface().([]byte)
-		if ok {
-			req = fmt.Sprintf("bytes len: %v", len(vv))
-		}
-		return req
+		return truncateToLen(v)
 	}
 
 	for i := 0; i < tt.NumField(); i++ {
@@ -54,22 +52,36 @@ func TruncateBytes(req interface{}) interface{} {
 	return req
 }
 
-func truncateToLen(oldValue reflect.Value) {
+func truncateToLen(oldValue reflect.Value) interface{} {
 	if !oldValue.IsValid() {
-		return
-	}
-	if !oldValue.CanSet() {
-		return
+		return oldValue
 	}
 	if !oldValue.CanInterface() {
-		return
+		return oldValue
 	}
 
 	vv := oldValue.Interface()
 	switch vv := vv.(type) {
+	case [][]byte:
+		for i, subV := range vv {
+			writeLenToReflectValue(oldValue.Index(i), len(subV))
+		}
+
 	case []byte:
-		var buf bytes.Buffer
-		buf.WriteString(fmt.Sprintf("bytes len: %v", len(vv)))
-		oldValue.SetBytes(buf.Bytes())
+		return writeLenToReflectValue(oldValue, len(vv))
 	}
+
+	return oldValue
+}
+
+func writeLenToReflectValue(v reflect.Value, length int) interface{} {
+	// if v can not set, return truncate result
+	if !v.CanAddr() {
+		return fmt.Sprintf("bytes len: %v", length)
+	}
+
+	var buf bytes.Buffer
+	buf.WriteString(fmt.Sprintf("bytes len: %v", length))
+	v.SetBytes(buf.Bytes())
+	return v
 }
