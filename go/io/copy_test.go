@@ -27,13 +27,15 @@ package io_test
 import (
 	"bytes"
 	"fmt"
-	"github.com/kaydxh/golang/go/io"
-	"gotest.tools/v3/assert"
 	"io/ioutil"
 	"math/rand"
 	"os"
 	"path/filepath"
 	"testing"
+
+	"github.com/kaydxh/golang/go/io"
+	io_ "github.com/kaydxh/golang/go/io"
+	"gotest.tools/v3/assert"
 )
 
 func TestCopyDir(t *testing.T) {
@@ -120,6 +122,33 @@ func TestCopyFile(t *testing.T) {
 	if !bytes.Equal(buf, readBuf) {
 		t.Errorf("expect true, got %v", false)
 	}
+}
+
+func TestCopyAll(t *testing.T) {
+	testCases := []struct {
+		src string
+		dst string
+	}{
+		{
+			src: "./testdata/file/1.txt",
+			dst: "./testdata.copy/file/1.txt",
+		},
+		/*
+			{
+				src: "./testdata/dir",
+				dst: "./testdata.copy/dir",
+			},
+		*/
+	}
+	for i, testCase := range testCases {
+		t.Run(fmt.Sprintf("test-%d", i), func(t *testing.T) {
+			err := io_.CopyAll(testCase.src, testCase.dst)
+			if err != nil {
+				t.Fatalf("copy all expected nil, got %v", err)
+			}
+		})
+	}
+
 }
 
 func randomMode(baseMode int) os.FileMode {
