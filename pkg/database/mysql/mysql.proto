@@ -23,4 +23,5 @@ message Mysql {
 
   google.protobuf.Duration max_wait_duration = 12;
   google.protobuf.Duration fail_after_duration = 13;
+  bool interpolate_params = 14;
 }

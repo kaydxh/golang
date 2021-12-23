@@ -12,16 +12,18 @@ import (
 
 func TestGetDataBase(t *testing.T) {
 	testCases := []struct {
-		Address  string
-		DataName string
-		UserName string
-		Password string
+		Address           string
+		DataName          string
+		UserName          string
+		Password          string
+		InterpolateParams bool
 	}{
 		{
-			Address:  "127.0.0.1:3306",
-			DataName: "test",
-			UserName: "root",
-			Password: "123456",
+			Address:           "127.0.0.1:3306",
+			DataName:          "sealet",
+			UserName:          "root",
+			Password:          "123456",
+			InterpolateParams: true,
 		},
 	}
 
@@ -32,7 +34,9 @@ func TestGetDataBase(t *testing.T) {
 				DataName: testCase.DataName,
 				UserName: testCase.UserName,
 				Password: testCase.Password,
-			})
+			},
+				mysql_.WithInterpolateParams(testCase.InterpolateParams),
+			)
 			sqlDB, err := db.GetDatabase()
 			if err != nil {
 				t.Fatalf("failed to get database: %v, got : %s", testCase.DataName, err)
