@@ -39,3 +39,9 @@ func WithConnMaxLifetime(connMaxLifetime time.Duration) DBOption {
 		c.opts.connMaxLifetime = connMaxLifetime
 	})
 }
+
+func WithInterpolateParams(enabled bool) DBOption {
+	return DBOptionFunc(func(c *DB) {
+		c.opts.interpolateParams = enabled
+	})
+}

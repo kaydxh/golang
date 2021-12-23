@@ -62,6 +62,7 @@ func (c *completedConfig) install(ctx context.Context) (*sqlx.DB, error) {
 		WithReadTimeout(c.Proto.GetReadTimeout().AsDuration()),
 		WithWriteTimeout(c.Proto.GetWriteTimeout().AsDuration()),
 		WithConnMaxLifetime(c.Proto.GetMaxLifeTime().AsDuration()),
+		WithInterpolateParams(c.Proto.GetInterpolateParams()),
 	)
 
 	return db.GetDatabaseUntil(

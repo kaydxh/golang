@@ -44,7 +44,8 @@ type DB struct {
 		readTimeout  time.Duration
 		writeTimeout time.Duration
 		// connection reused time, 0 means never expired
-		connMaxLifetime time.Duration
+		connMaxLifetime   time.Duration
+		interpolateParams bool
 	}
 }
 
@@ -129,6 +130,12 @@ func (d *DB) GetDatabase() (*sqlx.DB, error) {
 
 		if d.opts.writeTimeout > 0 {
 			params += fmt.Sprintf("&writeTimeout=%fs", d.opts.writeTimeout.Seconds())
+		}
+
+		if d.opts.interpolateParams {
+			params += "&interpolateParams=true"
+		} else {
+			params += "&interpolateParams=false"
 		}
 
 		return params
