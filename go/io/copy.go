@@ -29,6 +29,8 @@ import (
 	"io"
 	"os"
 	"path/filepath"
+
+	os_ "github.com/kaydxh/golang/go/os"
 )
 
 // Mode indicates whether to use hardlink or copy content
@@ -40,6 +42,20 @@ const (
 	// Hardlink creates a new hardlink to the existing file
 	Hardlink
 )
+
+func CopyAll(src, dst string) (err error) {
+	isDir, err := os_.IsDir(src)
+	if err != nil {
+		return err
+	}
+
+	if isDir {
+		fmt.Println("===isdir")
+		return CopyDir(src, dst, Content)
+	}
+
+	return CopyFile(src, dst)
+}
 
 func CopyDir(srcDir, dstDir string, copyMode Mode) (err error) {
 	return filepath.Walk(srcDir, func(srcPath string, f os.FileInfo, err error) error {
