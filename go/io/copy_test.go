@@ -131,7 +131,7 @@ func TestCopyAll(t *testing.T) {
 	}{
 		{
 			src: "./testdata/file/1.txt",
-			dst: "./testdata.copy/file/1.txt",
+			dst: "./testdata.copy/file",
 		},
 		/*
 			{
