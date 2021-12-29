@@ -267,23 +267,25 @@ func (h *Heap) ListKeys() []string {
 }
 
 // Get returns the requested item, or sets exists=false.
-func (h *Heap) Get(obj interface{}) (interface{}, bool, error) {
+func (h *Heap) Get(obj interface{}) (itemObj interface{}, exists bool, err error) {
 	key, err := h.data.keyFunc(obj)
 	if err != nil {
 		return nil, false, err
 	}
-	return h.GetByKey(key)
+
+	itemObj, exists = h.GetByKey(key)
+	return itemObj, exists, nil
 }
 
 // GetByKey returns the requested item, or sets exists=false.
-func (h *Heap) GetByKey(key string) (interface{}, bool, error) {
+func (h *Heap) GetByKey(key string) (interface{}, bool) {
 	h.lock.RLock()
 	defer h.lock.RUnlock()
 	item, exists := h.data.items[key]
 	if !exists {
-		return nil, false, nil
+		return nil, false
 	}
-	return item.obj, true, nil
+	return item.obj, true
 }
 
 // IsClosed returns true if the queue is closed.
