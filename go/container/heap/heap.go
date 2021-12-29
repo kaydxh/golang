@@ -15,7 +15,7 @@ type LessFunc func(interface{}, interface{}) bool
 
 // KeyFunc knows how to make a key from an object. Implementations
 // should be deterministic.
-type KeyFunc func(interface{}) (string, error)
+type KeyFunc func(interface{}) string
 
 type heapItem struct {
 	obj   interface{} // The object which is stored in the heap.
@@ -127,10 +127,7 @@ func (h *Heap) Close() {
 // Add inserts an item, and puts it in the queue. The item is updated if it
 // already exists.
 func (h *Heap) Add(obj interface{}) error {
-	key, err := h.data.keyFunc(obj)
-	if err != nil {
-		return err
-	}
+	key := h.data.keyFunc(obj)
 	h.lock.Lock()
 	defer h.lock.Unlock()
 	if h.closed {
@@ -156,10 +153,7 @@ func (h *Heap) BulkAdd(list []interface{}) error {
 		return fmt.Errorf(closedMsg)
 	}
 	for _, obj := range list {
-		key, err := h.data.keyFunc(obj)
-		if err != nil {
-			return err
-		}
+		key := h.data.keyFunc(obj)
 		if _, exists := h.data.items[key]; exists {
 			h.data.items[key].obj = obj
 			heap.Fix(h.data, h.data.items[key].index)
@@ -178,10 +172,7 @@ func (h *Heap) BulkAdd(list []interface{}) error {
 // safely retry items without contending with the producer and potentially enqueueing
 // stale items.
 func (h *Heap) AddIfNotPresent(obj interface{}) error {
-	id, err := h.data.keyFunc(obj)
-	if err != nil {
-		return err
-	}
+	id := h.data.keyFunc(obj)
 	h.lock.Lock()
 	defer h.lock.Unlock()
 	if h.closed {
@@ -209,10 +200,7 @@ func (h *Heap) Update(obj interface{}) error {
 
 // Delete removes an item.
 func (h *Heap) Delete(obj interface{}) error {
-	key, err := h.data.keyFunc(obj)
-	if err != nil {
-		return err
-	}
+	key := h.data.keyFunc(obj)
 	h.lock.Lock()
 	defer h.lock.Unlock()
 	if item, ok := h.data.items[key]; ok {
@@ -267,14 +255,10 @@ func (h *Heap) ListKeys() []string {
 }
 
 // Get returns the requested item, or sets exists=false.
-func (h *Heap) Get(obj interface{}) (itemObj interface{}, exists bool, err error) {
-	key, err := h.data.keyFunc(obj)
-	if err != nil {
-		return nil, false, err
-	}
-
-	itemObj, exists = h.GetByKey(key)
-	return itemObj, exists, nil
+// return item.obj, exists
+func (h *Heap) Get(obj interface{}) (interface{}, bool) {
+	key := h.data.keyFunc(obj)
+	return h.GetByKey(key)
 }
 
 // GetByKey returns the requested item, or sets exists=false.

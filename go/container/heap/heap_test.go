@@ -7,8 +7,8 @@ import (
 	heap_ "github.com/kaydxh/golang/go/container/heap"
 )
 
-func testHeapObjectKeyFunc(obj interface{}) (string, error) {
-	return obj.(testHeapObject).name, nil
+func testHeapObjectKeyFunc(obj interface{}) string {
+	return obj.(testHeapObject).name
 }
 
 type testHeapObject struct {
@@ -75,13 +75,13 @@ func TestHeap_Get(t *testing.T) {
 	h.Add(mkHeapObj("baz", 11))
 
 	// Get works with the key.
-	obj, exists, err := h.Get(mkHeapObj("baz", 0))
-	if err != nil || !exists || obj.(testHeapObject).val != 11 {
+	obj, exists := h.Get(mkHeapObj("baz", 0))
+	if !exists || obj.(testHeapObject).val != 11 {
 		t.Fatalf("unexpected error in getting element")
 	}
 	// Get non-existing object.
-	_, exists, err = h.Get(mkHeapObj("non-existing", 0))
-	if err != nil || exists {
+	_, exists = h.Get(mkHeapObj("non-existing", 0))
+	if exists {
 		t.Fatalf("didn't expect to get any object")
 	}
 }
