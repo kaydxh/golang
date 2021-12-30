@@ -3,6 +3,8 @@ package time
 import (
 	"context"
 	"time"
+
+	runtime_ "github.com/kaydxh/golang/go/runtime"
 )
 
 // Until loops until context timout, running f every period.
@@ -61,6 +63,7 @@ func BackOffUntilWithContext(
 		}
 
 		func() {
+			defer runtime_.Recover()
 			f(ctx)
 		}()
 
