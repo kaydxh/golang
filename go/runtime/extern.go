@@ -28,3 +28,11 @@ func GetShortCaller() string {
 	fn := GetCallerWithSkip(3)
 	return strings.TrimPrefix(path.Ext(fn), ".")
 }
+
+func GetCallStackTrace() string {
+	const size = 64 << 10
+	stacktrace := make([]byte, size)
+	stacktrace = stacktrace[:runtime.Stack(stacktrace, false)]
+
+	return string(stacktrace)
+}
