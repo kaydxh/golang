@@ -1,6 +1,9 @@
 package reflect
 
-import "reflect"
+import (
+	"math"
+	"reflect"
+)
 
 // cmd/compile/internal/gc/dump.go
 func IsZeroValue(v reflect.Value) bool {
@@ -16,24 +19,28 @@ func IsZeroValue(v reflect.Value) bool {
 	case reflect.Uint, reflect.Uint8, reflect.Uint16, reflect.Uint32, reflect.Uint64, reflect.Uintptr:
 		return v.Uint() == 0
 	case reflect.Float32, reflect.Float64:
-		return v.Float() == 0
+		return math.Float64bits(v.Float()) == 0
 	case reflect.Complex64, reflect.Complex128:
-		return v.Complex() == 0
+		c := v.Complex()
+		return math.Float64bits(real(c)) == 0 && math.Float64bits(imag(c)) == 0
 	case reflect.String:
 		return v.String() == ""
-	case reflect.UnsafePointer:
-		return v.Pointer() == 0
-	case reflect.Array, reflect.Chan, reflect.Map, reflect.Slice:
-		return v.Len() == 0
-	case reflect.Func:
-		return v.IsNil()
-	case reflect.Interface, reflect.Ptr:
-		if v.IsNil() {
-			return true
+	case reflect.Array:
+		for i := 0; i < v.Len(); i++ {
+			if !v.Index(i).IsZero() {
+				return false
+			}
 		}
-		break
+		return true
+	case reflect.Chan, reflect.Func, reflect.Interface, reflect.Map, reflect.Ptr, reflect.Slice, reflect.UnsafePointer:
+		return v.IsNil()
 	case reflect.Struct:
-		break
+		for i := 0; i < v.NumField(); i++ {
+			if !v.Field(i).IsZero() {
+				return false
+			}
+		}
+		return true
 	default:
 	}
 
