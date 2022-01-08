@@ -56,3 +56,29 @@ func TestRangeInt(t *testing.T) {
 		})
 	}
 }
+
+func TestRead(t *testing.T) {
+	testCases := []struct {
+		p []byte
+	}{
+		{
+			p: make([]byte, 10),
+		},
+		{
+			p: make([]byte, 20),
+		},
+	}
+
+	for i, testCase := range testCases {
+		t.Run(fmt.Sprintf("test-%v", i), func(t *testing.T) {
+			n, err := rand_.Read(testCase.p)
+			if err != nil {
+				t.Fatalf("failed to rand int, err: %v", err)
+			}
+			t.Logf("read n: %v, p: %v", n, testCase.p)
+
+			assert.Equal(t, len(testCase.p), n)
+
+		})
+	}
+}
