@@ -1,19 +1,22 @@
 package scheduler_test
 
 import (
+	"context"
 	"fmt"
 	"testing"
 
 	"github.com/google/uuid"
 	scheduler_ "github.com/kaydxh/golang/pkg/scheduler"
+	memory_ "github.com/kaydxh/golang/pkg/scheduler/broker/memory"
 	task_ "github.com/kaydxh/golang/pkg/scheduler/task"
 )
 
-func TestDispatcher(t *testing.T) {
+func TestServer(t *testing.T) {
 	burst := 1
-	//	broker := memory_.NewBroker()
-	dispatcher := scheduler_.NewDispatcher(burst)
-	dispatcher.AddTask(&task_.Task{
+	broker := memory_.NewBroker()
+	server := scheduler_.NewServer(burst, broker)
+
+	server.AddTask(context.Background(), &task_.Task{
 		TaskId: uuid.New().String(),
 		TaskFunc: func(a int, b string) error {
 			fmt.Printf("do task: %v:%v\n", a, b)
@@ -25,12 +28,12 @@ func TestDispatcher(t *testing.T) {
 				Value: 8,
 			},
 			task_.TaskArgument{
-				Type:  "int",
+				Type:  "string",
 				Value: "hello",
 			},
 		},
 	})
-	dispatcher.Stop()
-	fmt.Println("out")
+
+	select {}
 
 }

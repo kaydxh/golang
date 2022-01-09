@@ -11,11 +11,12 @@ import (
 // remote(ip:port) node
 // the mq
 type Broker interface {
+	SetTaskDispatcher(dispatcher Taskdispatcher)
 	Publish(ctx context.Context, task *task.Task) error
 }
 
 // TaskProcessor - can process a delivered task
 // This will probably always be a worker instance
-type TaskProcessor interface {
-	Process(task *task.Task) error
+type Taskdispatcher interface {
+	AddTask(task *task.Task) error
 }
