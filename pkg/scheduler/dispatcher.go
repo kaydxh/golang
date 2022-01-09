@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"sync"
 
-	"github.com/kaydxh/golang/pkg/scheduler/broker"
 	"github.com/kaydxh/golang/pkg/scheduler/task"
 	task_ "github.com/kaydxh/golang/pkg/scheduler/task"
 )
@@ -16,16 +15,14 @@ type Dispatcher struct {
 	taskQueCh   chan *task.Task
 	workers     []*Worker
 	burst       int
-	broker      broker.Broker
 	stopCh      chan struct{}
 }
 
-func NewDispatcher(burst int, broker broker.Broker) *Dispatcher {
+func NewDispatcher(burst int) *Dispatcher {
 	d := &Dispatcher{
 		workersChCh: make(chan chan *task.Task, burst),
 		taskQueCh:   make(chan *task.Task, 100),
 		burst:       burst,
-		broker:      broker,
 		stopCh:      make(chan struct{}),
 	}
 	go d.run()
@@ -34,7 +31,7 @@ func NewDispatcher(burst int, broker broker.Broker) *Dispatcher {
 
 func (d *Dispatcher) run() {
 	for i := 0; i < d.burst; i++ {
-		worker := NewWorker(i, d.workersChCh, d.broker)
+		worker := NewWorker(i, d.workersChCh)
 		go worker.Process(context.Background())
 		d.workers = append(d.workers, worker)
 
