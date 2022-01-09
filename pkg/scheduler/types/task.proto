@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package go.pkg.scheduler.types;
+import "google/protobuf/duration.proto";
+
+option go_package = "github.com/kaydxh/go.pkg.scheduler.types;types";
+
+
+enum TaskState {
+  TASK_STATE_RESERVE = 0;
+  TASK_STATE_PENDING = 1;
+  TASK_STATE_RUNNING = 2;
+  TASK_STATE_SUCCEED = 3;
+  TASK_STATE_FAILED = 4;
+  TASK_STATE_STOPPING = 5;
+  TASK_STATE_STOPPED = 6;
+}
