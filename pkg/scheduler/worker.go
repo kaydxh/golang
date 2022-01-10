@@ -9,38 +9,28 @@ import (
 
 type Worker struct {
 	id        int
-	limit     int // number of tasks which can be executed in parallel
 	stopCh    chan struct{}
 	working   bool
 	worksChCh chan chan *task.Task
-
-	taskCh chan *task.Task
-	//	tasksWait *sync.WaitGroup // wait group for waiting all tasks finishing when we close this worker
-
-	preTaskHandler  func(*task.Task)
-	postTaskHandler func(*task.Task)
+	taskCh    chan *task.Task
 }
 
 func NewWorker(id int, worksChCh chan chan *task.Task) *Worker {
 	w := &Worker{
 		id:        id,
 		worksChCh: worksChCh,
-		//		tasksWait: new(sync.WaitGroup),
-		taskCh: make(chan *task.Task),
-		stopCh: make(chan struct{}),
+		taskCh:    make(chan *task.Task),
+		stopCh:    make(chan struct{}),
 	}
 
 	return w
 }
 
 func (w *Worker) doProcess(ctx context.Context, task *task.Task) error {
-	//	defer w.tasksWait.Done()
 	fmt.Println(" doProcess")
-	/*
-		if w.preTaskHandler != nil {
-			w.preTaskHandler(task)
-		}
-	*/
+	if task.PreTaskHandler != nil {
+		task.PreTaskHandler(task)
+	}
 
 	//do task
 	_, err := task.Run()
@@ -48,8 +38,8 @@ func (w *Worker) doProcess(ctx context.Context, task *task.Task) error {
 		return err
 	}
 
-	if w.postTaskHandler != nil {
-		w.postTaskHandler(task)
+	if task.PostTaskHandler != nil {
+		task.PostTaskHandler(task)
 	}
 
 	return nil
@@ -63,7 +53,6 @@ func (w *Worker) Process(ctx context.Context) {
 		select {
 		case task := <-w.taskCh:
 			w.working = true
-			//w.tasksWait.Add(1)
 			fmt.Println(" get task")
 			w.doProcess(ctx, task)
 			w.worksChCh <- w.taskCh
@@ -80,7 +69,5 @@ func (w *Worker) Stop() {
 	}
 
 	close(w.stopCh)
-
-	//w.tasksWait.Wait()
 	w.working = false
 }

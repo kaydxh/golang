@@ -11,8 +11,8 @@ type Task struct {
 	TaskFunc interface{}
 	Args     []TaskArgument
 	//	TaskStatus
-	preTaskHandler  func(*Task) error
-	postTaskHandler func(*Task) error
+	PreTaskHandler  func(*Task) error
+	PostTaskHandler func(*Task) error
 }
 
 // Types which can be used: bool, string, int int8 int16 int32 int64, uint uint8 uint16 uint32 uint64, float32 float64
