@@ -73,3 +73,33 @@ func TestReplaceAll(t *testing.T) {
 
 	}
 }
+
+func TestSplit(t *testing.T) {
+	testCases := []struct {
+		s   string
+		sep string
+	}{
+		{
+			s:   "",
+			sep: ",",
+		},
+		{
+			s:   "a,b,c",
+			sep: ",",
+		},
+		{
+			s:   "a,b,c,",
+			sep: ",",
+		},
+	}
+
+	for _, testCase := range testCases {
+		t.Run(testCase.s, func(t *testing.T) {
+			ss := strings_.Split(testCase.s, testCase.sep)
+			t.Logf("ss: %v. len(ss): %v", ss, len(ss))
+
+		})
+
+	}
+
+}

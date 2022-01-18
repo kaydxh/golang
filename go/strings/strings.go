@@ -110,3 +110,24 @@ func Replace(s string, old string, news []interface{}, useQuote bool, n int) str
 func ReplaceAll(s, old string, news []interface{}, useQuote bool) string {
 	return Replace(s, old, news, useQuote, -1)
 }
+
+// Split slices s into all substrings separated by sep and returns a slice of
+// the substrings between those separators.
+//
+// If s does not contain sep and sep is not empty, Split returns a
+// slice of length 0.
+//
+// If sep is empty, Split splits after each UTF-8 sequence. If both s
+// and sep are empty, Split returns an empty slice.
+//
+// It is equivalent to SplitN with a count of -1.
+func Split(s, sep string) []string {
+	a := strings.Split(s, sep)
+	if len(a) == 1 {
+		if a[0] == "" {
+			a = a[1:]
+		}
+	}
+
+	return a
+}
