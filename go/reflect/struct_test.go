@@ -47,7 +47,7 @@ func TestNonzeroFieldTags(t *testing.T) {
 	}
 
 	id := uuid.NewString()
-	req := HttpRequest{
+	req := &HttpRequest{
 		RequestId: id,
 		//	Username:  "username 1",
 	}
