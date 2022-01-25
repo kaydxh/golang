@@ -82,3 +82,26 @@ func TestRead(t *testing.T) {
 		})
 	}
 }
+
+func TestRangeString(t *testing.T) {
+	testCases := []struct {
+		n int
+	}{
+		{
+			n: 5,
+		},
+		{
+			n: 8,
+		},
+	}
+
+	for i, testCase := range testCases {
+		t.Run(fmt.Sprintf("test-%v", i), func(t *testing.T) {
+			str := rand_.RangeString(testCase.n)
+			t.Logf("str: %v", str)
+			assert.Equal(t, len(str), testCase.n)
+
+		})
+	}
+
+}
