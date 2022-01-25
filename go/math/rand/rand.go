@@ -8,8 +8,9 @@ import (
 )
 
 var (
-	globalRand = rand.New(rand.NewSource(time.Now().UnixNano()))
-	mu         sync.Mutex
+	globalRand  = rand.New(rand.NewSource(time.Now().UnixNano()))
+	mu          sync.Mutex
+	letterRunes = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
 )
 
 // Int implements rand.Int on the global source.
@@ -81,4 +82,12 @@ func RangeInt(min, max int) (int, error) {
 		return 0, fmt.Errorf("min or max must > 0 and max > min")
 	}
 	return Intn(max-min) + min, nil
+}
+
+func RangeString(n int) string {
+	b := make([]rune, n)
+	for i := range b {
+		b[i] = letterRunes[rand.Intn(len(letterRunes))]
+	}
+	return string(b)
 }
