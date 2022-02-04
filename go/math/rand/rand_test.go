@@ -88,6 +88,9 @@ func TestRangeString(t *testing.T) {
 		n int
 	}{
 		{
+			n: 0,
+		},
+		{
 			n: 5,
 		},
 		{

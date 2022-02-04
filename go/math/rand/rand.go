@@ -84,6 +84,7 @@ func RangeInt(min, max int) (int, error) {
 	return Intn(max-min) + min, nil
 }
 
+//  RangeString generate string length [0, n].
 func RangeString(n int) string {
 	b := make([]rune, n)
 	for i := range b {
