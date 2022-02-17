@@ -4,6 +4,7 @@ go 1.16
 
 require (
 	github.com/armon/go-metrics v0.0.0-20190430140413-ec5e00d3c878 // indirect
+	github.com/cweill/gotests v1.6.0 // indirect
 	github.com/gin-gonic/gin v1.7.2
 	github.com/go-playground/validator/v10 v10.7.0
 	github.com/go-redis/redis/v8 v8.11.3
@@ -40,10 +41,11 @@ require (
 	github.com/ugorji/go v1.2.6 // indirect
 	go.uber.org/atomic v1.7.0
 	golang.org/x/crypto v0.0.0-20210711020723-a769d52b0f97 // indirect
-	golang.org/x/net v0.0.0-20210716203947-853a461950ff
-	golang.org/x/sys v0.0.0-20210630005230-0f9fa26af87c
-	golang.org/x/text v0.3.6
+	golang.org/x/net v0.0.0-20211015210444-4f30a5c0130f
+	golang.org/x/sys v0.0.0-20220209214540-3681064d5158
+	golang.org/x/text v0.3.7
 	golang.org/x/time v0.0.0-20210220033141-f8bda1e9f3ba
+	golang.org/x/tools v0.1.9 // indirect
 	google.golang.org/api v0.30.0
 	google.golang.org/genproto v0.0.0-20210721163202-f1cecdd8b78a // indirect
 	google.golang.org/grpc v1.39.0
