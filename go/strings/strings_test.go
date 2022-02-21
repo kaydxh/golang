@@ -103,3 +103,40 @@ func TestSplit(t *testing.T) {
 	}
 
 }
+
+func TestGetStringOrFallback(t *testing.T) {
+	type args struct {
+		value        string
+		defaultValue string
+	}
+	tests := []struct {
+		name string
+		args args
+		want string
+	}{
+		// TODO: Add test cases.
+		{
+			name: "test1",
+			args: args{
+				value:        "abc",
+				defaultValue: "default",
+			},
+			want: "abc",
+		},
+		{
+			name: "test2",
+			args: args{
+				value:        "",
+				defaultValue: "default",
+			},
+			want: "default",
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := strings_.GetStringOrFallback(tt.args.value, tt.args.defaultValue); got != tt.want {
+				t.Errorf("GetStringOrFallback() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
