@@ -6,14 +6,14 @@ import (
 	"unicode/utf8"
 )
 
-func GetStringOrFallback(values []string, defaultValue string) string {
+func GetStringOrFallback(values ...string) string {
 	for _, v := range values {
 		if v != "" {
 			return v
 		}
 	}
 
-	return defaultValue
+	return ""
 }
 
 /*
