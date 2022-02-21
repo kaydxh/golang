@@ -7,24 +7,24 @@ import (
 	proxy_ "github.com/kaydxh/golang/pkg/proxy"
 )
 
-func TestNewReverseProxy(t *testing.T) {
+func TestNewProxy(t *testing.T) {
 	type args struct {
 		router  gin.IRouter
-		options []proxy_.ReverseProxyOption
+		options []proxy_.ProxyOption
 	}
 	r := gin.Default()
 	tests := []struct {
 		name    string
 		args    args
-		want    *proxy_.ReverseProxy
+		want    *proxy_.Proxy
 		wantErr bool
 	}{
 		// TODO: Add test cases.
 		{
-			name: "reverse-proxy",
+			name: "proxy",
 			args: args{
 				router: r,
-				options: []proxy_.ReverseProxyOption{
+				options: []proxy_.ProxyOption{
 					proxy_.WithTargetUrl("127.0.0.1:1080"),
 					proxy_.WithProxyMode(proxy_.Reverse_ProxyMode),
 				},
@@ -34,9 +34,9 @@ func TestNewReverseProxy(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			proxy, err := proxy_.NewReverseProxy(tt.args.router, tt.args.options...)
+			proxy, err := proxy_.NewProxy(tt.args.router, tt.args.options...)
 			if (err != nil) != tt.wantErr {
-				t.Errorf("NewReverseProxy() error = %v, wantErr %v", err, tt.wantErr)
+				t.Errorf("NewProxy() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
 
