@@ -17,3 +17,9 @@ func WithMatchRouterFunc(matchRouter MatchRouterFunc) ReverseProxyOption {
 		c.opts.matchRouter = matchRouter
 	})
 }
+
+func WithProxyMode(proxyMode ProxyMode) ReverseProxyOption {
+	return ReverseProxyOptionFunc(func(c *ReverseProxy) {
+		c.opts.proxyMode = proxyMode
+	})
+}

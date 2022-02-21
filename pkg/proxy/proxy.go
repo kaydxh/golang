@@ -7,6 +7,15 @@ import (
 	"net/url"
 
 	"github.com/gin-gonic/gin"
+	http_ "github.com/kaydxh/golang/go/net/http"
+)
+
+type ProxyMode int32
+
+const (
+	Reverse_ProxyMode  ProxyMode = 0
+	Forward_ProxyMode  ProxyMode = 1
+	Redirect_ProxyMode ProxyMode = 2
 )
 
 type MatchRouterFunc func(*http.Request) string
@@ -17,6 +26,7 @@ type ReverseProxy struct {
 		routerPatterns []string
 		matchRouter    MatchRouterFunc
 		targetUrl      string
+		proxyMode      ProxyMode
 	}
 }
 
@@ -36,19 +46,39 @@ func (p *ReverseProxy) ProxyHandler() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		req := c.Request
 
-		targetUrl := p.opts.targetUrl
+		serviceTargetUrl := http_.CloneURL(c.Request.URL)
+		if serviceTargetUrl.Scheme == "" {
+			serviceTargetUrl.Scheme = "http"
+		}
+		serviceTargetUrl.Path = "/"
+		sTargetUrl := p.opts.targetUrl
 		if p.opts.matchRouter != nil {
-			targetUrl = p.opts.matchRouter(req)
+			sTargetUrl = p.opts.matchRouter(req)
 		}
 
-		if targetUrl == "" {
+		if sTargetUrl == "" {
 			return
 		}
-
-		serviceTargetUrl, err := url.Parse(targetUrl)
+		targetUrl, err := url.Parse(sTargetUrl)
 		if err != nil {
 			return
 		}
+		if targetUrl.Host != "" {
+			serviceTargetUrl.Host = targetUrl.Host
+		}
+
+		switch p.opts.proxyMode {
+		case Redirect_ProxyMode:
+			c.Redirect(http.StatusTemporaryRedirect, serviceTargetUrl.String())
+			c.Abort()
+			return
+
+		case Reverse_ProxyMode:
+			c.Request.Host = serviceTargetUrl.Host
+
+		case Forward_ProxyMode:
+		}
+
 		rp := httputil.NewSingleHostReverseProxy(serviceTargetUrl)
 		rp.ServeHTTP(c.Writer, c.Request)
 	}
