@@ -20,7 +20,7 @@ const (
 
 type MatchRouterFunc func(*http.Request) string
 
-type ReverseProxy struct {
+type Proxy struct {
 	router gin.IRouter
 	opts   struct {
 		routerPatterns []string
@@ -30,8 +30,8 @@ type ReverseProxy struct {
 	}
 }
 
-func NewReverseProxy(router gin.IRouter, options ...ReverseProxyOption) (*ReverseProxy, error) {
-	p := &ReverseProxy{
+func NewProxy(router gin.IRouter, options ...ProxyOption) (*Proxy, error) {
+	p := &Proxy{
 		router: router,
 	}
 	p.ApplyOptions(options...)
@@ -42,7 +42,7 @@ func NewReverseProxy(router gin.IRouter, options ...ReverseProxyOption) (*Revers
 	return p, nil
 }
 
-func (p *ReverseProxy) ProxyHandler() gin.HandlerFunc {
+func (p *Proxy) ProxyHandler() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		req := c.Request
 
@@ -84,7 +84,7 @@ func (p *ReverseProxy) ProxyHandler() gin.HandlerFunc {
 	}
 }
 
-func (p *ReverseProxy) SetProxy() {
+func (p *Proxy) SetProxy() {
 	for _, pattern := range p.opts.routerPatterns {
 		p.router.Any(pattern, p.ProxyHandler())
 	}

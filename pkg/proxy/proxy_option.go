@@ -1,33 +1,33 @@
 package proxy
 
-// A ReverseProxyOption sets options.
-type ReverseProxyOption interface {
-	apply(*ReverseProxy)
+// A ProxyOption sets options.
+type ProxyOption interface {
+	apply(*Proxy)
 }
 
-// EmptyReverseProxyOption does not alter the configuration. It can be embedded
+// EmptyProxyOption does not alter the configuration. It can be embedded
 // in another structure to build custom options.
 //
 // This API is EXPERIMENTAL.
-type EmptyReverseProxyOption struct{}
+type EmptyProxyOption struct{}
 
-func (EmptyReverseProxyOption) apply(*ReverseProxy) {}
+func (EmptyProxyOption) apply(*Proxy) {}
 
-// ReverseProxyOptionFunc wraps a function that modifies Client into an
-// implementation of the ReverseProxyOption interface.
-type ReverseProxyOptionFunc func(*ReverseProxy)
+// ProxyOptionFunc wraps a function that modifies Client into an
+// implementation of the ProxyOption interface.
+type ProxyOptionFunc func(*Proxy)
 
-func (f ReverseProxyOptionFunc) apply(do *ReverseProxy) {
+func (f ProxyOptionFunc) apply(do *Proxy) {
 	f(do)
 }
 
 // sample code for option, default for nothing to change
-func _ReverseProxyOptionWithDefault() ReverseProxyOption {
-	return ReverseProxyOptionFunc(func(*ReverseProxy) {
+func _ProxyOptionWithDefault() ProxyOption {
+	return ProxyOptionFunc(func(*Proxy) {
 		// nothing to change
 	})
 }
-func (o *ReverseProxy) ApplyOptions(options ...ReverseProxyOption) *ReverseProxy {
+func (o *Proxy) ApplyOptions(options ...ProxyOption) *Proxy {
 	for _, opt := range options {
 		if opt == nil {
 			continue
