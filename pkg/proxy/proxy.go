@@ -20,13 +20,21 @@ const (
 
 type MatchRouterFunc func(*http.Request) string
 
+type proxyOptions struct {
+	routerPatterns []string
+	matchRouter    MatchRouterFunc
+	targetUrl      string
+	proxyMode      ProxyMode
+}
+
 type Proxy struct {
 	router gin.IRouter
-	opts   struct {
-		routerPatterns []string
-		matchRouter    MatchRouterFunc
-		targetUrl      string
-		proxyMode      ProxyMode
+	opts   proxyOptions
+}
+
+func defaultProxyOptions() proxyOptions {
+	return proxyOptions{
+		proxyMode: Reverse_ProxyMode,
 	}
 }
 
@@ -34,6 +42,7 @@ func NewProxy(router gin.IRouter, options ...ProxyOption) (*Proxy, error) {
 	p := &Proxy{
 		router: router,
 	}
+	p.opts = defaultProxyOptions()
 	p.ApplyOptions(options...)
 	if p.opts.targetUrl == "" && p.opts.matchRouter == nil {
 		return nil, fmt.Errorf("target url and match router both nil")
@@ -51,6 +60,7 @@ func (p *Proxy) ProxyHandler() gin.HandlerFunc {
 			serviceTargetUrl.Scheme = "http"
 		}
 		serviceTargetUrl.Path = "/"
+
 		sTargetUrl := p.opts.targetUrl
 		if p.opts.matchRouter != nil {
 			sTargetUrl = p.opts.matchRouter(req)
@@ -59,6 +69,7 @@ func (p *Proxy) ProxyHandler() gin.HandlerFunc {
 		if sTargetUrl == "" {
 			return
 		}
+
 		targetUrl, err := url.Parse(sTargetUrl)
 		if err != nil {
 			return

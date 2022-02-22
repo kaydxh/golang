@@ -25,8 +25,8 @@ func TestNewProxy(t *testing.T) {
 			args: args{
 				router: r,
 				options: []proxy_.ProxyOption{
-					proxy_.WithTargetUrl("127.0.0.1:1080"),
-					proxy_.WithProxyMode(proxy_.Reverse_ProxyMode),
+					proxy_.WithTargetUrl("http://127.0.0.1:8081"),
+					//	proxy_.WithProxyMode(proxy_.Redirect_ProxyMode),
 				},
 			},
 			wantErr: false,
