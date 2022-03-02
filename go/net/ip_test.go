@@ -45,13 +45,12 @@ func TestGetHostIP(t *testing.T) {
 }
 
 func TestIsIPv4String(t *testing.T) {
-	isIPv4 := net_.IsIPv4String("199.59.149.232")
-	assert.True(t, true, isIPv4)
+	isIPv4 := net_.IsIPv4String("199.591.149.232")
+	assert.Equal(t, true, isIPv4)
 	t.Logf("ipv4: %v", isIPv4)
 }
 
 func TestLookupHost(t *testing.T) {
-	//ips, err := net.LookupHost("www.baidu.com")
 	ips, err := net.LookupHost("www.google.com")
 	if err != nil {
 		t.Fatalf("failed to get host ip, err: %v", err)
@@ -61,7 +60,6 @@ func TestLookupHost(t *testing.T) {
 }
 
 func TestLookupHostIPv4(t *testing.T) {
-	//ips, err := net.LookupHost("www.baidu.com")
 	ips, err := net_.LookupHostIPv4("www.google.com")
 	if err != nil {
 		t.Fatalf("failed to get host ip, err: %v", err)
