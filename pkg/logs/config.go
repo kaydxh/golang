@@ -1,11 +1,8 @@
 package logs
 
 import (
-	"fmt"
 	"os"
-	"path"
 	"path/filepath"
-	"runtime"
 	"time"
 
 	"github.com/go-playground/validator/v10"
@@ -67,12 +64,7 @@ func (c *completedConfig) install() error {
 	switch c.Proto.GetFormatter() {
 	case Log_json:
 		logrus.SetFormatter(&logrus.JSONFormatter{
-			CallerPrettyfier: func(f *runtime.Frame) (function string, file string) {
-				funcname := path.Base(f.Function)
-				dir := path.Dir(f.File)
-				filename := filepath.Join(path.Base(dir), path.Base(f.File))
-				return fmt.Sprintf("%s()", funcname), fmt.Sprintf("%s:%d", filename, f.Line)
-			},
+			CallerPrettyfier: GenShortCallPrettyfier(),
 		})
 
 	case Log_text:
