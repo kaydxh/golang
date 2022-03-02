@@ -10,6 +10,7 @@ import (
 
 	"github.com/go-playground/validator/v10"
 	time_ "github.com/kaydxh/golang/go/time"
+	logrus_ "github.com/kaydxh/golang/pkg/logs/logrus"
 	viper_ "github.com/kaydxh/golang/pkg/viper"
 	"github.com/sirupsen/logrus"
 	"google.golang.org/protobuf/types/known/durationpb"
@@ -63,7 +64,8 @@ func (c *completedConfig) Apply() error {
 func (c *completedConfig) install() error {
 	logrus.Infof("Installing Logs")
 
-	if c.Proto.GetFormatter() == Log_json {
+	switch c.Proto.GetFormatter() {
+	case Log_json:
 		logrus.SetFormatter(&logrus.JSONFormatter{
 			CallerPrettyfier: func(f *runtime.Frame) (function string, file string) {
 				funcname := path.Base(f.Function)
@@ -73,7 +75,7 @@ func (c *completedConfig) install() error {
 			},
 		})
 
-	} else {
+	case Log_text:
 		//DisableColors set true, out format:
 		//time="2021-08-07 20:21:46.468" level=info msg="Installing WebHandler" func="options.(*CompletedServerRunOptions).Run()" file="options.go:59"
 		//DisableColors set false, out format:
@@ -82,9 +84,20 @@ func (c *completedConfig) install() error {
 			//ForceQuote:       true,
 			DisableColors: true,
 			//DisableQuote:     true,
-			//FullTimestamp:    true,
+			FullTimestamp:    true,
 			TimestampFormat:  time_.DefaultTimeMillFormat,
 			CallerPrettyfier: GenShortCallPrettyfier(),
+		})
+
+	default:
+		logrus.SetFormatter(&logrus_.GlogFormatter{
+			//ForceQuote:       true,
+			DisableColors: true,
+			//DisableQuote:     true,
+			FullTimestamp:     true,
+			TimestampFormat:   time_.DefaultTimeMillFormat,
+			CallerPrettyfier:  GenShortCallPrettyfier(),
+			EnableGoroutineId: true,
 		})
 	}
 

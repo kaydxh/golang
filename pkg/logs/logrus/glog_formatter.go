@@ -115,9 +115,8 @@ type GlogFormatter struct {
 
 	// Disables the glog style ：[IWEF]yyyymmdd hh:mm:ss.uuuuuu threadid file:line] msg msg...
 	// replace with ：[IWEF] [yyyymmdd] [hh:mm:ss.uuuuuu] [threadid] [file:line] msg msg...
-	EnablePrettyLog   bool
+	//EnablePrettyLog   bool
 	EnableGoroutineId bool
-	pid               int
 }
 
 func (f *GlogFormatter) init(entry *logrus.Entry) {
@@ -131,7 +130,6 @@ func (f *GlogFormatter) init(entry *logrus.Entry) {
 			f.levelTextMaxLength = levelTextLength
 		}
 	}
-	f.pid = os.Getpid()
 }
 
 func (f *GlogFormatter) isColored() bool {

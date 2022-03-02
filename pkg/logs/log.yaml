@@ -1,9 +1,9 @@
 log:
-  formatter: text
+  formatter: glog
   level: info
   filepath: ./log
   max_age: 168h
   max_count: 100
   rotate_interval: 1h
-  rotate_size: 104857600
+  rotate_size: 500
   report_caller: true
