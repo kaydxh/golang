@@ -1,9 +1,11 @@
 package net_test
 
 import (
+	"net"
 	"testing"
 
 	net_ "github.com/kaydxh/golang/go/net"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestGetLocalAddrs(t *testing.T) {
@@ -40,4 +42,30 @@ func TestGetHostIP(t *testing.T) {
 		return
 	}
 	t.Logf("ip: %v", ip)
+}
+
+func TestIsIPv4String(t *testing.T) {
+	isIPv4 := net_.IsIPv4String("199.59.149.232")
+	assert.True(t, true, isIPv4)
+	t.Logf("ipv4: %v", isIPv4)
+}
+
+func TestLookupHost(t *testing.T) {
+	//ips, err := net.LookupHost("www.baidu.com")
+	ips, err := net.LookupHost("www.google.com")
+	if err != nil {
+		t.Fatalf("failed to get host ip, err: %v", err)
+		return
+	}
+	t.Logf("ips: %v", ips)
+}
+
+func TestLookupHostIPv4(t *testing.T) {
+	//ips, err := net.LookupHost("www.baidu.com")
+	ips, err := net_.LookupHostIPv4("www.google.com")
+	if err != nil {
+		t.Fatalf("failed to get host ip, err: %v", err)
+		return
+	}
+	t.Logf("ips: %v", ips)
 }

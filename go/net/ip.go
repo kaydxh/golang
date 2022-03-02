@@ -117,3 +117,28 @@ func GetLocalAddrs() ([]*net.IPNet, error) {
 
 	return localAddrs, nil
 }
+
+// IsIPv4 returns if netIP is IPv4.
+func IsIPv4(netIP net.IP) bool {
+	return netIP != nil && netIP.To4() != nil
+}
+
+func IsIPv4String(ip string) bool {
+	netIP := ParseIP(ip)
+	return IsIPv4(netIP)
+}
+
+func LookupHostIPv4(host string) (addrs []string, err error) {
+	ips, err := net.LookupHost(host)
+	if err != nil {
+		return
+	}
+
+	for _, ip := range ips {
+		if IsIPv4String(ip) {
+			addrs = append(addrs, ip)
+		}
+	}
+
+	return addrs, err
+}
