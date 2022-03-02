@@ -29,5 +29,6 @@ message Log {
   enum Formatter {
     text = 0;
     json = 1;
+    glog = 2;
   }
 }
