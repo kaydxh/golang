@@ -3,6 +3,7 @@ package logs
 import (
 	"fmt"
 	"path"
+	"path/filepath"
 	"runtime"
 	"time"
 )
@@ -48,7 +49,9 @@ type CallerPrettyfierFunc func(f *runtime.Frame) (function string, file string)
 func GenShortCallPrettyfier() CallerPrettyfierFunc {
 	return func(f *runtime.Frame) (function string, file string) {
 		funcname := path.Base(f.Function)
-		filename := path.Base(f.File)
+		dir := path.Dir(f.File)
+		filename := filepath.Join(path.Base(dir), path.Base(f.File))
+		//filename := path.Base(f.File)
 		return fmt.Sprintf("%s()", funcname), fmt.Sprintf("%s:%d", filename, f.Line)
 	}
 }
