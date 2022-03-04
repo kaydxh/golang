@@ -21,7 +21,7 @@ func HTTPError(ctx context.Context, mux *runtime.ServeMux,
 			Code:    errorToCode(err).String(),
 			Message: errorToString(err),
 		},
-		RequestId: strings_.GetStringOrFallback(GetMetadata(ctx, RequestIdKey), ""),
+		RequestId: strings_.GetStringOrFallback(append(GetMetadata(ctx, RequestIdKey), "")...),
 	}
 
 	// ForwardResponseMessage forwards the message "resp" from gRPC server to REST client
