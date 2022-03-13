@@ -25,7 +25,11 @@ func TestNewProxy(t *testing.T) {
 			args: args{
 				router: r,
 				options: []proxy_.ProxyOption{
-					proxy_.WithTargetUrl("http://127.0.0.1:8081"),
+					proxy_.WithProxyTargetResolverFunc(
+						func(c *gin.Context) (string, error) {
+							return "127.0.0.1:8081", nil
+						},
+					),
 					//	proxy_.WithProxyMode(proxy_.Redirect_ProxyMode),
 				},
 			},

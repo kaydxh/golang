@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"net/http"
 	"net/http/httputil"
-	"net/url"
 
 	"github.com/gin-gonic/gin"
+	"github.com/gin-gonic/gin/render"
 	http_ "github.com/kaydxh/golang/go/net/http"
 )
 
@@ -18,13 +18,13 @@ const (
 	Redirect_ProxyMode ProxyMode = 2
 )
 
-type MatchRouterFunc func(*http.Request) string
+type ProxyMatchedFunc func(c *gin.Context) bool
+type ProxyTargetResolverFunc func(c *gin.Context) (host string, err error)
 
 type proxyOptions struct {
-	routerPatterns []string
-	matchRouter    MatchRouterFunc
-	targetUrl      string
-	proxyMode      ProxyMode
+	proxyMatchedFunc        ProxyMatchedFunc
+	proxyTargetResolverFunc ProxyTargetResolverFunc
+	proxyMode               ProxyMode
 }
 
 type Proxy struct {
@@ -44,61 +44,61 @@ func NewProxy(router gin.IRouter, options ...ProxyOption) (*Proxy, error) {
 	}
 	p.opts = defaultProxyOptions()
 	p.ApplyOptions(options...)
-	if p.opts.targetUrl == "" && p.opts.matchRouter == nil {
-		return nil, fmt.Errorf("target url and match router both nil")
-	}
 
-	p.SetProxy()
+	p.setProxy()
 	return p, nil
 }
 
 func (p *Proxy) ProxyHandler() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		req := c.Request
 
-		serviceTargetUrl := http_.CloneURL(c.Request.URL)
-		if serviceTargetUrl.Scheme == "" {
-			serviceTargetUrl.Scheme = "http"
-		}
-		serviceTargetUrl.Path = "/"
-
-		sTargetUrl := p.opts.targetUrl
-		if p.opts.matchRouter != nil {
-			sTargetUrl = p.opts.matchRouter(req)
+		if p.opts.proxyMatchedFunc != nil {
+			// not apply proxy, process inplace
+			if !p.opts.proxyMatchedFunc(c) {
+				return
+			}
 		}
 
-		if sTargetUrl == "" {
+		if p.opts.proxyTargetResolverFunc == nil {
+			// proxy target resolver func is nil, process inplace
 			return
 		}
-
-		targetUrl, err := url.Parse(sTargetUrl)
+		targetAddr, err := p.opts.proxyTargetResolverFunc(c)
 		if err != nil {
-			//Gin
+			c.Render(http.StatusOK, render.JSON{Data: fmt.Errorf("resolve proxy target err: %v", err)})
 			return
 		}
-		if targetUrl.Host != "" {
-			serviceTargetUrl.Host = targetUrl.Host
+		if targetAddr == "" {
+			// proxy target is empty, process inplace
+			return
 		}
+
+		targetUrl := http_.CloneURL(c.Request.URL)
+		if targetUrl.Scheme == "" {
+			targetUrl.Scheme = "http"
+		}
+		targetUrl.Host = targetAddr
+		targetUrl.Path = "/"
 
 		switch p.opts.proxyMode {
 		case Redirect_ProxyMode:
-			c.Redirect(http.StatusTemporaryRedirect, serviceTargetUrl.String())
+			c.Redirect(http.StatusTemporaryRedirect, targetUrl.String())
 			c.Abort()
 			return
 
 		case Reverse_ProxyMode:
-			c.Request.Host = serviceTargetUrl.Host
+			c.Request.Host = targetUrl.Host
 
 		case Forward_ProxyMode:
 		}
 
-		rp := httputil.NewSingleHostReverseProxy(serviceTargetUrl)
+		rp := httputil.NewSingleHostReverseProxy(targetUrl)
 		rp.ServeHTTP(c.Writer, c.Request)
 		c.Abort()
 	}
 }
 
-func (p *Proxy) SetProxy() {
+func (p *Proxy) setProxy() {
 	p.router.Use(p.ProxyHandler())
 	/*
 		for _, pattern := range p.opts.routerPatterns {

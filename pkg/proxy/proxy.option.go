@@ -1,20 +1,14 @@
 package proxy
 
-func WithRouterPatterns(routerPatterns ...string) ProxyOption {
+func WithProxyMatchedFunc(proxyMatchedFunc ProxyMatchedFunc) ProxyOption {
 	return ProxyOptionFunc(func(c *Proxy) {
-		c.opts.routerPatterns = append(c.opts.routerPatterns, routerPatterns...)
+		c.opts.proxyMatchedFunc = proxyMatchedFunc
 	})
 }
 
-func WithTargetUrl(targetUrl string) ProxyOption {
+func WithProxyTargetResolverFunc(proxyTargetResolverFunc ProxyTargetResolverFunc) ProxyOption {
 	return ProxyOptionFunc(func(c *Proxy) {
-		c.opts.targetUrl = targetUrl
-	})
-}
-
-func WithMatchRouterFunc(matchRouter MatchRouterFunc) ProxyOption {
-	return ProxyOptionFunc(func(c *Proxy) {
-		c.opts.matchRouter = matchRouter
+		c.opts.proxyTargetResolverFunc = proxyTargetResolverFunc
 	})
 }
 
