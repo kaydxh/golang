@@ -48,6 +48,7 @@ func NewProxy(router gin.IRouter, options ...ProxyOption) (*Proxy, error) {
 		return nil, fmt.Errorf("target url and match router both nil")
 	}
 
+	p.SetProxy()
 	return p, nil
 }
 
@@ -72,6 +73,7 @@ func (p *Proxy) ProxyHandler() gin.HandlerFunc {
 
 		targetUrl, err := url.Parse(sTargetUrl)
 		if err != nil {
+			//Gin
 			return
 		}
 		if targetUrl.Host != "" {
@@ -92,11 +94,15 @@ func (p *Proxy) ProxyHandler() gin.HandlerFunc {
 
 		rp := httputil.NewSingleHostReverseProxy(serviceTargetUrl)
 		rp.ServeHTTP(c.Writer, c.Request)
+		c.Abort()
 	}
 }
 
 func (p *Proxy) SetProxy() {
-	for _, pattern := range p.opts.routerPatterns {
-		p.router.Any(pattern, p.ProxyHandler())
-	}
+	p.router.Use(p.ProxyHandler())
+	/*
+		for _, pattern := range p.opts.routerPatterns {
+			p.router.Any(pattern, p.ProxyHandler())
+		}
+	*/
 }
