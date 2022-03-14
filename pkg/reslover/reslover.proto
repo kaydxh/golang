@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package go.pkg.reslover;
+import "google/protobuf/duration.proto";
+
+option go_package = "github.com/kaydxh/go.pkg.reslover;reslover";
+
+message Reslover {
+  bool enabled = 1;
+  ResloverType reslover_type = 2;
+  LoadBalanceMode load_balance_mode = 3;
+  google.protobuf.Duration resolve_interval = 4;
+
+  enum ResloverType {
+    reslover_type_dns = 0;
+    reslover_type_consul = 1;
+  }
+  enum LoadBalanceMode {
+    load_balance_mode_random = 0;
+    load_balance_mode_consist = 1;
+  }
+}
