@@ -31,6 +31,7 @@ require (
 	github.com/pkg/profile v1.6.0
 	github.com/prometheus/client_golang v1.11.0
 	github.com/robfig/cron v1.2.0
+	github.com/serialx/hashring v0.0.0-20200727003509-22c0c7ab6b1b
 	github.com/sirupsen/logrus v1.8.0
 	github.com/smartystreets/assertions v0.0.0-20190116191733-b6c0e53d7304 // indirect
 	github.com/spf13/afero v1.2.2 // indirect
