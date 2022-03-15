@@ -107,7 +107,7 @@ func (srv *ResloverService) Serve(ctx context.Context) error {
 	srv.mu.Unlock()
 
 	time_.UntilWithContxt(ctx, func(ctx context.Context) {
-		logger.Infof("querying services")
+		logger.Debugf("querying services")
 		err := srv.QueryServices()
 		if err != nil {
 			logger.WithError(err).Errorf("query services failed")
@@ -133,8 +133,6 @@ func (srv *ResloverService) QueryServices() (err error) {
 		errs []error
 	)
 
-	logger := srv.logger()
-	logger.Info("QueryServices.....")
 	srv.serviceByName.Range(func(name string, service ResloverQuery) bool {
 		if service.Opts.ResloverType == Reslover_reslover_type_dns {
 			service.nodes, err = net_.LookupHostIPv4(service.Domain)
