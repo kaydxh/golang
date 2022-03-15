@@ -18,7 +18,7 @@ import (
 
 type ResloverQueryMap sync.Map
 
-type resloverOptions struct {
+type ResloverOptions struct {
 	ResloverType    Reslover_ResloverType
 	LoadBalanceMode Reslover_LoadBalanceMode
 }
@@ -27,11 +27,20 @@ type ResloverQuery struct {
 	Domain   string
 	nodes    []string
 	hashring *hashring.HashRing
-	Opts     resloverOptions
+	Opts     ResloverOptions
 }
 
-func defaultResloverOptions() resloverOptions {
-	return resloverOptions{
+//NewDefaultResloverQuery, dns reslover, bls consist hash
+func NewDefaultResloverQuery(domain string) *ResloverQuery {
+	rq := &ResloverQuery{
+		Domain: domain,
+	}
+	rq.SetDefault()
+	return rq
+}
+
+func defaultResloverOptions() ResloverOptions {
+	return ResloverOptions{
 		ResloverType:    Reslover_reslover_type_dns,
 		LoadBalanceMode: Reslover_load_balance_mode_consist,
 	}
@@ -155,11 +164,18 @@ func (srv *ResloverService) PickNode(name string, consistKey string) (node strin
 
 	if service.Opts.LoadBalanceMode == Reslover_load_balance_mode_consist {
 		if service.hashring == nil {
-			//			srv.QueryServices()
+			srv.QueryServices()
+			service, has = srv.serviceByName.Load(name)
+			if !has {
+				return "", false
+			}
 		}
 		return service.hashring.GetNode(consistKey)
 	}
 
+	if len(service.nodes) == 0 {
+		return "", false
+	}
 	s := service.nodes[rand.Intn(len(service.nodes))]
 	return s, true
 }
