@@ -103,12 +103,12 @@ func NamedInCondition(oper SqlOperator, cols []string, arg interface{}) (string,
 	return strings_.ReplaceAll(query, "?", args, true), nil
 }
 
-//foo=:foo,bar=:bar,  for update set
+// JoinNamedColumnsValues foo=:foo,bar=:bar,  for update set
 func JoinNamedColumnsValues(cols ...string) string {
 	return strings.Join(namedTableColumnsValues(SqlCompareEqual, cols...), ",")
 }
 
-// "foo=:foo AND bar=:bar" , for where condition
+// JoinNamedColumnsValuesWithOperator "foo=:foo AND bar=:bar" , for where condition
 func JoinNamedColumnsValuesWithOperator(cmp SqlCompare, oper SqlOperator, cols ...string) string {
 	conds := strings.Join(namedTableColumnsValues(cmp, cols...), fmt.Sprintf(" %s ", oper))
 	if len(cols) == 0 || conds == "" {
