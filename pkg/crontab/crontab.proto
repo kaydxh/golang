@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package go.pkg.crontab;
+import "google/protobuf/duration.proto";
+
+option go_package = "github.com/kaydxh/go.pkg.crontab;crontab";
+
+message Crontab {
+  bool enabled = 1;
+  google.protobuf.Duration check_interval = 4;
+}
