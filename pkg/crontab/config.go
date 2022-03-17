@@ -39,6 +39,10 @@ func (c *completedConfig) New(ctx context.Context) (*CrontabSerivce, error) {
 		return nil, c.completeError
 	}
 
+	if !c.Proto.GetEnabled() {
+		return nil, nil
+	}
+
 	rs, err := c.install(ctx)
 	if err != nil {
 		return nil, err
