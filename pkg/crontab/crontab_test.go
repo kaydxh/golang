@@ -2,6 +2,8 @@ package crontab_test
 
 import (
 	"context"
+	"os"
+	"path/filepath"
 	"testing"
 	"time"
 
@@ -21,6 +23,21 @@ func TestCrontabSerivce(t *testing.T) {
 
 	s.Register(func(ctx context.Context, logger *logrus.Entry) error {
 		logger.Infof("doing...")
+		filepath.Walk("./testdata", func(path string, info os.FileInfo, err error) error {
+
+			if !info.IsDir() {
+				now := time.Now()
+				if now.Sub(info.ModTime()) > time.Minute {
+					t.Logf("file[%v] expired 1 Minute, modify time: %v, now: %v", path, info.ModTime(), now)
+				} else {
+					t.Logf("file[%v] normal, modify time: %v, now: %v", path, info.ModTime(), now)
+
+				}
+			}
+
+			return nil
+		})
+
 		return nil
 	})
 
