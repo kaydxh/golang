@@ -133,6 +133,7 @@ func (srv *ResloverService) QueryServices() (err error) {
 		errs []error
 	)
 
+	logger := srv.logger()
 	srv.serviceByName.Range(func(name string, service ResloverQuery) bool {
 		if service.Opts.ResloverType == Reslover_reslover_type_dns {
 			service.nodes, err = net_.LookupHostIPv4(service.Domain)
@@ -140,6 +141,7 @@ func (srv *ResloverService) QueryServices() (err error) {
 				errs = append(errs, fmt.Errorf("failed to query service: %v, err: %v", service.Domain, err))
 				return true
 			}
+			logger.Debugf("the results of lookup domain[%s] are nodes[%v]", service.Domain, service.nodes)
 
 			if service.Opts.LoadBalanceMode == Reslover_load_balance_mode_consist {
 				service.hashring = hashring.New(service.nodes)
@@ -162,11 +164,7 @@ func (srv *ResloverService) PickNode(name string, consistKey string) (node strin
 
 	if service.Opts.LoadBalanceMode == Reslover_load_balance_mode_consist {
 		if service.hashring == nil {
-			srv.QueryServices()
-			service, has = srv.serviceByName.Load(name)
-			if !has {
-				return "", false
-			}
+			return "", false
 		}
 		return service.hashring.GetNode(consistKey)
 	}
