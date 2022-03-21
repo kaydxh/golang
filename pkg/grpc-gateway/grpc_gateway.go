@@ -7,6 +7,7 @@ import (
 
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	grpc_ "github.com/kaydxh/golang/go/net/grpc"
+	http_ "github.com/kaydxh/golang/go/net/http"
 
 	"google.golang.org/grpc"
 )
@@ -15,6 +16,9 @@ type InterceptorOption struct {
 	grpcServerOpts struct {
 		unaryInterceptors  []grpc.UnaryServerInterceptor
 		streamInterceptors []grpc.StreamServerInterceptor
+	}
+	httpServerOpts struct {
+		httpInterceptors http_.HandlerInterceptors
 	}
 }
 

@@ -71,6 +71,10 @@ func (c *completedConfig) New() (*GenericWebServer, error) {
 func (c *completedConfig) install() (*GenericWebServer, error) {
 	opts := c.opts.gatewayOptions //[]gw_.GRPCGatewayOption{}
 	//opts = append(opts, gw_.WithServerUnaryInterceptorsTimerOptions())
+	opts = append(
+		opts,
+		gw_.WithHttpHandlerInterceptorTraceIDOptions(),
+	)
 
 	opts = append(
 		opts,
