@@ -14,24 +14,32 @@ func ExtractRequestIdHTTPContext(r *http.Request) string {
 }
 
 func ExtractHTTPContext(r *http.Request, key string) string {
-	if requestID := r.Header.Get(key); requestID != "" {
-		return requestID
-	}
-	if requestID := r.URL.Query().Get(key); requestID != "" {
-		return requestID
-	}
-	if requestID := r.FormValue(key); requestID != "" {
-		return requestID
-	}
-	if requestID := r.PostFormValue(key); requestID != "" {
-		return requestID
+	if value := ExtractFromHTTP(r, key); value != "" {
+		return value
 	}
 
-	return ExtractRequestIdContext(r.Context())
+	return ExtractFromContext(r.Context(), key)
 }
 
-func ExtractRequestIdContext(ctx context.Context) string {
-	switch requestIDs := ctx.Value(DefaulXHTTPRequestIDKey).(type) {
+func ExtractFromHTTP(r *http.Request, key string) string {
+	if value := r.Header.Get(key); value != "" {
+		return value
+	}
+	if value := r.URL.Query().Get(key); value != "" {
+		return value
+	}
+	if value := r.FormValue(key); value != "" {
+		return value
+	}
+	if value := r.PostFormValue(key); value != "" {
+		return value
+	}
+
+	return ""
+}
+
+func ExtractFromContext(ctx context.Context, key string) string {
+	switch requestIDs := ctx.Value(key).(type) {
 	case string:
 		if requestIDs != "" {
 			return requestIDs
@@ -46,9 +54,9 @@ func ExtractRequestIdContext(ctx context.Context) string {
 
 }
 
-func SetRequestIdContext(r *http.Request, requestID string) {
+func SetRequestIdContext(r *http.Request, requestID string) *http.Request {
 	ctx := context.WithValue(r.Context(), DefaulXHTTPRequestIDKey, requestID)
 	r = r.WithContext(ctx)
 
-	return
+	return r
 }

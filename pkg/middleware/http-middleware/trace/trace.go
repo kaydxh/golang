@@ -6,11 +6,14 @@ import (
 	"github.com/google/uuid"
 )
 
-func TraceID(w http.ResponseWriter, r *http.Request) {
-	requestID := ExtractRequestIdHTTPContext(r)
-	if requestID == "" {
-		requestID = uuid.New().String()
-	}
+func TraceID(handler http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		requestID := ExtractRequestIdHTTPContext(r)
+		if requestID == "" {
+			requestID = uuid.New().String()
+		}
 
-	SetRequestIdContext(r, requestID)
+		r = SetRequestIdContext(r, requestID)
+		handler.ServeHTTP(w, r)
+	})
 }

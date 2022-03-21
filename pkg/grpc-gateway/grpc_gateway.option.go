@@ -1,7 +1,10 @@
 package grpcgateway
 
 import (
+	"net/http"
 	"runtime/debug"
+
+	http_ "github.com/kaydxh/golang/go/net/http"
 
 	"github.com/gin-gonic/gin/binding"
 	interceptorlogrus_ "github.com/grpc-ecosystem/go-grpc-middleware/logging/logrus"
@@ -12,6 +15,8 @@ import (
 	interceptormonitor_ "github.com/kaydxh/golang/pkg/grpc-middleware/monitor"
 	interceptorprometheus_ "github.com/kaydxh/golang/pkg/grpc-middleware/monitor/prometheus"
 	interceptorratelimit_ "github.com/kaydxh/golang/pkg/grpc-middleware/ratelimit"
+	httpinterceptortrace_ "github.com/kaydxh/golang/pkg/middleware/http-middleware/trace"
+
 	"github.com/sirupsen/logrus"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
@@ -168,4 +173,26 @@ func WithServerUnaryInterceptorsInOutPacketOptions() GRPCGatewayOption {
 	return GRPCGatewayOptionFunc(func(c *GRPCGateway) {
 		WithServerUnaryInterceptorsOptions(interceptormonitor_.UnaryServerInterceptorOfInOutPacket()).apply(c)
 	})
+}
+
+// WithHttpHandlerInterceptorOptions
+func WithHttpHandlerInterceptorOptions(opts ...http_.HandlerInterceptorsOption) GRPCGatewayOption {
+
+	return GRPCGatewayOptionFunc(func(c *GRPCGateway) {
+		c.opts.interceptionOptions.httpServerOpts.httpInterceptors.ApplyOptions(opts...)
+	})
+}
+
+func WithHttpHandlerInterceptor(handler func(http.Handler) http.Handler) GRPCGatewayOption {
+
+	return WithHttpHandlerInterceptorOptions(
+		http_.HandlerInterceptorsOptionFunc(func(handlers *http_.HandlerInterceptors) {
+			handlers.Interceptors = append(handlers.Interceptors, handler)
+		}),
+	)
+}
+
+// WithHttpHandlerInterceptorTraceIDOptions
+func WithHttpHandlerInterceptorTraceIDOptions() GRPCGatewayOption {
+	return WithHttpHandlerInterceptor(httpinterceptortrace_.TraceID)
 }
