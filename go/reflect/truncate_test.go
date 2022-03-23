@@ -5,6 +5,7 @@ import (
 	"testing"
 
 	//	"github.com/google/uuid"
+
 	"github.com/google/uuid"
 	reflect_ "github.com/kaydxh/golang/go/reflect"
 )
@@ -22,14 +23,17 @@ func TestTruncateBytes(t *testing.T) {
 				RequestId string
 				Image     []byte
 				Item      struct {
+					a     int
 					Image []byte
 				}
 			}{
 				RequestId: uuid.New().String(),
 				Image:     []byte("12345678"),
 				Item: struct {
+					a     int
 					Image []byte
 				}{
+					a:     1,
 					Image: []byte("12345678"),
 				},
 			},
@@ -66,12 +70,57 @@ func TestTruncateBytes(t *testing.T) {
 				},
 			},
 		},
+		{
+			req: &struct {
+				RequstId   string
+				FrameImage []byte
+				Jobs       []struct {
+					JobType   int
+					JobOutput struct {
+						OccupyData struct {
+							GroupCode  string
+							FrameImage []byte
+						}
+					}
+				}
+			}{
+				RequstId:   "RRRRRRID",
+				FrameImage: []byte("frame data"),
+				Jobs: []struct {
+					JobType   int
+					JobOutput struct {
+						OccupyData struct {
+							GroupCode  string
+							FrameImage []byte
+						}
+					}
+				}{
+					{
+						JobType: 1,
+						JobOutput: struct {
+							OccupyData struct {
+								GroupCode  string
+								FrameImage []byte
+							}
+						}{
+							OccupyData: struct {
+								GroupCode  string
+								FrameImage []byte
+							}{
+								GroupCode:  "group code",
+								FrameImage: []byte("frame data"),
+							},
+						},
+					},
+				},
+			},
+		},
 	}
 
 	for i, testCase := range testCases {
 		t.Run(fmt.Sprintf("case-%v", i), func(t *testing.T) {
 			truncateReq := reflect_.TruncateBytes(testCase.req)
-			t.Logf("req: %v, truncateReq: %s", testCase.req, truncateReq)
+			t.Logf("req: %v\n, truncateReq: %s", testCase.req, truncateReq)
 		})
 	}
 }
