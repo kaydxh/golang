@@ -6,72 +6,76 @@ import (
 	"reflect"
 )
 
+func TruncateBytes(v interface{}) interface{} {
+	return Truncate(v, func(v interface{}) bool {
+		_, ok := v.([]byte)
+		return ok
+	})
+
+}
+
+func Truncate(v interface{}, f func(v interface{}) bool) interface{} {
+	truncate(reflect.ValueOf(v), f)
+	return v
+
+}
+
 //https://stackoverflow.com/questions/6395076/using-reflect-how-do-you-set-the-value-of-a-struct-field
 // truncate []byte, [][]byte, not support others, eg: [][][]byte
 // struct must use pointer of sturct, or not rewrite it
-func TruncateBytes(req interface{}) interface{} {
-	v, ok := indirectStruct(req)
-	if !ok {
-		return nil
-	}
+func truncate(v reflect.Value, f func(v interface{}) bool) {
 	if !v.IsValid() {
-		return nil
+		return
 	}
 
-	tt := reflect.TypeOf(req)
-	if tt.Kind() == reflect.Ptr {
-		tt = tt.Elem()
-	}
-	if tt.Kind() != reflect.Struct {
-		return truncateToLen(v)
+	if v.Type() == nil {
+		return
 	}
 
-	for i := 0; i < tt.NumField(); i++ {
-		field := tt.Field(i)
-		property := string(field.Name)
-		f := v.FieldByName(property)
-		if !f.IsValid() {
-			return nil
+	if v.CanInterface() {
+		vv := v.Interface()
+		if f(vv) {
+			truncateToLen(v)
 		}
-
-		if !f.CanSet() {
-			continue
-		}
-		if !f.CanInterface() {
-			continue
-		}
-
-		valueValue := v.Field(i).Addr()
-		switch v.Field(i).Kind() {
-		case reflect.Struct:
-			TruncateBytes(valueValue.Interface())
-		}
-		truncateToLen(f)
 	}
 
-	return req
+	switch v.Kind() {
+	case reflect.Struct:
+		for i := 0; i < v.NumField(); i++ {
+			truncate(v.Field(i), f)
+		}
+
+	case reflect.Array, reflect.Slice:
+		for i := 0; i < v.Len(); i++ {
+			truncate(v.Index(i), f)
+		}
+
+	case reflect.Ptr:
+		truncate(reflect.Indirect(v), f)
+
+	default:
+
+	}
+
+	return
+
 }
 
-func truncateToLen(oldValue reflect.Value) interface{} {
+func truncateToLen(oldValue reflect.Value) {
 	if !oldValue.IsValid() {
-		return oldValue
+		return
 	}
 	if !oldValue.CanInterface() {
-		return oldValue
+		return
 	}
 
 	vv := oldValue.Interface()
 	switch vv := vv.(type) {
-	case [][]byte:
-		for i, subV := range vv {
-			writeLenToReflectValue(oldValue.Index(i), len(subV))
-		}
-
 	case []byte:
-		return writeLenToReflectValue(oldValue, len(vv))
+		writeLenToReflectValue(oldValue, len(vv))
 	}
 
-	return oldValue
+	return
 }
 
 func writeLenToReflectValue(v reflect.Value, length int) interface{} {
