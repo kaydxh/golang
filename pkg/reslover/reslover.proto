@@ -10,6 +10,7 @@ message Reslover {
   ResloverType reslover_type = 2;
   LoadBalanceMode load_balance_mode = 3;
   google.protobuf.Duration resolve_interval = 4;
+  repeated string domains = 5;
 
   enum ResloverType {
     reslover_type_dns = 0;

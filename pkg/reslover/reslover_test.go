@@ -50,10 +50,10 @@ func TestNewResloverService(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			rs := reslover_.NewResloverService(tt.args.resolverInterval, tt.args.services...)
+			err = s.AddServices(tt.args.services...)
 			for i := 0; i < 100; i++ {
 				consistkey := fmt.Sprintf("consist-key-%d", i)
-				node, has := rs.PickNode(tt.name, consistkey)
+				node, has := s.PickNode(tt.name, consistkey)
 				t.Logf("pick node: %v, has: %v, consistkey: %v", node, has, consistkey)
 			}
 		})
