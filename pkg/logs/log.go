@@ -1,10 +1,12 @@
 package logs
 
 import (
+	"context"
 	"fmt"
 	"time"
 
 	rotate_ "github.com/kaydxh/golang/pkg/file-rotate"
+	trace_ "github.com/kaydxh/golang/pkg/middleware/http-middleware/trace"
 	"github.com/sirupsen/logrus"
 )
 
@@ -62,4 +64,9 @@ func WithRotate(log *logrus.Logger, filedir string, options ...RotateOption) err
 	}))
 
 	return nil
+}
+
+func GetLogger(ctx context.Context) *logrus.Entry {
+	logger := logrus.WithField("request_id", trace_.ExtractRequestIDFromContext(ctx))
+	return logger
 }

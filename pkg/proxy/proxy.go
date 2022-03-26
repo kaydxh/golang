@@ -8,6 +8,8 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/render"
 	http_ "github.com/kaydxh/golang/go/net/http"
+	time_ "github.com/kaydxh/golang/go/time"
+	logs_ "github.com/kaydxh/golang/pkg/logs"
 )
 
 type ProxyMode int32
@@ -50,7 +52,15 @@ func NewProxy(router gin.IRouter, options ...ProxyOption) (*Proxy, error) {
 }
 
 func (p *Proxy) ProxyHandler() gin.HandlerFunc {
+
 	return func(c *gin.Context) {
+		tc := time_.New(true)
+		logger := logs_.GetLogger(c.Request.Context())
+		summary := func() {
+			tc.Tick("proxy handler")
+			logger.Infof(tc.String())
+		}
+		defer summary()
 
 		if p.opts.proxyMatchedFunc != nil {
 			// not apply proxy, process inplace

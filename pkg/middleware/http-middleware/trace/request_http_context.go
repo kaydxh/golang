@@ -6,11 +6,11 @@ import (
 )
 
 const (
-	DefaulXHTTPRequestIDKey = "X-Request-ID"
+	DefaultHTTPRequestIDKey = "X-Request-ID"
 )
 
 func ExtractRequestIdHTTPContext(r *http.Request) string {
-	return ExtractHTTPContext(r, DefaulXHTTPRequestIDKey)
+	return ExtractHTTPContext(r, DefaultHTTPRequestIDKey)
 }
 
 func ExtractHTTPContext(r *http.Request, key string) string {
@@ -38,6 +38,14 @@ func ExtractFromHTTP(r *http.Request, key string) string {
 	return ""
 }
 
+func ExtractRequestIDFromContext(ctx context.Context) string {
+	if v, ok := ctx.Value(DefaultHTTPRequestIDKey).(string); ok {
+		return v
+	}
+
+	return ""
+}
+
 func ExtractFromContext(ctx context.Context, key string) string {
 	switch requestIDs := ctx.Value(key).(type) {
 	case string:
@@ -55,7 +63,7 @@ func ExtractFromContext(ctx context.Context, key string) string {
 }
 
 func SetRequestIdContext(r *http.Request, requestID string) *http.Request {
-	ctx := context.WithValue(r.Context(), DefaulXHTTPRequestIDKey, requestID)
+	ctx := context.WithValue(r.Context(), DefaultHTTPRequestIDKey, requestID)
 	r = r.WithContext(ctx)
 
 	return r
