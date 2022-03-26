@@ -31,8 +31,8 @@ type ResloverQuery struct {
 }
 
 //NewDefaultResloverQuery, dns reslover, bls consist hash
-func NewDefaultResloverQuery(domain string) *ResloverQuery {
-	rq := &ResloverQuery{
+func NewDefaultResloverQuery(domain string) ResloverQuery {
+	rq := ResloverQuery{
 		Domain: domain,
 	}
 	rq.SetDefault()
@@ -56,6 +56,15 @@ type ResloverService struct {
 	inShutdown       atomic.Bool
 	mu               sync.Mutex
 	cancel           func()
+}
+
+func NewDefaultResloverServices(resolverInterval time.Duration, domains ...string) *ResloverService {
+	rs := NewResloverService(resolverInterval)
+	for _, domain := range domains {
+		rq := NewDefaultResloverQuery(domain)
+		rs.AddService(rq)
+	}
+	return rs
 }
 
 func NewResloverService(resolverInterval time.Duration, services ...ResloverQuery) *ResloverService {
@@ -164,7 +173,14 @@ func (srv *ResloverService) PickNode(name string, consistKey string) (node strin
 
 	if service.Opts.LoadBalanceMode == Reslover_load_balance_mode_consist {
 		if service.hashring == nil {
-			return "", false
+			err := srv.QueryServices()
+			if err != nil {
+				return "", false
+			}
+			service, has = srv.serviceByName.Load(name)
+			if !has {
+				return "", false
+			}
 		}
 		return service.hashring.GetNode(consistKey)
 	}
@@ -179,7 +195,20 @@ func (srv *ResloverService) PickNode(name string, consistKey string) (node strin
 func (srv *ResloverService) AddService(service ResloverQuery) error {
 	_, loaded := srv.serviceByName.LoadOrStore(service.Domain, service)
 	if loaded {
-		return fmt.Errorf("service entry already installed")
+		return fmt.Errorf("service[%v] entry already installed", service)
 	}
 	return nil
+}
+
+func (srv *ResloverService) AddServices(services ...ResloverQuery) error {
+	var errs []error
+	for _, service := range services {
+		err := srv.AddService(service)
+		if err != nil {
+			errs = append(errs, err)
+		}
+
+	}
+
+	return errors_.NewAggregate(errs)
 }

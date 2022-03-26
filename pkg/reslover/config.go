@@ -50,6 +50,17 @@ func (c *completedConfig) New(ctx context.Context) (*ResloverService, error) {
 func (c *completedConfig) install(ctx context.Context) (*ResloverService, error) {
 	resolverInterval := c.Proto.GetResolveInterval().AsDuration()
 	rs := NewResloverService(resolverInterval)
+	for _, domain := range c.Proto.GetDomains() {
+		rq := ResloverQuery{
+			Domain: domain,
+			Opts: ResloverOptions{
+				ResloverType:    c.Proto.GetResloverType(),
+				LoadBalanceMode: c.Proto.GetLoadBalanceMode(),
+			},
+		}
+		rs.AddService(rq)
+	}
+
 	return rs, nil
 }
 
