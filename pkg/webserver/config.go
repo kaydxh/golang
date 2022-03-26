@@ -7,8 +7,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 	viper_ "github.com/kaydxh/golang/pkg/viper"
-	"github.com/sirupsen/logrus"
-	"google.golang.org/grpc"
 
 	gw_ "github.com/kaydxh/golang/pkg/grpc-gateway"
 	"github.com/ory/viper"
@@ -69,38 +67,7 @@ func (c *completedConfig) New() (*GenericWebServer, error) {
 }
 
 func (c *completedConfig) install() (*GenericWebServer, error) {
-	opts := c.opts.gatewayOptions //[]gw_.GRPCGatewayOption{}
-	//opts = append(opts, gw_.WithServerUnaryInterceptorsTimerOptions())
-	opts = append(
-		opts,
-		gw_.WithHttpHandlerInterceptorTraceIDOptions(),
-	)
-
-	opts = append(
-		opts,
-		gw_.WithServerUnaryInterceptorsTimerOptions(c.Proto.GetMonitor().GetPrometheus().GetEnabledMetricTimerCost()),
-	)
-
-	opts = append(
-		opts,
-		gw_.WithServerUnaryInterceptorsCodeMessageOptions(
-			c.Proto.GetMonitor().GetPrometheus().GetEnabledMetricCodeMessage(),
-		),
-	)
-
-	opts = append(
-		opts,
-		gw_.WithServerInterceptorsLogrusOptions(logrus.StandardLogger()),
-	)
-	opts = append(
-		opts,
-		gw_.WithServerInterceptorsRecoveryOptions(),
-	)
-	opts = append(
-		opts,
-		gw_.WithServerUnaryInterceptorsRequestIdOptions(),
-	)
-
+	opts := c.installMiddleware()
 	grpcBackend := gw_.NewGRPCGateWay(c.opts.bindAddress, opts...)
 	//grpcBackend.ApplyOptions()
 	ginBackend := gin.New()
@@ -126,6 +93,33 @@ func (c *Config) Complete() CompletedConfig {
 	}
 	c.parseViper()
 
+	if c.Validator == nil {
+		c.Validator = validator.New()
+	}
+
+	return CompletedConfig{&completedConfig{Config: c}}
+}
+
+func (c *Config) installMiddleware() []gw_.GRPCGatewayOption {
+	// recovery
+	c.opts.gatewayOptions = append(
+		c.opts.gatewayOptions,
+		gw_.WithServerInterceptorsRecoveryOptions(),
+	)
+
+	//auto generate requestId
+	c.opts.gatewayOptions = append(
+		c.opts.gatewayOptions,
+		gw_.WithServerUnaryInterceptorsRequestIdOptions(),
+	)
+
+	// trace id
+	c.opts.gatewayOptions = append(
+		c.opts.gatewayOptions,
+		gw_.WithHttpHandlerInterceptorTraceIDOptions(),
+	)
+
+	// limit rate
 	c.opts.gatewayOptions = append(
 		c.opts.gatewayOptions,
 		gw_.WithServerInterceptorsLimitRateOptions(
@@ -134,15 +128,31 @@ func (c *Config) Complete() CompletedConfig {
 		),
 	)
 
-	if c.Validator == nil {
-		c.Validator = validator.New()
-	}
+	// time cost
+	c.opts.gatewayOptions = append(
+		c.opts.gatewayOptions,
+		gw_.WithServerUnaryInterceptorsTimerOptions(c.Proto.GetMonitor().GetPrometheus().GetEnabledMetricTimerCost()),
+	)
 
-	return CompletedConfig{&completedConfig{Config: c}}
+	// code,message and client ip
+	c.opts.gatewayOptions = append(
+		c.opts.gatewayOptions,
+		gw_.WithServerUnaryInterceptorsCodeMessageOptions(
+			c.Proto.GetMonitor().GetPrometheus().GetEnabledMetricCodeMessage(),
+		),
+	)
+
+	// log input and output
+	c.opts.gatewayOptions = append(
+		c.opts.gatewayOptions,
+		gw_.WithServerUnaryInterceptorsInOutPacketOptions(),
+	)
+
+	return c.opts.gatewayOptions
 }
 
-func (c *Config) WithGRPCGatewayOptions(opts ...grpc.UnaryServerInterceptor) {
-	c.opts.gatewayOptions = append(c.opts.gatewayOptions, gw_.WithServerUnaryInterceptorsOptions(opts...))
+func (c *Config) WithWebConfigOptions(opts ...ConfigOption) {
+	c.ApplyOptions(opts...)
 }
 
 func (c *Config) parseViper() {
