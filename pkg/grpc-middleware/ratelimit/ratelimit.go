@@ -4,7 +4,7 @@ import (
 	"context"
 	"time"
 
-	"github.com/sirupsen/logrus"
+	logs_ "github.com/kaydxh/golang/pkg/logs"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -20,12 +20,13 @@ type Limiter interface {
 func UnaryServerInterceptor(limiter Limiter) grpc.UnaryServerInterceptor {
 	return func(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (interface{}, error) {
 		if !limiter.Allow() {
+			logger := logs_.GetLogger(ctx)
 			err := status.Errorf(
 				codes.ResourceExhausted,
 				"%s is rejected by grpc_ratelimit middleware, please retry later.",
 				info.FullMethod,
 			)
-			logrus.Errorf("%#v", err)
+			logger.Errorf("%#v", err)
 			return nil, err
 		}
 		defer limiter.Put()
@@ -37,13 +38,14 @@ func UnaryServerInterceptor(limiter Limiter) grpc.UnaryServerInterceptor {
 func StreamServerInterceptor(limiter Limiter) grpc.StreamServerInterceptor {
 	return func(srv interface{}, stream grpc.ServerStream, info *grpc.StreamServerInfo, handler grpc.StreamHandler) error {
 		if !limiter.Allow() {
+			logger := logs_.GetLogger(stream.Context())
 			err := status.Errorf(
 				codes.ResourceExhausted,
 				"%s is rejected by grpc_ratelimit middleware, please retry later.",
 				info.FullMethod,
 			)
 
-			logrus.Errorf("%#v", err)
+			logger.Errorf("%#v", err)
 			return err
 		}
 
