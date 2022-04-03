@@ -25,10 +25,12 @@ const (
 
 var (
 	baseTimestamp time.Time
+	pid           int
 )
 
 func init() {
 	baseTimestamp = time.Now()
+	pid = os.Getpid()
 }
 
 /*
@@ -294,6 +296,9 @@ func (f *GlogFormatter) formatHeader(entry *logrus.Entry, levelText string) []by
 
 	if f.EnableGoroutineId {
 		buf.WriteString(fmt.Sprintf(" [%d]", runtime_.GoroutineID()))
+	} else {
+		//use pid instead of goroutine id
+		buf.WriteString(fmt.Sprintf(" [%d]", pid))
 	}
 
 	var (

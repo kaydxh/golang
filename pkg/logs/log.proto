@@ -15,6 +15,7 @@ message Log {
   google.protobuf.Duration rotate_interval = 6;
   int64 rotate_size = 7;
   bool report_caller = 8;
+  bool enable_goroutine_id = 9;
 
   enum Level {
     panic = 0;
