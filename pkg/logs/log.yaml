@@ -3,7 +3,8 @@ log:
   level: info
   filepath: ./log
   max_age: 168h
-  max_count: 100
+  max_count: 200
   rotate_interval: 1h
-  rotate_size: 500
+  rotate_size: 104857600
   report_caller: true
+  enable_goroutine_id: false

@@ -89,7 +89,7 @@ func (c *completedConfig) install() error {
 			FullTimestamp:     true,
 			TimestampFormat:   time_.DefaultTimeMillFormat,
 			CallerPrettyfier:  GenShortCallPrettyfier(),
-			EnableGoroutineId: true,
+			EnableGoroutineId: c.Proto.GetEnableGoroutineId(),
 		})
 	}
 
