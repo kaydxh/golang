@@ -11,6 +11,7 @@ import (
 
 var goroutineSpace = []byte("goroutine ")
 
+//low performance
 func GoroutineID() uint64 {
 	bp := littleBuf.Get().(*[]byte)
 	defer littleBuf.Put(bp)
