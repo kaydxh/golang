@@ -67,8 +67,9 @@ func (c *completedConfig) New() (*GenericWebServer, error) {
 }
 
 func (c *completedConfig) install() (*GenericWebServer, error) {
-	opts := c.installMiddleware()
-	grpcBackend := gw_.NewGRPCGateWay(c.opts.bindAddress, opts...)
+	c.installHttpMiddleware()
+	c.installGRPCMiddleware()
+	grpcBackend := gw_.NewGRPCGateWay(c.opts.bindAddress, c.Config.opts.gatewayOptions...)
 	//grpcBackend.ApplyOptions()
 	ginBackend := gin.New()
 	fmt.Printf(" - listen address[%s]\n", c.opts.bindAddress)
@@ -100,7 +101,29 @@ func (c *Config) Complete() CompletedConfig {
 	return CompletedConfig{&completedConfig{Config: c}}
 }
 
-func (c *Config) installMiddleware() []gw_.GRPCGatewayOption {
+func (c *Config) installHttpMiddleware() []gw_.GRPCGatewayOption {
+	// trace id
+	c.opts.gatewayOptions = append(
+		c.opts.gatewayOptions,
+		gw_.WithHttpHandlerInterceptorTraceIDOptions(),
+	)
+
+	// time cost
+	c.opts.gatewayOptions = append(
+		c.opts.gatewayOptions,
+		gw_.WithHttpHandlerInterceptorsTimerOptions(c.Proto.GetMonitor().GetPrometheus().GetEnabledMetricTimerCost()),
+	)
+
+	//inout
+	c.opts.gatewayOptions = append(
+		c.opts.gatewayOptions,
+		gw_.WithHttpHandlerInterceptorInOutPacketOptions(),
+	)
+
+	return c.opts.gatewayOptions
+}
+
+func (c *Config) installGRPCMiddleware() []gw_.GRPCGatewayOption {
 	// recovery
 	c.opts.gatewayOptions = append(
 		c.opts.gatewayOptions,
@@ -113,12 +136,6 @@ func (c *Config) installMiddleware() []gw_.GRPCGatewayOption {
 		gw_.WithServerUnaryInterceptorsRequestIdOptions(),
 	)
 
-	// trace id
-	c.opts.gatewayOptions = append(
-		c.opts.gatewayOptions,
-		gw_.WithHttpHandlerInterceptorTraceIDOptions(),
-	)
-
 	// limit rate
 	c.opts.gatewayOptions = append(
 		c.opts.gatewayOptions,
@@ -128,11 +145,13 @@ func (c *Config) installMiddleware() []gw_.GRPCGatewayOption {
 		),
 	)
 
-	// time cost
-	c.opts.gatewayOptions = append(
-		c.opts.gatewayOptions,
-		gw_.WithServerUnaryInterceptorsTimerOptions(c.Proto.GetMonitor().GetPrometheus().GetEnabledMetricTimerCost()),
-	)
+	/*
+		// time cost
+		c.opts.gatewayOptions = append(
+			c.opts.gatewayOptions,
+			gw_.WithServerUnaryInterceptorsTimerOptions(c.Proto.GetMonitor().GetPrometheus().GetEnabledMetricTimerCost()),
+		)
+	*/
 
 	// code,message and client ip
 	c.opts.gatewayOptions = append(
