@@ -94,7 +94,7 @@ func (g *GRPCGateway) initOnce() {
 	})
 }
 
-//called by grpcHandlerFunc
+// ServeHTTP, wrap g.gateMux httpServerOpts, and called by grpcHandlerFunc
 func (g *GRPCGateway) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	g.opts.interceptionOptions.httpServerOpts.handlerChain.WrapH(g.gatewayMux).ServeHTTP(w, r)
 }
