@@ -15,6 +15,8 @@ import (
 	interceptormonitor_ "github.com/kaydxh/golang/pkg/grpc-middleware/monitor"
 	interceptorprometheus_ "github.com/kaydxh/golang/pkg/grpc-middleware/monitor/prometheus"
 	interceptorratelimit_ "github.com/kaydxh/golang/pkg/grpc-middleware/ratelimit"
+
+	//	httpinterceptorinoutpacket_ "github.com/kaydxh/golang/pkg/middleware/http-middleware/inoutpacket"
 	httpinterceptortrace_ "github.com/kaydxh/golang/pkg/middleware/http-middleware/trace"
 
 	"github.com/sirupsen/logrus"
@@ -175,6 +177,49 @@ func WithServerUnaryInterceptorsInOutPacketOptions() GRPCGatewayOption {
 	})
 }
 
+// WithHttpPreHandlerInterceptorOptions
+func WithHttpPreHandlerInterceptorOptions(
+	handlers ...func(w http.ResponseWriter, r *http.Request) error,
+) GRPCGatewayOption {
+
+	return GRPCGatewayOptionFunc(func(c *GRPCGateway) {
+		c.opts.interceptionOptions.httpServerOpts.handlerChain.PreHandlers = append(
+			c.opts.interceptionOptions.httpServerOpts.handlerChain.PreHandlers,
+			handlers...)
+	})
+}
+
+// WithHttpHandlerInterceptorOptions
+func WithHttpHandlerInterceptorOptions(handlers ...http_.HandlerInterceptor) GRPCGatewayOption {
+
+	return GRPCGatewayOptionFunc(func(c *GRPCGateway) {
+		c.opts.interceptionOptions.httpServerOpts.handlerChain.Handlers = append(
+			c.opts.interceptionOptions.httpServerOpts.handlerChain.Handlers,
+			handlers...)
+	})
+}
+
+// WithHttpPostHandlerInterceptorOptions
+func WithHttpPostHandlerInterceptorOptions(
+	handlers ...func(w http.ResponseWriter, r *http.Request),
+) GRPCGatewayOption {
+
+	return GRPCGatewayOptionFunc(func(c *GRPCGateway) {
+		c.opts.interceptionOptions.httpServerOpts.handlerChain.PostHandlers = append(
+			c.opts.interceptionOptions.httpServerOpts.handlerChain.PostHandlers,
+			handlers...)
+	})
+}
+
+/*
+// WithHttpHandlerInterceptorOptions
+func WithHttpHandlerInterceptorOptions(opts ...http_.HandlerChainOption) GRPCGatewayOption {
+
+	return GRPCGatewayOptionFunc(func(c *GRPCGateway) {
+		c.opts.interceptionOptions.httpServerOpts.handlerChain.ApplyOptions(opts...)
+	})
+}
+
 // WithHttpHandlerInterceptorOptions
 func WithHttpHandlerInterceptorOptions(opts ...http_.HandlerInterceptorsOption) GRPCGatewayOption {
 
@@ -191,8 +236,19 @@ func WithHttpHandlerInterceptor(handler func(http.Handler) http.Handler) GRPCGat
 		}),
 	)
 }
+*/
 
 // WithHttpHandlerInterceptorTraceIDOptions
 func WithHttpHandlerInterceptorTraceIDOptions() GRPCGatewayOption {
-	return WithHttpHandlerInterceptor(httpinterceptortrace_.TraceID)
+	return WithHttpHandlerInterceptorOptions(http_.HandlerInterceptor{
+		Interceptor: httpinterceptortrace_.TraceID,
+	})
 }
+
+// WithHttpHandlerInterceptorTraceIDOptions
+/*
+func WithHttpHandlerInterceptorInOutPacketOptions() GRPCGatewayOption {
+	//return WithHttpHandlerInterceptor(httpinterceptorinoutpacket_.InOutPacket)
+	return WithHttpHandlerInterceptor(httpinterceptorinoutpacket_.InOutPacket)
+}
+*/
