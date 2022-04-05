@@ -1,33 +1,33 @@
 package http
 
-// A HandlerInterceptorsOption sets options.
-type HandlerInterceptorsOption interface {
-	apply(*HandlerInterceptors)
+// A HandlerInterceptorOption sets options.
+type HandlerInterceptorOption interface {
+	apply(*HandlerInterceptor)
 }
 
-// EmptyHandlerInterceptorsOption does not alter the configuration. It can be embedded
+// EmptyHandlerInterceptorOption does not alter the configuration. It can be embedded
 // in another structure to build custom options.
 //
 // This API is EXPERIMENTAL.
-type EmptyHandlerInterceptorsOption struct{}
+type EmptyHandlerInterceptorOption struct{}
 
-func (EmptyHandlerInterceptorsOption) apply(*HandlerInterceptors) {}
+func (EmptyHandlerInterceptorOption) apply(*HandlerInterceptor) {}
 
-// HandlerInterceptorsOptionFunc wraps a function that modifies HandlerInterceptors into an
-// implementation of the HandlerInterceptorsOption interface.
-type HandlerInterceptorsOptionFunc func(*HandlerInterceptors)
+// HandlerInterceptorOptionFunc wraps a function that modifies HandlerInterceptor into an
+// implementation of the HandlerInterceptorOption interface.
+type HandlerInterceptorOptionFunc func(*HandlerInterceptor)
 
-func (f HandlerInterceptorsOptionFunc) apply(do *HandlerInterceptors) {
+func (f HandlerInterceptorOptionFunc) apply(do *HandlerInterceptor) {
 	f(do)
 }
 
 // sample code for option, default for nothing to change
-func _HandlerInterceptorsOptionWithDefault() HandlerInterceptorsOption {
-	return HandlerInterceptorsOptionFunc(func(*HandlerInterceptors) {
+func _HandlerInterceptorOptionWithDefault() HandlerInterceptorOption {
+	return HandlerInterceptorOptionFunc(func(*HandlerInterceptor) {
 		// nothing to change
 	})
 }
-func (o *HandlerInterceptors) ApplyOptions(options ...HandlerInterceptorsOption) *HandlerInterceptors {
+func (o *HandlerInterceptor) ApplyOptions(options ...HandlerInterceptorOption) *HandlerInterceptor {
 	for _, opt := range options {
 		if opt == nil {
 			continue
