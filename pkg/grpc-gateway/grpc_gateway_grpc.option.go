@@ -1,23 +1,15 @@
 package grpcgateway
 
 import (
-	"net/http"
 	"runtime/debug"
 
-	http_ "github.com/kaydxh/golang/go/net/http"
-
-	"github.com/gin-gonic/gin/binding"
 	interceptorlogrus_ "github.com/grpc-ecosystem/go-grpc-middleware/logging/logrus"
 	interceptorrecovery_ "github.com/grpc-ecosystem/go-grpc-middleware/recovery"
-	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	rate_ "github.com/kaydxh/golang/go/time/rate"
 	interceptortcloud_ "github.com/kaydxh/golang/pkg/grpc-middleware/api/tcloud/v3.0"
 	interceptormonitor_ "github.com/kaydxh/golang/pkg/grpc-middleware/monitor"
 	interceptorprometheus_ "github.com/kaydxh/golang/pkg/grpc-middleware/monitor/prometheus"
 	interceptorratelimit_ "github.com/kaydxh/golang/pkg/grpc-middleware/ratelimit"
-
-	//	httpinterceptorinoutpacket_ "github.com/kaydxh/golang/pkg/middleware/http-middleware/inoutpacket"
-	httpinterceptortrace_ "github.com/kaydxh/golang/pkg/middleware/http-middleware/trace"
 
 	"github.com/sirupsen/logrus"
 	"google.golang.org/grpc"
@@ -34,12 +26,6 @@ func WithServerOptions(opts ...grpc.ServerOption) GRPCGatewayOption {
 func WithClientDialOptions(opts ...grpc.DialOption) GRPCGatewayOption {
 	return GRPCGatewayOptionFunc(func(c *GRPCGateway) {
 		c.opts.clientDialOptions = append(c.opts.clientDialOptions, opts...)
-	})
-}
-
-func WithGatewayMuxOptions(opts ...runtime.ServeMuxOption) GRPCGatewayOption {
-	return GRPCGatewayOptionFunc(func(c *GRPCGateway) {
-		c.opts.gatewayMuxOptions = append(c.opts.gatewayMuxOptions, opts...)
 	})
 }
 
@@ -88,14 +74,6 @@ func WithServerInterceptorsRecoveryOptions() GRPCGatewayOption {
 	})
 }
 
-/*
-func WithServerUnaryInterceptorsTimerOptions() GRPCGatewayOption {
-	return GRPCGatewayOptionFunc(func(c *GRPCGateway) {
-		WithServerUnaryInterceptorsOptions(interceptortimer_.UnaryServerInterceptor()).apply(c)
-	})
-}
-*/
-
 func WithServerUnaryInterceptorsTimerOptions(enabledMetric bool) GRPCGatewayOption {
 	return GRPCGatewayOptionFunc(func(c *GRPCGateway) {
 		WithServerUnaryInterceptorsOptions(interceptorprometheus_.UnaryServerInterceptorOfTimer(enabledMetric)).apply(c)
@@ -125,37 +103,6 @@ func WithServerUnaryInterceptorsErrorOptions() GRPCGatewayOption {
 	})
 }
 
-//HTTP, only called by failed response
-func WithServerInterceptorsHttpErrorOptions() GRPCGatewayOption {
-	return GRPCGatewayOptionFunc(func(c *GRPCGateway) {
-		WithGatewayMuxOptions(runtime.WithErrorHandler(interceptortcloud_.HTTPError)).apply(c)
-	})
-}
-
-//now unused, only called by successed response
-func WithServerInterceptorsHTTPForwardResponseOptions() GRPCGatewayOption {
-	return GRPCGatewayOptionFunc(func(c *GRPCGateway) {
-		WithGatewayMuxOptions(runtime.WithForwardResponseOption(interceptortcloud_.HTTPForwardResponse)).apply(c)
-	})
-}
-
-//tcloud api3.0 http response formatter
-func WithServerInterceptorsTCloud30HTTPResponseOptions() GRPCGatewayOption {
-	return GRPCGatewayOptionFunc(func(c *GRPCGateway) {
-		WithGatewayMuxOptions(
-			runtime.WithMarshalerOption(runtime.MIMEWildcard, interceptortcloud_.NewDefaultJSONPb()),
-		).apply(
-			c,
-		)
-
-		WithGatewayMuxOptions(
-			runtime.WithMarshalerOption(binding.MIMEJSON, interceptortcloud_.NewDefaultJSONPb()),
-		).apply(
-			c,
-		)
-	})
-}
-
 //limiter rate for grpc api
 func WithServerInterceptorsLimitRateOptions(burstUnary, burstStream int) GRPCGatewayOption {
 	return GRPCGatewayOptionFunc(func(c *GRPCGateway) {
@@ -174,40 +121,6 @@ func WithServerInterceptorsLimitRateOptions(burstUnary, burstStream int) GRPCGat
 func WithServerUnaryInterceptorsInOutPacketOptions() GRPCGatewayOption {
 	return GRPCGatewayOptionFunc(func(c *GRPCGateway) {
 		WithServerUnaryInterceptorsOptions(interceptormonitor_.UnaryServerInterceptorOfInOutPacket()).apply(c)
-	})
-}
-
-// WithHttpPreHandlerInterceptorOptions
-func WithHttpPreHandlerInterceptorOptions(
-	handlers ...func(w http.ResponseWriter, r *http.Request) error,
-) GRPCGatewayOption {
-
-	return GRPCGatewayOptionFunc(func(c *GRPCGateway) {
-		c.opts.interceptionOptions.httpServerOpts.handlerChain.PreHandlers = append(
-			c.opts.interceptionOptions.httpServerOpts.handlerChain.PreHandlers,
-			handlers...)
-	})
-}
-
-// WithHttpHandlerInterceptorOptions
-func WithHttpHandlerInterceptorOptions(handlers ...http_.HandlerInterceptor) GRPCGatewayOption {
-
-	return GRPCGatewayOptionFunc(func(c *GRPCGateway) {
-		c.opts.interceptionOptions.httpServerOpts.handlerChain.Handlers = append(
-			c.opts.interceptionOptions.httpServerOpts.handlerChain.Handlers,
-			handlers...)
-	})
-}
-
-// WithHttpPostHandlerInterceptorOptions
-func WithHttpPostHandlerInterceptorOptions(
-	handlers ...func(w http.ResponseWriter, r *http.Request),
-) GRPCGatewayOption {
-
-	return GRPCGatewayOptionFunc(func(c *GRPCGateway) {
-		c.opts.interceptionOptions.httpServerOpts.handlerChain.PostHandlers = append(
-			c.opts.interceptionOptions.httpServerOpts.handlerChain.PostHandlers,
-			handlers...)
 	})
 }
 
@@ -237,13 +150,6 @@ func WithHttpHandlerInterceptor(handler func(http.Handler) http.Handler) GRPCGat
 	)
 }
 */
-
-// WithHttpHandlerInterceptorTraceIDOptions
-func WithHttpHandlerInterceptorTraceIDOptions() GRPCGatewayOption {
-	return WithHttpHandlerInterceptorOptions(http_.HandlerInterceptor{
-		Interceptor: httpinterceptortrace_.TraceID,
-	})
-}
 
 // WithHttpHandlerInterceptorTraceIDOptions
 /*
