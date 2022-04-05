@@ -45,8 +45,9 @@ func (c *HandlerChain) WrapH(next http.Handler) http.Handler {
 			}
 		}
 
-		for _, h := range c.Handlers {
-			next = h.Interceptor(next)
+		// reverse iterate handlers, so called handler as registed order
+		for i := len(c.Handlers) - 1; i >= 0; i-- {
+			next = c.Handlers[i].Interceptor(next)
 		}
 
 		next.ServeHTTP(w, r)

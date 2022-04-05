@@ -90,11 +90,11 @@ func (g *GRPCGateway) initOnce() {
 
 		g.grpcServer = grpc.NewServer(serverOptions...)
 		g.gatewayMux = runtime.NewServeMux(g.opts.gatewayMuxOptions...)
-		//g.Server.Handler = grpcHandlerFunc(g.grpcServer, g.gatewayMux)
 		g.Server.Handler = grpcHandlerFunc(g.grpcServer, g)
 	})
 }
 
+//called by grpcHandlerFunc
 func (g *GRPCGateway) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	g.opts.interceptionOptions.httpServerOpts.handlerChain.WrapH(g.gatewayMux).ServeHTTP(w, r)
 }
