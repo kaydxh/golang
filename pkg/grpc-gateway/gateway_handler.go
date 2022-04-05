@@ -27,6 +27,12 @@ type HTTPHandler interface {
 
 type HTTPHandlerFunc func(ctx context.Context, mux *runtime.ServeMux, endpoint string, opts []grpc.DialOption) error
 
+// ServeMux is a request multiplexer for grpc-gateway.
+// It matches http requests to patterns and invokes the corresponding handler.
+
+// grpc.DialOption configures how we set up the connection. grpc client->
+// grpc server
+
 func (h HTTPHandlerFunc) Register(
 	ctx context.Context,
 	mux *runtime.ServeMux,

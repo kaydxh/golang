@@ -18,7 +18,13 @@ type InterceptorOption struct {
 		streamInterceptors []grpc.StreamServerInterceptor
 	}
 	httpServerOpts struct {
-		httpInterceptors http_.HandlerInterceptors
+		handlerChain http_.HandlerChain
+		/*
+			//invoke before http handler
+			PreHttpInterceptors []http_.HandlerInterceptor
+			//invoke after http handler
+			PostHttpInterceptors []http_.HandlerInterceptor
+		*/
 	}
 }
 
@@ -84,8 +90,13 @@ func (g *GRPCGateway) initOnce() {
 
 		g.grpcServer = grpc.NewServer(serverOptions...)
 		g.gatewayMux = runtime.NewServeMux(g.opts.gatewayMuxOptions...)
-		g.Server.Handler = grpcHandlerFunc(g.grpcServer, g.gatewayMux)
+		//g.Server.Handler = grpcHandlerFunc(g.grpcServer, g.gatewayMux)
+		g.Server.Handler = grpcHandlerFunc(g.grpcServer, g)
 	})
+}
+
+func (g *GRPCGateway) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	g.opts.interceptionOptions.httpServerOpts.handlerChain.WrapH(g.gatewayMux).ServeHTTP(w, r)
 }
 
 func (g *GRPCGateway) ListenAndServe() error {
