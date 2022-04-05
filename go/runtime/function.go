@@ -6,5 +6,10 @@ import (
 )
 
 func NameOfFunction(f interface{}) string {
-	return runtime.FuncForPC(reflect.ValueOf(f).Pointer()).Name()
+	v := reflect.ValueOf(f)
+	if v.Kind() == reflect.Func {
+		return runtime.FuncForPC(reflect.ValueOf(f).Pointer()).Name()
+	}
+
+	return ""
 }
