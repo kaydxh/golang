@@ -1,13 +1,58 @@
 package http
 
-import "net/http"
+import (
+	"net/http"
 
-type HandlerInterceptors struct {
-	Interceptors []func(h http.Handler) http.Handler
+	runtime_ "github.com/kaydxh/golang/go/runtime"
+)
+
+type HandlerInterceptor struct {
+	//http middleware
+	Interceptor func(h http.Handler) http.Handler
 }
 
-func NewHandlerInterceptors(opts ...HandlerInterceptorsOption) *HandlerInterceptors {
-	handers := &HandlerInterceptors{}
+func NewHandlerInterceptor(opts ...HandlerInterceptorOption) *HandlerInterceptor {
+	handers := &HandlerInterceptor{}
 	handers.ApplyOptions(opts...)
 	return handers
+}
+
+type HandlerChain struct {
+	//invoke before http handler
+	PreHandlers []func(w http.ResponseWriter, r *http.Request) error
+	Handlers    []HandlerInterceptor
+	//invoke after http handler
+	PostHandlers []func(w http.ResponseWriter, r *http.Request)
+}
+
+func NewHandlerChain(opts ...HandlerChainOption) *HandlerChain {
+	c := &HandlerChain{}
+	c.ApplyOptions(opts...)
+
+	return c
+}
+
+func (c *HandlerChain) WrapH(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+
+		defer runtime_.Recover()
+
+		for _, preH := range c.PreHandlers {
+			err := preH(w, r)
+			if err != nil {
+				// assume PreHandler already process response by self
+				return
+			}
+		}
+
+		for _, h := range c.Handlers {
+			next = h.Interceptor(next)
+		}
+
+		next.ServeHTTP(w, r)
+
+		for _, postH := range c.PostHandlers {
+			postH(w, r)
+		}
+	})
 }
