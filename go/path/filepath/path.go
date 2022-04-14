@@ -1,8 +1,11 @@
 package filepath
 
 import (
+	"os"
 	"path"
 	"path/filepath"
+
+	"github.com/pkg/errors"
 )
 
 func GetParentRelPath(filePath string) string {
@@ -42,4 +45,20 @@ func JoinPaths(rootPath, relativePath string) (string, error) {
 	}
 
 	return finalPath, nil
+}
+
+// CanonicalizePath turns path into an absolute path without symlinks.
+func CanonicalizePath(path string) (string, error) {
+	path, err := filepath.Abs(path)
+	if err != nil {
+		return "", err
+	}
+	path, err = filepath.EvalSymlinks(path)
+
+	// Get a better error if we have an invalid path
+	if pathErr, ok := err.(*os.PathError); ok {
+		err = errors.Wrap(pathErr.Err, pathErr.Path)
+	}
+
+	return path, err
 }
