@@ -8,7 +8,7 @@ import (
 
 func TraceID(handler http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		requestID := ExtractRequestIdHTTPContext(r)
+		requestID := ExtractRequestIdHTTPAndContext(r)
 		if requestID == "" {
 			requestID = uuid.New().String()
 		}
@@ -16,4 +16,19 @@ func TraceID(handler http.Handler) http.Handler {
 		r = SetRequestIdContext(r, requestID)
 		handler.ServeHTTP(w, r)
 	})
+}
+
+func SetPairsContext(keys []string) func(handler http.Handler) http.Handler {
+	return func(handler http.Handler) http.Handler {
+		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			for _, key := range keys {
+				value := ExtractHTTPAndContext(r, key)
+				if value != "" {
+					r = SetPairContext(r, key, value)
+				}
+			}
+
+			handler.ServeHTTP(w, r)
+		})
+	}
 }
