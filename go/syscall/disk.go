@@ -23,12 +23,11 @@ type DiskUsage struct {
 func NewDiskUsage(path string) (*DiskUsage, error) {
 	var stat syscall.Statfs_t
 	mount, err := FindMount(path)
-	fmt.Printf("err : %v\n", err)
-	fmt.Printf("mout: %v\n", mount)
-	volumePath, _, _, err := GetDevicePathAndFsTypeOptions(path)
-	fmt.Printf("err : %v\n", err)
-	fmt.Printf("volumePath : %v\n", volumePath)
-	err = syscall.Statfs(volumePath, &stat)
+	if err != nil {
+		return nil, err
+	}
+
+	err = syscall.Statfs(mount.Path, &stat)
 	if err != nil {
 		return nil, err
 	}
@@ -57,63 +56,19 @@ func (du *DiskUsage) Used() uint64 {
 }
 
 // Usage returns percentage of used on the file system
+/*
+https://github.com/coreutils/coreutils/blob/master/src/df.c#:~:text=pct%20%3D%20u100%20/%20nonroot_total%20%2B%20(u100%20%25%20nonroot_total%20!%3D%200)%3B
+By default, ext2/3/4 filesystems reserve 5% of the space to be useable only by root. This is to avoid a normal user completely filling the disk which would
+then cause system components to fail whenever they next needed to write to the disk
+*/
 func (du *DiskUsage) Usage() float32 {
-	return float32(du.Used()) / float32(du.Size())
-}
-
-const (
-	procMountsFile = "/proc/mounts"
-
-	fieldsPerLine = 6
-)
-
-const (
-	procDeviceIndex = iota
-	procPathIndex
-	procTypeIndex
-	procOptionIndex
-)
-
-func GetDevicePathAndFsTypeOptions(mountPoint string) (devicePath, fsType string, fsOptions []string, err error) {
-	if mountPoint == "" {
-		err = fmt.Errorf("Mount point cannot be empty")
-		return
+	var deta float32
+	u100 := du.Used() * 100
+	nonrootTotal := du.Used() + du.Avail()
+	if u100%nonrootTotal != 0 {
+		deta = 1.0
 	}
-
-	var file *os.File
-
-	file, err = os.Open(procMountsFile)
-	if err != nil {
-		return
-	}
-
-	defer file.Close()
-
-	reader := bufio.NewReader(file)
-	for {
-		var line string
-
-		line, err = reader.ReadString('\n')
-		if err == io.EOF {
-			err = fmt.Errorf("Mount %s not found", mountPoint)
-			return
-		}
-
-		fields := strings.Fields(line)
-		if len(fields) != fieldsPerLine {
-			err = fmt.Errorf("Incorrect no of fields (expected %d, got %d)) :%s", fieldsPerLine, len(fields), line)
-			return
-		}
-
-		fmt.Printf("-----fields[procDeviceIndex]: %v\n", fields[procDeviceIndex])
-
-		if mountPoint == fields[procPathIndex] {
-			devicePath = fields[procDeviceIndex]
-			fsType = fields[procTypeIndex]
-			fsOptions = strings.Split(fields[procOptionIndex], ",")
-			return
-		}
-	}
+	return float32(u100)/float32(nonrootTotal) + deta
 }
 
 type Mount struct {

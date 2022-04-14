@@ -19,6 +19,14 @@ func TestDiskUsage(t *testing.T) {
 			volumePath: "/dev",
 			expected:   "",
 		},
+		{
+			volumePath: "/data",
+			expected:   "",
+		},
+		{
+			volumePath: "/data/home/log",
+			expected:   "",
+		},
 	}
 
 	for _, testCase := range testCases {
@@ -29,7 +37,14 @@ func TestDiskUsage(t *testing.T) {
 				return
 
 			}
-			t.Logf("disk usage: %v", du.Usage())
+			t.Logf(
+				"disk free[%v], avali[%v], size[%v], used[%v], usage: %v",
+				du.Free(),
+				du.Avail(),
+				du.Size(),
+				du.Used(),
+				du.Usage(),
+			)
 
 		})
 	}
