@@ -9,11 +9,11 @@ const (
 	DefaultHTTPRequestIDKey = "X-Request-ID"
 )
 
-func ExtractRequestIdHTTPContext(r *http.Request) string {
-	return ExtractHTTPContext(r, DefaultHTTPRequestIDKey)
+func ExtractRequestIdHTTPAndContext(r *http.Request) string {
+	return ExtractHTTPAndContext(r, DefaultHTTPRequestIDKey)
 }
 
-func ExtractHTTPContext(r *http.Request, key string) string {
+func ExtractHTTPAndContext(r *http.Request, key string) string {
 	if value := ExtractFromHTTP(r, key); value != "" {
 		return value
 	}
@@ -62,9 +62,13 @@ func ExtractFromContext(ctx context.Context, key string) string {
 
 }
 
-func SetRequestIdContext(r *http.Request, requestID string) *http.Request {
-	ctx := context.WithValue(r.Context(), DefaultHTTPRequestIDKey, requestID)
+func SetPairContext(r *http.Request, key, value string) *http.Request {
+	ctx := context.WithValue(r.Context(), key, value)
 	r = r.WithContext(ctx)
 
 	return r
+}
+
+func SetRequestIdContext(r *http.Request, requestID string) *http.Request {
+	return SetPairContext(r, DefaultHTTPRequestIDKey, requestID)
 }
