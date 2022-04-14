@@ -28,9 +28,9 @@ require (
 	github.com/mitchellh/go-testing-interface v1.14.0 // indirect
 	github.com/mitchellh/mapstructure v1.2.3
 	github.com/ory/viper v1.7.5
+	github.com/pkg/errors v0.9.1
 	github.com/pkg/profile v1.6.0
 	github.com/prometheus/client_golang v1.11.0
-	github.com/robfig/cron v1.2.0
 	github.com/serialx/hashring v0.0.0-20200727003509-22c0c7ab6b1b
 	github.com/sirupsen/logrus v1.8.0
 	github.com/smartystreets/assertions v0.0.0-20190116191733-b6c0e53d7304 // indirect
