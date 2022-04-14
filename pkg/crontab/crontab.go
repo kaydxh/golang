@@ -14,6 +14,7 @@ import (
 )
 
 // Crontab ...
+
 type CrontabSerivce struct {
 	checkInterval time.Duration
 	inShutdown    atomic.Bool // true when when server is in shutdown
@@ -106,16 +107,19 @@ func (c *CrontabSerivce) check(ctx context.Context) error {
 	c.mu.Lock()
 	fs := c.fs
 	c.mu.Unlock()
-	go func() {
-		for _, f := range fs {
-			err := f(ctx, logger)
+
+	for _, f := range fs {
+		wg.Add(1)
+		go func(doFunc func(context.Context, *logrus.Entry) error) {
+			defer wg.Done()
+			err := doFunc(ctx, logger)
 			if err != nil {
 				c.mu.Lock()
 				errs = append(errs, err)
 				c.mu.Unlock()
 			}
-		}
-	}()
+		}(f)
+	}
 	wg.Wait()
 	return errors_.NewAggregate(errs)
 }
