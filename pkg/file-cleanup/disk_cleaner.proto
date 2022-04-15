@@ -12,5 +12,9 @@ message DiskCleaner {
   float disk_usage = 2;
   // clearn paths
   repeated string paths = 3;
-  google.protobuf.Duration check_interval = 4;
+  // ext
+  repeated string exts = 4;
+  google.protobuf.Duration check_interval = 5;
+  google.protobuf.Duration base_expired = 6;
+  google.protobuf.Duration min_expired = 7;
 }

@@ -1,5 +1,8 @@
 diskcleaner:
   enabled: true
-  disk_usage: 50
+  disk_usage: 85
   paths: [ "/data" ] 
-  check_interval : 10s
+  exts: [".jpg"]
+  check_interval: 60s
+  base_expired : 144h
+  min_expired: 60s
