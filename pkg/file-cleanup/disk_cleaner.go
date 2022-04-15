@@ -207,18 +207,17 @@ func (s *DiskCleanerSerivce) clean(ctx context.Context) error {
 				filepath.Walk(diskPath, func(filePath string, info os.FileInfo, err error) error {
 
 					if !info.IsDir() {
-						if strings_.SliceContains(s.exts, filepath.Ext(filePath)) {
+						if strings_.SliceContainsCaseInSensitive(s.exts, filepath.Ext(filePath)) {
 							now := time.Now()
 							if now.Sub(info.ModTime()) > actualExpired {
 								logger.Infof(
-									"file %v expired[%v], modify time: %v, now: %v",
+									"delete file %v expired[%v], modify time: %v, now: %v",
 									filePath,
 									actualExpired,
 									info.ModTime(),
 									now,
 								)
-							} else {
-								logger.Infof("file %v normal[%v], modify time: %v, now: %v", filePath, actualExpired, info.ModTime(), now)
+								os.Remove(filePath)
 							}
 						}
 					}
