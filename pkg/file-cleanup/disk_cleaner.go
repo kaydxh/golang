@@ -202,7 +202,12 @@ func (s *DiskCleanerSerivce) clean(ctx context.Context) error {
 
 			if du.Usage() >= s.diskUsage {
 				//clean
-				logger.Infof("disk[%v] usage over %v, start to clean", diskPath, s.diskUsage)
+				logger.Infof(
+					"disk[%v] usage over %v, file expired: %v, start to clean",
+					diskPath,
+					ebo.GetCurrentInterval(),
+					s.diskUsage,
+				)
 				actualExpired, _ := ebo.NextBackOff()
 				filepath.Walk(diskPath, func(filePath string, info os.FileInfo, err error) error {
 
