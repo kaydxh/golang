@@ -6,15 +6,13 @@ import (
 	syscall_ "github.com/kaydxh/golang/go/syscall"
 )
 
+// GOOS=linux  GOARCH=amd64  go test -c disk_test.go -o test
+// /test -test.v
 func TestDiskUsage(t *testing.T) {
 	testCases := []struct {
 		volumePath string
 		expected   string
 	}{
-		{
-			volumePath: "/",
-			expected:   "",
-		},
 		{
 			volumePath: "/dev",
 			expected:   "",
