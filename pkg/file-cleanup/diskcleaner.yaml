@@ -1,0 +1,5 @@
+diskcleaner:
+  enabled: true
+  disk_usage: 50
+  paths: [ "/data" ] 
+  check_interval : 10s

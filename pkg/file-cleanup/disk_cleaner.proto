@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package go.pkg.filecleanup;
+import "google/protobuf/duration.proto";
+
+option go_package = "github.com/kaydxh/go.pkg.filecleanup;filecleanup";
+
+message DiskCleaner {
+  bool enabled = 1;
+  // disk usage >= disk_usage, start to clean file, 0 means nerver clean, range
+  // 0-100
+  float disk_usage = 2;
+  // clearn paths
+  repeated string paths = 3;
+  google.protobuf.Duration check_interval = 4;
+}
