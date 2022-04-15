@@ -56,7 +56,10 @@ func (c *completedConfig) install(ctx context.Context) (*DiskCleanerSerivce, err
 	return NewDiskCleanerSerivce(
 		c.Proto.GetDiskUsage(),
 		c.Proto.GetPaths(),
+		c.Proto.GetExts(),
 		WithDiskCheckInterval(c.Proto.GetCheckInterval().AsDuration()),
+		WithDiskBaseExpired(c.Proto.GetBaseExpired().AsDuration()),
+		WithDiskMinExpired(c.Proto.GetMinExpired().AsDuration()),
 	)
 }
 

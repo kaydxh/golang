@@ -11,6 +11,7 @@ import (
 	"github.com/kaydxh/golang/go/errors"
 	errors_ "github.com/kaydxh/golang/go/errors"
 	filepath_ "github.com/kaydxh/golang/go/path/filepath"
+	strings_ "github.com/kaydxh/golang/go/strings"
 	syscall_ "github.com/kaydxh/golang/go/syscall"
 	time_ "github.com/kaydxh/golang/go/time"
 	"github.com/sirupsen/logrus"
@@ -26,19 +27,24 @@ func init() {
 }
 
 const (
-	DefaultCheckInterval time.Duration = time.Minute
-	DefaultbaseExpired   time.Duration = 72 * time.Hour
+	DefaultCheckInterval       time.Duration = time.Minute
+	DefaultbaseExpired         time.Duration = 72 * time.Hour
+	DefalutRandomizationFactor               = 0.1
+	DefalutMultiplier                        = 0.8
+	DefalutMinInterval                       = time.Minute
 )
 
 type DiskCleanerConfig struct {
 	checkInterval time.Duration
 	baseExpired   time.Duration
+	minExpired    time.Duration
 }
 
 // DiskCleanerSerivce ...
 type DiskCleanerSerivce struct {
+	// path:ExponentialBackOffMap
 	epoByPath time_.ExponentialBackOffMap
-	//paths     []string
+	exts      []string
 	//0-100
 	diskUsage  float32
 	inShutdown atomic.Bool // true when when server is in shutdown
@@ -69,28 +75,18 @@ func checkAndCanoicalzePaths(paths ...string) ([]string, bool) {
 
 }
 
-func defaultExponentialBackOff() time_.ExponentialBackOff {
-	epo := time_.NewExponentialBackOff(
-		time_.WithExponentialBackOffOptionInitialInterval(DefaultbaseExpired),
-		time_.WithExponentialBackOffOptionRandomizationFactor(0.1),
-		time_.WithExponentialBackOffOptionMultiplier(0.8),
-		time_.WithExponentialBackOffOptionMaxInterval(DefaultbaseExpired),
-		time_.WithExponentialBackOffOptionMinInterval(time.Minute),
-		time_.WithExponentialBackOffOptionMaxElapsedTime(0),
-	)
-	return *epo
-}
-
 // NewDiskCleanerSerivce ...
 func NewDiskCleanerSerivce(
 	diskUsage float32,
 	paths []string,
+	exts []string,
 	opts ...DiskCleanerConfigOption,
 ) (*DiskCleanerSerivce, error) {
 	canPaths, ok := checkAndCanoicalzePaths(paths...)
 	if !ok {
-		return nil, fmt.Errorf("invalid paths for disk")
+		return nil, fmt.Errorf("invalid paths for disk cheaner")
 	}
+
 	if diskUsage < 0 {
 		diskUsage = 0
 	}
@@ -98,23 +94,33 @@ func NewDiskCleanerSerivce(
 		diskUsage = 100
 	}
 
-	s := &DiskCleanerSerivce{
-		//	paths:     canPaths,
-		diskUsage: diskUsage,
+	if len(exts) == 0 {
+		return nil, fmt.Errorf("invalid exts for disk cleaner")
 	}
 
-	s.opts.checkInterval = DefaultCheckInterval
-	s.opts.baseExpired = DefaultbaseExpired
-
+	s := &DiskCleanerSerivce{
+		diskUsage: diskUsage,
+		exts:      exts,
+	}
 	s.opts.ApplyOptions(opts...)
+
+	if s.opts.checkInterval == 0 {
+		s.opts.checkInterval = DefaultCheckInterval
+	}
+	if s.opts.minExpired == 0 {
+		s.opts.minExpired = DefalutMinInterval
+	}
+	if s.opts.baseExpired == 0 {
+		s.opts.baseExpired = DefaultbaseExpired
+	}
 
 	for _, path := range canPaths {
 		exp := time_.NewExponentialBackOff(
 			time_.WithExponentialBackOffOptionInitialInterval(s.opts.baseExpired),
-			time_.WithExponentialBackOffOptionRandomizationFactor(0.1),
-			time_.WithExponentialBackOffOptionMultiplier(0.8),
+			time_.WithExponentialBackOffOptionRandomizationFactor(DefalutRandomizationFactor),
+			time_.WithExponentialBackOffOptionMultiplier(DefalutMultiplier),
 			time_.WithExponentialBackOffOptionMaxInterval(s.opts.baseExpired),
-			time_.WithExponentialBackOffOptionMinInterval(time.Minute),
+			time_.WithExponentialBackOffOptionMinInterval(s.opts.minExpired),
 			time_.WithExponentialBackOffOptionMaxElapsedTime(0),
 		)
 
@@ -201,17 +207,19 @@ func (s *DiskCleanerSerivce) clean(ctx context.Context) error {
 				filepath.Walk(diskPath, func(filePath string, info os.FileInfo, err error) error {
 
 					if !info.IsDir() {
-						now := time.Now()
-						if now.Sub(info.ModTime()) > actualExpired {
-							logger.Infof(
-								"file %v expired[%v], modify time: %v, now: %v",
-								filePath,
-								actualExpired,
-								info.ModTime(),
-								now,
-							)
-						} else {
-							logger.Infof("file %v normal[%v], modify time: %v, now: %v", filePath, actualExpired, info.ModTime(), now)
+						if strings_.SliceContains(s.exts, filepath.Ext(filePath)) {
+							now := time.Now()
+							if now.Sub(info.ModTime()) > actualExpired {
+								logger.Infof(
+									"file %v expired[%v], modify time: %v, now: %v",
+									filePath,
+									actualExpired,
+									info.ModTime(),
+									now,
+								)
+							} else {
+								logger.Infof("file %v normal[%v], modify time: %v, now: %v", filePath, actualExpired, info.ModTime(), now)
+							}
 						}
 					}
 
@@ -221,7 +229,7 @@ func (s *DiskCleanerSerivce) clean(ctx context.Context) error {
 			} else {
 				// reset expired Time
 				ebo.Reset()
-				logger.Infof("disk path: %v reset expired time: %v", diskPath, ebo.GetCurrentInterval())
+				logger.Infof("reset disk path: %v expired time: %v", diskPath, ebo.GetCurrentInterval())
 			}
 			s.epoByPath.Store(diskPath, ebo)
 
