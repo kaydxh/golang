@@ -205,6 +205,9 @@ func (f *GlogFormatter) Format(entry *logrus.Entry) ([]byte, error) {
 		case key == f.FieldMap.resolve(FieldKeyMsg):
 			value = entry.Message
 			f.appendValue(b, value)
+			//continue means msg not need call f.appendKeyValue(b, key, value)
+			//or will duplicate write message
+			continue
 		case key == f.FieldMap.resolve(fieldKey(logrus.ErrorKey)):
 			value = data[logrus.ErrorKey]
 		default:
