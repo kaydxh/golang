@@ -5,6 +5,7 @@ import (
 	"testing"
 
 	strings_ "github.com/kaydxh/golang/go/strings"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestStringIntersection(t *testing.T) {
@@ -55,6 +56,36 @@ func TestRemoveEmpty(t *testing.T) {
 		t.Run(fmt.Sprintf("case-%d", i), func(t *testing.T) {
 			intersection := strings_.RemoveEmpty(testCase.s)
 			t.Logf("intersection :%v", intersection)
+		})
+	}
+}
+
+func TestSliceContains(t *testing.T) {
+	testCases := []struct {
+		s             []string
+		target        string
+		caseSensitive bool
+		expected      bool
+	}{
+		{
+			s:             []string{"a", "bdx"},
+			target:        "bDx",
+			caseSensitive: false,
+			expected:      true,
+		},
+		{
+			s:             []string{"a", "bdx"},
+			target:        "bdx",
+			caseSensitive: true,
+			expected:      true,
+		},
+	}
+
+	for i, testCase := range testCases {
+		t.Run(fmt.Sprintf("case-%d", i), func(t *testing.T) {
+			has := strings_.SliceContains(testCase.s, testCase.target, testCase.caseSensitive)
+			t.Logf("has :%v", has)
+			assert.Equal(t, testCase.expected, has)
 		})
 	}
 }

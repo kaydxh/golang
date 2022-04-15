@@ -1,6 +1,8 @@
 package strings
 
 import (
+	"strings"
+
 	set_ "github.com/kaydxh/golang/go/container/set"
 )
 
@@ -46,8 +48,20 @@ func RemoveEmpty(s []string) []string {
 }
 
 // sliceContains reports whether the provided string is present in the given slice of strings.
-func SliceContains(list []string, target string) bool {
+func SliceContainsCaseInSensitive(list []string, target string) bool {
+	return SliceContains(list, target, false)
+}
+
+func SliceContains(list []string, target string, caseSensitive bool) bool {
+	if !caseSensitive {
+		target = strings.ToLower(target)
+	}
+
 	for _, s := range list {
+		if !caseSensitive {
+			s = strings.ToLower(s)
+		}
+
 		if s == target {
 			return true
 		}
