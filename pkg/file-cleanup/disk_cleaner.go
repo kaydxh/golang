@@ -73,8 +73,9 @@ func defaultExponentialBackOff() time_.ExponentialBackOff {
 	epo := time_.NewExponentialBackOff(
 		time_.WithExponentialBackOffOptionInitialInterval(DefaultbaseExpired),
 		time_.WithExponentialBackOffOptionRandomizationFactor(0.1),
-		time_.WithExponentialBackOffOptionMultiplier(0.5),
-		time_.WithExponentialBackOffOptionMaxInterval(time.Minute),
+		time_.WithExponentialBackOffOptionMultiplier(0.8),
+		time_.WithExponentialBackOffOptionMaxInterval(DefaultbaseExpired),
+		time_.WithExponentialBackOffOptionMinInterval(time.Minute),
 		time_.WithExponentialBackOffOptionMaxElapsedTime(0),
 	)
 	return *epo
@@ -111,8 +112,9 @@ func NewDiskCleanerSerivce(
 		exp := time_.NewExponentialBackOff(
 			time_.WithExponentialBackOffOptionInitialInterval(s.opts.baseExpired),
 			time_.WithExponentialBackOffOptionRandomizationFactor(0.1),
-			time_.WithExponentialBackOffOptionMultiplier(0.5),
-			time_.WithExponentialBackOffOptionMaxInterval(time.Minute),
+			time_.WithExponentialBackOffOptionMultiplier(0.8),
+			time_.WithExponentialBackOffOptionMaxInterval(s.opts.baseExpired),
+			time_.WithExponentialBackOffOptionMinInterval(time.Minute),
 			time_.WithExponentialBackOffOptionMaxElapsedTime(0),
 		)
 
@@ -195,20 +197,21 @@ func (s *DiskCleanerSerivce) clean(ctx context.Context) error {
 			if du.Usage() >= s.diskUsage {
 				//clean
 				logger.Infof("disk[%v] usage over %v, start to clean", diskPath, s.diskUsage)
-				filepath.Walk(diskPath, func(path string, info os.FileInfo, err error) error {
+				actualExpired, _ := ebo.NextBackOff()
+				filepath.Walk(diskPath, func(filePath string, info os.FileInfo, err error) error {
 
 					if !info.IsDir() {
 						now := time.Now()
-						actualExpired, _ := ebo.NextBackOff()
 						if now.Sub(info.ModTime()) > actualExpired {
 							logger.Infof(
-								"file[%v] expired 1 Minute, modify time: %v, now: %v",
-								path,
+								"file %v expired[%v], modify time: %v, now: %v",
+								filePath,
+								actualExpired,
 								info.ModTime(),
 								now,
 							)
 						} else {
-							logger.Infof("file[%v] normal, modify time: %v, now: %v", path, info.ModTime(), now)
+							logger.Infof("file %v normal[%v], modify time: %v, now: %v", filePath, actualExpired, info.ModTime(), now)
 						}
 					}
 
@@ -218,6 +221,7 @@ func (s *DiskCleanerSerivce) clean(ctx context.Context) error {
 			} else {
 				// reset expired Time
 				ebo.Reset()
+				logger.Infof("disk path: %v reset expired time: %v", diskPath, ebo.GetCurrentInterval())
 			}
 			s.epoByPath.Store(diskPath, ebo)
 
