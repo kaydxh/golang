@@ -233,7 +233,7 @@ func (s *DiskCleanerSerivce) clean(ctx context.Context) error {
 			} else {
 				// reset expired Time
 				ebo.Reset()
-				logger.Infof("reset disk path: %v expired time: %v", diskPath, ebo.GetCurrentInterval())
+				logger.Debugf("reset disk path: %v expired time: %v", diskPath, ebo.GetCurrentInterval())
 			}
 			s.epoByPath.Store(diskPath, ebo)
 
