@@ -26,6 +26,12 @@ func WithExponentialBackOffOptionMaxInterval(maxInterval time.Duration) Exponent
 	})
 }
 
+func WithExponentialBackOffOptionMinInterval(minInterval time.Duration) ExponentialBackOffOption {
+	return ExponentialBackOffOptionFunc(func(opt *ExponentialBackOff) {
+		opt.opts.MinInterval = minInterval
+	})
+}
+
 func WithExponentialBackOffOptionMaxElapsedTime(maxElapsedTime time.Duration) ExponentialBackOffOption {
 	return ExponentialBackOffOptionFunc(func(opt *ExponentialBackOff) {
 		opt.opts.MaxElapsedTime = maxElapsedTime

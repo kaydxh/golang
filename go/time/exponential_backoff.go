@@ -12,6 +12,7 @@ const (
 	// The default multiplier value used for increment current interval
 	DefaultMultiplier     = 1.5
 	DefaultMaxInterval    = 60 * time.Second
+	DefaultMinInterval    = DefaultInitialInterval
 	DefaultMaxElapsedTime = 15 * time.Minute
 )
 
@@ -23,6 +24,7 @@ type ExponentialBackOff struct {
 		InitialInterval     time.Duration
 		RandomizationFactor float64
 		Multiplier          float64
+		MinInterval         time.Duration
 		MaxInterval         time.Duration
 		// After MaxElapsedTime the ExponentialBackOff returns Stop.
 		// It never stops if MaxElapsedTime == 0.
@@ -35,6 +37,9 @@ func NewExponentialBackOff(opts ...ExponentialBackOffOption) *ExponentialBackOff
 	bo.opts.InitialInterval = DefaultInitialInterval
 	bo.opts.RandomizationFactor = DefaultRandomizationFactor
 	bo.opts.Multiplier = DefaultMultiplier
+	bo.opts.MaxInterval = DefaultMaxInterval
+	bo.opts.MinInterval = DefaultMinInterval
+	bo.opts.MaxElapsedTime = DefaultMaxElapsedTime
 
 	bo.ApplyOptions(opts...)
 	bo.Reset()
@@ -43,6 +48,11 @@ func NewExponentialBackOff(opts ...ExponentialBackOffOption) *ExponentialBackOff
 
 func (b *ExponentialBackOff) Reset() {
 	b.currentInterval = b.opts.InitialInterval
+	b.startTime = time.Now()
+}
+
+func (b *ExponentialBackOff) ResetWithInterval(initialInterval time.Duration) {
+	b.currentInterval = initialInterval
 	b.startTime = time.Now()
 }
 
@@ -74,6 +84,11 @@ func (b *ExponentialBackOff) GetElapsedTime() time.Duration {
 func (b *ExponentialBackOff) incrementCurrentInterval() {
 	if b.opts.MaxInterval > 0 && time.Duration(float64(b.currentInterval)*b.opts.Multiplier) > b.opts.MaxInterval {
 		b.currentInterval = b.opts.MaxInterval
+		return
+	}
+
+	if b.opts.MinInterval > 0 && time.Duration(float64(b.currentInterval)*b.opts.Multiplier) < b.opts.MinInterval {
+		b.currentInterval = b.opts.MinInterval
 		return
 	}
 
