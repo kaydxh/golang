@@ -23,6 +23,7 @@ var (
 	mountsByPath      map[string]*Mount
 	mountMutex        sync.Mutex
 	mountsInitialized bool
+	allMountsByDevice map[DeviceNumber][]*Mount
 )
 
 type DeviceNumber uint64
@@ -70,10 +71,24 @@ func FindMount(path string) (*Mount, error) {
 		return nil, err
 	}
 	mnt, ok := mountsByDevice[deviceNumber]
+
 	if ok {
 		if mnt == nil {
+			mnts, ok := allMountsByDevice[deviceNumber]
+			if ok {
+				if len(mnts) == 0 {
+					return nil, filesystemLacksMainMountError(deviceNumber)
+				}
+
+				for _, mnt := range mnts {
+					if strings.HasPrefix(path, mnt.Path) {
+						return mnt, nil
+					}
+				}
+			}
 			return nil, filesystemLacksMainMountError(deviceNumber)
 		}
+
 		return mnt, nil
 	}
 	// The mount couldn't be found by the number of the containing device.
@@ -119,7 +134,7 @@ func loadMountInfo() error {
 func readMountInfo(r io.Reader) error {
 	mountsByDevice = make(map[DeviceNumber]*Mount)
 	mountsByPath = make(map[string]*Mount)
-	allMountsByDevice := make(map[DeviceNumber][]*Mount)
+	allMountsByDevice = make(map[DeviceNumber][]*Mount)
 	allMountsByPath := make(map[string]*Mount)
 
 	scanner := bufio.NewScanner(r)
@@ -156,6 +171,7 @@ func readMountInfo(r io.Reader) error {
 		allMountsByDevice[mnt.DeviceNumber] =
 			append(allMountsByDevice[mnt.DeviceNumber], mnt)
 	}
+
 	for deviceNumber, filesystemMounts := range allMountsByDevice {
 		mnt := findMainMount(filesystemMounts)
 		mountsByDevice[deviceNumber] = mnt // may store an explicit nil entry
