@@ -84,7 +84,7 @@ func TestDescExponentialBackOff(t *testing.T) {
 		testInitialInterval     = 5 * time.Second
 		testRandomizationFactor = 0.1
 		testMultiplier          = 0.5
-		testMaxInterval         = testInitialInterval * 4
+		testMaxInterval         = testInitialInterval
 		testMinInterval         = 100 * time.Millisecond
 		testMaxElapsedTime      = time.Duration(0)
 	)
@@ -110,7 +110,18 @@ func TestDescExponentialBackOff(t *testing.T) {
 		actualInterval, over := exp.NextBackOff()
 		t.Logf("over: %v, actualInterval: %v", over, actualInterval)
 		if !(minInterval <= actualInterval && actualInterval <= maxInterval) {
-			t.Error("error")
+		}
+	}
+
+	t.Logf("starting back...")
+	for _, expected := range expectedResults {
+		//	assert.Equal(t, expected, exp.GetCurrentInterval())
+		// Assert that the next backoff falls in the expected range.
+		var minInterval = expected - time.Duration(testRandomizationFactor*float64(expected))
+		var maxInterval = expected + time.Duration(testRandomizationFactor*float64(expected))
+		actualInterval, over := exp.PreBackOff()
+		t.Logf("over: %v, actualInterval: %v", over, actualInterval)
+		if !(minInterval <= actualInterval && actualInterval <= maxInterval) {
 		}
 	}
 
