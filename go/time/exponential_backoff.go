@@ -60,8 +60,24 @@ func (b *ExponentialBackOff) GetCurrentInterval() time.Duration {
 	return b.currentInterval
 }
 
+// PreBackOff is get previos time duration
 // false : have gone over the maximu elapsed time
 // true : return remaining time
+func (b *ExponentialBackOff) PreBackOff() (time.Duration, bool) {
+	elapsed := b.GetElapsedTime()
+	nextRandomizedInterval := getRandomValueFromInterval(b.opts.RandomizationFactor, b.currentInterval)
+
+	if b.opts.MaxElapsedTime > 0 && elapsed > b.opts.MaxElapsedTime {
+		return b.currentInterval, false
+	}
+
+	//update currentInterval
+	b.decrementCurrentInterval()
+
+	return nextRandomizedInterval, true
+}
+
+//  NextBackOff is get next time duration
 func (b *ExponentialBackOff) NextBackOff() (time.Duration, bool) {
 	elapsed := b.GetElapsedTime()
 	nextRandomizedInterval := getRandomValueFromInterval(b.opts.RandomizationFactor, b.currentInterval)
@@ -80,7 +96,7 @@ func (b *ExponentialBackOff) GetElapsedTime() time.Duration {
 	return time.Now().Sub(b.startTime)
 }
 
-// Increments the current interval by multiplying it with the multiplier
+// Increment the current interval by multiplying it with the multiplier
 func (b *ExponentialBackOff) incrementCurrentInterval() {
 	if b.opts.MaxInterval > 0 && time.Duration(float64(b.currentInterval)*b.opts.Multiplier) > b.opts.MaxInterval {
 		b.currentInterval = b.opts.MaxInterval
@@ -93,6 +109,23 @@ func (b *ExponentialBackOff) incrementCurrentInterval() {
 	}
 
 	b.currentInterval = time.Duration(float64(b.currentInterval) * b.opts.Multiplier)
+}
+
+// decrement the current interval by multiplying it with the multiplier
+func (b *ExponentialBackOff) decrementCurrentInterval() {
+	if b.opts.MaxInterval > 0 &&
+		time.Duration(float64(b.currentInterval)*(1.0/b.opts.Multiplier)) > b.opts.MaxInterval {
+		b.currentInterval = b.opts.MaxInterval
+		return
+	}
+
+	if b.opts.MinInterval > 0 &&
+		time.Duration(float64(b.currentInterval)*(1.0/b.opts.Multiplier)) < b.opts.MinInterval {
+		b.currentInterval = b.opts.MinInterval
+		return
+	}
+
+	b.currentInterval = time.Duration(float64(b.currentInterval) * (1.0 / b.opts.Multiplier))
 }
 
 func getRandomValueFromInterval(
