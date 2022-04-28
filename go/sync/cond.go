@@ -6,6 +6,8 @@ import (
 	"time"
 )
 
+// Cond 条件变量不保证顺序性，即signal只是通知wait去获取数据，wait拿到的数据是不是
+// signal当时给的数据，不能保证
 type Cond struct {
 	L  sync.Locker
 	ch chan struct{}
@@ -48,6 +50,7 @@ func (c *Cond) WaitForDo(timeout time.Duration, pred func() bool, do func() erro
 		if err != nil {
 			return err
 		}
+
 	}
 	if do != nil {
 		do()
