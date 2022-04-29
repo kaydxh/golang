@@ -50,6 +50,11 @@ func (lim *Limiter) Allow() bool {
 	return lim.AllowN(time.Now(), 1, 0)
 }
 
+// AllowWaitUntil is shorthand for AllowFor(-1).
+func (lim *Limiter) AllowWaitUntil() bool {
+	return lim.AllowFor(-1 * time.Second)
+}
+
 // Allow is shorthand for AllowN(time.Now(), 1).
 func (lim *Limiter) AllowFor(timeout time.Duration) bool {
 	return lim.AllowN(time.Now(), 1, timeout)
@@ -151,13 +156,22 @@ func (lim *Limiter) WaitN(timeout time.Duration, n int) (err error) {
 
 	//guarantee triggle wait
 	lim.cond.Signal()
-	return lim.cond.WaitForDo(timeout, func() bool {
+
+	pred := func() bool {
 		return lim.tokens >= n
-	}, func() error {
+	}
+
+	do := func() error {
 		lim.tokens -= n
 		return nil
-	})
+	}
 
+	if timeout >= 0 {
+		return lim.cond.WaitForDo(timeout, pred, do)
+	} else {
+		lim.cond.WaitUntilDo(pred, do)
+		return nil
+	}
 }
 
 type Reservation struct {
