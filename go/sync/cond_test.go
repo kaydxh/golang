@@ -16,13 +16,14 @@ func TestWaitForDo(t *testing.T) {
 	l := new(sync.Mutex)
 	cond := sync_.NewCond(l)
 	a := 5
-	timout := 2 * time.Second
+	timout := 4 * time.Second
 
 	var wg sync.WaitGroup
 	wg.Add(1)
 	go func() {
 		defer wg.Done()
-		err := cond.WaitForDo(timout+2*time.Second, func() bool {
+		err := cond.WaitForDo(timout, func() bool {
+			fmt.Printf("==>a = %v\n", a)
 			return a == 3
 		}, func() error {
 			a += 100
@@ -37,10 +38,52 @@ func TestWaitForDo(t *testing.T) {
 		for {
 			cond.SignalDo(func() error {
 				a--
-				time.Sleep(timout)
+				//this sleep can increase the probability to waitforDo
+				//miss condition = > a==3
+				time.Sleep(1 * time.Second)
 				fmt.Printf("a: %v\n", a)
 				return nil
 			})
+			//time.Sleep(1 * time.Second)
+		}
+	}()
+
+	wg.Wait()
+}
+
+// condion only be fit for range condition
+func TestWaitUntilDo(t *testing.T) {
+	assert := assert.New(t)
+
+	l := new(sync.Mutex)
+	cond := sync_.NewCond(l)
+	a := 5
+
+	var wg sync.WaitGroup
+	wg.Add(1)
+	go func() {
+		defer wg.Done()
+		cond.WaitUntilDo(func() bool {
+			fmt.Printf("==>a = %v\n", a)
+			return a < 0
+		}, func() error {
+			fmt.Printf("a: %v\n", a)
+			assert.LessOrEqual(a, 0)
+			return nil
+		})
+	}()
+
+	go func() {
+		for {
+			cond.SignalDo(func() error {
+				a--
+				//this sleep can increase the probability to waitforDo
+				//miss condition = > a==3
+				time.Sleep(1 * time.Second)
+				fmt.Printf("a: %v\n", a)
+				return nil
+			})
+			//time.Sleep(1 * time.Second)
 		}
 	}()
 
