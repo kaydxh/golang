@@ -3,10 +3,11 @@ package pool
 import (
 	"context"
 	"sync"
-	"time"
 
 	sync_ "github.com/kaydxh/golang/go/sync"
 )
+
+type TaskHandler func(task interface{}) error
 
 type Pool struct {
 	Burst    int32
@@ -33,8 +34,6 @@ func New(burst int32, taskFunc TaskHandler) *Pool {
 
 	return p
 }
-
-type TaskHandler func(task interface{}) error
 
 func (p *Pool) Put(task interface{}) {
 	p.taskChan <- task
@@ -83,18 +82,12 @@ func (p *Pool) run(ctx context.Context) (doneC <-chan struct{}) {
 
 		for {
 
-			for {
-				err := p.cond.WaitForDo(time.Second, func() bool {
-					return burst > 0
-				}, func() error {
-					burst--
-					return nil
-				})
-				if err == nil {
-					break
-				}
-				p.cond.Signal()
-			}
+			p.cond.WaitUntilDo(func() bool {
+				return burst > 0
+			}, func() error {
+				burst--
+				return nil
+			})
 
 			select {
 			case task, ok := <-p.taskChan:
@@ -106,14 +99,15 @@ func (p *Pool) run(ctx context.Context) (doneC <-chan struct{}) {
 				go func(t interface{}) {
 
 					defer p.wg.Done()
+					defer p.cond.SignalDo(func() error {
+						burst++
+						return nil
+					})
+
 					if err := p.TaskFunc(t); err != nil {
 						//cancel()
 						return
 					}
-					p.cond.SignalDo(func() error {
-						burst++
-						return nil
-					})
 
 				}(task)
 
