@@ -46,11 +46,13 @@ func (c *Cond) WaitForDo(timeout time.Duration, pred func() bool, do func() erro
 	defer c.L.Unlock()
 
 	for !pred() {
+		start := time.Now()
 		err := c.waitFor(timeout)
 		if err != nil {
 			return err
 		}
 
+		timeout -= time.Now().Sub(start)
 	}
 	if do != nil {
 		do()
@@ -58,17 +60,19 @@ func (c *Cond) WaitForDo(timeout time.Duration, pred func() bool, do func() erro
 	return nil
 }
 
-func (c *Cond) WaitUntilDo(timeout time.Duration, pred func() bool, do func() error) error {
-	c.L.Lock()
-	defer c.L.Unlock()
+func (c *Cond) WaitUntil(pred func() bool) {
+	c.WaitUntilDo(pred, func() error { return nil })
+}
 
-	for !pred() {
-		c.wait()
+func (c *Cond) WaitUntilDo(pred func() bool, do func() error) {
+	for {
+		err := c.WaitForDo(5*time.Second, pred, do)
+		if err == nil {
+			break
+		}
+		c.Signal()
 	}
-	if do != nil {
-		do()
-	}
-	return nil
+
 }
 
 func (c *Cond) SignalDo(do func() error) {
