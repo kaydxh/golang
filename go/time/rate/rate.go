@@ -154,9 +154,6 @@ func (lim *Limiter) WaitN(timeout time.Duration, n int) (err error) {
 		return fmt.Errorf("rate: Wait(n=%d) exceeds limiter's burst %d", n, burst)
 	}
 
-	//guarantee triggle wait
-	lim.cond.Signal()
-
 	pred := func() bool {
 		return lim.tokens >= n
 	}
