@@ -3,14 +3,18 @@ package sync
 import (
 	"fmt"
 	"sync"
+	"sync/atomic"
 	"time"
+	"unsafe"
 )
 
 // Cond 条件变量不保证顺序性，即signal只是通知wait去获取数据，wait拿到的数据是不是
 // signal当时给的数据，不能保证
 type Cond struct {
-	L  sync.Locker
-	ch chan struct{}
+	L       sync.Locker
+	ch      chan struct{}
+	checker copyChecker
+	noCopy  noCopy
 }
 
 func NewCond(l sync.Locker) *Cond {
@@ -21,11 +25,12 @@ func NewCond(l sync.Locker) *Cond {
 	return c
 }
 
-func (c *Cond) wait() error {
+func (c *Cond) wait() {
+	c.checker.check()
 	c.L.Unlock()
 	defer c.L.Lock()
 	<-c.ch
-	return nil
+
 }
 
 func (c *Cond) waitFor(timeout time.Duration) error {
@@ -42,6 +47,7 @@ func (c *Cond) waitFor(timeout time.Duration) error {
 }
 
 func (c *Cond) WaitForDo(timeout time.Duration, pred func() bool, do func() error) error {
+	c.checker.check()
 	c.L.Lock()
 	defer c.L.Unlock()
 
@@ -61,16 +67,17 @@ func (c *Cond) WaitForDo(timeout time.Duration, pred func() bool, do func() erro
 }
 
 func (c *Cond) WaitUntil(pred func() bool) {
+	c.checker.check()
 	c.WaitUntilDo(pred, func() error { return nil })
 }
 
 func (c *Cond) WaitUntilDo(pred func() bool, do func() error) {
+	c.checker.check()
 	for {
 		err := c.WaitForDo(5*time.Second, pred, do)
 		if err == nil {
 			break
 		}
-		c.Signal()
 	}
 
 }
@@ -96,14 +103,41 @@ func (c *Cond) BroadcastDo(do func() error) {
 }
 
 func (c *Cond) Signal() {
+	c.checker.check()
 	go func() {
-		c.ch <- struct{}{}
+		select {
+		case c.ch <- struct{}{}:
+		default:
+		}
 	}()
 }
 
 func (c *Cond) Broadcast() {
+	c.checker.check()
 	go func() {
 		close(c.ch)
 		c.ch = make(chan struct{})
 	}()
 }
+
+// copyChecker holds back pointer to itself to detect object copying.
+type copyChecker uintptr
+
+func (c *copyChecker) check() {
+	if uintptr(*c) != uintptr(unsafe.Pointer(c)) &&
+		!atomic.CompareAndSwapUintptr((*uintptr)(c), 0, uintptr(unsafe.Pointer(c))) &&
+		uintptr(*c) != uintptr(unsafe.Pointer(c)) {
+		panic("sync.Cond is copied")
+	}
+}
+
+// noCopy may be embedded into structs which must not be copied
+// after the first use.
+//
+// See https://golang.org/issues/8005#issuecomment-190753527
+// for details.
+type noCopy struct{}
+
+// Lock is a no-op used by -copylocks checker from `go vet`.
+func (*noCopy) Lock()   {}
+func (*noCopy) Unlock() {}
