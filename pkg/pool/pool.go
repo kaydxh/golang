@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"sync"
 
+	errors_ "github.com/kaydxh/golang/go/errors"
 	rate_ "github.com/kaydxh/golang/go/time/rate"
 )
 
@@ -17,13 +18,12 @@ type Pool struct {
 	ctx context.Context
 
 	taskChan     chan interface{}
-	err          error
+	errs         []error
 	cancel       context.CancelFunc
 	workDoneChan chan struct{}
 
-	wg      sync.WaitGroup
-	errMu   sync.Mutex
-	errOnce sync.Once
+	wg    sync.WaitGroup
+	errMu sync.Mutex
 }
 
 func New(burst int32, taskFunc TaskHandler) *Pool {
@@ -64,15 +64,13 @@ func (p *Pool) Error() error {
 	p.errMu.Lock()
 	defer p.errMu.Unlock()
 
-	return p.err
+	return errors_.NewAggregate(p.errs)
 }
 
 func (p *Pool) trySetError(err error) {
-	p.errOnce.Do(func() {
-		p.errMu.Lock()
-		defer p.errMu.Unlock()
-		p.err = err
-	})
+	p.errMu.Lock()
+	defer p.errMu.Unlock()
+	p.errs = append(p.errs, err)
 }
 
 func (p *Pool) run() (doneC <-chan struct{}) {
@@ -101,7 +99,7 @@ func (p *Pool) run() (doneC <-chan struct{}) {
 
 					if err := p.TaskFunc(t); err != nil {
 						p.trySetError(err)
-						p.cancel()
+						//	p.cancel()
 						return
 					}
 
