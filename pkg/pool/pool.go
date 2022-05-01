@@ -11,11 +11,23 @@ import (
 
 type TaskHandler func(task interface{}) error
 
-type Pool struct {
-	Burst    int32
-	TaskFunc TaskHandler
+type PoolConfig struct {
+	burst int
+	// errstop, only take effect to the tasks that excessed the number burst,
+	errStop bool
+}
 
-	ctx context.Context
+func defaultPoolConfig() PoolConfig {
+	return PoolConfig{
+		burst:   1,
+		errStop: false,
+	}
+}
+
+type Pool struct {
+	TaskFunc TaskHandler
+	opts     PoolConfig
+	ctx      context.Context
 
 	taskChan     chan interface{}
 	errs         []error
@@ -26,16 +38,17 @@ type Pool struct {
 	errMu sync.Mutex
 }
 
-func New(burst int32, taskFunc TaskHandler) *Pool {
+func New(taskFunc TaskHandler, opts ...PoolOptions) *Pool {
 	p := &Pool{
-		Burst:        burst,
 		TaskFunc:     taskFunc,
 		taskChan:     make(chan interface{}),
 		workDoneChan: make(chan struct{}),
+		opts:         defaultPoolConfig(),
 	}
 	p.ctx, p.cancel = context.WithCancel(context.Background())
-	go p.run()
+	p.ApplyOptions(opts...)
 
+	go p.run()
 	return p
 }
 
@@ -74,14 +87,11 @@ func (p *Pool) trySetError(err error) {
 }
 
 func (p *Pool) run() (doneC <-chan struct{}) {
-	if p.Burst <= 0 {
-		p.Burst = 1
-	}
 
 	go func() {
 		defer close(p.workDoneChan)
 
-		limiter := rate_.NewLimiter(int(p.Burst))
+		limiter := rate_.NewLimiter(int(p.opts.burst))
 		for {
 			//util the condition is met, need one token, or will be blocked
 			limiter.AllowWaitUntil()
@@ -99,7 +109,9 @@ func (p *Pool) run() (doneC <-chan struct{}) {
 
 					if err := p.TaskFunc(t); err != nil {
 						p.trySetError(err)
-						//	p.cancel()
+						if p.opts.errStop {
+							p.cancel()
+						}
 						return
 					}
 
