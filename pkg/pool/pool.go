@@ -2,9 +2,10 @@ package pool
 
 import (
 	"context"
+	"fmt"
 	"sync"
 
-	sync_ "github.com/kaydxh/golang/go/sync"
+	rate_ "github.com/kaydxh/golang/go/time/rate"
 )
 
 type TaskHandler func(task interface{}) error
@@ -13,39 +14,50 @@ type Pool struct {
 	Burst    int32
 	TaskFunc TaskHandler
 
-	taskChan chan interface{}
-	err      error
-	cond     *sync_.Cond
+	ctx context.Context
+
+	taskChan     chan interface{}
+	err          error
+	cancel       context.CancelFunc
+	workDoneChan chan struct{}
 
 	wg      sync.WaitGroup
-	burstMu sync.Mutex
 	errMu   sync.Mutex
 	errOnce sync.Once
 }
 
 func New(burst int32, taskFunc TaskHandler) *Pool {
 	p := &Pool{
-		Burst:    burst,
-		TaskFunc: taskFunc,
-		taskChan: make(chan interface{}, 0),
+		Burst:        burst,
+		TaskFunc:     taskFunc,
+		taskChan:     make(chan interface{}),
+		workDoneChan: make(chan struct{}),
 	}
-	p.cond = sync_.NewCond(&p.burstMu)
-	go p.run(context.Background())
+	p.ctx, p.cancel = context.WithCancel(context.Background())
+	go p.run()
 
 	return p
 }
 
-func (p *Pool) Put(task interface{}) {
-	p.taskChan <- task
+func (p *Pool) Put(task interface{}) error {
+	select {
+	case p.taskChan <- task:
+	case <-p.workDoneChan:
+		return fmt.Errorf("workdone channel is closed, work goroutine is exit")
+	case <-p.ctx.Done():
+		return fmt.Errorf("work is stoped, work goroutine is exit")
+
+	}
+
+	return nil
 }
 
-func (p *Pool) Wait() error {
+func (p *Pool) Wait() {
 	p.wg.Wait()
-	return p.err
 }
 
 func (p *Pool) Stop() {
-	close(p.taskChan)
+	p.cancel()
 }
 
 func (p *Pool) Error() error {
@@ -63,31 +75,20 @@ func (p *Pool) trySetError(err error) {
 	})
 }
 
-func (p *Pool) run(ctx context.Context) (doneC <-chan struct{}) {
-	done := make(chan struct{})
+func (p *Pool) run() (doneC <-chan struct{}) {
 	if p.Burst <= 0 {
 		p.Burst = 1
 	}
 
-	burst := p.Burst
-
-	p.wg.Add(1)
-	//	context.Background().Done()
+	//	p.wg.Add(1)
 	go func() {
-		defer close(done)
-		defer p.wg.Done()
+		defer close(p.workDoneChan)
+		//defer p.wg.Done()
 
-		ctx, cancel := context.WithCancel(ctx)
-		_ = cancel
-
+		limiter := rate_.NewLimiter(int(p.Burst))
 		for {
-
-			p.cond.WaitUntilDo(func() bool {
-				return burst > 0
-			}, func() error {
-				burst--
-				return nil
-			})
+			//util the condition is met, need one token, or will be blocked
+			limiter.AllowWaitUntil()
 
 			select {
 			case task, ok := <-p.taskChan:
@@ -97,27 +98,32 @@ func (p *Pool) run(ctx context.Context) (doneC <-chan struct{}) {
 				p.wg.Add(1)
 
 				go func(t interface{}) {
-
+					/*
+						defer p.cond.SignalDo(func() error {
+							burst++
+							return nil
+						})
+					*/
+					defer limiter.Put()
 					defer p.wg.Done()
-					defer p.cond.SignalDo(func() error {
-						burst++
-						return nil
-					})
 
 					if err := p.TaskFunc(t); err != nil {
-						//cancel()
+						p.trySetError(err)
+						p.cancel()
 						return
 					}
 
 				}(task)
 
-			case <-ctx.Done():
+			case <-p.ctx.Done():
+				//  err: context canceled
+				fmt.Println("===cancel")
+				p.trySetError(p.ctx.Err())
 				return
 			}
 
 		}
 	}()
 
-	return done
-
+	return p.workDoneChan
 }
