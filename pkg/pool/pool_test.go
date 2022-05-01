@@ -10,12 +10,12 @@ import (
 
 func TestProcessOk(t *testing.T) {
 
-	p := pool_.New(5, func(task interface{}) error {
+	p := pool_.New(func(task interface{}) error {
 		fmt.Printf("start task[%v]\n", task)
 		time.Sleep(time.Second)
 		fmt.Printf("finish task[%v]\n", task)
 		return nil //must return nil
-	})
+	}, pool_.WithBurst(5))
 
 	//	defer p.Wait()
 	for i := 0; i < 10; i++ {
@@ -33,12 +33,12 @@ func TestProcessOk(t *testing.T) {
 
 func TestProcessFail(t *testing.T) {
 
-	p := pool_.New(2, func(task interface{}) error {
+	p := pool_.New(func(task interface{}) error {
 		fmt.Printf("start task[%v]\n", task)
 		time.Sleep(time.Second)
 		fmt.Printf("finish task[%v]\n", task)
 		return fmt.Errorf("failed to process task: %v\n", task)
-	})
+	}, pool_.WithBurst(2), pool_.WithErrStop(true))
 
 	//defer p.Wait()
 	for i := 0; i < 4; i++ {
