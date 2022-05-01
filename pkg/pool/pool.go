@@ -80,10 +80,8 @@ func (p *Pool) run() (doneC <-chan struct{}) {
 		p.Burst = 1
 	}
 
-	//	p.wg.Add(1)
 	go func() {
 		defer close(p.workDoneChan)
-		//defer p.wg.Done()
 
 		limiter := rate_.NewLimiter(int(p.Burst))
 		for {
@@ -98,12 +96,6 @@ func (p *Pool) run() (doneC <-chan struct{}) {
 				p.wg.Add(1)
 
 				go func(t interface{}) {
-					/*
-						defer p.cond.SignalDo(func() error {
-							burst++
-							return nil
-						})
-					*/
 					defer limiter.Put()
 					defer p.wg.Done()
 
@@ -117,7 +109,6 @@ func (p *Pool) run() (doneC <-chan struct{}) {
 
 			case <-p.ctx.Done():
 				//  err: context canceled
-				fmt.Println("===cancel")
 				p.trySetError(p.ctx.Err())
 				return
 			}
