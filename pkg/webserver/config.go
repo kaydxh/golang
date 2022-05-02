@@ -67,8 +67,8 @@ func (c *completedConfig) New() (*GenericWebServer, error) {
 }
 
 func (c *completedConfig) install() (*GenericWebServer, error) {
-	c.installHttpMiddleware()
-	c.installGRPCMiddleware()
+	c.installHttpMiddlewareChain()
+	c.installGRPCMiddlewareChain()
 	grpcBackend := gw_.NewGRPCGateWay(c.opts.bindAddress, c.Config.opts.gatewayOptions...)
 	//grpcBackend.ApplyOptions()
 	ginBackend := gin.New()
@@ -101,7 +101,7 @@ func (c *Config) Complete() CompletedConfig {
 	return CompletedConfig{&completedConfig{Config: c}}
 }
 
-func (c *Config) installHttpMiddleware() []gw_.GRPCGatewayOption {
+func (c *Config) installHttpMiddlewareChain() []gw_.GRPCGatewayOption {
 	// trace id
 	c.opts.gatewayOptions = append(
 		c.opts.gatewayOptions,
@@ -123,7 +123,7 @@ func (c *Config) installHttpMiddleware() []gw_.GRPCGatewayOption {
 	return c.opts.gatewayOptions
 }
 
-func (c *Config) installGRPCMiddleware() []gw_.GRPCGatewayOption {
+func (c *Config) installGRPCMiddlewareChain() []gw_.GRPCGatewayOption {
 	// recovery
 	c.opts.gatewayOptions = append(
 		c.opts.gatewayOptions,
