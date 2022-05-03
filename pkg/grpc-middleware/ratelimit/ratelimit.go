@@ -13,7 +13,7 @@ import (
 type Limiter interface {
 	Allow() bool
 	AllowFor(timeout time.Duration) bool
-	Put() bool
+	Put()
 }
 
 // UnaryServerInterceptor returns a new unary server interceptors that performs request rate limiting.
