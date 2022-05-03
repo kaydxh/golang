@@ -2,11 +2,13 @@ package webserver
 
 import (
 	"fmt"
+	"math"
 	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 	viper_ "github.com/kaydxh/golang/pkg/viper"
+	"google.golang.org/grpc"
 
 	gw_ "github.com/kaydxh/golang/pkg/grpc-gateway"
 	"github.com/ory/viper"
@@ -17,6 +19,9 @@ const (
 	defaultExternalAddress         = ":80"
 	defaultShutdownDelayDuration   = time.Duration(0)
 	defaultShutdownTimeoutDuration = 5 * time.Second
+
+	defaultMaxReceiveMessageSize = math.MaxInt32
+	defaultMaxSendMessageSize    = math.MaxInt32
 )
 
 type Config struct {
@@ -67,8 +72,9 @@ func (c *completedConfig) New() (*GenericWebServer, error) {
 }
 
 func (c *completedConfig) install() (*GenericWebServer, error) {
-	c.installHttpMiddlewareChain()
-	c.installGRPCMiddlewareChain()
+	c.Config.opts.gatewayOptions = append(c.Config.opts.gatewayOptions, c.installGrpcMessageSizeOptions()...)
+	c.Config.opts.gatewayOptions = append(c.Config.opts.gatewayOptions, c.installHttpMiddlewareChain()...)
+	c.Config.opts.gatewayOptions = append(c.Config.opts.gatewayOptions, c.installGrpcMiddlewareChain()...)
 	grpcBackend := gw_.NewGRPCGateWay(c.opts.bindAddress, c.Config.opts.gatewayOptions...)
 	//grpcBackend.ApplyOptions()
 	gin.SetMode(c.Proto.Mode.String())
@@ -102,73 +108,116 @@ func (c *Config) Complete() CompletedConfig {
 	return CompletedConfig{&completedConfig{Config: c}}
 }
 
+func (c *Config) installGrpcMessageSizeOptions() []gw_.GRPCGatewayOption {
+	maxRecvMsgSize := defaultMaxReceiveMessageSize
+	maxSendMsgSize := defaultMaxSendMessageSize
+
+	var opts []gw_.GRPCGatewayOption
+	// request
+	// http -> grpc client -> grpc server
+	// ---------------------------------  -> gin server
+	if c.Proto.GetGrpc().GetMaxReceiveMessageSize() > 0 {
+
+		maxRecvMsgSize = int(c.Proto.GetGrpc().GetMaxReceiveMessageSize())
+	}
+	opts = append(
+		opts,
+		gw_.WithServerOptions(grpc.MaxRecvMsgSize(maxRecvMsgSize)),
+	)
+	opts = append(
+		opts,
+		gw_.WithClientDialOptions(grpc.WithDefaultCallOptions(grpc.MaxCallSendMsgSize(maxRecvMsgSize))),
+	)
+
+	// response
+	// http <- grpc client <- grpc server
+	if c.Proto.GetGrpc().GetMaxSendMessageSize() > 0 {
+		maxSendMsgSize = int(c.Proto.GetGrpc().GetMaxSendMessageSize())
+	}
+	opts = append(
+		opts,
+		gw_.WithServerOptions(grpc.MaxSendMsgSize(maxSendMsgSize)),
+	)
+	opts = append(
+		opts,
+		gw_.WithClientDialOptions(grpc.WithDefaultCallOptions(grpc.MaxCallRecvMsgSize(maxSendMsgSize))),
+	)
+
+	return opts
+}
+
 func (c *Config) installHttpMiddlewareChain() []gw_.GRPCGatewayOption {
+
+	var opts []gw_.GRPCGatewayOption
+
 	// trace id
-	c.opts.gatewayOptions = append(
-		c.opts.gatewayOptions,
+	opts = append(
+		opts,
 		gw_.WithHttpHandlerInterceptorTraceIDOptions(),
 	)
 
 	// time cost
-	c.opts.gatewayOptions = append(
-		c.opts.gatewayOptions,
+	opts = append(
+		opts,
 		gw_.WithHttpHandlerInterceptorsTimerOptions(c.Proto.GetMonitor().GetPrometheus().GetEnabledMetricTimerCost()),
 	)
 
 	//inout
-	c.opts.gatewayOptions = append(
-		c.opts.gatewayOptions,
+	opts = append(
+		opts,
 		gw_.WithHttpHandlerInterceptorInOutPacketOptions(),
 	)
 
-	return c.opts.gatewayOptions
+	return opts
 }
 
-func (c *Config) installGRPCMiddlewareChain() []gw_.GRPCGatewayOption {
+func (c *Config) installGrpcMiddlewareChain() []gw_.GRPCGatewayOption {
+	var opts []gw_.GRPCGatewayOption
+
 	// recovery
-	c.opts.gatewayOptions = append(
-		c.opts.gatewayOptions,
+	opts = append(
+		opts,
 		gw_.WithServerInterceptorsRecoveryOptions(),
 	)
 
 	//auto generate requestId
-	c.opts.gatewayOptions = append(
-		c.opts.gatewayOptions,
+	opts = append(
+		opts,
 		gw_.WithServerUnaryInterceptorsRequestIdOptions(),
 	)
 
 	// limit rate
-	c.opts.gatewayOptions = append(
-		c.opts.gatewayOptions,
+	opts = append(
+		opts,
 		gw_.WithServerInterceptorsLimitRateOptions(
-			int(c.Proto.GetMaxConcurrencyUnary()),
-			int(c.Proto.GetMaxConcurrencyStream()),
+			int(c.Proto.GetGrpc().GetMaxConcurrencyUnary()),
+			int(c.Proto.GetGrpc().GetMaxConcurrencyStream()),
 		),
 	)
 
 	/*
 		// time cost
-		c.opts.gatewayOptions = append(
-			c.opts.gatewayOptions,
+		opts = append(
+			opts,
 			gw_.WithServerUnaryInterceptorsTimerOptions(c.Proto.GetMonitor().GetPrometheus().GetEnabledMetricTimerCost()),
 		)
 	*/
 
 	// code,message and client ip
-	c.opts.gatewayOptions = append(
-		c.opts.gatewayOptions,
+	opts = append(
+		opts,
 		gw_.WithServerUnaryInterceptorsCodeMessageOptions(
 			c.Proto.GetMonitor().GetPrometheus().GetEnabledMetricCodeMessage(),
 		),
 	)
 
 	// log input and output
-	c.opts.gatewayOptions = append(
-		c.opts.gatewayOptions,
+	opts = append(
+		opts,
 		gw_.WithServerUnaryInterceptorsInOutPacketOptions(),
 	)
 
-	return c.opts.gatewayOptions
+	return opts
 }
 
 func (c *Config) WithWebConfigOptions(opts ...ConfigOption) {
