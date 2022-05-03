@@ -71,6 +71,7 @@ func (c *completedConfig) install() (*GenericWebServer, error) {
 	c.installGRPCMiddlewareChain()
 	grpcBackend := gw_.NewGRPCGateWay(c.opts.bindAddress, c.Config.opts.gatewayOptions...)
 	//grpcBackend.ApplyOptions()
+	gin.SetMode(c.Proto.Mode.String())
 	ginBackend := gin.New()
 	fmt.Printf(" - listen address[%s]\n", c.opts.bindAddress)
 
