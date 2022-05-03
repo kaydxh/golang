@@ -10,8 +10,15 @@ message Web {
   Net bind_address = 1;
   int32 max_concurrency_unary = 2;
   int32 max_concurrency_stream = 3;
+  Mode mode = 4;
 
-  Monitor monitor = 4;
+  enum Mode {
+    release = 0;
+    debug = 1;
+    test = 2;
+  }
+
+  Monitor monitor = 5;
 
   message Net {
     string host = 1;

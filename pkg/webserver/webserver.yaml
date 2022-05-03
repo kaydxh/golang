@@ -4,7 +4,7 @@ web:
     timeout: 10s
   max_concurrency_unary: 10 # max concurrency for grpc unary api
   max_concurrency_stream: 10 # max concurrency for grpc stream api
-
+  mode: release
   monitor:
     prometheus: 
       enabled_metric_timer_cost: true
