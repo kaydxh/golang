@@ -11,6 +11,7 @@ import (
 	errors_ "github.com/kaydxh/golang/go/errors"
 	net_ "github.com/kaydxh/golang/go/net"
 	time_ "github.com/kaydxh/golang/go/time"
+	dns_ "github.com/kaydxh/golang/pkg/reslover/dns"
 	"github.com/serialx/hashring"
 	"github.com/sirupsen/logrus"
 	"go.uber.org/atomic"
@@ -28,6 +29,7 @@ type ResloverQuery struct {
 	nodes    []string
 	hashring *hashring.HashRing
 	Opts     ResloverOptions
+	resolver dns_.DNSResolver
 }
 
 //NewDefaultResloverQuery, dns reslover, bls consist hash
