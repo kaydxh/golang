@@ -1,6 +1,0 @@
-reslover:
-  enabled: true
-  reslover_type: reslover_type_dns
-  load_balance_mode: load_balance_mode_consist
-  domains: []
-  resolve_interval : 10s

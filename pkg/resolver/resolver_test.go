@@ -3,6 +3,7 @@ package reslover_test
 import (
 	"context"
 	"fmt"
+	"net"
 	"testing"
 	"time"
 
@@ -19,6 +20,7 @@ func TestNewResloverService(t *testing.T) {
 		t.Errorf("failed to new config err: %v", err)
 	}
 	s.Run(context.Background())
+	net.DefaultResolver
 
 	type args struct {
 		consistkey       string
