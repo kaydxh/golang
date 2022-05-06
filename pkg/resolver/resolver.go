@@ -11,16 +11,16 @@ import (
 	errors_ "github.com/kaydxh/golang/go/errors"
 	net_ "github.com/kaydxh/golang/go/net"
 	time_ "github.com/kaydxh/golang/go/time"
-	dns_ "github.com/kaydxh/golang/pkg/reslover/dns"
+	dns_ "github.com/kaydxh/golang/pkg/resolver/dns"
 	"github.com/serialx/hashring"
 	"github.com/sirupsen/logrus"
 	"go.uber.org/atomic"
 )
 
-type ResloverQueryMap sync.Map
+type ResolverQueryMap sync.Map
 
 type ResloverOptions struct {
-	ResloverType    Reslover_ResloverType
+	ResolverType    Reslover_ResloverType
 	LoadBalanceMode Reslover_LoadBalanceMode
 }
 
@@ -43,7 +43,7 @@ func NewDefaultResloverQuery(domain string) ResloverQuery {
 
 func defaultResloverOptions() ResloverOptions {
 	return ResloverOptions{
-		ResloverType:    Reslover_reslover_type_dns,
+		ResolverType:    Reslover_reslover_type_dns,
 		LoadBalanceMode: Reslover_load_balance_mode_consist,
 	}
 }
@@ -54,7 +54,7 @@ func (r *ResloverQuery) SetDefault() {
 
 type ResloverService struct {
 	resolverInterval time.Duration
-	serviceByName    ResloverQueryMap
+	serviceByName    ResolverQueryMap
 	inShutdown       atomic.Bool
 	mu               sync.Mutex
 	cancel           func()
