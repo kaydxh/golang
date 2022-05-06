@@ -2,9 +2,9 @@
 // versions:
 // 	protoc-gen-go v1.27.0
 // 	protoc        v3.13.0
-// source: pkg/reslover/reslover.proto
+// source: pkg/resolver/resolver.proto
 
-package reslover
+package resolver
 
 import (
 	duration "github.com/golang/protobuf/ptypes/duration"
@@ -21,130 +21,130 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-type Reslover_ResloverType int32
+type Resolver_ResolverType int32
 
 const (
-	Reslover_reslover_type_dns    Reslover_ResloverType = 0
-	Reslover_reslover_type_consul Reslover_ResloverType = 1
-	Reslover_reslover_type_k8s    Reslover_ResloverType = 2
+	Resolver_resolver_type_dns    Resolver_ResolverType = 0
+	Resolver_resolver_type_consul Resolver_ResolverType = 1
+	Resolver_resolver_type_k8s    Resolver_ResolverType = 2
 )
 
-// Enum value maps for Reslover_ResloverType.
+// Enum value maps for Resolver_ResolverType.
 var (
-	Reslover_ResloverType_name = map[int32]string{
-		0: "reslover_type_dns",
-		1: "reslover_type_consul",
-		2: "reslover_type_k8s",
+	Resolver_ResolverType_name = map[int32]string{
+		0: "resolver_type_dns",
+		1: "resolver_type_consul",
+		2: "resolver_type_k8s",
 	}
-	Reslover_ResloverType_value = map[string]int32{
-		"reslover_type_dns":    0,
-		"reslover_type_consul": 1,
-		"reslover_type_k8s":    2,
+	Resolver_ResolverType_value = map[string]int32{
+		"resolver_type_dns":    0,
+		"resolver_type_consul": 1,
+		"resolver_type_k8s":    2,
 	}
 )
 
-func (x Reslover_ResloverType) Enum() *Reslover_ResloverType {
-	p := new(Reslover_ResloverType)
+func (x Resolver_ResolverType) Enum() *Resolver_ResolverType {
+	p := new(Resolver_ResolverType)
 	*p = x
 	return p
 }
 
-func (x Reslover_ResloverType) String() string {
+func (x Resolver_ResolverType) String() string {
 	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
 }
 
-func (Reslover_ResloverType) Descriptor() protoreflect.EnumDescriptor {
-	return file_pkg_reslover_reslover_proto_enumTypes[0].Descriptor()
+func (Resolver_ResolverType) Descriptor() protoreflect.EnumDescriptor {
+	return file_pkg_resolver_resolver_proto_enumTypes[0].Descriptor()
 }
 
-func (Reslover_ResloverType) Type() protoreflect.EnumType {
-	return &file_pkg_reslover_reslover_proto_enumTypes[0]
+func (Resolver_ResolverType) Type() protoreflect.EnumType {
+	return &file_pkg_resolver_resolver_proto_enumTypes[0]
 }
 
-func (x Reslover_ResloverType) Number() protoreflect.EnumNumber {
+func (x Resolver_ResolverType) Number() protoreflect.EnumNumber {
 	return protoreflect.EnumNumber(x)
 }
 
-// Deprecated: Use Reslover_ResloverType.Descriptor instead.
-func (Reslover_ResloverType) EnumDescriptor() ([]byte, []int) {
-	return file_pkg_reslover_reslover_proto_rawDescGZIP(), []int{0, 0}
+// Deprecated: Use Resolver_ResolverType.Descriptor instead.
+func (Resolver_ResolverType) EnumDescriptor() ([]byte, []int) {
+	return file_pkg_resolver_resolver_proto_rawDescGZIP(), []int{0, 0}
 }
 
-type Reslover_LoadBalanceMode int32
+type Resolver_LoadBalanceMode int32
 
 const (
-	Reslover_load_balance_mode_random  Reslover_LoadBalanceMode = 0
-	Reslover_load_balance_mode_consist Reslover_LoadBalanceMode = 1
+	Resolver_load_balance_mode_random  Resolver_LoadBalanceMode = 0
+	Resolver_load_balance_mode_consist Resolver_LoadBalanceMode = 1
 )
 
-// Enum value maps for Reslover_LoadBalanceMode.
+// Enum value maps for Resolver_LoadBalanceMode.
 var (
-	Reslover_LoadBalanceMode_name = map[int32]string{
+	Resolver_LoadBalanceMode_name = map[int32]string{
 		0: "load_balance_mode_random",
 		1: "load_balance_mode_consist",
 	}
-	Reslover_LoadBalanceMode_value = map[string]int32{
+	Resolver_LoadBalanceMode_value = map[string]int32{
 		"load_balance_mode_random":  0,
 		"load_balance_mode_consist": 1,
 	}
 )
 
-func (x Reslover_LoadBalanceMode) Enum() *Reslover_LoadBalanceMode {
-	p := new(Reslover_LoadBalanceMode)
+func (x Resolver_LoadBalanceMode) Enum() *Resolver_LoadBalanceMode {
+	p := new(Resolver_LoadBalanceMode)
 	*p = x
 	return p
 }
 
-func (x Reslover_LoadBalanceMode) String() string {
+func (x Resolver_LoadBalanceMode) String() string {
 	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
 }
 
-func (Reslover_LoadBalanceMode) Descriptor() protoreflect.EnumDescriptor {
-	return file_pkg_reslover_reslover_proto_enumTypes[1].Descriptor()
+func (Resolver_LoadBalanceMode) Descriptor() protoreflect.EnumDescriptor {
+	return file_pkg_resolver_resolver_proto_enumTypes[1].Descriptor()
 }
 
-func (Reslover_LoadBalanceMode) Type() protoreflect.EnumType {
-	return &file_pkg_reslover_reslover_proto_enumTypes[1]
+func (Resolver_LoadBalanceMode) Type() protoreflect.EnumType {
+	return &file_pkg_resolver_resolver_proto_enumTypes[1]
 }
 
-func (x Reslover_LoadBalanceMode) Number() protoreflect.EnumNumber {
+func (x Resolver_LoadBalanceMode) Number() protoreflect.EnumNumber {
 	return protoreflect.EnumNumber(x)
 }
 
-// Deprecated: Use Reslover_LoadBalanceMode.Descriptor instead.
-func (Reslover_LoadBalanceMode) EnumDescriptor() ([]byte, []int) {
-	return file_pkg_reslover_reslover_proto_rawDescGZIP(), []int{0, 1}
+// Deprecated: Use Resolver_LoadBalanceMode.Descriptor instead.
+func (Resolver_LoadBalanceMode) EnumDescriptor() ([]byte, []int) {
+	return file_pkg_resolver_resolver_proto_rawDescGZIP(), []int{0, 1}
 }
 
-type Reslover struct {
+type Resolver struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
 	Enabled         bool                     `protobuf:"varint,1,opt,name=enabled,proto3" json:"enabled,omitempty"`
-	ResloverType    Reslover_ResloverType    `protobuf:"varint,2,opt,name=reslover_type,json=resloverType,proto3,enum=go.pkg.reslover.Reslover_ResloverType" json:"reslover_type,omitempty"`
-	LoadBalanceMode Reslover_LoadBalanceMode `protobuf:"varint,3,opt,name=load_balance_mode,json=loadBalanceMode,proto3,enum=go.pkg.reslover.Reslover_LoadBalanceMode" json:"load_balance_mode,omitempty"`
+	ResolverType    Resolver_ResolverType    `protobuf:"varint,2,opt,name=resolver_type,json=resolverType,proto3,enum=go.pkg.resolver.Resolver_ResolverType" json:"resolver_type,omitempty"`
+	LoadBalanceMode Resolver_LoadBalanceMode `protobuf:"varint,3,opt,name=load_balance_mode,json=loadBalanceMode,proto3,enum=go.pkg.resolver.Resolver_LoadBalanceMode" json:"load_balance_mode,omitempty"`
 	ResolveInterval *duration.Duration       `protobuf:"bytes,4,opt,name=resolve_interval,json=resolveInterval,proto3" json:"resolve_interval,omitempty"`
 	Domains         []string                 `protobuf:"bytes,5,rep,name=domains,proto3" json:"domains,omitempty"`
 }
 
-func (x *Reslover) Reset() {
-	*x = Reslover{}
+func (x *Resolver) Reset() {
+	*x = Resolver{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_pkg_reslover_reslover_proto_msgTypes[0]
+		mi := &file_pkg_resolver_resolver_proto_msgTypes[0]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
 }
 
-func (x *Reslover) String() string {
+func (x *Resolver) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*Reslover) ProtoMessage() {}
+func (*Resolver) ProtoMessage() {}
 
-func (x *Reslover) ProtoReflect() protoreflect.Message {
-	mi := &file_pkg_reslover_reslover_proto_msgTypes[0]
+func (x *Resolver) ProtoReflect() protoreflect.Message {
+	mi := &file_pkg_resolver_resolver_proto_msgTypes[0]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -155,65 +155,65 @@ func (x *Reslover) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use Reslover.ProtoReflect.Descriptor instead.
-func (*Reslover) Descriptor() ([]byte, []int) {
-	return file_pkg_reslover_reslover_proto_rawDescGZIP(), []int{0}
+// Deprecated: Use Resolver.ProtoReflect.Descriptor instead.
+func (*Resolver) Descriptor() ([]byte, []int) {
+	return file_pkg_resolver_resolver_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *Reslover) GetEnabled() bool {
+func (x *Resolver) GetEnabled() bool {
 	if x != nil {
 		return x.Enabled
 	}
 	return false
 }
 
-func (x *Reslover) GetResloverType() Reslover_ResloverType {
+func (x *Resolver) GetResolverType() Resolver_ResolverType {
 	if x != nil {
-		return x.ResloverType
+		return x.ResolverType
 	}
-	return Reslover_reslover_type_dns
+	return Resolver_resolver_type_dns
 }
 
-func (x *Reslover) GetLoadBalanceMode() Reslover_LoadBalanceMode {
+func (x *Resolver) GetLoadBalanceMode() Resolver_LoadBalanceMode {
 	if x != nil {
 		return x.LoadBalanceMode
 	}
-	return Reslover_load_balance_mode_random
+	return Resolver_load_balance_mode_random
 }
 
-func (x *Reslover) GetResolveInterval() *duration.Duration {
+func (x *Resolver) GetResolveInterval() *duration.Duration {
 	if x != nil {
 		return x.ResolveInterval
 	}
 	return nil
 }
 
-func (x *Reslover) GetDomains() []string {
+func (x *Resolver) GetDomains() []string {
 	if x != nil {
 		return x.Domains
 	}
 	return nil
 }
 
-var File_pkg_reslover_reslover_proto protoreflect.FileDescriptor
+var File_pkg_resolver_resolver_proto protoreflect.FileDescriptor
 
-var file_pkg_reslover_reslover_proto_rawDesc = []byte{
-	0x0a, 0x1b, 0x70, 0x6b, 0x67, 0x2f, 0x72, 0x65, 0x73, 0x6c, 0x6f, 0x76, 0x65, 0x72, 0x2f, 0x72,
-	0x65, 0x73, 0x6c, 0x6f, 0x76, 0x65, 0x72, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x12, 0x0f, 0x67,
-	0x6f, 0x2e, 0x70, 0x6b, 0x67, 0x2e, 0x72, 0x65, 0x73, 0x6c, 0x6f, 0x76, 0x65, 0x72, 0x1a, 0x1e,
+var file_pkg_resolver_resolver_proto_rawDesc = []byte{
+	0x0a, 0x1b, 0x70, 0x6b, 0x67, 0x2f, 0x72, 0x65, 0x73, 0x6f, 0x6c, 0x76, 0x65, 0x72, 0x2f, 0x72,
+	0x65, 0x73, 0x6f, 0x6c, 0x76, 0x65, 0x72, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x12, 0x0f, 0x67,
+	0x6f, 0x2e, 0x70, 0x6b, 0x67, 0x2e, 0x72, 0x65, 0x73, 0x6f, 0x6c, 0x76, 0x65, 0x72, 0x1a, 0x1e,
 	0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2f,
 	0x64, 0x75, 0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22, 0xd0,
-	0x03, 0x0a, 0x08, 0x52, 0x65, 0x73, 0x6c, 0x6f, 0x76, 0x65, 0x72, 0x12, 0x18, 0x0a, 0x07, 0x65,
+	0x03, 0x0a, 0x08, 0x52, 0x65, 0x73, 0x6f, 0x6c, 0x76, 0x65, 0x72, 0x12, 0x18, 0x0a, 0x07, 0x65,
 	0x6e, 0x61, 0x62, 0x6c, 0x65, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x08, 0x52, 0x07, 0x65, 0x6e,
-	0x61, 0x62, 0x6c, 0x65, 0x64, 0x12, 0x4b, 0x0a, 0x0d, 0x72, 0x65, 0x73, 0x6c, 0x6f, 0x76, 0x65,
+	0x61, 0x62, 0x6c, 0x65, 0x64, 0x12, 0x4b, 0x0a, 0x0d, 0x72, 0x65, 0x73, 0x6f, 0x6c, 0x76, 0x65,
 	0x72, 0x5f, 0x74, 0x79, 0x70, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0e, 0x32, 0x26, 0x2e, 0x67,
-	0x6f, 0x2e, 0x70, 0x6b, 0x67, 0x2e, 0x72, 0x65, 0x73, 0x6c, 0x6f, 0x76, 0x65, 0x72, 0x2e, 0x52,
-	0x65, 0x73, 0x6c, 0x6f, 0x76, 0x65, 0x72, 0x2e, 0x52, 0x65, 0x73, 0x6c, 0x6f, 0x76, 0x65, 0x72,
-	0x54, 0x79, 0x70, 0x65, 0x52, 0x0c, 0x72, 0x65, 0x73, 0x6c, 0x6f, 0x76, 0x65, 0x72, 0x54, 0x79,
+	0x6f, 0x2e, 0x70, 0x6b, 0x67, 0x2e, 0x72, 0x65, 0x73, 0x6f, 0x6c, 0x76, 0x65, 0x72, 0x2e, 0x52,
+	0x65, 0x73, 0x6f, 0x6c, 0x76, 0x65, 0x72, 0x2e, 0x52, 0x65, 0x73, 0x6f, 0x6c, 0x76, 0x65, 0x72,
+	0x54, 0x79, 0x70, 0x65, 0x52, 0x0c, 0x72, 0x65, 0x73, 0x6f, 0x6c, 0x76, 0x65, 0x72, 0x54, 0x79,
 	0x70, 0x65, 0x12, 0x55, 0x0a, 0x11, 0x6c, 0x6f, 0x61, 0x64, 0x5f, 0x62, 0x61, 0x6c, 0x61, 0x6e,
 	0x63, 0x65, 0x5f, 0x6d, 0x6f, 0x64, 0x65, 0x18, 0x03, 0x20, 0x01, 0x28, 0x0e, 0x32, 0x29, 0x2e,
-	0x67, 0x6f, 0x2e, 0x70, 0x6b, 0x67, 0x2e, 0x72, 0x65, 0x73, 0x6c, 0x6f, 0x76, 0x65, 0x72, 0x2e,
-	0x52, 0x65, 0x73, 0x6c, 0x6f, 0x76, 0x65, 0x72, 0x2e, 0x4c, 0x6f, 0x61, 0x64, 0x42, 0x61, 0x6c,
+	0x67, 0x6f, 0x2e, 0x70, 0x6b, 0x67, 0x2e, 0x72, 0x65, 0x73, 0x6f, 0x6c, 0x76, 0x65, 0x72, 0x2e,
+	0x52, 0x65, 0x73, 0x6f, 0x6c, 0x76, 0x65, 0x72, 0x2e, 0x4c, 0x6f, 0x61, 0x64, 0x42, 0x61, 0x6c,
 	0x61, 0x6e, 0x63, 0x65, 0x4d, 0x6f, 0x64, 0x65, 0x52, 0x0f, 0x6c, 0x6f, 0x61, 0x64, 0x42, 0x61,
 	0x6c, 0x61, 0x6e, 0x63, 0x65, 0x4d, 0x6f, 0x64, 0x65, 0x12, 0x44, 0x0a, 0x10, 0x72, 0x65, 0x73,
 	0x6f, 0x6c, 0x76, 0x65, 0x5f, 0x69, 0x6e, 0x74, 0x65, 0x72, 0x76, 0x61, 0x6c, 0x18, 0x04, 0x20,
@@ -222,11 +222,11 @@ var file_pkg_reslover_reslover_proto_rawDesc = []byte{
 	0x72, 0x65, 0x73, 0x6f, 0x6c, 0x76, 0x65, 0x49, 0x6e, 0x74, 0x65, 0x72, 0x76, 0x61, 0x6c, 0x12,
 	0x18, 0x0a, 0x07, 0x64, 0x6f, 0x6d, 0x61, 0x69, 0x6e, 0x73, 0x18, 0x05, 0x20, 0x03, 0x28, 0x09,
 	0x52, 0x07, 0x64, 0x6f, 0x6d, 0x61, 0x69, 0x6e, 0x73, 0x22, 0x56, 0x0a, 0x0c, 0x52, 0x65, 0x73,
-	0x6c, 0x6f, 0x76, 0x65, 0x72, 0x54, 0x79, 0x70, 0x65, 0x12, 0x15, 0x0a, 0x11, 0x72, 0x65, 0x73,
-	0x6c, 0x6f, 0x76, 0x65, 0x72, 0x5f, 0x74, 0x79, 0x70, 0x65, 0x5f, 0x64, 0x6e, 0x73, 0x10, 0x00,
-	0x12, 0x18, 0x0a, 0x14, 0x72, 0x65, 0x73, 0x6c, 0x6f, 0x76, 0x65, 0x72, 0x5f, 0x74, 0x79, 0x70,
+	0x6f, 0x6c, 0x76, 0x65, 0x72, 0x54, 0x79, 0x70, 0x65, 0x12, 0x15, 0x0a, 0x11, 0x72, 0x65, 0x73,
+	0x6f, 0x6c, 0x76, 0x65, 0x72, 0x5f, 0x74, 0x79, 0x70, 0x65, 0x5f, 0x64, 0x6e, 0x73, 0x10, 0x00,
+	0x12, 0x18, 0x0a, 0x14, 0x72, 0x65, 0x73, 0x6f, 0x6c, 0x76, 0x65, 0x72, 0x5f, 0x74, 0x79, 0x70,
 	0x65, 0x5f, 0x63, 0x6f, 0x6e, 0x73, 0x75, 0x6c, 0x10, 0x01, 0x12, 0x15, 0x0a, 0x11, 0x72, 0x65,
-	0x73, 0x6c, 0x6f, 0x76, 0x65, 0x72, 0x5f, 0x74, 0x79, 0x70, 0x65, 0x5f, 0x6b, 0x38, 0x73, 0x10,
+	0x73, 0x6f, 0x6c, 0x76, 0x65, 0x72, 0x5f, 0x74, 0x79, 0x70, 0x65, 0x5f, 0x6b, 0x38, 0x73, 0x10,
 	0x02, 0x22, 0x4e, 0x0a, 0x0f, 0x4c, 0x6f, 0x61, 0x64, 0x42, 0x61, 0x6c, 0x61, 0x6e, 0x63, 0x65,
 	0x4d, 0x6f, 0x64, 0x65, 0x12, 0x1c, 0x0a, 0x18, 0x6c, 0x6f, 0x61, 0x64, 0x5f, 0x62, 0x61, 0x6c,
 	0x61, 0x6e, 0x63, 0x65, 0x5f, 0x6d, 0x6f, 0x64, 0x65, 0x5f, 0x72, 0x61, 0x6e, 0x64, 0x6f, 0x6d,
@@ -234,34 +234,34 @@ var file_pkg_reslover_reslover_proto_rawDesc = []byte{
 	0x63, 0x65, 0x5f, 0x6d, 0x6f, 0x64, 0x65, 0x5f, 0x63, 0x6f, 0x6e, 0x73, 0x69, 0x73, 0x74, 0x10,
 	0x01, 0x42, 0x2c, 0x5a, 0x2a, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f,
 	0x6b, 0x61, 0x79, 0x64, 0x78, 0x68, 0x2f, 0x67, 0x6f, 0x2e, 0x70, 0x6b, 0x67, 0x2e, 0x72, 0x65,
-	0x73, 0x6c, 0x6f, 0x76, 0x65, 0x72, 0x3b, 0x72, 0x65, 0x73, 0x6c, 0x6f, 0x76, 0x65, 0x72, 0x62,
+	0x73, 0x6f, 0x6c, 0x76, 0x65, 0x72, 0x3b, 0x72, 0x65, 0x73, 0x6f, 0x6c, 0x76, 0x65, 0x72, 0x62,
 	0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
-	file_pkg_reslover_reslover_proto_rawDescOnce sync.Once
-	file_pkg_reslover_reslover_proto_rawDescData = file_pkg_reslover_reslover_proto_rawDesc
+	file_pkg_resolver_resolver_proto_rawDescOnce sync.Once
+	file_pkg_resolver_resolver_proto_rawDescData = file_pkg_resolver_resolver_proto_rawDesc
 )
 
-func file_pkg_reslover_reslover_proto_rawDescGZIP() []byte {
-	file_pkg_reslover_reslover_proto_rawDescOnce.Do(func() {
-		file_pkg_reslover_reslover_proto_rawDescData = protoimpl.X.CompressGZIP(file_pkg_reslover_reslover_proto_rawDescData)
+func file_pkg_resolver_resolver_proto_rawDescGZIP() []byte {
+	file_pkg_resolver_resolver_proto_rawDescOnce.Do(func() {
+		file_pkg_resolver_resolver_proto_rawDescData = protoimpl.X.CompressGZIP(file_pkg_resolver_resolver_proto_rawDescData)
 	})
-	return file_pkg_reslover_reslover_proto_rawDescData
+	return file_pkg_resolver_resolver_proto_rawDescData
 }
 
-var file_pkg_reslover_reslover_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
-var file_pkg_reslover_reslover_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
-var file_pkg_reslover_reslover_proto_goTypes = []interface{}{
-	(Reslover_ResloverType)(0),    // 0: go.pkg.reslover.Reslover.ResloverType
-	(Reslover_LoadBalanceMode)(0), // 1: go.pkg.reslover.Reslover.LoadBalanceMode
-	(*Reslover)(nil),              // 2: go.pkg.reslover.Reslover
+var file_pkg_resolver_resolver_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
+var file_pkg_resolver_resolver_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
+var file_pkg_resolver_resolver_proto_goTypes = []interface{}{
+	(Resolver_ResolverType)(0),    // 0: go.pkg.resolver.Resolver.ResolverType
+	(Resolver_LoadBalanceMode)(0), // 1: go.pkg.resolver.Resolver.LoadBalanceMode
+	(*Resolver)(nil),              // 2: go.pkg.resolver.Resolver
 	(*duration.Duration)(nil),     // 3: google.protobuf.Duration
 }
-var file_pkg_reslover_reslover_proto_depIdxs = []int32{
-	0, // 0: go.pkg.reslover.Reslover.reslover_type:type_name -> go.pkg.reslover.Reslover.ResloverType
-	1, // 1: go.pkg.reslover.Reslover.load_balance_mode:type_name -> go.pkg.reslover.Reslover.LoadBalanceMode
-	3, // 2: go.pkg.reslover.Reslover.resolve_interval:type_name -> google.protobuf.Duration
+var file_pkg_resolver_resolver_proto_depIdxs = []int32{
+	0, // 0: go.pkg.resolver.Resolver.resolver_type:type_name -> go.pkg.resolver.Resolver.ResolverType
+	1, // 1: go.pkg.resolver.Resolver.load_balance_mode:type_name -> go.pkg.resolver.Resolver.LoadBalanceMode
+	3, // 2: go.pkg.resolver.Resolver.resolve_interval:type_name -> google.protobuf.Duration
 	3, // [3:3] is the sub-list for method output_type
 	3, // [3:3] is the sub-list for method input_type
 	3, // [3:3] is the sub-list for extension type_name
@@ -269,14 +269,14 @@ var file_pkg_reslover_reslover_proto_depIdxs = []int32{
 	0, // [0:3] is the sub-list for field type_name
 }
 
-func init() { file_pkg_reslover_reslover_proto_init() }
-func file_pkg_reslover_reslover_proto_init() {
-	if File_pkg_reslover_reslover_proto != nil {
+func init() { file_pkg_resolver_resolver_proto_init() }
+func file_pkg_resolver_resolver_proto_init() {
+	if File_pkg_resolver_resolver_proto != nil {
 		return
 	}
 	if !protoimpl.UnsafeEnabled {
-		file_pkg_reslover_reslover_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*Reslover); i {
+		file_pkg_resolver_resolver_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*Resolver); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -292,19 +292,19 @@ func file_pkg_reslover_reslover_proto_init() {
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: file_pkg_reslover_reslover_proto_rawDesc,
+			RawDescriptor: file_pkg_resolver_resolver_proto_rawDesc,
 			NumEnums:      2,
 			NumMessages:   1,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
-		GoTypes:           file_pkg_reslover_reslover_proto_goTypes,
-		DependencyIndexes: file_pkg_reslover_reslover_proto_depIdxs,
-		EnumInfos:         file_pkg_reslover_reslover_proto_enumTypes,
-		MessageInfos:      file_pkg_reslover_reslover_proto_msgTypes,
+		GoTypes:           file_pkg_resolver_resolver_proto_goTypes,
+		DependencyIndexes: file_pkg_resolver_resolver_proto_depIdxs,
+		EnumInfos:         file_pkg_resolver_resolver_proto_enumTypes,
+		MessageInfos:      file_pkg_resolver_resolver_proto_msgTypes,
 	}.Build()
-	File_pkg_reslover_reslover_proto = out.File
-	file_pkg_reslover_reslover_proto_rawDesc = nil
-	file_pkg_reslover_reslover_proto_goTypes = nil
-	file_pkg_reslover_reslover_proto_depIdxs = nil
+	File_pkg_resolver_resolver_proto = out.File
+	file_pkg_resolver_resolver_proto_rawDesc = nil
+	file_pkg_resolver_resolver_proto_goTypes = nil
+	file_pkg_resolver_resolver_proto_depIdxs = nil
 }
