@@ -1,4 +1,4 @@
-package reslover
+package resolver
 
 import (
 	"github.com/ory/viper"

@@ -1,36 +1,34 @@
-package reslover_test
+package resolver_test
 
 import (
 	"context"
 	"fmt"
-	"net"
 	"testing"
 	"time"
 
-	"github.com/kaydxh/golang/pkg/reslover"
-	reslover_ "github.com/kaydxh/golang/pkg/reslover"
+	resolver_ "github.com/kaydxh/golang/pkg/resolver"
 	viper_ "github.com/kaydxh/golang/pkg/viper"
 )
 
-func TestNewResloverService(t *testing.T) {
-	cfgFile := "./reslover.yaml"
-	config := reslover_.NewConfig(reslover_.WithViper(viper_.GetViper(cfgFile, "reslover")))
+func TestNewResolverService(t *testing.T) {
+	cfgFile := "./resolver.yaml"
+	config := resolver_.NewConfig(resolver_.WithViper(viper_.GetViper(cfgFile, "resolver")))
 	s, err := config.Complete().New(context.Background())
 	if err != nil {
 		t.Errorf("failed to new config err: %v", err)
 	}
 	s.Run(context.Background())
-	net.DefaultResolver
+	//	net.DefaultResolver
 
 	type args struct {
 		consistkey       string
 		resolverInterval time.Duration
-		services         []reslover_.ResloverQuery
+		services         []resolver_.ResolverQuery
 	}
 	tests := []struct {
 		name string
 		args args
-		want *reslover_.ResloverService
+		want *resolver_.ResolverService
 	}{
 		// TODO: Add test cases.
 		{
@@ -38,12 +36,12 @@ func TestNewResloverService(t *testing.T) {
 			args: args{
 				consistkey:       "1",
 				resolverInterval: 0,
-				services: []reslover_.ResloverQuery{
+				services: []resolver_.ResolverQuery{
 					{
 						Domain: "www.baidu.com",
-						Opts: reslover_.ResloverOptions{
-							ResloverType:    reslover_.Reslover_reslover_type_dns,
-							LoadBalanceMode: reslover.Reslover_load_balance_mode_consist,
+						Opts: resolver_.ResolverOptions{
+							ResolverType:    resolver_.Resolver_resolver_type_dns,
+							LoadBalanceMode: resolver_.Resolver_load_balance_mode_consist,
 						},
 					},
 				},

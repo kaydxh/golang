@@ -1,4 +1,4 @@
-package reslover
+package resolver
 
 // A ConfigOption sets options.
 type ConfigOption interface {

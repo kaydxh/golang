@@ -1,4 +1,4 @@
-package reslover
+package resolver
 
 import (
 	"context"
@@ -9,7 +9,7 @@ import (
 )
 
 type Config struct {
-	Proto Reslover
+	Proto Resolver
 	opts  struct {
 		// If set, overrides params below
 		viper *viper.Viper
@@ -26,9 +26,9 @@ type CompletedConfig struct {
 	*completedConfig
 }
 
-func (c *completedConfig) New(ctx context.Context) (*ResloverService, error) {
+func (c *completedConfig) New(ctx context.Context) (*ResolverService, error) {
 
-	logrus.Infof("Installing Reslover")
+	logrus.Infof("Installing Resolver")
 
 	if c.completeError != nil {
 		return nil, c.completeError
@@ -42,19 +42,19 @@ func (c *completedConfig) New(ctx context.Context) (*ResloverService, error) {
 	if err != nil {
 		return nil, err
 	}
-	logrus.Infof("Installed Reslover")
+	logrus.Infof("Installed Resolver")
 
 	return rs, nil
 }
 
-func (c *completedConfig) install(ctx context.Context) (*ResloverService, error) {
+func (c *completedConfig) install(ctx context.Context) (*ResolverService, error) {
 	resolverInterval := c.Proto.GetResolveInterval().AsDuration()
-	rs := NewResloverService(resolverInterval)
+	rs := NewResolverService(resolverInterval)
 	for _, domain := range c.Proto.GetDomains() {
-		rq := ResloverQuery{
+		rq := ResolverQuery{
 			Domain: domain,
-			Opts: ResloverOptions{
-				ResloverType:    c.Proto.GetResloverType(),
+			Opts: ResolverOptions{
+				ResolverType:    c.Proto.GetResolverType(),
 				LoadBalanceMode: c.Proto.GetLoadBalanceMode(),
 			},
 		}
