@@ -9,9 +9,10 @@ import (
 
 	"github.com/kaydxh/golang/go/errors"
 	errors_ "github.com/kaydxh/golang/go/errors"
-	net_ "github.com/kaydxh/golang/go/net"
 	time_ "github.com/kaydxh/golang/go/time"
 	dns_ "github.com/kaydxh/golang/pkg/resolver/dns"
+	k8sdns_ "github.com/kaydxh/golang/pkg/resolver/dns/k8s-resolver"
+	netdns_ "github.com/kaydxh/golang/pkg/resolver/dns/net-resolver"
 	"github.com/serialx/hashring"
 	"github.com/sirupsen/logrus"
 	"go.uber.org/atomic"
@@ -25,6 +26,8 @@ type ResolverOptions struct {
 }
 
 type ResolverQuery struct {
+	// domain: domain for net resolver, Ex: cube-svc.ns.svc
+	// domain: svc name for k8s resolver, Ex: cube
 	Domain   string
 	nodes    []string
 	hashring *hashring.HashRing
@@ -50,6 +53,33 @@ func defaultResolverOptions() ResolverOptions {
 
 func (r *ResolverQuery) SetDefault() {
 	r.Opts = defaultResolverOptions()
+}
+
+func NewResolverQuery(domain string, opts ...ResolverQueryOption) (ResolverQuery, error) {
+	rq := NewDefaultResolverQuery(domain)
+	rq.ApplyOptions(opts...)
+	err := rq.SetResolver()
+	if err != nil {
+		return rq, err
+	}
+
+	return rq, nil
+}
+
+func (r *ResolverQuery) SetResolver() error {
+	var err error
+	switch r.Opts.ResolverType {
+	case Resolver_resolver_type_k8s:
+		r.resolver, err = k8sdns_.NewK8sDNSResolver()
+		if err != nil {
+			logrus.Errorf("new k8s resolver, err: %v", err)
+			return err
+		}
+	default:
+		r.resolver = netdns_.DefaultResolver
+	}
+
+	return nil
 }
 
 type ResolverService struct {
@@ -147,7 +177,8 @@ func (srv *ResolverService) QueryServices() (err error) {
 	logger := srv.logger()
 	srv.serviceByName.Range(func(name string, service ResolverQuery) bool {
 		if service.Opts.ResolverType == Resolver_resolver_type_dns {
-			service.nodes, err = net_.LookupHostIPv4(service.Domain)
+			//service.nodes, err = net_.LookupHostIPv4(service.Domain)
+			service.nodes, err = service.resolver.LookupHostIPv4(context.Background(), service.Domain)
 			if err != nil {
 				errs = append(errs, fmt.Errorf("failed to query service: %v, err: %v", service.Domain, err))
 				return true
