@@ -4,5 +4,5 @@ import "context"
 
 type DNSResolver interface {
 	// host domain
-	LookupHost(ctx context.Context, host string) (addrs []string, err error)
+	LookupHostIPv4(ctx context.Context, host string) (addrs []string, err error)
 }
