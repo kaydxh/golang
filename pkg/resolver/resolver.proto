@@ -11,6 +11,13 @@ message Resolver {
   LoadBalanceMode load_balance_mode = 3;
   google.protobuf.Duration resolve_interval = 4;
   repeated string domains = 5;
+  K8s k8s = 6;
+
+  message K8s {
+    repeated string service_names = 1;
+    string node_group = 2;
+    string node_unit = 3;
+  }
 
   enum ResolverType {
     resolver_type_dns = 0;

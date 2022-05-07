@@ -50,15 +50,35 @@ func (c *completedConfig) New(ctx context.Context) (*ResolverService, error) {
 func (c *completedConfig) install(ctx context.Context) (*ResolverService, error) {
 	resolverInterval := c.Proto.GetResolveInterval().AsDuration()
 	rs := NewResolverService(resolverInterval)
-	for _, domain := range c.Proto.GetDomains() {
-		rq := ResolverQuery{
-			Domain: domain,
-			Opts: ResolverOptions{
-				ResolverType:    c.Proto.GetResolverType(),
-				LoadBalanceMode: c.Proto.GetLoadBalanceMode(),
-			},
+
+	if c.Proto.ResolverType == Resolver_resolver_type_k8s {
+		for _, svc := range c.Proto.GetK8S().GetServiceNames() {
+			rq, err := NewResolverQuery(
+				svc,
+				WithResolverType(c.Proto.GetResolverType()),
+				WithLoadBalanceMode(c.Proto.GetLoadBalanceMode()),
+				WithNodeGroup(c.Proto.GetK8S().GetNodeGroup()),
+				WithNodeUnit(c.Proto.GetK8S().GetNodeUnit()),
+			)
+			if err != nil {
+				return nil, err
+			}
+			rs.AddService(rq)
 		}
-		rs.AddService(rq)
+
+	} else {
+
+		for _, domain := range c.Proto.GetDomains() {
+			rq, err := NewResolverQuery(
+				domain,
+				WithResolverType(c.Proto.GetResolverType()),
+				WithLoadBalanceMode(c.Proto.GetLoadBalanceMode()),
+			)
+			if err != nil {
+				return nil, err
+			}
+			rs.AddService(rq)
+		}
 	}
 
 	return rs, nil
