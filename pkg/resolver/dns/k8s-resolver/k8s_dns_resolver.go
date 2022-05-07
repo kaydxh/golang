@@ -164,12 +164,14 @@ func (r *K8sDNSResolver) LookupHostIPv4(ctx context.Context, svc string) ([]stri
 			continue
 		}
 
-		nodeUnit, ok := pod.Spec.NodeSelector[r.opts.nodeGroup]
-		if !ok {
-			continue
-		}
-		if nodeUnit != r.opts.nodeUnit {
-			continue
+		if r.opts.nodeGroup != "" {
+			nodeUnit, ok := pod.Spec.NodeSelector[r.opts.nodeGroup]
+			if !ok {
+				continue
+			}
+			if nodeUnit != r.opts.nodeUnit {
+				continue
+			}
 		}
 
 		if net_.IsIPv4String(pod.Status.PodIP) {

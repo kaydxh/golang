@@ -113,9 +113,7 @@ func NewResolverService(resolverInterval time.Duration, services ...ResolverQuer
 		rs.resolverInterval = 10 * time.Second
 	}
 
-	for _, s := range services {
-		_ = rs.AddService(s)
-	}
+	rs.AddServices(services...)
 	return rs
 }
 
@@ -228,23 +226,14 @@ func (srv *ResolverService) PickNode(name string, consistKey string) (node strin
 	return s, true
 }
 
-func (srv *ResolverService) AddService(service ResolverQuery) error {
-	_, loaded := srv.serviceByName.LoadOrStore(service.Domain, service)
-	if loaded {
-		return fmt.Errorf("service[%v] entry already installed", service)
-	}
-	return nil
+// AddService, if exist, it will update
+func (srv *ResolverService) AddService(service ResolverQuery) {
+	srv.serviceByName.Store(service.Domain, service)
 }
 
-func (srv *ResolverService) AddServices(services ...ResolverQuery) error {
-	var errs []error
+// AddServices, if exist, it will update
+func (srv *ResolverService) AddServices(services ...ResolverQuery) {
 	for _, service := range services {
-		err := srv.AddService(service)
-		if err != nil {
-			errs = append(errs, err)
-		}
-
+		srv.AddService(service)
 	}
-
-	return errors_.NewAggregate(errs)
 }
