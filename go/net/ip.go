@@ -1,9 +1,11 @@
 package net
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"net"
+	"strconv"
 )
 
 // This code is borrowed from https://github.com/uber/tchannel-go/blob/dev/localip.go
@@ -129,7 +131,11 @@ func IsIPv4String(ip string) bool {
 }
 
 func LookupHostIPv4(host string) (addrs []string, err error) {
-	ips, err := net.LookupHost(host)
+	return LookupHostIPv4WithContext(context.Background(), host)
+}
+
+func LookupHostIPv4WithContext(ctx context.Context, host string) (addrs []string, err error) {
+	ips, err := net.DefaultResolver.LookupHost(ctx, host)
 	if err != nil {
 		return
 	}
@@ -141,4 +147,17 @@ func LookupHostIPv4(host string) (addrs []string, err error) {
 	}
 
 	return addrs, err
+}
+
+// SplitHostIntPort split host and integral port
+func SplitHostIntPort(s string) (string, int, error) {
+	host, port, err := net.SplitHostPort(s)
+	if err != nil {
+		return "", 0, err
+	}
+	portInt, err := strconv.Atoi(port)
+	if err != nil {
+		return "", 0, err
+	}
+	return host, portInt, err
 }
