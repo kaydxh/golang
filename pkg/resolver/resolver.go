@@ -21,8 +21,11 @@ import (
 type ResolverQueryMap sync.Map
 
 type ResolverOptions struct {
-	ResolverType    Resolver_ResolverType
-	LoadBalanceMode Resolver_LoadBalanceMode
+	resolverType    Resolver_ResolverType
+	loadBalanceMode Resolver_LoadBalanceMode
+	//k8s
+	nodeGroup string
+	nodeUnit  string
 }
 
 type ResolverQuery struct {
@@ -31,7 +34,7 @@ type ResolverQuery struct {
 	Domain   string
 	nodes    []string
 	hashring *hashring.HashRing
-	Opts     ResolverOptions
+	opts     ResolverOptions
 	resolver dns_.DNSResolver
 }
 
@@ -46,13 +49,13 @@ func NewDefaultResolverQuery(domain string) ResolverQuery {
 
 func defaultResolverOptions() ResolverOptions {
 	return ResolverOptions{
-		ResolverType:    Resolver_resolver_type_dns,
-		LoadBalanceMode: Resolver_load_balance_mode_consist,
+		resolverType:    Resolver_resolver_type_dns,
+		loadBalanceMode: Resolver_load_balance_mode_consist,
 	}
 }
 
 func (r *ResolverQuery) SetDefault() {
-	r.Opts = defaultResolverOptions()
+	r.opts = defaultResolverOptions()
 }
 
 func NewResolverQuery(domain string, opts ...ResolverQueryOption) (ResolverQuery, error) {
@@ -68,9 +71,12 @@ func NewResolverQuery(domain string, opts ...ResolverQueryOption) (ResolverQuery
 
 func (r *ResolverQuery) SetResolver() error {
 	var err error
-	switch r.Opts.ResolverType {
+	switch r.opts.resolverType {
 	case Resolver_resolver_type_k8s:
-		r.resolver, err = k8sdns_.NewK8sDNSResolver()
+		r.resolver, err = k8sdns_.NewK8sDNSResolver(
+			k8sdns_.WithNodeGroup(r.opts.nodeGroup),
+			k8sdns_.WithNodeUnit(r.opts.nodeUnit),
+		)
 		if err != nil {
 			logrus.Errorf("new k8s resolver, err: %v", err)
 			return err
@@ -176,23 +182,20 @@ func (srv *ResolverService) QueryServices() (err error) {
 
 	logger := srv.logger()
 	srv.serviceByName.Range(func(name string, service ResolverQuery) bool {
-		if service.Opts.ResolverType == Resolver_resolver_type_dns {
-			//service.nodes, err = net_.LookupHostIPv4(service.Domain)
-			service.nodes, err = service.resolver.LookupHostIPv4(context.Background(), service.Domain)
-			if err != nil {
-				errs = append(errs, fmt.Errorf("failed to query service: %v, err: %v", service.Domain, err))
-				return true
-			}
-			logger.Debugf("the results of lookup domain[%s] are nodes[%v]", service.Domain, service.nodes)
 
-			if service.Opts.LoadBalanceMode == Resolver_load_balance_mode_consist {
-				service.hashring = hashring.New(service.nodes)
-			}
-			srv.serviceByName.Store(name, service)
+		service.nodes, err = service.resolver.LookupHostIPv4(context.Background(), service.Domain)
+		if err != nil {
+			errs = append(errs, fmt.Errorf("failed to query service: %v, err: %v", service.Domain, err))
 			return true
 		}
+		logger.Debugf("the results of lookup domain[%s] are nodes[%v]", service.Domain, service.nodes)
 
+		if service.opts.loadBalanceMode == Resolver_load_balance_mode_consist {
+			service.hashring = hashring.New(service.nodes)
+		}
+		srv.serviceByName.Store(name, service)
 		return true
+
 	})
 
 	return errors_.NewAggregate(errs)
@@ -204,7 +207,7 @@ func (srv *ResolverService) PickNode(name string, consistKey string) (node strin
 		return "", false
 	}
 
-	if service.Opts.LoadBalanceMode == Resolver_load_balance_mode_consist {
+	if service.opts.loadBalanceMode == Resolver_load_balance_mode_consist {
 		if service.hashring == nil {
 			err := srv.QueryServices()
 			if err != nil {

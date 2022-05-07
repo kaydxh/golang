@@ -87,6 +87,9 @@ func NewK8sDNSResolver(opts ...K8sDNSResolverOption) (*K8sDNSResolver, error) {
 	r.factory = informers.NewSharedInformerFactory(r.kubeClient, 0)
 	r.podInformer = r.factory.Core().V1().Pods()
 
+	//only run once
+	go r.podInformer.Informer().Run(r.stopCh)
+
 	return r, nil
 }
 
@@ -112,7 +115,6 @@ func (r *K8sDNSResolver) Pods(ctx context.Context, svcs ...string) ([]corev1.Pod
 			}
 		}()
 
-		go r.podInformer.Informer().Run(r.stopCh)
 		if synced := cache.WaitForCacheSync(r.stopCh, r.podInformer.Informer().HasSynced); !synced {
 			return nil, errors.New("pod cache sync failed")
 

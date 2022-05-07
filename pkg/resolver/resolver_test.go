@@ -10,6 +10,7 @@ import (
 	viper_ "github.com/kaydxh/golang/pkg/viper"
 )
 
+/*
 func TestNewResolverService(t *testing.T) {
 	cfgFile := "./resolver.yaml"
 	config := resolver_.NewConfig(resolver_.WithViper(viper_.GetViper(cfgFile, "resolver")))
@@ -54,6 +55,64 @@ func TestNewResolverService(t *testing.T) {
 			for i := 0; i < 100; i++ {
 				consistkey := fmt.Sprintf("consist-key-%d", i)
 				node, has := s.PickNode(tt.name, consistkey)
+				t.Logf("pick node: %v, has: %v, consistkey: %v", node, has, consistkey)
+			}
+		})
+	}
+}
+*/
+
+func TestNewResolverService2(t *testing.T) {
+	cfgFile := "./resolver.yaml"
+	config := resolver_.NewConfig(resolver_.WithViper(viper_.GetViper(cfgFile, "resolver")))
+	s, err := config.Complete().New(context.Background())
+	if err != nil {
+		t.Errorf("failed to new config err: %v", err)
+	}
+	s.Run(context.Background())
+
+	type args struct {
+		consistkey       string
+		resolverInterval time.Duration
+		services         []resolver_.ResolverQuery
+	}
+
+	tests := []struct {
+		serviceName      string
+		nodeGroup        string
+		nodeUnit         string
+		consistkey       string
+		loadBalanceMode  resolver_.Resolver_LoadBalanceMode
+		resolverType     resolver_.Resolver_ResolverType
+		resolverInterval time.Duration
+	}{
+		// TODO: Add test cases.
+		{
+			serviceName:      "test-cube-algo-backend",
+			nodeGroup:        "edge-global-group",
+			nodeUnit:         "edge-node-zone",
+			consistkey:       "1",
+			resolverInterval: 0,
+			resolverType:     resolver_.Resolver_resolver_type_k8s,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.serviceName, func(t *testing.T) {
+			rq, err := resolver_.NewResolverQuery(
+				tt.serviceName,
+				resolver_.WithLoadBalanceMode(tt.loadBalanceMode),
+				resolver_.WithResolverType(tt.resolverType),
+				resolver_.WithNodeGroup(tt.nodeGroup),
+				resolver_.WithNodeUnit(tt.nodeUnit),
+			)
+			if err != nil {
+				t.Fatalf("new resolver query err: %v", err)
+			}
+			err = s.AddServices(rq)
+			time.Sleep(5 * time.Second)
+			for i := 0; i < 100; i++ {
+				consistkey := fmt.Sprintf("consist-key-%d", i)
+				node, has := s.PickNode(tt.serviceName, consistkey)
 				t.Logf("pick node: %v, has: %v, consistkey: %v", node, has, consistkey)
 			}
 		})
