@@ -4,7 +4,7 @@ resolver:
   load_balance_mode: load_balance_mode_consist
   domains: []
   k8s:
-    service_name: []
+    service_names: []
     node_group:
     node_unit:
   resolve_interval : 10s
