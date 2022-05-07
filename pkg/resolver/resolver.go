@@ -1,4 +1,4 @@
-package reslover
+package resolver
 
 import (
 	"context"
@@ -19,40 +19,40 @@ import (
 
 type ResolverQueryMap sync.Map
 
-type ResloverOptions struct {
-	ResolverType    Reslover_ResloverType
-	LoadBalanceMode Reslover_LoadBalanceMode
+type ResolverOptions struct {
+	ResolverType    Resolver_ResolverType
+	LoadBalanceMode Resolver_LoadBalanceMode
 }
 
-type ResloverQuery struct {
+type ResolverQuery struct {
 	Domain   string
 	nodes    []string
 	hashring *hashring.HashRing
-	Opts     ResloverOptions
+	Opts     ResolverOptions
 	resolver dns_.DNSResolver
 }
 
-//NewDefaultResloverQuery, dns reslover, bls consist hash
-func NewDefaultResloverQuery(domain string) ResloverQuery {
-	rq := ResloverQuery{
+//NewDefaultResolverQuery, dns reslover, bls consist hash
+func NewDefaultResolverQuery(domain string) ResolverQuery {
+	rq := ResolverQuery{
 		Domain: domain,
 	}
 	rq.SetDefault()
 	return rq
 }
 
-func defaultResloverOptions() ResloverOptions {
-	return ResloverOptions{
-		ResolverType:    Reslover_reslover_type_dns,
-		LoadBalanceMode: Reslover_load_balance_mode_consist,
+func defaultResolverOptions() ResolverOptions {
+	return ResolverOptions{
+		ResolverType:    Resolver_resolver_type_dns,
+		LoadBalanceMode: Resolver_load_balance_mode_consist,
 	}
 }
 
-func (r *ResloverQuery) SetDefault() {
-	r.Opts = defaultResloverOptions()
+func (r *ResolverQuery) SetDefault() {
+	r.Opts = defaultResolverOptions()
 }
 
-type ResloverService struct {
+type ResolverService struct {
 	resolverInterval time.Duration
 	serviceByName    ResolverQueryMap
 	inShutdown       atomic.Bool
@@ -60,17 +60,17 @@ type ResloverService struct {
 	cancel           func()
 }
 
-func NewDefaultResloverServices(resolverInterval time.Duration, domains ...string) *ResloverService {
-	rs := NewResloverService(resolverInterval)
+func NewDefaultResolverServices(resolverInterval time.Duration, domains ...string) *ResolverService {
+	rs := NewResolverService(resolverInterval)
 	for _, domain := range domains {
-		rq := NewDefaultResloverQuery(domain)
+		rq := NewDefaultResolverQuery(domain)
 		rs.AddService(rq)
 	}
 	return rs
 }
 
-func NewResloverService(resolverInterval time.Duration, services ...ResloverQuery) *ResloverService {
-	rs := &ResloverService{
+func NewResolverService(resolverInterval time.Duration, services ...ResolverQuery) *ResolverService {
+	rs := &ResolverService{
 		resolverInterval: resolverInterval,
 	}
 	if rs.resolverInterval == 0 {
@@ -83,15 +83,15 @@ func NewResloverService(resolverInterval time.Duration, services ...ResloverQuer
 	return rs
 }
 
-func (srv *ResloverService) logger() logrus.FieldLogger {
-	return logrus.WithField("module", "ResloverService")
+func (srv *ResolverService) logger() logrus.FieldLogger {
+	return logrus.WithField("module", "ResolverService")
 }
 
-func (srv *ResloverService) Run(ctx context.Context) error {
+func (srv *ResolverService) Run(ctx context.Context) error {
 	logger := srv.logger()
-	logger.Infoln("ResloverService Run")
+	logger.Infoln("ResolverService Run")
 	if srv.inShutdown.Load() {
-		logger.Infoln("ResloverService Shutdown")
+		logger.Infoln("ResolverService Shutdown")
 		return fmt.Errorf("server closed")
 	}
 	go func() {
@@ -101,7 +101,7 @@ func (srv *ResloverService) Run(ctx context.Context) error {
 
 }
 
-func (srv *ResloverService) Serve(ctx context.Context) error {
+func (srv *ResolverService) Serve(ctx context.Context) error {
 	logger := srv.logger()
 	logger.Infoln("ServiceResolver Serve")
 
@@ -130,7 +130,7 @@ func (srv *ResloverService) Serve(ctx context.Context) error {
 	return nil
 }
 
-func (srv *ResloverService) Shutdown() {
+func (srv *ResolverService) Shutdown() {
 	srv.inShutdown.Store(true)
 	srv.mu.Lock()
 	defer srv.mu.Unlock()
@@ -139,14 +139,14 @@ func (srv *ResloverService) Shutdown() {
 	}
 }
 
-func (srv *ResloverService) QueryServices() (err error) {
+func (srv *ResolverService) QueryServices() (err error) {
 	var (
 		errs []error
 	)
 
 	logger := srv.logger()
-	srv.serviceByName.Range(func(name string, service ResloverQuery) bool {
-		if service.Opts.ResloverType == Reslover_reslover_type_dns {
+	srv.serviceByName.Range(func(name string, service ResolverQuery) bool {
+		if service.Opts.ResolverType == Resolver_resolver_type_dns {
 			service.nodes, err = net_.LookupHostIPv4(service.Domain)
 			if err != nil {
 				errs = append(errs, fmt.Errorf("failed to query service: %v, err: %v", service.Domain, err))
@@ -154,7 +154,7 @@ func (srv *ResloverService) QueryServices() (err error) {
 			}
 			logger.Debugf("the results of lookup domain[%s] are nodes[%v]", service.Domain, service.nodes)
 
-			if service.Opts.LoadBalanceMode == Reslover_load_balance_mode_consist {
+			if service.Opts.LoadBalanceMode == Resolver_load_balance_mode_consist {
 				service.hashring = hashring.New(service.nodes)
 			}
 			srv.serviceByName.Store(name, service)
@@ -167,13 +167,13 @@ func (srv *ResloverService) QueryServices() (err error) {
 	return errors_.NewAggregate(errs)
 }
 
-func (srv *ResloverService) PickNode(name string, consistKey string) (node string, has bool) {
+func (srv *ResolverService) PickNode(name string, consistKey string) (node string, has bool) {
 	service, has := srv.serviceByName.Load(name)
 	if !has {
 		return "", false
 	}
 
-	if service.Opts.LoadBalanceMode == Reslover_load_balance_mode_consist {
+	if service.Opts.LoadBalanceMode == Resolver_load_balance_mode_consist {
 		if service.hashring == nil {
 			err := srv.QueryServices()
 			if err != nil {
@@ -194,7 +194,7 @@ func (srv *ResloverService) PickNode(name string, consistKey string) (node strin
 	return s, true
 }
 
-func (srv *ResloverService) AddService(service ResloverQuery) error {
+func (srv *ResolverService) AddService(service ResolverQuery) error {
 	_, loaded := srv.serviceByName.LoadOrStore(service.Domain, service)
 	if loaded {
 		return fmt.Errorf("service[%v] entry already installed", service)
@@ -202,7 +202,7 @@ func (srv *ResloverService) AddService(service ResloverQuery) error {
 	return nil
 }
 
-func (srv *ResloverService) AddServices(services ...ResloverQuery) error {
+func (srv *ResolverService) AddServices(services ...ResolverQuery) error {
 	var errs []error
 	for _, service := range services {
 		err := srv.AddService(service)

@@ -1,4 +1,4 @@
-package reslover
+package resolver
 
 import (
 	"sync" // Used by sync.Map.
@@ -11,43 +11,43 @@ func _() {
 	_ = (sync.Map)(ResolverQueryMap{})
 }
 
-var _nil_ResolverQueryMap_ResloverQuery_value = func() (val ResloverQuery) { return }()
+var _nil_ResolverQueryMap_ResolverQuery_value = func() (val ResolverQuery) { return }()
 
 // Load returns the value stored in the map for a key, or nil if no
 // value is present.
 // The ok result indicates whether value was found in the map.
-func (m *ResolverQueryMap) Load(key string) (ResloverQuery, bool) {
+func (m *ResolverQueryMap) Load(key string) (ResolverQuery, bool) {
 	value, ok := (*sync.Map)(m).Load(key)
 	if value == nil {
-		return _nil_ResolverQueryMap_ResloverQuery_value, ok
+		return _nil_ResolverQueryMap_ResolverQuery_value, ok
 	}
-	return value.(ResloverQuery), ok
+	return value.(ResolverQuery), ok
 }
 
 // Store sets the value for a key.
-func (m *ResolverQueryMap) Store(key string, value ResloverQuery) {
+func (m *ResolverQueryMap) Store(key string, value ResolverQuery) {
 	(*sync.Map)(m).Store(key, value)
 }
 
 // LoadOrStore returns the existing value for the key if present.
 // Otherwise, it stores and returns the given value.
 // The loaded result is true if the value was loaded, false if stored.
-func (m *ResolverQueryMap) LoadOrStore(key string, value ResloverQuery) (ResloverQuery, bool) {
+func (m *ResolverQueryMap) LoadOrStore(key string, value ResolverQuery) (ResolverQuery, bool) {
 	actual, loaded := (*sync.Map)(m).LoadOrStore(key, value)
 	if actual == nil {
-		return _nil_ResolverQueryMap_ResloverQuery_value, loaded
+		return _nil_ResolverQueryMap_ResolverQuery_value, loaded
 	}
-	return actual.(ResloverQuery), loaded
+	return actual.(ResolverQuery), loaded
 }
 
 // LoadAndDelete deletes the value for a key, returning the previous value if any.
 // The loaded result reports whether the key was present.
-func (m *ResolverQueryMap) LoadAndDelete(key string) (value ResloverQuery, loaded bool) {
+func (m *ResolverQueryMap) LoadAndDelete(key string) (value ResolverQuery, loaded bool) {
 	actual, loaded := (*sync.Map)(m).LoadAndDelete(key)
 	if actual == nil {
-		return _nil_ResolverQueryMap_ResloverQuery_value, loaded
+		return _nil_ResolverQueryMap_ResolverQuery_value, loaded
 	}
-	return actual.(ResloverQuery), loaded
+	return actual.(ResolverQuery), loaded
 }
 
 // Delete deletes the value for a key.
@@ -65,8 +65,8 @@ func (m *ResolverQueryMap) Delete(key string) {
 //
 // Range may be O(N) with the number of elements in the map even if f returns
 // false after a constant number of calls.
-func (m *ResolverQueryMap) Range(f func(key string, value ResloverQuery) bool) {
+func (m *ResolverQueryMap) Range(f func(key string, value ResolverQuery) bool) {
 	(*sync.Map)(m).Range(func(key, value interface{}) bool {
-		return f(key.(string), value.(ResloverQuery))
+		return f(key.(string), value.(ResolverQuery))
 	})
 }
