@@ -9,6 +9,8 @@ import (
 	"net"
 	"net/http"
 	"time"
+
+	"github.com/gin-gonic/gin/binding"
 )
 
 type Client struct {
@@ -109,7 +111,16 @@ func (c *Client) PostJson(
 	body []byte,
 ) ([]byte, error) {
 	bodyReader := bytes.NewReader(body)
-	return c.PostReader(url, "application/json", headers, nil, bodyReader)
+	return c.PostReader(url, binding.MIMEJSON, headers, nil, bodyReader)
+}
+
+func (c *Client) PostPb(
+	url string,
+	headers map[string]string,
+	body []byte,
+) ([]byte, error) {
+	bodyReader := bytes.NewReader(body)
+	return c.PostReader(url, binding.MIMEPROTOBUF, headers, nil, bodyReader)
 }
 
 func (c *Client) PostJsonWithAuthorize(
@@ -119,7 +130,7 @@ func (c *Client) PostJsonWithAuthorize(
 	body []byte,
 ) ([]byte, error) {
 	bodyReader := bytes.NewReader(body)
-	return c.PostReader(url, "application/json", headers, auth, bodyReader)
+	return c.PostReader(url, binding.MIMEJSON, headers, auth, bodyReader)
 }
 
 func (c *Client) PostReader(
