@@ -80,7 +80,7 @@ func TestSplit(t *testing.T) {
 		sep string
 	}{
 		{
-			s:   "",
+			s:   "1",
 			sep: ",",
 		},
 		{
@@ -88,14 +88,14 @@ func TestSplit(t *testing.T) {
 			sep: ",",
 		},
 		{
-			s:   "a,b,c,",
+			s:   "a,b,c,,,,,",
 			sep: ",",
 		},
 	}
 
 	for _, testCase := range testCases {
 		t.Run(testCase.s, func(t *testing.T) {
-			ss := strings_.Split(testCase.s, testCase.sep)
+			ss := strings_.SplitOmitEmpty(testCase.s, testCase.sep)
 			t.Logf("ss: %v. len(ss): %v", ss, len(ss))
 
 		})
