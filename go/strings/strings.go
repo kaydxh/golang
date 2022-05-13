@@ -121,13 +121,14 @@ func ReplaceAll(s, old string, news []interface{}, useQuote bool) string {
 // and sep are empty, Split returns an empty slice.
 //
 // It is equivalent to SplitN with a count of -1.
-func Split(s, sep string) []string {
+func SplitOmitEmpty(s, sep string) []string {
+	var res []string
 	a := strings.Split(s, sep)
-	if len(a) == 1 {
-		if a[0] == "" {
-			a = a[1:]
+	for _, v := range a {
+		if v != "" {
+			res = append(res, v)
 		}
 	}
 
-	return a
+	return res
 }
