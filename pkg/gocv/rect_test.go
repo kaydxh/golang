@@ -39,10 +39,14 @@ func TestScale(t *testing.T) {
 				Width:  testCase.Width,
 				Height: testCase.Height,
 			}
-			r2 := r.Scale(testCase.factor)
+			r2 := r.Scale(testCase.factor).Intersect(r)
 			t.Logf("r2: %v", r2)
-			r3 := r.Intersect(r2)
-			t.Logf("r3: %v", r3)
+			/*
+				r2 := r.Scale(testCase.factor)
+				t.Logf("r2: %v", r2)
+				r3 := r.Intersect(r2)
+				t.Logf("r3: %v", r3)
+			*/
 		})
 	}
 }
