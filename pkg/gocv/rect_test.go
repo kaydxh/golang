@@ -9,10 +9,10 @@ import (
 
 func TestScale(t *testing.T) {
 	testCases := []struct {
-		X      int
-		Y      int
-		Width  int
-		Height int
+		X      int32
+		Y      int32
+		Width  int32
+		Height int32
 		factor float32
 	}{
 		{

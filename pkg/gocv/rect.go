@@ -1,10 +1,10 @@
 package gocv
 
 type Rect struct {
-	X      int
-	Y      int
-	Width  int
-	Height int
+	X      int32
+	Y      int32
+	Width  int32
+	Height int32
 }
 
 var ZR Rect
@@ -12,10 +12,10 @@ var ZR Rect
 func (r Rect) Scale(factor float32) Rect {
 	ox := r.X + r.Width/2
 	oy := r.Y + r.Height/2
-	r.X = ox + int(float32((r.X-ox))*factor)
-	r.Y = ox + int(float32((r.Y-oy))*factor)
-	r.Width = int(float32(r.Width) * factor)
-	r.Height = int(float32(r.Height) * factor)
+	r.X = ox + int32(float32((r.X-ox))*factor)
+	r.Y = ox + int32(float32((r.Y-oy))*factor)
+	r.Width = int32(float32(r.Width) * factor)
+	r.Height = int32(float32(r.Height) * factor)
 
 	return r
 }
