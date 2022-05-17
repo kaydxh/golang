@@ -47,3 +47,26 @@ func (r Rect) Intersect(s Rect) Rect {
 	}
 	return r
 }
+
+// Union returns the smallest rect that contains both r and s.
+func (r Rect) Union(s Rect) Rect {
+	if r.Empty() {
+		return s
+	}
+	if s.Empty() {
+		return r
+	}
+	if r.X > s.X {
+		r.X = s.X
+	}
+	if r.Y > s.Y {
+		r.Y = s.Y
+	}
+	if r.Width < s.Width {
+		r.Width = s.Width
+	}
+	if r.Height < s.Height {
+		r.Height = s.Height
+	}
+	return r
+}
