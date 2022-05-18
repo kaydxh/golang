@@ -70,3 +70,15 @@ func (r Rect) Union(s Rect) Rect {
 	}
 	return r
 }
+
+// In reports whether every point in r is in s.
+// true means s is larger than r
+func (r Rect) In(s Rect) bool {
+	if r.Empty() {
+		return true
+	}
+	// Note that r.Max is an exclusive bound for r, so that r.In(s)
+	// does not require that r.Max.In(s).
+	return s.X <= r.X && r.Y <= s.Y &&
+		s.Width <= r.Width && r.Height <= s.Height
+}
