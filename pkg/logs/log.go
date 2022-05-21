@@ -70,3 +70,12 @@ func GetLogger(ctx context.Context) *logrus.Entry {
 	logger := logrus.WithField("request_id", trace_.ExtractRequestIDFromContext(ctx))
 	return logger
 }
+
+func GetLoggerOrFallback(ctx context.Context, defaultValue string) *logrus.Entry {
+	requestId := trace_.ExtractRequestIDFromContext(ctx)
+	if requestId == "" {
+		requestId = defaultValue
+	}
+	logger := logrus.WithField("request_id", requestId)
+	return logger
+}
