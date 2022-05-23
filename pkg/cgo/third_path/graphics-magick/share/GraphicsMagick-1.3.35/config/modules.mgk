@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<!--
+  Magick Module Alias Map (modules.mgk)
+
+  Provides a mapping from a magick format identifier string to the
+  name of the loadable module which supports it.  This allows a module
+  to support formats other than its own name.  This file is optional
+  and the software will still function if it is removed.
+
+  Entries are of the form:
+
+  <module magick="MYMAGICK" name="MYMODULE" />
+
+-->
+<modulemap>
+
+</modulemap>

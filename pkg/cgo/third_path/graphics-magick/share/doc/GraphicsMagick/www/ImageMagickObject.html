@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.15.2: http://docutils.sourceforge.net/" />
+<title>ImageMagickObject</title>
+<link rel="stylesheet" href="docutils-articles.css" type="text/css" />
+</head>
+<body>
+
+<div class="banner">
+<img src="images/gm-107x76.png" alt="GraphicMagick logo" width="107" height="76" />
+<span class="title">GraphicsMagick</span>
+<form action="http://www.google.com/search">
+	<input type="hidden" name="domains" value="www.graphicsmagick.org" />
+	<input type="hidden" name="sitesearch" value="www.graphicsmagick.org" />
+    <span class="nowrap"><input type="text" name="q" size="25" maxlength="255" />&nbsp;<input type="submit" name="sa" value="Search" /></span>
+</form>
+</div>
+
+<div class="navmenu">
+<ul>
+<li><a href="index.html">Home</a></li>
+<li><a href="project.html">Project</a></li>
+<li><a href="download.html">Download</a></li>
+<li><a href="README.html">Install</a></li>
+<li><a href="Hg.html">Source</a></li>
+<li><a href="NEWS.html">News</a> </li>
+<li><a href="utilities.html">Utilities</a></li>
+<li><a href="programming.html">Programming</a></li>
+<li><a href="reference.html">Reference</a></li>
+</ul>
+</div>
+<div class="document" id="imagemagickobject">
+<h1 class="title">ImageMagickObject</h1>
+
+<!-- -*- mode: rst -*- -->
+<!-- This text is in reStucturedText format, so it may look a bit odd. -->
+<!-- See http://docutils.sourceforge.net/rst.html for details. -->
+<div class="section" id="overview">
+<h1>Overview</h1>
+<p>The <em>ImageMagickObject</em> is a COM+ compatible component that may be
+invoked from any language capable of using COM objects. The intended use
+is for Windows Scripting Host VBS scripts and Visual Basic, but it can
+also be used from C++, ASP, and other languages like Delphi, Perl and PHP.</p>
+<p>The strategy with the <em>ImageMagickObject</em> COM+ component is not to the
+same as with PerlMagick interface provided with ImageMagick. PerlMagick
+is a low level API based system that defines a whole new way of scripting
+IM operations. The IM COM+ component simply provides access to the
+<a class="reference external" href="convert.html">convert</a>, composite, <a class="reference external" href="mogrify.html">mogrify</a>, <a class="reference external" href="identify.html">identify</a>, and <a class="reference external" href="montage.html">montage</a> tools,
+efficiently executing them as part of your process, rather than as
+external programs. The way you use it is exactly the same. You pass it a
+list of strings including filenames and various options and it does the
+job. In fact, you can take any existing batch scripts that use the
+command line tools and translate them into the equivalent calls to the
+COM+ object in a matter of minutes. Beyond that, there is also a way to
+pass in and retrieve images in memory in the form of standard smart
+arrays (byte arrays). Samples are provided, to show both the simple and
+more elaborate forms of access.</p>
+<p><em>GraphicsMagick</em> provides a statically-built ImageMagick object as part of
+its &quot;utils&quot; <a class="reference external" href="INSTALL-windows.html">Windows installation package</a>. When this package is
+installed, <em>ImageMagickObject</em> and its sample programs are installed to</p>
+<pre class="literal-block">
+c:\Program Files\GraphicsMagick-1.3-Q16\ImageMagickObject
+</pre>
+<p>by default (path shown is for the Q:16 build). <em>ImageMagickObject</em> is
+registered if the checkbox for &quot;Register ImageMagickObject&quot; is checked at
+install time.</p>
+<p>You may execute the sample program from the Windows Command Shell like:</p>
+<pre class="literal-block">
+cscript SimpleTest.vbs
+</pre>
+<p>Since the <em>GraphicsMagick</em> utility command line parsers are incorporated
+within <em>ImageMagickObject</em>, please refer to the command line <a class="reference external" href="utilities.html">utility
+documentation</a> to learn how to use it. The sample VBS scripts show how
+the object should be called and used and have lots of comments.</p>
+<p>For C++ programmers - have a look at the MagickCMD.cpp command line
+utility for an example of how to call the object from C++. This is a bit
+complex because the object requires a variable size list of BSTR's to
+emulate the command line argc, argv style calling conventions of the COM
+component which is more complex in C++ then in VBS or VB.</p>
+</div>
+<div class="section" id="other-goodies">
+<h1>Other goodies...</h1>
+<p>MagickCMD is a C++ sample, but it can also server as a replacement for
+all the other command line utilities in most applications. Instead of
+using &quot;<tt class="docutils literal">convert xxxx yyyy</tt>&quot; you can use &quot;<tt class="docutils literal">MagickCMD convert xxxx
+yyyy</tt>&quot; instead. MagickCMD calls the COM object to get the job done. This
+small tight combination replaces the entire usual binary distribution in
+just a few megabytes.</p>
+</div>
+<div class="section" id="building-imagemagickobject-from-source">
+<h1>Building ImageMagickObject From Source</h1>
+<p>The source code for <em>ImageMagickObject</em> is available from <em>GraphicsMagick</em>
+CVS, or as part of the <em>GraphicsMagick</em> Windows source package. Once the
+source code has been retrieved and extracted, the source for
+<em>ImageMagickObject</em> may be found hidden in the directory
+&quot;<tt class="docutils literal">GraphicsMagick\contrib\win32\ATL7ImageMagickObject</tt>&quot;, however,
+<em>GraphicsMagick</em> itself must be built using the &quot;static-multithread&quot;
+(VisualStaticMT) build configuration. Building <em>ImageMagickObject</em>
+requires Microsoft Visual C++ 7.0 as delivered with Microsoft's Visual
+Studio .net package. See the Windows compilation instructions in order to
+get <em>GraphicsMagick</em> itself built before building <em>ImageMagickObject</em>.</p>
+<p>Once the VisualStaticMT project has been built, <em>ImageMagickObject</em> may
+be built by following the procedure:</p>
+<pre class="literal-block">
+cd  GraphicsMagick\contrib\win32\ATL7ImageMagickObject
+BuildImageMagickObject release
+</pre>
+<p>This procedure assumes that the VisualStaticMT project has been built
+using the &quot;release&quot; setting for an optimized build. If the &quot;debug&quot;
+setting was used for a debug build, then specify the argument &quot;debug&quot;
+instead.</p>
+<p>To register the DLL as a COM+ server use</p>
+<pre class="literal-block">
+regsvr32 /c /s ImageMagickObject.dll
+</pre>
+<p>To unregister the DLL use</p>
+<pre class="literal-block">
+regsvr32 /u /s ImageMagickObject.dll
+</pre>
+<p>The MagickCMD sample program operates similarly to the gm.exe program,
+and is a great way to exercise <em>ImageMagickObject</em> to verify that it is
+working.</p>
+<p>Sometime in the future, MagickCMD may assume the place of gm.exe in the
+&quot;utils&quot; distribution in order to decrease the overall package size.</p>
+<hr class="docutils" />
+<p>Copyright © GraphicsMagick Group 2002 - 2020</p>
+</div>
+</div>
+</body>
+</html>

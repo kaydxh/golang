@@ -1,0 +1,324 @@
+2020-02-23  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* version.sh: Updates in preparation for the 1.3.35 release.
+	Merge changes for 1.3.35 into GraphicsMagick-1_3 branch.
+
+	* www/INSTALL-windows.rst: Update Windows installation and build
+	documentation.
+
+2020-02-22  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* NEWS.txt: Update with News since previous release.
+
+	* magick/magick.c (InitializeMagickSignalHandlers): This private
+	implementation function is now a static function as it should have
+	been.
+	(InitializeMagickEx): New function which may be used in place of
+	InitializeMagick() to initialize GraphicsMagick.  This
+	initialization function returns an error status value, may update
+	a passed ExceptionInfo structure with error information, and
+	provides an options parameter which supports simple bit-flags to
+	tailor initialization.  The signal handler registrations are
+	skipped if the MAGICK_OPT_NO_SIGNAL_HANDER flag is set in the
+	options.
+
+2020-02-19  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* magick/magick.c (MagickToMime): Add a MIME translation for
+	"jpg".  Issue reported by Pro Turm.
+
+2020-02-18  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* www/INSTALL-windows.rst: Add quoting to avoid losing backslashes
+	in Windows paths.
+
+2020-02-16  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* magick/common.h: Add missing unsupported handling for some
+	recently added GCC/Clang attributes.
+
+	* magick/: Move all remaining private implementation code in
+	public headers which is guarded by MAGICK_IMPLEMENTATION into
+	private headers, which are never installed.
+
+2020-02-15  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* coders/tiff.c (WriteTIFFImage): Evidence suggests that large
+	strip sizes improve performance by reducing the number of I/Os.
+	The defaults suggested by libtiff are way to small for today's
+	images and computers.  Default TIFF strip sizes so that each
+	uncompressed strip consumes up to 1MiB of memory, or 4MiB for FAX
+	oriented codecs, or based on LZMA compression level when using
+	LZMA compression.  The default size may be adjusted via the
+	TIFF_BYTES_PER_STRIP preprocessor definition.
+
+2020-02-09  Fojtik Jaroslav  <JaFojtik@seznam.cz>
+
+	* coders/wpg.c ZeroFillMissing data will never been triggered when
+	y>=image->rows.
+
+2020-02-09  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* magick/render.c (DrawImage): Limit pattern dimensions by
+	LONG_MAX rather than ULONG_MAX since this seems more likely to
+	avoid arithmetic overflows later on.
+
+2020-02-09  Fojtik Jaroslav  <JaFojtik@seznam.cz>
+
+	* coders/wpg.c Check for exception in image.
+
+2020-02-09  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* magick/command.c (VersionCommand): Add Google perftools tcmalloc
+	to the available feature support.
+
+	* www/INSTALL-unix.rst: Include some information about building
+	with MSYS2.
+
+	* coders/png.c (ReadOnePNGImage): Eliminate compilation warnings
+	about signed/unsigned comparisons.
+
+	* magick/image.c: Remove private global string constants, and one
+	private global unsigned long constant, from the library ABI.
+	Since the global constants were declared via a private header and
+	only used within the GraphicsMagick build, removing these does not
+	impact the public ABI.  The globals removed are BackgroundColor,
+	BorderColor, DefaultTileFrame, DefaultTileGeometry,
+	DefaultTileLabel, ForegroundColor, HighlightColor, MatteColor,
+	PSDensityGeometry, PSPageGeometry, and DefaultCompressionQuality.
+
+2020-02-08  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* magick/render.c (DrawImage): Apply draconian pattern
+	specification offset and dimension validations.  Hopefully there
+	is no impact to usability.  If so please report it as a bug.
+	Fixes oss-fuzz 20586 "graphicsmagick:coder_MVG_fuzzer:
+	Integer-overflow in DrawPolygonPrimitive".
+
+	* coders/svg.c (ReadSVGImage): Fix dereference of NULL pointer
+	when stopping image timer.
+
+2020-02-06  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* coders/pict.c (DecodeImage): Allocate extra scanline memory to
+	allow small RLE overrun.  Fixes oss-fuzz 20271
+	"graphicsmagick:coder_PICT_fuzzer: Heap-buffer-overflow in
+	ExpandBuffer" and 20272 "graphicsmagick:coder_PICT_fuzzer:
+	Heap-buffer-overflow in DecodeImage".
+
+	* PerlMagick/t/wmf/read.t: Update WMF reference images.  Relax
+	test requirements for ski.wmf.
+
+	* locale/C.mgk: Correct error message associated with
+	"UnsupportedNumberOfRows".  Patch was submitted by Thorsten
+	Alteholz via private email on 2020-02-05.
+
+2020-02-04  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* coders/topol.c: Include magick/magick_endian.h.
+
+2020-02-03  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* magick, coders, wand: Added copious casts to avoid possible
+	integer overflows in the Microsoft Windows 64-bit build, where
+	sizeof(long) < sizeof(size_t).
+
+2020-01-26  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* magick/render.h ("PrimitiveInfo"): Change PrimitiveInfo
+	coordinates from type 'unsigned long' to 'size_t'.
+
+2020-01-24  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* magick/gradient.c (GradientImage): Warnings reduction, plus note
+	about incorrect diagonal gradients math.
+
+2020-01-20  Fojtik Jaroslav  <JaFojtik@seznam.cz>
+
+	* VisualMagick\configure\configure.cpp Option /arch:SSE2 is
+	available only for 32 bit build.
+
+2020-01-19  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* coders/pcd.c (DecodeImage): Assure that pcd_length gets
+	initialized with something.
+
+	* Magick++/lib/Options.cpp (strokeDashArray): Add needless check
+	for _drawInfo->dash_pattern null in order to make static analysis
+	happy.
+
+	* magick/render.c (DestroyPolygonInfo): Make sure to not
+	dereference a null edges pointer.
+
+	* coders/pdb.c (WritePDBImage): Make sure that null comment value
+	is not dereferenced.
+
+	* coders/vid.c (ReadVIDImage): Make sure that
+	ThrowVIDReaderException does not dereference a null pointer.
+
+	* magick/quantize.c (ClassifyImageColors): Fix error handling so a
+	null pointer won't be consumed after a memory allocation failure.
+	Changed the location of some variable declarations and added some
+	comments.
+
+2020-01-18  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* coders/caption.c (ReadCAPTIONImage): Assure that metrics are
+	initialized.
+
+	* magick/pixel_cache.c (DestroyThreadViewSet): Check if views
+	pointer is not null before destroying views.
+
+	* coders/xpm.c (ReadXPMImage): Properly detect the case where the
+	XPM colormap is not fully initialized.
+
+	* coders/pict.c (DecodeImage): Fix heap buffer over-reads. Fixes
+	oss-fuzz issue 20053 "graphicsmagick:coder_PICT_fuzzer:
+	Heap-buffer-overflow in ExpandBuffer" and oss-fuzz issue 20048
+	"graphicsmagick:coder_PICT_fuzzer: Heap-buffer-overflow in
+	DecodeImage".  Both of these oss-fuzz issues appeared due to
+	recent changes since the last release.
+
+	* coders/meta.c (WriteMETAImage): Assure that 'iptc_offset' is
+	initialized and valid.
+
+	* coders/jpeg.c (ReadJPEGImage): Assure that evaluating the
+	embedded profile length does not suffer from undefined behavior.
+
+2020-01-12  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* magick/render.c (DrawImage): Add more MVG parser validations.
+
+2020-01-11  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* coders/histogram.c (WriteHISTOGRAMImage): Histogram coder was
+	relying on the previously removed '@' file inclusion feature to
+	insert the histogram comment text.  Write a PseudoClass MIFF image
+	with RLE compression.  Fixes SourceForge issue #622 "Histogram
+	produces incorrect color table attribute ".
+
+	* magick/pixel_cache.c (ModifyCache): Re-open the pixel cache if
+	the cache rows/columns do not match the owning image rows/columns.
+
+	* magick/transform.c (TransformImage): TransformImage now returns
+	a MagickPassFail return status value rather than void.
+
+	* coders/pict.c (ReadPICTImage): Fix some over-strict validations
+	which were preventing some PICT files which were previously read
+	successfully from being accepted. Fix problems which occurred when
+	the clipping rectangle changed the image size. Improve reading
+	embedded JPEG blobs.  Now successfully reads all raster PICT files
+	I have available.
+
+2020-01-08  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* coders/pict.c (ReadPICTImage): Be more strict about PICT
+	rectangle by treating rectangle dimensions as if they are a 16-bit
+	signed type and not allowing negative values.  Avoid GCC warnings
+	which sprung up similar to "warning: comparison is always false
+	due to limited range of data type".
+
+2020-01-05  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* coders/sfw.c (ReadSFWImage): Restore a DestroyImage() statement
+	which was accidentally deleted by recent edits.  Fixes oss-fuzz
+	"Issue 19819 in oss-fuzz: graphicsmagick:coder_SFW_fuzzer:
+	Indirect-leak in AllocateImage".
+
+	* coders/png.c (WriteOneJNGImage): Detect when JPEG encoder has
+	failed, and throw exception.  Fix image dimension limit
+	validations.  Stop discarding exception report.  Fixes SourceForge
+	bug #621 "Assertion in WriteBlob at magick/blob.c:4937" which was
+	reported by Suhwan Song.
+
+	* coders/pict.c (WritePICTImage): Eliminating small buffer overrun
+	when run-length encoding pixels.  Fixes SourceForge bug #620
+	"heap-buffer-overflow in EncodeImage at coders/pict.c:1114" which
+	was reported by Suhwan Song.
+
+	* coders/logo.c (ReadLOGOImage): PATTERN error handling was
+	incomplete.  Add appropriate error handling.
+	(ReadLOGOImage): Switch to using ConstituteTextureImage() rather
+	than TextureImage() since it is more appropriate for this purpose.
+	(ReadLOGOImage): Oops!  Accidental change of behavior. When size
+	is not supplied, simply return the pattern image.
+
+2020-01-04  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* coders/*.c (ReadFOOImage): Stop image timer just before
+	returning from reader so that reported timings are correct when
+	used in the future.
+
+2020-01-03  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* magick/timer.c (StartTimer): Expose previously existing
+	StartTimer() function.
+	(StopTimer): Expose previously existing StartTimer() function.
+
+	* magick/constitute.c (WriteImage): Don't over-write time-stamp
+	when output is to INFO format.
+
+2020-01-03  Fojtik Jaroslav  <JaFojtik@seznam.cz>
+
+	* VisualMagick\configure\configure.exe: Should not depend on mfcr90.dll.
+	It is too bad when end user cannot run this tool because of missing DLL.
+
+	* VisualMagick\configure\configure.cpp Make speed optimisation as default
+	option.
+
+	* VisualMagick\configure\configure.vcproj Give different filename to debug
+	build to avoid accidental committing debug build to repository.
+
+2020-01-01  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* coders/dpx.c (GenerateDPXTimeStamp): Use reentrant localtime_r()
+	function if it is available.
+
+	* magick/log.c (LogMagickEventList): Use reentrant
+	localtime_r() function if it is available.
+
+	* coders/cineon.c (GenerateCineonTimeStamp): Use reentrant
+	localtime_r() function if it is available.
+
+	* coders/mat.c (WriteMATLABImage): Use reentrant localtime_r()
+	function if it is available.
+
+	* coders/pdf.c (WritePDFImage): Use reentrant localtime_r()
+	function if it is available.
+
+	* coders/ps.c (WritePSImage): Use reentrant ctime_r() function
+	if it is available.
+
+	* coders/ps2.c (WritePS2Image): Use reentrant ctime_r() function
+	if it is available.
+
+	* coders/ps3.c (WritePS3Image): Use reentrant ctime_r() function
+	if it is available.
+
+	* configure.ac: Test for getpwnam_r().
+
+	* magick/utility.c (ExpandFilename): Use reentrant getpwnam_r()
+	function if it is available.
+
+	* magick/magick.c (InitializeMagickSignalHandlers): Use the normal
+	termination signal handler for SIGXCPU and SIGXFSZ so that ulimit
+	or setrlimit(2) may be used to apply CPU (RLIMIT_CPU) and output
+	file size (RLIMIT_FSIZE) limits with the normal cleanup, and
+	without dumping core.  Note that any output files currently being
+	written may be truncated and files being written by external
+	programs (e.g. Ghostscript) might be left behind unless they are
+	to a temporary file assigned by GraphicsMagick.
+
+	* coders/xpm.c (ReadXPMImage): Promote a color-lookup
+	warning to an error.
+
+	* coders/xc.c (ReadXCImage): Promote a color-lookup
+	warning to an error.
+
+	* coders/null.c (ReadNULLImage): Promote a color-lookup
+	warning to an error.
+
+	* Makefile.am: Rotate ChangeLogs for the new year.
+
+	* coders/gradient.c (ReadGRADIENTImage): Promote a color-lookup
+	warning to an error.

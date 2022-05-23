@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.15.2: http://docutils.sourceforge.net/" />
+<title>OpenMP in GraphicsMagick</title>
+<link rel="stylesheet" href="docutils-articles.css" type="text/css" />
+</head>
+<body>
+
+<div class="banner">
+<img src="images/gm-107x76.png" alt="GraphicMagick logo" width="107" height="76" />
+<span class="title">GraphicsMagick</span>
+<form action="http://www.google.com/search">
+	<input type="hidden" name="domains" value="www.graphicsmagick.org" />
+	<input type="hidden" name="sitesearch" value="www.graphicsmagick.org" />
+    <span class="nowrap"><input type="text" name="q" size="25" maxlength="255" />&nbsp;<input type="submit" name="sa" value="Search" /></span>
+</form>
+</div>
+
+<div class="navmenu">
+<ul>
+<li><a href="index.html">Home</a></li>
+<li><a href="project.html">Project</a></li>
+<li><a href="download.html">Download</a></li>
+<li><a href="README.html">Install</a></li>
+<li><a href="Hg.html">Source</a></li>
+<li><a href="NEWS.html">News</a> </li>
+<li><a href="utilities.html">Utilities</a></li>
+<li><a href="programming.html">Programming</a></li>
+<li><a href="reference.html">Reference</a></li>
+</ul>
+</div>
+<div class="document" id="openmp-in-graphicsmagick">
+<h1 class="title">OpenMP in GraphicsMagick</h1>
+
+<!-- -*- mode: rst -*- -->
+<!-- This text is in reStucturedText format, so it may look a bit odd. -->
+<!-- See http://docutils.sourceforge.net/rst.html for details. -->
+<div class="contents local topic" id="contents">
+<ul class="simple">
+<li><a class="reference internal" href="#overview" id="id1">Overview</a></li>
+<li><a class="reference internal" href="#limitations" id="id2">Limitations</a></li>
+<li><a class="reference internal" href="#openmp-variables" id="id3">OpenMP Variables</a></li>
+</ul>
+</div>
+<div class="section" id="overview">
+<h1><a class="toc-backref" href="#id1">Overview</a></h1>
+<p>GraphicsMagick has been transformed to use <a class="reference external" href="http://openmp.org/">OpenMP</a> for the 1.3 release
+series. OpenMP is a portable framework for accelerating CPU-bound and
+memory-bound operations using multiple threads. OpenMP originates in
+the super-computing world and has been available in one form or
+another since the late '90s.</p>
+<p>Since GCC 4.2 has introduced excellent OpenMP support via <a class="reference external" href="http://gcc.gnu.org/onlinedocs/libgomp/">GOMP</a>,
+OpenMP has become available to the masses.  Recently, <a class="reference external" href="https://clang.llvm.org/">Clang</a> has
+also implemented good OpenMP support. Microsoft Visual Studio
+Professional 2005 and later support OpenMP so Windows users can
+benefit as well. Any multi-CPU and/or multi-core system is potentially
+a good candidate for use with OpenMP.  Modern multi-core chipsets from
+AMD, Intel, IBM, Oracle, and ARM perform very well with OpenMP.</p>
+<p>Most image processing routines are comprised of loops which iterate
+through the image pixels, image rows, or image regions. These loops
+are accelerated using OpenMP by executing portions of the total loops
+in different threads, and therefore on a different processor
+core. CPU-bound algorithms benefit most from OpenMP, but memory-bound
+algorithms may also benefit as well since the memory is accessed by
+different CPU cores, and sometimes the CPUs have their own path to
+memory. For example, the AMD Opteron is a <a class="reference external" href="https://en.wikipedia.org/wiki/Non-uniform_memory_access">NUMA</a> (Non-Uniform Memory
+Architecture) design such that multi-CPU systems split the system
+memory across CPUs so each CPU adds more memory bandwidth as well.
+Server-class CPUs offer more independent memory channels than desktop
+CPUs do.</p>
+<p>For severely CPU-bound algorithms, it is not uncommon to see a linear
+speed-up (within the constraints of <a class="reference external" href="https://en.wikipedia.org/wiki/Amdahl%27s_law">Amdahl's law</a>) due to the number
+of cores. For example, a two core system executes the algorithm twice
+as fast, and a four core system executes the algorithm four times as
+fast. Memory-bound algorithms scale based on the memory bandwith
+available to the cores. For example, memory-bound algorithms scale up
+to almost 1.5X on my four core Opteron system due to its <a class="reference external" href="https://en.wikipedia.org/wiki/Non-uniform_memory_access">NUMA</a>
+architecture. Some systems/CPUs are able to immediately context switch
+to another thread if the core would be blocked waiting for memory,
+allowing multiple memory accesses to be pending at once, and thereby
+improving throughput.  For example, typical speedup of 20-32X (average
+24X) has been observed on the Sun SPARC T2 CPU, which provides 8
+cores, with 8 virtual CPUs per core (64 threads).</p>
+<p>An approach used in GraphicsMagick is to recognize the various access
+patterns in the existing code, and re-write the algorithms (sometimes
+from scratch) to be based on a framework that we call &quot;pixel iterators&quot;.
+With this approach, the computation is restricted to a small unit (a
+callback function) with very well defined properties, and no knowledge as
+to how it is executed or where the data comes from. This approach removes
+the loops from the code and puts the loops in the framework, which may be
+adjusted based on experience. The continuing strategy will be to
+recognize design patterns and build frameworks which support those
+patterns. Sometimes algorithms are special/exotic enough that it is much
+easier to instrument the code for OpenMP rather than to attempt to fit
+the algorithm into a framework.</p>
+<p>Since OpenMP is based on multi-threading, multiple threads access the
+underlying pixel storage at once. The interface to this underlying
+storage is called the &quot;pixel cache&quot;. The original pixel cache code
+(derived from ImageMagick) was thread safe only to the extent that it
+allowed one thread per image. This code has now been re-written so that
+multiple threads may safely and efficiently work on the pixels in one
+image. The re-write also makes the pixel cache thread safe if a
+multi-threaded application uses an OpenMP-fortified library.</p>
+<p>GraphicsMagick provides its own built-in 'benchmark' driver utility
+which may be used to execute a multi-threaded benchmark of any other
+utility command.</p>
+<p>Using the built-in 'benchmark' driver utility, the following is an
+example of per-core speed-up due to OpenMP on a four-core AMD Opteron
+system (with Firefox and other desktop software still running).  The
+image is generated dynamically based on the 'granite' pattern and all
+the pixel quantum values have 30% gaussian noise added:</p>
+<pre class="literal-block">
+% gm benchmark -stepthreads 1 -duration 10 convert \
+  -size 2048x1080 pattern:granite -operator all Noise-Gaussian 30% null:
+Results: 1 threads 5 iter 11.34s user 11.340000s total 0.441 iter/s 0.441 iter/cpu 1.00 speedup 1.000 karp-flatt
+Results: 2 threads 9 iter 20.34s user 10.190000s total 0.883 iter/s 0.442 iter/cpu 2.00 speedup 0.000 karp-flatt
+Results: 3 threads 14 iter 31.72s user 10.600000s total 1.321 iter/s 0.441 iter/cpu 3.00 speedup 0.001 karp-flatt
+Results: 4 threads 18 iter 40.84s user 10.460000s total 1.721 iter/s 0.441 iter/cpu 3.90 speedup 0.008 karp-flatt
+</pre>
+<p>Note that the &quot;iter/s cpu&quot; value is a measure of the number of
+iterations given the amount of reported CPU time consumed. It is an
+effective measure of relative efficacy since its value should ideally
+not drop as iterations are added.  The <a class="reference external" href="https://en.wikipedia.org/wiki/Karp%E2%80%93Flatt_metric">karp-flatt metric</a> is another
+useful metric for evaluating thread-speedup efficiency. In the above
+example, the total speedup was about 3.9X with only a slight loss of
+CPU efficiency as threads are added.</p>
+</div>
+<div class="section" id="limitations">
+<h1><a class="toc-backref" href="#id2">Limitations</a></h1>
+<p>Often it is noticed that the memory allocation functions (e.g. from
+the standard C library such as GNU libc) significantly hinder
+performance since they are designed or optimized for single-threaded
+programs, or prioritize returning memory to the system over speed.
+Memory allocators are usually designed and optimized for programs
+which perform thousands of small allocations, and if they make a large
+memory allocation, they retain that memory for a long time.
+GraphicsMagick performs large memory allocations for raster image
+storage interspersed with a limited number of smaller allocations for
+supportive data structures.  This memory is released very quickly
+since GraphicsMagick is highly optimized and thus the time between
+allocation and deallocation can be very short.  It has been observed
+that some memory allocators are much slower to allocate and deallocate
+large amounts of memory (e.g. a hundred megabytes) than alternative
+allocators, even in single-threaded programs.  Under these conditions,
+the program can spend considerable time mysteriously &quot;sleeping&quot;.</p>
+<p>In order to help surmount problems with the default memory allocators,
+the configure script offers support for use of Google <a class="reference external" href="https://github.com/gperftools/gperftools">gperftools</a> <a class="reference external" href="https://github.com/gperftools/gperftools/wiki">'tcmalloc'</a>, Solaris mtmalloc,
+and Solaris umem libraries via the --with-tcmalloc, --with-mtmalloc,
+and --with-umem options, respectively.  When the allocation functions
+are behaving badly, the memory allocation/deallocation performance
+does not scale as threads are added and thus additional threads spend
+more time sleeping (e.g. on a lock, or in munmap()) rather than doing
+more work.  Performance improvements of a factor of two are not
+uncommon even before contending with the hugh CPU core/thread counts
+available on modern CPUs.  Using more threads which are slowed by
+poorly-matched memory allocation functions is wasteful of memory,
+system resources, human patience, and electrical power.</p>
+<p>Many modern CPUs support &quot;Turbo&quot; modes where the CPU clock rate is
+boosted if only a few cores are active.  When a CPU provides a &quot;Turbo&quot;
+mode, this decreases the apparent speed-up compared to using one
+thread because the one thread was executed at a much higher clock
+rate.  Likewise, when a CPU becomes very hot (due to being heavily
+used), it may decrease its clock rates overall to avoid burning up,
+and this may also decreases the actual speed-up when using many
+threads compared to using one thread.  Many CPUs support
+&quot;hyperthreads&quot; or other mechanisms in which one physical core will
+support multiple light-weight threads, and if the core is efficiently
+used by one thread, then this will decrease the apparent per-thread
+speed-up but the peak speed-up will hopefully still be bounded by the
+number of physical cores.</p>
+<p>In most cases, OpenMP does not speed-up loading an image from a file,
+or writing an image to a file.  It is common for file decode and
+encode to take longer than processing the image.  Using uncompressed
+formats is recommended with a fast I/O subsystem (or in-memory 'blobs'
+in order to obtain the greated speed-up from OpenMP.</p>
+<p>It has been observed that sometimes it takes much longer to start and
+stop GraphicsMagick than it takes for it to run the requested
+algorithm.  The slowness is due to inefficiencies of the libraries
+that GraphicsMagick is linked with (especially the ICU library that
+libxml2 is often linked with).  If GraphicsMagick takes too long to
+perform trivial operations, then consider using the 'modules' build,
+and investigate the 'batch' utility which allows running many
+GraphicsMagick commands as a 'batch' script.  If a 'modules' build is
+not feasible, then configuring GraphicsMagick to only support the
+specific formats actually needed can help with its execution time and
+improve opportunity for OpenMP speed-up.</p>
+</div>
+<div class="section" id="openmp-variables">
+<h1><a class="toc-backref" href="#id3">OpenMP Variables</a></h1>
+<p>According to the OpenMP specification, the OMP_NUM_THREADS evironment
+variable may be used to specify the number of threads available to the
+application. Typically this is set to the number of processor cores on
+the system but may be set lower to limit resource consumption or (in
+some cases) to improve execution efficiency.  The GraphicsMagick
+commands also accept a <tt class="docutils literal"><span class="pre">-limit</span> threads limit</tt> type option for
+specifying the maximum number of threads to use.</p>
+<hr class="docutils" />
+<div class="line-block">
+<div class="line">Copyright (C) 2008 - 2020 GraphicsMagick Group</div>
+</div>
+<p>This program is covered by multiple licenses, which are described in
+Copyright.txt. You should have received a copy of Copyright.txt with this
+package; otherwise see <a class="reference external" href="http://www.graphicsmagick.org/Copyright.html">http://www.graphicsmagick.org/Copyright.html</a>.</p>
+</div>
+</div>
+</body>
+</html>

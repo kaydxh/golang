@@ -1,0 +1,71 @@
+.ad l
+.nh
+.TH GraphicsMagick-Config 1 "4 December 2002" "GraphicsMagick"
+.SH NAME
+GraphicsMagick-config \- get information about the installed version of GraphicsMagick
+.SH SYNOPSIS
+.B GraphicsMagick-config 
+.B [--cflags]
+.B [--cppflags]
+.B [--exec-prefix]
+.B [--ldflags]
+.B [--libs]
+.B [--prefix]
+.B [--version]
+.SH DESCRIPTION
+.B GraphicsMagick-config
+prints the compiler and linker flags required to compile and link programs
+that use the
+.BR GraphicsMagick
+Application Programmer Interface.
+.SH EXAMPLES
+To print the version of the installed distribution of
+.BR GraphicsMagick ,
+use:
+
+.nf
+  GraphicsMagick-config --version
+.fi
+  
+To compile a program that calls the 
+.BR GraphicsMagick
+Application Programmer Interface, use:
+
+.nf
+  cc `GraphicsMagick-config --cflags --cppflags --ldflags --libs` program.c
+.fi
+
+.SH OPTIONS
+.TP
+.B --cflags
+Print the compiler flags that were used to compile 
+.BR libMagick .
+.TP
+.B --cppflags
+Print the preprocessor flags that are needed to find the
+.B GraphicsMagick
+C include files and defines to ensure that the GraphicsMagick data structures match between
+your program and the installed libraries.
+.TP
+.B --exec-prefix
+Print the directory under which target specific binaries and executables are installed.
+.TP
+.B --ldflags
+Print the linker flags that are needed to link with the
+.B GraphicsMagick
+library.
+.TP
+.B --libs
+Print the linker flags that are needed to link a program with
+.BR libGraphicsMagick .
+.TP
+.B --version
+Print the version of the
+.B GraphicsMagick
+distribution to standard output.
+.SH COPYRIGHT
+Copyright (C) 2002 GraphicsMagick Group
+
+Copyright (C) 2002 ImageMagick Studio
+.SH AUTHORS
+Bob Friesenhahn

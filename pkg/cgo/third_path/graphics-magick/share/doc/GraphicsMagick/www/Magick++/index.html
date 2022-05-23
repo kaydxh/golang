@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.15.2: http://docutils.sourceforge.net/" />
+<title>Magick++ API for GraphicsMagick</title>
+<link rel="stylesheet" href="../docutils-articles.css" type="text/css" />
+</head>
+<body>
+
+<div class="banner">
+<img src="../images/gm-107x76.png" alt="GraphicMagick logo" width="107" height="76" />
+<span class="title">GraphicsMagick</span>
+<form action="http://www.google.com/search">
+	<input type="hidden" name="domains" value="www.graphicsmagick.org" />
+	<input type="hidden" name="sitesearch" value="www.graphicsmagick.org" />
+    <span class="nowrap"><input type="text" name="q" size="25" maxlength="255" />&nbsp;<input type="submit" name="sa" value="Search" /></span>
+</form>
+</div>
+
+<div class="navmenu">
+<ul>
+<li><a href="../index.html">Home</a></li>
+<li><a href="../project.html">Project</a></li>
+<li><a href="../download.html">Download</a></li>
+<li><a href="../README.html">Install</a></li>
+<li><a href="../Hg.html">Source</a></li>
+<li><a href="../NEWS.html">News</a> </li>
+<li><a href="../utilities.html">Utilities</a></li>
+<li><a href="../programming.html">Programming</a></li>
+<li><a href="../reference.html">Reference</a></li>
+</ul>
+</div>
+<div class="document" id="magick-api-for-graphicsmagick">
+<h1 class="title">Magick++ API for GraphicsMagick</h1>
+
+<!-- -*- mode: rst -*- -->
+<!-- This text is in reStucturedText format, so it may look a bit odd. -->
+<!-- See http://docutils.sourceforge.net/rst.html for details. -->
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#introduction" id="id1">Introduction</a></li>
+<li><a class="reference internal" href="#api" id="id2">API</a></li>
+<li><a class="reference internal" href="#obtaining-magick" id="id3">Obtaining Magick++</a></li>
+<li><a class="reference internal" href="#installation" id="id4">Installation</a></li>
+<li><a class="reference internal" href="#usage" id="id5">Usage</a></li>
+<li><a class="reference internal" href="#reporting-bugs" id="id6">Reporting Bugs</a></li>
+</ul>
+</div>
+<div class="section" id="introduction">
+<h1><a class="toc-backref" href="#id1">Introduction</a></h1>
+<p><em>Magick++</em> is the object-oriented C++ API to the <a class="reference external" href="../index.html">GraphicsMagick</a>
+image-processing library, the most comprehensive open-source image
+processing package available. Read the <a class="reference external" href="ChangeLog.html">ChangeLog</a> for <em>Magick++</em>.</p>
+<p><em>Magick++</em> supports an object model which is inspired by <a class="reference external" href="../perl.html">PerlMagick</a>.
+Images support implicit reference counting so that copy constructors and
+assignment incur almost no cost. The cost of actually copying an image
+(if necessary) is done just before modification and this copy is managed
+automatically by <em>Magick++</em>. De-referenced copies are automatically
+deleted. The image objects support value (rather than pointer) semantics
+so it is trivial to support multiple generations of an image in memory at
+one time.</p>
+<p><em>Magick++</em> provides integrated support for the <a class="reference external" href="http://www.sgi.com/tech/stl/">Standard Template
+Library</a> (<cite>STL</cite>) which is part of the standard C++ language so that
+the powerful containers available (e.g. <a class="reference external" href="http://www.sgi.com/tech/stl/Deque.html">deque</a>, <a class="reference external" href="http://www.sgi.com/tech/stl/Vector.html">vector</a>, <a class="reference external" href="http://www.sgi.com/tech/stl/List.html">list</a>, and
+<a class="reference external" href="http://www.sgi.com/tech/stl/Map.html">map</a>) can be used to write programs similar to those possible with
+PERL &amp; <a class="reference external" href="../perl.html">PerlMagick</a>. STL-compatible template versions of
+GraphicsMagick's list-style operations are provided so that operations
+may be performed on multiple images stored in STL containers.</p>
+</div>
+<div class="section" id="api">
+<h1><a class="toc-backref" href="#id2">API</a></h1>
+<p><em>Magick++</em> provides a simple C++ API to the GraphicsMagick image
+processing library which supports reading and writing a huge number of
+image formats as well as supporting a broad spectrum of traditional image
+processing operations. The GraphicsMagick C API is complex and the data
+structures are not well documented. <em>Magick++</em> provides access to most of
+the features available from the C API but in a simple object-oriented and
+well-documented framework.</p>
+<p><em>Magick++</em> is intended to support commercial-grade application
+development. In order to avoid possible conflicts with the user's
+application, all symbols contained in <em>Magick++</em> (included by the header
+&lt;Magick++.h&gt;) are scoped to the namespace Magick. Symbols from the
+GraphicsMagick C library are imported under the MagickLib namespace to
+avoid possible conflicts and GraphicsMagick macros are only included
+within the <em>Magick++</em> implementation so they won't impact the user's
+application.</p>
+<p>The InitializeMagick() function <em>MUST</em> be invoked before constructing
+any Magick++ objects.  This used to be optional, but now it is
+absolutely required.  This function initalizes semaphores and
+configuration information necessary for the software to work
+correctly.  Failing to invoke InitializeMagick() is likely to lead to
+a program crash or thrown assertion.  If the program resides in the
+same directory as the GraphicsMagick files, then argv[0] may be passed
+as an argument so that GraphicsMagick knows where its files reside,
+otherwise NULL may be passed and GraphicsMagick will try to use other
+means (if necessary).</p>
+<p>The core class in <em>Magick++</em> is the <a class="reference external" href="Image.html">Image</a> class. The <a class="reference external" href="Image.html">Image</a> class
+provides methods to manipulate a single image frame (e.g. a JPEG image).
+Standard Template Library (<a class="reference external" href="STL.html">STL</a>) compatible algorithms and function
+objects are provided in order to manipulate multiple image frames or to
+read and write file formats which support multiple image frames (e.g. GIF
+animations, MPEG animations, and Postscript files).</p>
+<p>The <a class="reference external" href="Image.html">Image</a> class supports reference-counted memory management which
+supports the semantics of an intrinsic variable type (e.g. 'int') with an
+extremely efficient operator = and copy constructor (only a pointer is
+assigned) while ensuring that the image data is replicated as required so
+that it the image may be modified without impacting earlier generations.
+Since the <a class="reference external" href="Image.html">Image</a> class manages heap memory internally, images are best
+allocated via C++ automatic (stack-based) memory allocation. This support
+allows most programs using <em>Magick++</em> to be written without using any
+pointers, simplifying the implementation and avoiding the risks of using
+pointers. When a program uses automatic memory allocation to allocate
+<em>Magick++</em> images, that aspect of the program becomes naturally
+exception-safe and thread-safe.</p>
+<p>The image class uses a number of supportive classes in order to specify
+arguments. Colors are specified via the <a class="reference external" href="Color.html">Color</a> class. Colors specified
+in X11-style string form are implicitly converted to the <a class="reference external" href="Color.html">Color</a> class.
+Geometry arguments (those specifying width, height, and/or x and y
+offset) are specified via the <a class="reference external" href="Geometry.html">Geometry</a> class. Similar to the <a class="reference external" href="Color.html">Color</a>
+class, geometries specified as an X11-style string are implicitly
+converted to the <a class="reference external" href="Geometry.html">Geometry</a> class. Two dimensional drawable objects are
+specified via the <a class="reference external" href="Drawable.html">Drawable</a> class. Drawable objects may be provided as
+a single object or as a list of objects to be rendered using the current
+image options. <a class="reference external" href="Montage.html">Montage</a> options (a montage is a rendered grid of
+thumbnails in one image) are specified via the <a class="reference external" href="Montage.html">Montage</a> class.</p>
+<p>Errors are reported using C++ exceptions derived from the <a class="reference external" href="Exception.html">Exception</a>
+class, which is itself derived from the standard C++ exception class.
+Exceptions are reported synchronous with the operation and are caught by
+the first matching try block as the stack is unraveled. This allows a
+clean coding style in which multiple related <em>Magick++</em> commands may be
+executed with errors handled as a unit rather than line-by-line. Since
+the <a class="reference external" href="Image.html">Image</a> object provides reference-counted memory management,
+unreferenced images on the stack are automatically cleaned up, avoiding
+the potential for memory leaks.</p>
+<p>For ease of access, the documentation for the available user-level
+classes is available via the following table:</p>
+<table border="1" class="docutils">
+<caption><em>Magick++</em> User-Level Classes</caption>
+<colgroup>
+<col width="18%" />
+<col width="82%" />
+</colgroup>
+<tbody valign="top">
+<tr><td><a class="reference external" href="Blob.html">Blob</a></td>
+<td>Binary Large OBject container.</td>
+</tr>
+<tr><td><a class="reference external" href="CoderInfo.html">CoderInfo</a></td>
+<td>Report information about supported image formats (use with
+<a class="reference external" href="STL.html#coderInfoList">coderInfoList</a>())</td>
+</tr>
+<tr><td><a class="reference external" href="Color.html">Color</a></td>
+<td>Color specification.</td>
+</tr>
+<tr><td><a class="reference external" href="Drawable.html">Drawable</a></td>
+<td>Drawable shape (for input to 'draw').</td>
+</tr>
+<tr><td><a class="reference external" href="Exception.html">Exception</a></td>
+<td>C++ exception objects.</td>
+</tr>
+<tr><td><a class="reference external" href="Geometry.html">Geometry</a></td>
+<td>Geometry specification.</td>
+</tr>
+<tr><td><a class="reference external" href="Image.html">Image</a></td>
+<td>Image frame.  This is the primary object in <em>Magick++</em>.</td>
+</tr>
+<tr><td><a class="reference external" href="Montage.html">Montage</a></td>
+<td>Montage options for montageImages().</td>
+</tr>
+<tr><td><a class="reference external" href="Pixels.html">Pixels</a></td>
+<td>Low-level access to image pixels.</td>
+</tr>
+<tr><td><a class="reference external" href="STL.html">STL</a></td>
+<td>STL algorithms and function objects for operating on
+containers of image frames.</td>
+</tr>
+<tr><td><a class="reference external" href="TypeMetric.html">TypeMetric</a></td>
+<td>Container for font type metrics (use with
+<a class="reference external" href="Image.html#fonttypemetrics">Image::fontTypeMetrics</a>).</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="obtaining-magick">
+<h1><a class="toc-backref" href="#id3">Obtaining Magick++</a></h1>
+<p><em>Magick++</em> is included as part of <a class="reference external" href="../index.html">GraphicsMagick</a> source releases and may
+be retrieved via <a class="reference external" href="../download.html">ftp</a> or <a class="reference external" href="../Hg.html">Mercurial</a>.</p>
+</div>
+<div class="section" id="installation">
+<h1><a class="toc-backref" href="#id4">Installation</a></h1>
+<p>Installation is very easy since <em>Magick++</em> is part of <a class="reference external" href="../index.html">GraphicsMagick</a> and
+is built by default. Once <a class="reference external" href="../index.html">GraphicsMagick</a> is built, then <em>Magick++</em> is
+available for use.</p>
+</div>
+<div class="section" id="usage">
+<h1><a class="toc-backref" href="#id5">Usage</a></h1>
+<p>A helper script named <em>GraphicsMagick++-config</em> is installed in the same
+directory as the GraphicsMagick <em>gm</em> program under Unix which assists
+with recalling compilation options required to compile and link programs
+which depend on <em>Magick++</em>. For example, the following command will
+compile and link the source file example.cpp to produce the executable
+example (notice that quotes are backward quotes):</p>
+<pre class="literal-block">
+c++ -o example example.cpp `GraphicsMagick++-config --cppflags --cxxflags
+  --ldflags --libs`
+</pre>
+<p>Windows users may get started by manually editing a project file for one
+of the <em>Magick++</em> demo programs.</p>
+<p>It is necessary to initialize the GraphicsMagick library prior to
+using the <em>Magick++</em> library. This initialization is performed by
+passing the path to the GraphicsMagick DLLs (assumed to be in the same
+directory as your program) to the InitializeMagick() function
+call. This is commonly performed by providing the path to your program
+(argv[0]) as shown in the following example:</p>
+<pre class="literal-block">
+int main( int /*argc*/, char ** argv)
+{
+  InitializeMagick(*argv);
+</pre>
+<p>If you don't have the path to your executable, then pass NULL and
+usually the library will be found anyway. Besides helping to find the
+GraphicsMagick DLL/library and configuration files, InitializeMagick()
+initializes all of the semaphores and data necessary for a
+multi-threaded program to be completely thread safe.  This step used
+to be optional, but it is now absolutely required.  Failure to
+initialize GraphicsMagick will result in an application crash.</p>
+</div>
+<div class="section" id="reporting-bugs">
+<h1><a class="toc-backref" href="#id6">Reporting Bugs</a></h1>
+<p>Please report any bugs via the <a class="reference external" href="http://sourceforge.net/projects/graphicsmagick/">GraphicsMagick Bug Tracker</a>. Questions
+regarding usage should be directed to <a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">Bob Friesenhahn</a>.</p>
+<p>Copyright © Bob Friesenhahn 1999 - 2020</p>
+</div>
+</div>
+</body>
+</html>

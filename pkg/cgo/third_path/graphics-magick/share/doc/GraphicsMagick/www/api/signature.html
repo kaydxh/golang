@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.15.2: http://docutils.sourceforge.net/" />
+<title>signature</title>
+<link rel="stylesheet" href="../docutils-api.css" type="text/css" />
+</head>
+<body>
+
+<div class="banner">
+<img src="../images/gm-107x76.png" alt="GraphicMagick logo" width="107" height="76" />
+<span class="title">GraphicsMagick</span>
+<form action="http://www.google.com/search">
+	<input type="hidden" name="domains" value="www.graphicsmagick.org" />
+	<input type="hidden" name="sitesearch" value="www.graphicsmagick.org" />
+    <span class="nowrap"><input type="text" name="q" size="25" maxlength="255" />&nbsp;<input type="submit" name="sa" value="Search" /></span>
+</form>
+</div>
+
+<div class="navmenu">
+<ul>
+<li><a href="../index.html">Home</a></li>
+<li><a href="../project.html">Project</a></li>
+<li><a href="../download.html">Download</a></li>
+<li><a href="../README.html">Install</a></li>
+<li><a href="../Hg.html">Source</a></li>
+<li><a href="../NEWS.html">News</a> </li>
+<li><a href="../utilities.html">Utilities</a></li>
+<li><a href="../programming.html">Programming</a></li>
+<li><a href="../reference.html">Reference</a></li>
+</ul>
+</div>
+<div class="document" id="signature">
+<h1 class="title">signature</h1>
+<h2 class="subtitle" id="add-a-digital-signature-to-the-image">Add a digital signature to the image</h2>
+
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#finalizesignature" id="id9">FinalizeSignature</a></li>
+<li><a class="reference internal" href="#getsignatureinfo" id="id10">GetSignatureInfo</a></li>
+<li><a class="reference internal" href="#signatureimage" id="id11">SignatureImage</a></li>
+<li><a class="reference internal" href="#transformsignature" id="id12">TransformSignature</a></li>
+<li><a class="reference internal" href="#updatesignature" id="id13">UpdateSignature</a></li>
+</ul>
+</div>
+<div class="section" id="finalizesignature">
+<h1><a class="toc-backref" href="#id9">FinalizeSignature</a></h1>
+<div class="section" id="synopsis">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+FinalizeSignature( <a class="reference external" href="../api/types.html#signatureinfo">SignatureInfo</a> *signature_info );
+</pre>
+</div>
+<div class="section" id="description">
+<h2>Description</h2>
+<p>Method FinalizeSignature finalizes the SHA message digest computation.</p>
+<p>The format of the FinalizeSignature method is:</p>
+<pre class="literal-block">
+FinalizeSignature( <a class="reference external" href="../api/types.html#signatureinfo">SignatureInfo</a> *signature_info );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>signature_info:</dt>
+<dd>The address of a structure of type SignatureInfo.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="getsignatureinfo">
+<h1><a class="toc-backref" href="#id10">GetSignatureInfo</a></h1>
+<div class="section" id="id1">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+GetSignatureInfo( <a class="reference external" href="../api/types.html#signatureinfo">SignatureInfo</a> *signature_info );
+</pre>
+</div>
+<div class="section" id="id2">
+<h2>Description</h2>
+<p>Method GetSignatureInfo initializes the SHA message digest structure.</p>
+<p>The format of the GetSignatureInfo method is:</p>
+<pre class="literal-block">
+GetSignatureInfo( <a class="reference external" href="../api/types.html#signatureinfo">SignatureInfo</a> *signature_info );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>signature_info:</dt>
+<dd>The address of a structure of type SignatureInfo.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="signatureimage">
+<h1><a class="toc-backref" href="#id11">SignatureImage</a></h1>
+<div class="section" id="id3">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+unsigned int SignatureImage( <a class="reference external" href="../api/types.html#image">Image</a> *image );
+</pre>
+</div>
+<div class="section" id="id4">
+<h2>Description</h2>
+<p>SignatureImage() computes a message digest from an image pixel stream with
+an implementation of the NIST SHA-256 Message Digest algorithm.  This
+signature uniquely identifies the image and is convenient for determining
+if an image has been modified or whether two images are identical.</p>
+<p>The format of the SignatureImage method is:</p>
+<pre class="literal-block">
+unsigned int SignatureImage( <a class="reference external" href="../api/types.html#image">Image</a> *image );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>image:</dt>
+<dd>The image.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="transformsignature">
+<h1><a class="toc-backref" href="#id12">TransformSignature</a></h1>
+<div class="section" id="id5">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+TransformSignature( <a class="reference external" href="../api/types.html#signatureinfo">SignatureInfo</a> *signature_info );
+</pre>
+</div>
+<div class="section" id="id6">
+<h2>Description</h2>
+<p>TransformSignature() transforms the SHA message digest.</p>
+<p>The format of the TransformSignature method is:</p>
+<pre class="literal-block">
+TransformSignature( <a class="reference external" href="../api/types.html#signatureinfo">SignatureInfo</a> *signature_info );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>signature_info:</dt>
+<dd>The address of a structure of type SignatureInfo.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="updatesignature">
+<h1><a class="toc-backref" href="#id13">UpdateSignature</a></h1>
+<div class="section" id="id7">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+UpdateSignature( <a class="reference external" href="../api/types.html#signatureinfo">SignatureInfo</a> *signature_info, const unsigned char *message,
+                 const size_t length );
+</pre>
+</div>
+<div class="section" id="id8">
+<h2>Description</h2>
+<p>UpdateSignature() updates the SHA message digest.</p>
+<p>The format of the UpdateSignature method is:</p>
+<pre class="literal-block">
+UpdateSignature( <a class="reference external" href="../api/types.html#signatureinfo">SignatureInfo</a> *signature_info, const unsigned char *message,
+                 const size_t length );
+</pre>
+<dl class="docutils">
+<dt>signature_info:</dt>
+<dd>The address of a structure of type SignatureInfo.</dd>
+<dt>message:</dt>
+<dd>the message</dd>
+<dt>length:</dt>
+<dd>The length of the message.</dd>
+</dl>
+</div>
+</div>
+</div>
+</body>
+</html>

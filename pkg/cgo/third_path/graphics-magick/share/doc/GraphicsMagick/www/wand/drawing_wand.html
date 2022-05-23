@@ -1,0 +1,3245 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.15.2: http://docutils.sourceforge.net/" />
+<title>drawing_wand</title>
+<link rel="stylesheet" href="../docutils-api.css" type="text/css" />
+</head>
+<body>
+
+<div class="banner">
+<img src="../images/gm-107x76.png" alt="GraphicMagick logo" width="107" height="76" />
+<span class="title">GraphicsMagick</span>
+<form action="http://www.google.com/search">
+	<input type="hidden" name="domains" value="www.graphicsmagick.org" />
+	<input type="hidden" name="sitesearch" value="www.graphicsmagick.org" />
+    <span class="nowrap"><input type="text" name="q" size="25" maxlength="255" />&nbsp;<input type="submit" name="sa" value="Search" /></span>
+</form>
+</div>
+
+<div class="navmenu">
+<ul>
+<li><a href="../index.html">Home</a></li>
+<li><a href="../project.html">Project</a></li>
+<li><a href="../download.html">Download</a></li>
+<li><a href="../README.html">Install</a></li>
+<li><a href="../Hg.html">Source</a></li>
+<li><a href="../NEWS.html">News</a> </li>
+<li><a href="../utilities.html">Utilities</a></li>
+<li><a href="../programming.html">Programming</a></li>
+<li><a href="../reference.html">Reference</a></li>
+</ul>
+</div>
+<div class="document" id="drawing-wand">
+<h1 class="title">drawing_wand</h1>
+<h2 class="subtitle" id="wand-vector-drawing-interfaces">Wand vector drawing interfaces</h2>
+
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#clonedrawingwand" id="id227">CloneDrawingWand</a></li>
+<li><a class="reference internal" href="#destroydrawingwand" id="id228">DestroyDrawingWand</a></li>
+<li><a class="reference internal" href="#drawannotation" id="id229">DrawAnnotation</a></li>
+<li><a class="reference internal" href="#drawaffine" id="id230">DrawAffine</a></li>
+<li><a class="reference internal" href="#drawallocatewand" id="id231">DrawAllocateWand</a></li>
+<li><a class="reference internal" href="#drawarc" id="id232">DrawArc</a></li>
+<li><a class="reference internal" href="#drawbezier" id="id233">DrawBezier</a></li>
+<li><a class="reference internal" href="#drawcircle" id="id234">DrawCircle</a></li>
+<li><a class="reference internal" href="#drawclearexception" id="id235">DrawClearException</a></li>
+<li><a class="reference internal" href="#drawgetclippath" id="id236">DrawGetClipPath</a></li>
+<li><a class="reference internal" href="#drawsetclippath" id="id237">DrawSetClipPath</a></li>
+<li><a class="reference internal" href="#drawgetcliprule" id="id238">DrawGetClipRule</a></li>
+<li><a class="reference internal" href="#drawsetcliprule" id="id239">DrawSetClipRule</a></li>
+<li><a class="reference internal" href="#drawgetclipunits" id="id240">DrawGetClipUnits</a></li>
+<li><a class="reference internal" href="#drawgetexception" id="id241">DrawGetException</a></li>
+<li><a class="reference internal" href="#drawsetclipunits" id="id242">DrawSetClipUnits</a></li>
+<li><a class="reference internal" href="#drawcolor" id="id243">DrawColor</a></li>
+<li><a class="reference internal" href="#drawcomment" id="id244">DrawComment</a></li>
+<li><a class="reference internal" href="#drawellipse" id="id245">DrawEllipse</a></li>
+<li><a class="reference internal" href="#drawgetfillcolor" id="id246">DrawGetFillColor</a></li>
+<li><a class="reference internal" href="#drawsetfillcolor" id="id247">DrawSetFillColor</a></li>
+<li><a class="reference internal" href="#drawsetfillpatternurl" id="id248">DrawSetFillPatternURL</a></li>
+<li><a class="reference internal" href="#drawgetfillopacity" id="id249">DrawGetFillOpacity</a></li>
+<li><a class="reference internal" href="#drawsetfillopacity" id="id250">DrawSetFillOpacity</a></li>
+<li><a class="reference internal" href="#drawgetfillrule" id="id251">DrawGetFillRule</a></li>
+<li><a class="reference internal" href="#drawsetfillrule" id="id252">DrawSetFillRule</a></li>
+<li><a class="reference internal" href="#drawgetfont" id="id253">DrawGetFont</a></li>
+<li><a class="reference internal" href="#drawsetfont" id="id254">DrawSetFont</a></li>
+<li><a class="reference internal" href="#drawgetfontfamily" id="id255">DrawGetFontFamily</a></li>
+<li><a class="reference internal" href="#drawsetfontfamily" id="id256">DrawSetFontFamily</a></li>
+<li><a class="reference internal" href="#drawgetfontsize" id="id257">DrawGetFontSize</a></li>
+<li><a class="reference internal" href="#drawsetfontsize" id="id258">DrawSetFontSize</a></li>
+<li><a class="reference internal" href="#drawgetfontstretch" id="id259">DrawGetFontStretch</a></li>
+<li><a class="reference internal" href="#drawsetfontstretch" id="id260">DrawSetFontStretch</a></li>
+<li><a class="reference internal" href="#drawgetfontstyle" id="id261">DrawGetFontStyle</a></li>
+<li><a class="reference internal" href="#drawsetfontstyle" id="id262">DrawSetFontStyle</a></li>
+<li><a class="reference internal" href="#drawgetfontweight" id="id263">DrawGetFontWeight</a></li>
+<li><a class="reference internal" href="#drawsetfontweight" id="id264">DrawSetFontWeight</a></li>
+<li><a class="reference internal" href="#drawgetgravity" id="id265">DrawGetGravity</a></li>
+<li><a class="reference internal" href="#drawsetgravity" id="id266">DrawSetGravity</a></li>
+<li><a class="reference internal" href="#drawcomposite" id="id267">DrawComposite</a></li>
+<li><a class="reference internal" href="#drawline" id="id268">DrawLine</a></li>
+<li><a class="reference internal" href="#drawmatte" id="id269">DrawMatte</a></li>
+<li><a class="reference internal" href="#drawpathclose" id="id270">DrawPathClose</a></li>
+<li><a class="reference internal" href="#drawpathcurvetoabsolute" id="id271">DrawPathCurveToAbsolute</a></li>
+<li><a class="reference internal" href="#drawpathcurvetorelative" id="id272">DrawPathCurveToRelative</a></li>
+<li><a class="reference internal" href="#drawpathcurvetoquadraticbezierabsolute" id="id273">DrawPathCurveToQuadraticBezierAbsolute</a></li>
+<li><a class="reference internal" href="#drawpathcurvetoquadraticbezierrelative" id="id274">DrawPathCurveToQuadraticBezierRelative</a></li>
+<li><a class="reference internal" href="#drawpathcurvetoquadraticbeziersmoothabsolute" id="id275">DrawPathCurveToQuadraticBezierSmoothAbsolute</a></li>
+<li><a class="reference internal" href="#drawpathcurvetoquadraticbeziersmoothrelative" id="id276">DrawPathCurveToQuadraticBezierSmoothRelative</a></li>
+<li><a class="reference internal" href="#drawpathcurvetosmoothabsolute" id="id277">DrawPathCurveToSmoothAbsolute</a></li>
+<li><a class="reference internal" href="#drawpathcurvetosmoothrelative" id="id278">DrawPathCurveToSmoothRelative</a></li>
+<li><a class="reference internal" href="#drawpathellipticarcabsolute" id="id279">DrawPathEllipticArcAbsolute</a></li>
+<li><a class="reference internal" href="#drawpathellipticarcrelative" id="id280">DrawPathEllipticArcRelative</a></li>
+<li><a class="reference internal" href="#drawpathfinish" id="id281">DrawPathFinish</a></li>
+<li><a class="reference internal" href="#drawpathlinetoabsolute" id="id282">DrawPathLineToAbsolute</a></li>
+<li><a class="reference internal" href="#drawpathlinetorelative" id="id283">DrawPathLineToRelative</a></li>
+<li><a class="reference internal" href="#drawpathlinetohorizontalabsolute" id="id284">DrawPathLineToHorizontalAbsolute</a></li>
+<li><a class="reference internal" href="#drawpathlinetohorizontalrelative" id="id285">DrawPathLineToHorizontalRelative</a></li>
+<li><a class="reference internal" href="#drawpathlinetoverticalabsolute" id="id286">DrawPathLineToVerticalAbsolute</a></li>
+<li><a class="reference internal" href="#drawpathlinetoverticalrelative" id="id287">DrawPathLineToVerticalRelative</a></li>
+<li><a class="reference internal" href="#drawpathmovetoabsolute" id="id288">DrawPathMoveToAbsolute</a></li>
+<li><a class="reference internal" href="#drawpathmovetorelative" id="id289">DrawPathMoveToRelative</a></li>
+<li><a class="reference internal" href="#drawpathstart" id="id290">DrawPathStart</a></li>
+<li><a class="reference internal" href="#drawpeekgraphiccontext" id="id291">DrawPeekGraphicContext</a></li>
+<li><a class="reference internal" href="#drawpoint" id="id292">DrawPoint</a></li>
+<li><a class="reference internal" href="#drawpolygon" id="id293">DrawPolygon</a></li>
+<li><a class="reference internal" href="#drawpolyline" id="id294">DrawPolyline</a></li>
+<li><a class="reference internal" href="#drawpopclippath" id="id295">DrawPopClipPath</a></li>
+<li><a class="reference internal" href="#drawpopdefs" id="id296">DrawPopDefs</a></li>
+<li><a class="reference internal" href="#drawpopgraphiccontext" id="id297">DrawPopGraphicContext</a></li>
+<li><a class="reference internal" href="#drawpoppattern" id="id298">DrawPopPattern</a></li>
+<li><a class="reference internal" href="#drawpushclippath" id="id299">DrawPushClipPath</a></li>
+<li><a class="reference internal" href="#drawpushdefs" id="id300">DrawPushDefs</a></li>
+<li><a class="reference internal" href="#drawpushgraphiccontext" id="id301">DrawPushGraphicContext</a></li>
+<li><a class="reference internal" href="#drawpushpattern" id="id302">DrawPushPattern</a></li>
+<li><a class="reference internal" href="#drawrectangle" id="id303">DrawRectangle</a></li>
+<li><a class="reference internal" href="#drawrender" id="id304">DrawRender</a></li>
+<li><a class="reference internal" href="#drawrotate" id="id305">DrawRotate</a></li>
+<li><a class="reference internal" href="#drawroundrectangle" id="id306">DrawRoundRectangle</a></li>
+<li><a class="reference internal" href="#drawscale" id="id307">DrawScale</a></li>
+<li><a class="reference internal" href="#drawskewx" id="id308">DrawSkewX</a></li>
+<li><a class="reference internal" href="#drawskewy" id="id309">DrawSkewY</a></li>
+<li><a class="reference internal" href="#drawsetstopcolor" id="id310">DrawSetStopColor</a></li>
+<li><a class="reference internal" href="#drawgetstrokecolor" id="id311">DrawGetStrokeColor</a></li>
+<li><a class="reference internal" href="#drawsetstrokecolor" id="id312">DrawSetStrokeColor</a></li>
+<li><a class="reference internal" href="#drawsetstrokepatternurl" id="id313">DrawSetStrokePatternURL</a></li>
+<li><a class="reference internal" href="#drawgetstrokeantialias" id="id314">DrawGetStrokeAntialias</a></li>
+<li><a class="reference internal" href="#drawsetstrokeantialias" id="id315">DrawSetStrokeAntialias</a></li>
+<li><a class="reference internal" href="#drawgetstrokedasharray" id="id316">DrawGetStrokeDashArray</a></li>
+<li><a class="reference internal" href="#drawsetstrokedasharray" id="id317">DrawSetStrokeDashArray</a></li>
+<li><a class="reference internal" href="#drawgetstrokedashoffset" id="id318">DrawGetStrokeDashOffset</a></li>
+<li><a class="reference internal" href="#drawsetstrokedashoffset" id="id319">DrawSetStrokeDashOffset</a></li>
+<li><a class="reference internal" href="#drawgetstrokelinecap" id="id320">DrawGetStrokeLineCap</a></li>
+<li><a class="reference internal" href="#drawsetstrokelinecap" id="id321">DrawSetStrokeLineCap</a></li>
+<li><a class="reference internal" href="#drawgetstrokelinejoin" id="id322">DrawGetStrokeLineJoin</a></li>
+<li><a class="reference internal" href="#drawsetstrokelinejoin" id="id323">DrawSetStrokeLineJoin</a></li>
+<li><a class="reference internal" href="#drawgetstrokemiterlimit" id="id324">DrawGetStrokeMiterLimit</a></li>
+<li><a class="reference internal" href="#drawsetstrokemiterlimit" id="id325">DrawSetStrokeMiterLimit</a></li>
+<li><a class="reference internal" href="#drawgetstrokeopacity" id="id326">DrawGetStrokeOpacity</a></li>
+<li><a class="reference internal" href="#drawsetstrokeopacity" id="id327">DrawSetStrokeOpacity</a></li>
+<li><a class="reference internal" href="#drawgetstrokewidth" id="id328">DrawGetStrokeWidth</a></li>
+<li><a class="reference internal" href="#drawsetstrokewidth" id="id329">DrawSetStrokeWidth</a></li>
+<li><a class="reference internal" href="#drawgettextantialias" id="id330">DrawGetTextAntialias</a></li>
+<li><a class="reference internal" href="#drawsettextantialias" id="id331">DrawSetTextAntialias</a></li>
+<li><a class="reference internal" href="#drawgettextdecoration" id="id332">DrawGetTextDecoration</a></li>
+<li><a class="reference internal" href="#drawsettextdecoration" id="id333">DrawSetTextDecoration</a></li>
+<li><a class="reference internal" href="#drawgettextencoding" id="id334">DrawGetTextEncoding</a></li>
+<li><a class="reference internal" href="#drawsettextencoding" id="id335">DrawSetTextEncoding</a></li>
+<li><a class="reference internal" href="#drawgettextundercolor" id="id336">DrawGetTextUnderColor</a></li>
+<li><a class="reference internal" href="#drawsettextundercolor" id="id337">DrawSetTextUnderColor</a></li>
+<li><a class="reference internal" href="#drawtranslate" id="id338">DrawTranslate</a></li>
+<li><a class="reference internal" href="#drawsetviewbox" id="id339">DrawSetViewbox</a></li>
+<li><a class="reference internal" href="#newdrawingwand" id="id340">NewDrawingWand</a></li>
+</ul>
+</div>
+<div class="section" id="clonedrawingwand">
+<h1><a class="toc-backref" href="#id227">CloneDrawingWand</a></h1>
+<div class="section" id="synopsis">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+DrawingWand *CloneDrawingWand( const DrawingWand *drawing_wand );
+</pre>
+</div>
+<div class="section" id="description">
+<h2>Description</h2>
+<p>CloneDrawingWand() returns a new drawing wand which is a full (deep) copy
+of an existing drawing wand.</p>
+<p>The format of the  CloneDrawingWand method is:</p>
+<pre class="literal-block">
+DrawingWand *CloneDrawingWand( const DrawingWand *drawing_wand );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>drawing_wand:</dt>
+<dd>The drawing wand to copy</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="destroydrawingwand">
+<h1><a class="toc-backref" href="#id228">DestroyDrawingWand</a></h1>
+<div class="section" id="id1">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+void DestroyDrawingWand( DrawingWand *drawing_wand );
+</pre>
+</div>
+<div class="section" id="id2">
+<h2>Description</h2>
+<p>DestroyDrawingWand() frees all resources associated with the drawing
+wand. Once the drawing wand has been freed, it should not be used
+any further unless it re-allocated.</p>
+<p>The format of the  DestroyDrawingWand method is:</p>
+<pre class="literal-block">
+void DestroyDrawingWand( DrawingWand *drawing_wand );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>drawing_wand:</dt>
+<dd>The drawing wand to destroy.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="drawannotation">
+<h1><a class="toc-backref" href="#id229">DrawAnnotation</a></h1>
+<div class="section" id="id3">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+void DrawAnnotation( DrawingWand *drawing_wand, const double x, const double y,
+                     const unsigned char *text );
+</pre>
+</div>
+<div class="section" id="id4">
+<h2>Description</h2>
+<p>DrawAnnotation() draws text on the image.</p>
+<p>The format of the DrawAnnotation method is:</p>
+<pre class="literal-block">
+void DrawAnnotation( DrawingWand *drawing_wand, const double x, const double y,
+                     const unsigned char *text );
+</pre>
+<dl class="docutils">
+<dt>drawing_wand:</dt>
+<dd>The drawing wand.</dd>
+<dt>x:</dt>
+<dd>x ordinate to left of text</dd>
+<dt>y:</dt>
+<dd>y ordinate to text baseline</dd>
+<dt>text:</dt>
+<dd>text to draw</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="drawaffine">
+<h1><a class="toc-backref" href="#id230">DrawAffine</a></h1>
+<div class="section" id="id5">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+void DrawAffine( DrawingWand *drawing_wand, const <a class="reference external" href="../api/types.html#affinematrix">AffineMatrix</a> *affine );
+</pre>
+</div>
+<div class="section" id="id6">
+<h2>Description</h2>
+<p>DrawAffine() adjusts the current affine transformation matrix with
+the specified affine transformation matrix. Note that the current affine
+transform is adjusted rather than replaced.</p>
+<p>The format of the DrawAffine method is:</p>
+<pre class="literal-block">
+void DrawAffine( DrawingWand *drawing_wand, const <a class="reference external" href="../api/types.html#affinematrix">AffineMatrix</a> *affine );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>drawing_wand:</dt>
+<dd>Drawing drawing_wand</dd>
+<dt>affine:</dt>
+<dd>Affine matrix parameters</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="drawallocatewand">
+<h1><a class="toc-backref" href="#id231">DrawAllocateWand</a></h1>
+<div class="section" id="id7">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+DrawingWand DrawAllocateWand( const <a class="reference external" href="../api/types.html#drawinfo">DrawInfo</a> *draw_info, <a class="reference external" href="../api/types.html#image">Image</a> *image );
+</pre>
+</div>
+<div class="section" id="id8">
+<h2>Description</h2>
+<p>DrawAllocateWand() allocates an initial drawing wand which is an
+opaque handle required by the remaining drawing methods.</p>
+<p>The format of the DrawAllocateWand method is:</p>
+<pre class="literal-block">
+DrawingWand DrawAllocateWand( const <a class="reference external" href="../api/types.html#drawinfo">DrawInfo</a> *draw_info, <a class="reference external" href="../api/types.html#image">Image</a> *image );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>draw_info:</dt>
+<dd>Initial drawing defaults. Set to NULL to use
+ImageMagick defaults.</dd>
+<dt>image:</dt>
+<dd>The image to draw on.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="drawarc">
+<h1><a class="toc-backref" href="#id232">DrawArc</a></h1>
+<div class="section" id="id9">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+void DrawArc( DrawingWand *drawing_wand, const double sx, const double sy, const double ex,
+              const double ey, const double sd, const double ed );
+</pre>
+</div>
+<div class="section" id="id10">
+<h2>Description</h2>
+<p>DrawArc() draws an arc falling within a specified bounding rectangle on the
+image.</p>
+<p>The format of the DrawArc method is:</p>
+<pre class="literal-block">
+void DrawArc( DrawingWand *drawing_wand, const double sx, const double sy, const double ex,
+              const double ey, const double sd, const double ed );
+</pre>
+<dl class="docutils">
+<dt>drawing_wand:</dt>
+<dd>The drawing wand.</dd>
+<dt>sx:</dt>
+<dd>starting x ordinate of bounding rectangle</dd>
+<dt>sy:</dt>
+<dd>starting y ordinate of bounding rectangle</dd>
+<dt>ex:</dt>
+<dd>ending x ordinate of bounding rectangle</dd>
+<dt>ey:</dt>
+<dd>ending y ordinate of bounding rectangle</dd>
+<dt>sd:</dt>
+<dd>starting degrees of rotation</dd>
+<dt>ed:</dt>
+<dd>ending degrees of rotation</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="drawbezier">
+<h1><a class="toc-backref" href="#id233">DrawBezier</a></h1>
+<div class="section" id="id11">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+void DrawBezier( DrawingWand *drawing_wand, const unsigned long number_coordinates,
+                 const <a class="reference external" href="../api/types.html#pointinfo">PointInfo</a> *coordinates );
+</pre>
+</div>
+<div class="section" id="id12">
+<h2>Description</h2>
+<p>DrawBezier() draws a bezier curve through a set of points on the image.</p>
+<p>The format of the DrawBezier method is:</p>
+<pre class="literal-block">
+void DrawBezier( DrawingWand *drawing_wand, const unsigned long number_coordinates,
+                 const <a class="reference external" href="../api/types.html#pointinfo">PointInfo</a> *coordinates );
+</pre>
+<dl class="docutils">
+<dt>drawing_wand:</dt>
+<dd>The drawing wand.</dd>
+<dt>number_coordinates:</dt>
+<dd>number of coordinates</dd>
+<dt>coordinates:</dt>
+<dd>coordinates</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="drawcircle">
+<h1><a class="toc-backref" href="#id234">DrawCircle</a></h1>
+<div class="section" id="id13">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+void DrawCircle( DrawingWand *drawing_wand, const double ox, const double oy, const double px,
+                 const double py );
+</pre>
+</div>
+<div class="section" id="id14">
+<h2>Description</h2>
+<p>DrawCircle() draws a circle on the image.</p>
+<p>The format of the DrawCircle method is:</p>
+<pre class="literal-block">
+void DrawCircle( DrawingWand *drawing_wand, const double ox, const double oy, const double px,
+                 const double py );
+</pre>
+<dl class="docutils">
+<dt>drawing_wand:</dt>
+<dd>The drawing wand.</dd>
+<dt>ox:</dt>
+<dd>origin x ordinate</dd>
+<dt>oy:</dt>
+<dd>origin y ordinate</dd>
+<dt>px:</dt>
+<dd>perimeter x ordinate</dd>
+<dt>py:</dt>
+<dd>perimeter y ordinate</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="drawclearexception">
+<h1><a class="toc-backref" href="#id235">DrawClearException</a></h1>
+<div class="section" id="id15">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+MagickPassFail DrawClearException( DrawingWand *drawing_wand );
+</pre>
+</div>
+<div class="section" id="id16">
+<h2>Description</h2>
+<p>DrawClearException() clears any existing exception from the drawing wand.</p>
+<p>The format of the DrawGetException method is:</p>
+<pre class="literal-block">
+MagickPassFail DrawClearException( DrawingWand *drawing_wand );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>drawing_wand:</dt>
+<dd>The drawing wand.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="drawgetclippath">
+<h1><a class="toc-backref" href="#id236">DrawGetClipPath</a></h1>
+<div class="section" id="id17">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+char *DrawGetClipPath( const DrawingWand *drawing_wand );
+</pre>
+</div>
+<div class="section" id="id18">
+<h2>Description</h2>
+<p>DrawGetClipPath() obtains the current clipping path ID. The value returned
+must be deallocated by the user when it is no longer needed.</p>
+<p>The format of the DrawGetClipPath method is:</p>
+<pre class="literal-block">
+char *DrawGetClipPath( const DrawingWand *drawing_wand );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>drawing_wand:</dt>
+<dd>The drawing wand.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="drawsetclippath">
+<h1><a class="toc-backref" href="#id237">DrawSetClipPath</a></h1>
+<div class="section" id="id19">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+void DrawSetClipPath( DrawingWand *drawing_wand, const char *clip_path );
+</pre>
+</div>
+<div class="section" id="id20">
+<h2>Description</h2>
+<p>DrawSetClipPath() associates a named clipping path with the image.  Only
+the areas drawn on by the clipping path will be modified as long as it
+remains in effect.</p>
+<p>The format of the DrawSetClipPath method is:</p>
+<pre class="literal-block">
+void DrawSetClipPath( DrawingWand *drawing_wand, const char *clip_path );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>drawing_wand:</dt>
+<dd>The drawing wand.</dd>
+<dt>clip_path:</dt>
+<dd>name of clipping path to associate with image</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="drawgetcliprule">
+<h1><a class="toc-backref" href="#id238">DrawGetClipRule</a></h1>
+<div class="section" id="id21">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#fillrule">FillRule</a> DrawGetClipRule( const DrawingWand *drawing_wand );
+</pre>
+</div>
+<div class="section" id="id22">
+<h2>Description</h2>
+<p>DrawGetClipRule() returns the current polygon fill rule to be used by the
+clipping path.</p>
+<p>The format of the DrawGetClipRule method is:</p>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#fillrule">FillRule</a> DrawGetClipRule( const DrawingWand *drawing_wand );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>drawing_wand:</dt>
+<dd>The drawing wand.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="drawsetcliprule">
+<h1><a class="toc-backref" href="#id239">DrawSetClipRule</a></h1>
+<div class="section" id="id23">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+void DrawSetClipRule( DrawingWand *drawing_wand, const <a class="reference external" href="../api/types.html#fillrule">FillRule</a> fill_rule );
+</pre>
+</div>
+<div class="section" id="id24">
+<h2>Description</h2>
+<p>DrawSetClipRule() set the polygon fill rule to be used by the clipping path.</p>
+<p>The format of the DrawSetClipRule method is:</p>
+<pre class="literal-block">
+void DrawSetClipRule( DrawingWand *drawing_wand, const <a class="reference external" href="../api/types.html#fillrule">FillRule</a> fill_rule );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>drawing_wand:</dt>
+<dd>The drawing wand.</dd>
+<dt>fill_rule:</dt>
+<dd>fill rule (EvenOddRule or NonZeroRule)</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="drawgetclipunits">
+<h1><a class="toc-backref" href="#id240">DrawGetClipUnits</a></h1>
+<div class="section" id="id25">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#clippathunits">ClipPathUnits</a> DrawGetClipUnits( const DrawingWand *drawing_wand );
+</pre>
+</div>
+<div class="section" id="id26">
+<h2>Description</h2>
+<p>DrawGetClipUnits() returns the interpretation of clip path units.</p>
+<p>The format of the DrawGetClipUnits method is:</p>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#clippathunits">ClipPathUnits</a> DrawGetClipUnits( const DrawingWand *drawing_wand );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>drawing_wand:</dt>
+<dd>The drawing wand.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="drawgetexception">
+<h1><a class="toc-backref" href="#id241">DrawGetException</a></h1>
+<div class="section" id="id27">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+char *DrawGetException( const DrawingWand *drawing_wand, <a class="reference external" href="../api/types.html#exceptiontype">ExceptionType</a> *severity );
+</pre>
+</div>
+<div class="section" id="id28">
+<h2>Description</h2>
+<p>DrawGetException() obtains error information associated with the last
+exception (if any).  If an exception did occur, an allocated text string
+is returned which contains a detailed description of the exception.  This
+string must be deallocated by the user once it is no longer needed.</p>
+<p>The format of the DrawGetException method is:</p>
+<pre class="literal-block">
+char *DrawGetException( const DrawingWand *drawing_wand, <a class="reference external" href="../api/types.html#exceptiontype">ExceptionType</a> *severity );
+</pre>
+<dl class="docutils">
+<dt>drawing_wand:</dt>
+<dd>The drawing wand.</dd>
+<dt>severity:</dt>
+<dd>Enumeration corresponding to last thrown exception.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="drawsetclipunits">
+<h1><a class="toc-backref" href="#id242">DrawSetClipUnits</a></h1>
+<div class="section" id="id29">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+void DrawSetClipUnits( DrawingWand *drawing_wand, const <a class="reference external" href="../api/types.html#clippathunits">ClipPathUnits</a> clip_units );
+</pre>
+</div>
+<div class="section" id="id30">
+<h2>Description</h2>
+<p>DrawSetClipUnits() sets the interpretation of clip path units.</p>
+<p>The format of the DrawSetClipUnits method is:</p>
+<pre class="literal-block">
+void DrawSetClipUnits( DrawingWand *drawing_wand, const <a class="reference external" href="../api/types.html#clippathunits">ClipPathUnits</a> clip_units );
+</pre>
+<dl class="docutils">
+<dt>drawing_wand:</dt>
+<dd>The drawing wand.</dd>
+<dt>clip_units:</dt>
+<dd>units to use (UserSpace, UserSpaceOnUse, or ObjectBoundingBox)</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="drawcolor">
+<h1><a class="toc-backref" href="#id243">DrawColor</a></h1>
+<div class="section" id="id31">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+void DrawColor( DrawingWand *drawing_wand, const double x, const double y,
+                const <a class="reference external" href="../api/types.html#paintmethod">PaintMethod</a> paintMethod );
+</pre>
+</div>
+<div class="section" id="id32">
+<h2>Description</h2>
+<p>DrawColor() draws color on image using the current fill color, starting at
+specified position, and using specified paint method. The available paint
+methods are:</p>
+<p>PointMethod: Recolors the target pixel
+ReplaceMethod: Recolor any pixel that matches the target pixel.
+FloodfillMethod: Recolors target pixels and matching neighbors.
+FillToBorderMethod: Recolor target pixels and neighbors not matching
+ResetMethod: Recolor all pixels.</p>
+<p>The format of the DrawColor method is:</p>
+<pre class="literal-block">
+void DrawColor( DrawingWand *drawing_wand, const double x, const double y,
+                const <a class="reference external" href="../api/types.html#paintmethod">PaintMethod</a> paintMethod );
+</pre>
+<dl class="docutils">
+<dt>drawing_wand:</dt>
+<dd>The drawing wand.</dd>
+<dt>x:</dt>
+<dd>x ordinate</dd>
+<dt>y:</dt>
+<dd>y ordinate</dd>
+<dt>paintMethod:</dt>
+<dd>paint method</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="drawcomment">
+<h1><a class="toc-backref" href="#id244">DrawComment</a></h1>
+<div class="section" id="id33">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+void DrawComment( DrawingWand *drawing_wand, const char *comment );
+</pre>
+</div>
+<div class="section" id="id34">
+<h2>Description</h2>
+<p>DrawComment() adds a comment to a vector output stream.</p>
+<p>The format of the DrawComment method is:</p>
+<pre class="literal-block">
+void DrawComment( DrawingWand *drawing_wand, const char *comment );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>drawing_wand:</dt>
+<dd>The drawing wand.</dd>
+<dt>comment:</dt>
+<dd>comment text</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="drawellipse">
+<h1><a class="toc-backref" href="#id245">DrawEllipse</a></h1>
+<div class="section" id="id35">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+void DrawEllipse( DrawingWand *drawing_wand, const double ox, const double oy, const double rx,
+                  const double ry, const double start, const double end );
+</pre>
+</div>
+<div class="section" id="id36">
+<h2>Description</h2>
+<p>DrawEllipse() draws an ellipse on the image.</p>
+<p>The format of the DrawEllipse method is:</p>
+<pre class="literal-block">
+void DrawEllipse( DrawingWand *drawing_wand, const double ox, const double oy, const double rx,
+                  const double ry, const double start, const double end );
+</pre>
+<dl class="docutils">
+<dt>drawing_wand:</dt>
+<dd>The drawing wand.</dd>
+<dt>ox:</dt>
+<dd>origin x ordinate</dd>
+<dt>oy:</dt>
+<dd>origin y ordinate</dd>
+<dt>rx:</dt>
+<dd>radius in x</dd>
+<dt>ry:</dt>
+<dd>radius in y</dd>
+<dt>start:</dt>
+<dd>starting rotation in degrees</dd>
+<dt>end:</dt>
+<dd>ending rotation in degrees</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="drawgetfillcolor">
+<h1><a class="toc-backref" href="#id246">DrawGetFillColor</a></h1>
+<div class="section" id="id37">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+void DrawGetFillColor( const DrawingWand *drawing_wand, PixelWand *fill_color );
+</pre>
+</div>
+<div class="section" id="id38">
+<h2>Description</h2>
+<p>DrawGetFillColor() returns the fill color used for drawing filled objects.</p>
+<p>The format of the DrawGetFillColor method is:</p>
+<pre class="literal-block">
+void DrawGetFillColor( const DrawingWand *drawing_wand, PixelWand *fill_color );
+</pre>
+<dl class="docutils">
+<dt>drawing_wand:</dt>
+<dd>The drawing wand.</dd>
+<dt>fill_color:</dt>
+<dd>Return the fill color.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="drawsetfillcolor">
+<h1><a class="toc-backref" href="#id247">DrawSetFillColor</a></h1>
+<div class="section" id="id39">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+void DrawSetFillColor( DrawingWand *drawing_wand, const PixelWand *fill_wand );
+</pre>
+</div>
+<div class="section" id="id40">
+<h2>Description</h2>
+<p>DrawSetFillColor() sets the fill color to be used for drawing filled objects.</p>
+<p>The format of the DrawSetFillColor method is:</p>
+<pre class="literal-block">
+void DrawSetFillColor( DrawingWand *drawing_wand, const PixelWand *fill_wand );
+</pre>
+<dl class="docutils">
+<dt>drawing_wand:</dt>
+<dd>The drawing wand.</dd>
+<dt>fill_wand:</dt>
+<dd>fill wand.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="drawsetfillpatternurl">
+<h1><a class="toc-backref" href="#id248">DrawSetFillPatternURL</a></h1>
+<div class="section" id="id41">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+void DrawSetFillPatternURL( DrawingWand *drawing_wand, const char *fill_url );
+</pre>
+</div>
+<div class="section" id="id42">
+<h2>Description</h2>
+<p>DrawSetFillPatternURL() sets the URL to use as a fill pattern for filling
+objects. Only local URLs (&quot;#identifier&quot;) are supported at this time. These
+local URLs are normally created by defining a named fill pattern with
+DrawPushPattern/DrawPopPattern.</p>
+<p>The format of the DrawSetFillPatternURL method is:</p>
+<pre class="literal-block">
+void DrawSetFillPatternURL( DrawingWand *drawing_wand, const char *fill_url );
+</pre>
+<dl class="docutils">
+<dt>drawing_wand:</dt>
+<dd>The drawing wand.</dd>
+<dt>fill_url:</dt>
+<dd>URL to use to obtain fill pattern.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="drawgetfillopacity">
+<h1><a class="toc-backref" href="#id249">DrawGetFillOpacity</a></h1>
+<div class="section" id="id43">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+double DrawGetFillOpacity( const DrawingWand *drawing_wand );
+</pre>
+</div>
+<div class="section" id="id44">
+<h2>Description</h2>
+<p>DrawGetFillOpacity() returns the opacity used when drawing using the fill
+color or fill texture.  Fully opaque is 1.0.</p>
+<p>The format of the DrawGetFillOpacity method is:</p>
+<pre class="literal-block">
+double DrawGetFillOpacity( const DrawingWand *drawing_wand );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>drawing_wand:</dt>
+<dd>The drawing wand.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="drawsetfillopacity">
+<h1><a class="toc-backref" href="#id250">DrawSetFillOpacity</a></h1>
+<div class="section" id="id45">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+void DrawSetFillOpacity( DrawingWand *drawing_wand, const double fill_opacity );
+</pre>
+</div>
+<div class="section" id="id46">
+<h2>Description</h2>
+<p>DrawSetFillOpacity() sets the opacity to use when drawing using the fill
+color or fill texture.  Fully opaque is 1.0.</p>
+<p>The format of the DrawSetFillOpacity method is:</p>
+<pre class="literal-block">
+void DrawSetFillOpacity( DrawingWand *drawing_wand, const double fill_opacity );
+</pre>
+<dl class="docutils">
+<dt>drawing_wand:</dt>
+<dd>The drawing wand.</dd>
+<dt>fill_opacity:</dt>
+<dd>fill opacity</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="drawgetfillrule">
+<h1><a class="toc-backref" href="#id251">DrawGetFillRule</a></h1>
+<div class="section" id="id47">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#fillrule">FillRule</a> DrawGetFillRule( const DrawingWand *drawing_wand );
+</pre>
+</div>
+<div class="section" id="id48">
+<h2>Description</h2>
+<p>DrawGetFillRule() returns the fill rule used while drawing polygons.</p>
+<p>The format of the DrawGetFillRule method is:</p>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#fillrule">FillRule</a> DrawGetFillRule( const DrawingWand *drawing_wand );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>drawing_wand:</dt>
+<dd>The drawing wand.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="drawsetfillrule">
+<h1><a class="toc-backref" href="#id252">DrawSetFillRule</a></h1>
+<div class="section" id="id49">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+void DrawSetFillRule( DrawingWand *drawing_wand, const <a class="reference external" href="../api/types.html#fillrule">FillRule</a> fill_rule );
+</pre>
+</div>
+<div class="section" id="id50">
+<h2>Description</h2>
+<p>DrawSetFillRule() sets the fill rule to use while drawing polygons.</p>
+<p>The format of the DrawSetFillRule method is:</p>
+<pre class="literal-block">
+void DrawSetFillRule( DrawingWand *drawing_wand, const <a class="reference external" href="../api/types.html#fillrule">FillRule</a> fill_rule );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>drawing_wand:</dt>
+<dd>The drawing wand.</dd>
+<dt>fill_rule:</dt>
+<dd>fill rule (EvenOddRule or NonZeroRule)</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="drawgetfont">
+<h1><a class="toc-backref" href="#id253">DrawGetFont</a></h1>
+<div class="section" id="id51">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+char *DrawGetFont( const DrawingWand *drawing_wand );
+</pre>
+</div>
+<div class="section" id="id52">
+<h2>Description</h2>
+<p>DrawGetFont() returns a null-terminaged string specifying the font used
+when annotating with text. The value returned must be freed by the user
+when no longer needed.</p>
+<p>The format of the DrawGetFont method is:</p>
+<pre class="literal-block">
+char *DrawGetFont( const DrawingWand *drawing_wand );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>drawing_wand:</dt>
+<dd>The drawing wand.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="drawsetfont">
+<h1><a class="toc-backref" href="#id254">DrawSetFont</a></h1>
+<div class="section" id="id53">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+void DrawSetFont( DrawingWand *drawing_wand, const char *font_name );
+</pre>
+</div>
+<div class="section" id="id54">
+<h2>Description</h2>
+<p>DrawSetFont() sets the fully-sepecified font to use when annotating with
+text.</p>
+<p>The format of the DrawSetFont method is:</p>
+<pre class="literal-block">
+void DrawSetFont( DrawingWand *drawing_wand, const char *font_name );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>drawing_wand:</dt>
+<dd>The drawing wand.</dd>
+<dt>font_name:</dt>
+<dd>font name</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="drawgetfontfamily">
+<h1><a class="toc-backref" href="#id255">DrawGetFontFamily</a></h1>
+<div class="section" id="id55">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+char *DrawGetFontFamily( const DrawingWand *drawing_wand );
+</pre>
+</div>
+<div class="section" id="id56">
+<h2>Description</h2>
+<p>DrawGetFontFamily() returns the font family to use when annotating with text.
+The value returned must be freed by the user when it is no longer needed.</p>
+<p>The format of the DrawGetFontFamily method is:</p>
+<pre class="literal-block">
+char *DrawGetFontFamily( const DrawingWand *drawing_wand );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>drawing_wand:</dt>
+<dd>The drawing wand.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="drawsetfontfamily">
+<h1><a class="toc-backref" href="#id256">DrawSetFontFamily</a></h1>
+<div class="section" id="id57">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+void DrawSetFontFamily( DrawingWand *drawing_wand, const char *font_family );
+</pre>
+</div>
+<div class="section" id="id58">
+<h2>Description</h2>
+<p>DrawSetFontFamily() sets the font family to use when annotating with text.</p>
+<p>The format of the DrawSetFontFamily method is:</p>
+<pre class="literal-block">
+void DrawSetFontFamily( DrawingWand *drawing_wand, const char *font_family );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>drawing_wand:</dt>
+<dd>The drawing wand.</dd>
+<dt>font_family:</dt>
+<dd>font family</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="drawgetfontsize">
+<h1><a class="toc-backref" href="#id257">DrawGetFontSize</a></h1>
+<div class="section" id="id59">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+double DrawGetFontSize( const DrawingWand *drawing_wand );
+</pre>
+</div>
+<div class="section" id="id60">
+<h2>Description</h2>
+<p>DrawGetFontSize() returns the font pointsize used when annotating with text.</p>
+<p>The format of the DrawGetFontSize method is:</p>
+<pre class="literal-block">
+double DrawGetFontSize( const DrawingWand *drawing_wand );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>drawing_wand:</dt>
+<dd>The drawing wand.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="drawsetfontsize">
+<h1><a class="toc-backref" href="#id258">DrawSetFontSize</a></h1>
+<div class="section" id="id61">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+void DrawSetFontSize( DrawingWand *drawing_wand, const double pointsize );
+</pre>
+</div>
+<div class="section" id="id62">
+<h2>Description</h2>
+<p>DrawSetFontSize() sets the font pointsize to use when annotating with text.</p>
+<p>The format of the DrawSetFontSize method is:</p>
+<pre class="literal-block">
+void DrawSetFontSize( DrawingWand *drawing_wand, const double pointsize );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>drawing_wand:</dt>
+<dd>The drawing wand.</dd>
+<dt>pointsize:</dt>
+<dd>text pointsize</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="drawgetfontstretch">
+<h1><a class="toc-backref" href="#id259">DrawGetFontStretch</a></h1>
+<div class="section" id="id63">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#stretchtype">StretchType</a> DrawGetFontStretch( const DrawingWand *drawing_wand );
+</pre>
+</div>
+<div class="section" id="id64">
+<h2>Description</h2>
+<p>DrawGetFontStretch() returns the font stretch used when annotating with text.</p>
+<p>The format of the DrawGetFontStretch method is:</p>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#stretchtype">StretchType</a> DrawGetFontStretch( const DrawingWand *drawing_wand );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>drawing_wand:</dt>
+<dd>The drawing wand.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="drawsetfontstretch">
+<h1><a class="toc-backref" href="#id260">DrawSetFontStretch</a></h1>
+<div class="section" id="id65">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+void DrawSetFontStretch( DrawingWand *drawing_wand, const <a class="reference external" href="../api/types.html#stretchtype">StretchType</a> font_stretch );
+</pre>
+</div>
+<div class="section" id="id66">
+<h2>Description</h2>
+<p>DrawSetFontStretch() sets the font stretch to use when annotating with text.
+The AnyStretch enumeration acts as a wild-card &quot;don't care&quot; option.</p>
+<p>The format of the DrawSetFontStretch method is:</p>
+<pre class="literal-block">
+void DrawSetFontStretch( DrawingWand *drawing_wand, const <a class="reference external" href="../api/types.html#stretchtype">StretchType</a> font_stretch );
+</pre>
+<dl class="docutils">
+<dt>drawing_wand:</dt>
+<dd>The drawing wand.</dd>
+<dt>font_stretch:</dt>
+<dd>font stretch (NormalStretch, UltraCondensedStretch,
+CondensedStretch, SemiCondensedStretch,
+SemiExpandedStretch, ExpandedStretch,
+ExtraExpandedStretch, UltraExpandedStretch, AnyStretch)</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="drawgetfontstyle">
+<h1><a class="toc-backref" href="#id261">DrawGetFontStyle</a></h1>
+<div class="section" id="id67">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#styletype">StyleType</a> DrawGetFontStyle( const DrawingWand *drawing_wand );
+</pre>
+</div>
+<div class="section" id="id68">
+<h2>Description</h2>
+<p>DrawGetFontStyle() returns the font style used when annotating with text.</p>
+<p>The format of the DrawGetFontStyle method is:</p>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#styletype">StyleType</a> DrawGetFontStyle( const DrawingWand *drawing_wand );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>drawing_wand:</dt>
+<dd>The drawing wand.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="drawsetfontstyle">
+<h1><a class="toc-backref" href="#id262">DrawSetFontStyle</a></h1>
+<div class="section" id="id69">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+void DrawSetFontStyle( DrawingWand *drawing_wand, const <a class="reference external" href="../api/types.html#styletype">StyleType</a> style );
+</pre>
+</div>
+<div class="section" id="id70">
+<h2>Description</h2>
+<p>DrawSetFontStyle() sets the font style to use when annotating with text.
+The AnyStyle enumeration acts as a wild-card &quot;don't care&quot; option.</p>
+<p>The format of the DrawSetFontStyle method is:</p>
+<pre class="literal-block">
+void DrawSetFontStyle( DrawingWand *drawing_wand, const <a class="reference external" href="../api/types.html#styletype">StyleType</a> style );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>drawing_wand:</dt>
+<dd>The drawing wand.</dd>
+<dt>style:</dt>
+<dd>font style (NormalStyle, ItalicStyle, ObliqueStyle, AnyStyle)</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="drawgetfontweight">
+<h1><a class="toc-backref" href="#id263">DrawGetFontWeight</a></h1>
+<div class="section" id="id71">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+unsigned long DrawGetFontWeight( const DrawingWand *drawing_wand );
+</pre>
+</div>
+<div class="section" id="id72">
+<h2>Description</h2>
+<p>DrawGetFontWeight() returns the font weight used when annotating with text.</p>
+<p>The format of the DrawGetFontWeight method is:</p>
+<pre class="literal-block">
+unsigned long DrawGetFontWeight( const DrawingWand *drawing_wand );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>drawing_wand:</dt>
+<dd>The drawing wand.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="drawsetfontweight">
+<h1><a class="toc-backref" href="#id264">DrawSetFontWeight</a></h1>
+<div class="section" id="id73">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+void DrawSetFontWeight( DrawingWand *drawing_wand, const unsigned long font_weight );
+</pre>
+</div>
+<div class="section" id="id74">
+<h2>Description</h2>
+<p>DrawSetFontWeight() sets the font weight to use when annotating with text.</p>
+<p>The format of the DrawSetFontWeight method is:</p>
+<pre class="literal-block">
+void DrawSetFontWeight( DrawingWand *drawing_wand, const unsigned long font_weight );
+</pre>
+<dl class="docutils">
+<dt>drawing_wand:</dt>
+<dd>The drawing wand.</dd>
+<dt>font_weight:</dt>
+<dd>font weight (valid range 100-900)</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="drawgetgravity">
+<h1><a class="toc-backref" href="#id265">DrawGetGravity</a></h1>
+<div class="section" id="id75">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#gravitytype">GravityType</a> DrawGetGravity( const DrawingWand *drawing_wand );
+</pre>
+</div>
+<div class="section" id="id76">
+<h2>Description</h2>
+<p>DrawGetGravity() returns the text placement gravity used when annotating
+with text.</p>
+<p>The format of the DrawGetGravity method is:</p>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#gravitytype">GravityType</a> DrawGetGravity( const DrawingWand *drawing_wand );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>drawing_wand:</dt>
+<dd>The drawing wand.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="drawsetgravity">
+<h1><a class="toc-backref" href="#id266">DrawSetGravity</a></h1>
+<div class="section" id="id77">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+void DrawSetGravity( DrawingWand *drawing_wand, const <a class="reference external" href="../api/types.html#gravitytype">GravityType</a> gravity );
+</pre>
+</div>
+<div class="section" id="id78">
+<h2>Description</h2>
+<p>DrawSetGravity() sets the text placement gravity to use when annotating
+with text.</p>
+<p>The format of the DrawSetGravity method is:</p>
+<pre class="literal-block">
+void DrawSetGravity( DrawingWand *drawing_wand, const <a class="reference external" href="../api/types.html#gravitytype">GravityType</a> gravity );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>drawing_wand:</dt>
+<dd>The drawing wand.</dd>
+<dt>gravity:</dt>
+<dd>positioning gravity (NorthWestGravity, NorthGravity,
+NorthEastGravity, WestGravity, CenterGravity,
+EastGravity, SouthWestGravity, SouthGravity,
+SouthEastGravity)</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="drawcomposite">
+<h1><a class="toc-backref" href="#id267">DrawComposite</a></h1>
+<div class="section" id="id79">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+void DrawComposite( DrawingWand *drawing_wand, const <a class="reference external" href="../api/types.html#compositeoperator">CompositeOperator</a> composite_operator,
+                    const double x, const double y, const double width, const double height,
+                    const <a class="reference external" href="../api/types.html#image">Image</a> *image );
+</pre>
+</div>
+<div class="section" id="id80">
+<h2>Description</h2>
+<p>DrawComposite() composites an image onto the current image, using the
+specified composition operator, specified position, and at the specified
+size.</p>
+<p>The format of the DrawComposite method is:</p>
+<pre class="literal-block">
+void DrawComposite( DrawingWand *drawing_wand, const <a class="reference external" href="../api/types.html#compositeoperator">CompositeOperator</a> composite_operator,
+                    const double x, const double y, const double width, const double height,
+                    const <a class="reference external" href="../api/types.html#image">Image</a> *image );
+</pre>
+<dl class="docutils">
+<dt>drawing_wand:</dt>
+<dd>The drawing wand.</dd>
+<dt>composite_operator:</dt>
+<dd>composition operator</dd>
+<dt>x:</dt>
+<dd>x ordinate of top left corner</dd>
+<dt>y:</dt>
+<dd>y ordinate of top left corner</dd>
+<dt>width:</dt>
+<dd>Width to resize image to prior to compositing.  Specify zero to
+use existing width.</dd>
+<dt>height:</dt>
+<dd>Height to resize image to prior to compositing.  Specify zero
+to use existing height.</dd>
+<dt>image:</dt>
+<dd>Image to composite</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="drawline">
+<h1><a class="toc-backref" href="#id268">DrawLine</a></h1>
+<div class="section" id="id81">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+void DrawLine( DrawingWand *drawing_wand, const double sx, const double sy, const double ex,
+               const double ey );
+</pre>
+</div>
+<div class="section" id="id82">
+<h2>Description</h2>
+<p>DrawLine() draws a line on the image using the current stroke color,
+stroke opacity, and stroke width.</p>
+<p>The format of the DrawLine method is:</p>
+<pre class="literal-block">
+void DrawLine( DrawingWand *drawing_wand, const double sx, const double sy, const double ex,
+               const double ey );
+</pre>
+<dl class="docutils">
+<dt>drawing_wand:</dt>
+<dd>The drawing wand.</dd>
+<dt>sx:</dt>
+<dd>starting x ordinate</dd>
+<dt>sy:</dt>
+<dd>starting y ordinate</dd>
+<dt>ex:</dt>
+<dd>ending x ordinate</dd>
+<dt>ey:</dt>
+<dd>ending y ordinate</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="drawmatte">
+<h1><a class="toc-backref" href="#id269">DrawMatte</a></h1>
+<div class="section" id="id83">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+void DrawMatte( DrawingWand *drawing_wand, const double x, const double y,
+                const <a class="reference external" href="../api/types.html#paintmethod">PaintMethod</a> paint_method );
+</pre>
+</div>
+<div class="section" id="id84">
+<h2>Description</h2>
+<p>DrawMatte() paints on the image's opacity channel in order to set effected
+pixels to transparent.
+to influence the opacity of pixels. The available paint
+methods are:</p>
+<p>PointMethod: Select the target pixel
+ReplaceMethod: Select any pixel that matches the target pixel.
+FloodfillMethod: Select the target pixel and matching neighbors.
+FillToBorderMethod: Select the target pixel and neighbors not matching
+border color.
+ResetMethod: Select all pixels.</p>
+<p>The format of the DrawMatte method is:</p>
+<pre class="literal-block">
+void DrawMatte( DrawingWand *drawing_wand, const double x, const double y,
+                const <a class="reference external" href="../api/types.html#paintmethod">PaintMethod</a> paint_method );
+</pre>
+<dl class="docutils">
+<dt>drawing_wand:</dt>
+<dd>The drawing wand.</dd>
+<dt>x:</dt>
+<dd>x ordinate</dd>
+<dt>y:</dt>
+<dd>y ordinate</dd>
+</dl>
+<p>o paint_method:</p>
+</div>
+</div>
+<div class="section" id="drawpathclose">
+<h1><a class="toc-backref" href="#id270">DrawPathClose</a></h1>
+<div class="section" id="id85">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+void DrawPathClose( DrawingWand *drawing_wand );
+</pre>
+</div>
+<div class="section" id="id86">
+<h2>Description</h2>
+<p>DrawPathClose() adds a path element to the current path which closes the
+current subpath by drawing a straight line from the current point to the
+current subpath's most recent starting point (usually, the most recent
+moveto point).</p>
+<p>The format of the DrawPathClose method is:</p>
+<pre class="literal-block">
+void DrawPathClose( DrawingWand *drawing_wand );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>drawing_wand:</dt>
+<dd>The drawing wand.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="drawpathcurvetoabsolute">
+<h1><a class="toc-backref" href="#id271">DrawPathCurveToAbsolute</a></h1>
+<div class="section" id="id87">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+void DrawPathCurveToAbsolute( DrawingWand *drawing_wand, const double x1, const double y1,
+                              const double x2, const double y2, const double x,
+                              const double y );
+</pre>
+</div>
+<div class="section" id="id88">
+<h2>Description</h2>
+<p>DrawPathCurveToAbsolute() draws a cubic Bezier curve from the current
+point to (x,y) using (x1,y1) as the control point at the beginning of
+the curve and (x2,y2) as the control point at the end of the curve using
+absolute coordinates. At the end of the command, the new current point
+becomes the final (x,y) coordinate pair used in the polybezier.</p>
+<p>The format of the DrawPathCurveToAbsolute method is:</p>
+<pre class="literal-block">
+void DrawPathCurveToAbsolute( DrawingWand *drawing_wand, const double x1, const double y1,
+                              const double x2, const double y2, const double x,
+                              const double y );
+</pre>
+<dl class="docutils">
+<dt>drawing_wand:</dt>
+<dd>The drawing wand.</dd>
+<dt>x1:</dt>
+<dd>x ordinate of control point for curve beginning</dd>
+<dt>y1:</dt>
+<dd>y ordinate of control point for curve beginning</dd>
+<dt>x2:</dt>
+<dd>x ordinate of control point for curve ending</dd>
+<dt>y2:</dt>
+<dd>y ordinate of control point for curve ending</dd>
+<dt>x:</dt>
+<dd>x ordinate of the end of the curve</dd>
+<dt>y:</dt>
+<dd>y ordinate of the end of the curve</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="drawpathcurvetorelative">
+<h1><a class="toc-backref" href="#id272">DrawPathCurveToRelative</a></h1>
+<div class="section" id="id89">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+void DrawPathCurveToRelative( DrawingWand *drawing_wand, const double x1, const double y1,
+                              const double x2, const double y2, const double x,
+                              const double y );
+</pre>
+</div>
+<div class="section" id="id90">
+<h2>Description</h2>
+<p>DrawPathCurveToRelative() draws a cubic Bezier curve from the current
+point to (x,y) using (x1,y1) as the control point at the beginning of
+the curve and (x2,y2) as the control point at the end of the curve using
+relative coordinates. At the end of the command, the new current point
+becomes the final (x,y) coordinate pair used in the polybezier.</p>
+<p>The format of the DrawPathCurveToRelative method is:</p>
+<pre class="literal-block">
+void DrawPathCurveToRelative( DrawingWand *drawing_wand, const double x1, const double y1,
+                              const double x2, const double y2, const double x,
+                              const double y );
+</pre>
+<dl class="docutils">
+<dt>drawing_wand:</dt>
+<dd>The drawing wand.</dd>
+<dt>x1:</dt>
+<dd>x ordinate of control point for curve beginning</dd>
+<dt>y1:</dt>
+<dd>y ordinate of control point for curve beginning</dd>
+<dt>x2:</dt>
+<dd>x ordinate of control point for curve ending</dd>
+<dt>y2:</dt>
+<dd>y ordinate of control point for curve ending</dd>
+<dt>x:</dt>
+<dd>x ordinate of the end of the curve</dd>
+<dt>y:</dt>
+<dd>y ordinate of the end of the curve</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="drawpathcurvetoquadraticbezierabsolute">
+<h1><a class="toc-backref" href="#id273">DrawPathCurveToQuadraticBezierAbsolute</a></h1>
+<div class="section" id="id91">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+void DrawPathCurveToQuadraticBezierAbsolute( DrawingWand *drawing_wand, const double x1,
+                                             const double y1, onst double x, const double y );
+</pre>
+</div>
+<div class="section" id="id92">
+<h2>Description</h2>
+<p>DrawPathCurveToQuadraticBezierAbsolute() draws a quadratic Bezier curve
+from the current point to (x,y) using (x1,y1) as the control point using
+absolute coordinates. At the end of the command, the new current point
+becomes the final (x,y) coordinate pair used in the polybezier.</p>
+<p>The format of the DrawPathCurveToQuadraticBezierAbsolute method is:</p>
+<pre class="literal-block">
+void DrawPathCurveToQuadraticBezierAbsolute( DrawingWand *drawing_wand, const double x1,
+                                             const double y1, onst double x, const double y );
+</pre>
+<dl class="docutils">
+<dt>drawing_wand:</dt>
+<dd>The drawing wand.</dd>
+<dt>x1:</dt>
+<dd>x ordinate of the control point</dd>
+<dt>y1:</dt>
+<dd>y ordinate of the control point</dd>
+<dt>x:</dt>
+<dd>x ordinate of final point</dd>
+<dt>y:</dt>
+<dd>y ordinate of final point</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="drawpathcurvetoquadraticbezierrelative">
+<h1><a class="toc-backref" href="#id274">DrawPathCurveToQuadraticBezierRelative</a></h1>
+<div class="section" id="id93">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+void DrawPathCurveToQuadraticBezierRelative( DrawingWand *drawing_wand, const double x1,
+                                             const double y1, const double x,
+                                             const double y );
+</pre>
+</div>
+<div class="section" id="id94">
+<h2>Description</h2>
+<p>DrawPathCurveToQuadraticBezierRelative() draws a quadratic Bezier curve
+from the current point to (x,y) using (x1,y1) as the control point using
+relative coordinates. At the end of the command, the new current point
+becomes the final (x,y) coordinate pair used in the polybezier.</p>
+<p>The format of the DrawPathCurveToQuadraticBezierRelative method is:</p>
+<pre class="literal-block">
+void DrawPathCurveToQuadraticBezierRelative( DrawingWand *drawing_wand, const double x1,
+                                             const double y1, const double x,
+                                             const double y );
+</pre>
+<dl class="docutils">
+<dt>drawing_wand:</dt>
+<dd>The drawing wand.</dd>
+<dt>x1:</dt>
+<dd>x ordinate of the control point</dd>
+<dt>y1:</dt>
+<dd>y ordinate of the control point</dd>
+<dt>x:</dt>
+<dd>x ordinate of final point</dd>
+<dt>y:</dt>
+<dd>y ordinate of final point</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="drawpathcurvetoquadraticbeziersmoothabsolute">
+<h1><a class="toc-backref" href="#id275">DrawPathCurveToQuadraticBezierSmoothAbsolute</a></h1>
+<div class="section" id="id95">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+void DrawPathCurveToQuadraticBezierSmoothAbsolute( DrawingWand *drawing_wand, const double x,
+                                                   const double y );
+</pre>
+</div>
+<div class="section" id="id96">
+<h2>Description</h2>
+<p>DrawPathCurveToQuadraticBezierSmoothAbsolute() draws a quadratic
+Bezier curve (using absolute coordinates) from the current point to
+(x,y). The control point is assumed to be the reflection of the
+control point on the previous command relative to the current
+point. (If there is no previous command or if the previous command was
+not a DrawPathCurveToQuadraticBezierAbsolute,
+DrawPathCurveToQuadraticBezierRelative,
+DrawPathCurveToQuadraticBezierSmoothAbsolute or
+DrawPathCurveToQuadraticBezierSmoothRelative, assume the control point
+is coincident with the current point.). At the end of the command, the
+new current point becomes the final (x,y) coordinate pair used in the
+polybezier.</p>
+<p>The format of the DrawPathCurveToQuadraticBezierSmoothAbsolute method is:</p>
+<pre class="literal-block">
+void DrawPathCurveToQuadraticBezierSmoothAbsolute( DrawingWand *drawing_wand, const double x,
+                                                   const double y );
+</pre>
+<dl class="docutils">
+<dt>drawing_wand:</dt>
+<dd>The drawing wand.</dd>
+<dt>x:</dt>
+<dd>x ordinate of final point</dd>
+<dt>y:</dt>
+<dd>y ordinate of final point</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="drawpathcurvetoquadraticbeziersmoothrelative">
+<h1><a class="toc-backref" href="#id276">DrawPathCurveToQuadraticBezierSmoothRelative</a></h1>
+<div class="section" id="id97">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+void DrawPathCurveToQuadraticBezierSmoothRelative( DrawingWand *drawing_wand, const double x,
+                                                   const double y );
+</pre>
+</div>
+<div class="section" id="id98">
+<h2>Description</h2>
+<p>DrawPathCurveToQuadraticBezierSmoothRelative() draws a quadratic
+Bezier curve (using relative coordinates) from the current point to
+(x,y). The control point is assumed to be the reflection of the
+control point on the previous command relative to the current
+point. (If there is no previous command or if the previous command was
+not a DrawPathCurveToQuadraticBezierAbsolute,
+DrawPathCurveToQuadraticBezierRelative,
+DrawPathCurveToQuadraticBezierSmoothAbsolute or
+DrawPathCurveToQuadraticBezierSmoothRelative, assume the control point
+is coincident with the current point.). At the end of the command, the
+new current point becomes the final (x,y) coordinate pair used in the
+polybezier.</p>
+<p>The format of the DrawPathCurveToQuadraticBezierSmoothRelative method is:</p>
+<pre class="literal-block">
+void DrawPathCurveToQuadraticBezierSmoothRelative( DrawingWand *drawing_wand, const double x,
+                                                   const double y );
+</pre>
+<dl class="docutils">
+<dt>drawing_wand:</dt>
+<dd>The drawing wand.</dd>
+<dt>x:</dt>
+<dd>x ordinate of final point</dd>
+<dt>y:</dt>
+<dd>y ordinate of final point</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="drawpathcurvetosmoothabsolute">
+<h1><a class="toc-backref" href="#id277">DrawPathCurveToSmoothAbsolute</a></h1>
+<div class="section" id="id99">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+void DrawPathCurveToSmoothAbsolute( DrawingWand *drawing_wand, const double x2const double y2,
+                                    const double x, const double y );
+</pre>
+</div>
+<div class="section" id="id100">
+<h2>Description</h2>
+<p>DrawPathCurveToSmoothAbsolute() draws a cubic Bezier curve from the
+current point to (x,y) using absolute coordinates. The first control
+point is assumed to be the reflection of the second control point on
+the previous command relative to the current point. (If there is no
+previous command or if the previous command was not an
+DrawPathCurveToAbsolute, DrawPathCurveToRelative,
+DrawPathCurveToSmoothAbsolute or DrawPathCurveToSmoothRelative, assume
+the first control point is coincident with the current point.) (x2,y2)
+is the second control point (i.e., the control point at the end of the
+curve). At the end of the command, the new current point becomes the
+final (x,y) coordinate pair used in the polybezier.</p>
+<p>The format of the DrawPathCurveToSmoothAbsolute method is:</p>
+<pre class="literal-block">
+void DrawPathCurveToSmoothAbsolute( DrawingWand *drawing_wand, const double x2const double y2,
+                                    const double x, const double y );
+</pre>
+<dl class="docutils">
+<dt>drawing_wand:</dt>
+<dd>The drawing wand.</dd>
+<dt>x2:</dt>
+<dd>x ordinate of second control point</dd>
+<dt>y2:</dt>
+<dd>y ordinate of second control point</dd>
+<dt>x:</dt>
+<dd>x ordinate of termination point</dd>
+<dt>y:</dt>
+<dd>y ordinate of termination point</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="drawpathcurvetosmoothrelative">
+<h1><a class="toc-backref" href="#id278">DrawPathCurveToSmoothRelative</a></h1>
+<div class="section" id="id101">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+void DrawPathCurveToSmoothRelative( DrawingWand *drawing_wand, const double x2,
+                                    const double y2, const double x, const double y );
+</pre>
+</div>
+<div class="section" id="id102">
+<h2>Description</h2>
+<p>DrawPathCurveToSmoothRelative() draws a cubic Bezier curve from the
+current point to (x,y) using relative coordinates. The first control
+point is assumed to be the reflection of the second control point on
+the previous command relative to the current point. (If there is no
+previous command or if the previous command was not an
+DrawPathCurveToAbsolute, DrawPathCurveToRelative,
+DrawPathCurveToSmoothAbsolute or DrawPathCurveToSmoothRelative, assume
+the first control point is coincident with the current point.) (x2,y2)
+is the second control point (i.e., the control point at the end of the
+curve). At the end of the command, the new current point becomes the
+final (x,y) coordinate pair used in the polybezier.</p>
+<p>The format of the DrawPathCurveToSmoothRelative method is:</p>
+<pre class="literal-block">
+void DrawPathCurveToSmoothRelative( DrawingWand *drawing_wand, const double x2,
+                                    const double y2, const double x, const double y );
+</pre>
+<dl class="docutils">
+<dt>drawing_wand:</dt>
+<dd>The drawing wand.</dd>
+<dt>x2:</dt>
+<dd>x ordinate of second control point</dd>
+<dt>y2:</dt>
+<dd>y ordinate of second control point</dd>
+<dt>x:</dt>
+<dd>x ordinate of termination point</dd>
+<dt>y:</dt>
+<dd>y ordinate of termination point</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="drawpathellipticarcabsolute">
+<h1><a class="toc-backref" href="#id279">DrawPathEllipticArcAbsolute</a></h1>
+<div class="section" id="id103">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+void DrawPathEllipticArcAbsolute( DrawingWand *drawing_wand, const double rx, const double ry,
+                                  const double x_axis_rotation,
+                                  unsigned int large_arc_flag, unsigned int sweep_flag,
+                                  const double x, const double y );
+</pre>
+</div>
+<div class="section" id="id104">
+<h2>Description</h2>
+<p>DrawPathEllipticArcAbsolute() draws an elliptical arc from the current
+point to (x, y) using absolute coordinates. The size and orientation
+of the ellipse are defined by two radii (rx, ry) and an
+xAxisRotation, which indicates how the ellipse as a whole is rotated
+relative to the current coordinate system. The center (cx, cy) of the
+ellipse is calculated automatically to satisfy the constraints imposed
+by the other parameters. largeArcFlag and sweepFlag contribute to the
+automatic calculations and help determine how the arc is drawn. If
+largeArcFlag is true then draw the larger of the available arcs. If
+sweepFlag is true, then draw the arc matching a clock-wise rotation.</p>
+<p>The format of the DrawPathEllipticArcAbsolute method is:</p>
+<pre class="literal-block">
+void DrawPathEllipticArcAbsolute( DrawingWand *drawing_wand, const double rx, const double ry,
+                                  const double x_axis_rotation,
+                                  unsigned int large_arc_flag, unsigned int sweep_flag,
+                                  const double x, const double y );
+</pre>
+<dl class="docutils">
+<dt>drawing_wand:</dt>
+<dd>The drawing wand.</dd>
+<dt>rx:</dt>
+<dd>x radius</dd>
+<dt>ry:</dt>
+<dd>y radius</dd>
+<dt>x_axis_rotation:</dt>
+<dd>indicates how the ellipse as a whole is rotated
+relative to the current coordinate system</dd>
+<dt>large_arc_flag:</dt>
+<dd>If non-zero (true) then draw the larger of the
+available arcs</dd>
+<dt>sweep_flag:</dt>
+<dd>If non-zero (true) then draw the arc matching a
+clock-wise rotation</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="drawpathellipticarcrelative">
+<h1><a class="toc-backref" href="#id280">DrawPathEllipticArcRelative</a></h1>
+<div class="section" id="id105">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+void DrawPathEllipticArcRelative( DrawingWand *drawing_wand, const double rx, const double ry,
+                                  const double x_axis_rotation,
+                                  unsigned int large_arc_flag, unsigned int sweep_flag,
+                                  const double x, const double y );
+</pre>
+</div>
+<div class="section" id="id106">
+<h2>Description</h2>
+<p>DrawPathEllipticArcRelative() draws an elliptical arc from the current
+point to (x, y) using relative coordinates. The size and orientation
+of the ellipse are defined by two radii (rx, ry) and an
+xAxisRotation, which indicates how the ellipse as a whole is rotated
+relative to the current coordinate system. The center (cx, cy) of the
+ellipse is calculated automatically to satisfy the constraints imposed
+by the other parameters. largeArcFlag and sweepFlag contribute to the
+automatic calculations and help determine how the arc is drawn. If
+largeArcFlag is true then draw the larger of the available arcs. If
+sweepFlag is true, then draw the arc matching a clock-wise rotation.</p>
+<p>The format of the DrawPathEllipticArcRelative method is:</p>
+<pre class="literal-block">
+void DrawPathEllipticArcRelative( DrawingWand *drawing_wand, const double rx, const double ry,
+                                  const double x_axis_rotation,
+                                  unsigned int large_arc_flag, unsigned int sweep_flag,
+                                  const double x, const double y );
+</pre>
+<dl class="docutils">
+<dt>drawing_wand:</dt>
+<dd>The drawing wand.</dd>
+<dt>rx:</dt>
+<dd>x radius</dd>
+<dt>ry:</dt>
+<dd>y radius</dd>
+<dt>x_axis_rotation:</dt>
+<dd>indicates how the ellipse as a whole is rotated
+relative to the current coordinate system</dd>
+<dt>large_arc_flag:</dt>
+<dd>If non-zero (true) then draw the larger of the
+available arcs</dd>
+<dt>sweep_flag:</dt>
+<dd>If non-zero (true) then draw the arc matching a
+clock-wise rotation</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="drawpathfinish">
+<h1><a class="toc-backref" href="#id281">DrawPathFinish</a></h1>
+<div class="section" id="id107">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+void DrawPathFinish( DrawingWand *drawing_wand );
+</pre>
+</div>
+<div class="section" id="id108">
+<h2>Description</h2>
+<p>DrawPathFinish() terminates the current path.</p>
+<p>The format of the DrawPathFinish method is:</p>
+<pre class="literal-block">
+void DrawPathFinish( DrawingWand *drawing_wand );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>drawing_wand:</dt>
+<dd>The drawing wand.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="drawpathlinetoabsolute">
+<h1><a class="toc-backref" href="#id282">DrawPathLineToAbsolute</a></h1>
+<div class="section" id="id109">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+void DrawPathLineToAbsolute( DrawingWand *drawing_wand, const double x, const double y );
+</pre>
+</div>
+<div class="section" id="id110">
+<h2>Description</h2>
+<p>DrawPathLineToAbsolute() draws a line path from the current point to the
+given coordinate using absolute coordinates. The coordinate then becomes
+the new current point.</p>
+<p>The format of the DrawPathLineToAbsolute method is:</p>
+<pre class="literal-block">
+void DrawPathLineToAbsolute( DrawingWand *drawing_wand, const double x, const double y );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>drawing_wand:</dt>
+<dd>The drawing wand.</dd>
+<dt>x:</dt>
+<dd>target x ordinate</dd>
+<dt>y:</dt>
+<dd>target y ordinate</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="drawpathlinetorelative">
+<h1><a class="toc-backref" href="#id283">DrawPathLineToRelative</a></h1>
+<div class="section" id="id111">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+void DrawPathLineToRelative( DrawingWand *drawing_wand, const double x, const double y );
+</pre>
+</div>
+<div class="section" id="id112">
+<h2>Description</h2>
+<p>DrawPathLineToRelative() draws a line path from the current point to the
+given coordinate using relative coordinates. The coordinate then becomes
+the new current point.</p>
+<p>The format of the DrawPathLineToRelative method is:</p>
+<pre class="literal-block">
+void DrawPathLineToRelative( DrawingWand *drawing_wand, const double x, const double y );
+</pre>
+<dl class="docutils">
+<dt>drawing_wand:</dt>
+<dd>The drawing wand.</dd>
+<dt>x:</dt>
+<dd>target x ordinate</dd>
+<dt>y:</dt>
+<dd>target y ordinate</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="drawpathlinetohorizontalabsolute">
+<h1><a class="toc-backref" href="#id284">DrawPathLineToHorizontalAbsolute</a></h1>
+<div class="section" id="id113">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+void DrawPathLineToHorizontalAbsolute( DrawingWand *drawing_wand, const PathMode mode,
+                                       const double x );
+</pre>
+</div>
+<div class="section" id="id114">
+<h2>Description</h2>
+<p>DrawPathLineToHorizontalAbsolute() draws a horizontal line path from the
+current point to the target point using absolute coordinates.  The target
+point then becomes the new current point.</p>
+<p>The format of the DrawPathLineToHorizontalAbsolute method is:</p>
+<pre class="literal-block">
+void DrawPathLineToHorizontalAbsolute( DrawingWand *drawing_wand, const PathMode mode,
+                                       const double x );
+</pre>
+<dl class="docutils">
+<dt>drawing_wand:</dt>
+<dd>The drawing wand.</dd>
+<dt>x:</dt>
+<dd>target x ordinate</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="drawpathlinetohorizontalrelative">
+<h1><a class="toc-backref" href="#id285">DrawPathLineToHorizontalRelative</a></h1>
+<div class="section" id="id115">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+void DrawPathLineToHorizontalRelative( DrawingWand *drawing_wand, const double x );
+</pre>
+</div>
+<div class="section" id="id116">
+<h2>Description</h2>
+<p>DrawPathLineToHorizontalRelative() draws a horizontal line path from the
+current point to the target point using relative coordinates.  The target
+point then becomes the new current point.</p>
+<p>The format of the DrawPathLineToHorizontalRelative method is:</p>
+<pre class="literal-block">
+void DrawPathLineToHorizontalRelative( DrawingWand *drawing_wand, const double x );
+</pre>
+<dl class="docutils">
+<dt>drawing_wand:</dt>
+<dd>The drawing wand.</dd>
+<dt>x:</dt>
+<dd>target x ordinate</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="drawpathlinetoverticalabsolute">
+<h1><a class="toc-backref" href="#id286">DrawPathLineToVerticalAbsolute</a></h1>
+<div class="section" id="id117">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+void DrawPathLineToVerticalAbsolute( DrawingWand *drawing_wand, const double y );
+</pre>
+</div>
+<div class="section" id="id118">
+<h2>Description</h2>
+<p>DrawPathLineToVerticalAbsolute() draws a vertical line path from the
+current point to the target point using absolute coordinates.  The target
+point then becomes the new current point.</p>
+<p>The format of the DrawPathLineToVerticalAbsolute method is:</p>
+<pre class="literal-block">
+void DrawPathLineToVerticalAbsolute( DrawingWand *drawing_wand, const double y );
+</pre>
+<dl class="docutils">
+<dt>drawing_wand:</dt>
+<dd>The drawing wand.</dd>
+<dt>y:</dt>
+<dd>target y ordinate</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="drawpathlinetoverticalrelative">
+<h1><a class="toc-backref" href="#id287">DrawPathLineToVerticalRelative</a></h1>
+<div class="section" id="id119">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+void DrawPathLineToVerticalRelative( DrawingWand *drawing_wand, const double y );
+</pre>
+</div>
+<div class="section" id="id120">
+<h2>Description</h2>
+<p>DrawPathLineToVerticalRelative() draws a vertical line path from the
+current point to the target point using relative coordinates.  The target
+point then becomes the new current point.</p>
+<p>The format of the DrawPathLineToVerticalRelative method is:</p>
+<pre class="literal-block">
+void DrawPathLineToVerticalRelative( DrawingWand *drawing_wand, const double y );
+</pre>
+<dl class="docutils">
+<dt>drawing_wand:</dt>
+<dd>The drawing wand.</dd>
+<dt>y:</dt>
+<dd>target y ordinate</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="drawpathmovetoabsolute">
+<h1><a class="toc-backref" href="#id288">DrawPathMoveToAbsolute</a></h1>
+<div class="section" id="id121">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+void DrawPathMoveToAbsolute( DrawingWand *drawing_wand, const double x, const double y );
+</pre>
+</div>
+<div class="section" id="id122">
+<h2>Description</h2>
+<p>DrawPathMoveToAbsolute() starts a new sub-path at the given coordinate
+using absolute coordinates. The current point then becomes the
+specified coordinate.</p>
+<p>The format of the DrawPathMoveToAbsolute method is:</p>
+<pre class="literal-block">
+void DrawPathMoveToAbsolute( DrawingWand *drawing_wand, const double x, const double y );
+</pre>
+<dl class="docutils">
+<dt>drawing_wand:</dt>
+<dd>The drawing wand.</dd>
+<dt>x:</dt>
+<dd>target x ordinate</dd>
+<dt>y:</dt>
+<dd>target y ordinate</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="drawpathmovetorelative">
+<h1><a class="toc-backref" href="#id289">DrawPathMoveToRelative</a></h1>
+<div class="section" id="id123">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+void DrawPathMoveToRelative( DrawingWand *drawing_wand, const double x, const double y );
+</pre>
+</div>
+<div class="section" id="id124">
+<h2>Description</h2>
+<p>DrawPathMoveToRelative() starts a new sub-path at the given coordinate
+using relative coordinates. The current point then becomes the
+specified coordinate.</p>
+<p>The format of the DrawPathMoveToRelative method is:</p>
+<pre class="literal-block">
+void DrawPathMoveToRelative( DrawingWand *drawing_wand, const double x, const double y );
+</pre>
+<dl class="docutils">
+<dt>drawing_wand:</dt>
+<dd>The drawing wand.</dd>
+<dt>x:</dt>
+<dd>target x ordinate</dd>
+<dt>y:</dt>
+<dd>target y ordinate</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="drawpathstart">
+<h1><a class="toc-backref" href="#id290">DrawPathStart</a></h1>
+<div class="section" id="id125">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+void DrawPathStart( DrawingWand *drawing_wand );
+</pre>
+</div>
+<div class="section" id="id126">
+<h2>Description</h2>
+<p>DrawPathStart() declares the start of a path drawing list which is terminated
+by a matching DrawPathFinish() command. All other DrawPath commands must
+be enclosed between a DrawPathStart() and a DrawPathFinish() command. This
+is because path drawing commands are subordinate commands and they do not
+function by themselves.</p>
+<p>The format of the DrawPathStart method is:</p>
+<pre class="literal-block">
+void DrawPathStart( DrawingWand *drawing_wand );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>drawing_wand:</dt>
+<dd>The drawing wand.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="drawpeekgraphiccontext">
+<h1><a class="toc-backref" href="#id291">DrawPeekGraphicContext</a></h1>
+<div class="section" id="id127">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#drawinfo">DrawInfo</a> *DrawPeekGraphicContext( const DrawingWand *drawing_wand );
+</pre>
+</div>
+<div class="section" id="id128">
+<h2>Description</h2>
+<p>DrawPeekGraphicContext() returns the current graphic drawing_wand.</p>
+<p>The format of the DrawPeekGraphicContext method is:</p>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#drawinfo">DrawInfo</a> *DrawPeekGraphicContext( const DrawingWand *drawing_wand );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>drawing_wand:</dt>
+<dd>The drawing wand.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="drawpoint">
+<h1><a class="toc-backref" href="#id292">DrawPoint</a></h1>
+<div class="section" id="id129">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+void DrawPoint( DrawingWand *drawing_wand, const double x, const double y );
+</pre>
+</div>
+<div class="section" id="id130">
+<h2>Description</h2>
+<p>DrawPoint() draws a point using the current stroke color and stroke
+thickness at the specified coordinates.</p>
+<p>The format of the DrawPoint method is:</p>
+<pre class="literal-block">
+void DrawPoint( DrawingWand *drawing_wand, const double x, const double y );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>drawing_wand:</dt>
+<dd>The drawing wand.</dd>
+<dt>x:</dt>
+<dd>target x coordinate</dd>
+<dt>y:</dt>
+<dd>target y coordinate</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="drawpolygon">
+<h1><a class="toc-backref" href="#id293">DrawPolygon</a></h1>
+<div class="section" id="id131">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+void DrawPolygon( DrawingWand *drawing_wand, const unsigned long number_coordinates,
+                  const <a class="reference external" href="../api/types.html#pointinfo">PointInfo</a> *coordinates );
+</pre>
+</div>
+<div class="section" id="id132">
+<h2>Description</h2>
+<p>DrawPolygon() draws a polygon using the current stroke, stroke width, and
+fill color or texture, using the specified array of coordinates.</p>
+<p>The format of the DrawPolygon method is:</p>
+<pre class="literal-block">
+void DrawPolygon( DrawingWand *drawing_wand, const unsigned long number_coordinates,
+                  const <a class="reference external" href="../api/types.html#pointinfo">PointInfo</a> *coordinates );
+</pre>
+<dl class="docutils">
+<dt>drawing_wand:</dt>
+<dd>The drawing wand.</dd>
+<dt>number_coordinates:</dt>
+<dd>number of coordinates</dd>
+<dt>coordinates:</dt>
+<dd>coordinate array</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="drawpolyline">
+<h1><a class="toc-backref" href="#id294">DrawPolyline</a></h1>
+<div class="section" id="id133">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+void DrawPolyline( DrawingWand *drawing_wand, const unsigned long number_coordinates,
+                   const <a class="reference external" href="../api/types.html#pointinfo">PointInfo</a> *coordinates );
+</pre>
+</div>
+<div class="section" id="id134">
+<h2>Description</h2>
+<p>DrawPolyline() draws a polyline using the current stroke, stroke width, and
+fill color or texture, using the specified array of coordinates.</p>
+<p>The format of the DrawPolyline method is:</p>
+<pre class="literal-block">
+void DrawPolyline( DrawingWand *drawing_wand, const unsigned long number_coordinates,
+                   const <a class="reference external" href="../api/types.html#pointinfo">PointInfo</a> *coordinates );
+</pre>
+<dl class="docutils">
+<dt>drawing_wand:</dt>
+<dd>The drawing wand.</dd>
+<dt>number_coordinates:</dt>
+<dd>number of coordinates</dd>
+<dt>coordinates:</dt>
+<dd>coordinate array</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="drawpopclippath">
+<h1><a class="toc-backref" href="#id295">DrawPopClipPath</a></h1>
+<div class="section" id="id135">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+void DrawPopClipPath( DrawingWand *drawing_wand );
+</pre>
+</div>
+<div class="section" id="id136">
+<h2>Description</h2>
+<p>DrawPopClipPath() terminates a clip path definition.</p>
+<p>The format of the DrawPopClipPath method is:</p>
+<pre class="literal-block">
+void DrawPopClipPath( DrawingWand *drawing_wand );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>drawing_wand:</dt>
+<dd>The drawing wand.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="drawpopdefs">
+<h1><a class="toc-backref" href="#id296">DrawPopDefs</a></h1>
+<div class="section" id="id137">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+void DrawPopDefs( DrawingWand *drawing_wand );
+</pre>
+</div>
+<div class="section" id="id138">
+<h2>Description</h2>
+<p>DrawPopDefs() terminates a definition list</p>
+<p>The format of the DrawPopDefs method is:</p>
+<pre class="literal-block">
+void DrawPopDefs( DrawingWand *drawing_wand );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>drawing_wand:</dt>
+<dd>The drawing wand.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="drawpopgraphiccontext">
+<h1><a class="toc-backref" href="#id297">DrawPopGraphicContext</a></h1>
+<div class="section" id="id139">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+void DrawPopGraphicContext( DrawingWand *drawing_wand );
+</pre>
+</div>
+<div class="section" id="id140">
+<h2>Description</h2>
+<p>DrawPopGraphicContext() destroys the current drawing_wand returning to the
+previously pushed drawing wand. Multiple drawing wand  may exist. It is an
+error to attempt to pop more drawing_wands than have been pushed, and it is
+proper form to pop all drawing_wands which have been pushed.</p>
+<p>The format of the DrawPopGraphicContext method is:</p>
+<pre class="literal-block">
+void DrawPopGraphicContext( DrawingWand *drawing_wand );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>drawing_wand:</dt>
+<dd>The drawing wand.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="drawpoppattern">
+<h1><a class="toc-backref" href="#id298">DrawPopPattern</a></h1>
+<div class="section" id="id141">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+void DrawPopPattern( DrawingWand *drawing_wand );
+</pre>
+</div>
+<div class="section" id="id142">
+<h2>Description</h2>
+<p>DrawPopPattern() terminates a pattern definition.</p>
+<p>The format of the DrawPopPattern method is:</p>
+<pre class="literal-block">
+void DrawPopPattern( DrawingWand *drawing_wand );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>drawing_wand:</dt>
+<dd>The drawing wand.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="drawpushclippath">
+<h1><a class="toc-backref" href="#id299">DrawPushClipPath</a></h1>
+<div class="section" id="id143">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+void DrawPushClipPath( DrawingWand *drawing_wand, const char *clip_path_id );
+</pre>
+</div>
+<div class="section" id="id144">
+<h2>Description</h2>
+<p>DrawPushClipPath() starts a clip path definition which is comprized of
+any number of drawing commands and terminated by a DrawPopClipPath()
+command.</p>
+<p>The format of the DrawPushClipPath method is:</p>
+<pre class="literal-block">
+void DrawPushClipPath( DrawingWand *drawing_wand, const char *clip_path_id );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>drawing_wand:</dt>
+<dd>The drawing wand.</dd>
+<dt>clip_path_id:</dt>
+<dd>string identifier to associate with the clip path for
+later use.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="drawpushdefs">
+<h1><a class="toc-backref" href="#id300">DrawPushDefs</a></h1>
+<div class="section" id="id145">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+void DrawPushDefs( DrawingWand *drawing_wand );
+</pre>
+</div>
+<div class="section" id="id146">
+<h2>Description</h2>
+<p>DrawPushDefs() indicates that commands up to a terminating DrawPopDefs()
+command create named elements (e.g. clip-paths, textures, etc.) which
+may safely be processed earlier for the sake of efficiency.</p>
+<p>The format of the DrawPushDefs method is:</p>
+<pre class="literal-block">
+void DrawPushDefs( DrawingWand *drawing_wand );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>drawing_wand:</dt>
+<dd>The drawing wand.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="drawpushgraphiccontext">
+<h1><a class="toc-backref" href="#id301">DrawPushGraphicContext</a></h1>
+<div class="section" id="id147">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+void DrawPushGraphicContext( DrawingWand *drawing_wand );
+</pre>
+</div>
+<div class="section" id="id148">
+<h2>Description</h2>
+<p>DrawPushGraphicContext() clones the current drawing wand to create a
+new drawing wand. The original drawing drawing_wand(s) may be returned to
+by invoking DrawPopGraphicContext().  The drawing wands are stored on a
+drawing wand stack.  For every Pop there must have already been an
+equivalent Push.</p>
+<p>The format of the DrawPushGraphicContext method is:</p>
+<pre class="literal-block">
+void DrawPushGraphicContext( DrawingWand *drawing_wand );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>drawing_wand:</dt>
+<dd>The drawing wand.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="drawpushpattern">
+<h1><a class="toc-backref" href="#id302">DrawPushPattern</a></h1>
+<div class="section" id="id149">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+void DrawPushPattern( DrawingWand *drawing_wand, const char *pattern_id, const double x,
+                      const double y, const double width, const double height );
+</pre>
+</div>
+<div class="section" id="id150">
+<h2>Description</h2>
+<p>DrawPushPattern() indicates that subsequent commands up to a
+DrawPopPattern() command comprise the definition of a named pattern.
+The pattern space is assigned top left corner coordinates, a width
+and height, and becomes its own drawing space.  Anything which can
+be drawn may be used in a pattern definition.
+Named patterns may be used as stroke or brush definitions.</p>
+<p>The format of the DrawPushPattern method is:</p>
+<pre class="literal-block">
+void DrawPushPattern( DrawingWand *drawing_wand, const char *pattern_id, const double x,
+                      const double y, const double width, const double height );
+</pre>
+<dl class="docutils">
+<dt>drawing_wand:</dt>
+<dd>The drawing wand.</dd>
+<dt>pattern_id:</dt>
+<dd>pattern identification for later reference</dd>
+<dt>x:</dt>
+<dd>x ordinate of top left corner</dd>
+<dt>y:</dt>
+<dd>y ordinate of top left corner</dd>
+<dt>width:</dt>
+<dd>width of pattern space</dd>
+<dt>height:</dt>
+<dd>height of pattern space</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="drawrectangle">
+<h1><a class="toc-backref" href="#id303">DrawRectangle</a></h1>
+<div class="section" id="id151">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+void DrawRectangle( DrawingWand *drawing_wand, const double x1, const double y1,
+                    const double x2, const double y2 );
+</pre>
+</div>
+<div class="section" id="id152">
+<h2>Description</h2>
+<p>DrawRectangle() draws a rectangle given two coordinates and using
+the current stroke, stroke width, and fill settings.</p>
+<p>The format of the DrawRectangle method is:</p>
+<pre class="literal-block">
+void DrawRectangle( DrawingWand *drawing_wand, const double x1, const double y1,
+                    const double x2, const double y2 );
+</pre>
+<dl class="docutils">
+<dt>x1:</dt>
+<dd>x ordinate of first coordinate</dd>
+<dt>y1:</dt>
+<dd>y ordinate of first coordinate</dd>
+<dt>x2:</dt>
+<dd>x ordinate of second coordinate</dd>
+<dt>y2:</dt>
+<dd>y ordinate of second coordinate</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="drawrender">
+<h1><a class="toc-backref" href="#id304">DrawRender</a></h1>
+<div class="section" id="id153">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+unsigned int DrawRender( const DrawingWand *drawing_wand );
+</pre>
+</div>
+<div class="section" id="id154">
+<h2>Description</h2>
+<p>DrawRender() renders all preceding drawing commands onto the image.
+This function is deprecated.  Use MagickDrawImage() instead.</p>
+<p>The format of the DrawRender method is:</p>
+<pre class="literal-block">
+unsigned int DrawRender( const DrawingWand *drawing_wand );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>drawing_wand:</dt>
+<dd>The drawing wand.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="drawrotate">
+<h1><a class="toc-backref" href="#id305">DrawRotate</a></h1>
+<div class="section" id="id155">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+void DrawRotate( DrawingWand *drawing_wand, const double degrees );
+</pre>
+</div>
+<div class="section" id="id156">
+<h2>Description</h2>
+<p>DrawRotate() applies the specified rotation to the current coordinate space.</p>
+<p>The format of the DrawRotate method is:</p>
+<pre class="literal-block">
+void DrawRotate( DrawingWand *drawing_wand, const double degrees );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>drawing_wand:</dt>
+<dd>The drawing wand.</dd>
+<dt>degrees:</dt>
+<dd>degrees of rotation</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="drawroundrectangle">
+<h1><a class="toc-backref" href="#id306">DrawRoundRectangle</a></h1>
+<div class="section" id="id157">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+void DrawRoundRectangle( DrawingWand *drawing_wand, double x1, double y1, double x2, double y2,
+                         double rx, double ry );
+</pre>
+</div>
+<div class="section" id="id158">
+<h2>Description</h2>
+<p>DrawRoundRectangle() draws a rounted rectangle given two coordinates,
+x &amp; y corner radiuses and using the current stroke, stroke width,
+and fill settings.</p>
+<p>The format of the DrawRoundRectangle method is:</p>
+<pre class="literal-block">
+void DrawRoundRectangle( DrawingWand *drawing_wand, double x1, double y1, double x2, double y2,
+                         double rx, double ry );
+</pre>
+<dl class="docutils">
+<dt>drawing_wand:</dt>
+<dd>The drawing wand.</dd>
+<dt>x1:</dt>
+<dd>x ordinate of first coordinate</dd>
+<dt>y1:</dt>
+<dd>y ordinate of first coordinate</dd>
+<dt>x2:</dt>
+<dd>x ordinate of second coordinate</dd>
+<dt>y2:</dt>
+<dd>y ordinate of second coordinate</dd>
+<dt>rx:</dt>
+<dd>radius of corner in horizontal direction</dd>
+<dt>ry:</dt>
+<dd>radius of corner in vertical direction</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="drawscale">
+<h1><a class="toc-backref" href="#id307">DrawScale</a></h1>
+<div class="section" id="id159">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+void DrawScale( DrawingWand *drawing_wand, const double x, const double y );
+</pre>
+</div>
+<div class="section" id="id160">
+<h2>Description</h2>
+<p>DrawScale() adjusts the scaling factor to apply in the horizontal and
+vertical directions to the current coordinate space.</p>
+<p>The format of the DrawScale method is:</p>
+<pre class="literal-block">
+void DrawScale( DrawingWand *drawing_wand, const double x, const double y );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>drawing_wand:</dt>
+<dd>The drawing wand.</dd>
+<dt>x:</dt>
+<dd>horizontal scale factor</dd>
+<dt>y:</dt>
+<dd>vertical scale factor</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="drawskewx">
+<h1><a class="toc-backref" href="#id308">DrawSkewX</a></h1>
+<div class="section" id="id161">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+void DrawSkewX( DrawingWand *drawing_wand, const double degrees );
+</pre>
+</div>
+<div class="section" id="id162">
+<h2>Description</h2>
+<p>DrawSkewX() skews the current coordinate system in the horizontal
+direction.</p>
+<p>The format of the DrawSkewX method is:</p>
+<pre class="literal-block">
+void DrawSkewX( DrawingWand *drawing_wand, const double degrees );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>drawing_wand:</dt>
+<dd>The drawing wand.</dd>
+<dt>degrees:</dt>
+<dd>number of degrees to skew the coordinates</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="drawskewy">
+<h1><a class="toc-backref" href="#id309">DrawSkewY</a></h1>
+<div class="section" id="id163">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+void DrawSkewY( DrawingWand *drawing_wand, const double degrees );
+</pre>
+</div>
+<div class="section" id="id164">
+<h2>Description</h2>
+<p>DrawSkewY() skews the current coordinate system in the vertical
+direction.</p>
+<p>The format of the DrawSkewY method is:</p>
+<pre class="literal-block">
+void DrawSkewY( DrawingWand *drawing_wand, const double degrees );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>drawing_wand:</dt>
+<dd>The drawing wand.</dd>
+<dt>degrees:</dt>
+<dd>number of degrees to skew the coordinates</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="drawsetstopcolor">
+<h1><a class="toc-backref" href="#id310">DrawSetStopColor</a></h1>
+<div class="section" id="id165">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+void DrawSetStopColor( DrawingWand *drawing_wand, const <a class="reference external" href="../api/types.html#pixelpacket">PixelPacket</a> *stop_color,
+                       const double offset );
+</pre>
+</div>
+<div class="section" id="id166">
+<h2>Description</h2>
+<p>DrawSetStopColor() sets the stop color and offset for gradients</p>
+<p>The format of the DrawSetStopColor method is:</p>
+<pre class="literal-block">
+void DrawSetStopColor( DrawingWand *drawing_wand, const <a class="reference external" href="../api/types.html#pixelpacket">PixelPacket</a> *stop_color,
+                       const double offset );
+</pre>
+<dl class="docutils">
+<dt>drawing_wand:</dt>
+<dd>The drawing wand.</dd>
+</dl>
+<p>o stop_color:</p>
+<p>o offset:</p>
+</div>
+</div>
+<div class="section" id="drawgetstrokecolor">
+<h1><a class="toc-backref" href="#id311">DrawGetStrokeColor</a></h1>
+<div class="section" id="id167">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+void DrawGetStrokeColor( const DrawingWand *drawing_wand, ;
+</pre>
+</div>
+<div class="section" id="id168">
+<h2>Description</h2>
+<p>DrawGetStrokeColor() returns the color used for stroking object outlines.</p>
+<p>The format of the DrawGetStrokeColor method is:</p>
+<pre class="literal-block">
+void DrawGetStrokeColor( const DrawingWand *drawing_wand, ;
+</pre>
+<dl class="docutils">
+<dt>drawing_wand:</dt>
+<dd>The drawing wand.</dd>
+<dt>stroke_color:</dt>
+<dd>Return the stroke color.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="drawsetstrokecolor">
+<h1><a class="toc-backref" href="#id312">DrawSetStrokeColor</a></h1>
+<div class="section" id="id169">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+void DrawSetStrokeColor( DrawingWand *drawing_wand, const PixelWand *stroke_wand );
+</pre>
+</div>
+<div class="section" id="id170">
+<h2>Description</h2>
+<p>DrawSetStrokeColor() sets the color used for stroking object outlines.</p>
+<p>The format of the DrawSetStrokeColor method is:</p>
+<pre class="literal-block">
+void DrawSetStrokeColor( DrawingWand *drawing_wand, const PixelWand *stroke_wand );
+</pre>
+<dl class="docutils">
+<dt>drawing_wand:</dt>
+<dd>The drawing wand.</dd>
+<dt>stroke_wand:</dt>
+<dd>stroke wand.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="drawsetstrokepatternurl">
+<h1><a class="toc-backref" href="#id313">DrawSetStrokePatternURL</a></h1>
+<div class="section" id="id171">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+void DrawSetStrokePatternURL( DrawingWand *drawing_wand, const char *stroke_url );
+</pre>
+</div>
+<div class="section" id="id172">
+<h2>Description</h2>
+<p>DrawSetStrokePatternURL() sets the pattern used for stroking object outlines.</p>
+<p>The format of the DrawSetStrokePatternURL method is:</p>
+<pre class="literal-block">
+void DrawSetStrokePatternURL( DrawingWand *drawing_wand, const char *stroke_url );
+</pre>
+<dl class="docutils">
+<dt>drawing_wand:</dt>
+<dd>The drawing wand.</dd>
+<dt>stroke_url:</dt>
+<dd>URL specifying pattern ID (e.g. &quot;#pattern_id&quot;)</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="drawgetstrokeantialias">
+<h1><a class="toc-backref" href="#id314">DrawGetStrokeAntialias</a></h1>
+<div class="section" id="id173">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+unsigned int DrawGetStrokeAntialias( const DrawingWand *drawing_wand );
+</pre>
+</div>
+<div class="section" id="id174">
+<h2>Description</h2>
+<p>DrawGetStrokeAntialias() returns the current stroke antialias setting.
+Stroked outlines are antialiased by default.  When antialiasing is disabled
+stroked pixels are thresholded to determine if the stroke color or
+underlying canvas color should be used.</p>
+<p>The format of the DrawGetStrokeAntialias method is:</p>
+<pre class="literal-block">
+unsigned int DrawGetStrokeAntialias( const DrawingWand *drawing_wand );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>drawing_wand:</dt>
+<dd>The drawing wand.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="drawsetstrokeantialias">
+<h1><a class="toc-backref" href="#id315">DrawSetStrokeAntialias</a></h1>
+<div class="section" id="id175">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+void DrawSetStrokeAntialias( DrawingWand *drawing_wand,
+                             const unsigned int stroke_antialias );
+</pre>
+</div>
+<div class="section" id="id176">
+<h2>Description</h2>
+<p>DrawSetStrokeAntialias() controls whether stroked outlines are antialiased.
+Stroked outlines are antialiased by default.  When antialiasing is disabled
+stroked pixels are thresholded to determine if the stroke color or
+underlying canvas color should be used.</p>
+<p>The format of the DrawSetStrokeAntialias method is:</p>
+<pre class="literal-block">
+void DrawSetStrokeAntialias( DrawingWand *drawing_wand,
+                             const unsigned int stroke_antialias );
+</pre>
+<dl class="docutils">
+<dt>drawing_wand:</dt>
+<dd>The drawing wand.</dd>
+<dt>stroke_antialias:</dt>
+<dd>set to false (zero) to disable antialiasing</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="drawgetstrokedasharray">
+<h1><a class="toc-backref" href="#id316">DrawGetStrokeDashArray</a></h1>
+<div class="section" id="id177">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+double *DrawGetStrokeDashArray( const DrawingWand *drawing_wand,
+                                unsigned long *number_elements );
+</pre>
+</div>
+<div class="section" id="id178">
+<h2>Description</h2>
+<p>DrawGetStrokeDashArray() returns an array representing the pattern of
+dashes and gaps used to stroke paths (see DrawSetStrokeDashArray). The
+array must be freed once it is no longer required by the user.</p>
+<p>The format of the DrawGetStrokeDashArray method is:</p>
+<pre class="literal-block">
+double *DrawGetStrokeDashArray( const DrawingWand *drawing_wand,
+                                unsigned long *number_elements );
+</pre>
+<dl class="docutils">
+<dt>drawing_wand:</dt>
+<dd>The drawing wand.</dd>
+<dt>number_elements:</dt>
+<dd>address to place number of elements in dash array</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="drawsetstrokedasharray">
+<h1><a class="toc-backref" href="#id317">DrawSetStrokeDashArray</a></h1>
+<div class="section" id="id179">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+void DrawSetStrokeDashArray( DrawingWand *drawing_wand, const unsigned long number_elements,
+                             const double *dash_array );
+</pre>
+</div>
+<div class="section" id="id180">
+<h2>Description</h2>
+<p>DrawSetStrokeDashArray() specifies the pattern of dashes and gaps used to
+stroke paths. The stroke dash array represents an array of numbers that
+specify the lengths of alternating dashes and gaps in pixels. If an odd
+number of values is provided, then the list of values is repeated to yield
+an even number of values. To remove an existing dash array, pass a zero
+number_elements argument and null dash_array.
+A typical stroke dash array might contain the members 5 3 2.</p>
+<p>The format of the DrawSetStrokeDashArray method is:</p>
+<pre class="literal-block">
+void DrawSetStrokeDashArray( DrawingWand *drawing_wand, const unsigned long number_elements,
+                             const double *dash_array );
+</pre>
+<dl class="docutils">
+<dt>drawing_wand:</dt>
+<dd>The drawing wand.</dd>
+<dt>number_elements:</dt>
+<dd>number of elements in dash array</dd>
+<dt>dash_array:</dt>
+<dd>dash array values</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="drawgetstrokedashoffset">
+<h1><a class="toc-backref" href="#id318">DrawGetStrokeDashOffset</a></h1>
+<div class="section" id="id181">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+double DrawGetStrokeDashOffset( const DrawingWand *drawing_wand );
+</pre>
+</div>
+<div class="section" id="id182">
+<h2>Description</h2>
+<p>DrawGetStrokeDashOffset() returns the offset into the dash pattern to
+start the dash.</p>
+<p>The format of the DrawGetStrokeDashOffset method is:</p>
+<pre class="literal-block">
+double DrawGetStrokeDashOffset( const DrawingWand *drawing_wand );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>drawing_wand:</dt>
+<dd>The drawing wand.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="drawsetstrokedashoffset">
+<h1><a class="toc-backref" href="#id319">DrawSetStrokeDashOffset</a></h1>
+<div class="section" id="id183">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+void DrawSetStrokeDashOffset( DrawingWand *drawing_wand, const double dash_offset );
+</pre>
+</div>
+<div class="section" id="id184">
+<h2>Description</h2>
+<p>DrawSetStrokeDashOffset() specifies the offset into the dash pattern to
+start the dash.</p>
+<p>The format of the DrawSetStrokeDashOffset method is:</p>
+<pre class="literal-block">
+void DrawSetStrokeDashOffset( DrawingWand *drawing_wand, const double dash_offset );
+</pre>
+<dl class="docutils">
+<dt>drawing_wand:</dt>
+<dd>The drawing wand.</dd>
+<dt>dash_offset:</dt>
+<dd>dash offset</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="drawgetstrokelinecap">
+<h1><a class="toc-backref" href="#id320">DrawGetStrokeLineCap</a></h1>
+<div class="section" id="id185">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+LineCap DrawGetStrokeLineCap( const DrawingWand *drawing_wand );
+</pre>
+</div>
+<div class="section" id="id186">
+<h2>Description</h2>
+<p>DrawGetStrokeLineCap() returns the shape to be used at the end of
+open subpaths when they are stroked. Values of LineCap are
+UndefinedCap, ButtCap, RoundCap, and SquareCap.</p>
+<p>The format of the DrawGetStrokeLineCap method is:</p>
+<pre class="literal-block">
+LineCap DrawGetStrokeLineCap( const DrawingWand *drawing_wand );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>drawing_wand:</dt>
+<dd>The drawing wand.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="drawsetstrokelinecap">
+<h1><a class="toc-backref" href="#id321">DrawSetStrokeLineCap</a></h1>
+<div class="section" id="id187">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+void DrawSetStrokeLineCap( DrawingWand *drawing_wand, const LineCap linecap );
+</pre>
+</div>
+<div class="section" id="id188">
+<h2>Description</h2>
+<p>DrawSetStrokeLineCap() specifies the shape to be used at the end of
+open subpaths when they are stroked. Values of LineCap are
+UndefinedCap, ButtCap, RoundCap, and SquareCap.</p>
+<p>The format of the DrawSetStrokeLineCap method is:</p>
+<pre class="literal-block">
+void DrawSetStrokeLineCap( DrawingWand *drawing_wand, const LineCap linecap );
+</pre>
+<dl class="docutils">
+<dt>drawing_wand:</dt>
+<dd>The drawing wand.</dd>
+<dt>linecap:</dt>
+<dd>linecap style</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="drawgetstrokelinejoin">
+<h1><a class="toc-backref" href="#id322">DrawGetStrokeLineJoin</a></h1>
+<div class="section" id="id189">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+LineJoin DrawGetStrokeLineJoin( const DrawingWand *drawing_wand );
+</pre>
+</div>
+<div class="section" id="id190">
+<h2>Description</h2>
+<p>DrawGetStrokeLineJoin() returns the shape to be used at the
+corners of paths (or other vector shapes) when they are
+stroked. Values of LineJoin are UndefinedJoin, MiterJoin, RoundJoin,
+and BevelJoin.</p>
+<p>The format of the DrawGetStrokeLineJoin method is:</p>
+<pre class="literal-block">
+LineJoin DrawGetStrokeLineJoin( const DrawingWand *drawing_wand );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>drawing_wand:</dt>
+<dd>The drawing wand.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="drawsetstrokelinejoin">
+<h1><a class="toc-backref" href="#id323">DrawSetStrokeLineJoin</a></h1>
+<div class="section" id="id191">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+void DrawSetStrokeLineJoin( DrawingWand *drawing_wand, const LineJoin linejoin );
+</pre>
+</div>
+<div class="section" id="id192">
+<h2>Description</h2>
+<p>DrawSetStrokeLineJoin() specifies the shape to be used at the
+corners of paths (or other vector shapes) when they are
+stroked. Values of LineJoin are UndefinedJoin, MiterJoin, RoundJoin,
+and BevelJoin.</p>
+<p>The format of the DrawSetStrokeLineJoin method is:</p>
+<pre class="literal-block">
+void DrawSetStrokeLineJoin( DrawingWand *drawing_wand, const LineJoin linejoin );
+</pre>
+<dl class="docutils">
+<dt>drawing_wand:</dt>
+<dd>The drawing wand.</dd>
+<dt>linejoin:</dt>
+<dd>line join style</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="drawgetstrokemiterlimit">
+<h1><a class="toc-backref" href="#id324">DrawGetStrokeMiterLimit</a></h1>
+<div class="section" id="id193">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+unsigned long DrawGetStrokeMiterLimit( const DrawingWand *drawing_wand );
+</pre>
+</div>
+<div class="section" id="id194">
+<h2>Description</h2>
+<p>DrawGetStrokeMiterLimit() returns the miter limit. When two line
+segments meet at a sharp angle and miter joins have been specified for
+'lineJoin', it is possible for the miter to extend far beyond the
+thickness of the line stroking the path. The miterLimit' imposes a
+limit on the ratio of the miter length to the 'lineWidth'.</p>
+<p>The format of the DrawGetStrokeMiterLimit method is:</p>
+<pre class="literal-block">
+unsigned long DrawGetStrokeMiterLimit( const DrawingWand *drawing_wand );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>drawing_wand:</dt>
+<dd>The drawing wand.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="drawsetstrokemiterlimit">
+<h1><a class="toc-backref" href="#id325">DrawSetStrokeMiterLimit</a></h1>
+<div class="section" id="id195">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+void DrawSetStrokeMiterLimit( DrawingWand *drawing_wand, const unsigned long miterlimit );
+</pre>
+</div>
+<div class="section" id="id196">
+<h2>Description</h2>
+<p>DrawSetStrokeMiterLimit() specifies the miter limit. When two line
+segments meet at a sharp angle and miter joins have been specified for
+'lineJoin', it is possible for the miter to extend far beyond the
+thickness of the line stroking the path. The miterLimit' imposes a
+limit on the ratio of the miter length to the 'lineWidth'.</p>
+<p>The format of the DrawSetStrokeMiterLimit method is:</p>
+<pre class="literal-block">
+void DrawSetStrokeMiterLimit( DrawingWand *drawing_wand, const unsigned long miterlimit );
+</pre>
+<dl class="docutils">
+<dt>drawing_wand:</dt>
+<dd>The drawing wand.</dd>
+<dt>miterlimit:</dt>
+<dd>miter limit</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="drawgetstrokeopacity">
+<h1><a class="toc-backref" href="#id326">DrawGetStrokeOpacity</a></h1>
+<div class="section" id="id197">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+double DrawGetStrokeOpacity( const DrawingWand *drawing_wand );
+</pre>
+</div>
+<div class="section" id="id198">
+<h2>Description</h2>
+<p>DrawGetStrokeOpacity() returns the opacity of stroked object outlines.</p>
+<p>The format of the DrawGetStrokeOpacity method is:</p>
+<pre class="literal-block">
+double DrawGetStrokeOpacity( const DrawingWand *drawing_wand );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>drawing_wand:</dt>
+<dd>The drawing wand.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="drawsetstrokeopacity">
+<h1><a class="toc-backref" href="#id327">DrawSetStrokeOpacity</a></h1>
+<div class="section" id="id199">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+void DrawSetStrokeOpacity( DrawingWand *drawing_wand, const double stroke_opacity );
+</pre>
+</div>
+<div class="section" id="id200">
+<h2>Description</h2>
+<p>DrawSetStrokeOpacity() specifies the opacity of stroked object outlines.</p>
+<p>The format of the DrawSetStrokeOpacity method is:</p>
+<pre class="literal-block">
+void DrawSetStrokeOpacity( DrawingWand *drawing_wand, const double stroke_opacity );
+</pre>
+<dl class="docutils">
+<dt>drawing_wand:</dt>
+<dd>The drawing wand.</dd>
+<dt>stroke_opacity:</dt>
+<dd>stroke opacity.  The value 1.0 is opaque.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="drawgetstrokewidth">
+<h1><a class="toc-backref" href="#id328">DrawGetStrokeWidth</a></h1>
+<div class="section" id="id201">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+double DrawGetStrokeWidth( const DrawingWand *drawing_wand );
+</pre>
+</div>
+<div class="section" id="id202">
+<h2>Description</h2>
+<p>DrawGetStrokeWidth() returns the width of the stroke used to draw object
+outlines.</p>
+<p>The format of the DrawGetStrokeWidth method is:</p>
+<pre class="literal-block">
+double DrawGetStrokeWidth( const DrawingWand *drawing_wand );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>drawing_wand:</dt>
+<dd>The drawing wand.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="drawsetstrokewidth">
+<h1><a class="toc-backref" href="#id329">DrawSetStrokeWidth</a></h1>
+<div class="section" id="id203">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+void DrawSetStrokeWidth( DrawingWand *drawing_wand, const double stroke_width );
+</pre>
+</div>
+<div class="section" id="id204">
+<h2>Description</h2>
+<p>DrawSetStrokeWidth() sets the width of the stroke used to draw object
+outlines.</p>
+<p>The format of the DrawSetStrokeWidth method is:</p>
+<pre class="literal-block">
+void DrawSetStrokeWidth( DrawingWand *drawing_wand, const double stroke_width );
+</pre>
+<dl class="docutils">
+<dt>drawing_wand:</dt>
+<dd>The drawing wand.</dd>
+<dt>stroke_width:</dt>
+<dd>stroke width</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="drawgettextantialias">
+<h1><a class="toc-backref" href="#id330">DrawGetTextAntialias</a></h1>
+<div class="section" id="id205">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+unsigned int DrawGetTextAntialias( const DrawingWand *drawing_wand );
+</pre>
+</div>
+<div class="section" id="id206">
+<h2>Description</h2>
+<p>DrawGetTextAntialias() returns the current text antialias setting, which
+determines whether text is antialiased.  Text is antialiased by default.</p>
+<p>The format of the DrawGetTextAntialias method is:</p>
+<pre class="literal-block">
+unsigned int DrawGetTextAntialias( const DrawingWand *drawing_wand );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>drawing_wand:</dt>
+<dd>The drawing wand.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="drawsettextantialias">
+<h1><a class="toc-backref" href="#id331">DrawSetTextAntialias</a></h1>
+<div class="section" id="id207">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+void DrawSetTextAntialias( DrawingWand *drawing_wand, const unsigned int text_antialias );
+</pre>
+</div>
+<div class="section" id="id208">
+<h2>Description</h2>
+<p>DrawSetTextAntialias() controls whether text is antialiased.  Text is
+antialiased by default.</p>
+<p>The format of the DrawSetTextAntialias method is:</p>
+<pre class="literal-block">
+void DrawSetTextAntialias( DrawingWand *drawing_wand, const unsigned int text_antialias );
+</pre>
+<dl class="docutils">
+<dt>drawing_wand:</dt>
+<dd>The drawing wand.</dd>
+<dt>text_antialias:</dt>
+<dd>antialias boolean. Set to false (0) to disable
+antialiasing.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="drawgettextdecoration">
+<h1><a class="toc-backref" href="#id332">DrawGetTextDecoration</a></h1>
+<div class="section" id="id209">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#decorationtype">DecorationType</a> DrawGetTextDecoration( DrawingWand *drawing_wand );
+</pre>
+</div>
+<div class="section" id="id210">
+<h2>Description</h2>
+<p>DrawGetTextDecoration() returns the decoration applied when annotating with
+text.</p>
+<p>The format of the DrawGetTextDecoration method is:</p>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#decorationtype">DecorationType</a> DrawGetTextDecoration( DrawingWand *drawing_wand );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>drawing_wand:</dt>
+<dd>The drawing wand.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="drawsettextdecoration">
+<h1><a class="toc-backref" href="#id333">DrawSetTextDecoration</a></h1>
+<div class="section" id="id211">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+void DrawSetTextDecoration( DrawingWand *drawing_wand, const <a class="reference external" href="../api/types.html#decorationtype">DecorationType</a> decoration );
+</pre>
+</div>
+<div class="section" id="id212">
+<h2>Description</h2>
+<p>DrawSetTextDecoration() specifies a decoration to be applied when
+annotating with text.</p>
+<p>The format of the DrawSetTextDecoration method is:</p>
+<pre class="literal-block">
+void DrawSetTextDecoration( DrawingWand *drawing_wand, const <a class="reference external" href="../api/types.html#decorationtype">DecorationType</a> decoration );
+</pre>
+<dl class="docutils">
+<dt>drawing_wand:</dt>
+<dd>The drawing wand.</dd>
+<dt>decoration:</dt>
+<dd>text decoration.  One of NoDecoration, UnderlineDecoration,
+OverlineDecoration, or LineThroughDecoration</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="drawgettextencoding">
+<h1><a class="toc-backref" href="#id334">DrawGetTextEncoding</a></h1>
+<div class="section" id="id213">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+char *DrawGetTextEncoding( const DrawingWand *drawing_wand );
+</pre>
+</div>
+<div class="section" id="id214">
+<h2>Description</h2>
+<p>DrawGetTextEncoding() returns a null-terminated string which specifies the
+code set used for text annotations. The string must be freed by the user
+once it is no longer required.</p>
+<p>The format of the DrawGetTextEncoding method is:</p>
+<pre class="literal-block">
+char *DrawGetTextEncoding( const DrawingWand *drawing_wand );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>drawing_wand:</dt>
+<dd>The drawing wand.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="drawsettextencoding">
+<h1><a class="toc-backref" href="#id335">DrawSetTextEncoding</a></h1>
+<div class="section" id="id215">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+void DrawSetTextEncoding( DrawingWand *drawing_wand, const char *encoding );
+</pre>
+</div>
+<div class="section" id="id216">
+<h2>Description</h2>
+<p>DrawSetTextEncoding() specifies specifies the code set to use for
+text annotations. The only character encoding which may be specified
+at this time is &quot;UTF-8&quot; for representing Unicode as a sequence of
+bytes. Specify an empty string to set text encoding to the system's
+default. Successful text annotation using Unicode may require fonts
+designed to support Unicode.</p>
+<p>The format of the DrawSetTextEncoding method is:</p>
+<pre class="literal-block">
+void DrawSetTextEncoding( DrawingWand *drawing_wand, const char *encoding );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>drawing_wand:</dt>
+<dd>The drawing wand.</dd>
+<dt>encoding:</dt>
+<dd>character string specifying text encoding</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="drawgettextundercolor">
+<h1><a class="toc-backref" href="#id336">DrawGetTextUnderColor</a></h1>
+<div class="section" id="id217">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+void DrawGetTextUnderColor( const DrawingWand *drawing_wand, PixelWand *under_color );
+</pre>
+</div>
+<div class="section" id="id218">
+<h2>Description</h2>
+<p>DrawGetTextUnderColor() returns the color of a background rectangle
+to place under text annotations.</p>
+<p>The format of the DrawGetTextUnderColor method is:</p>
+<pre class="literal-block">
+void DrawGetTextUnderColor( const DrawingWand *drawing_wand, PixelWand *under_color );
+</pre>
+<dl class="docutils">
+<dt>drawing_wand:</dt>
+<dd>The drawing wand.</dd>
+<dt>under_color:</dt>
+<dd>Return the under color.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="drawsettextundercolor">
+<h1><a class="toc-backref" href="#id337">DrawSetTextUnderColor</a></h1>
+<div class="section" id="id219">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+void DrawSetTextUnderColor( DrawingWand *drawing_wand, const PixelWand *under_wand );
+</pre>
+</div>
+<div class="section" id="id220">
+<h2>Description</h2>
+<p>DrawSetTextUnderColor() specifies the color of a background rectangle
+to place under text annotations.</p>
+<p>The format of the DrawSetTextUnderColor method is:</p>
+<pre class="literal-block">
+void DrawSetTextUnderColor( DrawingWand *drawing_wand, const PixelWand *under_wand );
+</pre>
+<dl class="docutils">
+<dt>drawing_wand:</dt>
+<dd>The drawing wand.</dd>
+<dt>under_wand.:</dt>
+<dd>text under wand.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="drawtranslate">
+<h1><a class="toc-backref" href="#id338">DrawTranslate</a></h1>
+<div class="section" id="id221">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+void DrawTranslate( DrawingWand *drawing_wand, const double x, const double y );
+</pre>
+</div>
+<div class="section" id="id222">
+<h2>Description</h2>
+<p>DrawTranslate() applies a translation to the current coordinate
+system which moves the coordinate system origin to the specified
+coordinate.</p>
+<p>The format of the DrawTranslate method is:</p>
+<pre class="literal-block">
+void DrawTranslate( DrawingWand *drawing_wand, const double x, const double y );
+</pre>
+<dl class="docutils">
+<dt>drawing_wand:</dt>
+<dd>The drawing wand.</dd>
+<dt>x:</dt>
+<dd>new x ordinate for coordinate system origin</dd>
+<dt>y:</dt>
+<dd>new y ordinate for coordinate system origin</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="drawsetviewbox">
+<h1><a class="toc-backref" href="#id339">DrawSetViewbox</a></h1>
+<div class="section" id="id223">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+void DrawSetViewbox( DrawingWand *drawing_wand, unsigned long x1, unsigned long y1,
+                     unsigned long x2, unsigned long y2 );
+</pre>
+</div>
+<div class="section" id="id224">
+<h2>Description</h2>
+<p>DrawSetViewbox() sets the overall canvas size to be recorded with the
+drawing vector data.  Usually this will be specified using the same
+size as the canvas image.  When the vector data is saved to SVG or MVG
+formats, the viewbox is use to specify the size of the canvas image that
+a viewer will render the vector data on.</p>
+<p>The format of the DrawSetViewbox method is:</p>
+<pre class="literal-block">
+void DrawSetViewbox( DrawingWand *drawing_wand, unsigned long x1, unsigned long y1,
+                     unsigned long x2, unsigned long y2 );
+</pre>
+<dl class="docutils">
+<dt>drawing_wand:</dt>
+<dd>The drawing wand.</dd>
+<dt>x1:</dt>
+<dd>left x ordinate</dd>
+<dt>y1:</dt>
+<dd>top y ordinate</dd>
+<dt>x2:</dt>
+<dd>right x ordinate</dd>
+<dt>y2:</dt>
+<dd>bottom y ordinate</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="newdrawingwand">
+<h1><a class="toc-backref" href="#id340">NewDrawingWand</a></h1>
+<div class="section" id="id225">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+DrawingWand *NewDrawingWand( void );
+</pre>
+</div>
+<div class="section" id="id226">
+<h2>Description</h2>
+<p>NewDrawingWand() returns a drawing wand required for all other methods in
+the API.</p>
+<p>The format of the NewDrawingWand method is:</p>
+<pre class="literal-block">
+DrawingWand *NewDrawingWand( void );
+</pre>
+</div>
+</div>
+</div>
+</body>
+</html>

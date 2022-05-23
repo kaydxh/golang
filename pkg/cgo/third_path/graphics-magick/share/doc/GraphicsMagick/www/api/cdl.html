@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.15.2: http://docutils.sourceforge.net/" />
+<title>cdl</title>
+<link rel="stylesheet" href="../docutils-api.css" type="text/css" />
+</head>
+<body>
+
+<div class="banner">
+<img src="../images/gm-107x76.png" alt="GraphicMagick logo" width="107" height="76" />
+<span class="title">GraphicsMagick</span>
+<form action="http://www.google.com/search">
+	<input type="hidden" name="domains" value="www.graphicsmagick.org" />
+	<input type="hidden" name="sitesearch" value="www.graphicsmagick.org" />
+    <span class="nowrap"><input type="text" name="q" size="25" maxlength="255" />&nbsp;<input type="submit" name="sa" value="Search" /></span>
+</form>
+</div>
+
+<div class="navmenu">
+<ul>
+<li><a href="../index.html">Home</a></li>
+<li><a href="../project.html">Project</a></li>
+<li><a href="../download.html">Download</a></li>
+<li><a href="../README.html">Install</a></li>
+<li><a href="../Hg.html">Source</a></li>
+<li><a href="../NEWS.html">News</a> </li>
+<li><a href="../utilities.html">Utilities</a></li>
+<li><a href="../programming.html">Programming</a></li>
+<li><a href="../reference.html">Reference</a></li>
+</ul>
+</div>
+<div class="document" id="cdl">
+<h1 class="title">cdl</h1>
+<h2 class="subtitle" id="apply-asc-cdl-transform-to-image">Apply ASC CDL transform to image</h2>
+
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#cdlimage" id="id1">CdlImage</a></li>
+</ul>
+</div>
+<div class="section" id="cdlimage">
+<h1><a class="toc-backref" href="#id1">CdlImage</a></h1>
+<div class="section" id="synopsis">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+MagickPassFail CdlImage( <a class="reference external" href="../api/types.html#image">Image</a> *image, const char *cdl );
+</pre>
+</div>
+<div class="section" id="description">
+<h2>Description</h2>
+<p>The CdlImage() method applies (&quot;bakes in&quot;) the ASC-CDL which is a format
+for the exchange of basic primary color grading information between
+equipment and software from different manufacturers. The format defines
+the math for three functions: slope, offset and power. Each function uses
+a number for the red, green, and blue color channels for a total of nine
+numbers comprising a single color decision. A tenth number for chrominance
+(saturation) has been proposed but is not yet standardized.</p>
+<p>The cdl argument string is comma delimited and is in the form (but
+without invervening spaces or line breaks):</p>
+<p>redslope, redoffset, redpower :
+greenslope, greenoffset, greenpower :
+blueslope, blueoffset, bluepower :
+saturation</p>
+<p>with the unity (no change) specification being:</p>
+<p>&quot;1.0,0.0,1.0:1.0,0.0,1.0:1.0,0.0,1.0:0.0&quot;</p>
+<p>See <a class="reference external" href="http://en.wikipedia.org/wiki/ASC_CDL">http://en.wikipedia.org/wiki/ASC_CDL</a> for more information.</p>
+<p>The format of the CdlImage method is:</p>
+<pre class="literal-block">
+MagickPassFail CdlImage( <a class="reference external" href="../api/types.html#image">Image</a> *image, const char *cdl );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>image:</dt>
+<dd>The image.</dd>
+<dt>cdl:</dt>
+<dd>Define the coefficients for slope offset and power in the
+red green and blue channels, plus saturation.</dd>
+</dl>
+</div>
+</div>
+</div>
+</body>
+</html>

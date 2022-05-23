@@ -1,0 +1,329 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.15.2: http://docutils.sourceforge.net/" />
+<title>GraphicsMagick Security</title>
+<link rel="stylesheet" href="docutils-articles.css" type="text/css" />
+</head>
+<body>
+
+<div class="banner">
+<img src="images/gm-107x76.png" alt="GraphicMagick logo" width="107" height="76" />
+<span class="title">GraphicsMagick</span>
+<form action="http://www.google.com/search">
+	<input type="hidden" name="domains" value="www.graphicsmagick.org" />
+	<input type="hidden" name="sitesearch" value="www.graphicsmagick.org" />
+    <span class="nowrap"><input type="text" name="q" size="25" maxlength="255" />&nbsp;<input type="submit" name="sa" value="Search" /></span>
+</form>
+</div>
+
+<div class="navmenu">
+<ul>
+<li><a href="index.html">Home</a></li>
+<li><a href="project.html">Project</a></li>
+<li><a href="download.html">Download</a></li>
+<li><a href="README.html">Install</a></li>
+<li><a href="Hg.html">Source</a></li>
+<li><a href="NEWS.html">News</a> </li>
+<li><a href="utilities.html">Utilities</a></li>
+<li><a href="programming.html">Programming</a></li>
+<li><a href="reference.html">Reference</a></li>
+</ul>
+</div>
+<div class="document" id="graphicsmagick-security">
+<h1 class="title">GraphicsMagick Security</h1>
+
+<!-- -*- mode: rst -*- -->
+<!-- This text is in reStucturedText format, so it may look a bit odd. -->
+<!-- See http://docutils.sourceforge.net/rst.html for details. -->
+<div class="section" id="background">
+<h1>Background</h1>
+<p>Although GraphicsMagick is image processing software, security is a
+very important consideration for GraphicsMagick.  GraphicsMagick may
+be used to open files and URLs produced by an untrusted party.  Given
+a suitable weakness (which we make every effort to prevent), an
+intentionally constructed file might be able to cause the software to
+crash, leak memory, request huge amounts of memory, run forever, or in
+the worst case execute arbitrary code, including shell code.
+GraphicsMagick is very powerful and complex software supporting many
+capabilities and so untrusted parties should never be allowed to
+submit arbitrary requests into it.</p>
+<p>GraphicsMagick includes the ability to access arbitrary http and ftp
+URLs as well as local image, font, and SVG files.  The SVG renderer
+supports read access to http and ftp URLs as well as local files
+according to the SVG specification.  Since URLs and local file paths
+may be included in SVG files, untrusted SVG files may create a Server
+Side Request Forgery (<a class="reference external" href="https://cwe.mitre.org/data/definitions/918.html">SSRF</a>) vulnerability since URL requests are
+done by the computer executing the SVG, which may be in a realm of
+trust (e.g. inside the firewall and able to access &quot;localhost&quot;
+addresses).</p>
+<p>The <cite>-comment</cite>, <cite>-draw</cite>, <cite>-format</cite>, and <cite>-label</cite> utility options
+support a <cite>&#64;filename</cite> syntax to incorporate any readable file on the
+system as a convenience to the user.  If text from an untrusted source
+(e.g. a web page) is allowed to supply these options, then they may be
+used to read arbitrary files, creating a potential security hazard.</p>
+<p>The GraphicsMagick project is continually striving to eliminate
+conditions in the software which might pose a risk for its users while
+not constraining what its users may do with the software.</p>
+</div>
+<div class="section" id="reporting-issues">
+<h1>Reporting Issues</h1>
+<p>If you become aware of a serious security issue with GraphicsMagick,
+then it may be addressed by email directly to the GraphicsMagick
+maintainers or to the <a class="reference external" href="mailto:graphicsmagick-security&#37;&#52;&#48;graphicsmagick&#46;org">GraphicsMagick Security</a> mail address.  More
+minor issues are best addressed via the <a class="reference external" href="https://sourceforge.net/p/graphicsmagick/bugs/">GraphicsMagick Bug Tracker</a>
+at SourceForge.  Please remember to set the bug to 'private' if you
+use the bug tracker or else someone may aquire a zero-day exploit from
+your report.  We will set the bug to 'public' as soon as a remedy has
+been made available.</p>
+<p>Reporting an issue will allow us to fix it so that future releases of
+the software won't suffer from the problem.</p>
+<p>The current state of free software is that security-sensitive free
+software projects have been undergoing automated testing by machines
+(and sometimes what might be hundreds of machines).  Machines do not
+need to work at a day job, take care of families, rest, or eat, but we
+do.  Any bug report which comes with a patch or changeset to fix the
+problem is greatly appreciated and helps to move the project forward.</p>
+<p>The remedy available to us is to submit a changeset to the
+GraphicsMagick Mercurial repository, and include the changes in the
+next release.  Regardless of how an issue becomes known to us, the
+issue will become public knowledge as soon as we commit a fix to the
+source code repository.  Only in exceedingly rare and dire
+circumstances (e.g a previously-unknown zero-day shell exploit) might
+we do anything different.</p>
+</div>
+<div class="section" id="safe-use-of-the-software">
+<h1>Safe Use Of The Software</h1>
+<p>You are the first line of defense when it comes to GraphicsMagick
+security!</p>
+<p>If you are operating a server which supports file uploads from
+untrusted users, or delivered via a network protocol such as http,
+ftp, or email, then you should take steps to assure that a problem
+with opening/processing the file does not place the whole server at
+risk.  These are steps which can be taken:</p>
+<ol class="arabic">
+<li><p class="first">Subscribe to the <a class="reference external" href="https://lists.sourceforge.net/lists/listinfo/graphicsmagick-announce">graphicsmagick-announce</a> mailing list so that
+you are informed about new GraphicsMagick releases or special
+security bulletins.</p>
+</li>
+<li><p class="first">Make sure that GraphicsMagick is up to date as reported on the
+GraphicsMagick web site.  Don't simply trust that packages from
+your operating system vendor are kept up to date or are updated to
+include security fixes.  Keeping GraphicsMagick up to date might
+require that you compile GraphicsMagick yourself from source code.</p>
+</li>
+<li><p class="first">Execute the software in a <a class="reference external" href="https://en.wikipedia.org/wiki/Operating-system-level_virtualization">Container</a>, <a class="reference external" href="https://www.freebsd.org/doc/en_US.ISO8859-1/books/handbook/jails.html">FreeBSD Jail</a>, <a class="reference external" href="https://illumos.org/man/5/zones">Solaris
+Zone</a>, or <a class="reference external" href="https://en.wikipedia.org/wiki/Chroot">chrooted</a> environment such that it can not cause harm
+to the system running it.</p>
+</li>
+<li><p class="first">Execute the software as a least-privileged user (e.g. 'nobody').</p>
+</li>
+<li><p class="first">Normalize input file names or any other external inputs so that
+they are under your control and not controlled by an untrusted
+party.  This should include any file name specifications, which may
+include arbitrary 'glob' patterns (wildcards) (requiring hours or
+days to complete if sufficiently close long file names exist), and
+options supporting a <cite>&#64;filename</cite> syntax.</p>
+</li>
+<li><p class="first">Enforce that uploaded files are passed to the expected reader.  For
+example, the uploaded file &quot;file.jpg&quot; is forced to be read by the
+JPEG reader (rather than a reader selected based on header magic
+testing) by using the file name &quot;jpg:file.jpg&quot;.  If the file is not
+really what was indicated, then an error is reported.</p>
+<p>GraphicsMagick supports a great many file types and auto-detects
+many file types based on their content rather than file extension.
+The file which pretends to be an ordinary PNG or JPEG file might be
+something else entirely.  Note that even using independent file
+header testing may not be sufficient since it is possible to
+construct valid files with a header which appears to be several
+different types, but the first type which matches while testing the
+header will be selected.</p>
+</li>
+<li><p class="first">Apply resource limits via the <cite>-limit</cite> option or the
+<cite>MAGICK_LIMIT_*</cite> environment variables (e.g. <cite>export
+MAGICK_LIMIT_PIXELS=30Mp</cite>, <cite>export MAGICK_LIMIT_MEMORY=500Mb</cite>).
+Also consider setting resource limits using the <cite>ulimit</cite> command.</p>
+</li>
+<li><p class="first">Consider using the <cite>MAGICK_CODER_STABILITY</cite> environment variable to
+constrain the supported file formats to the subsets selected by
+<cite>PRIMARY</cite> or <cite>STABLE</cite>.  After setting this environment variable
+(e.g. <cite>export MAGICK_CODER_STABILITY=PRIMARY</cite>), use <cite>gm
+convert -list format</cite> and verify that the format support you need
+is enabled.  Selecting the <cite>PRIMARY</cite> or <cite>STABLE</cite> options blocks
+access of http and ftp URLs (<a class="reference external" href="https://cwe.mitre.org/data/definitions/918.html">SSRF</a> vulnerability), but does not
+block SVG renderer access to read local image files.</p>
+</li>
+</ol>
+</div>
+<div class="section" id="pgp-public-key">
+<h1>PGP Public Key</h1>
+<p>The following PGP public key (belonging to Bob Friesenhahn) is used to
+sign release files on the ftp site and may be used for private
+correspondence:</p>
+<pre class="literal-block">
+-----BEGIN PGP PUBLIC KEY BLOCK-----
+
+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
+akWaTz0WKIOiD9Lm2ylI9J0=
+=UAq2
+-----END PGP PUBLIC KEY BLOCK-----
+</pre>
+<p>Copyright © GraphicsMagick Group 2002 - 2020</p>
+</div>
+</div>
+</body>
+</html>

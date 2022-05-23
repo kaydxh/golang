@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.15.2: http://docutils.sourceforge.net/" />
+<title>colormap</title>
+<link rel="stylesheet" href="../docutils-api.css" type="text/css" />
+</head>
+<body>
+
+<div class="banner">
+<img src="../images/gm-107x76.png" alt="GraphicMagick logo" width="107" height="76" />
+<span class="title">GraphicsMagick</span>
+<form action="http://www.google.com/search">
+	<input type="hidden" name="domains" value="www.graphicsmagick.org" />
+	<input type="hidden" name="sitesearch" value="www.graphicsmagick.org" />
+    <span class="nowrap"><input type="text" name="q" size="25" maxlength="255" />&nbsp;<input type="submit" name="sa" value="Search" /></span>
+</form>
+</div>
+
+<div class="navmenu">
+<ul>
+<li><a href="../index.html">Home</a></li>
+<li><a href="../project.html">Project</a></li>
+<li><a href="../download.html">Download</a></li>
+<li><a href="../README.html">Install</a></li>
+<li><a href="../Hg.html">Source</a></li>
+<li><a href="../NEWS.html">News</a> </li>
+<li><a href="../utilities.html">Utilities</a></li>
+<li><a href="../programming.html">Programming</a></li>
+<li><a href="../reference.html">Reference</a></li>
+</ul>
+</div>
+<div class="document" id="colormap">
+<h1 class="title">colormap</h1>
+<h2 class="subtitle" id="colormap-related-functions">Colormap related functions</h2>
+
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#allocateimagecolormap" id="id5">AllocateImageColormap</a></li>
+<li><a class="reference internal" href="#cyclecolormapimage" id="id6">CycleColormapImage</a></li>
+<li><a class="reference internal" href="#replaceimagecolormap" id="id7">ReplaceImageColormap</a></li>
+</ul>
+</div>
+<div class="section" id="allocateimagecolormap">
+<h1><a class="toc-backref" href="#id5">AllocateImageColormap</a></h1>
+<div class="section" id="synopsis">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+MagickPassFail AllocateImageColormap( <a class="reference external" href="../api/types.html#image">Image</a> *image, const unsigned long colors );
+</pre>
+</div>
+<div class="section" id="description">
+<h2>Description</h2>
+<p>AllocateImageColormap() allocates an image colormap and initializes
+it to a linear gray colorspace with increasing intensity.  If the image
+already has a colormap, it is replaced.  AllocateImageColormap() returns
+MagickPass if successful, otherwise MagickFail if there is not enough memory.</p>
+<p>The format of the AllocateImageColormap method is:</p>
+<pre class="literal-block">
+MagickPassFail AllocateImageColormap( <a class="reference external" href="../api/types.html#image">Image</a> *image, const unsigned long colors );
+</pre>
+<dl class="docutils">
+<dt>image:</dt>
+<dd>The image.</dd>
+<dt>colors:</dt>
+<dd>The number of colors in the image colormap.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="cyclecolormapimage">
+<h1><a class="toc-backref" href="#id6">CycleColormapImage</a></h1>
+<div class="section" id="id1">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+MagickPassFail CycleColormapImage( <a class="reference external" href="../api/types.html#image">Image</a> *image, const int amount );
+</pre>
+</div>
+<div class="section" id="id2">
+<h2>Description</h2>
+<p>CycleColormap() displaces an image's colormap by a given number of
+positions.  If you cycle the colormap a number of times you can produce
+a psychodelic effect.</p>
+<p>The format of the CycleColormapImage method is:</p>
+<pre class="literal-block">
+MagickPassFail CycleColormapImage( <a class="reference external" href="../api/types.html#image">Image</a> *image, const int amount );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>image:</dt>
+<dd>The image.</dd>
+<dt>amount:</dt>
+<dd>Offset the colormap this much.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="replaceimagecolormap">
+<h1><a class="toc-backref" href="#id7">ReplaceImageColormap</a></h1>
+<div class="section" id="id3">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+MagickPassFail ReplaceImageColormap( <a class="reference external" href="../api/types.html#image">Image</a> *image, const <a class="reference external" href="../api/types.html#pixelpacket">PixelPacket</a> *colormap,
+                                     const unsigned int colors );
+</pre>
+</div>
+<div class="section" id="id4">
+<h2>Description</h2>
+<p>ReplaceImageColormap() replaces an existing image colormap with a new
+image colormap. The new image colormap is expected to contain all of the
+colors from the existing colormap. The existing colormap indexes are
+adjusted to conform with positions in the new colormap. If the new
+colormap contains duplicate entries, then the associated colormap index
+will point to the first entry found in the colormap and other matching
+entries will not be used. MagickPass is returned if the operation is
+successful, otherwise MagickFail is returned, and image-&gt;exception is
+updated with the cause of the failure.</p>
+<p>This function is useful in case colormap entries need to match across
+multiple images or otherwise occupy specific locations.</p>
+<p>The format of the ReplaceImageColormap method is:</p>
+<pre class="literal-block">
+MagickPassFail ReplaceImageColormap( <a class="reference external" href="../api/types.html#image">Image</a> *image, const <a class="reference external" href="../api/types.html#pixelpacket">PixelPacket</a> *colormap,
+                                     const unsigned int colors );
+</pre>
+<dl class="docutils">
+<dt>image:</dt>
+<dd>image in which to replace colormap.</dd>
+<dt>colormap:</dt>
+<dd>new colormap.</dd>
+<dt>colors:</dt>
+<dd>number of colors in new colormap.</dd>
+</dl>
+</div>
+</div>
+</div>
+</body>
+</html>

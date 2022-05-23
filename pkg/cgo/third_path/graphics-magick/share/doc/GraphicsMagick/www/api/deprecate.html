@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.15.2: http://docutils.sourceforge.net/" />
+<title>deprecate</title>
+<link rel="stylesheet" href="../docutils-api.css" type="text/css" />
+</head>
+<body>
+
+<div class="banner">
+<img src="../images/gm-107x76.png" alt="GraphicMagick logo" width="107" height="76" />
+<span class="title">GraphicsMagick</span>
+<form action="http://www.google.com/search">
+	<input type="hidden" name="domains" value="www.graphicsmagick.org" />
+	<input type="hidden" name="sitesearch" value="www.graphicsmagick.org" />
+    <span class="nowrap"><input type="text" name="q" size="25" maxlength="255" />&nbsp;<input type="submit" name="sa" value="Search" /></span>
+</form>
+</div>
+
+<div class="navmenu">
+<ul>
+<li><a href="../index.html">Home</a></li>
+<li><a href="../project.html">Project</a></li>
+<li><a href="../download.html">Download</a></li>
+<li><a href="../README.html">Install</a></li>
+<li><a href="../Hg.html">Source</a></li>
+<li><a href="../NEWS.html">News</a> </li>
+<li><a href="../utilities.html">Utilities</a></li>
+<li><a href="../programming.html">Programming</a></li>
+<li><a href="../reference.html">Reference</a></li>
+</ul>
+</div>
+<div class="document" id="deprecate">
+<h1 class="title">deprecate</h1>
+<h2 class="subtitle" id="methods-which-should-no-longer-be-used">Methods which should no longer be used</h2>
+
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#acquirecacheview" id="id19">AcquireCacheView</a></li>
+<li><a class="reference internal" href="#acquirememory" id="id20">AcquireMemory</a></li>
+<li><a class="reference internal" href="#clonememory" id="id21">CloneMemory</a></li>
+<li><a class="reference internal" href="#getcacheview" id="id22">GetCacheView</a></li>
+<li><a class="reference internal" href="#liberatememory" id="id23">LiberateMemory</a></li>
+<li><a class="reference internal" href="#popimagepixels" id="id24">PopImagePixels</a></li>
+<li><a class="reference internal" href="#pushimagepixels" id="id25">PushImagePixels</a></li>
+<li><a class="reference internal" href="#reacquirememory" id="id26">ReacquireMemory</a></li>
+<li><a class="reference internal" href="#setcacheview" id="id27">SetCacheView</a></li>
+<li><a class="reference internal" href="#synccacheview" id="id28">SyncCacheView</a></li>
+</ul>
+</div>
+<div class="section" id="acquirecacheview">
+<h1><a class="toc-backref" href="#id19">AcquireCacheView</a></h1>
+<div class="section" id="synopsis">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+const <a class="reference external" href="../api/types.html#pixelpacket">PixelPacket</a> *AcquireCacheView( <a class="reference external" href="../api/types.html#viewinfo">ViewInfo</a> *view, const long x, const long y,
+                                     const unsigned long columns, const unsigned long rows,
+                                     <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+</div>
+<div class="section" id="description">
+<h2>Description</h2>
+<p>Method AcquireCacheView gets pixels from the in-memory or disk pixel cache
+as defined by the geometry parameters for read-only access.   A pointer to
+the pixels is returned if the pixels are transferred, otherwise NULL is
+returned.</p>
+<p>The format of the AcquireCacheView method is:</p>
+<pre class="literal-block">
+const <a class="reference external" href="../api/types.html#pixelpacket">PixelPacket</a> *AcquireCacheView( <a class="reference external" href="../api/types.html#viewinfo">ViewInfo</a> *view, const long x, const long y,
+                                     const unsigned long columns, const unsigned long rows,
+                                     <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+<dl class="docutils">
+<dt>pixels:</dt>
+<dd>Method AcquireCacheView returns a null pointer if an error
+occurs, otherwise a pointer to the view pixels.</dd>
+<dt>view:</dt>
+<dd>The address of a structure of type ViewInfo.</dd>
+<dt>x,y,columns,rows:</dt>
+<dd>These values define the perimeter of a region of
+pixels.</dd>
+<dt>exception:</dt>
+<dd>Return any errors or warnings in this structure.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="acquirememory">
+<h1><a class="toc-backref" href="#id20">AcquireMemory</a></h1>
+<div class="section" id="id1">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+void *AcquireMemory( const size_t size );
+</pre>
+</div>
+<div class="section" id="id2">
+<h2>Description</h2>
+<p>AcquireMemory() returns a pointer to a block of memory of at least size
+bytes suitably aligned for any use.  NULL is returned if insufficient
+memory is available or the requested size is zero.</p>
+<p>The format of the AcquireMemory method is:</p>
+<pre class="literal-block">
+void *AcquireMemory( const size_t size );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>size:</dt>
+<dd>The size of the memory in bytes to allocate.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="clonememory">
+<h1><a class="toc-backref" href="#id21">CloneMemory</a></h1>
+<div class="section" id="id3">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+void *CloneMemory( void *destination, const void *source, const size_t size );
+</pre>
+</div>
+<div class="section" id="id4">
+<h2>Description</h2>
+<p>CloneMemory() copies size bytes from memory area source to the
+destination.  Copying between objects that overlap will take place
+correctly.  It returns destination.</p>
+<p>The format of the CloneMemory method is:</p>
+<pre class="literal-block">
+void *CloneMemory( void *destination, const void *source, const size_t size );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>size:</dt>
+<dd>The size of the memory in bytes to allocate.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="getcacheview">
+<h1><a class="toc-backref" href="#id22">GetCacheView</a></h1>
+<div class="section" id="id5">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#pixelpacket">PixelPacket</a> *GetCacheView( <a class="reference external" href="../api/types.html#viewinfo">ViewInfo</a> *view, const long x, const long y,
+                           const unsigned long columns, const unsigned long rows );
+</pre>
+</div>
+<div class="section" id="id6">
+<h2>Description</h2>
+<p>GetCacheView() gets writeable pixels from the in-memory or disk pixel
+cache as defined by the geometry parameters.   A pointer to the pixels
+is returned if the pixels are transferred, otherwise a NULL is returned.</p>
+<p>The format of the GetCacheView method is:</p>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#pixelpacket">PixelPacket</a> *GetCacheView( <a class="reference external" href="../api/types.html#viewinfo">ViewInfo</a> *view, const long x, const long y,
+                           const unsigned long columns, const unsigned long rows );
+</pre>
+<dl class="docutils">
+<dt>pixels:</dt>
+<dd>Method GetCacheView returns a null pointer if an error
+occurs, otherwise a pointer to the view pixels.</dd>
+<dt>view:</dt>
+<dd>The address of a structure of type ViewInfo.</dd>
+<dt>x,y,columns,rows:</dt>
+<dd>These values define the perimeter of a region of
+pixels.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="liberatememory">
+<h1><a class="toc-backref" href="#id23">LiberateMemory</a></h1>
+<div class="section" id="id7">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+void LiberateMemory( void ** memory );
+</pre>
+</div>
+<div class="section" id="id8">
+<h2>Description</h2>
+<p>LiberateMemory() frees memory that has already been allocated, and
+NULLs the pointer to it.</p>
+<p>The format of the LiberateMemory method is:</p>
+<pre class="literal-block">
+void LiberateMemory( void ** memory );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>memory:</dt>
+<dd>A pointer to a block of memory to free for reuse.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="popimagepixels">
+<h1><a class="toc-backref" href="#id24">PopImagePixels</a></h1>
+<div class="section" id="id9">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+unsigned int PopImagePixels( const <a class="reference external" href="../api/types.html#image">Image</a> *, const <a class="reference external" href="../api/types.html#quantumtype">QuantumType</a> quantum,
+                             unsigned char *destination );
+</pre>
+</div>
+<div class="section" id="id10">
+<h2>Description</h2>
+<p>PopImagePixels() transfers one or more pixel components from the image pixel
+cache to a user supplied buffer.   True is returned if the pixels are
+successfully transferred, otherwise False.</p>
+<p>The format of the PopImagePixels method is:</p>
+<pre class="literal-block">
+unsigned int PopImagePixels( const <a class="reference external" href="../api/types.html#image">Image</a> *, const <a class="reference external" href="../api/types.html#quantumtype">QuantumType</a> quantum,
+                             unsigned char *destination );
+</pre>
+<dl class="docutils">
+<dt>status:</dt>
+<dd>Method PopImagePixels returns True if the pixels are
+successfully transferred, otherwise False.</dd>
+<dt>image:</dt>
+<dd>The image.</dd>
+<dt>quantum:</dt>
+<dd>Declare which pixel components to transfer (RGB, RGBA, etc).</dd>
+<dt>destination:</dt>
+<dd>The components are transferred to this buffer.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="pushimagepixels">
+<h1><a class="toc-backref" href="#id25">PushImagePixels</a></h1>
+<div class="section" id="id11">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+unsigned int PushImagePixels( <a class="reference external" href="../api/types.html#image">Image</a> *image, const <a class="reference external" href="../api/types.html#quantumtype">QuantumType</a> quantum_type,
+                              const unsigned char *source );
+</pre>
+</div>
+<div class="section" id="id12">
+<h2>Description</h2>
+<p>PushImagePixels() transfers one or more pixel components from a user
+supplied buffer into the image pixel cache of an image.  It returns True if
+the pixels are successfully transferred, otherwise False.</p>
+<p>The format of the PushImagePixels method is:</p>
+<pre class="literal-block">
+unsigned int PushImagePixels( <a class="reference external" href="../api/types.html#image">Image</a> *image, const <a class="reference external" href="../api/types.html#quantumtype">QuantumType</a> quantum_type,
+                              const unsigned char *source );
+</pre>
+<dl class="docutils">
+<dt>status:</dt>
+<dd>Method PushImagePixels returns True if the pixels are
+successfully transferred, otherwise False.</dd>
+<dt>image:</dt>
+<dd>The image.</dd>
+<dt>quantum_type:</dt>
+<dd>Declare which pixel components to transfer (red, green,
+blue, opacity, RGB, or RGBA).</dd>
+<dt>source:</dt>
+<dd>The pixel components are transferred from this buffer.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="reacquirememory">
+<h1><a class="toc-backref" href="#id26">ReacquireMemory</a></h1>
+<div class="section" id="id13">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+void ReacquireMemory( void ** memory, const size_t size );
+</pre>
+</div>
+<div class="section" id="id14">
+<h2>Description</h2>
+<p>ReacquireMemory() changes the size of the memory and returns a
+pointer to the (possibly moved) block.  The contents will be unchanged
+up to the lesser of the new and old sizes.</p>
+<p>The format of the ReacquireMemory method is:</p>
+<pre class="literal-block">
+void ReacquireMemory( void ** memory, const size_t size );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>memory:</dt>
+<dd>A pointer to a memory allocation.  On return the pointer
+may change but the contents of the original allocation will not.</dd>
+<dt>size:</dt>
+<dd>The new size of the allocated memory.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="setcacheview">
+<h1><a class="toc-backref" href="#id27">SetCacheView</a></h1>
+<div class="section" id="id15">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#pixelpacket">PixelPacket</a> *SetCacheView( <a class="reference external" href="../api/types.html#viewinfo">ViewInfo</a> *view, const long x, const long y,
+                           const unsigned long columns, const unsigned long rows );
+</pre>
+</div>
+<div class="section" id="id16">
+<h2>Description</h2>
+<p>SetCacheView() gets pixels from the in-memory or disk pixel cache as
+defined by the geometry parameters.   A pointer to the pixels is returned
+if the pixels are transferred, otherwise a NULL is returned.</p>
+<p>The format of the SetCacheView method is:</p>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#pixelpacket">PixelPacket</a> *SetCacheView( <a class="reference external" href="../api/types.html#viewinfo">ViewInfo</a> *view, const long x, const long y,
+                           const unsigned long columns, const unsigned long rows );
+</pre>
+<dl class="docutils">
+<dt>view:</dt>
+<dd>The address of a structure of type ViewInfo.</dd>
+<dt>x,y,columns,rows:</dt>
+<dd>These values define the perimeter of a region of
+pixels.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="synccacheview">
+<h1><a class="toc-backref" href="#id28">SyncCacheView</a></h1>
+<div class="section" id="id17">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+MagickPassFail SyncCacheView( <a class="reference external" href="../api/types.html#viewinfo">ViewInfo</a> *view );
+</pre>
+</div>
+<div class="section" id="id18">
+<h2>Description</h2>
+<p>SyncCacheView() saves the view pixels to the in-memory or disk cache.
+The method returns MagickPass if the pixel region is synced, otherwise
+MagickFail.</p>
+<p>The format of the SyncCacheView method is:</p>
+<pre class="literal-block">
+MagickPassFail SyncCacheView( <a class="reference external" href="../api/types.html#viewinfo">ViewInfo</a> *view );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>view:</dt>
+<dd>The address of a structure of type ViewInfo.</dd>
+</dl>
+</div>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.15.2: http://docutils.sourceforge.net/" />
+<title>monitor</title>
+<link rel="stylesheet" href="../docutils-api.css" type="text/css" />
+</head>
+<body>
+
+<div class="banner">
+<img src="../images/gm-107x76.png" alt="GraphicMagick logo" width="107" height="76" />
+<span class="title">GraphicsMagick</span>
+<form action="http://www.google.com/search">
+	<input type="hidden" name="domains" value="www.graphicsmagick.org" />
+	<input type="hidden" name="sitesearch" value="www.graphicsmagick.org" />
+    <span class="nowrap"><input type="text" name="q" size="25" maxlength="255" />&nbsp;<input type="submit" name="sa" value="Search" /></span>
+</form>
+</div>
+
+<div class="navmenu">
+<ul>
+<li><a href="../index.html">Home</a></li>
+<li><a href="../project.html">Project</a></li>
+<li><a href="../download.html">Download</a></li>
+<li><a href="../README.html">Install</a></li>
+<li><a href="../Hg.html">Source</a></li>
+<li><a href="../NEWS.html">News</a> </li>
+<li><a href="../utilities.html">Utilities</a></li>
+<li><a href="../programming.html">Programming</a></li>
+<li><a href="../reference.html">Reference</a></li>
+</ul>
+</div>
+<div class="document" id="monitor">
+<h1 class="title">monitor</h1>
+<h2 class="subtitle" id="progress-monitor-support">Progress monitor support</h2>
+
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#magickmonitor" id="id5">MagickMonitor</a></li>
+<li><a class="reference internal" href="#magickmonitorformatted" id="id6">MagickMonitorFormatted</a></li>
+<li><a class="reference internal" href="#setmonitorhandler" id="id7">SetMonitorHandler</a></li>
+</ul>
+</div>
+<div class="section" id="magickmonitor">
+<h1><a class="toc-backref" href="#id5">MagickMonitor</a></h1>
+<div class="section" id="synopsis">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+MagickPassFail MagickMonitor( const char *text, const magick_int64_t quantum,
+                              const magick_uint64_t span, <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+</div>
+<div class="section" id="description">
+<h2>Description</h2>
+<p>MagickMonitor() calls the monitor handler method with a text string that
+describes the task and a measure of completion.  The method returns True
+on success otherwise False if an error is encountered, e.g. if there was a
+user interrupt.</p>
+<p>This function is deprecated.  Please use MagickMonitorFormatted() instead.</p>
+<p>The format of the MagickMonitor method is:</p>
+<pre class="literal-block">
+MagickPassFail MagickMonitor( const char *text, const magick_int64_t quantum,
+                              const magick_uint64_t span, <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+<dl class="docutils">
+<dt>text:</dt>
+<dd>Description of the task being performed.</dd>
+<dt>quantum:</dt>
+<dd>The position relative to the span parameter which represents
+how much progress has been made toward completing a task.</dd>
+<dt>span:</dt>
+<dd>The span relative to completing a task.</dd>
+<dt>exception:</dt>
+<dd>Return any errors or warnings in this structure.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="magickmonitorformatted">
+<h1><a class="toc-backref" href="#id6">MagickMonitorFormatted</a></h1>
+<div class="section" id="id1">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+MagickPassFail MagickMonitorFormatted( const magick_int64_t quantum,
+                                       const magick_uint64_t span,
+                                       <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception, const char *format,
+                                       ... );
+</pre>
+</div>
+<div class="section" id="id2">
+<h2>Description</h2>
+<p>MagickMonitorFormatted() calls the monitor handler method with a
+printf type format specification and variable argument list.  Also
+passed are quantum and span values which provide a measure of
+completion.  The method returns MagickPass on success otherwise
+MagickFail if an error is encountered, e.g. if there was a user
+interrupt.  If MagickFail is returned, the calling code is expected
+to terminate whatever is being monitored as soon as possible.</p>
+<p>Most callers of this function will use the QuantumTick() macro to
+decide when it should be called.  The QuantumTick() macro is designed
+to deliver no more than 100 events in a span (representing 1-100%)
+and to distribute events as evenly as possible over the span so that
+events are reported for every 1% of progress when possible.</p>
+<p>The format of the MagickMonitorFormatted method is:</p>
+<pre class="literal-block">
+MagickPassFail MagickMonitorFormatted( const magick_int64_t quantum,
+                                       const magick_uint64_t span,
+                                       <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception, const char *format,
+                                       ... );
+</pre>
+<dl class="docutils">
+<dt>quantum:</dt>
+<dd>The position relative to the span parameter which represents
+how much progress has been made toward completing a task.</dd>
+<dt>span:</dt>
+<dd>The span relative to completing a task.</dd>
+<dt>exception:</dt>
+<dd>Return any errors or warnings in this structure.</dd>
+<dt>format:</dt>
+<dd>A string describing the format to use to write the remaining
+arguments.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="setmonitorhandler">
+<h1><a class="toc-backref" href="#id7">SetMonitorHandler</a></h1>
+<div class="section" id="id3">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#monitorhandler">MonitorHandler</a> SetMonitorHandler( <a class="reference external" href="../api/types.html#monitorhandler">MonitorHandler</a> handler );
+</pre>
+</div>
+<div class="section" id="id4">
+<h2>Description</h2>
+<p>SetMonitorHandler() sets the monitor handler to the specified method
+and returns the previous monitor handler.</p>
+<p>The format of the SetMonitorHandler method is:</p>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#monitorhandler">MonitorHandler</a> SetMonitorHandler( <a class="reference external" href="../api/types.html#monitorhandler">MonitorHandler</a> handler );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>handler:</dt>
+<dd>Specifies a pointer to a method to handle monitors.</dd>
+</dl>
+</div>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,354 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.15.2: http://docutils.sourceforge.net/" />
+<title>quantize</title>
+<link rel="stylesheet" href="../docutils-api.css" type="text/css" />
+</head>
+<body>
+
+<div class="banner">
+<img src="../images/gm-107x76.png" alt="GraphicMagick logo" width="107" height="76" />
+<span class="title">GraphicsMagick</span>
+<form action="http://www.google.com/search">
+	<input type="hidden" name="domains" value="www.graphicsmagick.org" />
+	<input type="hidden" name="sitesearch" value="www.graphicsmagick.org" />
+    <span class="nowrap"><input type="text" name="q" size="25" maxlength="255" />&nbsp;<input type="submit" name="sa" value="Search" /></span>
+</form>
+</div>
+
+<div class="navmenu">
+<ul>
+<li><a href="../index.html">Home</a></li>
+<li><a href="../project.html">Project</a></li>
+<li><a href="../download.html">Download</a></li>
+<li><a href="../README.html">Install</a></li>
+<li><a href="../Hg.html">Source</a></li>
+<li><a href="../NEWS.html">News</a> </li>
+<li><a href="../utilities.html">Utilities</a></li>
+<li><a href="../programming.html">Programming</a></li>
+<li><a href="../reference.html">Reference</a></li>
+</ul>
+</div>
+<div class="document" id="quantize">
+<h1 class="title">quantize</h1>
+<h2 class="subtitle" id="reduce-the-number-of-colors-in-an-image">Reduce the number of colors in an image</h2>
+
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#clonequantizeinfo" id="id21">CloneQuantizeInfo</a></li>
+<li><a class="reference internal" href="#compressimagecolormap" id="id22">CompressImageColormap</a></li>
+<li><a class="reference internal" href="#destroyquantizeinfo" id="id23">DestroyQuantizeInfo</a></li>
+<li><a class="reference internal" href="#getimagequantizeerror" id="id24">GetImageQuantizeError</a></li>
+<li><a class="reference internal" href="#getquantizeinfo" id="id25">GetQuantizeInfo</a></li>
+<li><a class="reference internal" href="#grayscalepseudoclassimage" id="id26">GrayscalePseudoClassImage</a></li>
+<li><a class="reference internal" href="#mapimage" id="id27">MapImage</a></li>
+<li><a class="reference internal" href="#mapimages" id="id28">MapImages</a></li>
+<li><a class="reference internal" href="#orderedditherimage" id="id29">OrderedDitherImage</a></li>
+<li><a class="reference internal" href="#quantizeimage" id="id30">QuantizeImage</a></li>
+<li><a class="reference internal" href="#quantizeimages" id="id31">QuantizeImages</a></li>
+</ul>
+</div>
+<div class="section" id="clonequantizeinfo">
+<h1><a class="toc-backref" href="#id21">CloneQuantizeInfo</a></h1>
+<div class="section" id="synopsis">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#quantizeinfo">QuantizeInfo</a> *CloneQuantizeInfo( const <a class="reference external" href="../api/types.html#quantizeinfo">QuantizeInfo</a> *quantize_info );
+</pre>
+</div>
+<div class="section" id="description">
+<h2>Description</h2>
+<p>CloneQuantizeInfo() makes a duplicate of the given quantize info structure,
+or if quantize info is NULL, a new one.</p>
+<p>The format of the CloneQuantizeInfo method is:</p>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#quantizeinfo">QuantizeInfo</a> *CloneQuantizeInfo( const <a class="reference external" href="../api/types.html#quantizeinfo">QuantizeInfo</a> *quantize_info );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>clone_info:</dt>
+<dd>Method CloneQuantizeInfo returns a duplicate of the given
+quantize info, or if image info is NULL a new one.</dd>
+<dt>quantize_info:</dt>
+<dd>a structure of type info.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="compressimagecolormap">
+<h1><a class="toc-backref" href="#id22">CompressImageColormap</a></h1>
+<div class="section" id="id1">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+void CompressImageColormap( <a class="reference external" href="../api/types.html#image">Image</a> *image );
+</pre>
+</div>
+<div class="section" id="id2">
+<h2>Description</h2>
+<p>CompressImageColormap() compresses an image colormap by removing any
+duplicate or unused color entries.</p>
+<p>The format of the CompressImageColormap method is:</p>
+<pre class="literal-block">
+void CompressImageColormap( <a class="reference external" href="../api/types.html#image">Image</a> *image );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>image:</dt>
+<dd>The image.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="destroyquantizeinfo">
+<h1><a class="toc-backref" href="#id23">DestroyQuantizeInfo</a></h1>
+<div class="section" id="id3">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+DestroyQuantizeInfo( <a class="reference external" href="../api/types.html#quantizeinfo">QuantizeInfo</a> *quantize_info );
+</pre>
+</div>
+<div class="section" id="id4">
+<h2>Description</h2>
+<p>DestroyQuantizeInfo() deallocates memory associated with an QuantizeInfo
+structure.</p>
+<p>The format of the DestroyQuantizeInfo method is:</p>
+<pre class="literal-block">
+DestroyQuantizeInfo( <a class="reference external" href="../api/types.html#quantizeinfo">QuantizeInfo</a> *quantize_info );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>quantize_info:</dt>
+<dd>Specifies a pointer to an QuantizeInfo structure.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="getimagequantizeerror">
+<h1><a class="toc-backref" href="#id24">GetImageQuantizeError</a></h1>
+<div class="section" id="id5">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+unsigned int GetImageQuantizeError( <a class="reference external" href="../api/types.html#image">Image</a> *image );
+</pre>
+</div>
+<div class="section" id="id6">
+<h2>Description</h2>
+<p>GetImageQuantizeError() measures the difference between the original
+and quantized images.  This difference is the total quantization error.
+The error is computed by summing over all pixels in an image the distance
+squared in RGB space between each reference pixel value and its quantized
+value.  These values are computed:</p>
+<p>o mean_error_per_pixel:  This value is the mean error for any single
+pixel in the image.</p>
+<p>o normalized_mean_square_error:  This value is the normalized mean
+quantization error for any single pixel in the image.  This distance
+measure is normalized to a range between 0 and 1.  It is independent
+of the range of red, green, and blue values in the image.</p>
+<p>o normalized_maximum_square_error:  This value is the normalized
+maximum quantization error for any single pixel in the image.  This
+distance measure is normalized to a range between 0 and 1.  It is
+independent of the range of red, green, and blue values in your image.</p>
+<p>The format of the GetImageQuantizeError method is:</p>
+<pre class="literal-block">
+unsigned int GetImageQuantizeError( <a class="reference external" href="../api/types.html#image">Image</a> *image );
+</pre>
+<p>A description of each parameter follows.</p>
+<dl class="docutils">
+<dt>image:</dt>
+<dd>Specifies a pointer to an Image structure;  returned from
+ReadImage.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="getquantizeinfo">
+<h1><a class="toc-backref" href="#id25">GetQuantizeInfo</a></h1>
+<div class="section" id="id7">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+GetQuantizeInfo( <a class="reference external" href="../api/types.html#quantizeinfo">QuantizeInfo</a> *quantize_info );
+</pre>
+</div>
+<div class="section" id="id8">
+<h2>Description</h2>
+<p>GetQuantizeInfo() initializes the QuantizeInfo structure.</p>
+<p>The format of the GetQuantizeInfo method is:</p>
+<pre class="literal-block">
+GetQuantizeInfo( <a class="reference external" href="../api/types.html#quantizeinfo">QuantizeInfo</a> *quantize_info );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>quantize_info:</dt>
+<dd>Specifies a pointer to a QuantizeInfo structure.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="grayscalepseudoclassimage">
+<h1><a class="toc-backref" href="#id26">GrayscalePseudoClassImage</a></h1>
+<div class="section" id="id9">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+void GrayscalePseudoClassImage( <a class="reference external" href="../api/types.html#image">Image</a> *image );
+</pre>
+</div>
+<div class="section" id="id10">
+<h2>Description</h2>
+<p>GrayscalePseudoClassImage converts an image to a PseudoClass
+grayscale representation with an (optionally) compressed and sorted
+colormap. Colormap is ordered by increasing intensity.</p>
+<p>The format of the GrayscalePseudoClassImage method is:</p>
+<pre class="literal-block">
+void GrayscalePseudoClassImage( <a class="reference external" href="../api/types.html#image">Image</a> *image );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>image:</dt>
+<dd>The image.</dd>
+<dt>optimize_colormap:</dt>
+<dd>If true, produce an optimimal (compact) colormap.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="mapimage">
+<h1><a class="toc-backref" href="#id27">MapImage</a></h1>
+<div class="section" id="id11">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+unsigned int MapImage( <a class="reference external" href="../api/types.html#image">Image</a> *image, const <a class="reference external" href="../api/types.html#image">Image</a> *map_image,
+                       const unsigned int dither );
+</pre>
+</div>
+<div class="section" id="id12">
+<h2>Description</h2>
+<p>MapImage() replaces the colors of an image with the closest color from a
+reference image.</p>
+<p>The format of the MapImage method is:</p>
+<pre class="literal-block">
+unsigned int MapImage( <a class="reference external" href="../api/types.html#image">Image</a> *image, const <a class="reference external" href="../api/types.html#image">Image</a> *map_image,
+                       const unsigned int dither );
+</pre>
+<dl class="docutils">
+<dt>image:</dt>
+<dd>Specifies a pointer to an Image structure.</dd>
+<dt>map_image:</dt>
+<dd>Specifies a pointer to an Image structure.  Reduce
+image to a set of colors represented by this image.</dd>
+<dt>dither:</dt>
+<dd>Set this integer value to something other than zero to
+dither the quantized image.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="mapimages">
+<h1><a class="toc-backref" href="#id28">MapImages</a></h1>
+<div class="section" id="id13">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+unsigned int MapImages( <a class="reference external" href="../api/types.html#image">Image</a> *images, <a class="reference external" href="../api/types.html#image">Image</a> *map_image, const unsigned int dither );
+</pre>
+</div>
+<div class="section" id="id14">
+<h2>Description</h2>
+<p>MapImages() replaces the colors of a sequence of images with the closest
+color from a reference image. If the reference image does not contain a
+colormap, then a colormap will be created based on existing colors in the
+reference image. The order and number of colormap entries does not match
+the reference image.  If the order and number of colormap entries needs to
+match the reference image, then the ReplaceImageColormap() function may be
+used after invoking MapImages() in order to apply the reference colormap.</p>
+<p>The format of the MapImage method is:</p>
+<pre class="literal-block">
+unsigned int MapImages( <a class="reference external" href="../api/types.html#image">Image</a> *images, <a class="reference external" href="../api/types.html#image">Image</a> *map_image, const unsigned int dither );
+</pre>
+<dl class="docutils">
+<dt>image:</dt>
+<dd>Specifies a pointer to a set of Image structures.</dd>
+<dt>map_image:</dt>
+<dd>Specifies a pointer to an Image structure.  Reduce
+image to a set of colors represented by this image.</dd>
+<dt>dither:</dt>
+<dd>Set this integer value to something other than zero to
+dither the quantized image.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="orderedditherimage">
+<h1><a class="toc-backref" href="#id29">OrderedDitherImage</a></h1>
+<div class="section" id="id15">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+unsigned int OrderedDitherImage( <a class="reference external" href="../api/types.html#image">Image</a> *image );
+</pre>
+</div>
+<div class="section" id="id16">
+<h2>Description</h2>
+<p>OrderedDitherImage() uses the ordered dithering technique of reducing color
+images to monochrome using positional information to retain as much
+information as possible.</p>
+<p>The format of the OrderedDitherImage method is:</p>
+<pre class="literal-block">
+unsigned int OrderedDitherImage( <a class="reference external" href="../api/types.html#image">Image</a> *image );
+</pre>
+<p>A description of each parameter follows.</p>
+<dl class="docutils">
+<dt>image:</dt>
+<dd>Specifies a pointer to an Image structure;  returned from
+ReadImage.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="quantizeimage">
+<h1><a class="toc-backref" href="#id30">QuantizeImage</a></h1>
+<div class="section" id="id17">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+unsigned int QuantizeImage( const <a class="reference external" href="../api/types.html#quantizeinfo">QuantizeInfo</a> *quantize_info, <a class="reference external" href="../api/types.html#image">Image</a> *image );
+</pre>
+</div>
+<div class="section" id="id18">
+<h2>Description</h2>
+<p>QuantizeImage() analyzes the colors within a reference image and chooses a
+fixed number of colors to represent the image.  The goal of the algorithm
+is to minimize the color difference between the input and output image while
+minimizing the processing time.</p>
+<p>The format of the QuantizeImage method is:</p>
+<pre class="literal-block">
+unsigned int QuantizeImage( const <a class="reference external" href="../api/types.html#quantizeinfo">QuantizeInfo</a> *quantize_info, <a class="reference external" href="../api/types.html#image">Image</a> *image );
+</pre>
+<dl class="docutils">
+<dt>quantize_info:</dt>
+<dd>Specifies a pointer to an QuantizeInfo structure.</dd>
+<dt>image:</dt>
+<dd>Specifies a pointer to an Image structure.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="quantizeimages">
+<h1><a class="toc-backref" href="#id31">QuantizeImages</a></h1>
+<div class="section" id="id19">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+unsigned int QuantizeImages( const <a class="reference external" href="../api/types.html#quantizeinfo">QuantizeInfo</a> *quantize_info, <a class="reference external" href="../api/types.html#image">Image</a> *images );
+</pre>
+</div>
+<div class="section" id="id20">
+<h2>Description</h2>
+<p>QuantizeImages() analyzes the colors within a set of reference images and
+chooses a fixed number of colors to represent the set.  The goal of the
+algorithm is to minimize the color difference between the input and output
+images while minimizing the processing time.</p>
+<p>The format of the QuantizeImages method is:</p>
+<pre class="literal-block">
+unsigned int QuantizeImages( const <a class="reference external" href="../api/types.html#quantizeinfo">QuantizeInfo</a> *quantize_info, <a class="reference external" href="../api/types.html#image">Image</a> *images );
+</pre>
+<dl class="docutils">
+<dt>quantize_info:</dt>
+<dd>Specifies a pointer to an QuantizeInfo structure.</dd>
+<dt>images:</dt>
+<dd>Specifies a pointer to a list of Image structures.</dd>
+</dl>
+</div>
+</div>
+</div>
+</body>
+</html>
