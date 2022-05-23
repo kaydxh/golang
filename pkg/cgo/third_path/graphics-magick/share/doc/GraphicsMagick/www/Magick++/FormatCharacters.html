@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.15.2: http://docutils.sourceforge.net/" />
+<title>Special Format Characters</title>
+<link rel="stylesheet" href="../docutils-articles.css" type="text/css" />
+</head>
+<body>
+
+<div class="banner">
+<img src="../images/gm-107x76.png" alt="GraphicMagick logo" width="107" height="76" />
+<span class="title">GraphicsMagick</span>
+<form action="http://www.google.com/search">
+	<input type="hidden" name="domains" value="www.graphicsmagick.org" />
+	<input type="hidden" name="sitesearch" value="www.graphicsmagick.org" />
+    <span class="nowrap"><input type="text" name="q" size="25" maxlength="255" />&nbsp;<input type="submit" name="sa" value="Search" /></span>
+</form>
+</div>
+
+<div class="navmenu">
+<ul>
+<li><a href="../index.html">Home</a></li>
+<li><a href="../project.html">Project</a></li>
+<li><a href="../download.html">Download</a></li>
+<li><a href="../README.html">Install</a></li>
+<li><a href="../Hg.html">Source</a></li>
+<li><a href="../NEWS.html">News</a> </li>
+<li><a href="../utilities.html">Utilities</a></li>
+<li><a href="../programming.html">Programming</a></li>
+<li><a href="../reference.html">Reference</a></li>
+</ul>
+</div>
+<div class="document" id="special-format-characters">
+<h1 class="title">Special Format Characters</h1>
+
+<!-- -*- mode: rst -*- -->
+<!-- This text is in reStucturedText format, so it may look a bit odd. -->
+<!-- See http://docutils.sourceforge.net/rst.html for details. -->
+<p>The Magick::Image methods <a class="reference external" href="Image.html#annotate">annotate</a>, <a class="reference external" href="Image.html#draw">draw</a>, <a class="reference external" href="Image.html#label">label</a>, and the template
+function <a class="reference external" href="STL.html#montageImages">montageImages</a> support special
+format characters contained in the argument text. These format
+characters work similar to C's printf. Whenever a format character
+appears in the text, it is replaced with the equivalent attribute
+text. The available format characters are shown in the following
+table:</p>
+<table border="1" class="docutils">
+<caption>Format Characters</caption>
+<colgroup>
+<col width="37%" />
+<col width="63%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Format Character</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>%b</td>
+<td>file size</td>
+</tr>
+<tr><td>%d</td>
+<td>directory</td>
+</tr>
+<tr><td>%e</td>
+<td>filename extension</td>
+</tr>
+<tr><td>%f</td>
+<td>filename</td>
+</tr>
+<tr><td>%h</td>
+<td>height</td>
+</tr>
+<tr><td>%m</td>
+<td>magick (e.g GIF)</td>
+</tr>
+<tr><td>%p</td>
+<td>page number</td>
+</tr>
+<tr><td>%s</td>
+<td>scene number</td>
+</tr>
+<tr><td>%t</td>
+<td>top of filename</td>
+</tr>
+<tr><td>%w</td>
+<td>width</td>
+</tr>
+<tr><td>%x</td>
+<td>x resolution</td>
+</tr>
+<tr><td>%y</td>
+<td>y resolution</td>
+</tr>
+<tr><td>n</td>
+<td>newline</td>
+</tr>
+<tr><td>r</td>
+<td>carriage return</td>
+</tr>
+</tbody>
+</table>
+<p>Copyright © Bob Friesenhahn 1999 - 2020</p>
+</div>
+</body>
+</html>

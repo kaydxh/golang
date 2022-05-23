@@ -1,0 +1,465 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.15.2: http://docutils.sourceforge.net/" />
+<title>Magick Image File Format (version 1.0)</title>
+<link rel="stylesheet" href="docutils-articles.css" type="text/css" />
+</head>
+<body>
+
+<div class="banner">
+<img src="images/gm-107x76.png" alt="GraphicMagick logo" width="107" height="76" />
+<span class="title">GraphicsMagick</span>
+<form action="http://www.google.com/search">
+	<input type="hidden" name="domains" value="www.graphicsmagick.org" />
+	<input type="hidden" name="sitesearch" value="www.graphicsmagick.org" />
+    <span class="nowrap"><input type="text" name="q" size="25" maxlength="255" />&nbsp;<input type="submit" name="sa" value="Search" /></span>
+</form>
+</div>
+
+<div class="navmenu">
+<ul>
+<li><a href="index.html">Home</a></li>
+<li><a href="project.html">Project</a></li>
+<li><a href="download.html">Download</a></li>
+<li><a href="README.html">Install</a></li>
+<li><a href="Hg.html">Source</a></li>
+<li><a href="NEWS.html">News</a> </li>
+<li><a href="utilities.html">Utilities</a></li>
+<li><a href="programming.html">Programming</a></li>
+<li><a href="reference.html">Reference</a></li>
+</ul>
+</div>
+<div class="document" id="magick-image-file-format-version-1-0">
+<h1 class="title">Magick Image File Format (version 1.0)</h1>
+
+<!-- -*- mode: rst -*- -->
+<!-- This text is in reStucturedText format, so it may look a bit odd. -->
+<!-- See http://docutils.sourceforge.net/rst.html for details. -->
+<p>Magick Image File Format (MIFF) is a platform-independent format for
+storing bitmap images. MIFF was originally invented by John Cristy for
+ImageMagick, but is also a native format of GraphicsMagick. It is
+useful as an efficient lossless working file format which assures that
+all of the image attributes used by ImageMagick and GraphicsMagick are
+preserved. Several lossless compression algorithms are available in
+order to save space.</p>
+<div class="section" id="description">
+<h1>Description</h1>
+<p>A MIFF image file consist of two sections. The first section is a header
+composed of keywords describing the image in text form. The next section
+is the binary image data. The header is separated from the image data by
+a : character immediately followed by a ctrl-Z.</p>
+<p>The MIFF header is composed entirely of LATIN-1 characters. The fields in
+the header are keyword and value combination in the keyword=value format,
+with each keyword and value separated by an equal sign (=). Each
+keyword=value combination is delimited by at least one control or
+whitespace character. Comments may appear in the header section and are
+always delimited by braces. The MIFF header always ends with a colon (:)
+character, followed by a ctrl-Z character. It is also common to precede
+the colon with a formfeed and a newline character. The formfeed prevents
+the listing of binary data when using more(1) under Unix where the ctrl-Z
+has the same effect with the type command on the Win32 command line.</p>
+<p>It is required that the 'id' keyword be present with the value
+'ImageMagick' (id=ImageMagick) and be the first keyword listed in the
+MIFF header.  Files not starting with this keyword/value may be
+rejected.  The 'version' keyword must always be emitted for all new
+files with the value '1.0' (version=1.0).</p>
+<p>The MIFF header supports arbitrary LATIN-1 keyword strings.  Some
+keyword strings have special interpretation while others are merely
+stored as image attributes.  The following is a list of keyword=value
+combinations with special interpretation that may be found in a MIFF
+file:</p>
+<p>background-color=color</p>
+<p>border-color=color</p>
+<p>matte-color=color</p>
+<blockquote>
+these optional keywords reflects the image background, border, and
+matte colors respectively. A color can be a name (e.g. white) or a hex
+value (e.g. #ccc).</blockquote>
+<p>class=DirectClass</p>
+<p>class=PseudoClass</p>
+<blockquote>
+the type of binary image data stored in the MIFF file. If this keyword
+is not present, DirectClass image data is assumed.</blockquote>
+<p>colors=value</p>
+<blockquote>
+the number of colors in a DirectClass image. For a PseudoClass image,
+this keyword specifies the size of the colormap. If this keyword is not
+present in the header, and the image is PseudoClass, a linear 256 color
+grayscale colormap is used with the image data. The maximum number of
+colormap entries is 65535.</blockquote>
+<p>columns=value</p>
+<blockquote>
+the width of the image in pixels. This is a required keyword and has no
+default.</blockquote>
+<p>colorspace=RGB</p>
+<p>colorspace=CMYK</p>
+<blockquote>
+the colorspace of the pixel data. The default is RGB.</blockquote>
+<p>comment={text}</p>
+<blockquote>
+comment text.  Note that extremely old MIFF files used a different
+means to indicate comment text.</blockquote>
+<p>compression=BZip</p>
+<p>compression=None</p>
+<p>compression=RLE</p>
+<p>compression=Zip</p>
+<blockquote>
+the type of algorithm used to compress the image data. If this keyword
+is not present, the image data is assumed to be uncompressed.</blockquote>
+<p>delay &lt;1/100ths of a second&gt;</p>
+<blockquote>
+the interframe delay in an image sequence. The maximum delay is 65535.</blockquote>
+<p>depth=8</p>
+<p>depth=16</p>
+<p>depth=32</p>
+<blockquote>
+depth of a single color value representing values from 0 to 255
+(depth 8), 65535 (depth 16), or 4294967295 (depth 32). If this
+keyword is absent, a depth of 8 is assumed.  Depth values of 1 to 32
+are accepted, with the storage depth being rounded up to 8, 16,
+or 32.</blockquote>
+<p>dispose value</p>
+<blockquote>
+<p>GIF disposal method. Here are the valid methods:</p>
+<blockquote>
+<table border="1" class="docutils">
+<colgroup>
+<col width="19%" />
+<col width="81%" />
+</colgroup>
+<tbody valign="top">
+<tr><td>Disposal</td>
+<td>Description</td>
+</tr>
+<tr><td>0</td>
+<td>No disposal specified.</td>
+</tr>
+<tr><td>1</td>
+<td>Do not dispose between frames.</td>
+</tr>
+<tr><td>2</td>
+<td>Overwrite frame with background color from
+header.</td>
+</tr>
+<tr><td>3</td>
+<td>Overwrite with previous frame.</td>
+</tr>
+</tbody>
+</table>
+</blockquote>
+</blockquote>
+<p>gamma=value</p>
+<blockquote>
+gamma of the image. If it is not specified, a gamma value of
+.45454545 (linear-intensity gamma &quot;2.2&quot; as used by NTSC, sRGB, and
+Rec.709) is assumed.  A gamma value of 1.0 indicates linear-light.</blockquote>
+<p>id=ImageMagick</p>
+<blockquote>
+identify the file as a MIFF-format image file. This keyword is required
+and has no default. Although this keyword can appear anywhere in the
+header, it should start as the first keyword of the header in column 1.
+This will allow programs like file(1) to easily identify the file as
+MIFF.</blockquote>
+<p>iterations value</p>
+<blockquote>
+the number of times an image sequence loops before stopping.</blockquote>
+<p>label={value}</p>
+<blockquote>
+this optional keyword defines a short title or caption for the image.
+If any whitespace appears in the label, it must be enclosed within
+double quotes.</blockquote>
+<p>matte=True</p>
+<p>matte=False</p>
+<blockquote>
+specifies whether a DirectClass image has matte data. Matte data is
+generally useful for image compositing. This keyword has no meaning for
+pseudocolor images.</blockquote>
+<p>montage=&lt;width&gt;x&lt;height&gt;{+-}&lt;xoffset&gt;{+-}&lt;yoffset&gt;</p>
+<blockquote>
+size and location of the individual tiles of a composite image. See
+X(1) for details about the geometry specification. Use this keyword
+when the image is a composite of a number of different tiles. A tile
+consists of an image and optionally a border and a label. &lt; width&gt; is
+the size in pixels of each individual tile in the horizontal direction
+and &lt;height&gt; is the size in the vertical direction. Each tile must have
+an equal number of pixels in width and equal in height. However, the
+width can differ from the height. &lt;xoffset&gt; is the offset in number of
+pixels from the vertical edge of the composite image where the first
+tile of a row begins and &lt;yoffset&gt; is the offset from the horizontal
+edge where the first tile of a column begins. If this keyword is
+specified, a directory of tile names must follow the image header. The
+format of the directory is explained below.</blockquote>
+<p>page=&lt;width&gt;x&lt;height&gt;{+-}&lt;xoffset&gt;{+-}&lt;yoffset&gt;</p>
+<blockquote>
+preferred size and location of an image canvas.</blockquote>
+<p>profile-icc=value</p>
+<blockquote>
+the number of bytes in the International Color Consortium color
+profile. The profile is defined by the ICC profile specification.</blockquote>
+<p>profile-iptc=value</p>
+<blockquote>
+the number of bytes in the IPTC Newsphoto profile. The profile is
+defined by the IPTC specification.</blockquote>
+<p>profile-name=value</p>
+<blockquote>
+the number of bytes in the generic profile name where name identifies
+the profile. Name is substituted with any LATIN-1 string to form a
+unique generic profile identifier.</blockquote>
+<p>profile:name=value</p>
+<blockquote>
+the number of bytes in the generic profile name where name identifies
+the profile. Name is substituted with any LATIN-1 string to form a
+unique generic profile identifier.</blockquote>
+<p>red-primary=x,y</p>
+<p>green-primary=x,y</p>
+<p>blue-primary=x,y</p>
+<p>white-point=x,y</p>
+<blockquote>
+these optional keywords reflect the chromaticity primaries and white point.</blockquote>
+<p>rendering-intent=saturation</p>
+<p>rendering-intent=perceptual</p>
+<p>rendering-intent=absolute</p>
+<p>rendering-intent=relative</p>
+<blockquote>
+Rendering intent is the CSS-1 property that has been defined by the
+International Color Consortium.</blockquote>
+<p>resolution=&lt;x-resolution&gt;x&lt;y-resolution&gt;</p>
+<blockquote>
+vertical and horizontal resolution of the image. See units for the
+specific resolution units (e.g. pixels per inch).</blockquote>
+<p>rows=value</p>
+<blockquote>
+the height of the image in pixels. This is a required keyword and has
+no default.</blockquote>
+<p>orientation=value</p>
+<blockquote>
+specifies the orientation of the image as an attribute (does not
+effect pixel storage).  Supported values are TopLeft, TopRight,
+BottomRight, BottomLeft, LeftTop, RightTop, RightBottom, LeftBottom
+as specified by the TIFF and EXIF standards.</blockquote>
+<p>scene=value</p>
+<blockquote>
+the sequence number for this MIFF image file. This optional keyword is
+used when a MIFF image file is one in a sequence of files used in an
+animation.</blockquote>
+<p>signature=value</p>
+<blockquote>
+this optional keyword contains a string that uniquely identifies the
+image pixel contents. NIST's SHA-256 message digest algorithm is
+recommended.</blockquote>
+<p>units=pixels-per-inch</p>
+<p>units=pixels-per-centimeter</p>
+<blockquote>
+image resolution units.</blockquote>
+<p>version=1.0</p>
+<blockquote>
+Identifies the MIFF version used, which is 1.0 for the purpose of
+this specification.  If version is omitted, then certain MIFF
+features (e.g. compressed rows) are assumed to be encoded using a
+defunct MIFF format.</blockquote>
+<p>Other key value pairs are permitted. If a value contains whitespace it must be
+enclosed with braces as illustrated here:</p>
+<pre class="literal-block">
+id=ImageMagick  version=1.0
+class=PseudoClass colors=256
+compression=RLE
+columns=1280 rows=1024
+scene=1
+signature=d79e1c308aa5bbcdeea8ed63df412da9
+copyright={Copyright (c) 2000 Mortimer Snerd}
+&lt;FF&gt;
+:
+</pre>
+<p>Note that keyword=value combinations may be separated by newlines or
+spaces and may occur in any order within the header. Comments (within
+braces) may appear anywhere before the colon.</p>
+<p>The elements shown in the following table may appear after the header and
+before the image data. These elements appear in the order described in
+the following table if the keyword indicates that they exist.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="21%" />
+<col width="21%" />
+<col width="57%" />
+</colgroup>
+<tbody valign="top">
+<tr><td>Element</td>
+<td>Keyword</td>
+<td>Description</td>
+</tr>
+<tr><td>Image
+directory</td>
+<td>montage</td>
+<td>The directory consists of a name for each
+tile of the composite image separated by
+a newline character. The list is
+terminated with a NULL character.</td>
+</tr>
+<tr><td>ICC Profile</td>
+<td>profile-icc</td>
+<td>Binary color profile.</td>
+</tr>
+<tr><td>IPTC Profile</td>
+<td>profile-iptc</td>
+<td>Binary IPTC Newsphoto profile.</td>
+</tr>
+<tr><td>Generic
+Profiles</td>
+<td>profile-&lt;name&gt;</td>
+<td>Binary generic profile. Multiple named
+generic profiles may exist.</td>
+</tr>
+</tbody>
+</table>
+<p>Next comes the binary image data itself. How the image data is formatted
+depends upon the class of the image as specified (or not specified) by
+the value of the class keyword in the header. All numeric values in the
+binary section are written with the most significant bytes occuring first
+(big-endian ordering).</p>
+<p>DirectClass images (class=DirectClass) are continuous-tone, images stored
+as RGB (red, green, blue), RGBA (red, green, blue, alpha), CMYK (cyan,
+yellow, magenta, black), and CMYKA (cyan, yellow, magenta, black, alpha)
+intensity values as defined by the colorspace and matte keywords. The
+size of each intensity value depends on the depth of the image. The
+depth, number of bytes, and numeric range of each value are shown in the
+following table:</p>
+<blockquote>
+<table border="1" class="docutils">
+<colgroup>
+<col width="21%" />
+<col width="41%" />
+<col width="38%" />
+</colgroup>
+<tbody valign="top">
+<tr><td>Depth</td>
+<td>Bytes Per
+Value</td>
+<td>Value Range</td>
+</tr>
+<tr><td>8</td>
+<td>1</td>
+<td>0..255</td>
+</tr>
+<tr><td>16</td>
+<td>2</td>
+<td>0..65535</td>
+</tr>
+<tr><td>32</td>
+<td>4</td>
+<td>0..4294967295</td>
+</tr>
+</tbody>
+</table>
+</blockquote>
+<p>The alpha value (if it occurs) represents the degree of pixel opacity
+(zero is totally transparent).</p>
+<p>PseudoClass images (class=PseudoClass) are colormapped RGB images. The
+colormap is stored as a series of red, green, and blue pixel values. The
+size of each colormap value depends on the image depth, as shown in the
+following table:</p>
+<blockquote>
+<table border="1" class="docutils">
+<colgroup>
+<col width="19%" />
+<col width="22%" />
+<col width="31%" />
+<col width="28%" />
+</colgroup>
+<tbody valign="top">
+<tr><td>Depth</td>
+<td>Bytes Per
+Value</td>
+<td>Value Range</td>
+<td>Bytes Per
+Colormap Entry</td>
+</tr>
+<tr><td>8</td>
+<td>1</td>
+<td>0..255</td>
+<td>3</td>
+</tr>
+<tr><td>16</td>
+<td>2</td>
+<td>0..65535</td>
+<td>6</td>
+</tr>
+<tr><td>32</td>
+<td>4</td>
+<td>0..4294967295</td>
+<td>12</td>
+</tr>
+</tbody>
+</table>
+</blockquote>
+<p>The number of colormap entries is defined by the colors keyword. The
+colormap data occurs immediately following the header (or image directory
+if the montage keyword is in the header). Immediately following the
+colormap data is the PseudoClass image data. PseudoClass image data is an
+array of index values into the color map. The number of bytes comprising
+the index value depends on the number of colors in the image. The
+following table shows the number of bytes in each colormap index as
+determined by the colors keyword:</p>
+<blockquote>
+<table border="1" class="docutils">
+<colgroup>
+<col width="31%" />
+<col width="31%" />
+<col width="38%" />
+</colgroup>
+<tbody valign="top">
+<tr><td>Colors</td>
+<td>Bytes Per
+Index</td>
+<td>Index Range</td>
+</tr>
+<tr><td>&lt;=256</td>
+<td>1</td>
+<td>0..255</td>
+</tr>
+<tr><td>&lt;=65535</td>
+<td>2</td>
+<td>0..65535</td>
+</tr>
+<tr><td>&lt;=4294967295</td>
+<td>4</td>
+<td>0..4294967295</td>
+</tr>
+</tbody>
+</table>
+</blockquote>
+<p>If matte is true, each colormap index is immediately followed by an
+equally-sized alpha value. The alpha value represents the degree of pixel
+opacity (zero is totally transparent).</p>
+<p>The image data in a MIFF file may be uncompressed, runlength encoded,
+Zip compressed, or BZip compressed. The compression keyword in the
+header defines how the image data is compressed. Uncompressed pixels
+are stored one scanline at a time in row order. Runlength encoded
+compression counts runs of identical adjacent pixels and stores the
+pixels followed by a length byte (the number of identical pixels minus
+1). Zip and BZip compression for version 1.0 compresses each row of an
+image and precedes the compressed row with the length of compressed
+pixel bytes as a 32-bit unsigned value in most significant byte first
+order. If the version tag is not present (indicating a virtually
+unused legacy format) then Zip and BZip omit this length value and the
+reader must incrementally decode each row and restart compression at
+the point where decoding completed for the previous row.</p>
+<p>Note that compression in MIFF is scanline-based without any
+specialized pre-processing as is found in the PNG and TIFF file
+formats.  As a result, available compression levels are likely to be
+less than some other file formats given the same compression algorithm.</p>
+<p>MIFF files may contain more than one image. Simply concatenate each
+individual image (composed of a header and image data) into one file.</p>
+</div>
+<div class="section" id="authors">
+<h1>Authors</h1>
+<p>John Cristy, <a class="reference external" href="mailto:magick-users&#37;&#52;&#48;imagemagick&#46;org">magick-users<span>&#64;</span>imagemagick<span>&#46;</span>org</a> ImageMagick Studio LLC.</p>
+<p>Maintained since 2002 by Bob Friesenhahn, GraphicsMagick Group.</p>
+<hr class="docutils" />
+<p>Copyright © GraphicsMagick Group 2002 - 2020</p>
+</div>
+</div>
+</body>
+</html>

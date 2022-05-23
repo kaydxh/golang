@@ -1,0 +1,290 @@
+2001-12-28  Leonard Rosenthol  <leonardr@lazerware.com>
+
+	* Even more features and options were added to conjure
+	* Added CropBox support to PDF writer
+
+2001-12-26  Leonard Rosenthol  <leonardr@lazerware.com>
+
+	* Conjure now supports having a list of files for the script to
+	process being passed on the command line.
+	* More features and options were added to conjure
+
+2001-12-25  Leonard Rosenthol  <leonardr@lazerware.com>
+
+	* Made a huge number of improvements to conjure.  It now supports
+	over 15 different commands for manipulating your images.
+
+2001-12-24  Cristy  <cristy@mystic.es.dupont.com>
+
+	* Started a new scripting language utility, conjure.
+
+2001-12-20  Cristy  <cristy@mystic.es.dupont.com>
+
+	* Display the search path in the event a utility cannot find a
+	particular configuration file (thanks to billr@corbis.com)
+
+2001-12-14  Leonard Rosenthol  <leonardr@lazerware.com>
+
+	* Fixed some bugs in the new composite operators.
+
+2001-12-14  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* Added native BLOB support to coders/wmf.c.
+
+2001-12-13  Leonard Rosenthol  <leonardr@lazerware.com>
+
+	* Added new composite operators to support PSD/XCF
+	layer compositing:  NoCompositeOp, DarkenCompositeOp,
+	LightenCompositeOp, HueCompositeOp, SaturateCompositeOp,
+	ValueCompositeOp, ColorizeCompositeOp, LuminizeCompositeOp,
+	ScreenCompositeOp, OverlayCompositeOp.
+	* Modified the PSD coder to set the appropriate composite
+	operator.
+	* Modified the XCF coder to set the appropriate composite
+	operator.
+
+2001-12-10  Cristy  <cristy@mystic.es.dupont.com>
+
+	* Removed the flatten option from ImageInfo.
+	* Added new compose member to ImageInfo that defines which of
+	the composite operators to use when flattening an image.
+
+2001-12-09  Leonard Rosenthol  <leonardr@lazerware.com>
+
+	* Added new member to ImageInfo, flatten, used by PSD and XCF
+	to determine whether to flatten an image when read.
+	* PSD and XCF now respect image_info->flatten.
+	* Fixed bug in XCF loader when loading layered image as layers.
+	* Modified the convert program to set image_info->flatten if
+	-flatten is specified; we still call FlattenImages for other
+	formats that don't respect image_info->flatten.
+	* Modified Magick++'s Image class to support image_info->flatten.
+
+2001-12-08  Leonard Rosenthol  <leonardr@lazerware.com>
+
+	* Improvements to the Photoshop (PSD) coder:  1) added support
+	for Duotone images loaded as grayscale as per PSD docs;  and 2)
+	added option to composite layers when reading respects layer
+	visibility setting.
+
+2001-12-07  Cristy  <cristy@mystic.es.dupont.com>
+
+	* -dissolve wasn't working for the composite program (thanks to
+	Rick Manbry).
+	* DCM coder failed to read a valid DCM image file.
+
+2001-12-06  Cristy  <cristy@mystic.es.dupont.com>
+
+	* Stream buffer was not being freed in ReadStream().
+
+2001-12-05  Cristy  <cristy@mystic.es.dupont.com>
+
+	* Corrected bias when downsizing an image with ResizeImage().
+
+2001-11-25  Cristy  <cristy@mystic.es.dupont.com>
+
+	* AcquireImagePixels() can accept (x,y) outside the image area
+	(e.g. AcquireImagePixels(image,-3,-3,7,7,exception)).
+
+2001-11-22  Cristy  <cristy@mystic.es.dupont.com>
+
+	* Added limited SVG gradient support.
+
+2001-11-21  Cristy  <cristy@mystic.es.dupont.com>
+
+	* Added API method, PingBlob().
+
+2001-11-14  Cristy  <cristy@mystic.es.dupont.com>
+
+	* Moved a few pixel related defines (e.g. Downscale()) to
+	a corresponding method to enforce strong type checking at
+	compile time.
+
+2001-11-12  Cristy  <cristy@mystic.es.dupont.com>
+
+	* Previously ImageMagick did not write 8-bit ASCII PPM/PGM files
+	when QuantumDepth == 16.
+	* Added 'id' as an image attribute in PerlMagick (returns
+	ImageMagick registry ID).
+
+2001-11-10  Cristy  <cristy@mystic.es.dupont.com>
+
+	* Added SVG pattern support.
+	* Changed default background color to none.
+
+2001-11-06  Cristy  <cristy@mystic.es.dupont.com>
+
+	* Added support of reading and writing 16-bit raw PPM/PGM files.
+
+2001-11-05  Cristy  <cristy@mystic.es.dupont.com>
+
+	* Added -level to convert/mogrify (suggested by
+	mericson@phillynews.kom).
+
+2001-11-04  Cristy  <cristy@mystic.es.dupont.com>
+
+	* -shadow/-shade were not distiguished.
+
+2001-11-03  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* PerlMagick/Makefile.PL.in: Install PerlMagick using
+	ImageMagick's configure prefix.
+
+2001-11-02  Cristy  <cristy@mystic.es.dupont.com>
+
+	* Typecast offset to unsigned long in coders/pdf.c.
+
+2001-11-01  Cristy  <cristy@mystic.es.dupont.com>
+
+	* Convert's -flatten, -average, etc. failed with an assert error.
+
+2001-10-30  Cristy  <cristy@mystic.es.dupont.com>
+
+	* Added support for On-the-air bitmap.
+
+2001-09-29  Glenn  <randeg@alum.rpi.edu>
+
+	* When the delay setting for an image is greater than 4cs, duplicate
+	frames are inserted to achieve the desired delay while creating MPEG
+	files (contributed by Lawrence Livermore National Laboratory (LLNL)).
+
+2001-10-29  Cristy  <cristy@mystic.es.dupont.com>
+
+	* ImageMagick now has a registry for storing image blobs.
+
+2001-10-26  Cristy  <cristy@mystic.es.dupont.com>
+
+	* Added VMS patches (thanks to Jouk Jansen).
+
+2001-10-25 Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* Fixed parsing bug for decorate #FFFFFF.
+
+2001-10-22 Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* Added tests for mpeg2 library to configure.
+
+2001-10-22  Cristy  <cristy@mystic.es.dupont.com>
+
+	* Added a MPEG coder module.
+	* Added ImageType member to the image_info structure (suggested
+	by Glenn)
+
+2001-10-21  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* Eliminated libMagick.so dependency on libxml by not listing -lxml
+	when doing modules link.
+
+2001-10-18  Cristy  <cristy@mystic.es.dupont.com>
+
+	* Eliminated the libMagick.so dependancy on libtiff by moving
+	Huffman2DEncodeImage() from magick/compress.c to coders/pdf.c,
+	coders/ps2.c and coders/ps3.c (suggested by Bob Friesenhahn).
+	This change has the side-effect of elminating dependency on libpng
+	and libjpeg as well (which libtiff may depend on).
+
+2001-10-16  Cristy  <cristy@mystic.es.dupont.com>
+
+	* Convert now supports -channel {Cyan,Magenta,Yellow,Black}.
+
+2001-10-14  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* coders/wmf.c updated for libwmf 0.2.  Plenty of bugs remain within.
+
+2001-10-11  Cristy  <cristy@mystic.es.dupont.com>
+
+	* QueryFontMetrics() of PerlMagick now recognizes embedded
+	special characters (e.g. %h).
+
+2001-10-10  Cristy  <cristy@mystic.es.dupont.com>
+
+	* Fixed seg-fault for PingImage() on a JP2 image file.
+
+2001-10-07  Cristy  <cristy@mystic.es.dupont.com>
+
+	* CloneImage() now uses a referenced counted pixel cache.
+
+2001-10-05  Cristy  <cristy@mystic.es.dupont.com>
+
+	* Added AcquireImagePixels() method.
+	* Changed the formal parameter from Image * to const Image *
+	for a number of methods (e.g. ZoomImage()).
+	* Added ExceptionInfo parameter to DispatchImage().
+
+2001-10-05  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* Find libxml headers under Debian Linux (bug ID 921).
+
+2001-10-02  Cristy  <cristy@mystic.es.dupont.com>
+
+	* Fixed assertion error on drawing stroked text.
+
+2001-10-01  Cristy  <cristy@mystic.es.dupont.com>
+
+	* Added blob test to the PerlMagick test suite.
+
+2001-09-30  Cristy  <cristy@mystic.es.dupont.com>
+
+	* switched strcpy to strncpy to help protect against buffer
+	overflow.
+
+	* ltdl.c passed int reference but a long was needed; caused a
+	fault on Solaris 64-bit compiles.
+
+2001-09-25  Cristy  <cristy@mystic.es.dupont.com>
+
+	* Removed most lint complaints from the source.
+	* strtod() returns different results on Linux and Solaris for 0x13.
+	* Added a MATLAB encoder contributed by Jaroslav Fojtik.
+
+2001-09-21  Cristy  <cristy@mystic.es.dupont.com>
+
+	* Replaced TemporaryFilename() with UniqueImageFilename().
+	* ImageMagick CORE API is now 64-bit clean.
+
+2001-09-20  Cristy  <cristy@mystic.es.dupont.com>
+
+	* Fixed svg.c to accept a viewbox with a negative offset.
+
+2001-09-15  Cristy  <cristy@mystic.es.dupont.com>
+
+	* Surveying the code for 64-bit compatibility.
+	* The cloned colormap was too small (reported by Glenn).
+	* A blob was being unmapped more than once for multi-frame images.
+
+2001-09-12  Cristy  <cristy@mystic.es.dupont.com>
+
+	* Text drawing now handles UTF8-encoding.
+	* Off-by-one GetImagePixels() fix in draw.c
+	* PingImage() now reports attributes for all images in an image
+	sequence.
+
+2001-09-10  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* magick/image.h: Rename QuantumLeap define to QuantumDepth.
+	QuantumDepth is set to the values 8 or 16, depending on user
+	configuration option.
+
+2001-09-09  Cristy  <cristy@mystic.es.dupont.com>
+
+	* Updated PerlMagick signatures to reflect new message digest
+	algorithm.
+
+2001-09-08  Cristy  <cristy@mystic.es.dupont.com>
+
+	* ImageMagick defaults to 16-bit quantum.  Set QuantumMagick
+	for 8-bit.
+	* Changed image->blob from BlobInfo to BlobInfo* so the Image
+	structure size is not dependent on the large-file preprocessor
+	defines.
+
+2001-09-07  Cristy  <cristy@mystic.es.dupont.com>
+
+	* Added -background to convert program usage text.
+	* DispatchImage() now properly handles grayscale images.
+
+2001-09-01  Glenn  <randeg@alum.rpi.edu>
+
+	* The compression quality setting is now recognized when creating
+	MPEG images (contributed by Lawrence Livermore National Laboratory
+	(LLNL)).

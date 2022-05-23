@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+<!--
+
+                 GraphicsMagick Logging Configuration File
+
+The following options are available:
+
+  o events [comma separated list]
+      annotate       Text annotation events.
+      blob           File opening/closing/loading events.
+      cache          Pixel cache events.
+      coder          File format coder events.
+      configure      Configuration events (searching for .mgk files, etc.).
+      deprecate      Identify use of deprecated functions.
+      error          Error exception report events.
+      exception      Exception report events (warning and error).
+      locale         Locale events.
+      none           Reporting disabled.
+      render         Rendering (drawing) events.
+      resource       Resource allocation events (memory, disk, etc.)
+      temporaryFile  Temporary file events (allocate, deallocate, etc.)
+      transform      Image processing events.
+      user           User events (not emitted by GraphicsMagick).
+      warning        Warning exception report events.
+      X11            X11 server events.
+
+  o output
+      none           Reporting disabled.
+      disabled       Reporting disabled.
+      stdout         Log to stdout in "human readable" format
+      stderr         Log to stderr in "human readable" format
+      xmlfile        Log to a file in an XML format
+      txtfile        Log to a file in a text format
+      win32debug     Windows, Output events to the application/system debugger.
+      win32eventlog  Windows, Output events to the Application event log.
+
+  o Filename - Use specified filename if output to a file is selected.
+    Place a %d in the file name in order to support multiple log generations.
+
+  o Generations - Number of log files to maintain before circulating back to
+      the first name.
+
+  o Limit - Maximum number of logging events before creating a new log file.
+
+  o Format - Format of logging output
+
+      You can display the following components by embedding
+      special format characters:
+
+        %d   domain
+        %e   event
+        %f   function
+        %l   line
+        %m   module
+        %p   process ID
+        %r   real CPU time
+        %t   wall clock time
+        %u   user CPU time
+        %%   percent sign
+        \n   newline
+        \r   carriage return
+
+ -->
+<magicklog>
+  <log events="None" />
+  <log output="stderr" />
+  <log filename="Magick-%d.log" />
+  <log generations="3" />
+  <log limit="2000" />
+  <log format="%t %r %u %p %m/%f/%l/%d:\n  %e"  />
+</magicklog>

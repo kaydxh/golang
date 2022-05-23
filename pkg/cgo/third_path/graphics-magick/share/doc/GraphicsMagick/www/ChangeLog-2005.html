@@ -1,0 +1,1064 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.15.2: http://docutils.sourceforge.net/" />
+<title>ChangeLog-2005.rst</title>
+<link rel="stylesheet" href="docutils-articles.css" type="text/css" />
+</head>
+<body>
+
+<div class="banner">
+<img src="images/gm-107x76.png" alt="GraphicMagick logo" width="107" height="76" />
+<span class="title">GraphicsMagick</span>
+<form action="http://www.google.com/search">
+	<input type="hidden" name="domains" value="www.graphicsmagick.org" />
+	<input type="hidden" name="sitesearch" value="www.graphicsmagick.org" />
+    <span class="nowrap"><input type="text" name="q" size="25" maxlength="255" />&nbsp;<input type="submit" name="sa" value="Search" /></span>
+</form>
+</div>
+
+<div class="navmenu">
+<ul>
+<li><a href="index.html">Home</a></li>
+<li><a href="project.html">Project</a></li>
+<li><a href="download.html">Download</a></li>
+<li><a href="README.html">Install</a></li>
+<li><a href="Hg.html">Source</a></li>
+<li><a href="NEWS.html">News</a> </li>
+<li><a href="utilities.html">Utilities</a></li>
+<li><a href="programming.html">Programming</a></li>
+<li><a href="reference.html">Reference</a></li>
+</ul>
+</div>
+<div class="document">
+
+
+<p>2005-12-31  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>tiff: Update to libtiff 3.8.0.</li>
+</ul>
+</blockquote>
+<p>2005-12-26  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>NEWS: Updated with latest changes.</li>
+<li>tiff: Update to libtiff 3.7.4.</li>
+</ul>
+</blockquote>
+<p>2005-12-24  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>lcms: Update to lcms 1.15.</li>
+</ul>
+</blockquote>
+<p>2005-12-19  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>magick/enhance.c (LevelImage): Fix -level command parsing when a
+percent symbol is supplied within the argument rather than at the
+end.</li>
+<li>magick/utility.c (GetGeometry): Bounds-check geometry string
+length.</li>
+</ul>
+</blockquote>
+<p>2005-12-15  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/dpx.c: Decided to swap 10-bit subsampled 4:2:2 YCbCr by
+default since this is what practically all sample files I have
+been provided actually do.  Ignore the fact that there is nothing
+in the standard which supports this.</li>
+</ul>
+</blockquote>
+<p>2005-12-10  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>magick/command.c (NormalizeSamplingFactor): Generalized
+subsampling notation parsing support.</li>
+</ul>
+</blockquote>
+<p>2005-12-09  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>magick/command.c (NormalizeSamplingFactor): Add some support for
+normalizing industry-standard subsampling notation (e.g. 4:2:2)
+into GraphicsMagick's unusual notation.</li>
+</ul>
+</blockquote>
+<p>2005-12-06  Ralf Wildenhues  &lt;<a class="reference external" href="mailto:Ralf&#46;Wildenhues&#37;&#52;&#48;gmx&#46;de">Ralf<span>&#46;</span>Wildenhues<span>&#64;</span>gmx<span>&#46;</span>de</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>Updates to use latest development autotools, including
+development libtool 2.0.</li>
+</ul>
+</blockquote>
+<p>2005-12-03  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>magick/image.h: Added some useful macros for accessing
+PixelPacket members in a generic way.</li>
+<li>coders/dpx.c (ReadDPXImage): For YCbCr with <cite>A</cite> sample, <cite>A</cite>
+sample levels are like Luma.
+(WriteDPXImage): For YCbCr with <cite>A</cite> sample, <cite>A</cite> sample levels are
+like Luma.</li>
+</ul>
+</blockquote>
+<p>2005-12-02  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/tiff.c (RegisterTIFFImage): Report libtiff release
+version rather than ABI version.</li>
+</ul>
+</blockquote>
+<p>2005-11-27  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>magick/resize.c: Revert yesterday's benign-appearing edits since
+they caused a bizzare bug.</li>
+</ul>
+</blockquote>
+<p>2005-11-26  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/dpx.c (ReadDPXImage): Improve performance when reading
+YCbCr files.  Handle files which use Printing Density on top of
+YCbCr.  Default YCbCr to Rec.709 if the transfer characteristic is
+User Defined.</li>
+<li>coders/pcd.c (Upsample): Moved Upsample from gem.c to here since
+PCD is the only user and it is not a general purpose function.</li>
+</ul>
+</blockquote>
+<p>2005-11-14  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>VisualMagick/magick/magick_config.h.in: Remove unnecessary test
+for WIN32.</li>
+</ul>
+</blockquote>
+<p>2005-11-13  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>wand/magick_compat.c (FormatMagickStringList): MagickExport since this
+function is used by Ch extension.</li>
+<li>magick/log.c (LogMagickEventList): MagickExport since this
+function is used by Ch extension.</li>
+<li>magick/utility.c (FormatStringList): MagickExport since this
+function is used by Ch extension.</li>
+<li>coders/dpx.c (ReadDPXImage): Added support for dpx:swap-samples
+define in order to handle files with Cb and Cr swapped.  Fixed a
+bug in the header reading which caused some valid files to fail to
+read at all.
+(WriteDPXImage): Added support for dpx:swap-samples define in
+order to write files with Cb and Cr swapped.</li>
+<li>magick/profile.c (ProfileImage): Add support for ICC CMS
+profiles in YCbCr space.</li>
+</ul>
+</blockquote>
+<p>2005-10-10  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/svg.c (ReadSVGImage): Eliminate memory leak.</li>
+</ul>
+</blockquote>
+<p>2005-10-09  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>magick/image.h (Image): Added an orientation member to the Image
+structure to record image orientation for the DPX, and TIFF
+formats. Eventually formats which support IPTC and EXIF embedded
+profiles should be supported by the orientation member as well.</li>
+</ul>
+</blockquote>
+<p>2005-10-08  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>VisualMagick/magick/magick_types.h.in: Add patch for Ch.</li>
+<li>magick/command.c (TransmogrifyImage): Complete re-write of
+mogrify file handling.  Former version wrote to a temporary file
+and then moved temporary file to replace original if necessary.
+New version moves an existing writable file to a backup file with
+tilde (<cite>~</cite>) added to end of file name, writes to the final output
+file name, and removes the backup file on success.  The new
+approach satisfies formats which embed the output name in the file
+(e.g. the DPX format) and still works when the output file exists
+and is writeable, but is in non-writeable directory.  The previous
+approach would fail if the output file exists and is writable, but
+the directory is not writeable.</li>
+</ul>
+</blockquote>
+<p>2005-10-01  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/dpx.c (AttributeToString): Use strncpy rather than
+strlcpy to copy string.  This is important since DPX header
+strings are not null terminated and may need to fill all available
+space.  Certain short header fields like mp.film.manufacturer.id,
+mp.film.type, and mp.perfs.offset were being truncated!</li>
+</ul>
+</blockquote>
+<p>2005-09-25  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>magick/attribute.c (GetImageAttribute): Add more general support
+for retrieving wildcarded attributes so that an identify -format
+specification like <cite>%[dpx:*]</cite> works as expected.</li>
+<li>coders/tiff.c (WriteTIFFImage): Transform quality value into zip
+compression quality level similar to what is done for MIFF/MNG/PNG.
+Since default quality value is 75, this means that the default zip
+quality level is 7.</li>
+</ul>
+</blockquote>
+<p>2005-09-24  Peter Wu  &lt;<a class="reference external" href="mailto:peterw&#37;&#52;&#48;softintegration&#46;com">peterw<span>&#64;</span>softintegration<span>&#46;</span>com</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>Incorporate changes necessary so that GraphicsMagick can work
+with the Ch C/C++ interpreter from SoftIntegration at
+<a class="reference external" href="http://www.softintegration.com/">http://www.softintegration.com/</a>.</li>
+</ul>
+</blockquote>
+<p>2005-09-23  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>magick/pixel_cache.c: Incorporate all functionality from
+cache.c, cache_view.c, and stream.c so that all private interfaces
+can be fully hidden.  As a result cache.c, cache_view.c, and
+stream.c are now removed.</li>
+</ul>
+</blockquote>
+<p>2005-09-18  Michal Kowalczuk  &lt;<a class="reference external" href="mailto:sammael&#37;&#52;&#48;brzydal&#46;eu&#46;org">sammael<span>&#64;</span>brzydal<span>&#46;</span>eu<span>&#46;</span>org</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/gif.c: Free global_colormap before returning with error.</li>
+</ul>
+</blockquote>
+<p>2005-09-18  Stepan Kasal  &lt;<a class="reference external" href="mailto:kasal&#37;&#52;&#48;ucw&#46;cz">kasal<span>&#64;</span>ucw<span>&#46;</span>cz</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>Makefile.am (BUILT_SOURCES): Removed.</li>
+<li>magick/Makefile.am (MAGICK_BUILT_SRCS): Removed, too.</li>
+</ul>
+</blockquote>
+<p>2005-09-12 Glenn Randers-Pehrson &lt;<a class="reference external" href="mailto:glennrp&#37;&#52;&#48;glennrp&#46;com">glennrp<span>&#64;</span>glennrp<span>&#46;</span>com</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>magick/profile.c (ProfileImage):  Free color_profile-&gt;name
+and iptc_profile-&gt;name when destroying the profile.</li>
+</ul>
+</blockquote>
+<p>2005-08-28  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>magick/api.h: Eliminate requirement to include certain system
+headers prior to including &lt;magick/api.h&gt;.</li>
+<li>utilities/gm.c: Move utility implementation to GMCommand() in
+command.c</li>
+</ul>
+</blockquote>
+<p>2005-08-18  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/dpx.c: Added support for reading and writing DPX Luma
+files using proper video levels.</li>
+<li>magick/colorspace.h (enum ColorspaceType): Decided that
+GRAYColorspace should be reserved for full-range grayscale data
+while Rec601LumaColorspace and Rec709LumaColorspace should be for
+video colorspaces.  Therefore, GRAYColorspace is no longer a
+synonym for Rec601LumaColorspace.</li>
+<li>magick/colorspace.c: Added support for influencing Cineon Log
+colorspace transformations via image attributes.
+Perform colorspace transformations in floating point rather than
+integer in order to reduce the amount of noise added by
+transform table quantization.</li>
+<li>coders/psd.c (WritePSDImage): Ensure that output image is 8 or
+16-bits regardless of specific image depth.</li>
+<li>coders/dpx.c: Added support for planar YCbCr 4:2:2.</li>
+</ul>
+</blockquote>
+<p>2005-08-04  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/dpx.c (WriteDPXImage): 10 and 12-bit packed data was not
+according to DPX specification.  Added dpx:pixel-endian={lsb|msb}
+to allow the user to specify the endian order of the pixel data in
+case it does (or should not) not match the headers.  Library Of
+Congress format is 10-bit packed data in big-endian format, but is
+marked as little-endian.</li>
+</ul>
+</blockquote>
+<p>2005-08-03  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/dpx.c: Sample order for filled 10 bit samples matches DPX
+specification (was intentionally reversed).  RGB sample order is
+changed to match DPX specifiation (i.e. BGR rather than RGB).
+Disabled special support for Library Of Congress little-endian
+10-bit packed format.</li>
+</ul>
+</blockquote>
+<p>2005-08-01  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/dpx.c: Extend all image rows to a 32-bit integer
+boundary.</li>
+</ul>
+</blockquote>
+<p>2005-07-31  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/dpx.c: Support the little-endian 10-bit packed format as
+used by the Library Of Congress.</li>
+</ul>
+</blockquote>
+<p>2005-07-27  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/jp2.c: Change how Jasper is intialized.  Hopefully
+eliminate memory leak when reading ICC color profile.</li>
+<li>Overall: Compilation warning elimination with GCC 4.0.1.</li>
+<li>magick/utility.c (SystemCommand): Always report error status if
+a command fails.</li>
+</ul>
+</blockquote>
+<p>2005-07-26  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>zlib: Updated to version 1.2.3.</li>
+<li>coders/dpx.c: Use TriangleFilter for scaling chroma.</li>
+</ul>
+</blockquote>
+<p>2005-07-21  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/dpx.c: Support proper encode and decode of YCbCr video
+levels.</li>
+<li>magick/colorspace.c: Support Rec709YCbCrColorspace colorspace.</li>
+</ul>
+</blockquote>
+<p>2005-07-05  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>magick/{animate.c, display.c, import.c, xwindow.c}: Rename all
+symbols starting with <cite>X</cite> so that they are prefixed with <cite>Magick</cite>.
+This eases maintenance since it is almost impossible to understand
+code which pretends to be the X11 libraries.  The few programs
+which use the GraphicsMagick <cite>X</cite> functions will need to alter the
+symbol names they use.  Sorry.</li>
+<li>magick/command.c (DisplayImageCommand): Don't invoke
+XrmDestroyDatabase() to destroy the resource database associated
+with the display since it seems that XCloseDisplay() does this for
+us.</li>
+<li>magick/image.c (DisplayImages): Don't invoke
+XrmDestroyDatabase() to destroy the resource database associated
+with the display since it seems that XCloseDisplay() does this for
+us.</li>
+<li>coders/uyvy.c: Enforce image width restrictions.</li>
+<li>coders/dpx.c: Enforce image width restrictions when subsampling.</li>
+</ul>
+</blockquote>
+<p>2005-07-03  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/dpx.c: Support reading and writing subsampled CbYCr
+images.  Colorimetery is not right yet.</li>
+<li>magick/colorspace.h (enum Rec709YCbCrColorspace): New
+enumeration for Rec. 709 YcBCr colorspace.</li>
+</ul>
+</blockquote>
+<p>2005-06-21 Glenn Randers-Pehrson &lt;<a class="reference external" href="mailto:glennrp&#37;&#52;&#48;glennrp&#46;com">glennrp<span>&#64;</span>glennrp<span>&#46;</span>com</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/png.c: Fixed a problem with reading 16-bit PNG images
+using the Q8 quantum depth.</li>
+</ul>
+</blockquote>
+<p>2005-06-19  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/dpx.c (ReadDPXImage): Add read support for CbYCr at 4:4:4.
+(WriteDPXImage): Add write support for CbYCr at 4:4:4.</li>
+</ul>
+</blockquote>
+<p>2005-06-18  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/dpx.c (WriteDPXImage): Only preserve source image
+dimension and offset information if image size has not changed.
+If image size has changed, the existing information may become
+invalid.
+(WriteDPXImage): Allow user to assign DPX header attribute values
+using syntax like &quot;-define dpx:mp.frame.position=1000&quot;.</li>
+</ul>
+</blockquote>
+<p>2005-06-12  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/fpx.c: Fix compilation problem due to additional
+ExportImagePixelArea parameter.</li>
+</ul>
+</blockquote>
+<p>2005-06-09  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/png.c (WriteMNGImage): Use -define mng:need-cacheoff to
+write a libmng-specific nEED request to disable frame buffering.
+This allows the MNG data to stream without increasing memory
+consumption in the libmng client.</li>
+</ul>
+</blockquote>
+<p>2005-06-07  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/dpx.c (SMPTEStringToBits): Time code and user bits were
+being displayed in wrong order on little endian CPUs.  Thanks very
+much for bug report from Jason Howard.
+(SMPTEStringToBits): Similar fix for time code and user bits
+string to binary.</li>
+</ul>
+</blockquote>
+<p>2005-06-05  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/miff.c (ReadMIFFImage): Use StringToColorspaceType() to
+parse colorspaces.</li>
+<li>coders/dpx.c (ReadDPXImage): Change existing
+dpx:source-colorspace define to dpx:colorspace so it is easier to
+remember.</li>
+<li>coders/cineon.c (ReadCINEONImage): Extract Cineon header
+attributes in DPX compatible form so that it is possible to
+convert Cineon to DPX while losing as little header information as
+possible.  Allow the user to set the existing image colorspace
+using the cineon:colorspace define.</li>
+</ul>
+</blockquote>
+<p>2005-06-01  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/jpeg.c (ReadJPEGImage): Report actual depth of JPEG file
+(8 or 12 bits).</li>
+<li>coders/cineon.c (ReadCINEONImage): Report depth as 10 bits.</li>
+</ul>
+</blockquote>
+<p>2005-05-26  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/dpx.c: Retrieve and restore the DPX user defined data
+area.  Make available as a &quot;DPXUSERDATA&quot; attached profile.</li>
+</ul>
+</blockquote>
+<p>2005-05-21  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/meta.c (ReadMETAImage): Fixed reading ICM color profile
+files.  Due to a typo ICM color profiles were being stored as IPTC
+profiles.  This restores proper operation of the -profile option.
+(ReadMETAImage): Fix double free bug.  Hopefully does not result
+in a memory leak in other cases.</li>
+</ul>
+</blockquote>
+<p>2005-05-19  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>magick/image.c (DescribeImage): If the image is DirectClass,
+then don't compute the number of unique colors unless verbose is
+greater than one.  This change is made since computing the number
+of unique colors may take hours for some images.  The handling of
+the -verbose argument is changed so that it is cumulative.
+Specifying -verbose multiple times increases the level of
+verbosity.</li>
+</ul>
+</blockquote>
+<p>2005-05-18  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>magick/nt_base.c (NTreaddir): Fix write beyond buffer length
+reported in SourceForge issue #1182003.  Only impacts Windows.</li>
+</ul>
+</blockquote>
+<p>2005-05-17  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/dpx.c (ReadRowSamples): Added necessary masking necessary
+in order to cleanly retrieve DPX 10 bit samples.  Happened to work
+properly without the masking with QuantumDepth=16.</li>
+</ul>
+</blockquote>
+<p>2005-05-16  Tavis Ormandy &lt;<a class="reference external" href="mailto:taviso&#37;&#52;&#48;gentoo&#46;org">taviso<span>&#64;</span>gentoo<span>&#46;</span>org</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/xwd.c (ReadXWDImage): Fix for infinite loop in the xwd
+decoder when calculating the shift r/g/b values and the mask is
+set to zero.</li>
+</ul>
+</blockquote>
+<p>2005-05-15  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/jp2.c (ReadJP2Image): Return JP2 images as DirectClass
+grayscale rather than PseudoClass.</li>
+<li>coders/gray.c (ReadGRAYImage): Return GRAY images as DirectClass
+grayscale rather than PseudoClass.</li>
+<li>coders/dpx.c: Rewrote the DPX pixel reading/writing code yet
+again to obtain up to 2X better performance.  In the process,
+support little-endian pixel storage.</li>
+</ul>
+</blockquote>
+<p>2005-05-11  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/dpx.c: Added some performance optimizations for reading
+and writing.  Write the motion picture and television headers.</li>
+<li>magick/colorspace.c (TransformRGBImage): Update image colorspace
+to RGB when transforming from Cineon log space to RGB.</li>
+<li>coders/dpx.c (WriteDPXImage): Set image date &amp; time field.
+(ReadDPXImage): Retrieve television header SMTPE time code and
+user bits and return them as a formatted string.
+(WriteDPXImage): Fix colorspace mapping logic.  Was converting
+Cineon log to RGB when it shouldn't be.</li>
+</ul>
+</blockquote>
+<p>2005-05-10  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/dpx.c (WriteDPXImage): Default to big-endian output.</li>
+<li>magick/delegate.c (InvokePostscriptDelegate): Improved
+Ghostscript API-based error reporting and logging.</li>
+<li>magick/attribute.c (GenerateEXIFAttribute): Extend EXIF
+knowledge a bit.  Pass more characters from EXIF_FMT_BYTE in case
+the byte stream contains nulls.</li>
+<li>coders/dpx.c: Re-wrote the DPX read/write support in order to
+hopefully surmount problems noticed when testing with files sent
+to me.</li>
+<li>wand/pixel_wand.c (PixelSetYellowQuantum): Wrong PixelPacket
+member was being set.  Thanks to Cristy for the heads-up.</li>
+<li>magick/image.c (SetImageType): Revert change from 2005-03-12.
+Some coders require that when the image is set to Bilevel type,
+that it be PseudoClass.</li>
+</ul>
+</blockquote>
+<p>2005-04-28  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>utilities/tests/convolve.sh: Add a convolution parameter.</li>
+</ul>
+</blockquote>
+<p>2005-04-28 Glenn Randers-Pehrson &lt;<a class="reference external" href="mailto:glennrp&#37;&#52;&#48;glennrp&#46;com">glennrp<span>&#64;</span>glennrp<span>&#46;</span>com</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>magick/command.c: &quot;IsGeometry() test was rejecting valid
+-convolve parameters.  Also, the image returned by ConvolveImage()
+was ignored.</li>
+</ul>
+</blockquote>
+<p>2005-04-25 Glenn Randers-Pehrson &lt;<a class="reference external" href="mailto:glennrp&#37;&#52;&#48;glennrp&#46;com">glennrp<span>&#64;</span>glennrp<span>&#46;</span>com</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/png.c: Initialize several variables to avoid new
+GCC 4.0.0 warnings.</li>
+<li>coders/pnm.c: Defend against malicious &quot;P7&quot; files that try
+to set the colormap less than 256 bytes (bug fix from ImageMagick)</li>
+</ul>
+</blockquote>
+<p>2005-04-24  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/dpx.c (WriteDPXImage): Fill out source information
+header.</li>
+<li>Magick++: Added image leveling methods for Magick++.</li>
+</ul>
+</blockquote>
+<p>2005-04-23  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>NEWS: Update with latest news.</li>
+<li>magick/blob.c (WriteBlob): Move BlobStream write support to a
+subroutine for easier maintenance.</li>
+<li>coders/dpx.c (ReadDPXImage): Support retrieving all DPX
+attributes as image attributes.
+(WriteDPXImage): Buffer writes for better performance on some
+platforms.</li>
+</ul>
+</blockquote>
+<p>2005-04-17  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/dpx.c (WriteDPXImage): Re-write sample marshalling to be
+based on a series of tighter loops.  Results in a small
+performance increase.
+(ReadDPXImage): Re-write sample marshalling to be
+based on a series of tighter loops.  Results in a small
+performance increase.</li>
+</ul>
+</blockquote>
+<p>2005-04-15  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>magick/Xwindow.c (XDelay): Prefer use of select() over poll()
+since it is more portable.  MacOS-X has a poll() but it doesn't
+work right.</li>
+</ul>
+</blockquote>
+<p>2005-04-14  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>magick/magick_endian.h: Renamed from endian.h in order to avoid
+conflict with system headers.</li>
+</ul>
+</blockquote>
+<p>2005-04-13  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/miff.c (WriteMIFFImage): Normalize image depth to 8/16/32.</li>
+<li>coders/gray.c (WriteGRAYImage): Normalize image depth to 8/16/32.</li>
+<li>coders/fits.c (WriteFITSImage): Normalize image depth to 8/16.</li>
+<li>tests/Makefile.am: Extended read/write tests to include 10, 12,
+and 16-bit original test images.</li>
+<li>coders/dpx.c (ReadDPXImage): If samples are log encoded, then
+set the image to CineonLogRGBColorspace.
+(WriteDPXImage): If image samples are log encoded, then mark DPX
+file as being log encoded.</li>
+<li>magick/colorspace.c (TransformRGBImage): Support translation
+from log RGB to linear RGB based on Cineon guidelines.
+(RGBTransformImage): Support translation from linear RGB to log RGB.</li>
+<li>magick/colorspace.h (enum CineonLogRGBColorspace): New
+enumeration to record that the RGB values are log encoded in a
+2.048 density range as defined for the Cineon Digital Film System.</li>
+</ul>
+</blockquote>
+<p>2005-04-10  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>magick/command.c: Take advantage of ColorspaceTypeToString() and
+StringToColorspaceType() functions in implementation.</li>
+<li>magick/colorspace.c (RGBTransformImage): Added support for
+converting to Rec 709 grayscale colorspace.
+(ColorspaceTypeToString): New function to translate from
+ColorspaceType enumeration value to a string.
+(StringToColorspaceType): New function to translate from a string
+to a ColorspaceType enumeration value.  * magick/colorspace.h
+(enum Rec601LumaColorspace): New enumeration to support the Rec
+601 grayscale colorspace.  This is the colorspace previously
+represented by GRAYColorspace. If GRAYColorspace is specified,
+then Rec601LumaColorspace is selected.
+(enum Rec709LumaColorspace): New enumeration to support the Rec
+707 grayscale colorspace.</li>
+</ul>
+</blockquote>
+<p>2005-04-08  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>magick/command.c (IdentifyImageCommand): Use +ping to force
+identify to read the image pixels.</li>
+<li>magick/constitute.c (PingImage): Intentionally clear
+user/elapsed timer when ping is used on an image since the results
+are misleading.</li>
+<li>magick/image.c (DescribeImage): Only display pixel read rate if
+the time accumulated is at least the timer's resolution.</li>
+<li>magick/cache.c (OpenCache): Fix a memory resource leak noticed
+by Stefan v. Wachter &lt;<a class="reference external" href="mailto:svwa-dev&#37;&#52;&#48;mnet-online&#46;de">svwa-dev<span>&#64;</span>mnet-online<span>&#46;</span>de</a>&gt;.  This error with
+keeping track of resources may eventually cause GraphicsMagick to
+run slower and slower due to using disk-based images rather than
+memory-based images.</li>
+</ul>
+</blockquote>
+<p>2005-04-07 Glenn Randers-Pehrson &lt;<a class="reference external" href="mailto:glennrp&#37;&#52;&#48;glennrp&#46;com">glennrp<span>&#64;</span>glennrp<span>&#46;</span>com</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/png.c: encoder now accepts image-&gt;depth other than 8 and 16.</li>
+</ul>
+</blockquote>
+<p>2005-04-05  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/dpx.c (WriteDPXImage): First pass at a new SMPTE268M-2003
+DPX writer.</li>
+</ul>
+</blockquote>
+<p>2005-04-02  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>magick/utility.c (AllocateString): Performance enhancement.
+(CloneString): Performance enhancement.
+(ConcatenateString): Performance enhancement.</li>
+</ul>
+</blockquote>
+<p>2005-03-31 Glenn Randers-Pehrson &lt;<a class="reference external" href="mailto:glennrp&#37;&#52;&#48;glennrp&#46;com">glennrp<span>&#64;</span>glennrp<span>&#46;</span>com</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/jpeg.c: revised EOF test.  It was rejecting good image
+files.  Needs more work.</li>
+</ul>
+</blockquote>
+<p>2005-03-30 Glenn Randers-Pehrson &lt;<a class="reference external" href="mailto:glennrp&#37;&#52;&#48;glennrp&#46;com">glennrp<span>&#64;</span>glennrp<span>&#46;</span>com</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/pnm.c (ReadPNMImage): Throw a &quot;Corrupt Image&quot; exception
+if EOF is encountered while reading scanlines in P1, P2, P3, or P4
+formatted images (P5 and P6 were OK).</li>
+</ul>
+</blockquote>
+<p>2005-03-29 Glenn Randers-Pehrson &lt;<a class="reference external" href="mailto:glennrp&#37;&#52;&#48;glennrp&#46;com">glennrp<span>&#64;</span>glennrp<span>&#46;</span>com</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/sgi.c (ReadSGIImage): Throw a &quot;Corrupt Image&quot; exception
+if EOF is encountered while reading scanlines.</li>
+</ul>
+</blockquote>
+<p>2005-03-28 Glenn Randers-Pehrson &lt;<a class="reference external" href="mailto:glennrp&#37;&#52;&#48;glennrp&#46;com">glennrp<span>&#64;</span>glennrp<span>&#46;</span>com</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/jpeg.c (ReadJPEGImage): Throw a &quot;Corrupt Image&quot; exception
+if EOF is encountered while reading scanlines.</li>
+<li>coders/pcx.c (ReadPCXImage): Throw a &quot;Corrupt Image&quot; exception
+if EOF is encountered while reading pixels.</li>
+</ul>
+</blockquote>
+<p>2005-03-26  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/dpx.c (ReadDPXImage): First pass at a new SMPTE268M-2003
+DPX reader.</li>
+<li>magick/bit_stream.h (WordStreamLSBRead): New function to parse
+values from a stream which is defined by 32-bit words.  Values are
+read starting with the least significant bits.</li>
+</ul>
+</blockquote>
+<p>2005-03-23  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/tiff.c (ExtensionTagsInitialize): Fix conditional use of
+TIFFSetTagExtender().</li>
+</ul>
+</blockquote>
+<p>2005-03-20  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>magick/endian.c: Imported libtiff's swab.c since its functions
+are so useful and well-tested.</li>
+<li>magick/utility.c (FormatSize): Extend to support incredibly
+large sizes.</li>
+<li>magick/image.c (DescribeImage): Use GetTimerResolution() when
+computing pixels-per-second rate in order to avoid computing
+astronomical rates when the time consumed is too small to measure.</li>
+<li>magick/timer.c (GetTimerResolution): New function to return the
+timer's resolution.</li>
+</ul>
+</blockquote>
+<p>2005-03-19  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/pdf.c (WritePDFImage): Eliminate cause of annoying
+warning when PDFs are read by Ghostscript 8.5.</li>
+</ul>
+</blockquote>
+<p>2005-03-18  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>magick/nt_base.h (lt_dlerror): Needed to provide a mapping to
+NTdlerror().</li>
+<li>coders/tiff.c (TIFFErrors): Update to make thread safe via
+thread specific data.
+(TIFFWarnings): Update to make thread safe via thread specific
+data.</li>
+<li>magick/tsd.c (MagickTsdKeyCreate): New function to support
+thread specific data.
+(MagickTsdKeyDelete): ditto
+(MagickTsdSetSpecific): ditto
+(MagickTsdGetSpecific): ditto.</li>
+</ul>
+</blockquote>
+<p>2005-03-17  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>magick/image.c (ReplaceImageColormap): New function to replace
+the image colormap with a user-provided one. Colormap indexes are
+adjusted to point to identical colors in the new colormap.</li>
+<li>magick/nt_base.h: Reorganized a bit to cluster code supporting
+similar features in the same area of the header.</li>
+<li>magick/nt_base.c: Renamed wrappers for standard functions so
+that they have the prefix <cite>NT</cite>. Macros are used to apply the new
+names. This assures that there will not be conflicts if the library
+is linked with a different package's wrapper functions.</li>
+</ul>
+</blockquote>
+<p>2005-03-15  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>magick/quantize.c (GrayscalePseudoClassImage): Moved to here
+from image.c.  Added support for is_monochrome.</li>
+</ul>
+</blockquote>
+<p>2005-03-13  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>jp2: Updated Jasper library to version 1.701.0.</li>
+<li>magick/nt_base.c (NTGhostscriptFonts): Fixed a coding error
+which was added when strcpy/strcat code was replaced with
+strlcpy/strlcat.  Ghostscript fonts were not being found.</li>
+<li>magick/constitute.c (ReadImage): Don't attempt to access image
+members if image pointer is null.  Oops!</li>
+</ul>
+</blockquote>
+<p>2005-03-12  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>magick/image.c (SetImageType): Bilevel image is not required to
+be PseudoClass type.</li>
+<li>coders/mpc.c (WriteMPCImage): Persist is_monochrome and
+is_grayscale flags.
+(ReadMPCImage): Restore is_monochrome and is_grayscale flags.</li>
+<li>magick/constitute.c (WriteImage): Extended logging to include
+monochrome and grayscale flags.
+(ReadImage): Extended logging to include monochrome and grayscale
+flags.</li>
+<li>magick/image.c (DescribeImage): Include the effective pixel I/O
+rate alongside the image read/write time.  This provides an easier
+way to evaluate image read/write performance when looking at
+<cite>identify</cite> or <cite>convert -verbose</cite> output.</li>
+<li>coders/sun.c (ReadSUNImage): Ensure that pixel length value does
+not overflow for large images.</li>
+</ul>
+</blockquote>
+<p>2005-03-10  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>magick/cache.c (SetImagePixels): Improved documentation.
+(GetImagePixels): Improved documentation.</li>
+</ul>
+</blockquote>
+<p>2005-03-10 Glenn Randers-Pehrson &lt;<a class="reference external" href="mailto:glennrp&#37;&#52;&#48;glennrp&#46;com">glennrp<span>&#64;</span>glennrp<span>&#46;</span>com</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/png.c: Avoid attempting to write indexed PNG when
+a color entry has more than one opacity level.  The PNG format
+supports this but GM's colormap does not, so erroneous files
+were being written.</li>
+</ul>
+</blockquote>
+<p>2005-03-09  Arne Rusek  &lt;<a class="reference external" href="mailto:zonk&#37;&#52;&#48;matfyz&#46;cz">zonk<span>&#64;</span>matfyz<span>&#46;</span>cz</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>magick/attribute.c (GenerateEXIFAttribute): Offset type
+correction to fix loop termination if size_t type is not <cite>long</cite>.</li>
+</ul>
+</blockquote>
+<p>2005-03-09  Alexander Yaworsky  &lt;<a class="reference external" href="mailto:yaworsky&#37;&#52;&#48;users&#46;sourceforge&#46;net">yaworsky<span>&#64;</span>users<span>&#46;</span>sourceforge<span>&#46;</span>net</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/jbig.c (WriteJBIGImage): JBIG was writing an empty output
+file. Apparently libjbig parameters have changed. Setting l0
+parameter of jbg_enc_options to zero instead of -1 (like in
+jbigkit's pbmtools) solved the problem.</li>
+</ul>
+</blockquote>
+<p>2005-03-07  Mike Chiarappa  &lt;<a class="reference external" href="mailto:mikechiarappa&#37;&#52;&#48;libero&#46;it">mikechiarappa<span>&#64;</span>libero<span>&#46;</span>it</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>BCBMagickmagickGM_magick.bpr: Updated to reflect changes since
+last update.</li>
+<li>BCBMagickmagicklibMagick.bpr: Updated to reflect changes since
+last update.</li>
+</ul>
+</blockquote>
+<p>2005-03-06  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>magick/alpha_composite.h (AlphaComposite): Moved AlphaComposite
+to new alpha_composite.h header since it was causing porting
+problems.</li>
+<li>magick/constitute.h (enum QuantumType): Added CIEYQuantum and
+CIEXYZQuantum quantum import options.</li>
+<li>coders/tiff.c (ReadTIFFImage): Import LogLuv image data within
+GraphicsMagick (rather than libtiff) so that color resolution is
+not lost.  Results in a small speedup as well.</li>
+<li>magick/constitute.c (ImportImagePixelArea): Add a speed-up for
+importing bi-level images.  Add support for importing pixels in
+CIE XYZ and CIE Y colorspaces.</li>
+<li>coders/tiff.c (ReadTIFFImage): Support reading TIFF images which
+fail to properly scale the samples to the sample size (e.g. 12
+bits in a 16-bit sample).
+(WriteTIFFImage): Adjustments to strip-size (rows-per-strip)
+estimation.</li>
+<li>magick/constitute.c (ExportImagePixelArea): Support exporting
+unsigned samples with values which span only part of the range.
+For example, 12 bit data may be exported within 16 bit samples,
+with a value range of 0 to 4095.
+(ImportImagePixelArea): Support importing unsigned samples with
+values which span only part of the range.</li>
+</ul>
+</blockquote>
+<p>2005-02-26  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/tiff.c (ReadTIFFImage): Support reading TIFF files in
+IEEEFP format.
+(WriteTIFFImage): Support writing TIFF files in IEEEFP format.</li>
+<li>magick/constitute.c (ExportImagePixelArea): Support exporting
+floating point data.
+(ImportImagePixelArea): Support importing floating point data.</li>
+</ul>
+</blockquote>
+<p>2005-02-26  Albert Chin-A-Young  &lt;<a class="reference external" href="mailto:china&#37;&#52;&#48;thewrittenword&#46;com">china<span>&#64;</span>thewrittenword<span>&#46;</span>com</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>acinclude.m4 (AC_CXX_IOS_BINARY): Added macro to detect if the
+C++ compiler lacks support for ios::binary.</li>
+<li>configure.ac: Use  AC_CXX_IOS_BINARY.</li>
+</ul>
+</blockquote>
+<p>2005-02-19  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/tiff.c (ReadTIFFImage): Read grayscale TIFFs as
+DirectClass rather than promoting to PseudoClass.  Fix improper
+multiple repeated &quot;disassociate&quot; operations when reading planar
+images which contain an alpha channel.
+(WriteTIFFImage): Fix improper multiple repeated &quot;associate&quot;
+operations when writing planar images with an alpha channel.</li>
+</ul>
+</blockquote>
+<p>2005-02-16  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>win2k/IMDisplay/IMDisplayView.cpp (DoDisplayImage): Use
+TextureImage to apply background pattern.</li>
+<li>magick/image.c (TextureImage): Alpha blend the texture onto the
+background if the image has a matte channel.</li>
+<li>magick/constitute.h (enum QuantumType): Eliminated
+GrayInvertedQuantum and GrayInvertedAlphaQuantum which were added
+since GraphicsMagick 1.1.  Replaced this &quot;inverted&quot; gray
+functionality with the grayscale_inverted flag in
+ExportPixelAreaOptions and ImportPixelAreaOptions.</li>
+<li>magick/constitute.c (ExportImagePixelArea): Added an extra
+parameter for passing seldom used options via an
+ExportPixelAreaOptions structure.
+(ImportImagePixelArea): Added an extra parameter for passing
+seldom used options via an ImportPixelAreaOptions structure.
+(ExportPixelAreaOptionsInit): New function to initialize the
+ExportPixelAreaOptions structure with defaults.
+(ImportPixelAreaOptionsInit): New function to intialize the
+ImportPixelAreaOptions structure with defaults.</li>
+<li>coders/jpeg.c (WriteJPEGImage): Don't use jpeglib private
+BITS_IN_JSAMPLE definition to select JPEG bit depth.</li>
+<li>coders/tiff.c (ReadTIFFImage): Support using -define
+tiff:alpha={unspecified|associated|unassociated} to specify the
+alpha channel type in case the alpha channel is marked
+incorrectly.
+Properly read associated alpha images.
+(WriteTIFFImage): Support using -define
+tiff:alpha={unspecified|associated|unassociated} to override the
+alpha channel type.
+Properly write associated alpha images by default.</li>
+</ul>
+</blockquote>
+<p>2005-02-02  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/tiff.c (WritePTIFImage): Ensure that pyramid image frames
+are the same type as the original image.
+(WriteTIFFImage): Added support for writing tiled TIFF.</li>
+</ul>
+</blockquote>
+<p>2005-01-31  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>magick/render.c (TraceBezier): Avoid probable bug under Visual
+C++ 7.0 or later due to the argument to pow not being promoted to
+double.</li>
+</ul>
+</blockquote>
+<p>2005-01-30  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/tiff.c (WriteTIFFImage): Re-wrote TIFF writing code.</li>
+<li>magick/image.h (MaxValueGivenBits): Renamed MaxRGBGivenBits
+macro to MaxValueGivenBits.</li>
+<li>magick/constitute.h (enum QuantumType): Added UndefinedQuantum.</li>
+<li>magick/static.c (RegisterStaticModules): Support compiling
+without PNG.</li>
+</ul>
+</blockquote>
+<p>2005-01-29  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>magick/color.c (IsPaletteImage): Fix memory leak reported by
+Stefan v. Wachter &lt;<a class="reference external" href="mailto:svwa-dev&#37;&#52;&#48;mnet-online&#46;de">svwa-dev<span>&#64;</span>mnet-online<span>&#46;</span>de</a>&gt;.</li>
+<li>magick/Makefile.am (MAGICK_INCLUDE_HDRS): Needed to install
+magick/operator.h.</li>
+<li>coders/tiff.c (ReadTIFFImage): Re-wrote TIFF reading code again
+for more flexibility and performance.</li>
+</ul>
+</blockquote>
+<p>2005-01-17  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>configure.ac: Remove --disable-lzw option and HasLZW define.
+LZW support is always enabled now.</li>
+</ul>
+</blockquote>
+<p>2005-01-16  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/tga.c (WriteTGAImage): Incorporated patch from Stefan
+v. Wachter to enable writing grayscale images as well as adding
+more image type option smarts.</li>
+<li>coders/psd.c (ReadPSDImage): Fix stack overflow vulnerability
+reported by Andrei Nigmatulin. See <a class="reference external" href="http://lwn.net/Articles/119713/">http://lwn.net/Articles/119713/</a>
+for details.</li>
+</ul>
+</blockquote>
+<p>2005-01-14  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>win2k/IMDisplay/IMDisplayDoc.cpp (DoReadImage): Ensure that image
+is in RGB color space after being read since this is what Windows
+expects.</li>
+</ul>
+</blockquote>
+<p>2005-01-13  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/tiff.c (ReadTIFFImage): Handle extra samples in scanline
+TIFFs.</li>
+</ul>
+</blockquote>
+<p>2005-01-09  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>magick/image.c (DescribeImage): Report statistics for a virtual
+gray channel for grayscale images rather than discrete red, green,
+and blue.</li>
+<li>PerlMagick/Makefile.nt: JNG and JP2 to test list.</li>
+<li>configure.ac: Changed --without-fpx to --with-fpx due to
+decision to default FlashPIX to <cite>no</cite>.  FlashPIX library is not
+very portable and is only known to work properly under SPARC
+Solaris and Windows.</li>
+<li>NEWS: Updated with latest news.</li>
+<li>lcms: Updated to LCMS 1.14.</li>
+</ul>
+</blockquote>
+<p>2005-01-08  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/jp2.c (ReadJP2Image): Handle images in YCBCR colorspace.
+(ReadJP2Image): Retrieve and store an ICC ICM color profile if
+present.</li>
+<li>PerlMagick/t/tiff/read.t: Added test for reading truecolor
+planar TIFF image.
+Added test for reading 32-bit TrueColor TIFF image.
+Added test for reading 32-bit grayscale TIFF image.</li>
+<li>coders/tiff.c (ReadTIFFImage): Fixed stripped TIFF reader.</li>
+</ul>
+</blockquote>
+<p>2005-01-04  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/tiff.c (WriteTIFFImage): Only set TIFFTAG_PREDICTOR to 2
+for bits-per-sample values that libtiff supports.</li>
+</ul>
+</blockquote>
+</div>
+</body>
+</html>

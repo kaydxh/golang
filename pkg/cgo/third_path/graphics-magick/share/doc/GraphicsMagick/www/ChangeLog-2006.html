@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.15.2: http://docutils.sourceforge.net/" />
+<title>ChangeLog-2006.rst</title>
+<link rel="stylesheet" href="docutils-articles.css" type="text/css" />
+</head>
+<body>
+
+<div class="banner">
+<img src="images/gm-107x76.png" alt="GraphicMagick logo" width="107" height="76" />
+<span class="title">GraphicsMagick</span>
+<form action="http://www.google.com/search">
+	<input type="hidden" name="domains" value="www.graphicsmagick.org" />
+	<input type="hidden" name="sitesearch" value="www.graphicsmagick.org" />
+    <span class="nowrap"><input type="text" name="q" size="25" maxlength="255" />&nbsp;<input type="submit" name="sa" value="Search" /></span>
+</form>
+</div>
+
+<div class="navmenu">
+<ul>
+<li><a href="index.html">Home</a></li>
+<li><a href="project.html">Project</a></li>
+<li><a href="download.html">Download</a></li>
+<li><a href="README.html">Install</a></li>
+<li><a href="Hg.html">Source</a></li>
+<li><a href="NEWS.html">News</a> </li>
+<li><a href="utilities.html">Utilities</a></li>
+<li><a href="programming.html">Programming</a></li>
+<li><a href="reference.html">Reference</a></li>
+</ul>
+</div>
+<div class="document">
+
+
+<p>2006-11-02  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>www/Magick++/Image.html: Fix documentation regarding retrieving
+EXIF attribute.</li>
+<li>magick/command.c: Fix typo in usage messages.</li>
+</ul>
+</blockquote>
+<p>2006-11-02  Daniel Kobras  &lt;<a class="reference external" href="mailto:kobras&#37;&#52;&#48;debian&#46;org">kobras<span>&#64;</span>debian<span>&#46;</span>org</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/dcm.c: (ReadDCMImage) Prevent buffer overflow of
+<cite>photometric</cite> array in DCM coder. Original patch thanks to
+M Joonas Pihlaja. (CVE-2006-5456)</li>
+<li>coders/palm.c: (ReadPALMImage) Fix heap overflows of <cite>one_row</cite>
+array in PALM coder. Original patch thanks to M Joonas Pihlaja.
+(CVE-2006-5456)</li>
+</ul>
+</blockquote>
+<p>2006-10-24  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>Updated libtool to latest CVS head version (1.2352 2006/10/24)
+in order to fix a bootstrap nit.</li>
+</ul>
+</blockquote>
+<p>2006-10-22  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>Updated autoconf to version 2.60, automake to version 1.10, and
+libtool to latest CVS head version (1.2348 2006/10/22).</li>
+</ul>
+</blockquote>
+<p>2006-09-11  Daniel Kobras  &lt;<a class="reference external" href="mailto:kobras&#37;&#52;&#48;debian&#46;org">kobras<span>&#64;</span>debian<span>&#46;</span>org</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/xcf.c (ReadBlobStringWithLongSize): Add new parameter <cite>max</cite>
+to prevent overflowing the <cite>string</cite> array. (CVE-2006-3743)
+(ReadOneLayer): Adjust callers of ReadBlobStringWithLongSize(), and
+guard against infinite loops on premature end-of-file.
+(ReadXCFImage): Adjust callers of ReadBlobStringWithLongSize(), and
+guard against infinite loops on premature end-of-file.</li>
+</ul>
+</blockquote>
+<p>2006-09-09  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/sgi.c (ReadSGIImage): Mostly applied Debian patch for
+CVE-2006-4144 security issue related to RLE decoding.  Also added
+complete verification of file header.</li>
+<li>magick/image.c (ComputePixelError): Add progress monitor.
+(GetImageStatisticsMean): Call progress monitor less often.
+(GetImageStatisticsVariance): Call progress monitor less often.</li>
+</ul>
+</blockquote>
+<p>2006-08-17  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/tiff.c (WriteTIFFImage): ImageInfo <cite>endian</cite> option now
+controls TIFF byte-order rather than bit-order when writing.</li>
+<li>coders/png.c (ReadOnePNGImage): Fix compilation problem.  Patch
+submitted by Aron Stansvik.</li>
+</ul>
+</blockquote>
+<p>2006-07-11  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/jpeg.c (WriteJPEGImage): Clear the JPEG library
+structures in order to ensure a completely clean slate.</li>
+</ul>
+</blockquote>
+<p>2006-06-04  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>magick/command.c (ConvertImageCommand): Fix memory leaks which
+occured when an image was not returned.</li>
+<li>magick/command.c (IdentifyImageCommand): Ditto.</li>
+<li>magick/command.c (MogrifyImageCommand): Ditto.</li>
+</ul>
+</blockquote>
+<p>2006-06-01  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>magick/command.c: Add mention of -resample to convert and
+mogrify usage messages.</li>
+</ul>
+</blockquote>
+<p>2006-05-31  Ralf Wildenhues  &lt;<a class="reference external" href="mailto:Ralf&#46;Wildenhues&#37;&#52;&#48;gmx&#46;de">Ralf<span>&#46;</span>Wildenhues<span>&#64;</span>gmx<span>&#46;</span>de</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>configure.ac: Fix arguments to AC_CHECK_HEADER.</li>
+</ul>
+</blockquote>
+<p>2006-05-19  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/tiff.c (ReadTIFFImage): -define tiff:alpha= override was
+only working if the TIFFTAG_EXTRASAMPLES tag was present.  Now it
+is always available when an alpha channel is present.</li>
+</ul>
+</blockquote>
+<p>2006-05-11  JH  &lt;<a class="reference external" href="mailto:jh&#37;&#52;&#48;ops&#46;everybox&#46;com">jh<span>&#64;</span>ops<span>&#46;</span>everybox<span>&#46;</span>com</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>GraphicsMagick.spec.in (files devel): Include
+%{_libdir}/lib%{name}Wand.so.</li>
+</ul>
+</blockquote>
+<p>2006-05-04  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>magick/nt_base.c (NTGhostscriptEnumerateVersions): Recent GNU
+Ghostscript identifies itself as &quot;GPL Ghostscript&quot;.</li>
+</ul>
+</blockquote>
+<p>2006-04-10  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>tiff: Updated bundled libtiff to version 3.8.2.</li>
+</ul>
+</blockquote>
+<p>2006-04-05  Fojtik Jaroslav  &lt;<a class="reference external" href="mailto:JaFojtik&#37;&#52;&#48;seznam&#46;cz">JaFojtik<span>&#64;</span>seznam<span>&#46;</span>cz</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/mat.c: Sets image is_grayscale flag as well as added more
+symbolic constants.</li>
+</ul>
+</blockquote>
+<p>2006-04-04  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/dpx.c (IMAGE_DATA_ROUNDING): Thanks to Steve Sloan for
+noticing that 8K is 8192 rather than 8092.  Added a define to
+allow tailoring the pixel data alignment boundary in case 8K is
+not the right answer for some reason.</li>
+</ul>
+</blockquote>
+<p>2006-03-20  Fojtik Jaroslav  &lt;<a class="reference external" href="mailto:JaFojtik&#37;&#52;&#48;seznam&#46;cz">JaFojtik<span>&#64;</span>seznam<span>&#46;</span>cz</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/mat.c: Ensure that unusued opacity channel is set to opaque.</li>
+<li>PerlMagick/t/input.art: New ART test image.</li>
+<li>PerlMagick/t/input8.mat: New MATLAB test image (8-bit indexed).</li>
+<li>PerlMagick/t/input_dbl.mat: New MATLAB test image (double grey)</li>
+<li>PerlMagick/t/input_rgb.mat: New MATLAB test image (8-bit RGB)</li>
+</ul>
+</blockquote>
+<p>2006-03-19  Fojtik Jaroslav  &lt;<a class="reference external" href="mailto:JaFojtik&#37;&#52;&#48;seznam&#46;cz">JaFojtik<span>&#64;</span>seznam<span>&#46;</span>cz</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/mat.c: Use symbolic constants rather than plain numbers
+so the module is more maintainable.  Correct the format for the
+day of the week.</li>
+</ul>
+</blockquote>
+<p>2006-03-13  Fojtik Jaroslav  &lt;<a class="reference external" href="mailto:JaFojtik&#37;&#52;&#48;seznam&#46;cz">JaFojtik<span>&#64;</span>seznam<span>&#46;</span>cz</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/mat.c (WriteMATLABImage): Add RGB writer support for
+MATLAB format.</li>
+</ul>
+</blockquote>
+<p>2006-03-11  Fojtik Jaroslav  &lt;<a class="reference external" href="mailto:JaFojtik&#37;&#52;&#48;seznam&#46;cz">JaFojtik<span>&#64;</span>seznam<span>&#46;</span>cz</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/mat.c (ReadMATImage): RGB support for MAT reader.</li>
+</ul>
+</blockquote>
+<p>2006-03-02  Fojtik Jaroslav  &lt;<a class="reference external" href="mailto:JaFojtik&#37;&#52;&#48;seznam&#46;cz">JaFojtik<span>&#64;</span>seznam<span>&#46;</span>cz</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/mat.c: Fixes for observed crash.  Byte and word formats
+are working.</li>
+</ul>
+</blockquote>
+<p>2006-02-27  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>doc/environment.imdoc: MAGICK_FONT_PATH has not been supported
+since 1.1.  Remove mention of it!</li>
+</ul>
+</blockquote>
+<p>2006-02-23  Mike Chiarappa  &lt;<a class="reference external" href="mailto:mikechiarappa&#37;&#52;&#48;libero&#46;it">mikechiarappa<span>&#64;</span>libero<span>&#46;</span>it</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>BCBMagick: Updated to latest changes</li>
+</ul>
+</blockquote>
+<p>2006-02-06  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/sgi.c (ReadSGIImage): Properly compute image depth for
+16-bit SGI image files.</li>
+</ul>
+</blockquote>
+<p>2006-01-22  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>magick/utility.c (GetExecutionPathUsingName): Search executable
+search path for binary.</li>
+</ul>
+</blockquote>
+<p>2006-01-17  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/dpx.c (ReadDPXImage, WriteDPXImage): Alpha channel in DPX
+uses zero, or reference black, to represent an opaque pixel.</li>
+</ul>
+</blockquote>
+<p>2006-01-04  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>magick/semaphore.c (AllocateSemaphoreInfo): Allow semaphores to
+recurse on POSIX systems which support recursive semaphores but
+also warn if the semaphore recurses.</li>
+<li><dl class="first docutils">
+<dt>magick/log.c (SetLogEventMask): Avoid deadlock if invoked before</dt>
+<dd>log.mgk has been loaded.</dd>
+</dl>
+</li>
+<li>magick/attribute.c (GenerateEXIFAttribute): Fix memory leak on
+error which was reported by Micha³ Kowalczuk.</li>
+</ul>
+</blockquote>
+<p>2006-01-03  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>magick/constitute.c (ReadImage): Avoid crash if delegate fails
+to return image.</li>
+</ul>
+</blockquote>
+<p>2006-01-03  Daniel Kobras  &lt;<a class="reference external" href="mailto:kobras&#37;&#52;&#48;debian&#46;org">kobras<span>&#64;</span>debian<span>&#46;</span>org</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>magick/attribute.c (GenerateEXIFAttribute): Fix EXIF IFD stack
+overflow vulnerability.</li>
+<li>configure.ac: Fix typo in HTMLDecodeDelegate.</li>
+</ul>
+</blockquote>
+</div>
+</body>
+</html>

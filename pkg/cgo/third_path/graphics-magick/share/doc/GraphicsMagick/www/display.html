@@ -1,0 +1,3677 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+  "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=us-ascii">
+	<title>GraphicsMagick GM Utility</title>
+	<style type=text/css>
+	<!--
+		@page { size: 8.5in 11in }
+		TD P { color: #000000; font-family: "Verdana", "Arial", "Helvetica", sans-serif; font-size: 12pt }
+		P { color: #000000; font-family: "Verdana", "Arial", "Helvetica", sans-serif; font-size: 12pt }
+		A:link { color: #00B04F }
+		A:visited { color: #007B37 }
+	-->
+	</style>
+
+</head>
+<body LANG="en-US" TEXT="#000000" LINK="#00B04F" VLINK="#007B37" BGCOLOR="#ffffff">
+<a name="top"></a>
+<table border=0 cellpadding=10 cellspacing=0 style="margin-top:-17px" width="100%"><tr><td>
+<br>&nbsp;<br>
+<table BORDER=0 WIDTH="100%"> 
+<tr> 
+<td ALIGN=LEFT bgcolor="#FFFFFF"><img 
+SRC="images/right_triangle.png"  ALT=">" BORDER=0 
+height=14 width=15><b><font face="Helvetica, Arial"><font 
+color="#00B04F"><font size="+1">
+<a NAME="display"></a>gm display
+</font></font></font></b></td></tr></table>
+<table width="94%" border="0" cellspacing="0" cellpadding="8">
+<tr><td width="3%"><br></td><td>
+<table BORDER=0 WIDTH="100%"> 
+<tr> 
+<td ALIGN=LEFT bgcolor="#FFFFFF"><img 
+SRC="images/right_triangle.png"  ALT=">" BORDER=0 
+height=14 width=15><b><font face="Helvetica, Arial"><font 
+color="#00B04F"><font size="+1">
+<a NAME="disp-top"></a>NAME
+</font></font></font></b></td></tr></table>
+<table width="94%" border="0" cellspacing="0" cellpadding="8">
+<tr><td width="3%"><br></td><td>
+<p>
+display - display an image on any workstation running X
+<br>&nbsp;<br>
+</td></tr></table>
+<table BORDER=0 WIDTH="100%"> 
+<tr> 
+<td ALIGN=LEFT bgcolor="#FFFFFF"><img 
+SRC="images/right_triangle.png"  ALT=">" BORDER=0 
+height=14 width=15><b><font face="Helvetica, Arial"><font 
+color="#00B04F"><font size="+1">
+<a NAME="disp-contents"></a>Contents
+</font></font></font></b></td></tr></table>
+<table width="94%" border="0" cellspacing="0" cellpadding="8">
+<tr><td width="3%"><br></td><td>
+<ul>
+<li>
+<a href="#disp-syno">Synopsis</a>
+<li>
+<a href="#disp-desc">Description</a>
+<li>
+<a href="#disp-exam">Examples</a>
+<li>
+<a href="#disp-opti">Options</a>
+<li>
+<a href="#disp-mous">Mouse Buttons</a>
+<li>
+<a href="#disp-comm">Command Widget</a>
+<li>
+<a href="#disp-keyb">Keyboard Accelerators</a>
+<li>
+<a href="#disp-xres">X Resources</a>
+<li>
+<a href="#disp-imlo">Image Loading</a>
+<li>
+<a href="#disp-visu">Visual Image Directory</a>
+<li>
+<a href="#disp-imcu">Image Cutting</a>
+<li>
+<a href="#disp-imco">Image Copying</a>
+<li>
+<a href="#disp-impas">Image Pasting</a>
+<li>
+<a href="#disp-imcr">Image Cropping</a>
+<li>
+<a href="#disp-imch">Image Chopping</a>
+<li>
+<a href="#disp-imro">Image Rotation</a>
+<li>
+<a href="#disp-segm">Image Segmentation</a>
+<li>
+<a href="#disp-iman">Image Annotation</a>
+<li>
+<a href="#disp-imcomp">Image Compositing</a>
+<li>
+<a href="#disp-cole">Color Editing</a>
+<li>
+<a href="#disp-matt">Matte (Transparent Channel) Editing</a>
+<li>
+<a href="#disp-imdr">Image Drawing</a>
+<li>
+<a href="#disp-regi">Region of Interest</a>
+<li>
+<a href="#disp-impa">Image Panning</a>
+<li>
+<a href="#disp-impa">User Preferences</a>
+</ul>
+</td></tr></table>
+<table BORDER=0 WIDTH="100%"> 
+<tr> 
+<td ALIGN=LEFT bgcolor="#FFFFFF"><img 
+SRC="images/right_triangle.png"  ALT=">" BORDER=0 
+height=14 width=15><b><font face="Helvetica, Arial"><font 
+color="#00B04F"><font size="+1">
+<a NAME="disp-syno"></a>Synopsis
+</font></font></font></b></td></tr></table>
+<table width="94%" border="0" cellspacing="0" cellpadding="8">
+<tr><td width="3%"><br></td><td>
+<p>
+<strong>gm display</strong> <strong>[</strong> <em>options</em> <strong>...]</strong> <em>file</em>
+<strong>[</strong><em>options</em><strong>...]</strong><em>file</em>
+</td></tr></table>
+<table BORDER=0 WIDTH="100%"> 
+<tr> 
+<td ALIGN=LEFT bgcolor="#FFFFFF"><img 
+SRC="images/right_triangle.png"  ALT=">" BORDER=0 
+height=14 width=15><b><font face="Helvetica, Arial"><font 
+color="#00B04F"><font size="+1">
+<a NAME="disp-desc"></a>Description
+</font></font></font></b></td></tr></table>
+<table width="94%" border="0" cellspacing="0" cellpadding="8">
+<tr><td width="3%"><br></td><td>
+<p>
+Display is a machine architecture independent
+image processing and display program. It can display an image on any workstation
+screen running an X server. <strong>Display</strong> can read and write
+<strong>many</strong>
+of the more popular image <a href="formats.html">formats</a> (e.g. <strong>JPEG</strong>,
+<strong>TIFF</strong>,
+<strong>PNM</strong>,
+<strong>Photo
+CD</strong>, etc.).
+<p>
+With <strong>display</strong>, you can perform these functions on an image:
+<dl>
+<dd><img SRC="images/ball.png" ALT="*">load an image from a file
+<dd><img SRC="images/ball.png" ALT="*">display the next image
+<dd><img SRC="images/ball.png" ALT="*">display the former image
+<dd><img SRC="images/ball.png" ALT="*">display a sequence of images as a slide show
+<dd><img SRC="images/ball.png" ALT="*">write the image to a file
+<dd><img SRC="images/ball.png" ALT="*">print the image to a <em>PostScript</em> printer
+<dd><img SRC="images/ball.png" ALT="*">delete the image file
+<dd><img SRC="images/ball.png" ALT="*">create a Visual Image Directory
+<dd><img SRC="images/ball.png" ALT="*">select the image to display by its thumbnail rather than name
+<dd><img SRC="images/ball.png" ALT="*">undo last image transformation
+<dd><img SRC="images/ball.png" ALT="*">copy a region of the image
+<dd><img SRC="images/ball.png" ALT="*">paste a region to the image
+<dd><img SRC="images/ball.png" ALT="*">restore the image to its original size
+<dd><img SRC="images/ball.png" ALT="*">refresh the image
+<dd><img SRC="images/ball.png" ALT="*">half the image size
+<dd><img SRC="images/ball.png" ALT="*">double the image size
+<dd><img SRC="images/ball.png" ALT="*">resize the image
+<dd><img SRC="images/ball.png" ALT="*">crop the image
+<dd><img SRC="images/ball.png" ALT="*">cut the image
+<dd><img SRC="images/ball.png" ALT="*">flop image in the horizontal direction
+<dd><img SRC="images/ball.png" ALT="*">flip image in the vertical direction
+<dd><img SRC="images/ball.png" ALT="*">rotate the image 90 degrees clockwise
+<dd><img SRC="images/ball.png" ALT="*">rotate the image 90 degrees counter-clockwise
+<dd><img SRC="images/ball.png" ALT="*">rotate the image
+<dd><img SRC="images/ball.png" ALT="*">shear the image
+<dd><img SRC="images/ball.png" ALT="*">roll the image
+<dd><img SRC="images/ball.png" ALT="*">trim the image edges
+<dd><img SRC="images/ball.png" ALT="*">invert the colors of the image
+<dd><img SRC="images/ball.png" ALT="*">vary the color brightness
+<dd><img SRC="images/ball.png" ALT="*">vary the color saturation
+<dd><img SRC="images/ball.png" ALT="*">vary the image hue
+<dd><img SRC="images/ball.png" ALT="*">gamma correct the image
+<dd><img SRC="images/ball.png" ALT="*">sharpen the image contrast
+<dd><img SRC="images/ball.png" ALT="*">dull the image contrast
+<dd><img SRC="images/ball.png" ALT="*">perform histogram equalization on the image
+<dd><img SRC="images/ball.png" ALT="*">perform histogram normalization on the image
+<dd><img SRC="images/ball.png" ALT="*">negate the image colors
+<dd><img SRC="images/ball.png" ALT="*">convert the image to grayscale
+<dd><img SRC="images/ball.png" ALT="*">set the maximum number of unique colors in the image
+<dd><img SRC="images/ball.png" ALT="*">reduce the speckles within an image
+<dd><img SRC="images/ball.png" ALT="*">eliminate peak noise from an image
+<dd><img SRC="images/ball.png" ALT="*">detect edges within the image
+<dd><img SRC="images/ball.png" ALT="*">emboss an image
+<dd><img SRC="images/ball.png" ALT="*">segment the image by color
+<dd><img SRC="images/ball.png" ALT="*">simulate an oil painting
+<dd><img SRC="images/ball.png" ALT="*">simulate a charcoal drawing
+<dd><img SRC="images/ball.png" ALT="*">annotate the image with text
+<dd><img SRC="images/ball.png" ALT="*">draw on the image
+<dd><img SRC="images/ball.png" ALT="*">edit an image pixel color
+<dd><img SRC="images/ball.png" ALT="*">edit the image matte information
+<dd><img SRC="images/ball.png" ALT="*">composite an image with another
+<dd><img SRC="images/ball.png" ALT="*">add a border to the image
+<dd><img SRC="images/ball.png" ALT="*">surround image with an ornamental border
+<dd><img SRC="images/ball.png" ALT="*">apply image processing techniques to a region of interest
+<dd><img SRC="images/ball.png" ALT="*">display information about the image
+<dd><img SRC="images/ball.png" ALT="*">zoom a portion of the image
+<dd><img SRC="images/ball.png" ALT="*">show a histogram of the image
+<dd><img SRC="images/ball.png" ALT="*">display image to background of a window
+<dd><img SRC="images/ball.png" ALT="*">set user preferences
+<dd><img SRC="images/ball.png" ALT="*">display information about this program
+<dd><img SRC="images/ball.png" ALT="*">discard all images and exit program
+<dd><img SRC="images/ball.png" ALT="*">change the level of magnification
+<dd><img SRC="images/ball.png" ALT="*">display images specified by a World Wide Web (WWW) uniform resource locator (URL)
+</dl>
+</td></tr></table>
+     <p>
+<i><a href="#top">Back to Contents</a></i> 
+&nbsp;</p>
+<table BORDER=0 WIDTH="100%"> 
+<tr> 
+<td ALIGN=LEFT bgcolor="#FFFFFF"><img 
+SRC="images/right_triangle.png"  ALT=">" BORDER=0 
+height=14 width=15><b><font face="Helvetica, Arial"><font 
+color="#00B04F"><font size="+1">
+<a NAME="disp-exam"></a>Examples
+</font></font></font></b></td></tr></table>
+<table width="94%" border="0" cellspacing="0" cellpadding="8">
+<tr><td width="3%"><br></td><td>
+<p>
+To scale an image of a cockatoo to exactly 640 pixels in width and 480
+pixels in height and position the window at location (200,200), use:
+<pre>
+    gm display -geometry 640x480+200+200! cockatoo.miff
+</pre>
+<p>
+To display an image of a cockatoo without a border centered on a backdrop,
+use:
+<pre>
+    gm display +borderwidth -backdrop cockatoo.miff
+</pre>
+<p>
+To tile a slate texture onto the root window, use:
+<pre>
+    gm display -size 1280x1024 -window root slate.png
+</pre>
+<p>
+To display a visual image directory of all your JPEG images, use:
+<pre>
+    gm display 'vid:*.jpg'
+</pre>
+<p>
+To display a MAP image that is 640 pixels in width and 480 pixels in height
+with 256 colors, use:
+<pre>
+    gm display -size 640x480+256 cockatoo.map
+</pre>
+<p>
+To display an image of a cockatoo specified with a <strong>World Wide Web (WWW)</strong>
+uniform resource locator <strong>(URL)</strong>, use:
+<pre>
+    gm display ftp://wizards.dupont.com/images/cockatoo.jpg
+</pre>
+<p>
+To display histogram of an image, use:
+<pre>
+    gm gm convert file.jpg HISTOGRAM:- | gm display -
+</pre>
+</td></tr></table>
+     <p>
+<i><a href="#top">Back to Contents</a></i> 
+&nbsp;</p>
+<table BORDER=0 WIDTH="100%"> 
+<tr> 
+<td ALIGN=LEFT bgcolor="#FFFFFF"><img 
+SRC="images/right_triangle.png"  ALT=">" BORDER=0 
+height=14 width=15><b><font face="Helvetica, Arial"><font 
+color="#00B04F"><font size="+1">
+<a NAME="disp-opti"></a>Options
+</font></font></font></b></td></tr></table>
+<table width="94%" border="0" cellspacing="0" cellpadding="8">
+<tr><td width="3%"><br></td><td>
+<p>
+Options are processed in command line order. Any option you specify on
+the command line remains in effect until it is explicitly changed by specifying
+the option again with a different effect. For example to display three images,
+the first with 32 colors, the second with an unlimited number of colors,
+and the third with only 16 colors, use:
+<pre>
+    gm display -colors 32 cockatoo.miff -noop duck.miff -colors 16 macaw.miff
+</pre>
+<p>
+<strong>Display</strong> options can appear on the command line or in your X resources
+file. See <em>X(1)</em>. Options on the command line supersede values specified
+in your X resources file.
+<p>
+For a more detailed description of each option, see
+Options, above.
+<a href="GraphicsMagick.html"><em>GraphicsMagick(1)</em></a>.
+<br>&nbsp;<br>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    <a href="GraphicsMagick.html#details-authenticate">-authenticate</a> <i>&lt;string&gt;</i>
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>decrypt image with this password</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    <a href="GraphicsMagick.html#details-backdrop">-backdrop</a>
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>display the image centered on a backdrop.</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    <a href="GraphicsMagick.html#details-background">-background</a> <i>&lt;color&gt;</i>
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>the background color</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    <a href="GraphicsMagick.html#details-border">-border</a> <i>&lt;width&gt;x&lt;height&gt;</i>
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>surround the image with a border of color</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    <a href="GraphicsMagick.html#details-bordercolor">-bordercolor</a> <i>&lt;color&gt;</i>
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>the border color</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    -borderwidth <i>&lt;geometry&gt;</i>
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>the border width</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    <a href="GraphicsMagick.html#details-colormap">-colormap</a> <i>&lt;type&gt;</i>
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>define the colormap type</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    <a href="GraphicsMagick.html#details-colors">-colors</a> <i>&lt;value&gt;</i>
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>preferred number of colors in the image</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    <a href="GraphicsMagick.html#details-colorspace">-colorspace</a> <i>&lt;value&gt;</i>
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>the type of colorspace</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    <a href="GraphicsMagick.html#details-comment">-comment</a> <i>&lt;string&gt;</i>
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>annotate an image with a comment</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    <a href="GraphicsMagick.html#details-compress">-compress</a> <i>&lt;type&gt;</i>
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>the type of image compression</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    <a href="GraphicsMagick.html#details-contrast">-contrast</a>
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>enhance or reduce the image contrast</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    <a href="GraphicsMagick.html#details-crop">-crop</a> <i>&lt;width&gt;x&lt;height&gt;</i>{<i>+-</i>}<i>&lt;x&gt;</i>{<i>+-</i>}<i>&lt;y&gt;</i>{<i>%</i>}<i></i>
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>preferred size and location of the cropped image</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    -debug <i>&lt;events&gt;</i>
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>enable debug printout</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    <a href="GraphicsMagick.html#details-define">-define</a> <i>&lt;key&gt;</i>{<i>=&lt;value&gt;</i>}<i>,...</i>
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>add coder/decoder specific options</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    <a href="GraphicsMagick.html#details-delay">-delay</a> <i>&lt;1/100ths of a second&gt;</i>
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>display the next image after pausing</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    <a href="GraphicsMagick.html#details-density">-density</a> <i>&lt;width&gt;x&lt;height&gt;</i>
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>horizontal and vertical resolution in pixels of the image</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    <a href="GraphicsMagick.html#details-depth">-depth</a> <i>&lt;value&gt;</i>
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>depth of the image</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    -despeckle
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>reduce the speckles within an image</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    <a href="GraphicsMagick.html#details-display">-display</a> <i>&lt;host:display[.screen]&gt;</i>
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>specifies the X server to contact</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    <a href="GraphicsMagick.html#details-dispose">-dispose</a> <i>&lt;method&gt;</i>
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>GIF disposal method</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    <a href="GraphicsMagick.html#details-dither">-dither</a>
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>apply Floyd/Steinberg error diffusion to the image</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    -edge <i>&lt;radius&gt;</i>
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>detect edges within an image</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    <a href="GraphicsMagick.html#details-endian">-endian</a> <i>&lt;type&gt;</i>
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>specify endianness (MSB, LSB, or Native) of image</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    -enhance
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>apply a digital filter to enhance a noisy image</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    <a href="GraphicsMagick.html#details-filter">-filter</a> <i>&lt;type&gt;</i>
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>use this type of filter when resizing an image</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    <a href="GraphicsMagick.html#details-flip">-flip</a>
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>create a "mirror image"</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    <a href="GraphicsMagick.html#details-flop">-flop</a>
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>create a "mirror image"</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    <a href="GraphicsMagick.html#details-font">-font</a> <i>&lt;name&gt;</i>
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>use this font when annotating the image with text</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    <a href="GraphicsMagick.html#details-foreground">-foreground</a> <i>&lt;color&gt;</i>
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>define the foreground color</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    <a href="GraphicsMagick.html#details-frame">-frame</a> <i>&lt;width&gt;x&lt;height&gt;+&lt;outer bevel width&gt;+&lt;inner bevel width&gt;</i>
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>surround the image with an ornamental border</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    <a href="GraphicsMagick.html#details-gamma">-gamma</a> <i>&lt;value&gt;</i>
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>level of gamma correction</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    <a href="GraphicsMagick.html#details-geometry">-geometry</a> <i>&lt;width&gt;x&lt;height&gt;</i>{<i>+-</i>}<i>&lt;x&gt;</i>{<i>+-</i>}<i>&lt;y&gt;</i>{<i>%</i>}<i></i>{<i>@</i>}<i></i>{<i>!</i>}<i></i>{<i>^</i>}<i></i>{<i>&lt;</i>}<i></i>{<i>&gt;</i>}<i></i>
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>Specify dimension, offset, and resize options.</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    -help
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>print usage instructions</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    <a href="GraphicsMagick.html#details-iconGeometry">-iconGeometry</a> <i>&lt;geometry&gt;</i>
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>specify the icon geometry</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    -iconic
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>iconic animation</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    -immutable
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>make image immutable</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    <a href="GraphicsMagick.html#details-interlace">-interlace</a> <i>&lt;type&gt;</i>
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>the type of interlacing scheme</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    <a href="GraphicsMagick.html#details-label">-label</a> <i>&lt;name&gt;</i>
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>assign a label to an image</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    <a href="GraphicsMagick.html#details-limit">-limit</a> <i>&lt;type&gt; &lt;value&gt;</i>
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>Disk, File, Map, Memory, Pixels, Width, Height or Threads resource limit</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    <a href="GraphicsMagick.html#details-log">-log</a> <i>&lt;string&gt;</i>
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>Specify format for debug log</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    -magnify <i>&lt;factor&gt;</i>
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>magnify the image</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    <a href="GraphicsMagick.html#details-map">-map</a> <i>&lt;type&gt;</i>
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>display image using this type.</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    <a href="GraphicsMagick.html#details-matte">-matte</a>
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>store matte channel if the image has one</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    <a href="GraphicsMagick.html#details-mattecolor">-mattecolor</a> <i>&lt;color&gt;</i>
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>specify the color to be used with the <strong>-frame</strong> option</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    -monitor
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>show progress indication</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    -monochrome
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>transform the image to black and white</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    -name
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>name an image</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    <a href="GraphicsMagick.html#details-negate">-negate</a>
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>replace every pixel with its complementary color</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    <a href="GraphicsMagick.html#details-noop">-noop</a>
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>NOOP (no option)</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    <a href="GraphicsMagick.html#details-page">-page</a> <i>&lt;width&gt;x&lt;height&gt;</i>{<i>+-</i>}<i>&lt;x&gt;</i>{<i>+-</i>}<i>&lt;y&gt;</i>{<i>%</i>}<i></i>{<i>!</i>}<i></i>{<i>&lt;</i>}<i></i>{<i>&gt;</i>}<i></i>
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>size and location of an image canvas</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    <a href="GraphicsMagick.html#details+progress">+progress</a>
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>disable progress monitor and busy cursor</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    <a href="GraphicsMagick.html#details-quality">-quality</a> <i>&lt;value&gt;</i>
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>JPEG/MIFF/PNG/TIFF compression level</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    <a href="GraphicsMagick.html#details-raise">-raise</a> <i>&lt;width&gt;x&lt;height&gt;</i>
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>lighten or darken image edges</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    <a href="GraphicsMagick.html#details-remote">-remote</a>
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>perform a X11 remote operation</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    <a href="GraphicsMagick.html#details-roll">-roll</a> <i></i>{<i>+-</i>}<i>&lt;x&gt;</i>{<i>+-</i>}<i>&lt;y&gt;</i>
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>roll an image vertically or horizontally</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    <a href="GraphicsMagick.html#details-rotate">-rotate</a> <i>&lt;degrees&gt;</i>{<i>&lt;</i>}<i></i>{<i>&gt;</i>}<i></i>
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>rotate the image</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    <a href="GraphicsMagick.html#details-sample">-sample</a> <i>&lt;geometry&gt;</i>
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>scale image using pixel sampling</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    <a href="GraphicsMagick.html#details-sampling-factor">-sampling-factor</a> <i>&lt;horizontal_factor&gt;x&lt;vertical_factor&gt;</i>
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>chroma subsampling factors</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    <a href="GraphicsMagick.html#details-scenes">-scenes</a> <i>&lt;value-value&gt;</i>
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>range of image scene numbers to read</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    <a href="GraphicsMagick.html#details-set">-set</a> <i>&lt;attribute&gt; &lt;value&gt;</i>
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>set an image attribute</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    <a href="GraphicsMagick.html#details+set">+set</a> <i>&lt;attribute&gt;</i>
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>unset an image attribute</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    <a href="GraphicsMagick.html#details-segment">-segment</a> <i>&lt;cluster threshold&gt;x&lt;smoothing threshold&gt;</i>
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>segment an image</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    <a href="GraphicsMagick.html#details-shared-memory">-shared-memory</a>
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>use shared memory</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    <a href="GraphicsMagick.html#details-sharpen">-sharpen</a> <i>&lt;radius&gt;</i>{<i>x&lt;sigma&gt;</i>}<i></i>
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>sharpen the image</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    <a href="GraphicsMagick.html#details-size">-size</a> <i>&lt;width&gt;x&lt;height&gt;</i>{<i>+offset</i>}<i></i>
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>width and height of the image</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    <a href="GraphicsMagick.html#details-text-font">-text-font</a> <i>&lt;name&gt;</i>
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>font for writing fixed-width text</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    -texture <i>&lt;filename&gt;</i>
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>name of texture to tile onto the image background</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    <a href="GraphicsMagick.html#details-title">-title</a> <i>&lt;string&gt;</i>
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>assign title to displayed image [<em>animate, display, montage</em>]</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    <a href="GraphicsMagick.html#details-treedepth">-treedepth</a> <i>&lt;value&gt;</i>
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>tree depth for the color reduction algorithm</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    <a href="GraphicsMagick.html#details-trim">-trim</a>
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>trim an image</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    <a href="GraphicsMagick.html#details-type">-type</a> <i>&lt;type&gt;</i>
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>the image type</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    <a href="GraphicsMagick.html#details-update">-update</a> <i>&lt;seconds&gt;</i>
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>
+detect when image file is modified and redisplay.</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    -use-pixmap
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>use the pixmap</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    <a href="GraphicsMagick.html#details-verbose">-verbose</a>
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>print detailed information about the image</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    <a href="GraphicsMagick.html#details-version">-version</a>
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>print GraphicsMagick version string</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    <a href="GraphicsMagick.html#details-visual">-visual</a> <i>&lt;type&gt;</i>
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>animate images using this X visual type</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    <a href="GraphicsMagick.html#details-window">-window</a> <i>&lt;id&gt;</i>
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>make image the background of a window</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    -window-group
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>specify the window group</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    <a href="GraphicsMagick.html#details-write">-write</a> <i>&lt;filename&gt;</i>
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>write the image to a file [<em>display</em>]</td></tr></table>
+<p>
+For a more detailed description of each option, see
+Options, above.
+<a href="GraphicsMagick.html"><em>GraphicsMagick(1)</em></a>.
+<br>&nbsp;<br>
+</td></tr></table>
+     <p>
+<i><a href="#top">Back to Contents</a></i> 
+&nbsp;</p>
+<table BORDER=0 WIDTH="100%"> 
+<tr> 
+<td ALIGN=LEFT bgcolor="#FFFFFF"><img 
+SRC="images/right_triangle.png"  ALT=">" BORDER=0 
+height=14 width=15><b><font face="Helvetica, Arial"><font 
+color="#00B04F"><font size="+1">
+<a NAME="disp-mous"></a>Mouse Buttons
+</font></font></font></b></td></tr></table>
+<table width="94%" border="0" cellspacing="0" cellpadding="8">
+<tr><td width="3%"><br></td><td>
+<p>
+The effects of each button press is described below. Three buttons are
+required. If you have a two button mouse, button 1 and 3 are returned.
+Press <strong>ALT</strong> and button 3 to simulate button 2.
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    1
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>
+Press this button to map or unmap the <a href="#disp-comm">Command
+widget</a> . See the next section for more information about the Command
+widget.</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    2
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>
+Press and drag to define a region of the image to magnify.</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    3
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>
+Press and drag to choose from a select set of <strong>display(1)</strong>
+commands. This button behaves differently if the image being displayed
+is a visual image directory. Choose a particular tile of the directory
+and press this button and drag to select a command from a pop-up menu.
+Choose from these menu items:</td></tr></table>
+<ul>
+<li>Open
+<li>Next
+<li>Former
+<li>Delete
+<li>Update
+</ul>
+<p>
+If you choose <strong>Open</strong>, the image represented by the tile is displayed.
+To return to the visual image directory, choose <strong>Next</strong> from the Command
+widget (refer to <a href="#disp-comm">Command Widget</a>).
+<strong>Next</strong> and <strong>Former</strong>
+moves to the next or former image respectively. Choose <strong>Delete</strong> to
+delete a particular image tile. Finally, choose <strong>Update</strong> to synchronize
+all the image tiles with their respective images. See
+<a href="montage.html">montage</a>
+and
+<a href="miff.html">miff</a> for more details.
+</td></tr></table>
+     <p>
+<i><a href="#top">Back to Contents</a></i> 
+&nbsp;</p>
+<table BORDER=0 WIDTH="100%"> 
+<tr> 
+<td ALIGN=LEFT bgcolor="#FFFFFF"><img 
+SRC="images/right_triangle.png"  ALT=">" BORDER=0 
+height=14 width=15><b><font face="Helvetica, Arial"><font 
+color="#00B04F"><font size="+1">
+<a NAME="disp-comm"></a>Command Widget
+</font></font></font></b></td></tr></table>
+<table width="94%" border="0" cellspacing="0" cellpadding="8">
+<tr><td width="3%"><br></td><td>
+<p>
+The Command widget lists a number of sub-menus and commands. They are
+<ul>
+<li><strong>File</strong>
+<ul>
+<li>Open...
+<li>Next
+<li>Former
+<li>Select...
+<li>Save...
+<li>Print...
+<li>Delete...
+<li>Canvas...
+<li>Visual Directory...
+<li>Quit
+</ul>
+</ul>
+<ul>
+<li><strong>Edit</strong>
+<ul>
+<li>Undo
+<li>Redo
+<li>Cut
+<li>Copy
+<li>Paste
+</ul>
+</ul>
+<ul>
+<li><strong>View</strong>
+<ul>
+<li>Half Size
+<li>Original Size
+<li>Double Size
+<li>Resize...
+<li>Apply
+<li>Refresh
+<li>Restore
+</ul>
+</ul>
+<ul>
+<li><strong>Transform</strong>
+<ul>
+<li>Crop
+<li>Chop
+<li>Flop
+<li>Flip
+<li>Rotate Right
+<li>Rotate Left
+<li>Rotate...
+<li>Shear...
+<li>Roll...
+<li>Trim Edges
+</ul>
+</ul>
+<ul>
+<li><strong>Enhance</strong>
+<ul>
+<li>Hue...
+<li>Saturation...
+<li>Brightness...
+<li>Gamma...
+<li>Spiff...
+<li>Dull
+<li>Equalize
+<li>Normalize
+<li>Negate
+<li>GRAYscale
+<li>Quantize...
+</ul>
+</ul>
+<ul>
+<li><strong>Effects</strong>
+<ul>
+<li>Despeckle
+<li>Emboss
+<li>Reduce Noise
+<li>Add Noise
+<li>Sharpen...
+<li>Blur...
+<li>Threshold...
+<li>Edge Detect...
+<li>Spread...
+<li>Shade...
+<li>Raise...
+<li>Segment...
+</ul>
+</ul>
+<ul>
+<li><strong>F/X</strong>
+<ul>
+<li>Solarize...
+<li>Swirl...
+<li>Implode...
+<li>Wave...
+<li>Oil Paint...
+<li>Charcoal Draw...
+</ul>
+</ul>
+<ul>
+<li><strong>Image Edit</strong>
+<ul>
+<li>Annotate...
+<li>Draw...
+<li>Color...
+<li>Matte...
+<li>Composite...
+<li>Add Border...
+<li>Add Frame...
+<li>Comment...
+<li>Launch...
+<li>Region of Interest...
+</ul>
+</ul>
+<ul>
+<li><strong>Miscellany</strong>
+<ul>
+<li>Image Info
+<li>Zoom Image
+<li>Show Preview...
+<li>Show Histogram
+<li>Show Matte
+<li>Background...
+<li>Slide Show
+<li>Preferences...
+</ul>
+</ul>
+<ul>
+<li><strong>Help</strong>
+<ul>
+<li>Overview
+<li>Browse Documentation
+<li>About Display
+</ul>
+</ul>
+<p>
+Menu items with a indented triangle have a sub-menu. They are represented
+above as the indented items. To access a sub-menu item, move the pointer
+to the appropriate menu and press button 1 and drag. When you find the
+desired sub-menu item, release the button and the command is executed.
+Move the pointer away from the sub-menu if you decide not to execute a
+particular command.
+</td></tr></table>
+     <p>
+<i><a href="#top">Back to Contents</a></i> 
+&nbsp;</p>
+<table BORDER=0 WIDTH="100%"> 
+<tr> 
+<td ALIGN=LEFT bgcolor="#FFFFFF"><img 
+SRC="images/right_triangle.png"  ALT=">" BORDER=0 
+height=14 width=15><b><font face="Helvetica, Arial"><font 
+color="#00B04F"><font size="+1">
+<a NAME="disp-keyb"></a>Keyboard Accelerators
+</font></font></font></b></td></tr></table>
+<table width="94%" border="0" cellspacing="0" cellpadding="8">
+<tr><td width="3%"><br></td><td>
+<p>
+Accelerators are one or two key presses that effect a particular command.
+The keyboard accelerators that
+<strong>display</strong> understands is:
+<pre>
+    Ctl+O     Press to <a href="#disp-imlo">load</a> an image from a file.
+    space     Press to display the next image.
+</pre>
+<p>
+If the image is a multi-paged document such as a
+<em>PostScript</em> document,
+you can skip ahead several pages by preceding this command with a number.
+For example to display the fourth page beyond the current page,
+press <tt>4space</tt>.
+<pre>
+    backspace Press to display the former image.
+</pre>
+<p>
+If the image is a multi-paged document such as a
+<em>PostScript</em> document,
+you can skip behind several pages by preceding this command with a number.
+For example to display the fourth page preceding the current page, press
+4n.
+<pre>
+    Ctl-S    Press to save the image to a file.
+    Ctl-P    Press to print the image to a
+             <em>PostScript</em> printer.
+    Ctl-D    Press to delete an image file.
+    Ctl-N    Press to create a blank canvas.
+    Ctl-Q    Press to discard all images and exit program.
+    Ctl+Z    Press to undo last image transformation.
+    Ctl+R    Press to redo last image transformation.
+    Ctl-X    Press to <a href="#disp-imcu">cut</a> a region of
+             the image.
+    Ctl-C    Press to <a href="#disp-imco">copy</a> a region of
+             the image.
+    Ctl-V    Press to <a href="#disp-impa">paste</a> a region to
+             the image.
+    &lt;        Press to halve the image size.
+    .        Press to return to the original image size.
+    &gt;        Press to double the image size.
+    %        Press to resize the image to a width and height
+             you specify.
+    Cmd-A    Press to make any image transformations
+             permanent.
+             By default, any image size transformations are
+             applied to the original image to create the
+             image displayed on the X server.  However, the
+             transformations are not permanent (i.e. the
+             original image does not change size only the
+             X image does). For example, if you press "&gt;"
+             the X image will appear to double in size, but
+             the original image will in fact remain the same
+             size.  To force the original image to double in
+             size, press "&gt;" followed by "Cmd-A".
+    @        Press to refresh the image window.
+    C        Press to <a href="#disp-imcr">crop</a> the image.
+    [        Press to <a href="#disp-imch">chop</a> the image.
+    H        Press to flop image in the horizontal direction.
+    V        Press to flip image in the vertical direction.
+    /        Press to rotate the image 90 degrees clockwise.
+    \        Press to rotate the image 90 degrees
+             counter-clockwise.
+    *        Press to <a href="#disp-imro">rotate</a> the image
+             the number of degrees you specify.
+    S        Press to shear the image the number of degrees
+             you specify.
+    R        Press to roll the image.
+    T        Press to trim the image edges.
+    Shft-H   Press to vary the color hue.
+    Shft-S   Press to vary the color saturation.
+    Shft-L   Press to vary the image brightness.
+    Shft-G   Press to gamma correct the image.
+    Shft-C   Press to spiff up the image contrast.
+    Shft-Z   Press to dull the image contrast.
+    =        Press to perform histogram equalization on
+             the image.
+    Shft-N   Press to perform histogram normalization on
+             the image.
+    Shft-~   Press to negate the colors of the image.
+    .        Press to convert the image colors to gray.
+    Shft-#   Press to set the maximum number of unique
+             colors in the image.
+    F2       Press to reduce the speckles in an image.
+    F2       Press to emboss an image.
+    F4       Press to eliminate peak noise from an image.
+    F5       Press to add noise to an image.
+    F6       Press to sharpen an image.
+    F7       Press to blur image an image.
+    F8       Press to threshold the image.
+    F9       Press to detect edges within an image.
+    F10      Press to displace pixels by a random amount.
+    F11      Press to shade the image using a distant light
+             source.
+    F12      Press to lighten or darken image edges to
+             create a 3-D effect.
+    F13      Press to segment the image by color.
+    Meta-S   Press to swirl image pixels about the center.
+    Meta-I   Press to implode image pixels about the center.
+    Meta-W   Press to alter an image along a sine wave.
+    Meta-P   Press to simulate an oil painting.
+    Meta-C   Press to simulate a charcoal drawing.
+    Alt-X    Press to <a href="#disp-imcomp">composite</a> the image
+             with another.
+    Alt-A    Press to <a href="#disp-iman">annotate</a> the image with text.
+    Alt-D    Press to <a href="#disp-imdr">draw</a> a line on the image.
+    Alt-P    Press to <a href="#disp-cole">edit an image pixel color</a>.
+    Alt-M    Press to <a href="#disp-matt">edit the image matte</a> information.
+    Alt-X    Press to <a href="#disp-imcomp">composite</a> the image with another.
+    Alt-A    Press to add a border to the image.
+    Alt-F    Press to add a ornamental frame to the image.
+    Alt-Shft-!   Press to add an image comment.
+    Ctl-A    Press to apply image processing techniques to a
+             region of interest.
+    Shft-?   Press to display information about the image.
+    Shft-+   Press to map the zoom image window.
+    Shft-P   Press to preview an image enhancement, effect,
+             or f/x.
+    F1       Press to display helpful information about
+             the "display" utility.
+    Find     Press to browse documentation about
+             GraphicsMagick.
+    1-9      Press to change the level of magnification.
+</pre>
+<p>
+Use the arrow keys to move the image one pixel up, down, left, or right
+within the magnify window. Be sure to first map the magnify window by pressing
+button 2.
+<p>
+Press ALT and one of the arrow keys to trim off one pixel from any side
+of the image.
+</td></tr></table>
+     <p>
+<i><a href="#top">Back to Contents</a></i> 
+&nbsp;</p>
+<table BORDER=0 WIDTH="100%"> 
+<tr> 
+<td ALIGN=LEFT bgcolor="#FFFFFF"><img 
+SRC="images/right_triangle.png"  ALT=">" BORDER=0 
+height=14 width=15><b><font face="Helvetica, Arial"><font 
+color="#00B04F"><font size="+1">
+<a NAME="disp-xres"></a>X Resources
+</font></font></font></b></td></tr></table>
+<table width="94%" border="0" cellspacing="0" cellpadding="8">
+<tr><td width="3%"><br></td><td>
+<p>
+<strong>Display</strong> options can appear on the command line or in your X resource
+file. Options on the command line supersede values specified in your X
+resource file. See <em>X(1)</em> for more information on X resources.
+<p>
+Most <strong>display</strong> options have a corresponding X resource. In addition,
+<strong>display</strong>
+uses the following X resources:
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    background <i>(class Background)</i>
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>
+Specifies the preferred color to use for the Image window background. The
+default is #ccc.</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    borderColor <i>(class BorderColor)</i>
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>
+Specifies the preferred color to use for the Image window border. The default
+is #ccc.</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    borderWidth <i>(class BorderWidth)</i>
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>
+Specifies the width in pixels of the image window border. The default is
+2.</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    browseCommand <i>(class browseCommand)</i>
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>
+Specifies the name of the preferred browser when displaying GraphicsMagick
+documentation. The default is <tt>netscape %s</tt>.</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    confirmExit <i>(class ConfirmExit)</i>
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>
+<strong>Display</strong> pops up a dialog box to confirm exiting the program when
+exiting the program. Set this resource to <tt>False</tt> to exit without
+a confirmation.</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    displayGamma <i>(class DisplayGamma)</i>
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>
+Specifies the gamma of the X server.</td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>
+You can apply separate gamma values to the red, green, and blue channels
+of the image with a gamma value list delineated with slashes (i.e. 1.7/2.3/1.2).</td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>
+The default is 2.2.</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    displayWarnings <i>(class DisplayWarnings)</i>
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>
+<strong>Display</strong> pops up a dialog box whenever a warning message occurs.
+Set this resource to <tt>False</tt> to ignore warning messages.</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    font <i>(class FontList)</i>
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>
+Specifies the name of the preferred font to use in normal formatted text.
+The default is 14 point Helvetica.</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    font[1-9] <i>(class Font[1-9])</i>
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>
+Specifies the name of the preferred font to use when
+<a href="#disp-iman">annotating</a>
+the image window with text. The default fonts are fixed, variable, 5x8,
+6x10, 7x13bold, 8x13bold, 9x15bold, 10x20, and 12x24.</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    foreground <i>(class Foreground)</i>
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>
+Specifies the preferred color to use for text within the image window.
+The default is black.</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    gammaCorrect <i>(class gammaCorrect)</i>
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>
+This resource, if true, will lighten or darken an image of known gamma
+to match the gamma of the display (see resource <strong>displayGamma</strong>). The
+default is True.</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    geometry <i>(class Geometry)</i>
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>
+Specifies the preferred size and position of the image window. It is not
+necessarily obeyed by all window managers.</td></tr></table>
+<table width="90%" border="0" cellspacing="0"             cellpadding="8">             <tr><td width="6%"><br></td><td><font size="-1">
+Offsets, if present, are handled in <em>X(1)</em> style.  A negative x offset is
+measured from the right edge of the screen to the right edge of the icon,
+and a negative y offset is measured from the bottom edge of the screen
+to the bottom edge of the icon.</font></td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    iconGeometry <i>(class IconGeometry)</i>
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>
+Specifies the preferred size and position of the application when iconified.
+It is not necessarily obeyed by all window managers.</td></tr></table>
+<table width="90%" border="0" cellspacing="0"             cellpadding="8">             <tr><td width="6%"><br></td><td><font size="-1">
+Offsets, if present, are handled in the same manner as in class Geometry.</font></td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    iconic <i>(class Iconic)</i>
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>
+This resource indicates that you would prefer that the application's windows
+initially not be visible as if the windows had be immediately iconified
+by you. Window managers may choose not to honor the application's request.</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    magnify <i>(class Magnify)</i>
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>
+specifies an integral factor by which the image should be enlarged. The
+default is 3.</td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>
+This value only affects the magnification window which is invoked with
+<a href="#disp-mous">button</a>
+number 3 after the image is displayed.</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    matteColor <i>(class MatteColor)</i>
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>
+Specify the color of windows. It is used for the backgrounds of windows,
+menus, and notices. A 3D effect is achieved by using highlight and shadow
+colors derived from this color. Default value: #697B8F.</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    name <i>(class Name)</i>
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>
+This resource specifies the name under which resources for the application
+should be found. This resource is useful in shell aliases to distinguish
+between invocations of an application, without resorting to creating links
+to alter the executable file name. The default is the application name.</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    pen[1-9] <i>(class Pen[1-9])</i>
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>
+Specifies the color of the preferred font to use when
+<a href="#disp-iman">annotating</a>
+the image window with text. The default colors are black, blue, green,
+cyan, gray, red, magenta, yellow, and white.</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    printCommand <i>(class PrintCommand)</i>
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>
+This command is executed whenever Print is issued.  In general, it is the
+command to print <em>PostScript</em> to your printer. Default value: <tt>lp
+-c -s %i</tt>.</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    sharedMemory <i>(class SharedMemory)</i>
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>
+This resource specifies whether display should attempt use shared memory
+for pixmaps. GraphicsMagick must be compiled with shared memory support,
+and the display must support the MIT-SHM extension. Otherwise, this
+resource is ignored. The default is True.</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    textFont <i>(class textFont)</i>
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>
+Specifies the name of the preferred font to use in fixed (typewriter style)
+formatted text. The default is 14 point Courier.</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    title <i>(class Title)</i>
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>
+This resource specifies the title to be used for the image window. This
+information is sometimes used by a window manager to provide a header identifying
+the window. The default is the image file name.</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    undoCache <i>(class UndoCache)</i>
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>
+Specifies, in mega-bytes, the amount of memory in the undo edit cache.
+Each time you modify the image it is saved in the undo edit cache as long
+as memory is available. You can subsequently <em>undo</em> one or more of
+these transformations. The default is 16 Megabytes.</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    usePixmap <i>(class UsePixmap)</i>
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>
+Images are maintained as a XImage by default. Set this resource to True
+to utilize a server Pixmap instead. This option is useful if your image
+exceeds the dimensions of your server screen and you intend to pan the
+image. Panning is much faster with Pixmaps than with a XImage. Pixmaps
+are considered a precious resource, use them with discretion.</td></tr></table>
+<p>
+To set the geometry of the Magnify or Pan or window, use the geometry resource.
+For example, to set the Pan window geometry to 256x256, use:
+<pre>
+    gm display.pan.geometry: 256x256
+</pre>
+</td></tr></table>
+     <p>
+<i><a href="#top">Back to Contents</a></i> 
+&nbsp;</p>
+<table BORDER=0 WIDTH="100%"> 
+<tr> 
+<td ALIGN=LEFT bgcolor="#FFFFFF"><img 
+SRC="images/right_triangle.png"  ALT=">" BORDER=0 
+height=14 width=15><b><font face="Helvetica, Arial"><font 
+color="#00B04F"><font size="+1">
+<a NAME="disp-imlo"></a>Image Loading
+</font></font></font></b></td></tr></table>
+<table width="94%" border="0" cellspacing="0" cellpadding="8">
+<tr><td width="3%"><br></td><td>
+<p>
+To select an image to display, choose <strong>Open</strong> of the <strong>File</strong> sub-menu
+from the <a href="#disp-comm">Command widget</a>. A file browser is displayed.
+To choose a particular image file, move the pointer to the filename and
+press any button. The filename is copied to the text window. Next, press
+<strong>Open</strong>
+or press the <strong>RETURN</strong> key. Alternatively, you can type the image file
+name directly into the text window. To descend directories, choose a directory
+name and press the button twice quickly. A scrollbar allows a large list
+of filenames to be moved through the viewing area if it exceeds the size
+of the list area.
+<p>
+You can trim the list of file names by using shell globbing characters.
+For example, type <tt>*.jpg</tt> to list only files that end
+with <tt>.jpg</tt>.
+<p>
+To select your image from the X server screen instead of from a file, Choose
+<strong>Grab</strong> of the <strong>Open</strong> widget.
+</td></tr></table>
+     <p>
+<i><a href="#top">Back to Contents</a></i> 
+&nbsp;</p>
+<table BORDER=0 WIDTH="100%"> 
+<tr> 
+<td ALIGN=LEFT bgcolor="#FFFFFF"><img 
+SRC="images/right_triangle.png"  ALT=">" BORDER=0 
+height=14 width=15><b><font face="Helvetica, Arial"><font 
+color="#00B04F"><font size="+1">
+<a NAME="disp-visu"></a>Visual Image Directory
+</font></font></font></b></td></tr></table>
+<table width="94%" border="0" cellspacing="0" cellpadding="8">
+<tr><td width="3%"><br></td><td>
+<p>
+To create a Visual Image Directory, choose Visual Directory of the <strong>File</strong>
+sub-menu from the <a href="#disp-comm">Command widget</a> . A file browser is
+displayed. To create a Visual Image Directory from all the images in the
+current directory, press <strong>Directory</strong> or press the <strong>RETURN key</strong>.
+Alternatively, you can select a set of image names by using shell globbing
+characters. For example, type <tt>*.jpg</tt> to include only files that
+end with <tt>.jpg</tt>. To descend directories, choose a directory name
+and press the button twice quickly. A scrollbar allows a large list of
+filenames to be moved through the viewing area if it exceeds the size of
+the list area.
+<p>
+After you select a set of files, they are turned into thumbnails and tiled
+onto a single image. Now move the pointer to a particular thumbnail and
+press <strong>button 3</strong> and drag. Finally, select Open. The image represented
+by the thumbnail is displayed at its full size. Choose <strong>Next</strong> from
+the <strong>File</strong> sub-menu of the Command widget to return to the Visual
+Image Directory.
+</td></tr></table>
+     <p>
+<i><a href="#top">Back to Contents</a></i> 
+&nbsp;</p>
+<table BORDER=0 WIDTH="100%"> 
+<tr> 
+<td ALIGN=LEFT bgcolor="#FFFFFF"><img 
+SRC="images/right_triangle.png"  ALT=">" BORDER=0 
+height=14 width=15><b><font face="Helvetica, Arial"><font 
+color="#00B04F"><font size="+1">
+<a NAME="disp-imcu"></a>Image Cutting
+</font></font></font></b></td></tr></table>
+<table width="94%" border="0" cellspacing="0" cellpadding="8">
+<tr><td width="3%"><br></td><td>
+<p>
+Note that cut information for image window is not retained for colormapped
+X server visuals (e.g. <em>StaticColor</em>,
+<em>StaticColor</em>, <em>GRAYScale</em>,
+<em>PseudoColor</em>).
+Correct cutting behavior may require a <em>TrueColor</em> or <em>DirectColor</em>
+visual or a <em>Standard Colormap</em>.
+<p>
+To begin, press choose <strong>Cut</strong> of the <strong>Edit</strong> sub-menu from the
+<a href="#disp-comm">Command
+widget</a>. Alternatively, press
+<strong>F3</strong> in the image window.
+<p>
+A small window appears showing the location of the cursor in the image
+window. You are now in cut mode. In cut mode, the Command widget has these
+options:
+<ul>
+<li><strong>Help</strong>
+<li><strong>Dismiss</strong>
+</ul>
+<p>
+To define a cut region, press button 1 and drag. The cut region is defined
+by a highlighted rectangle that expands or contracts as it follows the
+pointer. Once you are satisfied with the cut region, release the button.
+You are now in rectify mode. In rectify mode, the Command widget has these
+options:
+<ul>
+<li><strong>Cut</strong>
+<li><strong>Help</strong>
+<li><strong>Dismiss</strong>
+</ul>
+<p>
+You can make adjustments by moving the pointer to one of the cut rectangle
+corners, pressing a button, and dragging. Finally, press Cut to commit
+your copy region. To exit without cutting the image, press Dismiss.
+</td></tr></table>
+     <p>
+<i><a href="#top">Back to Contents</a></i> 
+&nbsp;</p>
+<table BORDER=0 WIDTH="100%"> 
+<tr> 
+<td ALIGN=LEFT bgcolor="#FFFFFF"><img 
+SRC="images/right_triangle.png"  ALT=">" BORDER=0 
+height=14 width=15><b><font face="Helvetica, Arial"><font 
+color="#00B04F"><font size="+1">
+<a NAME="disp-imco"></a>Image Copying
+</font></font></font></b></td></tr></table>
+<table width="94%" border="0" cellspacing="0" cellpadding="8">
+<tr><td width="3%"><br></td><td>
+<p>
+To begin, press choose <strong>Copy</strong> of the <strong>Edit</strong> sub-menu from the
+<a href="#disp-comm">Command
+widget</a>. Alternatively, press
+<strong>F4</strong> in the image window.
+<p>
+A small window appears showing the location of the cursor in the image
+window. You are now in copy mode. In copy mode, the Command widget has
+these options:
+<ul>
+<li>Help
+<li>Dismiss
+</ul>
+<p>
+To define a copy region, press button 1 and drag. The copy region is defined
+by a highlighted rectangle that expands or contracts as it follows the
+pointer. Once you are satisfied with the copy region, release the button.
+You are now in rectify mode. In rectify mode, the Command widget has these
+options:
+<ul>
+<li>Copy
+<li>Help
+<li>Dismiss
+</ul>
+<p>
+You can make adjustments by moving the pointer to one of the copy rectangle
+corners, pressing a button, and dragging. Finally, press Copy to commit
+your copy region. To exit without copying the image, press Dismiss.
+</td></tr></table>
+     <p>
+<i><a href="#top">Back to Contents</a></i> 
+&nbsp;</p>
+<table BORDER=0 WIDTH="100%"> 
+<tr> 
+<td ALIGN=LEFT bgcolor="#FFFFFF"><img 
+SRC="images/right_triangle.png"  ALT=">" BORDER=0 
+height=14 width=15><b><font face="Helvetica, Arial"><font 
+color="#00B04F"><font size="+1">
+<a NAME="disp-impas"></a>Image Pasting
+</font></font></font></b></td></tr></table>
+<table width="94%" border="0" cellspacing="0" cellpadding="8">
+<tr><td width="3%"><br></td><td>
+<p>
+To begin, press choose <strong>Paste</strong> of the <strong>Edit</strong> sub-menu from the
+<a href="#disp-comm">Command
+widget</a>. Alternatively, press
+<strong>F5</strong> in the image window.
+<p>
+A small window appears showing the location of the cursor in the image
+window. You are now in Paste mode. To exit immediately, press Dismiss.
+In Paste mode, the Command widget has these options:
+<ul>
+<li><strong>Operators</strong>
+<ul>
+<li>over
+<li>in
+<li>out
+<li>atop
+<li>xor
+<li>plus
+<li>minus
+<li>add
+<li>subtract
+<li>difference
+<li>multiply
+<li>bumpmap
+<li>replace
+</ul>
+<li><strong>Help</strong>
+<li><strong>Dismiss</strong>
+</ul>
+<p>
+Choose a composite operation from the <strong>Operators</strong> sub-menu of the
+<a href="#disp-comm">Command
+widget</a>. How each operator behaves is described below. <em>image window</em>
+is the image currently displayed on your X server and <em>image</em> is the
+image obtained with the File Browser widget.
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    over
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>
+The result is the union of the two image shapes, with <em>image</em> obscuring
+<em>image
+window</em> in the region of overlap.</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    in
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>
+The result is simply <em>image</em> cut by the shape of
+<em>image window</em>.
+None of the image data of image window is in the result.</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    out
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>
+The resulting image is <em>image</em> with the shape of
+<em>image window</em>
+cut out.</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    atop
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>
+The result is the same shape as <em>image window</em>, with
+<em>image</em>
+obscuring <em>image window</em> where the image shapes overlap. Note this
+differs from over because the portion of image outside
+<em>image window</em>'s
+shape does not appear in the result.</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    xor
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>
+The result is the image data from both <em>image</em> and
+<em>image window</em>
+that is outside the overlap region. The overlap region is blank.</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    plus
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>
+The result is just the sum of the image data. Output values are cropped
+to the maximum value (no overflow). This operation is independent of the
+matte channels.</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    minus
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>
+The result of <em>image</em> - <em>image window</em>, with underflow cropped
+to zero. The matte channel is ignored (set to opaque, full coverage).</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    add
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>
+The result of <em>image</em> + <em>image window</em>, with overflow wrapping
+around (mod MaxRGB+1).</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    subtract
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>
+The result of <em>image</em> - <em>image window</em>, with underflow wrapping
+around (mod MaxRGB+1). The add and subtract operators can be used to perform
+reversible transformations.</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    difference
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>
+The result of abs(<em>image</em> - <em>image window</em>). This is useful for
+comparing two very similar images.</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    multiply
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>
+The result of <em>image</em> * <em>image window</em>. This is useful for
+the creation of drop-shadows.</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    bumpmap
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>
+The result of <em>image window</em> shaded by <em>window</em>.</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    replace
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>The resulting image is <em>image window</em> replaced with
+<em>image</em>.
+Here the matte information is ignored.</td></tr></table>
+<p>
+The image compositor requires a matte, or alpha channel in the image for
+some operations. This extra channel usually defines a mask which represents
+a sort of a cookie-cutter for the image. This is the case when matte is
+255 (full coverage) for pixels inside the shape, zero outside, and between
+zero and 255 on the boundary. If image does not have a matte channel, it
+is initialized with 0 for any pixel matching in color to pixel location
+(0,0), otherwise 255. See <a href="#disp-matt">Matte Editing</a> for a method
+of defining a matte channel.
+<p>
+Note that matte information for image window is not retained for colormapped
+X server visuals (e.g. <em>StaticColor, StaticColor, GrayScale, PseudoColor</em>).
+Correct compositing behavior may require a
+<em>TrueColor</em> or <em>DirectColor</em>
+visual or a <em>Standard Colormap</em>.
+<p>
+Choosing a composite operator is optional. The default operator is replace.
+However, you must choose a location to composite your image and press button
+1. Press and hold the button before releasing and an outline of the image
+will appear to help you identify your location.
+<p>
+The actual colors of the pasted image is saved. However, the color that
+appears in image window may be different. For example, on a monochrome
+screen image window will appear black or white even though your pasted
+image may have many colors. If the image is saved to a file it is written
+with the correct colors. To assure the correct colors are saved in the
+final image, any <em>PseudoClass</em> image is promoted to <em>DirectClass</em>.
+To force a
+<em>PseudoClass</em> image to remain <em>PseudoClass</em>,
+use <strong>-colors</strong>.
+</td></tr></table>
+     <p>
+<i><a href="#top">Back to Contents</a></i> 
+&nbsp;</p>
+<table BORDER=0 WIDTH="100%"> 
+<tr> 
+<td ALIGN=LEFT bgcolor="#FFFFFF"><img 
+SRC="images/right_triangle.png"  ALT=">" BORDER=0 
+height=14 width=15><b><font face="Helvetica, Arial"><font 
+color="#00B04F"><font size="+1">
+<a NAME="disp-imcr"></a>Image Cropping
+</font></font></font></b></td></tr></table>
+<table width="94%" border="0" cellspacing="0" cellpadding="8">
+<tr><td width="3%"><br></td><td>
+<p>
+To begin, press choose <strong>Crop</strong> of the <strong>Transform</strong> submenu from
+the <a href="#disp-comm">Command widget</a>. Alternatively,
+<a href="#disp-keyb">press</a> C in the image window.
+<p>
+A small window appears showing the location of the cursor in the image
+window. You are now in crop mode. In crop mode, the Command widget has
+these options:
+<ul>
+<li><strong>Help</strong>
+<li><strong>Dismiss</strong>
+</ul>
+<p>
+To define a cropping region, press button 1 and drag. The cropping region
+is defined by a highlighted rectangle that expands or contracts as it follows
+the pointer. Once you are satisfied with the cropping region, release the
+button. You are now in rectify mode. In rectify mode, the Command widget
+has these options:
+<ul>
+<li><strong>Crop</strong>
+<li><strong>Help</strong>
+<li><strong>Dismiss</strong>
+</ul>
+<p>
+You can make adjustments by moving the pointer to one of the cropping rectangle
+corners, pressing a button, and dragging. Finally, press Crop to commit
+your cropping region. To exit without cropping the image, press Dismiss.
+</td></tr></table>
+     <p>
+<i><a href="#top">Back to Contents</a></i> 
+&nbsp;</p>
+<table BORDER=0 WIDTH="100%"> 
+<tr> 
+<td ALIGN=LEFT bgcolor="#FFFFFF"><img 
+SRC="images/right_triangle.png"  ALT=">" BORDER=0 
+height=14 width=15><b><font face="Helvetica, Arial"><font 
+color="#00B04F"><font size="+1">
+<a NAME="disp-imch"></a>Image Chopping
+</font></font></font></b></td></tr></table>
+<table width="94%" border="0" cellspacing="0" cellpadding="8">
+<tr><td width="3%"><br></td><td>
+<p>
+An image is chopped interactively. There is no command line argument to
+chop an image. To begin, choose <strong>Chop</strong> of the <strong>Transform</strong> sub-menu
+from the <a href="#disp-comm">Command widget</a>. Alternatively,
+<a href="#disp-keyb">press</a> [ in the Image window.
+<p>
+You are now in <strong>Chop</strong> mode. To exit immediately, press
+<strong>Dismiss</strong>.
+In Chop mode, the Command widget has these options:
+<ul>
+<li><strong>Direction</strong>
+<ul>
+<li>horizontal
+<li>vertical
+</ul>
+<li><strong>Help</strong>
+<li><strong>Dismiss</strong>
+</ul>
+<p>
+If the you choose the horizontal direction (this is the default), the area
+of the image between the two horizontal endpoints of the chop line is removed.
+Otherwise, the area of the image between the two vertical endpoints of
+the chop line is removed.
+<p>
+Select a location within the image window to begin your chop, press and
+hold any button. Next, move the pointer to another location in the image.
+As you move a line will connect the initial location and the pointer. When
+you release the button, the area within the image to chop is determined
+by which direction you choose from the Command widget.
+<p>
+To cancel the image chopping, move the pointer back to the starting point
+of the line and release the button.
+</td></tr></table>
+     <p>
+<i><a href="#top">Back to Contents</a></i> 
+&nbsp;</p>
+<table BORDER=0 WIDTH="100%"> 
+<tr> 
+<td ALIGN=LEFT bgcolor="#FFFFFF"><img 
+SRC="images/right_triangle.png"  ALT=">" BORDER=0 
+height=14 width=15><b><font face="Helvetica, Arial"><font 
+color="#00B04F"><font size="+1">
+<a NAME="disp-imro"></a>Image Rotation
+</font></font></font></b></td></tr></table>
+<table width="94%" border="0" cellspacing="0" cellpadding="8">
+<tr><td width="3%"><br></td><td>
+<p>
+Press the / key to rotate the image 90 degrees or \ to rotate -90 degrees.
+To interactively choose the degree of rotation, choose
+<strong>Rotate...</strong>
+of the <strong>Transform</strong> submenu from the <a href="#disp-comm">Command Widget</a>.
+Alternatively, <a href="#disp-keyb">press</a> * in the image window.
+<p>
+A small horizontal line is drawn next to the pointer. You are now in rotate
+mode. To exit immediately, press Dismiss. In rotate mode, the Command widget
+has these options:
+<ul>
+<li><strong>Pixel Color</strong>
+<ul>
+<li>black
+<li>blue
+<li>cyan
+<li>green
+<li>gray
+<li>red
+<li>magenta
+<li>yellow
+<li>white
+<li>Browser...
+</ul>
+<li><strong>Direction</strong>
+<ul>
+<li>horizontal
+<li>vertical
+</ul>
+<li><strong>Help</strong>
+<li><strong>Dismiss</strong>
+</ul>
+<p>
+Choose a background color from the Pixel Color sub-menu. Additional background
+colors can be specified with the color browser. You can change the menu
+colors by setting the <a href="#disp-xres">X resources</a> pen1 through pen9.
+<p>
+If you choose the color browser and press <strong>Grab</strong>, you can select the
+background color by moving the pointer to the desired color on the screen
+and press any button.
+<p>
+Choose a point in the image window and press this button and hold. Next,
+move the pointer to another location in the image. As you move a line connects
+the initial location and the pointer. When you release the button, the
+degree of image rotation is determined by the slope of the line you just
+drew. The slope is relative to the direction you choose from the Direction
+sub-menu of the Command widget.
+<p>
+To cancel the image rotation, move the pointer back to the starting point
+of the line and release the button.
+</td></tr></table>
+     <p>
+<i><a href="#top">Back to Contents</a></i> 
+&nbsp;</p>
+<table BORDER=0 WIDTH="100%"> 
+<tr> 
+<td ALIGN=LEFT bgcolor="#FFFFFF"><img 
+SRC="images/right_triangle.png"  ALT=">" BORDER=0 
+height=14 width=15><b><font face="Helvetica, Arial"><font 
+color="#00B04F"><font size="+1">
+<a NAME="disp-segm"></a>Image Segmentation
+</font></font></font></b></td></tr></table>
+<table width="94%" border="0" cellspacing="0" cellpadding="8">
+<tr><td width="3%"><br></td><td>
+<p>
+Choose <strong>Effects-&gt;Segment</strong> to segment an image by analyzing the histograms
+of the color components and identifying units that are homogeneous with
+the fuzzy c-means technique. The scale-space filter analyzes the histograms
+of the three color components of the image and identifies a set of classes.
+The extents of each class is used to coarsely segment the image with thresholding.
+The color associated with each class is determined by the mean color of
+all pixels within the extents of a particular class. Finally, any unclassified
+pixels are assigned to the closest class with the fuzzy c-means technique.
+<p>The fuzzy c-Means algorithm can be summarized as follows:
+<ul>
+<li>
+Build a histogram, one for each color component of the image.
+<li>
+For each histogram, successively apply the scale-space filter and build
+an interval tree of zero crossings in the second derivative at each scale.
+Analyze this scale-space "fingerprint" to determine which peaks or valleys
+in the histogram are most predominant.
+<li>
+The fingerprint defines intervals on the axis of the histogram. Each interval
+contains either a minima or a maxima in the original signal. If each color
+component lies within the maxima interval, that pixel is considered "classified"
+and is assigned an unique class number.
+<li>
+Any pixel that fails to be classified in the above thresholding pass is
+classified using the fuzzy c-Means technique. It is assigned to one of
+the classes discovered in the histogram analysis phase.
+</ul>
+<p>
+The fuzzy c-Means technique attempts to cluster a pixel by finding the
+local minima of the generalized within group sum of squared error objective
+function. A pixel is assigned to the closest class of which the fuzzy membership
+has a maximum value.
+<p>
+For additional information see:
+<blockquote><em>Young Won Lim, Sang Uk Lee</em>, "<strong>On The Color Image Segmentation
+Algorithm Based on the Thresholding and the Fuzzy c-Means Techniques</strong>",
+Pattern Recognition, Volume 23, Number 9, pages 935-952, 1990.</blockquote>
+<br>&nbsp;<br>
+</td></tr></table>
+     <p>
+<i><a href="#top">Back to Contents</a></i> 
+&nbsp;</p>
+<table BORDER=0 WIDTH="100%"> 
+<tr> 
+<td ALIGN=LEFT bgcolor="#FFFFFF"><img 
+SRC="images/right_triangle.png"  ALT=">" BORDER=0 
+height=14 width=15><b><font face="Helvetica, Arial"><font 
+color="#00B04F"><font size="+1">
+<a NAME="disp-iman"></a>Image Annotation
+</font></font></font></b></td></tr></table>
+<table width="94%" border="0" cellspacing="0" cellpadding="8">
+<tr><td width="3%"><br></td><td>
+<p>
+An image is annotated interactively. There is no command line argument
+to annotate an image. To begin, choose
+<strong>Annotate</strong> of the <strong>Image
+Edit</strong> sub-menu from the <a href="#disp-comm">Command widget</a>. Alternatively,
+<a href="#disp-keyb">press</a> a in the image window.
+<p>
+A small window appears showing the location of the cursor in the image
+window. You are now in annotate mode. To exit immediately, press Dismiss.
+In annotate mode, the Command widget has these options:
+<ul>
+<li>
+<strong>Font Name</strong>
+<ul>
+<li>
+fixed
+<li>
+variable
+<li>
+5x8
+<li>
+6x10
+<li>
+7x13bold
+<li>
+8x13bold
+<li>
+9x15bold
+<li>
+10x20
+<li>
+12x24
+<li>
+Browser...
+</ul>
+<li>
+<strong>Font Color</strong>
+<ul>
+<li>
+black
+<li>
+blue
+<li>
+cyan
+<li>
+green
+<li>
+gray
+<li>
+red
+<li>
+magenta
+<li>
+yellow
+<li>
+white
+<li>
+transparent
+<li>
+Browser...
+</ul>
+<li>
+<strong>Box Color</strong>
+<ul>
+<li>
+black
+<li>
+blue
+<li>
+cyan
+<li>
+green
+<li>
+gray
+<li>
+red
+<li>
+magenta
+<li>
+yellow
+<li>
+white
+<li>
+transparent
+<li>
+Browser...
+</ul>
+<li>
+<strong>Rotate Text</strong>
+<ul>
+<li>
+-90
+<li>
+-45
+<li>
+-30
+<li>
+0
+<li>
+30
+<li>
+45
+<li>
+90
+<li>
+180
+<li>
+Dialog...
+</ul>
+<li>
+<strong>Help</strong>
+<li>
+<strong>Dismiss</strong>
+</ul>
+<p>
+Choose a font name from the <strong>Font Name</strong> sub-menu. Additional font
+names can be specified with the font browser. You can change the menu names
+by setting the <a href="#disp-xres">X resources</a> font1 through font9.
+<p>
+Choose a font color from the <strong>Font Color</strong> sub-menu. Additional font
+colors can be specified with the color browser. You can change the menu
+colors by setting the <a href="#disp-xres">X resources</a> pen1 through pen9.
+<p>
+If you select the color browser and press <strong>Grab</strong>, you can choose the
+font color by moving the pointer to the desired color on the screen and
+press any button.
+<p>
+If you choose to rotate the text, choose <strong>Rotate Text</strong> from the menu
+and select an angle. Typically you will only want to rotate one line of
+text at a time. Depending on the angle you choose, subsequent lines may
+end up overwriting each other.
+<p>
+Choosing a font and its color is optional. The default font is fixed and
+the default color is black. However, you must choose a location to begin
+entering text and press a button. An underscore character will appear at
+the location of the pointer. The cursor changes to a pencil to indicate
+you are in text mode. To exit immediately, press Dismiss.
+<p>
+In text mode, any key presses will display the character at the location
+of the underscore and advance the underscore cursor. Enter your text and
+once completed press Apply to finish your image annotation. To correct
+errors press <strong>BACK SPACE</strong>. To delete an entire line of text, press
+<strong>DELETE</strong>.
+Any text that exceeds the boundaries of the image window is automatically
+continued onto the next line.
+<p>
+The actual color you request for the font is saved in the image. However,
+the color that appears in your Image window may be different. For example,
+on a monochrome screen the text will appear black or white even if you
+choose the color red as the font color. However, the image saved to a file
+with <strong>-write</strong> is written with red lettering. To assure the correct
+color text in the final image, any <em>PseudoClass</em> image is promoted
+to <em>DirectClass</em> (see miff(5)). To force a <em>PseudoClass</em> image
+to remain
+<em>PseudoClass</em>, use <strong>-colors</strong>.
+</td></tr></table>
+     <p>
+<i><a href="#top">Back to Contents</a></i> 
+&nbsp;</p>
+<table BORDER=0 WIDTH="100%"> 
+<tr> 
+<td ALIGN=LEFT bgcolor="#FFFFFF"><img 
+SRC="images/right_triangle.png"  ALT=">" BORDER=0 
+height=14 width=15><b><font face="Helvetica, Arial"><font 
+color="#00B04F"><font size="+1">
+<a NAME="disp-imcomp"></a>Image Compositing
+</font></font></font></b></td></tr></table>
+<table width="94%" border="0" cellspacing="0" cellpadding="8">
+<tr><td width="3%"><br></td><td>
+<p>
+An image composite is created interactively. <strong>There is no command line
+argument to composite an image</strong>. To begin, choose <strong>Composite</strong> of
+the <strong>Image Edit</strong> from the <a href="#disp-comm">Command widget</a>. Alternatively,
+<a href="#disp-keyb">press</a> x in the Image window.
+<p>
+First a popup window is displayed requesting you to enter an image name.
+Press <strong>Composite</strong>, <strong>Grab</strong> or type a file name. Press <strong>Cancel</strong>
+if you choose not to create a composite image. When you choose <strong>Grab</strong>,
+move the pointer to the desired window and press any button.
+<p>
+If the <strong>Composite</strong> image does not have any matte information, you
+are informed and the file browser is displayed again. Enter the name of
+a mask image. The image is typically grayscale and the same size as the
+composite image. If the image is not grayscale, it is converted to grayscale
+and the resulting intensities are used as matte information.
+<p>
+A small window appears showing the location of the cursor in the image
+window. You are now in composite mode. To exit immediately, press Dismiss.
+In composite mode, the Command widget has these options:
+<ul>
+<li>
+<strong>Operators</strong>
+<ul>
+<li>
+over
+<li>
+in
+<li>
+out
+<li>
+atop
+<li>
+xor
+<li>
+plus
+<li>
+minus
+<li>
+add
+<li>
+subtract
+<li>
+difference
+<li>
+bumpmap
+<li>
+replace
+</ul>
+<li>
+<strong>Blend</strong>
+<li>
+<strong>Displace</strong>
+<li>
+<strong>Help</strong>
+<li>
+<strong>Dismiss</strong>
+</ul>
+<p>
+Choose a composite operation from the Operators sub-menu of the Command
+widget. How each operator behaves is described below. image window is the
+image currently displayed on your X server and image is the image obtained
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    over
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>
+The result is the union of the two image shapes, with <em>image</em> obscuring
+<em>image
+window</em> in the region of overlap.</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    in
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>
+The result is simply <em>image</em> cut by the shape of
+<em>image window</em>.
+None of the image data of image window is in the result.</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    out
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>
+The resulting image is <em>image</em> with the shape of
+<em>image window</em>
+cut out.</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    atop
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>
+The result is the same shape as <em>image window</em>, with
+<em>image</em>
+obscuring <em>image window</em> where the image shapes overlap. Note this
+differs from over because the portion of image outside
+<em>image window</em>'s
+shape does not appear in the result.</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    xor
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>
+The result is the image data from both <em>image</em> and
+<em>image window</em>
+that is outside the overlap region. The overlap region is blank.</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    plus
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>
+The result is just the sum of the image data. Output values are cropped
+to 255 (no overflow). This operation is independent of the matte channels.</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    minus
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>
+The result of <em>image</em> - <em>image window</em>, with underflow cropped
+to zero. The matte channel is ignored (set to 255, full coverage).</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    add
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>
+The result of <em>image</em> + <em>image window</em>, with overflow wrapping
+around (mod 256).</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    subtract
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>
+The result of <em>image</em> - <em>image window</em>, with underflow wrapping
+around (mod 256). The add and subtract operators can be used to perform
+reversible transformations.</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    difference
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>
+The result of abs(<em>image</em> - <em>image window</em>). This is useful for
+comparing two very similar images.</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    bumpmap
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>
+The result of <em>image window</em> shaded by <em>window</em>.</td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    replace
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>
+The resulting image is <em>image window</em> replaced with
+<em>image</em>.
+Here the matte information is ignored.</td></tr></table>
+<p>
+The image compositor requires a matte, or alpha channel in the image for
+some operations. This extra channel usually defines a mask which represents
+a sort of a cookie-cutter for the image. This is the case when matte is
+255 (full coverage) for pixels inside the shape, zero outside, and between
+zero and 255 on the boundary. If image does not have a matte channel, it
+is initialized with 0 for any pixel matching in color to pixel location
+(0,0), otherwise 255. See <a href="#disp-matt">Matte Editing</a> for a method
+of defining a matte channel.
+<p>
+If you choose <strong>blend</strong>, the composite operator becomes <strong>over</strong>.
+The image matte channel percent transparency is initialized to factor.
+The image window is initialized to (100-factor). Where factor is the value
+you specify in the Dialog widget.
+<p>
+<strong>Displace</strong> shifts the image pixels as defined by a displacement map.
+With this option, <em>image</em> is used as a displacement map. Black, within
+the displacement map, is a maximum positive displacement. White is a maximum
+negative displacement and middle gray is neutral. The displacement is scaled
+to determine the pixel shift. By default, the displacement applies in both
+the horizontal and vertical directions. However, if you specify
+<em>mask</em>,
+<em>image</em>
+is the horizontal X displacement and
+<em>mask</em> the vertical Y displacement.
+<p>
+Note that matte information for image window is not retained for colormapped
+X server visuals (e.g.
+<em>StaticColor, StaticColor, GrayScale, PseudoColor</em>).
+Correct compositing behavior may require a <em>TrueColor</em> or
+<em>DirectColor</em>
+visual or a <em>Standard Colormap</em>.
+<p>
+Choosing a composite operator is optional. The default operator is replace.
+However, you must choose a location to composite your image and press button
+1. Press and hold the button before releasing and an outline of the image
+will appear to help you identify your location.
+<p>
+The actual colors of the composite image is saved. However, the color that
+appears in image window may be different. For example, on a monochrome
+screen Image window will appear black or white even though your composited
+image may have many colors. If the image is saved to a file it is written
+with the correct colors. To assure the correct colors are saved in the
+final image, any PseudoClass image is promoted to <em>DirectClass</em> (see
+<a href="miff.html">miff</a>).
+To force a <em>PseudoClass</em> image to remain <em>PseudoClass</em>,
+use <strong>-colors</strong>.
+</td></tr></table>
+     <p>
+<i><a href="#top">Back to Contents</a></i> 
+&nbsp;</p>
+<table BORDER=0 WIDTH="100%"> 
+<tr> 
+<td ALIGN=LEFT bgcolor="#FFFFFF"><img 
+SRC="images/right_triangle.png"  ALT=">" BORDER=0 
+height=14 width=15><b><font face="Helvetica, Arial"><font 
+color="#00B04F"><font size="+1">
+<a NAME="disp-cole"></a>Color Editing
+</font></font></font></b></td></tr></table>
+<table width="94%" border="0" cellspacing="0" cellpadding="8">
+<tr><td width="3%"><br></td><td>
+<p>
+Changing the the color of a set of pixels is performed interactively. There
+is no command line argument to edit a pixel. To begin, choose <strong>Color</strong>
+from the <strong>Image Edit</strong> submenu of the <a href="#disp-comm">Command widget</a>.
+Alternatively, <a href="#disp-keyb">press</a> c in the image window.
+<p>
+A small window appears showing the location of the cursor in the image
+window. You are now in color edit mode. To exit immediately, press <strong>Dismiss</strong>.
+In color edit mode, the
+<strong>Command widget</strong> has these options:
+<ul>
+<li>
+<strong>Method</strong>
+<ul>
+<li>
+point
+<li>
+replace
+<li>
+floodfill
+<li>
+reset
+</ul>
+<li>
+<strong>Pixel Color</strong>
+<ul>
+<li>
+black
+<li>
+blue
+<li>
+cyan
+<li>
+green
+<li>
+gray
+<li>
+red
+<li>
+magenta
+<li>
+yellow
+<li>
+white
+<li>
+Browser...
+</ul>
+<li>
+<strong>Border Color</strong>
+<ul>
+<li>
+black
+<li>
+blue
+<li>
+cyan
+<li>
+green
+<li>
+gray
+<li>
+red
+<li>
+magenta
+<li>
+yellow
+<li>
+white
+<li>
+Browser...
+</ul>
+<li>
+<strong>Fuzz</strong>
+<ul>
+<li>
+0
+<li>
+2
+<li>
+4
+<li>
+8
+<li>
+16
+<li>Dialog...
+</ul>
+<li>
+<strong>Undo</strong>
+<li>
+<strong>Help</strong>
+<li>
+<strong>Dismiss</strong>
+</ul>
+<p>
+Choose a color editing method from the <strong>Method</strong> sub-menu of
+the <a href="#disp-comm">Command
+widget</a>. The <strong>point method</strong> recolors any pixel selected with the
+pointer unless the button is released. The <strong>replace method</strong> recolors
+any pixel that matches the color of the pixel you select with a button
+press. <strong>Floodfill</strong> recolors any pixel that matches the color of the
+pixel you select with a button press and is a neighbor.
+Whereas <strong>filltoborder</strong>
+changes the matte value of any neighbor pixel that is not the border color.
+Finally <strong>reset</strong> changes the entire image to the designated color.
+<p>
+Next, choose a pixel color from the <strong>Pixel Color</strong> sub-menu. Additional
+pixel colors can be specified with the color browser. You can change the
+menu colors by setting the <a href="#disp-xres">X resources</a> pen1 through
+pen9.
+<p>
+Now press button 1 to select a pixel within the Image window to change
+its color. Additional pixels may be recolored as prescribed by the method
+you choose. additional pixels by increasing the Delta value.
+<p>
+If the <strong>Magnify widget</strong> is mapped, it can be helpful in positioning
+your pointer within the image (refer to button 2). Alternatively you can
+select a pixel to recolor from within the <strong>Magnify widget</strong>. Move the
+pointer to the <strong>Magnify widget</strong> and position the pixel with the cursor
+control keys. Finally, press a button to recolor the selected pixel (or
+pixels).
+<p>
+The actual color you request for the pixels is saved in the image. However,
+the color that appears in your Image window may be different. For example,
+on a monochrome screen the pixel will appear black or white even if you
+choose the color red as the pixel color. However, the image saved to a
+file with -write is written with red pixels. To assure the correct color
+text in the final image, any <em>PseudoClass</em> image is promoted
+to <em>DirectClass</em>
+To force a <em>PseudoClass</em> image to remain
+<em>PseudoClass</em>, use <strong>-colors</strong>.
+</td></tr></table>
+     <p>
+<i><a href="#top">Back to Contents</a></i> 
+&nbsp;</p>
+<table BORDER=0 WIDTH="100%"> 
+<tr> 
+<td ALIGN=LEFT bgcolor="#FFFFFF"><img 
+SRC="images/right_triangle.png"  ALT=">" BORDER=0 
+height=14 width=15><b><font face="Helvetica, Arial"><font 
+color="#00B04F"><font size="+1">
+<a NAME="disp-matt"></a>Matte Editing
+</font></font></font></b></td></tr></table>
+<table width="94%" border="0" cellspacing="0" cellpadding="8">
+<tr><td width="3%"><br></td><td>
+<p>
+Matte information within an image is useful for some operations such as
+image <a href="#disp-imcomp">compositing</a>. This extra channel usually defines
+a mask which represents a sort of a cookie-cutter for the image. This is
+the case when matte is 255 (full coverage) for pixels inside the shape,
+zero outside, and between zero and 255 on the boundary.
+<p>
+Setting the matte information in an image is done interactively. There
+is no command line argument to edit a pixel. To begin, and choose <strong>Matte</strong>
+of the <strong>Image Edit</strong> sub-menu from the <a href="#disp-comm">Command widget</a>.
+<p>
+Alternatively, <a href="#disp-keyb">press</a> m in the image window.
+<p>
+A small window appears showing the location of the cursor in the image
+window. You are now in matte edit mode. To exit immediately, press Dismiss.
+In matte edit mode, the Command widget has these options:
+<ul>
+<li>
+<strong>Method</strong>
+<ul>
+<li>
+point
+<li>
+replace
+<li>
+floodfill
+<li>
+reset
+</ul>
+<li>
+<strong>Border Color</strong>
+<ul>
+<li>
+black
+<li>
+blue
+<li>
+cyan
+<li>
+green
+<li>
+gray
+<li>
+red
+<li>
+magenta
+<li>
+yellow
+<li>
+white
+<li>
+Browser...
+</ul>
+<li>
+<strong>Fuzz</strong>
+<ul>
+<li>
+0
+<li>
+2
+<li>
+4
+<li>
+8
+<li>
+16
+<li>Dialog...
+</ul>
+<li>
+<strong>Matte</strong>
+<li>
+<strong>Undo</strong>
+<li>
+<strong>Help</strong>
+<li>
+<strong>Dismiss</strong>
+</ul>
+Choose a matte editing method from the <strong>Method</strong> sub-menu of the <a href="#disp-comm">Command
+widget</a>. The <strong>point method</strong> changes the matte value of the any
+pixel selected with the pointer until the button is released. The <strong>replace
+method</strong> changes the matte value of any pixel that matches the color
+of the pixel you select with a button press. <strong>Floodfill</strong> changes the
+matte value of any pixel that matches the color of the pixel you select
+with a button press and is a neighbor. Whereas
+<strong>filltoborder</strong> recolors
+any neighbor pixel that is not the border color. Finally <strong>reset</strong> changes
+the entire image to the designated matte value.
+<p>Choose <strong>Matte Value</strong> and a dialog appears requesting a matte value.
+Enter a value between <strong>0 and 255</strong>. This value is assigned as the matte
+value of the selected pixel or pixels.
+<p>Now, press any button to select a pixel within the Image window to change
+its matte value. You can change the matte value of additional pixels by
+increasing the Delta value. The Delta value is first added then subtracted
+from the red, green, and blue of the target color. Any pixels within the
+range also have their matte value updated.
+<p>If the <strong>Magnify widget</strong> is mapped, it can be helpful in positioning
+your pointer within the image (refer to button 2). Alternatively you can
+select a pixel to change the matte value from within the
+<strong>Magnify widget</strong>.
+Move the pointer to the <strong>Magnify widget</strong> and position the pixel with
+the cursor control keys. Finally, press a button to change the matte value
+of the selected pixel (or pixels).
+<p>Matte information is only valid in a <em>DirectClass image</em>. Therefore,
+any <em>PseudoClass</em> image is promoted to
+<em>DirectClass</em>. Note that
+matte information for <em>PseudoClass</em> is not retained for colormapped
+X server visuals (e.g. <em>StaticColor, StaticColor, GrayScale, PseudoColor</em>)
+unless you immediately save your image to a file (refer to Write). Correct
+matte editing behavior may require a <em>TrueColor</em> or <em>DirectColor</em>
+visual or a <em>Standard Colormap</em>.
+</td></tr></table>
+     <p>
+<i><a href="#top">Back to Contents</a></i> 
+&nbsp;</p>
+<table BORDER=0 WIDTH="100%"> 
+<tr> 
+<td ALIGN=LEFT bgcolor="#FFFFFF"><img 
+SRC="images/right_triangle.png"  ALT=">" BORDER=0 
+height=14 width=15><b><font face="Helvetica, Arial"><font 
+color="#00B04F"><font size="+1">
+<a NAME="disp-imdr"></a>Image Drawing
+</font></font></font></b></td></tr></table>
+<table width="94%" border="0" cellspacing="0" cellpadding="8">
+<tr><td width="3%"><br></td><td>
+<p>
+An image is drawn upon interactively. <strong>There is no command line argument
+to draw on an image</strong>. To begin, choose <strong>Draw</strong> of the Image <strong>Edit</strong>
+sub-menu from the <a href="#disp-comm">Command widget</a>.
+Alternatively, <a href="#disp-keyb">press</a> d in the image window.
+<p>
+The cursor changes to a crosshair to indicate you are in draw mode. To
+exit immediately, press Dismiss. In draw mode, the Command widget has these
+options:
+<ul>
+<li>
+<strong>Primitive</strong>
+<ul>
+<li>
+point
+<li>
+line
+<li>
+rectangle
+<li>
+fill rectangle
+<li>
+circle
+<li>
+fill circle
+<li>
+ellipse
+<li>
+fill ellipse
+<li>
+polygon
+<li>
+fill polygon
+</ul>
+<li>
+<strong>Color</strong>
+<ul>
+<li>
+black
+<li>
+blue
+<li>
+cyan
+<li>
+green
+<li>
+gray
+<li>
+red
+<li>
+magenta
+<li>
+yellow
+<li>
+white
+<li>
+transparent
+<li>
+Browser...
+</ul>
+<li>
+<strong>Stipple</strong>
+<ul>
+<li>
+Brick
+<li>
+Diagonal
+<li>
+Scales
+<li>
+Vertical
+<li>
+Wavy
+<li>
+Translucent
+<li>
+Opaque
+<li>
+Open...
+</ul>
+<li>
+<strong>Width</strong>
+<ul>
+<li>
+1
+<li>
+2
+<li>
+4
+<li>
+8
+<li>
+16
+<li>Dialog...
+</ul>
+<li>
+<strong>Undo</strong>
+<li>
+<strong>Help</strong>
+<li>
+<strong>Dismiss</strong>
+</ul>
+Choose a drawing primitive from the <strong>Primitive</strong> sub-menu.
+<p>
+Next, choose a color from the <strong>Color</strong> sub-menu. Additional colors
+can be specified with the color browser. You can change the menu colors
+by setting the <a href="#disp-xres">X resources</a> pen1 through pen9. The transparent
+color updates the image matte channel and is useful for image compositing.
+<p>
+If you choose the color browser and press <strong>Grab</strong>, you can select the
+primitive color by moving the pointer to the desired color on the screen
+and press any button. The transparent color updates the image matte channel
+and is useful for image compositing.
+<p>
+Choose a stipple, if appropriate, from the <strong>Stipple</strong> sub-menu. Additional
+stipples can be specified with the file browser. Stipples obtained from
+the file browser must be on disk in the X11 bitmap format.
+<p>
+Choose a line width, if appropriate, from the <strong>Width</strong> sub-menu. To
+choose a specific width select the <strong>Dialog</strong> widget.
+<p>
+Choose a point in the image window and press button 1 and hold. Next, move
+the pointer to another location in the image. As you move, a line connects
+the initial location and the pointer. When you release the button, the
+image is updated with the primitive you just drew. For polygons, the image
+is updated when you press and release the button without moving the pointer.
+<p>
+To cancel image drawing, move the pointer back to the starting point of
+the line and release the button.
+</td></tr></table>
+     <p>
+<i><a href="#top">Back to Contents</a></i> 
+&nbsp;</p>
+<table BORDER=0 WIDTH="100%"> 
+<tr> 
+<td ALIGN=LEFT bgcolor="#FFFFFF"><img 
+SRC="images/right_triangle.png"  ALT=">" BORDER=0 
+height=14 width=15><b><font face="Helvetica, Arial"><font 
+color="#00B04F"><font size="+1">
+<a NAME="disp-regi"></a>Region of Interest
+</font></font></font></b></td></tr></table>
+<table width="94%" border="0" cellspacing="0" cellpadding="8">
+<tr><td width="3%"><br></td><td>
+<p>
+To begin, press choose Region of Interest of the Pixel Transform sub-menu
+from the <a href="#disp-comm">Command widget</a>.
+Alternatively, <a href="#disp-keyb">press</a> R in the image window.
+<p>
+A small window appears showing the location of the cursor in the image
+window. You are now in region of interest mode. In region of interest mode,
+the Command widget has these options:
+<ul>
+<li>
+<strong>Help</strong>
+<li>
+<strong>Dismiss</strong>
+</ul>
+<p>
+To define a region of interest, press button 1 and drag. The region of
+interest is defined by a highlighted rectangle that expands or contracts
+as it follows the pointer. Once you are satisfied with the region of interest,
+release the button. You are now in apply mode. In apply mode the Command
+widget has these options:
+<ul>
+<li>
+<strong>File</strong>
+<ul>
+<li>
+Save...
+<li>
+Print...
+</ul>
+<li>
+<strong>Edit</strong>
+<ul>
+<li>
+Undo
+<li>
+Redo
+</ul>
+<li>
+<strong>Transform</strong>
+<ul>
+<li>
+Flip
+<li>
+Flop
+<li>
+Rotate Right
+<li>
+Rotate Left
+</ul>
+<li>
+<strong>Enhance</strong>
+<ul>
+<li>
+Hue...
+<li>
+Saturation...
+<li>
+Brightness...
+<li>
+Gamma...
+<li>
+Spiff
+<li>
+Dull
+<li>
+Equalize
+<li>
+Normalize
+<li>
+Negate
+<li>
+GRAYscale
+<li>
+Quantize...
+</ul>
+<li>
+<strong>Effects</strong>
+<ul>
+<li>
+Despeckle
+<li>
+Emboss
+<li>
+Reduce Noise
+<li>
+Add Noise
+<li>
+Sharpen...
+<li>
+Blur...
+<li>
+Threshold...
+<li>
+Edge Detect...
+<li>
+Spread...
+<li>
+Shade...
+<li>
+Raise...
+<li>
+Segment...
+</ul>
+</ul>
+<ul>
+<li>
+<strong>F/X</strong>
+<ul>
+<li>
+Solarize...
+<li>
+Swirl...
+<li>
+Implode...
+<li>
+Wave...
+<li>
+Oil Paint
+<li>
+Charcoal Draw...
+</ul>
+</ul>
+<ul>
+<li>
+<strong>Miscellany</strong>
+<ul>
+<li>
+Image Info
+<li>
+Zoom Image
+<li>
+Show Preview...
+<li>
+Show Histogram
+<li>
+Show Matte
+</ul>
+<li>
+<strong>Help</strong>
+<li>
+<strong>Dismiss</strong>
+</ul>
+<p>
+You can make adjustments to the region of interest by moving the pointer
+to one of the rectangle corners, pressing a button, and dragging. Finally,
+choose an image processing technique from the Command widget. You can choose
+more than one image processing technique to apply to an area. Alternatively,
+you can move the region of interest before applying another image processing
+technique. To exit, press Dismiss.
+</td></tr></table>
+     <p>
+<i><a href="#top">Back to Contents</a></i> 
+&nbsp;</p>
+<table BORDER=0 WIDTH="100%"> 
+<tr> 
+<td ALIGN=LEFT bgcolor="#FFFFFF"><img 
+SRC="images/right_triangle.png"  ALT=">" BORDER=0 
+height=14 width=15><b><font face="Helvetica, Arial"><font 
+color="#00B04F"><font size="+1">
+<a NAME="disp-impa"></a>Image Panning
+</font></font></font></b></td></tr></table>
+<table width="94%" border="0" cellspacing="0" cellpadding="8">
+<tr><td width="3%"><br></td><td>
+<p>
+When an image exceeds the width or height of the X server screen, display
+maps a small panning icon. The rectangle within the panning icon shows
+the area that is currently displayed in the the image window. To pan about
+the image, press any button and drag the pointer within the panning icon.
+The pan rectangle moves with the pointer and the image window is updated
+to reflect the location of the rectangle within the panning icon. When
+you have selected the area of the image you wish to view, release the button.
+<p>
+Use the arrow keys to pan the image one pixel up, down, left, or right
+within the image window.
+<p>
+The panning icon is withdrawn if the image becomes smaller than the dimensions
+of the X server screen.
+</td></tr></table>
+     <p>
+<i><a href="#top">Back to Contents</a></i> 
+&nbsp;</p>
+<table BORDER=0 WIDTH="100%"> 
+<tr> 
+<td ALIGN=LEFT bgcolor="#FFFFFF"><img 
+SRC="images/right_triangle.png"  ALT=">" BORDER=0 
+height=14 width=15><b><font face="Helvetica, Arial"><font 
+color="#00B04F"><font size="+1">
+<a NAME="disp-pref"></a>User Preferences
+</font></font></font></b></td></tr></table>
+<table width="94%" border="0" cellspacing="0" cellpadding="8">
+<tr><td width="3%"><br></td><td>
+<p>
+Preferences affect the default behavior of <strong>display(1)</strong>. The preferences
+are either true or false and are stored in your home directory
+as <tt>.displayrc</tt>:
+<dl>
+<dt>
+<strong>display image centered on a backdrop</strong></dt>
+<dd>
+This backdrop covers the entire workstation screen and is useful for hiding
+other X window activity while viewing the image. The color of the backdrop
+is specified as the background color. Refer to <a href="#disp-xres">X Resources</a>
+for details.</dd>
+<dt>
+<strong>confirm on program exit</strong></dt>
+<dd>
+Ask for a confirmation before exiting the <strong>display(1)</strong> program.</dd>
+<dt>
+<strong>correct image for display gamma</strong></dt>
+<dd>
+If the image has a known gamma, the gamma is corrected to match that of
+the X server (see the <a href="#disp-xres">X Resource</a><strong> displayGamma</strong>).</dd>
+<dt>
+<strong>display warning messages</strong></dt>
+<dd>
+Display any warning messages.</dd>
+<dt>
+<strong>apply Floyd/Steinberg error diffusion to image</strong></dt>
+<dd>
+The basic strategy of dithering is to trade intensity resolution for spatial
+resolution by averaging the intensities of several neighboring pixels.
+Images which suffer from severe contouring when reducing colors can be
+improved with this preference.</dd>
+<dt>
+<strong>use a shared colormap for colormapped X visuals</strong></dt>
+<dd>
+This option only applies when the default X server visual is
+<em>PseudoColor</em>
+or <em>GRAYScale</em>. Refer to <strong>-visual</strong> for more details. By default,
+a shared colormap is allocated. The image shares colors with other X clients.
+Some image colors could be approximated, therefore your image may look
+very different than intended. Otherwise the image colors appear exactly
+as they are defined. However, other clients may go technicolor when the
+image colormap is installed.</dd>
+<dt>
+<strong>display images as an X server pixmap</strong></dt>
+<dd>
+Images are maintained as a XImage by default. Set this resource to True
+to utilize a server Pixmap instead. This option is useful if your image
+exceeds the dimensions of your server screen and you intend to pan the
+image. Panning is much faster with Pixmaps than with a XImage. Pixmaps
+are considered a precious resource, use them with discretion.</dd>
+</dl>
+</td></tr></table>
+     <p>
+<i><a href="#top">Back to Contents</a></i> 
+&nbsp;</p>

@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.15.2: http://docutils.sourceforge.net/" />
+<title>Magick::PixelPacket Structure</title>
+<link rel="stylesheet" href="../docutils-articles.css" type="text/css" />
+</head>
+<body>
+
+<div class="banner">
+<img src="../images/gm-107x76.png" alt="GraphicMagick logo" width="107" height="76" />
+<span class="title">GraphicsMagick</span>
+<form action="http://www.google.com/search">
+	<input type="hidden" name="domains" value="www.graphicsmagick.org" />
+	<input type="hidden" name="sitesearch" value="www.graphicsmagick.org" />
+    <span class="nowrap"><input type="text" name="q" size="25" maxlength="255" />&nbsp;<input type="submit" name="sa" value="Search" /></span>
+</form>
+</div>
+
+<div class="navmenu">
+<ul>
+<li><a href="../index.html">Home</a></li>
+<li><a href="../project.html">Project</a></li>
+<li><a href="../download.html">Download</a></li>
+<li><a href="../README.html">Install</a></li>
+<li><a href="../Hg.html">Source</a></li>
+<li><a href="../NEWS.html">News</a> </li>
+<li><a href="../utilities.html">Utilities</a></li>
+<li><a href="../programming.html">Programming</a></li>
+<li><a href="../reference.html">Reference</a></li>
+</ul>
+</div>
+<div class="document" id="magick-pixelpacket-structure">
+<h1 class="title">Magick::PixelPacket Structure</h1>
+
+<!-- -*- mode: rst -*- -->
+<!-- This text is in reStucturedText format, so it may look a bit odd. -->
+<!-- See http://docutils.sourceforge.net/rst.html for details. -->
+<p>The PixelPacket structure is used to represent DirectClass pixels in
+GraphicsMagick. GraphicsMagick may be compiled to support 32, 64, or
+even 128 bit pixels. The size of PixelPacket is controlled by the
+value of the QuantumDepth define. The default build depth is 32 bit
+pixels, which provides minumum (&quot;web standard&quot;) accuracy, least memory
+consumption, and best performance.  If deeper images need to be
+supported or more mathematical accuracy is desired, then
+GraphicsMagick may be compiled with QuantumDepth=16 or
+QuantumDepth=32.</p>
+<p>The following table shows the relationship between QuantumDepth, the
+type of Quantum, and the overall PixelPacket size:</p>
+<table border="1" class="docutils">
+<caption>Effect Of QuantumDepth Values</caption>
+<colgroup>
+<col width="28%" />
+<col width="35%" />
+<col width="37%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">QuantumDepth</th>
+<th class="head">Quantum Type</th>
+<th class="head">PixelPacket Size</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>8</td>
+<td>unsigned char</td>
+<td>32 bits</td>
+</tr>
+<tr><td>16</td>
+<td>unsigned short</td>
+<td>64 bits</td>
+</tr>
+<tr><td>32</td>
+<td>unsigned int</td>
+<td>128 bits</td>
+</tr>
+</tbody>
+</table>
+<p>The members of the PixelPacket structure, and their interpretation,
+are shown in the following table:</p>
+<table border="1" class="docutils">
+<caption>PixelPacket Structure Members</caption>
+<colgroup>
+<col width="10%" />
+<col width="10%" />
+<col width="19%" />
+<col width="31%" />
+<col width="28%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Member</th>
+<th class="head">Type</th>
+<th class="head" colspan="3">Interpretation</th>
+</tr>
+<tr><th class="head"></th>
+<th class="head">&nbsp;</th>
+<th class="head">RGBColorspace</th>
+<th class="head">RGBColorspace + matte</th>
+<th class="head">CMYKColorspace</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>red</td>
+<td>Quantum</td>
+<td>Red</td>
+<td>Red</td>
+<td>Cyan</td>
+</tr>
+<tr><td>green</td>
+<td>Quantum</td>
+<td>Green</td>
+<td>Green</td>
+<td>Magenta</td>
+</tr>
+<tr><td>blue</td>
+<td>Quantum</td>
+<td>Blue</td>
+<td>Blue</td>
+<td>Yellow</td>
+</tr>
+<tr><td>opacity</td>
+<td>Quantum</td>
+<td>Ignored</td>
+<td>Opacity</td>
+<td>Black</td>
+</tr>
+</tbody>
+</table>
+<p>Note that opacity is stored inverted from most other software
+(i.e. maximum value is completely transparent and minum value is
+totally opaque).</p>
+<p>Note that for CMYKColorspace + matte (CMYKA), the opacity is stored in
+the assocated IndexPacket.</p>
+<p>Copyright © Bob Friesenhahn 1999 - 2020</p>
+</div>
+</body>
+</html>

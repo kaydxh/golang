@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.15.2: http://docutils.sourceforge.net/" />
+<title>montage</title>
+<link rel="stylesheet" href="../docutils-api.css" type="text/css" />
+</head>
+<body>
+
+<div class="banner">
+<img src="../images/gm-107x76.png" alt="GraphicMagick logo" width="107" height="76" />
+<span class="title">GraphicsMagick</span>
+<form action="http://www.google.com/search">
+	<input type="hidden" name="domains" value="www.graphicsmagick.org" />
+	<input type="hidden" name="sitesearch" value="www.graphicsmagick.org" />
+    <span class="nowrap"><input type="text" name="q" size="25" maxlength="255" />&nbsp;<input type="submit" name="sa" value="Search" /></span>
+</form>
+</div>
+
+<div class="navmenu">
+<ul>
+<li><a href="../index.html">Home</a></li>
+<li><a href="../project.html">Project</a></li>
+<li><a href="../download.html">Download</a></li>
+<li><a href="../README.html">Install</a></li>
+<li><a href="../Hg.html">Source</a></li>
+<li><a href="../NEWS.html">News</a> </li>
+<li><a href="../utilities.html">Utilities</a></li>
+<li><a href="../programming.html">Programming</a></li>
+<li><a href="../reference.html">Reference</a></li>
+</ul>
+</div>
+<div class="document" id="montage">
+<h1 class="title">montage</h1>
+<h2 class="subtitle" id="create-a-thumbnail-image-mosaic">Create a thumbnail image mosaic</h2>
+
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#clonemontageinfo" id="id7">CloneMontageInfo</a></li>
+<li><a class="reference internal" href="#destroymontageinfo" id="id8">DestroyMontageInfo</a></li>
+<li><a class="reference internal" href="#getmontageinfo" id="id9">GetMontageInfo</a></li>
+<li><a class="reference internal" href="#montageimages" id="id10">MontageImages</a></li>
+</ul>
+</div>
+<div class="section" id="clonemontageinfo">
+<h1><a class="toc-backref" href="#id7">CloneMontageInfo</a></h1>
+<div class="section" id="synopsis">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#montageinfo">MontageInfo</a> *CloneMontageInfo( const <a class="reference external" href="../api/types.html#imageinfo">ImageInfo</a> *image_info,
+                               const <a class="reference external" href="../api/types.html#montageinfo">MontageInfo</a> *montage_info );
+</pre>
+</div>
+<div class="section" id="description">
+<h2>Description</h2>
+<p>CloneMontageInfo() makes a copy of the given montage info structure.  If
+NULL is specified, a new image info structure is created initialized to
+default values.</p>
+<p>The format of the CloneMontageInfo method is:</p>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#montageinfo">MontageInfo</a> *CloneMontageInfo( const <a class="reference external" href="../api/types.html#imageinfo">ImageInfo</a> *image_info,
+                               const <a class="reference external" href="../api/types.html#montageinfo">MontageInfo</a> *montage_info );
+</pre>
+<dl class="docutils">
+<dt>image_info:</dt>
+<dd>The image info.</dd>
+<dt>montage_info:</dt>
+<dd>The montage info.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="destroymontageinfo">
+<h1><a class="toc-backref" href="#id8">DestroyMontageInfo</a></h1>
+<div class="section" id="id1">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+void DestroyMontageInfo( <a class="reference external" href="../api/types.html#montageinfo">MontageInfo</a> *montage_info );
+</pre>
+</div>
+<div class="section" id="id2">
+<h2>Description</h2>
+<p>DestroyMontageInfo() deallocates memory associated with montage_info.</p>
+<p>The format of the DestroyMontageInfo method is:</p>
+<pre class="literal-block">
+void DestroyMontageInfo( <a class="reference external" href="../api/types.html#montageinfo">MontageInfo</a> *montage_info );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>montage_info:</dt>
+<dd>Specifies a pointer to an MontageInfo structure.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="getmontageinfo">
+<h1><a class="toc-backref" href="#id9">GetMontageInfo</a></h1>
+<div class="section" id="id3">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+void GetMontageInfo( const <a class="reference external" href="../api/types.html#imageinfo">ImageInfo</a> *image_info, <a class="reference external" href="../api/types.html#montageinfo">MontageInfo</a> *montage_info );
+</pre>
+</div>
+<div class="section" id="id4">
+<h2>Description</h2>
+<p>GetMontageInfo() initializes montage_info to default values.</p>
+<p>The format of the GetMontageInfo method is:</p>
+<pre class="literal-block">
+void GetMontageInfo( const <a class="reference external" href="../api/types.html#imageinfo">ImageInfo</a> *image_info, <a class="reference external" href="../api/types.html#montageinfo">MontageInfo</a> *montage_info );
+</pre>
+<dl class="docutils">
+<dt>image_info:</dt>
+<dd>a structure of type ImageInfo.</dd>
+<dt>montage_info:</dt>
+<dd>Specifies a pointer to a MontageInfo structure.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="montageimages">
+<h1><a class="toc-backref" href="#id10">MontageImages</a></h1>
+<div class="section" id="id5">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#image">Image</a> *MontageImages( const <a class="reference external" href="../api/types.html#image">Image</a> *images, const <a class="reference external" href="../api/types.html#montageinfo">MontageInfo</a> *montage_info,
+                      <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+</div>
+<div class="section" id="id6">
+<h2>Description</h2>
+<p>Montageimages() is a layout manager that lets you tile one or more
+thumbnails across an image canvas.</p>
+<p>The format of the MontageImages method is:</p>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#image">Image</a> *MontageImages( const <a class="reference external" href="../api/types.html#image">Image</a> *images, const <a class="reference external" href="../api/types.html#montageinfo">MontageInfo</a> *montage_info,
+                      <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+<dl class="docutils">
+<dt>images:</dt>
+<dd>Specifies a pointer to an array of Image structures.</dd>
+<dt>montage_info:</dt>
+<dd>Specifies a pointer to a MontageInfo structure.</dd>
+<dt>exception:</dt>
+<dd>Return any errors or warnings in this structure.</dd>
+</dl>
+</div>
+</div>
+</div>
+</body>
+</html>

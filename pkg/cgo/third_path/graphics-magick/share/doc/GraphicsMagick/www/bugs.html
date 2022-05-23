@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.15.2: http://docutils.sourceforge.net/" />
+<title>GraphicsMagick Bugs</title>
+<link rel="stylesheet" href="docutils-articles.css" type="text/css" />
+</head>
+<body>
+
+<div class="banner">
+<img src="images/gm-107x76.png" alt="GraphicMagick logo" width="107" height="76" />
+<span class="title">GraphicsMagick</span>
+<form action="http://www.google.com/search">
+	<input type="hidden" name="domains" value="www.graphicsmagick.org" />
+	<input type="hidden" name="sitesearch" value="www.graphicsmagick.org" />
+    <span class="nowrap"><input type="text" name="q" size="25" maxlength="255" />&nbsp;<input type="submit" name="sa" value="Search" /></span>
+</form>
+</div>
+
+<div class="navmenu">
+<ul>
+<li><a href="index.html">Home</a></li>
+<li><a href="project.html">Project</a></li>
+<li><a href="download.html">Download</a></li>
+<li><a href="README.html">Install</a></li>
+<li><a href="Hg.html">Source</a></li>
+<li><a href="NEWS.html">News</a> </li>
+<li><a href="utilities.html">Utilities</a></li>
+<li><a href="programming.html">Programming</a></li>
+<li><a href="reference.html">Reference</a></li>
+</ul>
+</div>
+<div class="document" id="graphicsmagick-bugs">
+<h1 class="title">GraphicsMagick Bugs</h1>
+
+<!-- -*- mode: rst -*- -->
+<!-- This text is in reStucturedText format, so it may look a bit odd. -->
+<!-- See http://docutils.sourceforge.net/rst.html for details. -->
+<p>The following bugs are known to exist in GraphicsMagick. Please report
+any additional bugs to the GraphicsMagick <a class="reference external" href="https://sourceforge.net/p/graphicsmagick/_list/tickets">bug tracker</a> at SourceForge.</p>
+<blockquote>
+<ul class="simple">
+<li>BMP reader is not working for some obscure low-color packed files.</li>
+<li>DPX reader/writer does not properly handle subformats where row
+samples spill over the storage word boundary. This means that
+single-channel/grayscale 10-bit DPX files will only work for widths
+evenly divisible by three. (SF 1533184)</li>
+<li>The PSD reader is disabled by default because it does not work well
+enough and several man-years worth of dedicated volunteer time is
+required to make it work properly.</li>
+<li>Scitex reader is not working for some files.</li>
+<li>SVG writer works only if you are particularly luckly and so it is
+not included in the build by default..</li>
+<li>SVG reader mishandles basic units and many other syntax elements (SF
+1231547, 1298606).</li>
+</ul>
+</blockquote>
+</div>
+</body>
+</html>

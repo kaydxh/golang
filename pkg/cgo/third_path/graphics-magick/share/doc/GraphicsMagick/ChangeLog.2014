@@ -1,0 +1,895 @@
+2014-12-31  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* coders/wpg.c (UnpackWPGRaster): Fix some compilation and
+	valgrind warnings.
+
+	* NEWS.txt: Updated news again.
+
+2014-12-31 Fojtik Jaroslav  <JaFojtik@seznam.cz>
+
+	* coders/wpg.c Fixed 2bpp issue.
+
+2014-12-31  Glenn Randers-Pehrson  <glennrp@simple.dallas.tx.us>
+
+	* coders/png.c: Validate MHDR chunk length.
+
+	* coders/png.c: Use ReadBlob() once instead of ReadBlobByte()
+	in a loop.
+
+	* coders/png.c: Avoid reading beyond the end of a tEXt keyword.
+
+2014-12-30  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* coders/xpm.c (ReadXPMImage): Detect short XPM rows and report
+	error to user rather than overrunning a buffer.
+
+	* coders/pcx.c (ReadPCXImage): Validate that header bytes per line
+	is sufficient to contain the indicated data.
+
+	* coders/pdb.c (ReadPDBImage): Fix indexes array overrun for 2 and
+	4-bit PDB image files.
+
+	* coders/xpm.c (ReadXPMImage): Avoid strncpy() of overlapping
+	memory.  Fix memory leaks in error paths.
+
+	* coders/viff.c (ReadVIFFImage): Validate index before using it to
+	access colormap.
+
+	* coders/{cineon.c, dpx.c} (StringToAttribute): Can't use
+	strlcpy() to copy string which might not be NULL-terminated since
+	strlcpy() continues searching for end of string after size bytes
+	have been copied.
+
+	* coders/meta.c (convertHTMLcodes): Avoid strcpy() of overlapping
+	memory.
+
+2014-12-29  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* www/process.rst: Update description of development process to be
+	more aligned with the process actually used.
+
+	* coders/wpg.c (ReadWPGImage): Avoid use of NULL pointer returned
+	from FlipImage(), FlopImage(), and RotateImage().
+
+	* coders/rle.c (ReadRLEImage): URT RLE reader is now more robust
+	with errant files.
+
+2014-12-28  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* libtool: Update bundled libtool to version 2.4.4.
+
+	* magick/constitute.c (WriteImage): Remove bogus use of
+	GetBlobStatus() as a catch-all for write errors.  Coders should be
+	detecting write errors all by themselves.
+
+2014-12-27  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* NEWS.txt: Updated with more improvements since previous release.
+
+	* coders/palm.c (WritePALMImage): Log header details.
+
+	* coders/pdb.c: PDB reader and writer need to be more robust when
+	calculating packets and buffer allocation.  Also log header
+	details.  Problem was reported by Hanno Böck.
+
+2014-12-26  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* NEWS.txt: Updated with more improvements since previous release.
+
+	* ttf: Update bundled Freetype to 2.5.4.
+
+	* png: Update bundled libpng to 1.6.16.
+
+2014-12-22  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* coders/tiff.c (ReadTIFFImage): The libtiff JBIG coder only
+	supports strip images, and fails when scanlines are requested.
+	Force use of stripped read method when the file uses JBIG
+	compression.  It is still not possible to write JBIG compressed
+	TIFF files since there is not yet a strip writer.  Problem
+	reported by Yuriy Kaminskiyon via the GM-bugs mailing list on
+	2014-12-22.
+
+2014-12-21  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* coders/tiff.c (QuantumTransferMode): Fix quantum transfer
+	handling for photometrics which might deliver one or three samples
+	per pixel.  These were assuming that three samples were always
+	provided.
+
+2014-12-21  Glenn Randers-Pehrson  <glennrp@simple.dallas.tx.us>
+
+	* coders/png.c: Impose a 10-million limit on dimensions
+	when reading a PNG file.
+
+2014-12-21  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* NEWS.txt: Updated with improvements since previous release.
+
+2014-12-20  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* magick/statistics.c (GetImageStatistics): Failed to compute
+	statistics for the Black channel of CMYK image files.  Problem
+	reported by Michael Below via Debian bug 773552:
+	"graphicsmagick-imagemagick-compat: convert to cmyk leaves k
+	channel empty".
+
+2014-12-14  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* magick/delegate.c (InvokeDelegate): Windows spawnvp() splits
+	arguments into more arguments.  Add escaping to avoid the
+	splitting.  Resolves SourceForge bug #276 "dcraw 9.19 included
+	with gm 1.3.20 doesn't support paths with spaces."
+
+	* magick/utility.c (TranslateTextEx): Fix regression added on
+	2014-12-13 (yesterday) which caused output file name passed to
+	delegate programs to be wrong.
+
+	* magick/annotate.c (RenderFreetype): Fix regression added in
+	1.3.19 which caused spurious drawing errors to be produced while
+	rendering with text when all of the text is off the left-hand side
+	of the image.
+
+2014-12-13  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* magick/command.c (CompareUsage): Options should be listed in
+	alphabetical order.
+
+	* magick/annotate.c (RenderFreetype): Immediately quit processing
+	and return an error if SyncImagePixels() reports a problem.
+
+	* coders/psd.c (ReadPSDImage): Return with an error right away if
+	SetImageEx() (to create solid-color background canvas) reports a
+	failure.
+
+	* magick/annotate.c (AnnotateImage): Document all of the
+	attributes which are supported.
+
+	* magick/utility.c (TranslateTextEx): Assure that attributes
+	requiring ImageInfo pointer are skipped.  AnnotateImage() does not
+	pass ImageInfo.  Also document all of the attributes which are
+	supported.
+
+	* doc/compare.imdoc: Compare documentation examples referred to
+	non-existing option -algorithm rather than the existing option
+	-highlight-style.  Fixes SourceForge bug #286 "docs are wrong
+	about `-algorithm` option of `gm compare`?".
+
+	* Magick++/lib/Magick++/Geometry.h (Magick): Re-implemented
+	Magick++ Geometry to use bit-fields for booleans and used a union
+	to reserve space for the future as well as to achieve the same
+	size as in the previous release.  Eliminated inline methods
+	because they make it impossible to change the class internal
+	design.  ABI was broken already when limitPixels() and fillArea()
+	methods were added on 2014-11-28.  Inline method instantiations in
+	already compiled applications will malfunction unless the
+	dependent applications are re-compiled.
+
+	* magick/image.c (SetImageEx): Add a new version of SetImage()
+	called SetImageEx() which reports exceptions to a provided
+	exception parameter rather than into the image.
+
+2014-12-01  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* magick/colormap.c (AllocateImageColormap): Refuse to allocate a
+	colormap larger than MaxColormapSize.
+
+	* coders/psd.c (ReadPSDImage): Avoid extremely long execution time
+	if the PSD colormap size is astonishingly large.  Problem was
+	reported by Hanno Böck.
+
+2014-11-30  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* coders/dcm.c: Verify that DCM data is available before
+	attempting to use it.  Avoids a crash due to improper DCM header.
+	Problem was reported by Hanno Böck.
+	(DCM_ReadNonNativeImages): Fix array over-run (off by one error)
+	while looking for end of multi-fragment frames.
+
+2014-11-29  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* coders/sun.c: Thoroughly validate Sun Rasterfile headers and
+	verify that there are no arithmetic overflows in buffer-size
+	calculations.  Problem was reported by Hanno Böck.
+
+2014-11-28  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* Magick++/lib/Magick++/Geometry.h (Magick::Geometry): Add and
+	document limitPixels() and fillArea() methods to support '@' and
+	'^' geometry qualifiers.  Fill area contributed by Long Ho and
+	limitPixels() by Bob Friesenhahn.
+
+	* www/Magick++/Image.rst: Document extent and resize methods.
+
+	* Magick++/lib/STL.cpp (extentImage): New function object to
+	invoke image extent method. Original implementation contributed by
+	Long Ho.  Subsequently modified by Bob Friesenhahn.
+	(resizeImage): New function object to invoke image resize
+	method. Contributed by Long Ho.
+
+	* Magick++/lib/Image.cpp (extent): New method to place image on
+	sized canvas of constant color using gravity.  Contributed by Long
+	Ho.
+	(resize): New method to resize image specifying geometry, filter,
+	and blur.  Original implementation contributed by Long Ho.
+	Subsequently modified by Bob Friesenhahn.
+
+2014-11-26  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* coders/avi.c: AVI support in GraphicsMagick is completely
+	unusable and it could never compete with dedicated software like
+	'ffmpeg'.  Removing AVI support until such time it can be
+	supported properly.
+
+	* coders/viff.c: Add protections against buffer overflow by
+	verifying that buffer size allocation calculations do not
+	overflow.  Also added header logging for read and write. Work
+	performed due to complaint by Hanno Böck.
+
+2014-11-24  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* magick/common.h (MAGICK_NO_SANITIZE_ADDRESS): Add
+	MAGICK_NO_SANITIZE_ADDRESS macro definition for disabling
+	clang/GCC address sanitizer on a function if the need arises.
+
+2014-11-24  Glenn Randers-Pehrson  <glennrp@simple.dallas.tx.us>
+
+	* coders/png.c (ReadPNGImage): Do not attempt to clean up
+	a "previous" NULL PNG image.
+
+2014-11-24  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* coders/xwd.c (ReadXWDImage): Add logging of XWD header values.
+	Fix memory leaks in error reporting paths.  Ping mode skips
+	allocating memory for data and colormap.  Added a few more header
+	validation checks (not complete).  XWD is put in
+	UnstableCoderClass until such time as header validation checks are
+	complete.
+
+2014-11-22  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* coders/pdb.c (WritePDBImage): Use MagickAllocateArray() when
+	allocating packets.
+
+	* coders/dpx.c (ReadDPXImage): Validate DPX header orientation and
+	number of elements.  Problem was reported by Hanno Böck.
+
+2014-11-20  Glenn Randers-Pehrson  <glennrp@simple.dallas.tx.us>
+
+	* coders/png.c (ReadJNGImage): Do not attempt to clean up
+	a "previous" NULL JNG image.
+
+2014-11-17  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* www/FAQ.rst: Add a FAQ entry regarding what 'identify' reports.
+	Resolves SF issue #280 "Better documentation for spurious gm
+	identify in Q8 compilation."
+
+2014-11-16  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* magick/enhance.c (ModulateImage): ModulateImage() should produce
+	a progress indication even if only the colormap is modified.
+
+2014-11-13  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* coders/psd.c (ReadPSDImage): Patch by Cédric Demière to fix
+	"Memory allocation failed" error when reading PSDs files which
+	have no layers.  Delivered via SF patch #41 "PSD : files without
+	layers".  Resolves SF bug #242 "Can not convert PSD to JPG or PNG
+	(gm convert: Memory allocation failed)".
+
+2014-11-12  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* coders/webp.c (WriteWEBPImage): WebP fix by Roman Hiestand to
+	make WebP lossless format truely lossless.
+
+	* tests/rwblob.tap (check_types): Added a test for WebP lossless.
+
+	* tests/rwfile.tap: Added a test for WebP lossless.
+
+	* tests/rwblob.c: Added support for -define.
+
+	* tests/rwfile.c: Added support for -define.
+
+2014-11-09  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* webp, VisualMagick/webp: Updated bundled WebP to 0.4.2 release.
+
+2014-11-01  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* Magick++/tests/attributes.cpp: Add a simple test for
+	Image::formatExpression().
+
+	* Magick++/lib/Image.cpp (formatExpression): Handle case where
+	TranslateText() returns NULL.  Problem was reported by Dirk
+	Lemstra..
+
+2014-10-30  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* Magick++/lib/Image.cpp (formatExpression): New method to format
+	a string based on a format similar to command-line -format.
+	Feature was requested by Dirk Lemstra.
+
+	* magick/blob.c (BlobReserveSize): Don't throw an exception if
+	posix_fallocate() fails since it seems that it is not supported
+	for all filesystem types, and is only intended for optimization.
+
+	* Magick++/lib/Image.cpp (resolutionUnits): Return resolution
+	units from Image if available, else return the value from
+	ImageInfo.  Issue was reported by Dirk Lemstra.
+
+2014-10-26  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* coders/pnm.c (ReadPNMImage): Validate PGM, PPM, and PAM header
+	MaxValue parameter.  Issue was reported by Hanno Böck.
+
+	* coders/pcx.c (ReadPCXImage): Fix for CVE-2014-8355, eliminate
+	memory leaks in error paths, and add PCX header logging.  Issue
+	was reported by Hanno Böck.
+
+2014-10-14  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* wand/wand_symbols.h (MagickSetImageGamma): Fix typo in
+	wand/wand_symbols.h.  Resolves SF bug #277.
+
+2014-10-04  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* coders/tiff.c (TIFFIgnoreTags): Avoid warning about unused
+	strtol() return value on Linux.
+
+	* magick/random-private.h ("C"): Move random inlined
+	implementation bits to random-private.h, which is not installed,
+	or used outside of the core C library.
+
+2014-09-26  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* magick/annotate.c (AnnotateImage): An empty text string should
+	not be treated as an error.  Resolves Debian bug 759956.
+
+2014-08-31  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* coders/tiff.c: Added a new define called tiff:ignore-tags that
+	can be used to ignore tags in 'corrupted' files with unknown and
+	invalid tags. Without this patch the file cannot be read and
+	raises an error. Patch by Dirk Lemstra via SF patches #40.
+
+	* magick/type.c (ReadTypeConfigureFile): Support reading type
+	configuration file from Windows resource. Patch by Dirk Lemstra
+	via SF patches #32.
+
+	* Magick++/lib/Magick++/STL.h: Fixed code analysis warning in
+	STL.h. Patch by Dirk Lemstra via SF patches #32.
+
+	* Magick++/lib/Magick++/Include.h: Autolink WebP in Visual
+	Studio. Patch by Dirk Lemstra via SF patches #32.
+
+2014-08-28  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* coders/psd.c (WritePSDImage): Fix small stack over-write if more
+	than 99 layers are written to PSD format.  Similar to
+	CVE-2014-1947 for ImageMagick.  Changed layer naming to use at
+	least 4 digits.  Issue was brought to our attention by Rex Dieter
+	and change is mostly based on his patch.
+
+2014-08-23  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* magick/enum_strings.c (StringToCompositeOperator): Support
+	composite operator names similar to the major brand, without
+	losing any compatibility with previous naming.
+
+2014-08-23  Glenn Randers-Pehrson  <glennrp@simple.dallas.tx.us>
+	* coders/png.c: Fixed handling of transparency when writing
+	indexed PNG. Reference: SourceForge Bug tracker [bugs:#267]
+	Transparency lost when converting from GIF to PNG.
+
+2014-08-17  Jaroslav Fojtik  <JaFojtik@seznam.cz>
+
+	* VisualMagick\configure\configure.cpp Remove webp when attempting
+	to compile with Visual Studio 6.
+
+2014-08-16  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* NEWS.txt: Update for 1.3.20 release.
+
+	* www/index.rst: Update for 1.3.20 release.
+
+	* version.sh: Update library versioning for next release.
+
+2014-08-12  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* png: Updated libpng to 1.6.12 release.
+
+	* zlib: Updated zlib to 1.2.8 release.
+
+2014-08-09  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* NEWS.txt: Updated NEWS file to document changes since previous
+	release.
+
+2014-08-09  Jaroslav Fojtik  <JaFojtik@seznam.cz>
+
+        * coders/webp.c webp cannot be compiled when HasWEBP is not set.
+
+2014-08-08  Glenn Randers-Pehrson  <glennrp@simple.dallas.tx.us>
+
+	* coders/png.c: Eliminated palette and depth optimization (see
+	https://sourceforge.net/p/graphicsmagick/feature-requests/35/).
+
+2014-08-06  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* dcraw/dcraw.c: Fix dcraw build for x64 target when only WIN64 is
+	defined (by also defining WIN32).
+
+	* VisualMagick/configure/configure.cpp (write_file): Fix problem
+	with x64 project naming which caused object file disambiguation
+	not to work for x64 target. Make line terminations consistent.
+
+2014-08-03  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* VisualMagick: VisualMagick fixes by Dirk Lemstra to improve
+	configure program so that it is possible to select QuantumDepth,
+	OpenMP, and 64-bit build via configure dialog boxes as well as
+	options on the command line.  Also automatically detects and deals
+	with similarly named files in subdirectories so that WebP support
+	can now build successfully.  Resolves SF patches 31, 33, 35, 37,
+	and 38.
+
+2014-07-27  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* magick/nt_base.c (NTResourceToBlob): Support loading mgk files
+	as Windows resource from library if MagickLibName is defined.
+	Patch contributed by Dirk Lemstra via SF patch #32.
+	(NTGhostscriptDLL): For Microsoft Windows, add support for a
+	MAGICK_GHOSTSCRIPT_PATH environment variable which specifies the
+	path to Ghostscript.  If this environment variable is defined,
+	then the Windows registry is not used to find Ghostscript.  Patch
+	contributed by Dirk Lemstra via SF patch #39.
+
+	* magick/log.c: Added SetLogMethod() to allow an
+	application/library to specify a function to be called for
+	logging.  Patch contributed by Dirk Lemstra.
+
+2014-07-20  Glenn Randers-Pehrson  <glennrp@simple.dallas.tx.us>
+
+	* coders/bmp.c: "opacity" read from a BMP3 is actually "alpha",
+	so store q->opacity=MaxRGB-opacity instead of q->opacity=opacity.
+	Reference: Bug tracker [bugs:#271] Blank result for BMP resize.
+
+2014-07-20  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* webp, VisualMagick/webp: Integrate webp 0.4.0 into windows
+	build.  May require manual renaming of output object files in
+	project files to build webp until VisualMagick configure is
+	improved!
+
+2014-07-19  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* magick/composite.c: fmin() and fmax() are defined by C'99 and
+	not available everywhere, so add and use MagickFmin() and
+	MagickFmax() to improve portability.
+
+2014-07-11  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* Magick++/lib/Magick++/Image.h (Magick): Fix complilation errors
+	caused by continued raw use of __attribute__.
+
+2014-06-30  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* magick/composite.c: Fixes by Brendan Lane for color channel
+	overflows in modified/new quantum operators.  Fixes test suite
+	results for Q32 build and makes LinearBurn and LinearDodge work
+	correctly at all.
+
+	* wand/pixel_wand.c (PixelSetMagenta): Fix documentation.
+	Resolves SourceForge bug #273 'Green Magenta' typo in docs.
+
+2014-06-28  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* magick/composite.c: Composition improvements and additions
+	contributed by Brendan Lane via SourceForge patch #34 "Most of the
+	missing Photoshop separable compositing operations"
+	(https://sourceforge.net/p/graphicsmagick/patches/34/).  These
+	composition operators were modified to include alpha in their
+	computations: Difference, Darken, Lighten, HardLight, and these
+	operators were added Overlay, Exclusion, ColorBurn, ColorDodge,
+	SoftLight, LinearBurn, LinearDodge, LinearLight, VividLight,
+	PinLight, HardMix.
+
+2014-06-22  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* magick/composite.c (ScreenCompositePixels): Implementation of
+	Screen composite contributed by Brendan Lane.  SourceForge patch
+	#30 "Missing Screen composite operation".
+
+	* wand/magick_compat.c: Re-worked Wand library implementation to
+	depend directly on GraphicsMagick library functionality rather
+	than using ImageMagick shim code from magick_compat.c and
+	magick_compat.h. The magick_compat.c source module becomes "dead
+	code", which remains only to support the existing ABI, and will be
+	deleted at the next major ABI break point.
+
+	* magick/utility.c (MagickFormatString): New private function to
+	format a string into a buffer with a specified size.  Same as
+	previously existing FormatString() except requires a length
+	argument.
+
+2014-06-15  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* wand/magick_compat.h: Use MAGICK_ATTRIBUTE definition from
+	magick/common.h.
+
+	* magick/common.h (MAGICK_ATTRIBUTE): Don't undefine __attribute__
+	since this may be used by system or compiler headers.  Define
+	private macro instead.  Resolves SourceForge bug #270 "Compile
+	error with g++ -std=c++11".
+
+2014-06-06  Glenn Randers-Pehrson  <glennrp@simple.dallas.tx.us>
+
+	* coders/png.c (ReadOnePNGImage): Free png_pixels and
+	quantum_scanline before error return.  Use "png_error()"
+	instead of "ThrowException2()" for errors occuring while
+	decoding a PNG so proper cleanup will happen.
+
+2014-06-03  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* coders/tiff.c (ReadTIFFImage): Make sure that libtiff warnings
+	are promoted to errors for critical tags.
+
+2014-06-02  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* coders/tiff.c (ReadTIFFImage): Be quite a lot more draconian
+	when retrieving the baseline standard TIFF tags we need in order
+	to avoid consuming uninitalized data later.  An error with these
+	tags will result in failure to read the image file.
+
+2014-05-21  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* magick/operator.c: Decided that ThresholdBlackNegateQuantumOp
+	and ThresholdWhiteNegateQuantumOp should set the result to white
+	or black respectively rather than being based on subtraction.
+
+2014-05-18  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* Makefile.am (AUTOMAKE_OPTIONS): Be ultra-pedantic with CPPFLAGS
+	and include paths in order to assure that only required
+	directories are supplied, and to avoid accidential collision with
+	system header files.
+
+2014-05-17  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* magick/operator.h ("C"): New quantum operators
+	ThresholdBlackNegateQuantumOp and ThresholdWhiteNegateQuantumOp.
+	These correspond to -operator "Threshold-Black-Negate" and
+	"Threshold-White-Negate".
+
+2014-05-11  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* magick/composite.c (MultiplyCompositePixels): Multiply
+	composition now uses SVG interpretation of how alpha should be
+	handled.  No longer does a simple multiply of alpha channel.
+	Behavior change.  Patch contributed by Sara Shafaei.
+
+	* coders/msl.c (ProcessMSLScript): Deal with case where
+	image_info->attributes is NULL.
+
+2014-04-29  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* magick/utility.c (TranslateTextEx): Support additional format
+	specifiers 'g', 'A', 'C', 'D', 'G', 'H', 'M', 'O', 'P', 'Q', 'T',
+	'U', 'W', 'X', and '@'.
+	(GetMagickGeometry): Support '>' and '<' qualifiers with '@'
+	qualifier to specify if image should be resized if larger or
+	lesser than given area specification.  Resolves SourceForge bug
+	#216 ">" wont take effect when use @ to specify the maximum area.
+
+	* magick/transform.c (GetImageMosaicDimensions): Move mosaic
+	dimensions code to a static function for possible future re-use.
+
+2014-04-23  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* magick/gradient.c (GradientImage): Update image is_grayscale and
+	is_monochrome flags based on gradient color properties.
+
+2014-04-20  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* magick/utility.c (GetMagickGeometry): Deal with resize geometry
+	missing width or height (e.g. '640x' or 'x480') by substituting
+	the missing value with one which preserves the image aspect ratio.
+	This has been documented to be supported since almost the dawn of
+	GraphicsMagick but was not actually supported until now.
+
+2014-04-19  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* doc/options.imdoc: Document WebP encoder options.
+
+	* coders/webp.c (WriteWEBPImage): Support all of the WebP encoder
+	options via -define arguments.  Most of this work is contributed
+	by Roman Hiestand.
+
+	* configure.ac: User-provided LIBS should be prepended to LIBS
+	that configure script produces so that user option takes
+	precedence.
+
+2014-04-12  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* PerlMagick/Magick.xs: Added support for HardLight composition
+	operator.
+
+	* www/perl.rst: Update PerlMagick documentation, including the
+	composition operators.
+
+	* coders/xcf.c (GIMPBlendModeToCompositeOperator): Use new
+	HardLight composition operator to support XCF GIMP_HARDLIGHT_MODE
+	blend mode.  Contributed by Sara Shafaei.
+
+	* coders/psd.c (CompositeOperatorToPSDBlendMode): Use new
+	HardLight composition operator to support PSD "hLit" blend mode.
+	Contributed by Sara Shafaei.
+
+	* wand/magick_wand.c (MagickOperatorImageChannel): New function to
+	apply an operator to an image channel.  Contributed by Sara
+	Shafaei.
+
+	* magick/composite.c (HardLightCompositePixels): New HardLight
+	composition operator.  Contributed by Sara Shafaei.
+
+2014-04-09  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* magick/command.c (BenchmarkImageCommand): Add a CSV title line
+	and quoting to benchmark -rawcsv output.
+
+2014-04-05  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* coders/webp.c: Add progress indication support to WebP writer.
+
+	* magick/command.c (VersionCommand): WebP support is included in
+	-version output.
+
+	* coders/webp.c: WebP coder identifies library version and header
+	ABI versions. Improve WebP error reporting.
+
+2014-04-02  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* coders/tiff.c (WriteTIFFImage): Allow specifying the TIFF image
+	software tag.  In the special case that the string length is zero
+	(e.g. -set software '') then the tag is skipped entirely.  This is
+	to support SourceForge feature request #37 "Option to prevent
+	addition of Exif Software tag" opened by Jean-Louis Grall.  Please
+	note that this tag is not an EXIF tag.
+
+	* magick/command.c: composite, convert, display, mogrify, and
+	import now support +set to remove an existing image attribute.
+
+2014-03-16  Glenn Randers-Pehrson  <glennrp@simple.dallas.tx.us>
+
+	* coders/png.c: Don't block threads when PNG_SETJMP_SUPPORTED is
+	not enabled.
+
+	* coders/png.c: Changed prefix of macros defined in coders/png.c
+	from PNG_ to GMPNG_.  PNG_ is reserved for macros defined by
+	libpng.
+
+2014-03-16  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* magick/blob.c: Don't use setvbuf() to set stdio block size if
+	filesystem block size is zero (e.g. MAGICK_IOBUF_SIZE=0)
+
+2014-03-12  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* tests/{rwblob.tap, rwfile.tap}: Added tests for WEBP.
+
+	* tests/{rwblob.c, rwfile.c}: Add lossy hint for WEBP.
+
+	* coders/webp.c (WriteWEBPImage): Fix inverted return status.
+	Added a tiny bit of logging.
+
+2014-03-09  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* ttf: Updated FreeType to release 2.5.3 of March 6, 2014.
+	Provides security fixes for CVE-2014-2240.
+
+	* jpeg: Update to libjpeg 9a of 19-Jan-2014.
+
+	* png: Update to Libpng 1.6.10 - March 6, 2014.
+
+2014-03-06  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* magick/nt_base.c (NTResourceToBlob): According to Microsoft
+	Report article 193678 (http://support.microsoft.com/kb/193678),
+	FreeResource() is not needed in WIN32 and performs no useful
+	function.  Remove use of it.  Also remove use of UnlockResource()
+	which is similarly unuseful for WIN32.
+
+	* configure.ac (MAGICK_LIBRARY_REVISION): Test for Windows
+	_aligned_malloc() is not reliable.  Use Windows CRT version to
+	decide if it is available.
+
+2014-03-05  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* magick/studio.h: Make sure that Windows _aligned_malloc() is not
+	used under MinGW unless the CRT version allows it.
+
+2014-02-26  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* magick/pixel_cache.c (InterpolateViewColor): Applied patch by
+	Troy Patteson plus fixes to ignore opacity channel if image matte
+	is false.  Replaces most of the code rewritten on 2014-02-16 and
+	which produced a faint darkened border.  The results look stellar
+	now.
+
+2014-02-24  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* magick/shear.c: Applied patch by Troy Patteson to improve
+	non-integral rotation by around 40% by minimizing added image
+	borders.  This may cause small differences in results for some
+	images.
+
+	* reference/filter/Rotate10.miff: Update rotate 10 degrees
+	reference image so that PerlMagick test passes.
+
+	* magick/shear.c: Applied patch by Troy Patteson to fix
+	SourceForge issue #260 "Rotation exhibits clipping/shearing errors
+	for short wide images at some angles".
+
+2014-02-22  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* doc/options.imdoc: Fix documentation to note that 'unspecified
+	alpha' is the GraphicsMagick default when writing TIFF rather than
+	'associated alpha'.  Much thanks to Mats Peterson for alerting us
+	of this error.
+
+2014-02-16  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* magick/pixel_cache.c (InterpolateViewColor): Added a hack so that
+	affine transformations and displace composite do not have
+	background colored fringing on the transferred image edges when
+	the background is completely transparent.  Fringing problem was
+	caused by one or more of the line ends being a transparent pixel
+	outside of the bounds of the original image content.  May not be
+	the final solution.
+
+2014-02-14  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* magick/semaphore.c (AcquireSemaphoreInfo): Document that this
+	function was deprecated.
+	(LiberateSemaphoreInfo): Document that this function was
+	deprecated.
+
+2014-02-11  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* coders/psd.c (RegisterPSDImage): Set PSD to UnstableCoderClass
+	since its implementation is currently rather marginal.  It may
+	even be that this coder deserves to be marked with the new
+	BrokenCoderClass.  We are still looking for a volunteer to iron
+	out the wrinkles in the PSD reader.
+
+	* magick/magick.h (CoderClass): Added BrokenCoderClass to mark
+	coders which often malfunction or are not very useful in their
+	current condition.  Sometimes there is still hope that problems
+	will be resolved and so the source file is not outright deleted.
+	This setting allows us to mark and use coders which might
+	malfunction by defining MAGICK_CODER_STABILITY=BROKEN in the
+	environment while not causing danger for normal use.
+
+2014-02-09  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* wand/magick_wand.c: Documentation improvements for
+	MagickSetInterlaceScheme() and MagickSetImageInterlaceScheme().
+	Resolves SourceForge bug #262 "setImageInterlaceScheme doesn't
+	make image progressive".
+
+2014-02-06  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* coders/{ps.c, ps2.c, ps3.c, pdf.c}: Only use resolution from
+	image or -density if units was properly specified.  Without units,
+	resolution is worthless.
+
+	* coders/ps3.c (WritePS3Image): Use image resolution similar to PDF
+	changes.
+
+	* coders/ps2.c (WritePS2Image): Use image resolution similar to PDF
+	changes.
+
+	* coders/ps.c (WritePSImage): Use image resolution similar to PDF
+	changes.
+
+	* coders/pdf.c (WritePDFImage): Use resolution from image if it
+	appears to be valid.  Resolves SourceForge issue #261 "PNG Pixel
+	Density Not Preserved Converting to PDF".
+
+	* magick/enum_strings.c (StringToResolutionType): New function to
+	convert ResolutionType to C string.
+	(ResolutionTypeToString): New function to convert from C string to
+	ResolutionType.
+
+2014-02-01  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* wand/magick_wand.c (MagickGetImageGeometry): New function to get
+	the image geometry string.  This function and the three others in
+	this change set are contributed by Sara Shafaei.
+	(MagickGetImageMatte): New function to read the image matte
+	(opacity) channel enable flag.
+	(MagickSetImageGeometry): New function to set the image geometry
+	string.
+	(MagickSetImageMatte): New function to set the image matte
+	(opacity) channel enable flag.
+
+2014-01-31  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* wand/magick_wand.c (MagickDrawImage): Remove development debug
+	fprintf which causes each drawing primitive to be printed to
+	stderr.
+
+2014-01-21  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* coders/pnm.c (ReadPNMImage): Fix scaling of alpha in sub-ranged
+	pixels.  Addresses SourceForge issue #237 "Incorrect MAXVAL
+	scaling when reading PAM images", which was not fully fixed in by
+	the previous attempt.
+
+2014-01-19  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* magick/tsd.c: Implement TSD for "pure" OpenMP mode without
+	relying on POSIX or WIN32 TSD APIs.
+
+	* magick/semaphore.c: Implement OpenMP-based locking so that code
+	can compile in a "pure" OpenMP mode without relying on POSIX or
+	WIN32 locking APIs.
+
+	* configure.ac: --without-threads no longer disables use of
+	OpenMP.  Use the already existing option --disable-openmp to
+	disable OpenMP.
+
+2014-01-12  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* magick/common.h: Support use of clang/llvm __attribute__ and
+	__builtin extensions similar to the existing support for GCC.
+
+2014-01-05  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* Magick++/lib/Image.cpp (thumbnail): New method for fast image
+	resizing, particularly to make thumbnails.
+
+	* coders/gif.c: Log when Netscape loop exension is read and
+	written.
+
+	* coders/png.c (WriteOnePNGImage): In optimize mode, disable matte
+	channel immediately if there are no non-opaque pixels.  Also added
+	some useful logging.  Resolves SourceForge issue #252 "convert an
+	8bit PNG result in a corrupted image ".
+
+	* wand/magick_wand.c (MagickSetImageGravity): New Wand method to
+	set image gravity.
+	(MagickGetImageGravity): New wand method to get image gravity.
+
+2014-01-02  Glenn Randers-Pehrson  <glennrp@simple.dallas.tx.us>
+
+	* coders/png.c (ReadOnePNGImage): Use libpng function
+	png_set_strip_16_to_8() when scaling 16-bit input PNG down to
+	8-bit in a Q8 build.  The png_set_scale_16_to_8() function is
+	more accurate, but the slight difference causes reference tests
+	to fail and causes unexpected difference between the behavior
+	of PNG and other formats.  If png_set_strip_16_to_8() is not
+	supported in libpng, then we use png_set_scale_16_to_8() if
+	that is available.
+
+2014-01-01  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* INSTALL-windows.txt: Update for 2014.
+
+	* INSTALL-unix.txt: Update for 2014.
+
+	* Copyright.txt: Update for 2014.
+
+	* NEWS.txt: Update for 2014.
+
+	* README.txt: Update for 2014.
+
+	* doc: Update for 2014.
+
+	* www: Update for 2014.
+
+	* VisualMagick/installer: Update for 2014.
+
+	* ChangeLog: Rotate Changelog to ChangeLog.2013 for 2014.
+

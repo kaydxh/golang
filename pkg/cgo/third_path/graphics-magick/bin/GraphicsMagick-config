@@ -1,0 +1,51 @@
+#!/bin/sh
+#
+# Configure options script for re-calling GraphicsMagick compilation
+# options required to use the GraphicsMagick library.
+#
+# Concept derived from gtk-config in the Gtk package except that Autoconf-style
+# configuration information is presented instead so that it may be used more
+# effectively in configure scripts.
+#
+usage='Usage: GraphicsMagick-config [--cflags] [--cppflags] [--exec-prefix] [--ldflags] [--libs] [--prefix] [--version]
+
+ For example, "example.c" may be compiled to produce "example" as follows:
+
+  "gcc -o example example.c `GraphicsMagick-config --cppflags --cflags --ldflags --libs`"'
+
+if test $# -eq 0; then
+      echo "${usage}" 1>&2
+      exit 1
+fi
+
+while test $# -gt 0; do
+  case $1 in
+    --prefix)
+      echo /root/pinwoodxu/GraphicsMagick-source/release
+      ;;
+    --exec-prefix)
+      echo /root/pinwoodxu/GraphicsMagick-source/release
+      ;;
+    --version)
+      echo 1.3.35
+      ;;
+    --cflags)
+      echo '-fopenmp -g -O2 -Wall -pthread'
+      ;;
+    --cppflags)
+      echo '-I/root/pinwoodxu/GraphicsMagick-source/release/include/GraphicsMagick'
+      ;;
+    --ldflags)
+      echo '-L/root/pinwoodxu/GraphicsMagick-source/release/lib '
+      ;;
+    --libs)
+      echo '-lGraphicsMagick -lwebp -lwebpmux -ltiff -ljpeg -lpng15 -lbz2 -lz -lm -lpthread -lgomp'
+      ;;
+    *)
+      echo "${usage}" 1>&2
+      exit 1
+      ;;
+  esac
+  shift
+done
+

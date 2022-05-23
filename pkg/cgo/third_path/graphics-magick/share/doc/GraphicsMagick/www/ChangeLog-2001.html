@@ -1,0 +1,440 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.15.2: http://docutils.sourceforge.net/" />
+<title>ChangeLog-2001.rst</title>
+<link rel="stylesheet" href="docutils-articles.css" type="text/css" />
+</head>
+<body>
+
+<div class="banner">
+<img src="images/gm-107x76.png" alt="GraphicMagick logo" width="107" height="76" />
+<span class="title">GraphicsMagick</span>
+<form action="http://www.google.com/search">
+	<input type="hidden" name="domains" value="www.graphicsmagick.org" />
+	<input type="hidden" name="sitesearch" value="www.graphicsmagick.org" />
+    <span class="nowrap"><input type="text" name="q" size="25" maxlength="255" />&nbsp;<input type="submit" name="sa" value="Search" /></span>
+</form>
+</div>
+
+<div class="navmenu">
+<ul>
+<li><a href="index.html">Home</a></li>
+<li><a href="project.html">Project</a></li>
+<li><a href="download.html">Download</a></li>
+<li><a href="README.html">Install</a></li>
+<li><a href="Hg.html">Source</a></li>
+<li><a href="NEWS.html">News</a> </li>
+<li><a href="utilities.html">Utilities</a></li>
+<li><a href="programming.html">Programming</a></li>
+<li><a href="reference.html">Reference</a></li>
+</ul>
+</div>
+<div class="document">
+
+
+<p>2001-12-28  Leonard Rosenthol  &lt;<a class="reference external" href="mailto:leonardr&#37;&#52;&#48;lazerware&#46;com">leonardr<span>&#64;</span>lazerware<span>&#46;</span>com</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>Even more features and options were added to conjure</li>
+<li>Added CropBox support to PDF writer</li>
+</ul>
+</blockquote>
+<p>2001-12-26  Leonard Rosenthol  &lt;<a class="reference external" href="mailto:leonardr&#37;&#52;&#48;lazerware&#46;com">leonardr<span>&#64;</span>lazerware<span>&#46;</span>com</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>Conjure now supports having a list of files for the script to
+process being passed on the command line.</li>
+<li>More features and options were added to conjure</li>
+</ul>
+</blockquote>
+<p>2001-12-25  Leonard Rosenthol  &lt;<a class="reference external" href="mailto:leonardr&#37;&#52;&#48;lazerware&#46;com">leonardr<span>&#64;</span>lazerware<span>&#46;</span>com</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>Made a huge number of improvements to conjure.  It now supports
+over 15 different commands for manipulating your images.</li>
+</ul>
+</blockquote>
+<p>2001-12-24  Cristy  &lt;<a class="reference external" href="mailto:cristy&#37;&#52;&#48;mystic&#46;es&#46;dupont&#46;com">cristy<span>&#64;</span>mystic<span>&#46;</span>es<span>&#46;</span>dupont<span>&#46;</span>com</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>Started a new scripting language utility, conjure.</li>
+</ul>
+</blockquote>
+<p>2001-12-20  Cristy  &lt;<a class="reference external" href="mailto:cristy&#37;&#52;&#48;mystic&#46;es&#46;dupont&#46;com">cristy<span>&#64;</span>mystic<span>&#46;</span>es<span>&#46;</span>dupont<span>&#46;</span>com</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>Display the search path in the event a utility cannot find a
+particular configuration file (thanks to <a class="reference external" href="mailto:billr&#37;&#52;&#48;corbis&#46;com">billr<span>&#64;</span>corbis<span>&#46;</span>com</a>)</li>
+</ul>
+</blockquote>
+<p>2001-12-14  Leonard Rosenthol  &lt;<a class="reference external" href="mailto:leonardr&#37;&#52;&#48;lazerware&#46;com">leonardr<span>&#64;</span>lazerware<span>&#46;</span>com</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>Fixed some bugs in the new composite operators.</li>
+</ul>
+</blockquote>
+<p>2001-12-14  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>Added native BLOB support to coders/wmf.c.</li>
+</ul>
+</blockquote>
+<p>2001-12-13  Leonard Rosenthol  &lt;<a class="reference external" href="mailto:leonardr&#37;&#52;&#48;lazerware&#46;com">leonardr<span>&#64;</span>lazerware<span>&#46;</span>com</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>Added new composite operators to support PSD/XCF
+layer compositing:  NoCompositeOp, DarkenCompositeOp,
+LightenCompositeOp, HueCompositeOp, SaturateCompositeOp,
+ValueCompositeOp, ColorizeCompositeOp, LuminizeCompositeOp,
+ScreenCompositeOp, OverlayCompositeOp.</li>
+<li>Modified the PSD coder to set the appropriate composite
+operator.</li>
+<li>Modified the XCF coder to set the appropriate composite
+operator.</li>
+</ul>
+</blockquote>
+<p>2001-12-10  Cristy  &lt;<a class="reference external" href="mailto:cristy&#37;&#52;&#48;mystic&#46;es&#46;dupont&#46;com">cristy<span>&#64;</span>mystic<span>&#46;</span>es<span>&#46;</span>dupont<span>&#46;</span>com</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>Removed the flatten option from ImageInfo.</li>
+<li>Added new compose member to ImageInfo that defines which of
+the composite operators to use when flattening an image.</li>
+</ul>
+</blockquote>
+<p>2001-12-09  Leonard Rosenthol  &lt;<a class="reference external" href="mailto:leonardr&#37;&#52;&#48;lazerware&#46;com">leonardr<span>&#64;</span>lazerware<span>&#46;</span>com</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>Added new member to ImageInfo, flatten, used by PSD and XCF
+to determine whether to flatten an image when read.</li>
+<li>PSD and XCF now respect image_info-&gt;flatten.</li>
+<li>Fixed bug in XCF loader when loading layered image as layers.</li>
+<li>Modified the convert program to set image_info-&gt;flatten if
+-flatten is specified; we still call FlattenImages for other
+formats that don't respect image_info-&gt;flatten.</li>
+<li>Modified Magick++'s Image class to support image_info-&gt;flatten.</li>
+</ul>
+</blockquote>
+<p>2001-12-08  Leonard Rosenthol  &lt;<a class="reference external" href="mailto:leonardr&#37;&#52;&#48;lazerware&#46;com">leonardr<span>&#64;</span>lazerware<span>&#46;</span>com</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>Improvements to the Photoshop (PSD) coder:  1) added support
+for Duotone images loaded as grayscale as per PSD docs;  and 2)
+added option to composite layers when reading respects layer
+visibility setting.</li>
+</ul>
+</blockquote>
+<p>2001-12-07  Cristy  &lt;<a class="reference external" href="mailto:cristy&#37;&#52;&#48;mystic&#46;es&#46;dupont&#46;com">cristy<span>&#64;</span>mystic<span>&#46;</span>es<span>&#46;</span>dupont<span>&#46;</span>com</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>-dissolve wasn't working for the composite program (thanks to
+Rick Manbry).</li>
+<li>DCM coder failed to read a valid DCM image file.</li>
+</ul>
+</blockquote>
+<p>2001-12-06  Cristy  &lt;<a class="reference external" href="mailto:cristy&#37;&#52;&#48;mystic&#46;es&#46;dupont&#46;com">cristy<span>&#64;</span>mystic<span>&#46;</span>es<span>&#46;</span>dupont<span>&#46;</span>com</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>Stream buffer was not being freed in ReadStream().</li>
+</ul>
+</blockquote>
+<p>2001-12-05  Cristy  &lt;<a class="reference external" href="mailto:cristy&#37;&#52;&#48;mystic&#46;es&#46;dupont&#46;com">cristy<span>&#64;</span>mystic<span>&#46;</span>es<span>&#46;</span>dupont<span>&#46;</span>com</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>Corrected bias when downsizing an image with ResizeImage().</li>
+</ul>
+</blockquote>
+<p>2001-11-25  Cristy  &lt;<a class="reference external" href="mailto:cristy&#37;&#52;&#48;mystic&#46;es&#46;dupont&#46;com">cristy<span>&#64;</span>mystic<span>&#46;</span>es<span>&#46;</span>dupont<span>&#46;</span>com</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>AcquireImagePixels() can accept (x,y) outside the image area
+(e.g. AcquireImagePixels(image,-3,-3,7,7,exception)).</li>
+</ul>
+</blockquote>
+<p>2001-11-22  Cristy  &lt;<a class="reference external" href="mailto:cristy&#37;&#52;&#48;mystic&#46;es&#46;dupont&#46;com">cristy<span>&#64;</span>mystic<span>&#46;</span>es<span>&#46;</span>dupont<span>&#46;</span>com</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>Added limited SVG gradient support.</li>
+</ul>
+</blockquote>
+<p>2001-11-21  Cristy  &lt;<a class="reference external" href="mailto:cristy&#37;&#52;&#48;mystic&#46;es&#46;dupont&#46;com">cristy<span>&#64;</span>mystic<span>&#46;</span>es<span>&#46;</span>dupont<span>&#46;</span>com</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>Added API method, PingBlob().</li>
+</ul>
+</blockquote>
+<p>2001-11-14  Cristy  &lt;<a class="reference external" href="mailto:cristy&#37;&#52;&#48;mystic&#46;es&#46;dupont&#46;com">cristy<span>&#64;</span>mystic<span>&#46;</span>es<span>&#46;</span>dupont<span>&#46;</span>com</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>Moved a few pixel related defines (e.g. Downscale()) to
+a corresponding method to enforce strong type checking at
+compile time.</li>
+</ul>
+</blockquote>
+<p>2001-11-12  Cristy  &lt;<a class="reference external" href="mailto:cristy&#37;&#52;&#48;mystic&#46;es&#46;dupont&#46;com">cristy<span>&#64;</span>mystic<span>&#46;</span>es<span>&#46;</span>dupont<span>&#46;</span>com</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>Previously ImageMagick did not write 8-bit ASCII PPM/PGM files
+when QuantumDepth == 16.</li>
+<li>Added 'id' as an image attribute in PerlMagick (returns
+ImageMagick registry ID).</li>
+</ul>
+</blockquote>
+<p>2001-11-10  Cristy  &lt;<a class="reference external" href="mailto:cristy&#37;&#52;&#48;mystic&#46;es&#46;dupont&#46;com">cristy<span>&#64;</span>mystic<span>&#46;</span>es<span>&#46;</span>dupont<span>&#46;</span>com</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>Added SVG pattern support.</li>
+<li>Changed default background color to none.</li>
+</ul>
+</blockquote>
+<p>2001-11-06  Cristy  &lt;<a class="reference external" href="mailto:cristy&#37;&#52;&#48;mystic&#46;es&#46;dupont&#46;com">cristy<span>&#64;</span>mystic<span>&#46;</span>es<span>&#46;</span>dupont<span>&#46;</span>com</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>Added support of reading and writing 16-bit raw PPM/PGM files.</li>
+</ul>
+</blockquote>
+<p>2001-11-05  Cristy  &lt;<a class="reference external" href="mailto:cristy&#37;&#52;&#48;mystic&#46;es&#46;dupont&#46;com">cristy<span>&#64;</span>mystic<span>&#46;</span>es<span>&#46;</span>dupont<span>&#46;</span>com</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>Added -level to convert/mogrify (suggested by
+<a class="reference external" href="mailto:mericson&#37;&#52;&#48;phillynews&#46;kom">mericson<span>&#64;</span>phillynews<span>&#46;</span>kom</a>).</li>
+</ul>
+</blockquote>
+<p>2001-11-04  Cristy  &lt;<a class="reference external" href="mailto:cristy&#37;&#52;&#48;mystic&#46;es&#46;dupont&#46;com">cristy<span>&#64;</span>mystic<span>&#46;</span>es<span>&#46;</span>dupont<span>&#46;</span>com</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>-shadow/-shade were not distiguished.</li>
+</ul>
+</blockquote>
+<p>2001-11-03  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>PerlMagick/Makefile.PL.in: Install PerlMagick using
+ImageMagick's configure prefix.</li>
+</ul>
+</blockquote>
+<p>2001-11-02  Cristy  &lt;<a class="reference external" href="mailto:cristy&#37;&#52;&#48;mystic&#46;es&#46;dupont&#46;com">cristy<span>&#64;</span>mystic<span>&#46;</span>es<span>&#46;</span>dupont<span>&#46;</span>com</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>Typecast offset to unsigned long in coders/pdf.c.</li>
+</ul>
+</blockquote>
+<p>2001-11-01  Cristy  &lt;<a class="reference external" href="mailto:cristy&#37;&#52;&#48;mystic&#46;es&#46;dupont&#46;com">cristy<span>&#64;</span>mystic<span>&#46;</span>es<span>&#46;</span>dupont<span>&#46;</span>com</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>Convert's -flatten, -average, etc. failed with an assert error.</li>
+</ul>
+</blockquote>
+<p>2001-10-30  Cristy  &lt;<a class="reference external" href="mailto:cristy&#37;&#52;&#48;mystic&#46;es&#46;dupont&#46;com">cristy<span>&#64;</span>mystic<span>&#46;</span>es<span>&#46;</span>dupont<span>&#46;</span>com</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>Added support for On-the-air bitmap.</li>
+</ul>
+</blockquote>
+<p>2001-09-29  Glenn  &lt;<a class="reference external" href="mailto:randeg&#37;&#52;&#48;alum&#46;rpi&#46;edu">randeg<span>&#64;</span>alum<span>&#46;</span>rpi<span>&#46;</span>edu</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>When the delay setting for an image is greater than 4cs, duplicate
+frames are inserted to achieve the desired delay while creating MPEG
+files (contributed by Lawrence Livermore National Laboratory (LLNL)).</li>
+</ul>
+</blockquote>
+<p>2001-10-29  Cristy  &lt;<a class="reference external" href="mailto:cristy&#37;&#52;&#48;mystic&#46;es&#46;dupont&#46;com">cristy<span>&#64;</span>mystic<span>&#46;</span>es<span>&#46;</span>dupont<span>&#46;</span>com</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>ImageMagick now has a registry for storing image blobs.</li>
+</ul>
+</blockquote>
+<p>2001-10-26  Cristy  &lt;<a class="reference external" href="mailto:cristy&#37;&#52;&#48;mystic&#46;es&#46;dupont&#46;com">cristy<span>&#64;</span>mystic<span>&#46;</span>es<span>&#46;</span>dupont<span>&#46;</span>com</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>Added VMS patches (thanks to Jouk Jansen).</li>
+</ul>
+</blockquote>
+<p>2001-10-25 Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>Fixed parsing bug for decorate #FFFFFF.</li>
+</ul>
+</blockquote>
+<p>2001-10-22 Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>Added tests for mpeg2 library to configure.</li>
+</ul>
+</blockquote>
+<p>2001-10-22  Cristy  &lt;<a class="reference external" href="mailto:cristy&#37;&#52;&#48;mystic&#46;es&#46;dupont&#46;com">cristy<span>&#64;</span>mystic<span>&#46;</span>es<span>&#46;</span>dupont<span>&#46;</span>com</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>Added a MPEG coder module.</li>
+<li>Added ImageType member to the image_info structure (suggested
+by Glenn)</li>
+</ul>
+</blockquote>
+<p>2001-10-21  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>Eliminated libMagick.so dependency on libxml by not listing -lxml
+when doing modules link.</li>
+</ul>
+</blockquote>
+<p>2001-10-18  Cristy  &lt;<a class="reference external" href="mailto:cristy&#37;&#52;&#48;mystic&#46;es&#46;dupont&#46;com">cristy<span>&#64;</span>mystic<span>&#46;</span>es<span>&#46;</span>dupont<span>&#46;</span>com</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>Eliminated the libMagick.so dependancy on libtiff by moving
+Huffman2DEncodeImage() from magick/compress.c to coders/pdf.c,
+coders/ps2.c and coders/ps3.c (suggested by Bob Friesenhahn).
+This change has the side-effect of elminating dependency on libpng
+and libjpeg as well (which libtiff may depend on).</li>
+</ul>
+</blockquote>
+<p>2001-10-16  Cristy  &lt;<a class="reference external" href="mailto:cristy&#37;&#52;&#48;mystic&#46;es&#46;dupont&#46;com">cristy<span>&#64;</span>mystic<span>&#46;</span>es<span>&#46;</span>dupont<span>&#46;</span>com</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>Convert now supports -channel {Cyan,Magenta,Yellow,Black}.</li>
+</ul>
+</blockquote>
+<p>2001-10-14  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/wmf.c updated for libwmf 0.2.  Plenty of bugs remain within.</li>
+</ul>
+</blockquote>
+<p>2001-10-11  Cristy  &lt;<a class="reference external" href="mailto:cristy&#37;&#52;&#48;mystic&#46;es&#46;dupont&#46;com">cristy<span>&#64;</span>mystic<span>&#46;</span>es<span>&#46;</span>dupont<span>&#46;</span>com</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>QueryFontMetrics() of PerlMagick now recognizes embedded
+special characters (e.g. %h).</li>
+</ul>
+</blockquote>
+<p>2001-10-10  Cristy  &lt;<a class="reference external" href="mailto:cristy&#37;&#52;&#48;mystic&#46;es&#46;dupont&#46;com">cristy<span>&#64;</span>mystic<span>&#46;</span>es<span>&#46;</span>dupont<span>&#46;</span>com</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>Fixed seg-fault for PingImage() on a JP2 image file.</li>
+</ul>
+</blockquote>
+<p>2001-10-07  Cristy  &lt;<a class="reference external" href="mailto:cristy&#37;&#52;&#48;mystic&#46;es&#46;dupont&#46;com">cristy<span>&#64;</span>mystic<span>&#46;</span>es<span>&#46;</span>dupont<span>&#46;</span>com</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>CloneImage() now uses a referenced counted pixel cache.</li>
+</ul>
+</blockquote>
+<p>2001-10-05  Cristy  &lt;<a class="reference external" href="mailto:cristy&#37;&#52;&#48;mystic&#46;es&#46;dupont&#46;com">cristy<span>&#64;</span>mystic<span>&#46;</span>es<span>&#46;</span>dupont<span>&#46;</span>com</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>Added AcquireImagePixels() method.</li>
+<li>Changed the formal parameter from Image * to const Image *
+for a number of methods (e.g. ZoomImage()).</li>
+<li>Added ExceptionInfo parameter to DispatchImage().</li>
+</ul>
+</blockquote>
+<p>2001-10-05  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>Find libxml headers under Debian Linux (bug ID 921).</li>
+</ul>
+</blockquote>
+<p>2001-10-02  Cristy  &lt;<a class="reference external" href="mailto:cristy&#37;&#52;&#48;mystic&#46;es&#46;dupont&#46;com">cristy<span>&#64;</span>mystic<span>&#46;</span>es<span>&#46;</span>dupont<span>&#46;</span>com</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>Fixed assertion error on drawing stroked text.</li>
+</ul>
+</blockquote>
+<p>2001-10-01  Cristy  &lt;<a class="reference external" href="mailto:cristy&#37;&#52;&#48;mystic&#46;es&#46;dupont&#46;com">cristy<span>&#64;</span>mystic<span>&#46;</span>es<span>&#46;</span>dupont<span>&#46;</span>com</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>Added blob test to the PerlMagick test suite.</li>
+</ul>
+</blockquote>
+<p>2001-09-30  Cristy  &lt;<a class="reference external" href="mailto:cristy&#37;&#52;&#48;mystic&#46;es&#46;dupont&#46;com">cristy<span>&#64;</span>mystic<span>&#46;</span>es<span>&#46;</span>dupont<span>&#46;</span>com</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>switched strcpy to strncpy to help protect against buffer
+overflow.</li>
+<li>ltdl.c passed int reference but a long was needed; caused a
+fault on Solaris 64-bit compiles.</li>
+</ul>
+</blockquote>
+<p>2001-09-25  Cristy  &lt;<a class="reference external" href="mailto:cristy&#37;&#52;&#48;mystic&#46;es&#46;dupont&#46;com">cristy<span>&#64;</span>mystic<span>&#46;</span>es<span>&#46;</span>dupont<span>&#46;</span>com</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>Removed most lint complaints from the source.</li>
+<li>strtod() returns different results on Linux and Solaris for 0x13.</li>
+<li>Added a MATLAB encoder contributed by Jaroslav Fojtik.</li>
+</ul>
+</blockquote>
+<p>2001-09-21  Cristy  &lt;<a class="reference external" href="mailto:cristy&#37;&#52;&#48;mystic&#46;es&#46;dupont&#46;com">cristy<span>&#64;</span>mystic<span>&#46;</span>es<span>&#46;</span>dupont<span>&#46;</span>com</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>Replaced TemporaryFilename() with UniqueImageFilename().</li>
+<li>ImageMagick CORE API is now 64-bit clean.</li>
+</ul>
+</blockquote>
+<p>2001-09-20  Cristy  &lt;<a class="reference external" href="mailto:cristy&#37;&#52;&#48;mystic&#46;es&#46;dupont&#46;com">cristy<span>&#64;</span>mystic<span>&#46;</span>es<span>&#46;</span>dupont<span>&#46;</span>com</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>Fixed svg.c to accept a viewbox with a negative offset.</li>
+</ul>
+</blockquote>
+<p>2001-09-15  Cristy  &lt;<a class="reference external" href="mailto:cristy&#37;&#52;&#48;mystic&#46;es&#46;dupont&#46;com">cristy<span>&#64;</span>mystic<span>&#46;</span>es<span>&#46;</span>dupont<span>&#46;</span>com</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>Surveying the code for 64-bit compatibility.</li>
+<li>The cloned colormap was too small (reported by Glenn).</li>
+<li>A blob was being unmapped more than once for multi-frame images.</li>
+</ul>
+</blockquote>
+<p>2001-09-12  Cristy  &lt;<a class="reference external" href="mailto:cristy&#37;&#52;&#48;mystic&#46;es&#46;dupont&#46;com">cristy<span>&#64;</span>mystic<span>&#46;</span>es<span>&#46;</span>dupont<span>&#46;</span>com</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>Text drawing now handles UTF8-encoding.</li>
+<li>Off-by-one GetImagePixels() fix in draw.c</li>
+<li>PingImage() now reports attributes for all images in an image
+sequence.</li>
+</ul>
+</blockquote>
+<p>2001-09-10  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>magick/image.h: Rename QuantumLeap define to QuantumDepth.
+QuantumDepth is set to the values 8 or 16, depending on user
+configuration option.</li>
+</ul>
+</blockquote>
+<p>2001-09-09  Cristy  &lt;<a class="reference external" href="mailto:cristy&#37;&#52;&#48;mystic&#46;es&#46;dupont&#46;com">cristy<span>&#64;</span>mystic<span>&#46;</span>es<span>&#46;</span>dupont<span>&#46;</span>com</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>Updated PerlMagick signatures to reflect new message digest
+algorithm.</li>
+</ul>
+</blockquote>
+<p>2001-09-08  Cristy  &lt;<a class="reference external" href="mailto:cristy&#37;&#52;&#48;mystic&#46;es&#46;dupont&#46;com">cristy<span>&#64;</span>mystic<span>&#46;</span>es<span>&#46;</span>dupont<span>&#46;</span>com</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>ImageMagick defaults to 16-bit quantum.  Set QuantumMagick
+for 8-bit.</li>
+<li>Changed image-&gt;blob from BlobInfo to BlobInfo* so the Image
+structure size is not dependent on the large-file preprocessor
+defines.</li>
+</ul>
+</blockquote>
+<p>2001-09-07  Cristy  &lt;<a class="reference external" href="mailto:cristy&#37;&#52;&#48;mystic&#46;es&#46;dupont&#46;com">cristy<span>&#64;</span>mystic<span>&#46;</span>es<span>&#46;</span>dupont<span>&#46;</span>com</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>Added -background to convert program usage text.</li>
+<li>DispatchImage() now properly handles grayscale images.</li>
+</ul>
+</blockquote>
+<p>2001-09-01  Glenn  &lt;<a class="reference external" href="mailto:randeg&#37;&#52;&#48;alum&#46;rpi&#46;edu">randeg<span>&#64;</span>alum<span>&#46;</span>rpi<span>&#46;</span>edu</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>The compression quality setting is now recognized when creating
+MPEG images (contributed by Lawrence Livermore National Laboratory
+(LLNL)).</li>
+</ul>
+</blockquote>
+</div>
+</body>
+</html>
