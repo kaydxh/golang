@@ -1,0 +1,3 @@
+find_package(Protobuf)
+list(APPEND IMPORT_DIRS "${PROJECT_SOURCE_DIR}")
+PROTOBUF_GENERATE_TEMPLATE("${IMPORT_DIRS}" "proto-types")

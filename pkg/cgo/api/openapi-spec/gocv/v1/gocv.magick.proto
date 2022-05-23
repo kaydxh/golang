@@ -1,0 +1,14 @@
+syntax = "proto3";
+package sdk.api.gocv.v1;
+
+import "types/sdk-go.code.proto";
+
+option go_package = "github.com/kaydxh/golang/pkg/cgo/api/openapi-spec/gocv/v1;v1";
+
+message MagickInitializeMagickRequest {
+  string path = 1;
+}
+
+message MagickInitializeMagickResponse {
+  sdk.types.code.CgoError error = 1;
+}
