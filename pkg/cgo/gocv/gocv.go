@@ -3,11 +3,11 @@ package gocv
 import (
 	"os"
 
-	v1 "github.com/kaydxh/golang/pkg/cgo/api/openapi-spec/gocv/v1"
+	"github.com/kaydxh/golang/pkg/cgo/api/openapi-spec/gocv"
 )
 
-func NewMagickInitializeMagickRequest() *v1.MagickInitializeMagickRequest {
-	return &v1.MagickInitializeMagickRequest{
+func NewMagickInitializeMagickRequest() *gocv.MagickInitializeMagickRequest {
+	return &gocv.MagickInitializeMagickRequest{
 		Path: os.Args[0],
 	}
 }
