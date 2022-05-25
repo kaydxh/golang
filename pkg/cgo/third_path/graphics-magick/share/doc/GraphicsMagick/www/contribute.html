@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.15.2: http://docutils.sourceforge.net/" />
+<title>Contributing to GraphicsMagick</title>
+<link rel="stylesheet" href="docutils-articles.css" type="text/css" />
+</head>
+<body>
+
+<div class="banner">
+<img src="images/gm-107x76.png" alt="GraphicMagick logo" width="107" height="76" />
+<span class="title">GraphicsMagick</span>
+<form action="http://www.google.com/search">
+	<input type="hidden" name="domains" value="www.graphicsmagick.org" />
+	<input type="hidden" name="sitesearch" value="www.graphicsmagick.org" />
+    <span class="nowrap"><input type="text" name="q" size="25" maxlength="255" />&nbsp;<input type="submit" name="sa" value="Search" /></span>
+</form>
+</div>
+
+<div class="navmenu">
+<ul>
+<li><a href="index.html">Home</a></li>
+<li><a href="project.html">Project</a></li>
+<li><a href="download.html">Download</a></li>
+<li><a href="README.html">Install</a></li>
+<li><a href="Hg.html">Source</a></li>
+<li><a href="NEWS.html">News</a> </li>
+<li><a href="utilities.html">Utilities</a></li>
+<li><a href="programming.html">Programming</a></li>
+<li><a href="reference.html">Reference</a></li>
+</ul>
+</div>
+<div class="document" id="contributing-to-graphicsmagick">
+<h1 class="title">Contributing to GraphicsMagick</h1>
+
+<!-- -*- mode: rst -*- -->
+<!-- This text is in reStucturedText format, so it may look a bit odd. -->
+<!-- See http://docutils.sourceforge.net/rst.html for details. -->
+<p>The future and success of GraphicsMagick depends on your contributions.
+By contributing to GraphicsMagick you will benefit from the
+features/fixes you contribute, can take pride in taking part in the
+development of a quality product, and you can tell your friends that you
+contribute to the GraphicsMagick project.</p>
+<p>There are a number of ways you can contribute:</p>
+<ul class="simple">
+<li>Submit bug reports to the GraphicsMagick bug tracking system at
+SourceForge.</li>
+<li>Submit patches to the GraphicsMagick patch submission system at
+SourceForge.</li>
+<li>Perform test builds on unusual systems and report the results.</li>
+<li>Submit ideas and proposed designs to the graphicsmagick-core
+mailing list.</li>
+<li>Create a new language interface, dependent library, or application.</li>
+<li>Join the GraphicsMagick Group as a full-fledged developer with CVS
+commit access.</li>
+</ul>
+<p>Regardless of how you choose to contribute, your contributions will be
+treated with the respect and value that they deserve.</p>
+<p>Becoming a member of the GraphicsMagick Group requires a majority vote
+from existing members. Your chances of being admitted to the group are
+increased significantly if you have a proven track-record of success on
+other open source projects, are a recognized expert in the field, or have
+already demonstrated your capabilities and commitment by contributing to
+the project in other ways. Please contact Bob Friesenhahn
+&lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt; in order to be considered for group
+membership.</p>
+<div class="section" id="areas-to-contribute">
+<h1>Areas To Contribute</h1>
+<p>The following are areas where significant contributions may be made to
+the GraphicsMagick project:</p>
+<ul class="simple">
+<li>Support building and distributing GraphicsMagick RPMs for Linux.</li>
+<li>Act as formal maintainer for the Gentoo Linux GraphicsMagick ebuild so
+that it is added back to Portage. This is not difficult since the
+ebuild has been actively maintained via the Gentoo bug tracking system.
+At the very least, registering a vote for the Gentoo bug may be helpful.
+See <a class="reference external" href="http://bugs.gentoo.org/show_bug.cgi?id=190372">http://bugs.gentoo.org/show_bug.cgi?id=190372</a>.</li>
+<li>Set up an FTP mirror site for GraphicsMagick.</li>
+<li>Create a language interface using SWIG &lt;<a class="reference external" href="http://www.swig.org/">http://www.swig.org/</a>&gt; to
+support scripting in Perl, Python, TCL/TK, Guile, MzScheme, Ruby,
+Java, PHP, and CHICKEN, based on a common implementation.</li>
+<li>Create a new utility command parser based on a separate LALR or
+XML-based syntax definition, and using an approach suitable to
+replace the existing error-prone command parsers in magick/command.c</li>
+<li>Create a vector encoder for EPS, Postscript, PDF, SVG
+&lt;<a class="reference external" href="http://www.w3.org/Graphics/SVG/">http://www.w3.org/Graphics/SVG/</a>&gt;, Macromedia Flash
+(SWF), WebCGM &lt;<a class="reference external" href="http://www.w3.org/Graphics/WebCGM/">http://www.w3.org/Graphics/WebCGM/</a>&gt;, or WMF.</li>
+<li>Create an OpenEXR coder based on the OpenEXR
+&lt;<a class="reference external" href="http://www.openexr.com/">http://www.openexr.com/</a>&gt; library from Industrial Light &amp; Magic.</li>
+<li>Create a <em>pstoedit</em> module to import Postscript, EPS, and PDF
+files as vector data using pstoedit &lt;<a class="reference external" href="http://www.pstoedit.net/">http://www.pstoedit.net/</a>&gt; which
+already includes a high-quality driver to render Postscript vectors via
+GraphicsMagick. This module could also export vector data in many
+formats using pstoedit's output drivers.</li>
+<li>Work on adding EXIF profile writing support which works for JPEG and
+TIFF formats.</li>
+<li>Add integrated Adobe XMP
+&lt;<a class="reference external" href="http://www.adobe.com/products/xmp/index.html">http://www.adobe.com/products/xmp/index.html</a>&gt; profile support for
+TIFF, JPEG, PNG, PDF, EPS, and Postscript.</li>
+<li>Port Erik Reinhard's super-cool Parameter Estimation For
+Photographic Tone Reproduction
+&lt;<a class="reference external" href="http://www.cs.ucf.edu/~reinhard/Reinhard02/">http://www.cs.ucf.edu/~reinhard/Reinhard02/</a>&gt; algorithm to
+GraphicsMagick.</li>
+<li>Create a replacement (using a portable Widget set such as FLTK) for the
+IMDisplay Windows GUI program and possibly the X11 'display' program.</li>
+<li>Create an interface between GraphicsMagick and OpenOffice.org.
+&lt;<a class="reference external" href="http://www.openoffice.org/">http://www.openoffice.org/</a>&gt; so that OpenOffice may load and save
+any format supported by GraphicsMagick. OpenOffice.org offers a
+separate SDK so there may be a number of other opportunities to
+explore.</li>
+<li>Complete the port of ralcgm to Windows so that it may be used as a
+delegate under Windows.</li>
+</ul>
+<hr class="docutils" />
+<p>Copyright © GraphicsMagick Group 2002 - 2020</p>
+</div>
+</div>
+</body>
+</html>

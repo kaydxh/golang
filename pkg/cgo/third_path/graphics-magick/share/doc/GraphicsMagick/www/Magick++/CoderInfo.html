@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.15.2: http://docutils.sourceforge.net/" />
+<title>Magick::CoderInfo Class</title>
+<link rel="stylesheet" href="../docutils-articles.css" type="text/css" />
+</head>
+<body>
+
+<div class="banner">
+<img src="../images/gm-107x76.png" alt="GraphicMagick logo" width="107" height="76" />
+<span class="title">GraphicsMagick</span>
+<form action="http://www.google.com/search">
+	<input type="hidden" name="domains" value="www.graphicsmagick.org" />
+	<input type="hidden" name="sitesearch" value="www.graphicsmagick.org" />
+    <span class="nowrap"><input type="text" name="q" size="25" maxlength="255" />&nbsp;<input type="submit" name="sa" value="Search" /></span>
+</form>
+</div>
+
+<div class="navmenu">
+<ul>
+<li><a href="../index.html">Home</a></li>
+<li><a href="../project.html">Project</a></li>
+<li><a href="../download.html">Download</a></li>
+<li><a href="../README.html">Install</a></li>
+<li><a href="../Hg.html">Source</a></li>
+<li><a href="../NEWS.html">News</a> </li>
+<li><a href="../utilities.html">Utilities</a></li>
+<li><a href="../programming.html">Programming</a></li>
+<li><a href="../reference.html">Reference</a></li>
+</ul>
+</div>
+<div class="document" id="magick-coderinfo-class">
+<h1 class="title">Magick::CoderInfo Class</h1>
+
+<!-- -*- mode: rst -*- -->
+<!-- This text is in reStucturedText format, so it may look a bit odd. -->
+<!-- See http://docutils.sourceforge.net/rst.html for details. -->
+<p>The CoderInfo class supports obtaining information about
+GraphicsMagick support for an image format (designated by a magick
+string). It may be used to provide support for a specific named format
+(provided as an argument to the constructor), or as an element of a
+container when format support is queried using the coderInfoList()
+templated function.</p>
+<p>The following code fragment illustrates how CoderInfo may be used:</p>
+<pre class="literal-block">
+CoderInfo info(&quot;GIF&quot;);
+cout &lt;&lt; info-&gt;name() &lt;&lt; &quot;: (&quot; &lt;&lt; info-&gt;description() &lt;&lt; &quot;) : &quot;;
+cout &lt;&lt; &quot;Readable = &quot;;
+if ( info-&gt;isReadable() )
+  cout &lt;&lt; &quot;true&quot;;
+else
+  cout &lt;&lt; &quot;false&quot;;
+cout &lt;&lt; &quot;, &quot;;
+cout &lt;&lt; &quot;Writable = &quot;;
+if ( info-&gt;isWritable() )
+  cout &lt;&lt; &quot;true&quot;;
+else
+  cout &lt;&lt; &quot;false&quot;;
+cout &lt;&lt; &quot;, &quot;;
+cout &lt;&lt; &quot;Multiframe = &quot;;
+if ( info-&gt;isMultiframe() )
+  cout &lt;&lt; &quot;true&quot;;
+else
+  cout &lt;&lt; &quot;false&quot;;
+cout &lt;&lt; endl;
+</pre>
+<p>The definition of class 'Magick::CoderInfo' is:</p>
+<pre class="literal-block">
+namespace Magick
+{
+  class MagickDLLDecl CoderInfo
+  {
+  public:
+
+    enum MatchType {
+      AnyMatch,       // match any coder
+      TrueMatch,      // match coder if true
+      FalseMatch      // match coder if false
+    };
+
+    // Default constructor
+    CoderInfo ( void );
+
+    // Copy constructor
+    CoderInfo ( const CoderInfo &amp;coder_ );
+
+    // Construct with coder name
+    CoderInfo ( const std::string &amp;name_ );
+
+    // Destructor
+    ~CoderInfo ( void );
+
+    // Format name
+    std::string name( void ) const;
+
+    // Format description
+    std::string description( void ) const;
+
+    // Format is readable
+    bool isReadable( void ) const;
+
+    // Format is writeable
+    bool isWritable( void ) const;
+
+    // Format supports multiple frames
+    bool isMultiFrame( void ) const;
+
+    // Assignment operator
+    CoderInfo&amp; operator= (const CoderInfo &amp;coder_ );
+
+  };
+}
+</pre>
+<p>Copyright © Bob Friesenhahn 1999 - 2020</p>
+</div>
+</body>
+</html>

@@ -1,0 +1,799 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.15.2: http://docutils.sourceforge.net/" />
+<title>GraphicsMagick FAQ</title>
+<link rel="stylesheet" href="docutils-articles.css" type="text/css" />
+</head>
+<body>
+
+<div class="banner">
+<img src="images/gm-107x76.png" alt="GraphicMagick logo" width="107" height="76" />
+<span class="title">GraphicsMagick</span>
+<form action="http://www.google.com/search">
+	<input type="hidden" name="domains" value="www.graphicsmagick.org" />
+	<input type="hidden" name="sitesearch" value="www.graphicsmagick.org" />
+    <span class="nowrap"><input type="text" name="q" size="25" maxlength="255" />&nbsp;<input type="submit" name="sa" value="Search" /></span>
+</form>
+</div>
+
+<div class="navmenu">
+<ul>
+<li><a href="index.html">Home</a></li>
+<li><a href="project.html">Project</a></li>
+<li><a href="download.html">Download</a></li>
+<li><a href="README.html">Install</a></li>
+<li><a href="Hg.html">Source</a></li>
+<li><a href="NEWS.html">News</a> </li>
+<li><a href="utilities.html">Utilities</a></li>
+<li><a href="programming.html">Programming</a></li>
+<li><a href="reference.html">Reference</a></li>
+</ul>
+</div>
+<div class="document" id="graphicsmagick-faq">
+<h1 class="title">GraphicsMagick FAQ</h1>
+
+<!-- -*- mode: rst -*- -->
+<!-- This text is in reStucturedText format, so it may look a bit odd. -->
+<!-- See http://docutils.sourceforge.net/rst.html for details. -->
+<!-- URL links -->
+<div class="contents topic" id="faq-contents">
+<p class="topic-title first">FAQ Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#how-does-graphicsmagick-differ-from-imagemagick" id="id1">How does GraphicsMagick differ from ImageMagick?</a></li>
+<li><a class="reference internal" href="#how-often-does-graphicsmagick-pick-up-new-code-from-imagemagick" id="id2">How often does GraphicsMagick pick up new code from ImageMagick?</a></li>
+<li><a class="reference internal" href="#are-there-any-plans-to-use-opencl-or-cuda-to-use-a-gpu" id="id3">Are there any plans to use OpenCL or CUDA to use a GPU?</a></li>
+<li><a class="reference internal" href="#what-is-the-meaning-of-magick" id="id4">What is the meaning of &quot;magick&quot;?</a></li>
+<li><a class="reference internal" href="#how-can-i-process-many-files-at-once" id="id5">How can I process many files at once?</a></li>
+<li><a class="reference internal" href="#i-received-the-following-message-delegation-failed-what-does-it-mean" id="id6">I received the following message, &quot;?????? delegation failed ...&quot;. What does it mean?</a></li>
+<li><a class="reference internal" href="#how-do-i-set-the-transparency-index-in-a-gif-image-so-it-displays-properly-within-mozilla" id="id7">How do I set the transparency index in a GIF image so it displays properly within Mozilla?</a></li>
+<li><a class="reference internal" href="#how-can-i-stop-the-filenames-from-changing-in-the-title-bar-of-the-animate-1-image-window" id="id8">How can I stop the filenames from changing in the title bar of the animate(1) image window?</a></li>
+<li><a class="reference internal" href="#the-image-grabbed-by-import-1-does-not-look-like-the-image-on-my-x-server-what-s-wrong" id="id9">The image grabbed by import(1) does not look like the image on my X server. What's wrong?</a></li>
+<li><a class="reference internal" href="#how-do-i-animate-a-digital-yuv-image-sequence" id="id10">How do I animate a digital YUV image sequence?</a></li>
+<li><a class="reference internal" href="#how-do-i-change-the-default-postscript-page-size" id="id11">How do I change the default <em>PostScript</em> page size?</a></li>
+<li><a class="reference internal" href="#i-get-a-memory-allocation-error-what-can-i-do" id="id12">I get a memory allocation error. What can I do?</a></li>
+<li><a class="reference internal" href="#how-do-i-concatenate-three-images-left-to-right-with-no-borders-frames-or-text" id="id13">How do I concatenate three images left-to-right with no borders, frames, or text?</a></li>
+<li><a class="reference internal" href="#how-do-i-create-a-gif-animation-sequence-to-display-within-firefox" id="id14">How do I create a GIF animation sequence to display within Firefox?</a></li>
+<li><a class="reference internal" href="#when-i-display-a-postscript-image-white-borders-are-trimmed" id="id15">When I display a <em>PostScript</em> image, white borders are trimmed.</a></li>
+<li><a class="reference internal" href="#what-are-visual-image-directories-how-do-i-use-them" id="id16">What are visual image directories? How do I use them?</a></li>
+<li><a class="reference internal" href="#how-can-i-include-the-window-frame-when-importing-a-window" id="id17">How can I include the window frame when importing a window?</a></li>
+<li><a class="reference internal" href="#i-displayed-an-image-and-it-appears-as-one-solid-color-what-did-i-do-wrong" id="id18">I displayed an image and it appears as one solid color. What did I do wrong?</a></li>
+<li><a class="reference internal" href="#i-received-the-following-message-library-is-not-available" id="id19">I received the following message, &quot;???? library is not available...&quot;.</a></li>
+<li><a class="reference internal" href="#i-want-to-inspect-the-values-of-the-matte-channel-within-my-image" id="id20">I want to inspect the values of the matte channel within my image.</a></li>
+<li><a class="reference internal" href="#how-can-i-add-one-of-those-cool-bevels-to-my-image-that-i-see-used-on-the-web" id="id21">How can I add one of those cool bevels to my image that I see used on the Web?</a></li>
+<li><a class="reference internal" href="#i-try-to-launch-display-from-my-window-manager-and-it-fails-what-s-up" id="id22">I try to launch display from my window manager and it fails. What's up?</a></li>
+<li><a class="reference internal" href="#how-can-i-make-postscript-text-look-good" id="id23">How can I make Postscript text look good?</a></li>
+<li><a class="reference internal" href="#how-can-i-annotate-an-image-with-text-that-is-2-to-3-inches-tall" id="id24">How can I annotate an image with text that is 2 to 3 inches tall?</a></li>
+<li><a class="reference internal" href="#how-can-i-convert-my-gif-animation-sequence-to-individual-image-files" id="id25">How can I convert my GIF animation sequence to individual image files?</a></li>
+<li><a class="reference internal" href="#how-can-i-remove-the-background-that-prints-around-my-image-when-i-display-it-with-firefox" id="id26">How can I remove the background that prints around my image when I display it with Firefox?</a></li>
+<li><a class="reference internal" href="#how-do-i-create-a-gif-or-png-image-with-web-safe-colors" id="id27">How do I create a GIF or PNG image with Web safe colors?</a></li>
+<li><a class="reference internal" href="#how-can-i-add-a-matte-layer-to-my-image" id="id28">How can I add a matte layer to my image?</a></li>
+<li><a class="reference internal" href="#how-can-i-draw-with-text-using-convert-under-windows-nt" id="id29">How can I draw with text using 'convert' under Windows NT?</a></li>
+<li><a class="reference internal" href="#why-are-my-jpeg-files-larger-than-expected" id="id30">Why are my JPEG files larger than expected?</a></li>
+<li><a class="reference internal" href="#how-do-i-extract-a-single-image-from-a-multi-image-file" id="id31">How do I extract a single image from a multi-image file?</a></li>
+<li><a class="reference internal" href="#how-can-i-extract-and-combine-cmyk-channels-in-a-cmyk-image" id="id32">How can I extract and combine CMYK channels in a CMYK image?</a></li>
+<li><a class="reference internal" href="#how-can-i-create-a-solid-or-patterned-canvas-image" id="id33">How can I create a solid or patterned canvas image?</a></li>
+<li><a class="reference internal" href="#what-does-identify-report" id="id34">What does <cite>identify</cite> report?</a></li>
+</ul>
+</div>
+<div class="section" id="how-does-graphicsmagick-differ-from-imagemagick">
+<h1><a class="toc-backref" href="#id1">How does GraphicsMagick differ from ImageMagick?</a></h1>
+<p><em>GraphicsMagick</em> is originally based on (forked from) ImageMagick
+5.5.2 in November 2002, from the version distributed by ImageMagick
+Studio LLC, which is itself forked in August 1999 from ImageMagick
+developed by E. I. du Pont de Nemours and Company starting in
+1992. Other than utilities being executed as sub-commands of the 'gm'
+command, the command-line syntax and programming APIs remain entirely
+upward compatible with ImageMagick 5.5.2. A better question might be
+&quot;<em>How does ImageMagick differ from ImageMagick?</em>&quot; since ImageMagick
+continues to alter and evolve its interfaces so they are no longer
+completely compatible with earlier versions. While GraphicsMagick also
+adds new features, it does so in a way which assures that existing
+features work as they did before. ImageMagick focuses on adding new
+functionality and features and has dramatically mutated several times
+since the fork.</p>
+<p>GraphicsMagick maintains a stable release branch, maintains a detailed
+ChangeLog, and maintains a stable source repository with complete version
+history so that changes are controlled, and changes between releases are
+accurately described. GraphicsMagick provides continued support for a
+release branch. ImageMagick does not offer any of these things.</p>
+<p>Since GraphicsMagick is more stable, more time has been spent optimizing
+and debugging its code.</p>
+<p>GraphicsMagick is much smaller than ImageMagick and has dramatically
+fewer dependencies on external libraries. For example, on the FreeBSD
+operating system, a fully-featured install of GraphicsMagick depends
+on 36 libraries whereas ImageMagick requires 64.  GraphicsMagick's
+installation footprint is 3-5X smaller than ImageMagick.</p>
+<p>GraphicsMagick is usually faster than ImageMagick. The baseline execution
+overhead for simple commands is much lower, and GraphicsMagick is also
+more efficient at dealing with large images.</p>
+</div>
+<div class="section" id="how-often-does-graphicsmagick-pick-up-new-code-from-imagemagick">
+<h1><a class="toc-backref" href="#id2">How often does GraphicsMagick pick up new code from ImageMagick?</a></h1>
+<p>GraphicsMagick never picks up new code from ImageMagick as distributed
+by ImageMagick Studio LLC. Not long after the GraphicsMagick project
+was started in November 2002, ImageMagick from ImageMagick Studio LLC
+abandoned the MIT X11 style license it had been using since 1992, and
+switched between several different licenses until it ended up with one
+based on the Apache license, which is intended to penalize projects
+which borrow some of its source code, or fork from it. Since that
+time, GraphicsMagick has not incorporated any ImageMagick source code.</p>
+<p>On November 27, 2003 ImageMagick Studio LLC applied to register
+&quot;ImageMagick&quot; as its trademark, and it was awarded this registered
+trademark (serial number 78333969) on August 30, 2005.  Those who
+re-distribute modified versions of &quot;ImageMagick&quot; (e.g. patched or
+improved) under license as &quot;ImageMagick&quot; now face the risk of
+arbitrary trademark infringement claims by ImageMagick Studio LLC.</p>
+<p>Authors of new features are encouraged to independently contribute
+their work to the GraphicsMagick project so that it can be released
+under GraphicsMagick's MIT X11 style license without additional
+encumberment.  In order for a work to be accepted, it must have been
+developed entirely outside the ImageMagick source base to avoid any
+possibility of copyright taint.</p>
+</div>
+<div class="section" id="are-there-any-plans-to-use-opencl-or-cuda-to-use-a-gpu">
+<h1><a class="toc-backref" href="#id3">Are there any plans to use OpenCL or CUDA to use a GPU?</a></h1>
+<p>It is well known that some math-intensive algorithms run very quickly
+on video-card (and stand-alone) GPUs.  Video card vendors encourage
+you to buy an expensive video card with quite a lot of installed RAM
+and modify applications to use the GPU via their proprietary or
+limited-purpose APIs.  GPUs are quite effective at producing images
+for real-time display, such as for video games and virtual reality.
+GraphicsMagick has been significantly updated to use multiple CPU
+cores to speed up the image processing, and work continues to thread
+the few remaining algorithms, or remove inefficiencies in algorithms
+which don't see as much speed-up as they should.  Linear speedup as
+cores are added is typical for CPU-bound algorithms on well-designed
+CPUs.  Regardless, <a class="reference external" href="http://en.wikipedia.org/wiki/Amdal%27s_law">Amdahl's law</a> is a significant factor
+in GraphicsMagick, with non-parallelizable code paths often dominating
+the time.</p>
+<p>It is my belief that stand-alone GPUs are a poor design (expensive,
+inefficient, failure-prone, bandwidth bottlenecked, lack
+functionality, are insecure, and are not supported in servers) and
+that multi-core CPUs will ultimately prevail.  Functionality which
+currently works best in a GPU will simply be integrated into
+tomorrow's multi-core CPUs and C compilers will naturally support that
+functionality.  Once GPU capabilities are integrated into CPUs, there
+will be no more need to develop specialized code for a GPU.  Today 16
+core CPUs are readily available for purchase in systems at reasonable
+prices, and this trend is certain to continue.</p>
+<p>Intel's <a class="reference external" href="http://en.wikipedia.org/wiki/Xeon_Phi">Xeon Phi</a> offers a
+61 core 'x86 CPU in a GPU-like plugin form-factor which provides over
+a TeraFLOP of performance.  Being based on power-hungry plug-in cards,
+this solution suffers from many of the issues associated with GPUs.
+However, since it supports OpenMP, it may be a suitable target for
+executing some GraphicsMagick algorithms. Effective use of Xeon Phi
+currently requires use of Intel's development tools so from that
+standpoint it is not much more open than GPUs.</p>
+<p>Future multi-core CPUs will use a similar amount of power to today's
+CPUs, will idle at very low power consumption levels, and will fit
+into a very small chassis.  Due to this trend, there is no value
+obtained by expending energy toward developing specialized code for
+today's GPUs.</p>
+</div>
+<div class="section" id="what-is-the-meaning-of-magick">
+<h1><a class="toc-backref" href="#id4">What is the meaning of &quot;magick&quot;?</a></h1>
+<p>According to the infamous British accultist <a class="reference external" href="http://en.wikipedia.org/wiki/Aleister_Crowley">Aleister Crowley</a>, the definition of
+<a class="reference external" href="http://en.wikipedia.org/wiki/Magick_(Aleister_Crowley)">magick</a> is
+&quot;the science and art of causing change to occur in conformity with the
+will&quot;.</p>
+</div>
+<div class="section" id="how-can-i-process-many-files-at-once">
+<h1><a class="toc-backref" href="#id5">How can I process many files at once?</a></h1>
+<p>Use 'gm mogrify'.  The 'mogrify' subcommand is designed to operate on
+any number of files in one command.  Normally 'mogrify' overwrites the
+input files but the <cite>-output-directory</cite> option (which must appear
+before any input file names!) allows sending the modified files to a
+different directory (which could be in a subdirectory).  For example:</p>
+<pre class="literal-block">
+gm mogrify -output-directory .thumbs -resize 320x200 *.jpg
+</pre>
+<p>If you encounter command line length limitations then you can have
+GraphicsMagick expand the file list by quoting the wildcard argument
+to prevent it from being expanded by your command shell:</p>
+<pre class="literal-block">
+gm mogrify -output-directory .thumbs -resize 320x200 &quot;*.jpg&quot;
+</pre>
+<p>and you can also retrieve a list of files to process from a text file
+(e.g. named 'files.txt') like:</p>
+<pre class="literal-block">
+gm mogrify -output-directory .thumbs -resize 320x200 &#64;files.txt
+</pre>
+<p>where files.txt has one line per file name.  If the input file paths
+contain relative sub-directory paths (e.g. &quot;foo/file1&quot;, &quot;bar/file2&quot;),
+you can instruct GraphicsMagick to create a similar subdirectory
+structure under the output directory by adding the
+<cite>-create-directories</cite> option:</p>
+<pre class="literal-block">
+gm mogrify -output-directory .thumbs -create-directories -resize 320x200 &#64;files.txt
+</pre>
+<p>Note that the algorithm used to generate output file names is quite
+simple.  If -output-directory is &quot;/foo&quot; and the file path is
+&quot;bar/none.jpg&quot; then the final path will be &quot;foo/bar/none.jpg&quot;.  Based
+on this it should be clear that when <cite>-output-directory</cite> is used, file
+paths should be relative paths rather than absolute paths or else the
+concatenation won't work.</p>
+</div>
+<div class="section" id="i-received-the-following-message-delegation-failed-what-does-it-mean">
+<h1><a class="toc-backref" href="#id6">I received the following message, &quot;?????? delegation failed ...&quot;. What does it mean?</a></h1>
+<p><em>GraphicsMagick</em> uses several freely available packages to perform the
+translation of certain image formats (<em>PostScript</em>, <em>MPEG</em>, etc.). Make
+sure these packages are available as described in the <a class="reference external" href="README.html">README</a> file. Also
+verify that you have plenty of temporary disk space. If not, set the
+MAGICK_TMPDIR (or TMPDIR) environment variable to an area where
+sufficient space is available. Finally, for <em>PostScript</em>, verify that
+Ghostscript supports the <em>pnmraw</em> or <em>ppmraw</em> device (<tt class="docutils literal">gs <span class="pre">-h</span></tt>) and that
+the document contains valid <em>PostScript</em> statements (<tt class="docutils literal">gs image.ps</tt>).</p>
+</div>
+<div class="section" id="how-do-i-set-the-transparency-index-in-a-gif-image-so-it-displays-properly-within-mozilla">
+<h1><a class="toc-backref" href="#id7">How do I set the transparency index in a GIF image so it displays properly within Mozilla?</a></h1>
+<p>Display your GIF image with <a class="reference external" href="display.html">display</a>. Choose <em>Matte</em> from the <em>Image
+Edit</em> command menu and identify a pixel that has the <em>transparency</em>
+color. Press <em>Method</em> and select a matte edit method from a pop-up menu.
+Choose from these methods:</p>
+<ul class="simple">
+<li>point</li>
+<li>replace</li>
+<li>floodfill</li>
+</ul>
+<p>The <em>point</em> method changes the matte value of any pixel selected with the
+pointer until the button is is released. The <em>replace</em> method changes the
+matte value of any pixel that matches the color of the pixel you select
+with a button press. <em>Floodfill</em> changes the matte value of any pixel
+that matches the color of the pixel you select with a button press and is
+a neighbor.</p>
+<p>Select your transparent pixel with the pointer and press a button. The
+image is redisplayed with any transparent pixels recolored to the
+background color. You can select other pixels or areas to force to
+transparent. When you are satisfied, press Return.</p>
+<p>Finally, choose <em>Save</em> from the command menu and write your GIF image to
+a file. <strong>Note that setting transparency works best on a TrueColor or
+DirectColor visual</strong>. If your server only exports colormapped visuals you
+will need to use a <em>Standard Colormap</em> to set transparency.</p>
+<pre class="literal-block">
+xstdcmap -best
+gm display -map list image.gif
+[ choose Matte Edit ]
+[ select your transparent pixel then press Return ]
+[ choose Save '
+</pre>
+<p>If you do not have the <em>xstdcmap(1)</em> program, try</p>
+<pre class="literal-block">
+gm display -visual TrueColor image.gif
+</pre>
+</div>
+<div class="section" id="how-can-i-stop-the-filenames-from-changing-in-the-title-bar-of-the-animate-1-image-window">
+<h1><a class="toc-backref" href="#id8">How can I stop the filenames from changing in the title bar of the animate(1) image window?</a></h1>
+<p><a class="reference external" href="animate.html">Animate</a> updates the image file name in the title bar of the image window
+as each image is displayed from the image sequence. To display just a
+single name that will not change, use <em>-title</em>:</p>
+<pre class="literal-block">
+gm animate -title &quot;My Image Sequence&quot; images.
+</pre>
+</div>
+<div class="section" id="the-image-grabbed-by-import-1-does-not-look-like-the-image-on-my-x-server-what-s-wrong">
+<h1><a class="toc-backref" href="#id9">The image grabbed by import(1) does not look like the image on my X server. What's wrong?</a></h1>
+<p>Use the <em>-descend</em> option:</p>
+<pre class="literal-block">
+gm import -descend image.miff
+</pre>
+<p>or set this X resource:</p>
+<pre class="literal-block">
+gm import.descend: True
+</pre>
+<p>By default, <a class="reference external" href="import.html">import</a> quickly grabs the image from the X server. However,
+it may not always have the correct colors in some areas. This can happen
+when a subwindow has a different colormap than its parent. With
+<em>-descend</em>, <a class="reference external" href="import.html">import</a> descends the window hierarchy. Descending involves
+grabbing the image and colormap of each window or subwindow associated
+with the window you select and compositing it on a blank canvas. This can
+be significantly slower than just grabbing the top-level window but
+ensures the correct image.</p>
+</div>
+<div class="section" id="how-do-i-animate-a-digital-yuv-image-sequence">
+<h1><a class="toc-backref" href="#id10">How do I animate a digital YUV image sequence?</a></h1>
+<p>Suppose your sequence is 72 352x240 frames titled frame0.Y, frame0.U,
+frame0.V, frame1.Y, frame1.U, etc. Use this command:</p>
+<pre class="literal-block">
+gm animate -geometry 352x240 -scene 0-71 yuv3:frame%d
+</pre>
+</div>
+<div class="section" id="how-do-i-change-the-default-postscript-page-size">
+<h1><a class="toc-backref" href="#id11">How do I change the default <em>PostScript</em> page size?</a></h1>
+<p>The default dimensions of a <em>PostScript</em> page is 612x792. If you prefer
+another default, change the page geometries (PSPageGeometry) in
+<cite>magick/image.h</cite> and recompile.</p>
+</div>
+<div class="section" id="i-get-a-memory-allocation-error-what-can-i-do">
+<h1><a class="toc-backref" href="#id12">I get a memory allocation error. What can I do?</a></h1>
+<p>Memory allocation is a complex topic in GraphicsMagick and image
+processing requires a lot of memory. GraphicsMagick tries to take best
+advantage of the resources available by optimizing its use of <em>virtual</em>
+memory. Virtual memory is normally the amount of RAM (Random Access
+Memory) available to the process plus the amount of free space in the
+system paging area (known as &quot;swap&quot; under Unix, or a &quot;page file&quot; under
+Windows). In addition to the RAM and the paging area, GraphicsMagick is
+able to expand the amount of virtual memory available by using
+memory-mapped files which cause the file to be treated as extra memory. A
+piece of hardware known as the Memory Management Unit (MMU) performs the
+magic which allows the system paging area and memory-mapped files to be
+treated as more memory by your system's CPU.</p>
+<p>Usually when a memory allocation error occurs, it is because the system's
+paging area is full, or the programs memory (heap) is fragmented badly
+enough that there is no large-enough block of memory available to satisfy
+the request. In some cases the operating system may artificially limit
+the memory available to the program. Failures of small memory allocations
+are generally considered fatal by GraphicsMagick. If it is impossible to
+allocate even a little bit of memory, then there is no point in
+continuing. When large memory allocations associated with allocating
+memory for image pixels fail, GraphicsMagick uses that as a key to know
+that it should start using memory-mapped temporary files to increase
+virtual memory. Under Unix and other POSIX-compliant systems, these
+memory-mapped temporary files are created in either the system default
+location (e.g. <cite>/var/tmp</cite>) or the directory set by the TMPDIR environment
+variable. Under Windows, temporary files are created in the directory set
+by the TEMP or TMP environment variable. Use the MAGICK_TMPDIR
+environment variable to specify a directory for GraphicsMagick to write
+its temporary files.</p>
+<p>If the temporary file directory is too small, or is itself mapped to the
+system's paging area (no win!), then GraphicsMagick will fail to allocate
+more virtual memory via the temporary file and will return an error.</p>
+<p>The single biggest factor in how much memory is required by
+GraphicsMagick is the QuantumDepth setting when it was compiled. The
+amount of memory (in bytes) required to store a single image in memory is
+may be calculated via the equation (QuantumDepth*Rows*Columns*5)/8. As a
+means of example, the following table shows the amount of memory consumed
+by a single 1024x768 image using the supported QuantumDepth settings:</p>
+<blockquote>
+<table border="1" class="docutils">
+<colgroup>
+<col width="46%" />
+<col width="54%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">QuantumDepth</th>
+<th class="head">Virtual Memory</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>8</td>
+<td>3MB</td>
+</tr>
+<tr><td>16</td>
+<td>8MB</td>
+</tr>
+<tr><td>32</td>
+<td>15MB</td>
+</tr>
+</tbody>
+</table>
+</blockquote>
+<p>Performing an image processing operation may require that several images
+be in memory at one time. In the case of animations, hundreds of images
+may be in memory at one time.</p>
+<p><em>GraphicsMagick</em> is designed to be general purpose. It can display many
+image storage formats (<em>Monochrome</em>, <em>PseudoColor</em>, or <em>TrueColor</em>) on
+many different types of X visuals (<em>StaticGray, StaticColor, PseudoColor,
+GrayScale, DirectColor,</em> or <em>TrueColor</em>). To support all these
+combinations of image storage formats and X visuals, extra memory is
+required. Additionally, <a class="reference external" href="animate.html">animate</a> and <a class="reference external" href="montage.html">montage</a> store an entire image
+sequence in memory.</p>
+<p>It is recommended that systems used to run <em>GraphicsMagick</em> have at least
+96MB of RAM and 140MB free in their paging area. Systems used to process
+large images (do the math!) may require considerably more memory to
+operate efficiently. GraphicsMagick is proven to be far more efficient at
+processing huge images when it is compiled as a 64-bit application on a
+64-bit capable CPU. RAM is typically 1000 times faster than disk, so it
+is important to keep as much data in RAM as possible (buy lots of RAM).
+The temporary file area should have plenty of free space. The size of the
+temporary file area is usually the deciding factor as to whether
+GraphicsMagick is able to complete an operation. With sufficient free
+disk space, GraphicsMagick is primarily limited by your CPU, your
+operating system's ability to address memory, and your degree of
+patience. GraphicsMagick has been used to process RGB images 64K by 64K
+pixels in size!</p>
+</div>
+<div class="section" id="how-do-i-concatenate-three-images-left-to-right-with-no-borders-frames-or-text">
+<h1><a class="toc-backref" href="#id13">How do I concatenate three images left-to-right with no borders, frames, or text?</a></h1>
+<p>Assume your three images are called image1.ppm, image2.ppm, and
+image3.ppm. Type</p>
+<pre class="literal-block">
+gm montage -mode concatenate -tile 3x1 image1.ppm image2.ppm \
+  image3.ppm concatenated.miff
+</pre>
+<p>To concatenate the images top-to-bottom, use -tile 1x3.</p>
+<p>For more control over the placement of an image, use <a class="reference external" href="composite.html">composite</a>. First
+create a matte image and position your images onto the matte. For
+example,</p>
+<pre class="literal-block">
+gm convert -size 350x500 xc:black composite.miff
+gm composite -geometry +0+0 composite.miff image1.gif composite.miff
+gm composite -geometry &quot;+1&quot;00+0 composite.miff image2.gif composite.miff
+gm composite -geometry +0+300 composite.miff image3.gif composite.miff
+gm composite -geometry +0+375 composite.miff image4.gif composite.miff
+</pre>
+</div>
+<div class="section" id="how-do-i-create-a-gif-animation-sequence-to-display-within-firefox">
+<h1><a class="toc-backref" href="#id14">How do I create a GIF animation sequence to display within Firefox?</a></h1>
+<p>Use <a class="reference external" href="convert.html">convert</a> with the <em>-delay</em> and <em>-page</em> options. The <em>-delay</em> option
+is used to specify the delay in <em>1/100ths of a second</em> between the
+display of each frame of the animation. For example,</p>
+<pre class="literal-block">
+gm convert -delay 20 frame*.gif animation.gif
+</pre>
+<p>You can also declare specific delays for each frame of the image
+sequence. For example, if the delay was 20, 10, and 5, use</p>
+<pre class="literal-block">
+gm convert -delay 20 frame1.gif -delay 10 frame2.gif \
+  -delay 5 frame3.gif animation.gif
+</pre>
+<p>Use <em>-page</em> to specify the <em>left</em> and <em>top</em> locations of the image frame</p>
+<pre class="literal-block">
+gm convert frame1.gif -page +50&quot;+1&quot;00 frame2.gif -page +0&quot;+1&quot;00 \
+  frame3.gif animation.gif
+</pre>
+<p>Finally, if you want the image to loop within <em>FireFox</em>, use <em>-loop</em></p>
+<pre class="literal-block">
+gm convert -loop 50 frame*.gif animation.gif
+</pre>
+<p>Note, that all the images are composited into a single multi-image GIF
+animation. If you want a single image produced for each frame, use
+<em>+adjoin</em></p>
+<pre class="literal-block">
+gm convert +adjoin images.* frames%d.gif
+</pre>
+</div>
+<div class="section" id="when-i-display-a-postscript-image-white-borders-are-trimmed">
+<h1><a class="toc-backref" href="#id15">When I display a <em>PostScript</em> image, white borders are trimmed.</a></h1>
+<p><em>GraphicsMagick</em> automatically trims any <em>PostScript</em> image as defined by
+the bounding box. To preempt this behavior, remove the bounding box
+statement from the <em>Postscript</em> or explicitly set the page size. For
+example,</p>
+<pre class="literal-block">
+gm display -page letter image.ps
+</pre>
+</div>
+<div class="section" id="what-are-visual-image-directories-how-do-i-use-them">
+<h1><a class="toc-backref" href="#id16">What are visual image directories? How do I use them?</a></h1>
+<p>A visual image directory (VID) is an image that contains thumbnails of
+one or more images in a file directory. Rather than displaying each
+individual image at its full resolution, you can browse the visual image
+directory and choose an image to display. You can create a VID with
+either of these commands:</p>
+<pre class="literal-block">
+gm montage *.jpg directory.vid
+gm convert 'vid:*.jpg' directory.vid
+</pre>
+<p>Of course you can substitute any filenames you desire. <a class="reference external" href="montage.html">Montage</a> has many
+relevant command line options. You can exercise more control over the
+appearance of the VID than with <a class="reference external" href="convert.html">convert</a>.</p>
+<p>Next display the directory:</p>
+<pre class="literal-block">
+gm display directory.vid
+</pre>
+<p>Finally browse and select an image to display. Move the pointer to the
+image and press button 3.</p>
+<p>You can create the VID directory with this command:</p>
+<pre class="literal-block">
+gm display 'vid:*.jpg'
+</pre>
+<p>You can also select <em>Visual Image...</em> from the <em>File</em> menu of the command
+widget.</p>
+<p><em>Note, that creating a VID is time consuming</em>. Creating them on-the-fly
+within <a class="reference external" href="display.html">display</a> may be less convenient than using <a class="reference external" href="montage.html">montage</a> or <a class="reference external" href="convert.html">convert</a> .
+Also, if you create them with <a class="reference external" href="montage.html">montage</a>. or <a class="reference external" href="convert.html">convert</a>, you can reuse them
+as often as necessary.</p>
+<p>Note that a visual image directory is useful for looking at individual
+frames of an image sequence:</p>
+<pre class="literal-block">
+gm display vid:movie.mpg
+</pre>
+</div>
+<div class="section" id="how-can-i-include-the-window-frame-when-importing-a-window">
+<h1><a class="toc-backref" href="#id17">How can I include the window frame when importing a window?</a></h1>
+<p>I use the window ID reported by <em>xwininfo(1)</em> with import and it does not
+include the window manager frame as expected. How can I save the window
+with its frame?</p>
+<p>By default, <em>xwininfo(1)</em> returns the ID of the window you click on. Use
+the <em>-frame</em> option to get the reparented window ID:</p>
+<pre class="literal-block">
+xwininfo -frame
+</pre>
+<p>You can then use the returned window ID with <a class="reference external" href="import.html">import</a>:</p>
+<pre class="literal-block">
+gm import -frame -window ID window.miff
+</pre>
+</div>
+<div class="section" id="i-displayed-an-image-and-it-appears-as-one-solid-color-what-did-i-do-wrong">
+<h1><a class="toc-backref" href="#id18">I displayed an image and it appears as one solid color. What did I do wrong?</a></h1>
+<p>A blank image generally means that the image is either corrupt or it has
+a matte channel and the matte values are all zero. <em>GraphicsMagick</em>
+treats a matte value of zero as completely transparent. To determine if
+this is the problem, try</p>
+<pre class="literal-block">
+gm display +matte image.miff
+</pre>
+</div>
+<div class="section" id="i-received-the-following-message-library-is-not-available">
+<h1><a class="toc-backref" href="#id19">I received the following message, &quot;???? library is not available...&quot;.</a></h1>
+<p><em>GraphicsMagick</em> requires source libraries not included with the
+distribution to view or convert certain image formats such as JPEG or
+TIFF. The above message means you did not compile the required library
+and link with the <em>GraphicsMagick</em> utilities. See <a class="reference external" href="README.html">README</a> for the
+location of these libraries and compiling instructions.</p>
+</div>
+<div class="section" id="i-want-to-inspect-the-values-of-the-matte-channel-within-my-image">
+<h1><a class="toc-backref" href="#id20">I want to inspect the values of the matte channel within my image.</a></h1>
+<p>View the matte image as a gray scale image. Suppose you have a TIFF image
+that has a matte channel and is 640 pixels in width and 480 in height.
+Type:</p>
+<pre class="literal-block">
+gm convert image.tiff image.matte
+gm display -size 640x480 gray:image.matte
+</pre>
+</div>
+<div class="section" id="how-can-i-add-one-of-those-cool-bevels-to-my-image-that-i-see-used-on-the-web">
+<h1><a class="toc-backref" href="#id21">How can I add one of those cool bevels to my image that I see used on the Web?</a></h1>
+<p>There are four types of ornamental borders you can add to your image
+with GraphicsMagick. Each is listed below with the procedure to use
+them with your image.</p>
+<ul>
+<li><p class="first">Surround the image with a border of color</p>
+<p>Use -border followed by the width and height of the border. Set the
+color of the border with -bordercolor. For example, to surround your
+image with a red border that is 25 pixels wide on each side, use</p>
+<pre class="literal-block">
+gm convert -bordercolor red -border 25x25 image.jpg image.gif
+</pre>
+</li>
+<li><p class="first">Lighten or darken image edges to create a 3-D effect</p>
+<p>Use -raise followed by the width of the image edge. For example, to
+create a raised edge effect of 25 pixels, use</p>
+<pre class="literal-block">
+gm convert -raise 25 image.jpg image.gif
+</pre>
+</li>
+<li><p class="first">Surround the image with an ornamental frame</p>
+<p>Use -frame followed by the width and height of the frame. Set the
+color of the border with -mattecolor. For example, to surround your
+image with a gray frame that is 25 pixels wide on each side, use</p>
+<pre class="literal-block">
+gm convert -mattecolor gray -frame 25x25 image.jpg image.gif
+</pre>
+</li>
+<li><p class="first">Surround the image with a raised or sunken bevel</p>
+<p>Use -frame followed by the width and height of the bevel. Set the
+color of the border with -mattecolor. This is just like the
+description above except you specify a bevel width that matches the
+frame width. For example, to surround your image with a gray bevel
+that is 25 pixels wide on each side, use</p>
+<pre class="literal-block">
+gm convert -mattecolor gray -frame 25x25+0+25 image.jpg image.gif
+gm convert -mattecolor gray -frame 25x25+25+0 image.jpg image.gif
+</pre>
+</li>
+</ul>
+</div>
+<div class="section" id="i-try-to-launch-display-from-my-window-manager-and-it-fails-what-s-up">
+<h1><a class="toc-backref" href="#id22">I try to launch display from my window manager and it fails. What's up?</a></h1>
+<p><a class="reference external" href="display.html">Display</a> determines if it is executing interactively and behaves
+differently depending on the result. To convince display &lt;display.html&gt;
+you are running in an interactive environment when launching from a
+window manager, use either of</p>
+<pre class="literal-block">
+display logo:Untitled
+display &lt; /dev/console
+</pre>
+<p>Note that this issue no longer exists as of GraphicsMagick 1.2.</p>
+</div>
+<div class="section" id="how-can-i-make-postscript-text-look-good">
+<h1><a class="toc-backref" href="#id23">How can I make Postscript text look good?</a></h1>
+<p>Simple. Increase the dots-per-inch when converting and sub-sample:</p>
+<pre class="literal-block">
+gm convert -density 288 -geometry 25% image.ps image.gif
+</pre>
+<p>Change the density to 144 and geometry to 50% if the above command fails
+due to insufficient memory. Alternatively, see the Ghostscript
+documentation about using high-quality fonts.</p>
+<p>The -density option increases the number of pixels (or dots) generated by
+Ghostscript when processing the input postscript file. However as all
+other images formats are generally displayed on screens which are
+typically about 72 to 100 dots per inch, the output image will be larger.</p>
+<p>The <em>-geometry</em> option reduces the large image output of ghostscript
+image back to a normal 72 dpi resolution (25% of 288 dpi gives 72 dpi)
+but in the process anti-aliases (or smooths) the fonts and lines of the
+image so as to remove the jaggies you would otherwise get from a normal
+postscript to image conversion.</p>
+</div>
+<div class="section" id="how-can-i-annotate-an-image-with-text-that-is-2-to-3-inches-tall">
+<h1><a class="toc-backref" href="#id24">How can I annotate an image with text that is 2 to 3 inches tall?</a></h1>
+<p>If you do not access to a particular named font that is large, try
+scalable fonts. First see if you have any scalable fonts. Type</p>
+<pre class="literal-block">
+xlsfonts -fn '*-0-0-0-0-*'
+</pre>
+<p>Or if you are using <a class="reference external" href="display.html">display</a>, use the font pattern above within the Font
+Browser (see Image Edit-&gt;Annotate). Next substitute the appropriate
+resolution. Keep in mind that a scalable font must be fully qualified to
+work. That is, all 14 fields must be specified. Here is one example where
+we annotate an image with large <em>Helvetica</em> text:</p>
+<pre class="literal-block">
+gm convert -font '-*-helvetica-*-*-*--300-300-*-*-*-*-iso8859-1' \
+  -fill green -draw 'text 50,300 Magick' image.gif annotated.gif
+</pre>
+<p>If you have the FreeType support built into GraphicsMagick, just
+increase your pointsize and/or density:</p>
+<pre class="literal-block">
+gm convert -font Helvetica -pointsize 100 -density 300 ...
+</pre>
+</div>
+<div class="section" id="how-can-i-convert-my-gif-animation-sequence-to-individual-image-files">
+<h1><a class="toc-backref" href="#id25">How can I convert my GIF animation sequence to individual image files?</a></h1>
+<p>Use the scene embedded file format with <a class="reference external" href="convert.html">convert</a>:</p>
+<pre class="literal-block">
+gm convert animation.gif +adjoin frame%02d.gif
+</pre>
+<p>The resulting image files are titled frame01.gif, frame02.gif,
+frame03.gif, etc.</p>
+</div>
+<div class="section" id="how-can-i-remove-the-background-that-prints-around-my-image-when-i-display-it-with-firefox">
+<h1><a class="toc-backref" href="#id26">How can I remove the background that prints around my image when I display it with Firefox?</a></h1>
+<p>Use the +page option of the <a class="reference external" href="convert.html">convert</a> command:</p>
+<pre class="literal-block">
+gm convert +page alpha.gif beta.gif
+</pre>
+<p>GIF allows for a page offset relative to some background. The page
+offset information may have been in your GIF image already or it
+could have been introduced by GraphicsMagick. Either way, +page
+removes the unwanted page offset and FireFox should behave as
+expected.</p>
+</div>
+<div class="section" id="how-do-i-create-a-gif-or-png-image-with-web-safe-colors">
+<h1><a class="toc-backref" href="#id27">How do I create a GIF or PNG image with Web safe colors?</a></h1>
+<p>Web safe colors are not normally needed any more since almost all
+computers now have true color displays. However, this FAQ may still be
+useful since it demonstrates how a colormap from an image may be
+applied to another image..</p>
+<p>Use the -map option of the <a class="reference external" href="convert.html">convert</a> command:</p>
+<pre class="literal-block">
+gm convert -map netscape: alpha.gif beta.gif
+</pre>
+<p>Netscape predefines 216 colors for colormapped displays. Use the above
+command to ensure only these predefined colors are used. Otherwise
+Netscape dithers your image with varying degrees of image fidelity.</p>
+</div>
+<div class="section" id="how-can-i-add-a-matte-layer-to-my-image">
+<h1><a class="toc-backref" href="#id28">How can I add a matte layer to my image?</a></h1>
+<p>One way is to use a bitmap as your transparency mask First, use the
+-matte option to add an all-opaque opacity channel, then use the
+composite utility to copy the graylevel samples from the mask file
+into your new opacity channel:</p>
+<pre class="literal-block">
+gm convert image.gif -matte temp.miff
+gm composite -compose CopyOpacity mask.xbm temp.miff transparent.gif
+</pre>
+<p>Note, GIF is limited to one transparent color. If your mask has
+variable opacity, use a format like MIFF, TIFF, or PNG as your output
+image format.</p>
+</div>
+<div class="section" id="how-can-i-draw-with-text-using-convert-under-windows-nt">
+<h1><a class="toc-backref" href="#id29">How can I draw with text using 'convert' under Windows NT?</a></h1>
+<p>The problem is that NT interprets the command line differently than
+Unix does, causing the documented command to fail. The following
+command has been reported to work correctly (all on one line):</p>
+<pre class="literal-block">
+gm convert -font Arial -fill blue -draw &quot;text 10,10 'your text here'&quot; \
+   d:\test.tif png:d:\test.png
+</pre>
+<p>and here is another example which is reported to work (which relies
+on Ghostscript's 'gs' program to installed):</p>
+<pre class="literal-block">
+gm convert.exe -pointsize 18 -draw &quot;text 0,0 &quot;This is my text!&quot;&quot; \
+  C:\blank.gif c:\text.gif
+</pre>
+</div>
+<div class="section" id="why-are-my-jpeg-files-larger-than-expected">
+<h1><a class="toc-backref" href="#id30">Why are my JPEG files larger than expected?</a></h1>
+<p>Your JPEG files may contain embedded &quot;profiles&quot; such as Exif or IPTC,
+or they may contain uncompressed thumbnails. You can use the <cite>+profile
+&quot;*&quot;</cite> commandline option or an equivalent API method to remove them.</p>
+</div>
+<div class="section" id="how-do-i-extract-a-single-image-from-a-multi-image-file">
+<h1><a class="toc-backref" href="#id31">How do I extract a single image from a multi-image file?</a></h1>
+<p>Use a square-bracket syntax to indicate which frame or frames you
+want. For example,</p>
+<pre class="literal-block">
+gm convert &quot;Image.gif[0]&quot; first.gif
+</pre>
+<p>Will extract the first image (scene 0) from a GIF animation. Be sure
+to surround the file specification with quotation marks, to prevent
+the shell from interpreting the square brackets.</p>
+</div>
+<div class="section" id="how-can-i-extract-and-combine-cmyk-channels-in-a-cmyk-image">
+<h1><a class="toc-backref" href="#id32">How can I extract and combine CMYK channels in a CMYK image?</a></h1>
+<p>GraphicsMagick 1.2.2 and later support combining multiple channels in of
+any image file format in order to create a CMYK image file.  For example,
+starting with a CMYK JPEG file, we can create a set of separate files
+with one file per channel:</p>
+<pre class="literal-block">
+gm convert cmyk.jpg -channel cyan cyan.tiff
+gm convert cmyk.jpg -channel magenta magenta.tiff
+gm convert cmyk.jpg -channel yellow yellow.tiff
+gm convert cmyk.jpg -channel black black.tiff
+</pre>
+<p>and then we can join them back together:</p>
+<pre class="literal-block">
+gm composite -compose CopyMagenta magenta.tiff cyan.tiff result.tiff
+gm composite -compose CopyYellow yellow.tiff result.tiff result.tiff
+gm composite -compose CopyBlack black.tiff result.tiff result.tiff
+</pre>
+<p>Perhaps it is possible to accomplish this in one composite command. We
+will leave that as an exercise for later. Note that it is possible to
+extract just one channel, manipulate it, and then insert it back into the
+original image file.</p>
+<p>There is also built-in support for a <em>Partition</em> interlace format which
+can split to a set of files, and join a set of files, but the only
+supported format is a raw format which is not easy to deal with.</p>
+</div>
+<div class="section" id="how-can-i-create-a-solid-or-patterned-canvas-image">
+<h1><a class="toc-backref" href="#id33">How can I create a solid or patterned canvas image?</a></h1>
+<p>Canvas images may be created using the 'XC:' or 'TILE:' pseudo-image
+formats. XC produces solid color images based on an color you specify
+while TILE produces a tiled image based on an an image you specify. Both
+of these require that the desired size be specified, and the desired
+image type may be specified as well.</p>
+<p>To create a solid red canvas image:</p>
+<pre class="literal-block">
+gm convert -size 640x480 xc:red canvas.tiff
+</pre>
+<p>or using hex syntax to specify the color:</p>
+<pre class="literal-block">
+gm convert -size 640x480 &quot;xc:#f00&quot; canvas.tiff
+</pre>
+<p>To create a solid red canvas image using truecolor pixels:</p>
+<pre class="literal-block">
+gm convert -size 640x480 -type TrueColor xc:red canvas.tiff
+</pre>
+<p>To create a patterned canvas image using a built-in crosshatch pattern:</p>
+<pre class="literal-block">
+gm convert -size 640x480 tile:image:CROSSHATCH45 canvas.tiff
+</pre>
+<p>To create a patterned canvas image using a user-supplied image:</p>
+<pre class="literal-block">
+gm convert -size 640x480 tile:myimage.tiff canvas.tiff
+</pre>
+</div>
+<div class="section" id="what-does-identify-report">
+<h1><a class="toc-backref" href="#id34">What does <cite>identify</cite> report?</a></h1>
+<p>GraphicsMagick is sophisticated image handling software supporting
+perhaps a hundred formats, and hundreds of subformats, yet it needs to
+be able to apply image processing algorithms in a consistent way, and
+save to many output formats.  Some image types are radically different
+from others.  Due to this, GraphicsMagick normalizes images it reads
+into only nine internal in-memory formats (see the description of
+-type) which are a specialization of just two internal formats.  The
+<cite>identify</cite> command reports the characteristics of one of those
+internal formats rather than the genuine properties of the input image
+file.  In fact, if the properties of all the input files were to be
+reported, it would require a book to describe all of the properties.
+For example, the WMF vector-drawing format is much different from the
+PNG image file format, yet GraphicsMagick can read both.</p>
+<p>Only limited original properties are preserved, and it depends on how
+GraphicsMagick was built.  For example, a &quot;Q8&quot; build can only report
+up to a depth of 8 bits, but a &quot;Q32&quot; build can report a depth of up to
+32 bits.  The original image depth is reported if it is at least 8
+bits, and equal to or less than the build depth.</p>
+<p>By default <cite>identify</cite> reports only the most basic properties:</p>
+<pre class="literal-block">
+% gm identify seaworld.jpg
+seaworld.jpg JPEG 1530x1020+0+0 DirectClass 8-bit 204.0K 0.000u 0:01
+</pre>
+<p>but with -verbose it can report on a large number of properties.</p>
+<hr class="docutils" />
+<p>Copyright © GraphicsMagick Group 2002 - 2020</p>
+</div>
+</div>
+</body>
+</html>

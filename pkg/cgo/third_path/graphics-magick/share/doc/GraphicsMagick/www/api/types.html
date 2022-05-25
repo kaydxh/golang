@@ -1,0 +1,2844 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.15.2: http://docutils.sourceforge.net/" />
+<title>GraphicsMagick Types</title>
+<link rel="stylesheet" href="../docutils-articles.css" type="text/css" />
+</head>
+<body>
+
+<div class="banner">
+<img src="../images/gm-107x76.png" alt="GraphicMagick logo" width="107" height="76" />
+<span class="title">GraphicsMagick</span>
+<form action="http://www.google.com/search">
+	<input type="hidden" name="domains" value="www.graphicsmagick.org" />
+	<input type="hidden" name="sitesearch" value="www.graphicsmagick.org" />
+    <span class="nowrap"><input type="text" name="q" size="25" maxlength="255" />&nbsp;<input type="submit" name="sa" value="Search" /></span>
+</form>
+</div>
+
+<div class="navmenu">
+<ul>
+<li><a href="../index.html">Home</a></li>
+<li><a href="../project.html">Project</a></li>
+<li><a href="../download.html">Download</a></li>
+<li><a href="../README.html">Install</a></li>
+<li><a href="../Hg.html">Source</a></li>
+<li><a href="../NEWS.html">News</a> </li>
+<li><a href="../utilities.html">Utilities</a></li>
+<li><a href="../programming.html">Programming</a></li>
+<li><a href="../reference.html">Reference</a></li>
+</ul>
+</div>
+<div class="document" id="graphicsmagick-types">
+<h1 class="title">GraphicsMagick Types</h1>
+
+<!-- -*- mode: rst -*- -->
+<!-- This text is in reStucturedText format, so it may look a bit odd. -->
+<!-- See http://docutils.sourceforge.net/rst.html for details. -->
+<div class="contents local topic" id="contents">
+<ul class="simple">
+<li><a class="reference internal" href="#affinematrix" id="id1">AffineMatrix</a></li>
+<li><a class="reference internal" href="#blobinfo" id="id2">BlobInfo</a></li>
+<li><a class="reference internal" href="#cache" id="id3">Cache</a></li>
+<li><a class="reference internal" href="#channeltype" id="id4">ChannelType</a></li>
+<li><a class="reference internal" href="#chromaticityinfo" id="id5">ChromaticityInfo</a></li>
+<li><a class="reference internal" href="#classtype" id="id6">ClassType</a></li>
+<li><a class="reference internal" href="#clippathunits" id="id7">ClipPathUnits</a></li>
+<li><a class="reference internal" href="#colorpacket" id="id8">ColorPacket</a></li>
+<li><a class="reference internal" href="#colorspacetype" id="id9">ColorspaceType</a></li>
+<li><a class="reference internal" href="#compliancetype" id="id10">ComplianceType</a></li>
+<li><a class="reference internal" href="#compositeoperator" id="id11">CompositeOperator</a></li>
+<li><a class="reference internal" href="#compressiontype" id="id12">CompressionType</a></li>
+<li><a class="reference internal" href="#decorationtype" id="id13">DecorationType</a></li>
+<li><a class="reference internal" href="#drawcontext" id="id14">DrawContext</a></li>
+<li><a class="reference internal" href="#drawinfo" id="id15">DrawInfo</a></li>
+<li><a class="reference internal" href="#endiantype" id="id16">EndianType</a></li>
+<li><a class="reference internal" href="#errorhandler" id="id17">ErrorHandler</a></li>
+<li><a class="reference internal" href="#exceptioninfo" id="id18">ExceptionInfo</a></li>
+<li><a class="reference internal" href="#exceptiontype" id="id19">ExceptionType</a></li>
+<li><a class="reference internal" href="#fillrule" id="id20">FillRule</a></li>
+<li><a class="reference internal" href="#filtertypes" id="id21">FilterTypes</a></li>
+<li><a class="reference internal" href="#frameinfo" id="id22">FrameInfo</a></li>
+<li><a class="reference internal" href="#gravitytype" id="id23">GravityType</a></li>
+<li><a class="reference internal" href="#image" id="id24">Image</a></li>
+<li><a class="reference internal" href="#imageinfo" id="id25">ImageInfo</a></li>
+<li><a class="reference internal" href="#imagetype" id="id26">ImageType</a></li>
+<li><a class="reference internal" href="#indexpacket" id="id27">IndexPacket</a></li>
+<li><a class="reference internal" href="#interlacetype" id="id28">InterlaceType</a></li>
+<li><a class="reference internal" href="#layertype" id="id29">LayerType</a></li>
+<li><a class="reference internal" href="#magickinfo" id="id30">MagickInfo</a></li>
+<li><a class="reference internal" href="#monitorhandler" id="id31">MonitorHandler</a></li>
+<li><a class="reference internal" href="#montageinfo" id="id32">MontageInfo</a></li>
+<li><a class="reference internal" href="#noisetype" id="id33">NoiseType</a></li>
+<li><a class="reference internal" href="#orientationtype" id="id34">OrientationType</a></li>
+<li><a class="reference internal" href="#paintmethod" id="id35">PaintMethod</a></li>
+<li><a class="reference internal" href="#pixelpacket" id="id36">PixelPacket</a></li>
+<li><a class="reference internal" href="#pointinfo" id="id37">PointInfo</a></li>
+<li><a class="reference internal" href="#profileinfo" id="id38">ProfileInfo</a></li>
+<li><a class="reference internal" href="#quantizeinfo" id="id39">QuantizeInfo</a></li>
+<li><a class="reference internal" href="#quantum" id="id40">Quantum</a></li>
+<li><a class="reference internal" href="#quantumtype" id="id41">QuantumType</a></li>
+<li><a class="reference internal" href="#rectangleinfo" id="id42">RectangleInfo</a></li>
+<li><a class="reference internal" href="#registrytype" id="id43">RegistryType</a></li>
+<li><a class="reference internal" href="#renderingintent" id="id44">RenderingIntent</a></li>
+<li><a class="reference internal" href="#resolutiontype" id="id45">ResolutionType</a></li>
+<li><a class="reference internal" href="#resourcetype" id="id46">ResourceType</a></li>
+<li><a class="reference internal" href="#segmentinfo" id="id47">SegmentInfo</a></li>
+<li><a class="reference internal" href="#signatureinfo" id="id48">SignatureInfo</a></li>
+<li><a class="reference internal" href="#storagetype" id="id49">StorageType</a></li>
+<li><a class="reference internal" href="#streamhandler" id="id50">StreamHandler</a></li>
+<li><a class="reference internal" href="#stretchtype" id="id51">StretchType</a></li>
+<li><a class="reference internal" href="#styletype" id="id52">StyleType</a></li>
+<li><a class="reference internal" href="#typemetric" id="id53">TypeMetric</a></li>
+<li><a class="reference internal" href="#viewinfo" id="id54">ViewInfo</a></li>
+<li><a class="reference internal" href="#virtualpixelmethod" id="id55">VirtualPixelMethod</a></li>
+<li><a class="reference internal" href="#magickxresourceinfo" id="id56">MagickXResourceInfo</a></li>
+</ul>
+</div>
+<div class="section" id="affinematrix">
+<h1><a class="toc-backref" href="#id1">AffineMatrix</a></h1>
+<p>AffineMatrix defines a 2D affine matrix transform.</p>
+<pre class="literal-block">
+typedef struct _AffineMatrix
+{
+  double
+    sx,
+    rx,
+    ry,
+    sy,
+    tx,
+    ty;
+} AffineMatrix;
+</pre>
+</div>
+<div class="section" id="blobinfo">
+<h1><a class="toc-backref" href="#id2">BlobInfo</a></h1>
+<p>BlobInfo is an opaque pointer reference to the internal structure of an
+I/O blob handle.</p>
+</div>
+<div class="section" id="cache">
+<h1><a class="toc-backref" href="#id3">Cache</a></h1>
+<pre class="literal-block">
+typedef void
+  *Cache;
+</pre>
+</div>
+<div class="section" id="channeltype">
+<h1><a class="toc-backref" href="#id4">ChannelType</a></h1>
+<pre class="literal-block">
+typedef enum
+{
+  UndefinedChannel,
+  RedChannel,     /* RGB Red channel */
+  CyanChannel,    /* CMYK Cyan channel */
+  GreenChannel,   /* RGB Green channel */
+  MagentaChannel, /* CMYK Magenta channel */
+  BlueChannel,    /* RGB Blue channel */
+  YellowChannel,  /* CMYK Yellow channel */
+  OpacityChannel, /* Opacity channel */
+  BlackChannel,   /* CMYK Black (K) channel */
+  MatteChannel,   /* Same as Opacity channel (deprecated) */
+  AllChannels,    /* Color channels */
+  GrayChannel     /* Color channels represent an intensity. */
+} ChannelType;
+</pre>
+</div>
+<div class="section" id="chromaticityinfo">
+<h1><a class="toc-backref" href="#id5">ChromaticityInfo</a></h1>
+<p>The ChromaticityInfo structure is used to represent chromaticity
+(colorspace primary coordinates in xy space) values for images in
+GraphicsMagick.</p>
+<p>The members of the ChromaticityInfo structure are shown in the following
+table:</p>
+<table border="1" class="docutils">
+<caption>ChromaticityInfo Structure Members</caption>
+<colgroup>
+<col width="20%" />
+<col width="12%" />
+<col width="68%" />
+</colgroup>
+<tbody valign="top">
+<tr><td>Member</td>
+<td>Type</td>
+<td>Description</td>
+</tr>
+<tr><td>red_primary</td>
+<td>PointInfo</td>
+<td>Chromaticity red primary point (e.g. x=0.64, y=0.33)</td>
+</tr>
+<tr><td>green_primary</td>
+<td>PointInfo</td>
+<td>Chromaticity green primary point (e.g. x=0.3, y=0.6)</td>
+</tr>
+<tr><td>blue_primary</td>
+<td>PointInfo</td>
+<td>Chromaticity blue primary point (e.g. x=0.15, y=0.06)</td>
+</tr>
+<tr><td>white_point</td>
+<td>PointInfo</td>
+<td>Chromaticity white point (e.g. x=0.3127, y=0.329)</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="classtype">
+<h1><a class="toc-backref" href="#id6">ClassType</a></h1>
+<p>ClassType enumeration specifies the image storage class.</p>
+<table border="1" class="docutils">
+<caption>ClassType</caption>
+<colgroup>
+<col width="17%" />
+<col width="83%" />
+</colgroup>
+<tbody valign="top">
+<tr><td>Enumeration</td>
+<td>Description</td>
+</tr>
+<tr><td>UndefinedClass</td>
+<td>Unset value.</td>
+</tr>
+<tr><td>DirectClass</td>
+<td>Image is composed of pixels which represent literal color values.</td>
+</tr>
+<tr><td>PseudoClass</td>
+<td>Image is composed of pixels which specify an index in a color palette.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="clippathunits">
+<h1><a class="toc-backref" href="#id7">ClipPathUnits</a></h1>
+<pre class="literal-block">
+typedef enum
+{
+  UserSpace,
+  UserSpaceOnUse,
+  ObjectBoundingBox
+} ClipPathUnits;
+</pre>
+</div>
+<div class="section" id="colorpacket">
+<h1><a class="toc-backref" href="#id8">ColorPacket</a></h1>
+<pre class="literal-block">
+typedef struct _ColorPacket
+{
+  PixelPacket
+    pixel;
+
+  unsigned short
+    index;
+
+  unsigned long
+    count;
+} ColorPacket;
+</pre>
+</div>
+<div class="section" id="colorspacetype">
+<h1><a class="toc-backref" href="#id9">ColorspaceType</a></h1>
+<p>The ColorspaceType enumeration is used to specify the colorspace that
+quantization (color reduction and mapping) is done under or to specify
+the colorspace when encoding an output image. Colorspaces are ways of
+describing colors to fit the requirements of a particular application
+(e.g. Television, offset printing, color monitors). Color reduction, by
+default, takes place in the RGBColorspace. Empirical evidence suggests
+that distances in color spaces such as YUVColorspace or YIQColorspace
+correspond to perceptual color differences more closely han do distances
+in RGB space. These color spaces may give better results when color
+reducing an image. Refer to quantize for more details.</p>
+<p>When encoding an output image, the colorspaces RGBColorspace,
+CMYKColorspace, and GRAYColorspace may be specified. The CMYKColorspace
+option is only applicable when writing TIFF, JPEG, and Adobe Photoshop
+bitmap (PSD) files.</p>
+<table border="1" class="docutils">
+<caption>ColorspaceType</caption>
+<colgroup>
+<col width="32%" />
+<col width="68%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Enumeration</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>UndefinedColorspace</td>
+<td>Unset value.</td>
+</tr>
+<tr><td>RGBColorspace</td>
+<td>Red, Green, Blue colorspace.</td>
+</tr>
+<tr><td>GRAYColorspace</td>
+<td>Similar to Luma (Y) according to ITU-R 601</td>
+</tr>
+<tr><td>TransparentColorspace</td>
+<td>RGB which preserves the matte while quantizing colors.</td>
+</tr>
+<tr><td>OHTAColorspace</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>XYZColorspace</td>
+<td>CIE XYZ</td>
+</tr>
+<tr><td>YCCColorspace</td>
+<td>Kodak PhotoCD PhotoYCC</td>
+</tr>
+<tr><td>YIQColorspace</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>YPbPrColorspace</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>YUVColorspace</td>
+<td>YUV colorspace as used for computer video.</td>
+</tr>
+<tr><td>CMYKColorspace</td>
+<td>Cyan, Magenta, Yellow, Black colorspace.</td>
+</tr>
+<tr><td>sRGBColorspace</td>
+<td>Kodak PhotoCD sRGB</td>
+</tr>
+<tr><td>HSLColorspace</td>
+<td>Hue, saturation, luminosity</td>
+</tr>
+<tr><td>HWBColorspace</td>
+<td>Hue, whiteness, blackness</td>
+</tr>
+<tr><td>LABColorspace</td>
+<td>ITU LAB</td>
+</tr>
+<tr><td>CineonLogRGBColorspace</td>
+<td>RGB data with Cineon Log scaling, 2.048 density range</td>
+</tr>
+<tr><td>Rec601LumaColorspace</td>
+<td>Luma (Y) according to ITU-R 601</td>
+</tr>
+<tr><td>Rec601YCbCrColorspace</td>
+<td>YCbCr according to ITU-R 601</td>
+</tr>
+<tr><td>Rec709LumaColorspace</td>
+<td>Luma (Y) according to ITU-R 709</td>
+</tr>
+<tr><td>Rec709YCbCrColorspace</td>
+<td>YCbCr according to ITU-R 709</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="compliancetype">
+<h1><a class="toc-backref" href="#id10">ComplianceType</a></h1>
+<pre class="literal-block">
+typedef enum
+{
+  UndefinedCompliance = 0x0000,
+  NoCompliance = 0x0000,
+  SVGCompliance = 0x0001,
+  X11Compliance = 0x0002,
+  XPMCompliance = 0x0004,
+  AllCompliance = 0xffff
+} ComplianceType;
+</pre>
+</div>
+<div class="section" id="compositeoperator">
+<h1><a class="toc-backref" href="#id11">CompositeOperator</a></h1>
+<p>CompositeOperator is used to select the image composition algorithm used
+to compose a composite image with an image. By default, each of the
+composite image pixels are replaced by the corresponding image tile
+pixel. Specify CompositeOperator to select a different algorithm.</p>
+<p>The image compositor requires a matte, or alpha channel in the image for
+some operations. This extra channel usually defines a mask which
+represents a sort of a cookie-cutter for the image. This is the case when
+matte is 255 (full coverage) for pixels inside the shape, zero outside,
+and between zero and 255 on the boundary. For certain operations, if
+image does not have a matte channel, it is initialized with 0 for any
+pixel matching in color to pixel location (0,0), otherwise 255 (to work
+properly borderWidth must be 0).</p>
+<table border="1" class="docutils">
+<caption>CompositeOperator</caption>
+<colgroup>
+<col width="23%" />
+<col width="77%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Enumeration</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>UndefinedCompositeOp</td>
+<td>Unset value.</td>
+</tr>
+<tr><td>OverCompositeOp</td>
+<td>The result is the union of the the two image shapes with the composite
+image obscuring image in the region of overlap.</td>
+</tr>
+<tr><td>InCompositeOp</td>
+<td>The result is a simply composite image cut by the shape of image. None of
+the image data of image is included in the result.</td>
+</tr>
+<tr><td>OutCompositeOp</td>
+<td>The resulting image is composite image with the shape of image cut out.</td>
+</tr>
+<tr><td>AtopCompositeOp</td>
+<td>The result is the same shape as image image, with composite image
+obscuring image there the image shapes overlap. Note that this differs
+from OverCompositeOp because the portion of composite image outside of
+image's shape does not appear in the result.</td>
+</tr>
+<tr><td>XorCompositeOp</td>
+<td>The result is the image data from both composite image and image that is
+outside the overlap region. The overlap region will be blank.</td>
+</tr>
+<tr><td>PlusCompositeOp</td>
+<td>The result is just the sum of the  image data. Output values are cropped
+to 255 (no overflow). This operation is independent of the matte channels.</td>
+</tr>
+<tr><td>MinusCompositeOp</td>
+<td>The result of composite image - image, with overflow cropped to zero. The
+matte chanel is ignored (set to 255, full coverage).</td>
+</tr>
+<tr><td>AddCompositeOp</td>
+<td>The result of composite image + image, with overflow wrapping around (mod
+256).</td>
+</tr>
+<tr><td>SubtractCompositeOp</td>
+<td>The result of composite image - image, with underflow wrapping around (mod
+256). The add and subtract operators can be used to perform reversible
+transformations.</td>
+</tr>
+<tr><td>DifferenceCompositeOp</td>
+<td>The result of abs(composite image - image). This is useful for comparing
+two very similar images.</td>
+</tr>
+<tr><td>BumpmapCompositeOp</td>
+<td>The result image shaded by composite image.</td>
+</tr>
+<tr><td>CopyCompositeOp</td>
+<td>The resulting image is image replaced with composite image. Here the matte
+information is ignored.</td>
+</tr>
+<tr><td>CopyRedCompositeOp</td>
+<td>The resulting image is the red layer in image replaced with the red layer
+in composite image. The other layers are copied untouched.</td>
+</tr>
+<tr><td>CopyGreenCompositeOp</td>
+<td>The resulting image is the green layer in image replaced with the green
+layer in composite image. The other layers are copied untouched.</td>
+</tr>
+<tr><td>CopyBlueCompositeOp</td>
+<td>The resulting image is the blue layer in image replaced with the blue
+layer in composite image. The other layers are copied untouched.</td>
+</tr>
+<tr><td>CopyOpacityCompositeOp</td>
+<td>The resulting image is the matte layer in image replaced with the matte
+layer in composite image. The other layers are copied untouched.</td>
+</tr>
+<tr><td>ClearCompositeOp</td>
+<td>Pixels in the region are set to Transparent.</td>
+</tr>
+<tr><td>DissolveCompositeOp</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>DisplaceCompositeOp</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>ModulateCompositeOp</td>
+<td>Modulate brightness in HSL space.</td>
+</tr>
+<tr><td>ThresholdCompositeOp</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>NoCompositeOp</td>
+<td>Do nothing at all.</td>
+</tr>
+<tr><td>DarkenCompositeOp</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>LightenCompositeOp</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>HueCompositeOp</td>
+<td>Copy Hue channel (from HSL colorspace).</td>
+</tr>
+<tr><td>SaturateCompositeOp</td>
+<td>Copy Saturation channel (from HSL colorspace).</td>
+</tr>
+<tr><td>ColorizeCompositeOp</td>
+<td>Copy Hue and Saturation channels (from HSL colorspace).</td>
+</tr>
+<tr><td>LuminizeCompositeOp</td>
+<td>Copy Brightness channel (from HSL colorspace).</td>
+</tr>
+<tr><td>ScreenCompositeOp</td>
+<td>[Not yet implemented]</td>
+</tr>
+<tr><td>OverlayCompositeOp</td>
+<td>[Not yet implemented]</td>
+</tr>
+<tr><td>CopyCyanCompositeOp</td>
+<td>Copy the Cyan channel.</td>
+</tr>
+<tr><td>CopyMagentaCompositeOp</td>
+<td>Copy the Magenta channel.</td>
+</tr>
+<tr><td>CopyYellowCompositeOp</td>
+<td>Copy the Yellow channel.</td>
+</tr>
+<tr><td>CopyBlackCompositeOp</td>
+<td>Copy the Black channel.</td>
+</tr>
+<tr><td>DivideCompositeOp</td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="compressiontype">
+<h1><a class="toc-backref" href="#id12">CompressionType</a></h1>
+<p>CompressionType is used to express the desired compression type when
+encoding an image. Be aware that most image types only support a sub-set
+of the available compression types. If the compression type specified is
+incompatable with the image, GraphicsMagick selects a compression type
+compatable with the image type.</p>
+<table border="1" class="docutils">
+<caption>CompressionType</caption>
+<colgroup>
+<col width="28%" />
+<col width="72%" />
+</colgroup>
+<tbody valign="top">
+<tr><td>Enumeration</td>
+<td>Description</td>
+</tr>
+<tr><td>UndefinedCompression</td>
+<td>Unset value.</td>
+</tr>
+<tr><td>NoCompression</td>
+<td>No compression</td>
+</tr>
+<tr><td>BZipCompression</td>
+<td>BZip (Burrows-Wheeler block-sorting text compression algorithm and
+Huffman coding)  as used by bzip2 utilities</td>
+</tr>
+<tr><td>FaxCompression</td>
+<td>CCITT Group 3 FAX compression</td>
+</tr>
+<tr><td>Group4Compression</td>
+<td>CCITT Group 4 FAX compression (used only for TIFF)</td>
+</tr>
+<tr><td>JPEGCompression</td>
+<td>JPEG compression</td>
+</tr>
+<tr><td>LosslessJPEGCompression</td>
+<td>Lossless JPEG compression</td>
+</tr>
+<tr><td>LZWCompression</td>
+<td>Lempel-Ziv-Welch (LZW) compression (caution, patented by Unisys)</td>
+</tr>
+<tr><td>RLECompression</td>
+<td>Run-Length encoded (RLE) compression</td>
+</tr>
+<tr><td>ZipCompression</td>
+<td>Lempel-Ziv compression (LZ77) as used in PKZIP and GNU gzip.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="decorationtype">
+<h1><a class="toc-backref" href="#id13">DecorationType</a></h1>
+<pre class="literal-block">
+typedef enum
+{
+  NoDecoration,
+  UnderlineDecoration,
+  OverlineDecoration,
+  LineThroughDecoration
+} DecorationType;
+</pre>
+</div>
+<div class="section" id="drawcontext">
+<h1><a class="toc-backref" href="#id14">DrawContext</a></h1>
+<pre class="literal-block">
+typedef struct _DrawContext *DrawContext;
+</pre>
+</div>
+<div class="section" id="drawinfo">
+<h1><a class="toc-backref" href="#id15">DrawInfo</a></h1>
+<p>The DrawInfo structure is used to support annotating an image using
+drawing commands.</p>
+<table border="1" class="docutils">
+<caption>Methods Supporting DrawInfo</caption>
+<colgroup>
+<col width="23%" />
+<col width="77%" />
+</colgroup>
+<tbody valign="top">
+<tr><td>Method</td>
+<td>Description</td>
+</tr>
+<tr><td>GetDrawInfo()</td>
+<td>Allocate new structure with defaults set.</td>
+</tr>
+<tr><td>CloneDrawInfo()</td>
+<td>Copy existing structure, allocating new structure in the process.</td>
+</tr>
+<tr><td>DestroyDrawInfo()</td>
+<td>Deallocate structure, including any members.</td>
+</tr>
+<tr><td>DrawImage()</td>
+<td>Render primitives to image.</td>
+</tr>
+</tbody>
+</table>
+<p>The members of the DrawInfo structure are shown in the following table.
+The structure is initialized to reasonable defaults by first initializing
+the equivalent members of ImageInfo, and then initializing the entire
+structure using GetDrawInfo().</p>
+<table border="1" class="docutils">
+<caption>DrawInfo Structure Members Supporting DrawImage()</caption>
+<colgroup>
+<col width="16%" />
+<col width="14%" />
+<col width="69%" />
+</colgroup>
+<tbody valign="top">
+<tr><td>Member</td>
+<td>Type</td>
+<td>Description</td>
+</tr>
+<tr><td>affine</td>
+<td>AffineInfo</td>
+<td>Coordinate transformation (rotation, scaling, and translation).</td>
+</tr>
+<tr><td>border_color</td>
+<td>PixelPacket</td>
+<td>Border color</td>
+</tr>
+<tr><td>box</td>
+<td>PixelPacket</td>
+<td>Text solid background color.</td>
+</tr>
+<tr><td>decorate</td>
+<td>DecorationType</td>
+<td>Text decoration type.</td>
+</tr>
+<tr><td>density</td>
+<td>char *</td>
+<td>Text rendering density in DPI (effects scaling font according to
+pointsize). E.g. &quot;72x72&quot;</td>
+</tr>
+<tr><td>fill</td>
+<td>PixelPacket</td>
+<td>Object internal fill (within outline) color.</td>
+</tr>
+<tr><td>font</td>
+<td>char *</td>
+<td>Font to use when rendering text.</td>
+</tr>
+<tr><td>gravity</td>
+<td>GravityType</td>
+<td>Text placement preference (e.g. NorthWestGravity).</td>
+</tr>
+<tr><td>linewidth</td>
+<td>double</td>
+<td>Stroke (outline) drawing width in pixels.</td>
+</tr>
+<tr><td>pointsize</td>
+<td>double</td>
+<td>Font size (also see density).</td>
+</tr>
+<tr><td>primitive</td>
+<td>char *</td>
+<td>Space or new-line delimited list of text drawing primitives (e.g
+&quot;text 100,100 Cockatoo&quot;). See the table Drawing Primitives for the
+available drawing primitives.</td>
+</tr>
+<tr><td>stroke</td>
+<td>PixelPacket</td>
+<td>Object stroke (outline) color.</td>
+</tr>
+<tr><td>stroke_antialias</td>
+<td>unsigned int</td>
+<td>Set to True (non-zero) to obtain anti-aliased stroke rendering.</td>
+</tr>
+<tr><td>text_antialias</td>
+<td>unsigned int</td>
+<td>Set to True (non-zero) to obtain anti-aliased text rendering.</td>
+</tr>
+<tr><td>tile</td>
+<td>Image *</td>
+<td>Image texture to draw with. Use an image containing a single color
+(e.g. a 1x1 image) to draw in a solid color.</td>
+</tr>
+</tbody>
+</table>
+<p>Drawing Primitives</p>
+<p>The drawing primitives shown in the following table may be supplied as a
+space or new-line delimited list to the primitive member. Primitives
+which set drawing options effect the results from subsequent drawing
+operations. See the 'push graphic-context' and 'pop graphic-context'
+primitives for a way to control the propagation of drawing options.</p>
+<table border="1" class="docutils">
+<caption>Drawing Primitives</caption>
+<colgroup>
+<col width="16%" />
+<col width="28%" />
+<col width="56%" />
+</colgroup>
+<tbody valign="top">
+<tr><td>Primitive</td>
+<td>Arguments</td>
+<td>Purpose</td>
+</tr>
+<tr><td>affine</td>
+<td>sx,rx,ry,sy,tx,ty</td>
+<td>Apply coordinate transformations to support scaling
+(s), rotation (r), and translation (t). Angles are
+specified in radians. Equivalent to SVG matrix command
+which supplies a transformation matrix.</td>
+</tr>
+<tr><td>angle</td>
+<td>angle</td>
+<td>Specify object drawing angle.</td>
+</tr>
+<tr><td>arc</td>
+<td>startX,startY endX,endY
+startDegrees,endDegrees</td>
+<td>Draw an arc.</td>
+</tr>
+<tr><td>Bezier</td>
+<td>x1,y1, x2,y2, x3,y3, ...,
+xN,yN</td>
+<td>Draw a Bezier curve.</td>
+</tr>
+<tr><td>circle</td>
+<td>originX,originY
+perimX,perimY</td>
+<td>Draw a circle.</td>
+</tr>
+<tr><td>color</td>
+<td>x,y (point|replace|
+floodfill|filltoborder|
+reset)</td>
+<td>Set color in image according to specified colorization
+rule.</td>
+</tr>
+<tr><td>decorate</td>
+<td>(none|underline|overline|
+line-through)</td>
+<td>Specify text decoration.</td>
+</tr>
+<tr><td>ellipse</td>
+<td>originX,originY
+width,height
+arcStart,arcEnd</td>
+<td>Draw an ellipse.</td>
+</tr>
+<tr><td>fill</td>
+<td>colorspec</td>
+<td>Specifiy object filling color.</td>
+</tr>
+<tr><td>fill-opacity</td>
+<td>opacity</td>
+<td>Specify object fill opacity.</td>
+</tr>
+<tr><td>font</td>
+<td>fontname</td>
+<td>Specify text drawing font.</td>
+</tr>
+<tr><td>gravity</td>
+<td>(NorthWest,North,NorthEast,
+West,Center,East,
+SouthWest,South,SouthEast)</td>
+<td>Specify text positioning gravity.</td>
+</tr>
+<tr><td>image</td>
+<td>x,y width,height filename</td>
+<td>Composite image at position, scaled to specified width
+and height, and specified filename. If width or height
+is zero, scaling is not performed.</td>
+</tr>
+<tr><td>line</td>
+<td>startX,startY endX,endY</td>
+<td>Draw a line.</td>
+</tr>
+<tr><td>matte</td>
+<td>x,y (point|replace|
+floodfill|filltoborder|
+reset)</td>
+<td>Set matte in image according to specified colorization
+rule.</td>
+</tr>
+<tr><td>opacity</td>
+<td>fillOpacity strokeOpacity</td>
+<td>Specify drawing fill and stroke opacities.</td>
+</tr>
+<tr><td>path</td>
+<td>'SVG-compatible path
+arguments'</td>
+<td>Draw using SVG-compatible path drawing commands.</td>
+</tr>
+<tr><td>point</td>
+<td>x,y</td>
+<td>Set point to fill color.</td>
+</tr>
+<tr><td>pointsize</td>
+<td>pointsize</td>
+<td>Specify text drawing pointsize (scaled to density).</td>
+</tr>
+<tr><td>polygon</td>
+<td>x1,y1, x2,y2, x3,y3, ...,
+xN,yN</td>
+<td>Draw a polygon.</td>
+</tr>
+<tr><td>polyline</td>
+<td>x1,y1, x2,y2, x3,y3, ...,
+xN,yN</td>
+<td>Draw a polyline.</td>
+</tr>
+<tr><td>pop</td>
+<td>graphic-context</td>
+<td>Remove options set since previous &quot;push
+graphic-context&quot; command. Options revert to those in
+effect prior to pushing the graphic context.</td>
+</tr>
+<tr><td>push</td>
+<td>graphic-context</td>
+<td>Specify new graphic context.</td>
+</tr>
+<tr><td>rect</td>
+<td>upperLeftX,upperLeftY
+lowerRightX,lowerRightY</td>
+<td>Draw a rectangle.</td>
+</tr>
+<tr><td>rotate</td>
+<td>angle</td>
+<td>Specify coordiante space rotation. Subsequent objects
+are drawn with coordate space rotated by specified
+angle.</td>
+</tr>
+<tr><td>roundrectangle</td>
+<td>centerX,centerY
+width,hight
+cornerWidth,cornerHeight</td>
+<td>Draw a rectangle with rounded corners.</td>
+</tr>
+<tr><td>stroke</td>
+<td>colorspec</td>
+<td>Specify object stroke (outline) color.</td>
+</tr>
+<tr><td>stroke-antialias</td>
+<td>stroke_antialias (0 or 1)</td>
+<td>Specify if stroke should be antialiased or not.</td>
+</tr>
+<tr><td>stroke-dash</td>
+<td>value</td>
+<td>Specify pattern to be used when drawing stroke.</td>
+</tr>
+<tr><td>stroke-opacity</td>
+<td>opacity</td>
+<td>Specify opacity of stroke drawing color.</td>
+</tr>
+<tr><td>stroke-width</td>
+<td>linewidth</td>
+<td>Specify stroke (outline) width in pixels.</td>
+</tr>
+<tr><td>text</td>
+<td>x,y &quot;some text&quot;</td>
+<td>Draw text at position.</td>
+</tr>
+<tr><td>text-antialias</td>
+<td>text_antialias (0 or 1)</td>
+<td>Specify if rendered text is to be antialiased (blend
+edges).</td>
+</tr>
+<tr><td>scale</td>
+<td>x,y</td>
+<td>Specify scaling to be applied to coordintate space for
+subsequent drawing commands.</td>
+</tr>
+<tr><td>translate</td>
+<td>x,y</td>
+<td>Specify center of coordinate space to use for
+subsequent drawing commands.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="endiantype">
+<h1><a class="toc-backref" href="#id16">EndianType</a></h1>
+<pre class="literal-block">
+typedef enum
+{
+  UndefinedEndian,
+  LSBEndian,            /* &quot;little&quot; endian */
+  MSBEndian,            /* &quot;big&quot; endian */
+  NativeEndian          /* native endian */
+} EndianType;
+</pre>
+</div>
+<div class="section" id="errorhandler">
+<h1><a class="toc-backref" href="#id17">ErrorHandler</a></h1>
+<pre class="literal-block">
+typedef void
+  (*ErrorHandler)(const ExceptionType,const char *,const char *);
+</pre>
+</div>
+<div class="section" id="exceptioninfo">
+<h1><a class="toc-backref" href="#id18">ExceptionInfo</a></h1>
+<pre class="literal-block">
+typedef struct _ExceptionInfo
+{
+  char
+    *reason,
+    *description;
+
+  ExceptionType
+    severity;
+
+  unsigned long
+    signature;
+} ExceptionInfo;
+</pre>
+</div>
+<div class="section" id="exceptiontype">
+<h1><a class="toc-backref" href="#id19">ExceptionType</a></h1>
+<pre class="literal-block">
+typedef enum
+{
+  UndefinedException,
+  WarningException = 300,
+  ResourceLimitWarning = 300,
+  TypeWarning = 305,
+  OptionWarning = 310,
+  DelegateWarning = 315,
+  MissingDelegateWarning = 320,
+  CorruptImageWarning = 325,
+  FileOpenWarning = 330,
+  BlobWarning = 335,
+  StreamWarning = 340,
+  CacheWarning = 345,
+  CoderWarning = 350,
+  ModuleWarning = 355,
+  DrawWarning = 360,
+  ImageWarning = 365,
+  XServerWarning = 380,
+  MonitorWarning = 385,
+  RegistryWarning = 390,
+  ConfigureWarning = 395,
+  ErrorException = 400,
+  ResourceLimitError = 400,
+  TypeError = 405,
+  OptionError = 410,
+  DelegateError = 415,
+  MissingDelegateError = 420,
+  CorruptImageError = 425,
+  FileOpenError = 430,
+  BlobError = 435,
+  StreamError = 440,
+  CacheError = 445,
+  CoderError = 450,
+  ModuleError = 455,
+  DrawError = 460,
+  ImageError = 465,
+  XServerError = 480,
+  MonitorError = 485,
+  RegistryError = 490,
+  ConfigureError = 495,
+  FatalErrorException = 700,
+  ResourceLimitFatalError = 700,
+  TypeFatalError = 705,
+  OptionFatalError = 710,
+  DelegateFatalError = 715,
+  MissingDelegateFatalError = 720,
+  CorruptImageFatalError = 725,
+  FileOpenFatalError = 730,
+  BlobFatalError = 735,
+  StreamFatalError = 740,
+  CacheFatalError = 745,
+  CoderFatalError = 750,
+  ModuleFatalError = 755,
+  DrawFatalError = 760,
+  ImageFatalError = 765,
+  XServerFatalError = 780,
+  MonitorFatalError = 785,
+  RegistryFatalError = 790,
+  ConfigureFatalError = 795
+} ExceptionType;
+</pre>
+</div>
+<div class="section" id="fillrule">
+<h1><a class="toc-backref" href="#id20">FillRule</a></h1>
+<pre class="literal-block">
+typedef enum
+{
+  UndefinedRule,
+  EvenOddRule,
+  NonZeroRule
+} FillRule;
+</pre>
+</div>
+<div class="section" id="filtertypes">
+<h1><a class="toc-backref" href="#id21">FilterTypes</a></h1>
+<p>FilterTypes is used to adjust the filter algorithm used when resizing
+images. Different filters experience varying degrees of success with
+various images and can take significantly different amounts of processing
+time. GraphicsMagick uses the LanczosFilter by default since this filter
+has been shown to provide the best results for most images in a
+reasonable amount of time. Other filter types (e.g. TriangleFilter) may
+execute much faster but may show artifacts when the image is re-sized or
+around diagonal lines. The only way to be sure is to test the filter with
+sample images.</p>
+<table border="1" class="docutils">
+<caption>FilterTypes</caption>
+<colgroup>
+<col width="48%" />
+<col width="52%" />
+</colgroup>
+<tbody valign="top">
+<tr><td>Enumeration</td>
+<td>Description</td>
+</tr>
+<tr><td>UndefinedFilter</td>
+<td>Unset value.</td>
+</tr>
+<tr><td>PointFilter</td>
+<td>Point Filter</td>
+</tr>
+<tr><td>BoxFilter</td>
+<td>Box Filter</td>
+</tr>
+<tr><td>TriangleFilter</td>
+<td>Triangle Filter</td>
+</tr>
+<tr><td>HermiteFilter</td>
+<td>Hermite Filter</td>
+</tr>
+<tr><td>HanningFilter</td>
+<td>Hanning Filter</td>
+</tr>
+<tr><td>HammingFilter</td>
+<td>Hamming Filter</td>
+</tr>
+<tr><td>BlackmanFilter</td>
+<td>Blackman Filter</td>
+</tr>
+<tr><td>GaussianFilter</td>
+<td>Gaussian Filter</td>
+</tr>
+<tr><td>QuadraticFilter</td>
+<td>Quadratic Filter</td>
+</tr>
+<tr><td>CubicFilter</td>
+<td>Cubic Filter</td>
+</tr>
+<tr><td>CatromFilter</td>
+<td>Catrom Filter</td>
+</tr>
+<tr><td>MitchellFilter</td>
+<td>Mitchell Filter</td>
+</tr>
+<tr><td>LanczosFilter</td>
+<td>Lanczos Filter</td>
+</tr>
+<tr><td>BesselFilter</td>
+<td>Bessel Filter</td>
+</tr>
+<tr><td>SincFilter</td>
+<td>Sinc Filter</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="frameinfo">
+<h1><a class="toc-backref" href="#id22">FrameInfo</a></h1>
+<pre class="literal-block">
+typedef struct _FrameInfo
+{
+  unsigned long
+    width,
+    height;
+
+  long
+    x,
+    y,
+    inner_bevel,
+    outer_bevel;
+} FrameInfo;
+</pre>
+</div>
+<div class="section" id="gravitytype">
+<h1><a class="toc-backref" href="#id23">GravityType</a></h1>
+<p>GravityType specifies positioning of an object (e.g. text, image) within
+a bounding region (e.g. an image). Gravity provides a convenient way to
+locate objects irrespective of the size of the bounding region, in other
+words, you don't need to provide absolute coordinates in order to
+position an object. A common default for gravity is NorthWestGravity.</p>
+<table border="1" class="docutils">
+<caption>GravityType</caption>
+<colgroup>
+<col width="27%" />
+<col width="73%" />
+</colgroup>
+<tbody valign="top">
+<tr><td>Enumeration</td>
+<td>Description</td>
+</tr>
+<tr><td>ForgetGravity</td>
+<td>Don't use gravity.</td>
+</tr>
+<tr><td>NorthWestGravity</td>
+<td>Position object at top-left of region.</td>
+</tr>
+<tr><td>NorthGravity</td>
+<td>Postiion object at top-center of region</td>
+</tr>
+<tr><td>NorthEastGravity</td>
+<td>Position object at top-right of region</td>
+</tr>
+<tr><td>WestGravity</td>
+<td>Position object at left-center of region</td>
+</tr>
+<tr><td>CenterGravity</td>
+<td>Position object at center of region</td>
+</tr>
+<tr><td>EastGravity</td>
+<td>Position object at right-center of region</td>
+</tr>
+<tr><td>SouthWestGravity</td>
+<td>Position object at left-bottom of region</td>
+</tr>
+<tr><td>SouthGravity</td>
+<td>Position object at bottom-center of region</td>
+</tr>
+<tr><td>SouthEastGravity</td>
+<td>Position object at bottom-right of region</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="image">
+<h1><a class="toc-backref" href="#id24">Image</a></h1>
+<p>The Image structure represents an GraphicsMagick image. It is initially
+allocated by AllocateImage() and deallocated by DestroyImage(). The
+functions ReadImage(), ReadImages(), BlobToImage() and CreateImage()
+return a new image. Use CloneImage() to copy an image. An image consists
+of a structure containing image attributes as well as the image pixels.</p>
+<p>The image pixels are represented by the structure PixelPacket and are
+cached in-memory, or on disk, depending on the cache threshold setting.
+This cache is known as the &quot;pixel cache&quot;. Pixels in the cache may not be
+edited directly. They must first be made visible from the cache via a
+pixel view. A pixel view is a rectangular view of the pixels as defined
+by a starting coordinate, and a number of rows and columns. When
+considering the varying abilities of multiple platforms, the most
+reliably efficient pixel view is comprized of part, or all, of one image
+row.</p>
+<p>There are two means of accessing pixel views. When using the default
+view, the pixels are made visible and accessable by using the
+GetImagePixels() method which provides access to a specified region of
+the image. After the view has been updated, the pixels may be saved back
+to the cache in their original positions via SyncImagePixels(). In order
+to create an image with new contents, or to blindly overwrite existing
+contents, the method SetImagePixels() is used to reserve a pixel view
+corresponding to a region in the pixel cache. Once the pixel view has
+been updated, it may be written to the cache via SyncImagePixels(). The
+function GetIndexes() provides access to the image colormap, represented
+as an array of type IndexPacket.</p>
+<p>A more flexible interface to the image pixels is via the Cache View
+interface. This interface supports multiple pixel cache views (limited by
+the amount of available memory), each of which are identified by a handle
+(of type ViewInfo). Use OpenCacheView() to obtain a new cache view,
+CloseCacheView() to discard a cache view, GetCacheViewPixels() to access
+an existing pixel region, SetCacheView() to define a new pixel region,
+and SyncCacheViewPixels() to save the updated pixel region. The function
+GetCacheViewIndexes() provides access to the colormap indexes associated
+with the pixel view.</p>
+<p>When writing encoders and decoders for new image formats, it is
+convenient to have a high-level interface available which supports
+converting between external pixel representations and GraphicsMagick's
+own representation. Pixel components (red, green, blue, opacity, RGB, or
+RGBA) may be transferred from a user-supplied buffer into the default
+view by using ImportImagePixelArea(), or from an allocated view via
+ImportViewPixelArea(). Pixel components may be transferred from the
+default view into a user-supplied buffer by using ExportImagePixelArea(),
+or from an allocated view via ExportViewPixelArea(). Use of this
+high-level interface helps protect image coders from changes to
+GraphicsMagick's pixel representation and simplifies the implementation.</p>
+<p>The members of the Image structure are shown in the following table:</p>
+<table border="1" class="docutils">
+<caption>Image Structure Members</caption>
+<colgroup>
+<col width="31%" />
+<col width="18%" />
+<col width="51%" />
+</colgroup>
+<tbody valign="top">
+<tr><td>Member</td>
+<td>Type</td>
+<td>Description</td>
+</tr>
+<tr><td>background_color</td>
+<td>PixelPacket</td>
+<td>Image background color</td>
+</tr>
+<tr><td>blur</td>
+<td>double</td>
+<td>Blur factor to apply to the image when zooming</td>
+</tr>
+<tr><td>border_color</td>
+<td>PixelPacket</td>
+<td>Image border color</td>
+</tr>
+<tr><td>chromaticity</td>
+<td>ChromaticityInfo</td>
+<td>Red, green, blue, and white-point chromaticity
+values.</td>
+</tr>
+<tr><td>colormap</td>
+<td>PixelPacket *</td>
+<td>PseudoColor palette array.</td>
+</tr>
+<tr><td>colors</td>
+<td>unsigned int</td>
+<td>The desired number of colors. Used by
+QuantizeImage().</td>
+</tr>
+<tr><td>colorspace</td>
+<td>ColorspaceType</td>
+<td>Image pixel interpretation.If the colorspace is
+RGB the pixels are red, green, blue. If matte is
+true, then red, green, blue, and index. If it is
+CMYK, the pixels are cyan, yellow, magenta, black.
+Otherwise the colorspace is ignored.</td>
+</tr>
+<tr><td>columns</td>
+<td>unsigned int</td>
+<td>Image width</td>
+</tr>
+<tr><td>compression</td>
+<td>CompressionType</td>
+<td>Image compresion type. The default is the
+compression type of the specified image file.</td>
+</tr>
+<tr><td>delay</td>
+<td>unsigned int</td>
+<td>Time in 1/100ths of a second (0 to 65535) which
+must expire before displaying the next image in an
+animated sequence. This option is useful for
+regulating the animation of a sequence of GIF
+images within Netscape.</td>
+</tr>
+<tr><td>depth</td>
+<td>unsigned int</td>
+<td>Image depth.  Number of encoding bits per sample.
+Usually 8 or 16, but sometimes 10 or 12.</td>
+</tr>
+<tr><td>directory</td>
+<td>char *</td>
+<td>Tile names from within an image montage. Only
+valid after calling MontageImages() or reading a
+MIFF file which contains a directory.</td>
+</tr>
+<tr><td>dispose</td>
+<td>unsigned int</td>
+<td>GIF disposal method. This option is used to
+control how successive frames are rendered (how
+the preceding frame is disposed of) when creating
+a GIF animation.</td>
+</tr>
+<tr><td>exception</td>
+<td>ExceptionInfo</td>
+<td>Record of any error which occurred when updating
+image.</td>
+</tr>
+<tr><td>filename</td>
+<td>char
+[MaxTextExtent]</td>
+<td>Image file name to read or write.</td>
+</tr>
+<tr><td>filter</td>
+<td>FilterTypes</td>
+<td>Filter to use when resizing image. The reduction
+filter employed has a significant effect on the
+time required to resize an image and the resulting
+quality. The default filter is Lanczos which has
+been shown to produce high quality results when
+reducing most images.</td>
+</tr>
+<tr><td>fuzz</td>
+<td>int</td>
+<td>Colors within this distance are considered equal.
+A number of algorithms search for a target color.
+By default the color must be exact. Use this
+option to match colors that are close to the
+target color in RGB space.</td>
+</tr>
+<tr><td>gamma</td>
+<td>double</td>
+<td>Gamma level of the image. The same color image
+displayed on two different workstations may look
+different due to differences in the display
+monitor. Use gamma correction to adjust for this
+color difference.</td>
+</tr>
+<tr><td>geometry</td>
+<td>char *</td>
+<td>Preferred size of the image when encoding.</td>
+</tr>
+<tr><td>interlace</td>
+<td>InterlaceType</td>
+<td>The type of interlacing scheme (default
+NoInterlace). This option is used to specify the
+type of interlacing scheme for raw image formats
+such as RGB or YUV. NoInterlace means do not
+interlace, LineInterlace uses scanline
+interlacing, and PlaneInterlace uses plane
+interlacing. PartitionInterlace is like
+PlaneInterlace except the different planes are
+saved to individual files (e.g. image.R, image.G,
+and image.B). Use LineInterlace or PlaneInterlace
+to create an interlaced GIF or progressive JPEG
+image.</td>
+</tr>
+<tr><td>iterations</td>
+<td>unsigned int</td>
+<td>Number of iterations to loop an animation (e.g.
+Netscape loop extension) for.</td>
+</tr>
+<tr><td>magick</td>
+<td>char
+[MaxTextExtent]</td>
+<td>Image encoding format (e.g. &quot;GIF&quot;).</td>
+</tr>
+<tr><td>magick_columns</td>
+<td>unsigned int</td>
+<td>Base image width (before transformations)</td>
+</tr>
+<tr><td>magick_filename</td>
+<td>char
+[MaxTextExtent]</td>
+<td>Base image filename (before transformations)</td>
+</tr>
+<tr><td>magick_rows</td>
+<td>unsigned int</td>
+<td>Base image height (before transformations)</td>
+</tr>
+<tr><td>matte</td>
+<td>unsigned int</td>
+<td>If non-zero, then the index member of pixels
+represents the alpha channel.</td>
+</tr>
+<tr><td>matte_color</td>
+<td>PixelPacket</td>
+<td>Image matte (transparent) color</td>
+</tr>
+<tr><td>montage</td>
+<td>char *</td>
+<td>Tile size and offset within an image montage. Only
+valid for montage images.</td>
+</tr>
+<tr><td>next</td>
+<td>struct _Image *</td>
+<td>Next image frame in sequence</td>
+</tr>
+<tr><td>offset</td>
+<td>int</td>
+<td>Number of initial bytes to skip over when reading
+raw image.</td>
+</tr>
+<tr><td>orientation</td>
+<td>OrientationType</td>
+<td>Orientation of the image. Specifies scanline
+orientation and starting coordinate of image.</td>
+</tr>
+<tr><td>page</td>
+<td>RectangleInfo</td>
+<td>Equivalent size of Postscript page.</td>
+</tr>
+<tr><td>previous</td>
+<td>struct _Image *</td>
+<td>Previous image frame in sequence.</td>
+</tr>
+<tr><td>rendering_intent</td>
+<td>RenderingIntent</td>
+<td>The type of rendering intent.</td>
+</tr>
+<tr><td>rows</td>
+<td>unsigned int</td>
+<td>Image height</td>
+</tr>
+<tr><td>scene</td>
+<td>unsigned int</td>
+<td>Image frame scene number.</td>
+</tr>
+<tr><td>storage_class</td>
+<td>ClassType</td>
+<td>Image storage class. If DirectClass then the image
+packets contain valid RGB or CMYK colors. If
+PseudoClass then the image has a colormap
+referenced by pixel's index member.</td>
+</tr>
+<tr><td>tile_info</td>
+<td>RectangleInfo</td>
+<td>Describes a tile within an image.  For example, if
+your images is 640x480 you may only want 320x256
+with an offset of +128+64. It is used for raw
+formats such as RGB and CMYK as well as for TIFF.</td>
+</tr>
+<tr><td>timer</td>
+<td>TimerInfo</td>
+<td>Support for measuring actual (user + system) and
+elapsed execution time.</td>
+</tr>
+<tr><td>total_colors</td>
+<td>unsigned long</td>
+<td>The number of colors in the image after
+QuantizeImage(), or QuantizeImages() if the
+verbose flag was set before the call. Calculated
+by GetNumberColors().</td>
+</tr>
+<tr><td>units</td>
+<td>ResolutionType</td>
+<td>Units of image resolution</td>
+</tr>
+<tr><td>x_resolution</td>
+<td>double</td>
+<td>Horizontal resolution of the image</td>
+</tr>
+<tr><td>y_resolution</td>
+<td>double</td>
+<td>Vertical resolution of the image</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="imageinfo">
+<h1><a class="toc-backref" href="#id25">ImageInfo</a></h1>
+<p>The ImageInfo structure is used to supply option information to the
+functions AllocateImage(), AnimateImages(), BlobToImage(),
+CloneAnnotateInfo(), DisplayImages(), GetAnnotateInfo(), ImageToBlob(),
+PingImage(), ReadImage(), ReadImages(), and, WriteImage(). These
+functions update information in ImageInfo to reflect attributes of the
+current image.</p>
+<p>Use CloneImageInfo() to duplicate an existing ImageInfo structure or
+allocate a new one. Use DestroyImageInfo() to deallocate memory
+associated with an ImageInfo structure. Use GetImageInfo() to initialize
+an existing ImageInfo structure. Use SetImageInfo() to set image type
+information in the ImageInfo structure based on an existing image.</p>
+<p>The members of the ImageInfo structure are shown in the following table:</p>
+<table border="1" class="docutils">
+<caption>ImageInfo Structure Members</caption>
+<colgroup>
+<col width="16%" />
+<col width="15%" />
+<col width="68%" />
+</colgroup>
+<tbody valign="top">
+<tr><td>Member</td>
+<td>Type</td>
+<td>Description</td>
+</tr>
+<tr><td>adjoin</td>
+<td>unsigned int</td>
+<td>Join images into a single multi-image file.</td>
+</tr>
+<tr><td>antialias</td>
+<td>unsigned int</td>
+<td>Control antialiasing of rendered Postscript and Postscript or
+TrueType fonts. Enabled by default.</td>
+</tr>
+<tr><td>background_color</td>
+<td>PixelPacket</td>
+<td>Image background color.</td>
+</tr>
+<tr><td>border_color</td>
+<td>PixelPacket</td>
+<td>Image border color.</td>
+</tr>
+<tr><td>colorspace</td>
+<td>ColorspaceType</td>
+<td>Image pixel interpretation.If the colorspace is RGB the pixels are
+red, green, blue. If matte is true, then red, green, blue, and
+index. If it is CMYK, the pixels are cyan, yellow, magenta, black.
+Otherwise the colorspace is ignored.</td>
+</tr>
+<tr><td>compression</td>
+<td>CompressionType</td>
+<td>Image compresion type. The default is the compression type of the
+specified image file.</td>
+</tr>
+<tr><td>delay</td>
+<td>char *</td>
+<td>Time in 1/100ths of a second (0 to 65535) which must expire before
+displaying the next image in an animated sequence. This option is
+useful for regulating the animation of a sequence of GIF images
+within Netscape.</td>
+</tr>
+<tr><td>density</td>
+<td>char *</td>
+<td>Vertical and horizontal resolution in pixels of the image. This
+option specifies an image density when decoding a Postscript or
+Portable Document page. Often used with page.</td>
+</tr>
+<tr><td>depth</td>
+<td>unsigned int</td>
+<td>Image depth (8 or 16). QuantumLeap must be defined before a depth
+of 16 is valid.</td>
+</tr>
+<tr><td>dispose</td>
+<td>char *</td>
+<td>GIF disposal method. This option is used to control how successive
+frames are rendered (how the preceding frame is disposed of) when
+creating a GIF animation.</td>
+</tr>
+<tr><td>dither</td>
+<td>unsigned int</td>
+<td>Apply Floyd/Steinberg error diffusion to the image. The basic
+strategy of dithering is to trade intensity resolution for spatial
+resolution by averaging the intensities of several neighboring
+pixels. Images which suffer from severe contouring when reducing
+colors can be improved with this option. The colors or monochrome
+option must be set for this option to take effect.</td>
+</tr>
+<tr><td>file</td>
+<td>FILE *</td>
+<td>Stdio stream to read image from or write image to. If set,
+ImageMagick will read from or write to the stream rather than
+opening a file. Used by ReadImage() and WriteImage(). The stream is
+closed when the operation completes.</td>
+</tr>
+<tr><td>filename</td>
+<td>char
+[MaxTextExtent]</td>
+<td>Image file name to read or write.</td>
+</tr>
+<tr><td>fill</td>
+<td>PixelPacket</td>
+<td>Drawing object fill color.</td>
+</tr>
+<tr><td>font</td>
+<td>char *</td>
+<td>Text rendering font. If the font is a fully qualified X server font
+name, the font is obtained from an X server. To use a TrueType
+font, precede the TrueType filename with an &#64;. Otherwise, specify a
+Postscript font name (e.g. &quot;helvetica&quot;).</td>
+</tr>
+<tr><td>fuzz</td>
+<td>int</td>
+<td>Colors within this distance are considered equal. A number of
+algorithms search for a target color. By default the color must be
+exact. Use this option to match colors that are close to the target
+color in RGB space.</td>
+</tr>
+<tr><td>interlace</td>
+<td>InterlaceType</td>
+<td>The type of interlacing scheme (default NoInterlace). This option
+is used to specify the type of interlacing scheme for raw image
+formats such as RGB or YUV. NoInterlace means do not interlace,
+LineInterlace uses scanline interlacing, and PlaneInterlace uses
+plane interlacing. PartitionInterlace is like PlaneInterlace except
+the different planes are saved to individual files (e.g. image.R,
+image.G, and image.B). Use LineInterlace or PlaneInterlace to
+create an interlaced GIF or progressive JPEG image.</td>
+</tr>
+<tr><td>iterations</td>
+<td>char *</td>
+<td>Number of iterations to loop an animation (e.g. Netscape loop
+extension) for.</td>
+</tr>
+<tr><td>linewidth</td>
+<td>unsigned int</td>
+<td>Line width for drawing lines, circles, ellipses, etc.</td>
+</tr>
+<tr><td>magick</td>
+<td>char
+[MaxTextExtent]</td>
+<td>Image encoding format (e.g. &quot;GIF&quot;).</td>
+</tr>
+<tr><td>matte_color</td>
+<td>PixelPacket</td>
+<td>Image matte (transparent) color.</td>
+</tr>
+<tr><td>monochrome</td>
+<td>unsigned int</td>
+<td>Transform the image to black and white.</td>
+</tr>
+<tr><td>page</td>
+<td>char *</td>
+<td>Equivalent size of Postscript page.</td>
+</tr>
+<tr><td>ping</td>
+<td>unsigned int</td>
+<td>Set to True to read enough of the image to determine the image
+columns, rows, and filesize. The columns, rows, and size attributes
+are valid after invoking ReadImage() while ping is set. The image
+data is not valid after calling ReadImage() if ping is set.</td>
+</tr>
+<tr><td>pointsize</td>
+<td>double</td>
+<td>Text rendering font point size.</td>
+</tr>
+<tr><td>preview_type</td>
+<td>PreviewType</td>
+<td>Image manipulation preview option. Used by 'display'.</td>
+</tr>
+<tr><td>quality</td>
+<td>unsigned int</td>
+<td>JPEG/MIFF/PNG compression level (default 75).</td>
+</tr>
+<tr><td>server_name</td>
+<td>char *</td>
+<td>X11 display to display to obtain fonts from, or to capture image
+from.</td>
+</tr>
+<tr><td>size</td>
+<td>char *</td>
+<td>Width and height of a raw image (an image which does not support
+width and height information). Size may also be used to affect the
+image size read from a multi-resolution format (e.g. Photo CD,
+JBIG, or JPEG.</td>
+</tr>
+<tr><td>stroke</td>
+<td>PixelPacket</td>
+<td>Drawing object outline color.</td>
+</tr>
+<tr><td>subimage</td>
+<td>unsigned int</td>
+<td>Subimage of an image sequence.</td>
+</tr>
+<tr><td>subrange</td>
+<td>unsigned int</td>
+<td>Number of images relative to the base image.</td>
+</tr>
+<tr><td>texture</td>
+<td>char *</td>
+<td>Image filename to use as background texture.</td>
+</tr>
+<tr><td>tile</td>
+<td>char *</td>
+<td>Tile name.</td>
+</tr>
+<tr><td>units</td>
+<td>ResolutionType</td>
+<td>Units of image resolution.</td>
+</tr>
+<tr><td>verbose</td>
+<td>unsigned int</td>
+<td>Print detailed information about the image if True.</td>
+</tr>
+<tr><td>view</td>
+<td>char *</td>
+<td>FlashPix viewing parameters.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="imagetype">
+<h1><a class="toc-backref" href="#id26">ImageType</a></h1>
+<p>ImageType indicates the type classification of the image.</p>
+<table border="1" class="docutils">
+<caption>ImageType</caption>
+<colgroup>
+<col width="31%" />
+<col width="69%" />
+</colgroup>
+<tbody valign="top">
+<tr><td>Enumeration</td>
+<td>Description</td>
+</tr>
+<tr><td>UndefinedType</td>
+<td>Unset value.</td>
+</tr>
+<tr><td>BilevelType</td>
+<td>Monochrome image</td>
+</tr>
+<tr><td>GrayscaleType</td>
+<td>Grayscale image</td>
+</tr>
+<tr><td>PaletteType</td>
+<td>Indexed color (palette) image</td>
+</tr>
+<tr><td>PaletteMatteType</td>
+<td>Indexed color (palette) image with opacity</td>
+</tr>
+<tr><td>TrueColorType</td>
+<td>Truecolor image</td>
+</tr>
+<tr><td>TrueColorMatteType</td>
+<td>Truecolor image with opacity</td>
+</tr>
+<tr><td>ColorSeparationType</td>
+<td>Cyan/Yellow/Magenta/Black (CYMK) image</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="indexpacket">
+<h1><a class="toc-backref" href="#id27">IndexPacket</a></h1>
+<p>IndexPacket is the type used for a colormap index. An array of type
+IndexPacket is used to represent an image in PseudoClass type. Currently
+supported IndexPacket underlying types are 'unsigned char' and 'unsigned
+short'. The type is selected at build time according to the QuantumDepth
+setting.</p>
+</div>
+<div class="section" id="interlacetype">
+<h1><a class="toc-backref" href="#id28">InterlaceType</a></h1>
+<p>InterlaceType specifies the ordering of the red, green, and blue pixel
+information in the image. Interlacing is usually used to make image
+information available to the user faster by taking advantage of the space
+vs time tradeoff. For example, interlacing allows images on the Web to be
+recognizable sooner and satellite images to accumulate/render with image
+resolution increasing over time.</p>
+<p>Use LineInterlace or PlaneInterlace to create an interlaced GIF or
+progressive JPEG image.</p>
+<table border="1" class="docutils">
+<caption>InterlaceType</caption>
+<colgroup>
+<col width="19%" />
+<col width="81%" />
+</colgroup>
+<tbody valign="top">
+<tr><td>Enumeration</td>
+<td>Description</td>
+</tr>
+<tr><td>UndefinedInterlace</td>
+<td>Unset value.</td>
+</tr>
+<tr><td>NoInterlace</td>
+<td>Don't interlace image (RGBRGBRGBRGBRGBRGB...)</td>
+</tr>
+<tr><td>LineInterlace</td>
+<td>Use scanline interlacing (RRR...GGG...BBB...RRR...GGG...BBB...)</td>
+</tr>
+<tr><td>PlaneInterlace</td>
+<td>Use plane interlacing (RRRRRR...GGGGGG...BBBBBB...)</td>
+</tr>
+<tr><td>PartitionInterlace</td>
+<td>Similar to plane interlaing except that the different planes are saved to
+individual files (e.g. image.R, image.G, and image.B)</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="layertype">
+<h1><a class="toc-backref" href="#id29">LayerType</a></h1>
+<p>LayerType is used as an argument when doing color separations. Use
+LayerType when extracting a layer from an image. MatteLayer is useful for
+extracting the opacity values from an image.</p>
+<table border="1" class="docutils">
+<caption>LayerType</caption>
+<colgroup>
+<col width="28%" />
+<col width="72%" />
+</colgroup>
+<tbody valign="top">
+<tr><td>Enumeration</td>
+<td>Description</td>
+</tr>
+<tr><td>UndefinedLayer</td>
+<td>Unset value.</td>
+</tr>
+<tr><td>RedLayer</td>
+<td>Select red layer</td>
+</tr>
+<tr><td>GreenLayer</td>
+<td>Select green layer</td>
+</tr>
+<tr><td>BlueLayer</td>
+<td>Select blue layer</td>
+</tr>
+<tr><td>MatteLayer</td>
+<td>Select matte (opacity values) layer</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="magickinfo">
+<h1><a class="toc-backref" href="#id30">MagickInfo</a></h1>
+<p>The MagickInfo structure is used by GraphicsMagick to register support
+for an image format. The MagickInfo structure is allocated with default
+parameters by calling SetMagickInfo(). Image formats are registered by
+calling RegisterMagickInfo() which adds the initial structure to a linked
+list (at which point it is owned by the list). A pointer to the structure
+describing a format may be obtained by calling GetMagickInfo(). Pass the
+argument NULL to obtain the first member of this list. A human-readable
+list of registered image formats may be printed to a file descriptor by
+calling ListMagickInfo().</p>
+<p>Support for formats may be provided as a module which is part of the
+GraphicsMagick library, provided by a module which is loaded dynamically
+at run-time, or directly by the linked program. Users of GraphicsMagick
+will normally want to create a loadable-module, or support encode/decode
+of an image format directly from within their program.</p>
+<p>Sample Module:</p>
+<p>The following shows sample code for a module called &quot;GIF&quot; (gif.c). Note
+that the names of the Register and Unregister call-back routines are
+calculated at run-time, and therefore must follow the rigid naming scheme
+RegisterFORMATImage and UnregisterFORMATImage, respectively, where FORMAT
+is the upper-cased name of the module file:</p>
+<pre class="literal-block">
+/* Read image */
+Image *ReadGIFImage(const ImageInfo *image_info)
+{
+  [ decode the image ... ]
+}
+
+/* Write image */
+unsigned int WriteGIFImage(const ImageInfo *image_info,Image *image)
+{
+  [ encode the image ... ]
+}
+
+/* Module call-back to register support for formats */
+void RegisterGIFImage(void)
+{
+  MagickInfo *entry;
+  entry=SetMagickInfo(&quot;GIF&quot;);
+  entry-&gt;decoder=ReadGIFImage;
+  entry-&gt;encoder=WriteGIFImage;
+  entry-&gt;description=&quot;CompuServe graphics interchange format&quot;;
+  entry-&gt;module=&quot;GIF&quot;;
+  RegisterMagickInfo(entry);
+
+  entry=SetMagickInfo(&quot;GIF87&quot;);
+  entry-&gt;decoder=ReadGIFImage;
+  entry-&gt;encoder=WriteGIFImage;
+  entry-&gt;adjoin=False;
+  entry-&gt;description=&quot;CompuServe graphics interchange format (version 87a)&quot;;
+  entry-&gt;module=&quot;GIF&quot;;
+  RegisterMagickInfo(entry);
+}
+
+/* Module call-back to unregister support for formats */
+Export void UnregisterGIFImage(void)
+{
+  UnregisterMagickInfo(&quot;GIF&quot;);
+  UnregisterMagickInfo(&quot;GIF87&quot;);
+}
+</pre>
+<p>Sample Application Code</p>
+<p>Image format support provided within the user's application does not need
+to implement the RegisterFORMATImage and UnregisterFORMATImage call-back
+routines. Instead, the application takes responsibility for the
+registration itself. An example follows:</p>
+<pre class="literal-block">
+/* Read image */
+Image *ReadGIFImage(const ImageInfo *image_info)
+{
+  [ decode the image ... ]
+}
+/* Write image */
+unsigned int WriteGIFImage(const ImageInfo *image_info,Image *image)
+{
+  [ encode the image ... ]
+}
+#include &lt;stdio.h&gt;
+int main( void )
+{
+  struct MagickInfo* info;
+  info = SetMagickInfo(&quot;GIF&quot;);
+  if ( info == (MagickInfo*)NULL )
+  exit(1);
+  info-&gt;decoder = ReadGIFImage;
+  info-&gt;encoder = WriteGIFImage;
+  info-&gt;adjoin = False;
+  info-&gt;description = &quot;CompuServe graphics interchange format&quot;;
+  /* Add MagickInfo structure to list */
+  RegisterMagickInfo(info);
+  info = GetMagickInfo(&quot;GIF&quot;);
+  [ do something with info ... ]
+  ListMagickInfo( stdout );
+  return;
+}
+</pre>
+<p>MagickInfo Structure Definition</p>
+<p>The members of the MagickInfo structure are shown in the following table:</p>
+<table border="1" class="docutils">
+<caption>MagickInfo Structure Members</caption>
+<colgroup>
+<col width="12%" />
+<col width="20%" />
+<col width="67%" />
+</colgroup>
+<tbody valign="top">
+<tr><td>Member</td>
+<td>Type</td>
+<td>Description</td>
+</tr>
+<tr><td>adjoin</td>
+<td>unsigned int</td>
+<td>Set to non-zero (True) if this file format supports multi-frame
+images.</td>
+</tr>
+<tr><td>blob_support</td>
+<td>unsigned int</td>
+<td>Set to non-zero (True) if the encoder and decoder for this format
+supports operating on arbitrary BLOBs (rather than only disk
+files).</td>
+</tr>
+<tr><td>data</td>
+<td>void *</td>
+<td>User specified data. A way to pass any sort of data structure to
+the endoder/decoder. To set this, GetMagickInfo() must be called
+to first obtain a pointer to the registered structure since it can
+not be set via a RegisterMagickInfo() parameter.</td>
+</tr>
+<tr><td>decoder</td>
+<td>Image *(*decoder)
+(const ImageInfo
+*)</td>
+<td>Function to decode image data and return GraphicsMagick Image.</td>
+</tr>
+<tr><td>description</td>
+<td>char *</td>
+<td>Long form image format description (e.g. &quot;CompuServe graphics
+interchange format&quot;).</td>
+</tr>
+<tr><td>encoder</td>
+<td>unsigned int
+(*encoder)(const
+ImageInfo *, Image
+*)</td>
+<td>Function to encode image data with options passed via ImageInfo
+and image represented by Image.</td>
+</tr>
+<tr><td>module</td>
+<td>char *</td>
+<td>Name of module (e.g. &quot;GIF&quot;) which registered this format. Set to
+NULL if format is not registered by a module.</td>
+</tr>
+<tr><td>name</td>
+<td>const char *</td>
+<td>Magick string (e.g. &quot;GIF&quot;) which identifies this format.</td>
+</tr>
+<tr><td>next</td>
+<td>MagickInfo</td>
+<td>Next MagickInfo struct in linked-list. NULL if none.</td>
+</tr>
+<tr><td>previous</td>
+<td>MagickInfo</td>
+<td>Previous MagickInfo struct in linked-list. NULL if none.</td>
+</tr>
+<tr><td>raw</td>
+<td>unsigned int</td>
+<td>Image format does not contain size (must be specified in
+ImageInfo).</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="monitorhandler">
+<h1><a class="toc-backref" href="#id31">MonitorHandler</a></h1>
+<p>MonitorHandler is the function type to be used for the progress monitor
+callback. Its definition is as follows:</p>
+<pre class="literal-block">
+typedef unsigned int
+  (*MonitorHandler)(const char *text, const magick_int64_t quantum,
+    const magick_uint64_t span, ExceptionInfo *exception);
+</pre>
+<p>The operation of the monitor handler is described in the following table:</p>
+<table border="1" class="docutils">
+<caption>MonitorHandler Parameters</caption>
+<colgroup>
+<col width="25%" />
+<col width="25%" />
+<col width="49%" />
+</colgroup>
+<tbody valign="top">
+<tr><td>Parameter</td>
+<td>Type</td>
+<td>Description</td>
+</tr>
+<tr><td>return status</td>
+<td>unsigned int</td>
+<td>The progress monitor should normally return
+True (a non-zero value) if the operation is
+to continue. If the progress monitor returns
+false, then the operation is will be aborted.
+This mechanism allows a user to terminate a
+process which is taking too long to complete.</td>
+</tr>
+<tr><td>text</td>
+<td>const char *</td>
+<td>A description of the current operation being
+performed.</td>
+</tr>
+<tr><td>quantum</td>
+<td>const magick_int64_t</td>
+<td>A value within the range of 0 to span which
+indicates the degree of progress.</td>
+</tr>
+<tr><td>span</td>
+<td>const magick_uint64_t</td>
+<td>The total range that quantum will span.</td>
+</tr>
+<tr><td>exception</td>
+<td>exceptionInfo *</td>
+<td>If the progress monitor returns False (abort
+operation), it should also update the
+structure passed via the exception parameter
+so that an error message may be reported to
+the user.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="montageinfo">
+<h1><a class="toc-backref" href="#id32">MontageInfo</a></h1>
+<pre class="literal-block">
+typedef struct _MontageInfo
+{
+  char
+    *geometry,
+    *tile,
+    *title,
+    *frame,
+    *texture,
+    *font;
+
+  double
+    pointsize;
+
+  unsigned long
+    border_width;
+
+  unsigned int
+    shadow;
+
+  PixelPacket
+    fill,
+    stroke,
+    background_color,
+    border_color,
+    matte_color;
+
+  GravityType
+    gravity;
+
+  char
+    filename[MaxTextExtent];
+
+  unsigned long
+    signature;
+} MontageInfo;
+</pre>
+</div>
+<div class="section" id="noisetype">
+<h1><a class="toc-backref" href="#id33">NoiseType</a></h1>
+<p>NoiseType is used as an argument to select the type of noise to be added
+to the image.</p>
+<table border="1" class="docutils">
+<caption>NoiseType</caption>
+<colgroup>
+<col width="48%" />
+<col width="52%" />
+</colgroup>
+<tbody valign="top">
+<tr><td>Enumeration</td>
+<td>Description</td>
+</tr>
+<tr><td>UniformNoise</td>
+<td>Uniform noise</td>
+</tr>
+<tr><td>GaussianNoise</td>
+<td>Gaussian noise</td>
+</tr>
+<tr><td>MultiplicativeGaussianNoise</td>
+<td>Multiplicative Gaussian noise</td>
+</tr>
+<tr><td>ImpulseNoise</td>
+<td>Impulse noise</td>
+</tr>
+<tr><td>LaplacianNoise</td>
+<td>Laplacian noise</td>
+</tr>
+<tr><td>PoissonNoise</td>
+<td>Poisson noise</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="orientationtype">
+<h1><a class="toc-backref" href="#id34">OrientationType</a></h1>
+<p>OrientationType specifies the orientation of the image. Useful for when
+the image is produced via a different ordinate system, the camera was
+turned on its side, or the page was scanned sideways.</p>
+<table border="1" class="docutils">
+<caption>OrientationType</caption>
+<colgroup>
+<col width="25%" />
+<col width="29%" />
+<col width="45%" />
+</colgroup>
+<tbody valign="top">
+<tr><td>Enumeration</td>
+<td>Scanline Direction</td>
+<td>Frame Direction</td>
+</tr>
+<tr><td>UndefinedOrientation</td>
+<td>Unknown</td>
+<td>Unknown</td>
+</tr>
+<tr><td>TopLeftOrientation</td>
+<td>Left to right</td>
+<td>Top to bottom</td>
+</tr>
+<tr><td>TopRightOrientation</td>
+<td>Right to left</td>
+<td>Top to bottom</td>
+</tr>
+<tr><td>BottomRightOrientation</td>
+<td>Right to left</td>
+<td>Bottom to top</td>
+</tr>
+<tr><td>BottomLeftOrientation</td>
+<td>Left to right</td>
+<td>Bottom to top</td>
+</tr>
+<tr><td>LeftTopOrientation</td>
+<td>Top to bottom</td>
+<td>Left to right</td>
+</tr>
+<tr><td>RightTopOrientation</td>
+<td>Top to bottom</td>
+<td>Right to left</td>
+</tr>
+<tr><td>RightBottomOrientation</td>
+<td>Bottom to top</td>
+<td>Right to left</td>
+</tr>
+<tr><td>LeftBottomOrientation</td>
+<td>Bottom to top</td>
+<td>Left to right</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="paintmethod">
+<h1><a class="toc-backref" href="#id35">PaintMethod</a></h1>
+<p>PaintMethod specifies how pixel colors are to be replaced in the image.
+It is used to select the pixel-filling algorithm employed.</p>
+<table border="1" class="docutils">
+<caption>PaintMethod</caption>
+<colgroup>
+<col width="19%" />
+<col width="81%" />
+</colgroup>
+<tbody valign="top">
+<tr><td>Enumeration</td>
+<td>Description</td>
+</tr>
+<tr><td>PointMethod</td>
+<td>Replace pixel color at point.</td>
+</tr>
+<tr><td>ReplaceMethod</td>
+<td>Replace color for all image pixels matching color at point.</td>
+</tr>
+<tr><td>FloodfillMethod</td>
+<td>Replace color for pixels surrounding point until encountering pixel that fails
+to match color at point.</td>
+</tr>
+<tr><td>FillToBorderMethod</td>
+<td>Replace color for pixels surrounding point until encountering pixels matching
+border color.</td>
+</tr>
+<tr><td>ResetMethod</td>
+<td>Replace colors for all pixels in image with pen color.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="pixelpacket">
+<h1><a class="toc-backref" href="#id36">PixelPacket</a></h1>
+<p>The PixelPacket structure is used to represent DirectClass color pixels
+in GraphicsMagick. If the image is indicated as a PseudoClass image, its
+DirectClass representation is only valid immediately after calling
+SyncImage(). If an image is set as PseudoClass and the DirectClass
+representation is modified, the image should then be set as DirectClass.
+Use QuantizeImage() to restore the PseudoClass colormap if the
+DirectClass representation is modified.</p>
+<p>The members of the PixelPacket structure are shown in the following table:</p>
+<table border="1" class="docutils">
+<caption>PixelPacket Structure Members</caption>
+<colgroup>
+<col width="11%" />
+<col width="10%" />
+<col width="24%" />
+<col width="33%" />
+<col width="23%" />
+</colgroup>
+<tbody valign="top">
+<tr><td rowspan="2">Member</td>
+<td rowspan="2">Type</td>
+<td colspan="3">Interpretation</td>
+</tr>
+<tr><td>RGBColorspace (3)</td>
+<td>RGBColorspace + matte(3)</td>
+<td>CMYKColorspace</td>
+</tr>
+<tr><td>red</td>
+<td>Quantum</td>
+<td>Red</td>
+<td>Red</td>
+<td>Cyan</td>
+</tr>
+<tr><td>green</td>
+<td>Quantum</td>
+<td>Green</td>
+<td>Green</td>
+<td>Magenta</td>
+</tr>
+<tr><td>blue</td>
+<td>Quantum</td>
+<td>Blue</td>
+<td>Blue</td>
+<td>Yellow</td>
+</tr>
+<tr><td>opacity</td>
+<td>Quantum</td>
+<td>Ignored</td>
+<td>Opacity</td>
+<td>Black</td>
+</tr>
+</tbody>
+</table>
+<p>Notes:</p>
+<blockquote>
+<ol class="arabic simple">
+<li>Quantum is an unsigned short (MaxRGB=65535) if GraphicsMagick is
+built using -DQuantumDepth=16 Otherwise it is an unsigned char
+(MaxRGB=255).</li>
+<li>SyncImage() may be used to synchronize the DirectClass color pixels
+to the current PseudoClass colormap.</li>
+<li>For pixel representation purposes, all colorspaces are treated like
+RGBColorspace except for CMYKColorspace.</li>
+</ol>
+</blockquote>
+</div>
+<div class="section" id="pointinfo">
+<h1><a class="toc-backref" href="#id37">PointInfo</a></h1>
+<p>The PointInfo structure is used by the ChromaticityInfo structure to
+specify chromaticity point values. This defines the boundaries and gammut
+(range of included color) of the colorspace.</p>
+<p>The members of the PointInfo structure are shown in the following table:</p>
+<table border="1" class="docutils">
+<caption>PointInfo Structure Members</caption>
+<colgroup>
+<col width="31%" />
+<col width="25%" />
+<col width="44%" />
+</colgroup>
+<tbody valign="top">
+<tr><td>Member</td>
+<td>Type</td>
+<td>Description</td>
+</tr>
+<tr><td>x</td>
+<td>double</td>
+<td>X ordinate</td>
+</tr>
+<tr><td>y</td>
+<td>double</td>
+<td>Y ordinate</td>
+</tr>
+<tr><td>z</td>
+<td>double</td>
+<td>Z ordinate</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="profileinfo">
+<h1><a class="toc-backref" href="#id38">ProfileInfo</a></h1>
+<p>The ProfileInfo structure is used to represent ICC or IPCT profiles in
+GraphicsMagick (stored as an opaque BLOB).</p>
+<p>The members of the ProfileInfo structure are shown in the following table:</p>
+<table border="1" class="docutils">
+<caption>ProfileInfo Structure Members</caption>
+<colgroup>
+<col width="24%" />
+<col width="40%" />
+<col width="36%" />
+</colgroup>
+<tbody valign="top">
+<tr><td>Member</td>
+<td>Type</td>
+<td>Description</td>
+</tr>
+<tr><td>length</td>
+<td>unsigned int</td>
+<td>Profile length</td>
+</tr>
+<tr><td>info</td>
+<td>unsigned char *</td>
+<td>Profile data</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="quantizeinfo">
+<h1><a class="toc-backref" href="#id39">QuantizeInfo</a></h1>
+<p>The QuantizeInfo structure is used to support passing parameters to
+GraphicsMagick's color quantization (reduction) functions. Color
+quantization is the process of analyzing one or more images, and
+calculating a color palette which best approximates the image within a
+specified colorspace, and then adjusting the image pixels to use the
+calculated color palette. The maximum number of colors allowed in the
+color palette may be specified.</p>
+<table border="1" class="docutils">
+<caption>Methods Supporting QuantizeInfo</caption>
+<colgroup>
+<col width="20%" />
+<col width="80%" />
+</colgroup>
+<tbody valign="top">
+<tr><td>Method</td>
+<td>Description</td>
+</tr>
+<tr><td>GetQuantizeInfo()</td>
+<td>Allocate new structure with defaults set.</td>
+</tr>
+<tr><td>CloneQuantizeInfo()</td>
+<td>Copy existing structure, allocating new structure in the process.</td>
+</tr>
+<tr><td>DestroyQuantizeInfo
+()</td>
+<td>Deallocate structure, including any members.</td>
+</tr>
+<tr><td>QuantizeImage</td>
+<td>Analyzes the colors within a reference image and chooses a fixed number of
+colors to represent the image.</td>
+</tr>
+<tr><td>QuantizeImages</td>
+<td>Analyzes the colors within a set of reference images and chooses a fixed
+number of colors to represent the set.</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils">
+<caption>QuantizeInfo Structure Members</caption>
+<colgroup>
+<col width="13%" />
+<col width="14%" />
+<col width="72%" />
+</colgroup>
+<tbody valign="top">
+<tr><td>Member</td>
+<td>Type</td>
+<td>Description</td>
+</tr>
+<tr><td>colorspace</td>
+<td>ColorspaceType</td>
+<td>The colorspace to quantize in. Color reduction, by default, takes
+place in the RGB color space.  Empirical  evidence  suggests that
+distances in color spaces such as YUV or YIQ  correspond  to
+perceptual  color differences more closely  than  do distances in RGB
+space. The Transparent color space behaves uniquely in that it
+preserves the matte channel of the image if it exists.</td>
+</tr>
+<tr><td>dither</td>
+<td>unsigned int</td>
+<td>Set to True (non-zero) to apply Floyd/Steinberg error diffusion to the
+image. When the size of the color palette is less than the image
+colors, this trades off spacial resolution for color resolution by
+dithering to achieve a similar looking image.</td>
+</tr>
+<tr><td>measure_error</td>
+<td>unsigned int</td>
+<td>Set to True (non-zero) to calculate quantization errors when
+quantizing the image.</td>
+</tr>
+<tr><td>number_colors</td>
+<td>unsigned int</td>
+<td>Specify the maximum number of colors in the output image. Must be
+equal to, or less than MaxRGB, which is determined by the value of
+QuantumLeap when GraphicsMagick was compiled.</td>
+</tr>
+<tr><td>signature</td>
+<td>unsigned long</td>
+<td>???</td>
+</tr>
+<tr><td>tree_depth</td>
+<td>unsigned int</td>
+<td>Specify the tree depth to use while quantizing. The values zero and
+one support automatic tree depth determination. The tree depth may be
+forced via values ranging from two to eight. The ideal tree depth
+depends on the characteristics of the input image, and may be
+determined through experimentation.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="quantum">
+<h1><a class="toc-backref" href="#id40">Quantum</a></h1>
+<p>Quantum is the base type ('unsigned char', 'unsigned short', 'unsigned
+int') used to store a pixel component (e.g. 'R' is one pixel component of
+an RGB pixel).</p>
+</div>
+<div class="section" id="quantumtype">
+<h1><a class="toc-backref" href="#id41">QuantumType</a></h1>
+<p>QuantumType is used to indicate the source or destination format of
+entire pixels, or components of pixels (&quot;Quantums&quot;) while they are being
+read, or written to, a pixel cache. The validity of these format
+specifications depends on whether the Image pixels are in RGB format,
+RGBA format, or CMYK format. The pixel Quantum size is determined by the
+Image depth (eight or sixteen bits).</p>
+<table border="1" class="docutils">
+<caption>RGB(A) Image Quantums</caption>
+<colgroup>
+<col width="18%" />
+<col width="82%" />
+</colgroup>
+<tbody valign="top">
+<tr><td>Enumeration</td>
+<td>Description</td>
+</tr>
+<tr><td>IndexQuantum</td>
+<td>PseudoColor colormap indices (valid only for image with colormap)</td>
+</tr>
+<tr><td>RedQuantum</td>
+<td>Red pixel Quantum</td>
+</tr>
+<tr><td>GreenQuantum</td>
+<td>Green pixel Quantum</td>
+</tr>
+<tr><td>BlueQuantum</td>
+<td>Blue pixel Quantum</td>
+</tr>
+<tr><td>OpacityQuantum</td>
+<td>Opacity (Alpha) Quantum</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils">
+<caption>CMY(K) Image Quantum</caption>
+<colgroup>
+<col width="40%" />
+<col width="60%" />
+</colgroup>
+<tbody valign="top">
+<tr><td>Enumeration</td>
+<td>Description</td>
+</tr>
+<tr><td>CyanQuantum</td>
+<td>Cyan pixel Quantum</td>
+</tr>
+<tr><td>MagentaQuantum</td>
+<td>Magenta pixel Quantum</td>
+</tr>
+<tr><td>YellowQuantum</td>
+<td>Yellow pixel Quantum</td>
+</tr>
+<tr><td>BlackQuantum</td>
+<td>Black pixel Quantum</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils">
+<caption>Grayscale Image Quantums</caption>
+<colgroup>
+<col width="58%" />
+<col width="42%" />
+</colgroup>
+<tbody valign="top">
+<tr><td>Enumeration</td>
+<td>Description</td>
+</tr>
+<tr><td>GrayQuantum</td>
+<td>Gray pixel</td>
+</tr>
+<tr><td>GrayOpacityQuantum</td>
+<td>Pixel opacity</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils">
+<caption>Entire Pixels (Expressed in Byte Order)</caption>
+<colgroup>
+<col width="28%" />
+<col width="72%" />
+</colgroup>
+<tbody valign="top">
+<tr><td>Enumeration</td>
+<td>Description</td>
+</tr>
+<tr><td>RGBQuantum</td>
+<td>RGB pixel (24 or 48 octets)</td>
+</tr>
+<tr><td>RGBAQuantum</td>
+<td>RGBA pixel (32 or 64 octets)</td>
+</tr>
+<tr><td>CMYKQuantum</td>
+<td>CMYK pixel (32 or 64 octets)</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="rectangleinfo">
+<h1><a class="toc-backref" href="#id42">RectangleInfo</a></h1>
+<p>The RectangleInfo structure is used to represent positioning information
+in GraphicsMagick.</p>
+<p>The members of the RectangleInfo structure are shown in the following
+table:</p>
+<table border="1" class="docutils">
+<caption>RectangleInfo Structure Members</caption>
+<colgroup>
+<col width="20%" />
+<col width="25%" />
+<col width="55%" />
+</colgroup>
+<tbody valign="top">
+<tr><td>Member</td>
+<td>Type</td>
+<td>Description</td>
+</tr>
+<tr><td>width</td>
+<td>unsigned int</td>
+<td>Rectangle width</td>
+</tr>
+<tr><td>height</td>
+<td>unsigned int</td>
+<td>Rectangle height</td>
+</tr>
+<tr><td>x</td>
+<td>int</td>
+<td>Rectangle horizontal offset</td>
+</tr>
+<tr><td>y</td>
+<td>int</td>
+<td>Rectangle vertical offset</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="registrytype">
+<h1><a class="toc-backref" href="#id43">RegistryType</a></h1>
+<pre class="literal-block">
+typedef enum
+{
+  UndefinedRegistryType,
+  ImageRegistryType,
+  ImageInfoRegistryType
+} RegistryType;
+</pre>
+</div>
+<div class="section" id="renderingintent">
+<h1><a class="toc-backref" href="#id44">RenderingIntent</a></h1>
+<p>Rendering intent is a concept defined by ICC Spec ICC.1:1998-09, &quot;File
+Format for Color Profiles&quot;. GraphicsMagick uses RenderingIntent in order
+to support ICC Color Profiles.</p>
+<p>From the specification: &quot;Rendering intent specifies the style of
+reproduction to be used during the evaluation of this profile in a
+sequence of profiles. It applies specifically to that profile in the
+sequence and not to the entire sequence. Typically, the user or
+application will set the rendering intent dynamically at runtime or
+embedding time.&quot;</p>
+<table border="1" class="docutils">
+<caption>RenderingIntent</caption>
+<colgroup>
+<col width="17%" />
+<col width="83%" />
+</colgroup>
+<tbody valign="top">
+<tr><td>Enumeration</td>
+<td>Description</td>
+</tr>
+<tr><td>UndefinedIntent</td>
+<td>Unset value.</td>
+</tr>
+<tr><td>SaturationIntent</td>
+<td>A rendering intent that specifies the saturation of the pixels in the image is
+preserved perhaps at the expense of accuracy in hue and lightness.</td>
+</tr>
+<tr><td>PerceptualIntent</td>
+<td>A rendering intent that specifies the full gamut of the image is compressed or
+expanded to fill the gamut of the destination device. Gray balance is preserved
+but colorimetric accuracy might not be preserved.</td>
+</tr>
+<tr><td>AbsoluteIntent</td>
+<td>Absolute colorimetric</td>
+</tr>
+<tr><td>RelativeIntent</td>
+<td>Relative colorimetric</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="resolutiontype">
+<h1><a class="toc-backref" href="#id45">ResolutionType</a></h1>
+<p>By default, GraphicsMagick defines resolutions in pixels per inch.
+ResolutionType provides a means to adjust this.</p>
+<table border="1" class="docutils">
+<caption>ResolutionType</caption>
+<colgroup>
+<col width="30%" />
+<col width="70%" />
+</colgroup>
+<tbody valign="top">
+<tr><td>Enumeration</td>
+<td>Description</td>
+</tr>
+<tr><td>UndefinedResolution</td>
+<td>Unset value.</td>
+</tr>
+<tr><td>PixelsPerInchResolution</td>
+<td>Density specifications are specified in units of pixels per inch
+(english units).</td>
+</tr>
+<tr><td>PixelsPerCentimeterResolution</td>
+<td>Density specifications are specified in units of pixels per
+centimeter (metric units).</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="resourcetype">
+<h1><a class="toc-backref" href="#id46">ResourceType</a></h1>
+<pre class="literal-block">
+typedef enum
+{
+  UndefinedResource,
+  FileResource,
+  MemoryResource,
+  MapResource,
+  DiskResource
+} ResourceType;
+</pre>
+</div>
+<div class="section" id="segmentinfo">
+<h1><a class="toc-backref" href="#id47">SegmentInfo</a></h1>
+<pre class="literal-block">
+typedef struct _SegmentInfo
+{
+  double
+    x1,
+    y1,
+    x2,
+    y2;
+} SegmentInfo;
+</pre>
+</div>
+<div class="section" id="signatureinfo">
+<h1><a class="toc-backref" href="#id48">SignatureInfo</a></h1>
+<pre class="literal-block">
+typedef struct _SignatureInfo
+{
+  unsigned long
+    digest[8],
+    low_order,
+    high_order;
+
+  long
+    offset;
+
+  unsigned char
+    message[SignatureSize];
+} SignatureInfo;
+</pre>
+</div>
+<div class="section" id="storagetype">
+<h1><a class="toc-backref" href="#id49">StorageType</a></h1>
+<pre class="literal-block">
+typedef enum
+{
+  CharPixel,
+  ShortPixel,
+  IntegerPixel,
+  LongPixel,
+  FloatPixel,
+  DoublePixel
+} StorageType;
+</pre>
+</div>
+<div class="section" id="streamhandler">
+<h1><a class="toc-backref" href="#id50">StreamHandler</a></h1>
+<pre class="literal-block">
+typedef unsigned int
+  (*StreamHandler)(const Image *,const void *,const size_t);
+</pre>
+</div>
+<div class="section" id="stretchtype">
+<h1><a class="toc-backref" href="#id51">StretchType</a></h1>
+<pre class="literal-block">
+typedef enum
+{
+  NormalStretch,
+  UltraCondensedStretch,
+  ExtraCondensedStretch,
+  CondensedStretch,
+  SemiCondensedStretch,
+  SemiExpandedStretch,
+  ExpandedStretch,
+  ExtraExpandedStretch,
+  UltraExpandedStretch,
+  AnyStretch
+} StretchType;
+</pre>
+</div>
+<div class="section" id="styletype">
+<h1><a class="toc-backref" href="#id52">StyleType</a></h1>
+<pre class="literal-block">
+typedef enum
+{
+  NormalStyle,
+  ItalicStyle,
+  ObliqueStyle,
+  AnyStyle
+} StyleType;
+</pre>
+</div>
+<div class="section" id="typemetric">
+<h1><a class="toc-backref" href="#id53">TypeMetric</a></h1>
+<pre class="literal-block">
+typedef struct _TypeMetric
+{
+  PointInfo
+    pixels_per_em;
+
+  double
+    ascent,
+    descent,
+    width,
+    height,
+    max_advance;
+
+  SegmentInfo
+    bounds;
+
+  double
+    underline_position,
+    underline_thickness;
+} TypeMetric;
+</pre>
+</div>
+<div class="section" id="viewinfo">
+<h1><a class="toc-backref" href="#id54">ViewInfo</a></h1>
+<p>ViewInfo represents a handle to a pixel view, which represents a uniquely
+selectable rectangular region of pixels. The only limit on the number of
+views is the amount of available memory. Each Image contains a collection
+of default views (one view per thread) so that the image may be usefully
+accessed without needing to explicitly allocate pixel views.</p>
+<pre class="literal-block">
+typedef void *ViewInfo;
+</pre>
+</div>
+<div class="section" id="virtualpixelmethod">
+<h1><a class="toc-backref" href="#id55">VirtualPixelMethod</a></h1>
+<pre class="literal-block">
+typedef enum
+{
+  UndefinedVirtualPixelMethod,
+  ConstantVirtualPixelMethod,
+  EdgeVirtualPixelMethod,
+  MirrorVirtualPixelMethod,
+  TileVirtualPixelMethod
+} VirtualPixelMethod;
+</pre>
+</div>
+<div class="section" id="magickxresourceinfo">
+<h1><a class="toc-backref" href="#id56">MagickXResourceInfo</a></h1>
+<pre class="literal-block">
+typedef struct _XResourceInfo
+{
+  XrmDatabase
+    resource_database;
+
+  ImageInfo
+    *image_info;
+
+  QuantizeInfo
+    *quantize_info;
+
+  unsigned long
+    colors;
+
+  unsigned int
+    close_server,
+    backdrop;
+
+  char
+    *background_color,
+    *border_color;
+
+  char
+    *client_name;
+
+  XColormapType
+    colormap;
+
+  unsigned int
+    border_width,
+    color_recovery,
+    confirm_exit,
+    delay;
+
+  char
+    *display_gamma;
+
+  char
+    *font,
+    *font_name[MaxNumberFonts],
+    *foreground_color;
+
+  unsigned int
+    display_warnings,
+    gamma_correct;
+
+  char
+    *icon_geometry;
+
+  unsigned int
+    iconic,
+    immutable;
+
+  char
+    *image_geometry;
+
+  char
+    *map_type,
+    *matte_color,
+    *name;
+
+  unsigned int
+    magnify,
+    pause;  char
+    *pen_colors[MaxNumberPens];
+
+  char
+    *text_font,
+    *title;
+
+  int
+    quantum;
+
+  unsigned int
+    update,
+    use_pixmap,
+    use_shared_memory;
+
+  unsigned long
+    undo_cache;
+
+  char
+    *visual_type,
+    *window_group,
+    *window_id,
+    *write_filename;
+
+  Image
+    *copy_image;
+
+  int
+    gravity;
+
+  char
+    home_directory[MaxTextExtent];
+} XResourceInfo;
+</pre>
+<hr class="docutils" />
+<p>Copyright © GraphicsMagick Group 2002 - 2020</p>
+</div>
+</div>
+</body>
+</html>

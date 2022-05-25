@@ -1,0 +1,384 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.15.2: http://docutils.sourceforge.net/" />
+<title>Magick::Color Class</title>
+<link rel="stylesheet" href="../docutils-articles.css" type="text/css" />
+</head>
+<body>
+
+<div class="banner">
+<img src="../images/gm-107x76.png" alt="GraphicMagick logo" width="107" height="76" />
+<span class="title">GraphicsMagick</span>
+<form action="http://www.google.com/search">
+	<input type="hidden" name="domains" value="www.graphicsmagick.org" />
+	<input type="hidden" name="sitesearch" value="www.graphicsmagick.org" />
+    <span class="nowrap"><input type="text" name="q" size="25" maxlength="255" />&nbsp;<input type="submit" name="sa" value="Search" /></span>
+</form>
+</div>
+
+<div class="navmenu">
+<ul>
+<li><a href="../index.html">Home</a></li>
+<li><a href="../project.html">Project</a></li>
+<li><a href="../download.html">Download</a></li>
+<li><a href="../README.html">Install</a></li>
+<li><a href="../Hg.html">Source</a></li>
+<li><a href="../NEWS.html">News</a> </li>
+<li><a href="../utilities.html">Utilities</a></li>
+<li><a href="../programming.html">Programming</a></li>
+<li><a href="../reference.html">Reference</a></li>
+</ul>
+</div>
+<div class="document" id="magick-color-class">
+<h1 class="title">Magick::Color Class</h1>
+
+<!-- -*- mode: rst -*- -->
+<!-- This text is in reStucturedText format, so it may look a bit odd. -->
+<!-- See http://docutils.sourceforge.net/rst.html for details. -->
+<p>Color is the base color class in Magick++. It is a simple container
+class for the pixel red, green, blue, and alpha values scaled to fit
+GraphicsMagick's Quantum (number of bits in a color component value)
+size. Normally users will instantiate a class derived from Color which
+supports the color model that fits the needs of the application. The
+Color class may be constructed directly from an X11-style color
+string. As a perhaps odd design decision, the value transparent black
+is considered to represent an unset value (invalid color) in many
+cases. This choice was made since it avoided using more memory. The
+default Color constructor constructs an invalid color
+(i.e. transparent black) and may be used as a parameter in order to
+remove a color setting.</p>
+<div class="section" id="quantum">
+<h1>Quantum</h1>
+<p>The base type used to represent color samples in GraphicsMagick is the
+Quantum type. Pixels are represented by a structure of Quantum
+values. For example, an RGB pixel contains red, green, and blue
+quantums, while an RGBA pixel contains red, green, blue, and opacity
+quantums. The maximum value that a Quantum can attain is specified by
+a constant value represented by the MaxRGB define, which is itself
+determined by the number of bits in a Quantum. The QuantumDepth build
+option determines the number of bits in a Quantum.</p>
+</div>
+<div class="section" id="pixelpacket">
+<h1>PixelPacket</h1>
+<p>PixelPacket is the internal representation of a pixel in
+GraphicsMagick. GraphicsMagick may be compiled to support 32, 64, or
+128 bit pixels of type PixelPacket. This is controlled by the value of
+the QuantumDepth define. The default is 32 bit pixels
+(QuantumDepth=8), which provides the best performance and the least
+resource consumption. If additional color precision or range is
+desired, then GraphicsMagick may be compiled with QuantumDepth=16 or
+QuantumDepth=32. The following table shows the relationship between
+QuantumDepth, the type of Quantum, and the overall PixelPacket size:</p>
+<table border="1" class="docutils">
+<caption>Effect Of QuantumDepth Values</caption>
+<colgroup>
+<col width="28%" />
+<col width="35%" />
+<col width="37%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">QuantumDepth</th>
+<th class="head">Quantum Typedef</th>
+<th class="head">PixelPacket Size</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>8</td>
+<td>unsigned char</td>
+<td>32 bits</td>
+</tr>
+<tr><td>16</td>
+<td>unsigned short</td>
+<td>64 bits</td>
+</tr>
+<tr><td>32</td>
+<td>unsigned int</td>
+<td>128 bits</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="color-class">
+<h1>Color Class</h1>
+<p>The Color base class is not intended to be used directly. Normally a
+user will construct a derived class or inherit from this class. Color
+arguments are must be scaled to fit the Quantum size according to the
+range of MaxRGB. The Color class contains a pointer to a PixelPacket,
+which may be allocated by the Color class, or may refer to an existing
+pixel in an image.</p>
+<p>An alternate way to construct the class is via an X11-compatible color
+specification string (e.g. Color(“red”) or Color (“#FF0000”)). Since
+the class may be constructed from a string, convenient strings may be
+passed in place of an explicit Color object in methods which accept a
+reference to Color. Color may also be converted to a std::string for
+convenience in user interfaces, and for saving settings to a text
+file.</p>
+<p>The following is the definition of the Color class:</p>
+<pre class="literal-block">
+// Compare two Color objects regardless of LHS/RHS
+int MagickDLLDecl operator == ( const Magick::Color&amp; left_, const Magick::Color&amp; right_ );
+int MagickDLLDecl operator != ( const Magick::Color&amp; left_, const Magick::Color&amp; right_ );
+int MagickDLLDecl operator &gt;  ( const Magick::Color&amp; left_, const Magick::Color&amp; right_ );
+int MagickDLLDecl operator &lt;  ( const Magick::Color&amp; left_, const Magick::Color&amp; right_ );
+int MagickDLLDecl operator &gt;= ( const Magick::Color&amp; left_, const Magick::Color&amp; right_ );
+int MagickDLLDecl operator &lt;= ( const Magick::Color&amp; left_, const Magick::Color&amp; right_ );
+
+// Base color class stores RGB components scaled to fit Quantum
+class MagickDLLDecl Color
+{
+public:
+  Color ( Quantum red_,
+          Quantum green_,
+          Quantum blue_ );
+  Color ( Quantum red_,
+          Quantum green_,
+          Quantum blue_,
+          Quantum alpha_ );
+  Color ( const std::string &amp;x11color_ );
+  Color ( const char * x11color_ );
+  Color ( void );
+  virtual        ~Color ( void );
+  Color ( const Color &amp; color_ );
+
+  // Red color (range 0 to MaxRGB)
+  void           redQuantum ( Quantum red_ );
+  Quantum        redQuantum ( void ) const;
+
+  // Green color (range 0 to MaxRGB)
+  void           greenQuantum ( Quantum green_ );
+  Quantum        greenQuantum ( void ) const;
+
+  // Blue color (range 0 to MaxRGB)
+  void           blueQuantum ( Quantum blue_ );
+  Quantum        blueQuantum ( void ) const;
+
+  // Alpha level (range OpaqueOpacity=0 to TransparentOpacity=MaxRGB)
+  void           alphaQuantum ( Quantum alpha_ );
+  Quantum        alphaQuantum ( void ) const;
+
+  // Scaled (to 1.0) version of alpha for use in sub-classes
+  // (range opaque=0 to transparent=1.0)
+  void           alpha ( double alpha_ );
+  double         alpha ( void ) const;
+
+  // Does object contain valid color?
+  void           isValid ( bool valid_ );
+  bool           isValid ( void ) const;
+
+  // Set color via X11 color specification string
+  const Color&amp; operator= ( const std::string &amp;x11color_ );
+  const Color&amp; operator= ( const char * x11color_ );
+
+  // Assignment operator
+  Color&amp; operator= ( const Color&amp; color_ );
+
+  // Return X11 color specification string
+  /* virtual */ operator std::string() const;
+
+  // Return ImageMagick PixelPacket
+  operator PixelPacket() const;
+
+  // Construct color via ImageMagick PixelPacket
+  Color ( const PixelPacket &amp;color_ );
+
+  // Set color via ImageMagick PixelPacket
+  const Color&amp; operator= ( const PixelPacket &amp;color_ );
+
+};
+</pre>
+</div>
+<div class="section" id="color-derived-classes">
+<h1>Color Derived Classes</h1>
+<p>Available derived color specification classes are shown in the following table:</p>
+<table border="1" class="docutils">
+<caption>Color Derived Classes</caption>
+<colgroup>
+<col width="14%" />
+<col width="86%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Class</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td><a class="reference internal" href="#colorrgb">ColorRGB</a></td>
+<td>Representation of RGB color with red, green, and blue specified
+as ratios (0 to 1)</td>
+</tr>
+<tr><td><a class="reference internal" href="#colorgray">ColorGray</a></td>
+<td>Representation of grayscale RGB color (equal parts red, green,
+and blue) specified as a ratio (0 to 1)</td>
+</tr>
+<tr><td><a class="reference internal" href="#colormono">ColorMono</a></td>
+<td>Representation of a black/white color (true/false)</td>
+</tr>
+<tr><td><a class="reference internal" href="#colorhsl">ColorHSL</a></td>
+<td>Representation of a color in Hue/Saturation/Luminosity (HSL)
+colorspace</td>
+</tr>
+<tr><td><a class="reference internal" href="#coloryuv">ColorYUV</a></td>
+<td>Representation of a color in the YUV colorspace</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="colorrgb">
+<h1>ColorRGB</h1>
+<p>Representation of an RGB color in floating point. All color arguments
+have a valid range of 0.0 - 1.0. Note that floating point alpha may be
+set via the alpha() method in the Color base class:</p>
+<pre class="literal-block">
+class ColorRGB : public Color
+{
+public:
+  ColorRGB ( double red_, double green_, double blue_ );
+  ColorRGB ( void );
+  ColorRGB ( const Color &amp; color_ );
+  /* virtual */  ~ColorRGB ( void );
+
+  void           red ( double red_ );
+  double         red ( void ) const;
+
+  void           green ( double green_ );
+  double         green ( void ) const;
+
+  void           blue ( double blue_ );
+  double         blue ( void ) const;
+
+  // Assignment operator from base class
+  ColorRGB&amp; operator= ( const Color&amp; color_ );
+
+protected:
+  // Constructor to construct with PixelPacket*
+  ColorRGB ( PixelPacket* rep_, PixelType pixelType_ );
+};
+</pre>
+</div>
+<div class="section" id="colorgray">
+<h1>ColorGray</h1>
+<p>Representation of a floating point grayscale color (in RGB
+colorspace). Grayscale is simply RGB with equal parts of red, green,
+and blue. All double arguments have a valid range of 0.0 - 1.0:</p>
+<pre class="literal-block">
+class ColorGray : public Color
+{
+public:
+  ColorGray ( double shade_ );
+  ColorGray ( void );
+  ColorGray ( const Color &amp; color_ );
+  /* virtual */ ~ColorGray ();
+
+  void           shade ( double shade_ );
+  double         shade ( void ) const;
+
+  // Assignment operator from base class
+  ColorGray&amp; operator= ( const Color&amp; color_ );
+
+};
+</pre>
+</div>
+<div class="section" id="colormono">
+<h1>ColorMono</h1>
+<p>Representation of a black/white pixel (in RGB colorspace). Color
+arguments are constrained to 'false' (black pixel) and 'true' (white
+pixel):</p>
+<pre class="literal-block">
+class ColorMono : public Color
+{
+public:
+  ColorMono ( bool mono_ );
+  ColorMono ( void );
+  ColorMono ( const Color &amp; color_ );
+  /* virtual */ ~ColorMono ();
+
+  void           mono ( bool mono_ );
+  bool           mono ( void ) const;
+
+  // Assignment operator from base class
+  ColorMono&amp; operator= ( const Color&amp; color_ );
+
+};
+</pre>
+</div>
+<div class="section" id="colorhsl">
+<h1>ColorHSL</h1>
+<p>Representation of a color in Hue/Saturation/Luminosity (HSL) colorspace:</p>
+<pre class="literal-block">
+class MagickDLLDecl ColorHSL : public Color
+{
+public:
+  ColorHSL ( double hue_, double saturation_, double luminosity_ );
+  ColorHSL ( void );
+  ColorHSL ( const Color &amp; color_ );
+  /* virtual */  ~ColorHSL ( );
+
+  void           hue ( double hue_ );
+  double         hue ( void ) const;
+
+  void           saturation ( double saturation_ );
+  double         saturation ( void ) const;
+
+  void           luminosity ( double luminosity_ );
+  double         luminosity ( void ) const;
+
+  // Assignment operator from base class
+  ColorHSL&amp; operator= ( const Color&amp; color_ );
+
+};
+</pre>
+</div>
+<div class="section" id="coloryuv">
+<h1>ColorYUV</h1>
+<p>Representation of a color in YUV colorspace (used to encode color for
+television transmission).  Argument ranges are</p>
+<blockquote>
+<table border="1" class="docutils">
+<colgroup>
+<col width="11%" />
+<col width="89%" />
+</colgroup>
+<tbody valign="top">
+<tr><td>Y</td>
+<td>0.0 through 1.0</td>
+</tr>
+<tr><td>U</td>
+<td>-0.5 through 0.5</td>
+</tr>
+<tr><td>V</td>
+<td>-0.5 through 0.5</td>
+</tr>
+</tbody>
+</table>
+</blockquote>
+<pre class="literal-block">
+class ColorYUV : public Color
+{
+public:
+  ColorYUV ( double y_, double u_, double v_ );
+  ColorYUV ( void );
+  ColorYUV ( const Color &amp; color_ );
+  /* virtual */ ~ColorYUV ( void );
+
+  void           u ( double u_ );
+  double         u ( void ) const;
+
+  void           v ( double v_ );
+  double         v ( void ) const;
+
+  void           y ( double y_ );
+  double         y ( void ) const;
+
+  // Assignment operator from base class
+  ColorYUV&amp; operator= ( const Color&amp; color_ );
+
+};
+</pre>
+<p>Copyright © Bob Friesenhahn 1999 - 2020</p>
+</div>
+</div>
+</body>
+</html>

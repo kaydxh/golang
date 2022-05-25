@@ -1,0 +1,12 @@
+prefix=/root/pinwoodxu/GraphicsMagick-source/release
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include/GraphicsMagick
+
+
+Name: GraphicsMagickWand
+Version: 1.3.35
+Description: GraphicsMagick Wand image processing library
+Requires: GraphicsMagick
+Libs: -lGraphicsMagickWand
+Cflags:

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.15.2: http://docutils.sourceforge.net/" />
+<title>plasma</title>
+<link rel="stylesheet" href="../docutils-api.css" type="text/css" />
+</head>
+<body>
+
+<div class="banner">
+<img src="../images/gm-107x76.png" alt="GraphicMagick logo" width="107" height="76" />
+<span class="title">GraphicsMagick</span>
+<form action="http://www.google.com/search">
+	<input type="hidden" name="domains" value="www.graphicsmagick.org" />
+	<input type="hidden" name="sitesearch" value="www.graphicsmagick.org" />
+    <span class="nowrap"><input type="text" name="q" size="25" maxlength="255" />&nbsp;<input type="submit" name="sa" value="Search" /></span>
+</form>
+</div>
+
+<div class="navmenu">
+<ul>
+<li><a href="../index.html">Home</a></li>
+<li><a href="../project.html">Project</a></li>
+<li><a href="../download.html">Download</a></li>
+<li><a href="../README.html">Install</a></li>
+<li><a href="../Hg.html">Source</a></li>
+<li><a href="../NEWS.html">News</a> </li>
+<li><a href="../utilities.html">Utilities</a></li>
+<li><a href="../programming.html">Programming</a></li>
+<li><a href="../reference.html">Reference</a></li>
+</ul>
+</div>
+<div class="document" id="plasma">
+<h1 class="title">plasma</h1>
+<h2 class="subtitle" id="create-a-plasma-fractal-image">Create a Plasma fractal image.</h2>
+
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#plasmaimage" id="id1">PlasmaImage</a></li>
+</ul>
+</div>
+<div class="section" id="plasmaimage">
+<h1><a class="toc-backref" href="#id1">PlasmaImage</a></h1>
+<div class="section" id="synopsis">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+MagickPassFail PlasmaImage( <a class="reference external" href="../api/types.html#image">Image</a> *image, const <a class="reference external" href="../api/types.html#segmentinfo">SegmentInfo</a> *segment,
+                            unsigned long attenuate, unsigned long depth );
+</pre>
+</div>
+<div class="section" id="description">
+<h2>Description</h2>
+<p>PlasmaImage() initializes an image with plasma fractal values.  The image
+must be initialized with a base color and the random number generator
+seeded before this method is called.</p>
+<p>The format of the PlasmaImage method is:</p>
+<pre class="literal-block">
+MagickPassFail PlasmaImage( <a class="reference external" href="../api/types.html#image">Image</a> *image, const <a class="reference external" href="../api/types.html#segmentinfo">SegmentInfo</a> *segment,
+                            unsigned long attenuate, unsigned long depth );
+</pre>
+<dl class="docutils">
+<dt>image:</dt>
+<dd>The image.</dd>
+<dt>segment:</dt>
+<dd>Define the region to apply plasma fractals values.</dd>
+<dt>attenuate:</dt>
+<dd>Define the plasma attenuation factor.</dd>
+<dt>depth:</dt>
+<dd>Limit the plasma recursion depth.</dd>
+</dl>
+</div>
+</div>
+</div>
+</body>
+</html>

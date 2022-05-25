@@ -1,0 +1,1283 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.15.2: http://docutils.sourceforge.net/" />
+<title>ChangeLog-2017.rst</title>
+<link rel="stylesheet" href="docutils-articles.css" type="text/css" />
+</head>
+<body>
+
+<div class="banner">
+<img src="images/gm-107x76.png" alt="GraphicMagick logo" width="107" height="76" />
+<span class="title">GraphicsMagick</span>
+<form action="http://www.google.com/search">
+	<input type="hidden" name="domains" value="www.graphicsmagick.org" />
+	<input type="hidden" name="sitesearch" value="www.graphicsmagick.org" />
+    <span class="nowrap"><input type="text" name="q" size="25" maxlength="255" />&nbsp;<input type="submit" name="sa" value="Search" /></span>
+</form>
+</div>
+
+<div class="navmenu">
+<ul>
+<li><a href="index.html">Home</a></li>
+<li><a href="project.html">Project</a></li>
+<li><a href="download.html">Download</a></li>
+<li><a href="README.html">Install</a></li>
+<li><a href="Hg.html">Source</a></li>
+<li><a href="NEWS.html">News</a> </li>
+<li><a href="utilities.html">Utilities</a></li>
+<li><a href="programming.html">Programming</a></li>
+<li><a href="reference.html">Reference</a></li>
+</ul>
+</div>
+<div class="document">
+
+
+<p>2017-12-25  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>tests/rwfile.tap: Add tests for MIFF compressed sub-formats.</li>
+</ul>
+</blockquote>
+<p>2017-12-24  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>magick/blob.c (OpenBlob): Zlib 1.2.8 does not accept an open
+mode of &quot;w+b&quot; or &quot;wb+&quot;.  It seems to be allergic to '+'.  As a
+result, writing to &quot;.gz&quot; files was not working with Zlib 1.2.8.
+Note that &quot;w+b&quot; must be used in the normal case since the test
+suite fails otherwise!</li>
+</ul>
+</blockquote>
+<p>2017-12-22  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/png.c (ReadMNGImage): Fix SourceForge issue #535
+&quot;heap-buffer-overflow in ReadMNGImage&quot;.  Problem was caused by
+accessing byte before testing that limit has been reached, rather
+than testing for limit before accessing the byte.  This means that
+it could only ever read one past the buffer allocation size.</li>
+<li>coders/webp.c (WriteWEBPImage): Fix SourceForge issue #536
+&quot;stack-buffer-overflow in WriteWEBPImage&quot;.  Due to a change to use
+WebPMemoryWriter as part of the EXIF and ICC profile support
+addition (enabled with libwebp 0.5.0), the progress indicator
+callback is now passed a pointer to a wrong structure.  This is
+quite unfortunate since the progress indication is useful.  The
+progress indication is temporarily disabled when the
+WebPMemoryWriter is in use until a solution is implemented.
+(ProgressCallback): Re-implement progress callback so that image
+pointer is stored/retrieved as thread-specific data.</li>
+<li>coders/png.c (ReadMNGImage): Fix SourceForge issue #537 &quot;null
+pointer dereference in ReadMNGImage&quot;.  DEFI chunk must be at least
+2 bytes long.</li>
+<li>coders/tiff.c (ReadNewsProfile): Fix SourceForge issue #533
+&quot;heap-buffer-overflow on LocaleNCompare&quot;.  LocaleNCompare() was
+being allowed to read heap data beyond the allocated region.</li>
+</ul>
+</blockquote>
+<p>2017-12-17  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>magick/shear.c (IntegralRotateImage): Assure that reported error
+in rotate by 270 case does immediately terminate processing.
+Return a NULL Image pointer if there is a problem rather than a
+corrupted image.  Fix is related to SourceForge issue #532
+&quot;heap-buffer-overflow bug in ReadWPGImage&quot;.</li>
+<li>magick/pixel_cache.c (AcquireCacheNexus): Add a check that the
+pixel cache is compatible with the image dimensions.  Fix is
+related to SourceForge issue #532 &quot;heap-buffer-overflow bug in
+ReadWPGImage&quot;.</li>
+</ul>
+</blockquote>
+<p>2017-12-16  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/png.c (ReadOneJNGImage): Fix SourceForge issue #530
+&quot;heap-buffer-overflow in ReadOneJNGImage&quot;.  In this case there is
+a read one byte beyond the oFFs chunk allocation size due to an
+error in specifying an offset into the chunk.</li>
+<li>coders/palm.c (ReadPALMImage): Fix SourceForge issue #529
+&quot;global-buffer-overflow in ReadPALMImage&quot;.  This issue only
+occured in builds with QuantumDepth=8 due to the small range of
+IndexPacket.</li>
+</ul>
+</blockquote>
+<p>2017-12-13  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>PerlMagick/{Magick.pm, Magick.pm.in, Makefile.PL.in}: Only base
+PerlMagick version on numeric portion of PACKAGE_VERSION.</li>
+</ul>
+</blockquote>
+<p>2017-12-09  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>www/index.rst: Update to 1.3.27.</li>
+<li>www/Changes.rst: Add 1.3.27</li>
+<li>version.sh: Update library versioning.</li>
+<li>NEWS.txt: Update NEWS in preparation for releasing 1.3.27.</li>
+</ul>
+</blockquote>
+<p>2017-12-08  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/dcm.c (DCM_ReadElement): Change size checks addressing
+CVE-2017-12140 to be based on size_t rather than magick_off_t due
+to apparent instability of the previous check across compilers.</li>
+</ul>
+</blockquote>
+<p>2017-12-07  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/png.c (WriteOnePNGImage): Fix heap read access outside of
+allocated PixelPacket array while testing pixels for opacity.
+Resolves SourceForge issue #526 &quot;heap-buffer-overflow in
+WriteOnePNGImage&quot;.</li>
+</ul>
+</blockquote>
+<p>2017-12-06  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/pnm.c (WritePNMImage): Fix SourceForge bug #525
+&quot;heap-buffer-overflow in MagickBitStreamMSBWrite&quot;.</li>
+</ul>
+</blockquote>
+<p>2017-12-05  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/dcm.c (DCM_ReadElement): Eliminate huge memory allocation
+based on bogus length value. Addresses CVE-2017-12140. Problem was
+reported via email from Petr Gajdos on Tue, 5 Dec 2017.</li>
+</ul>
+</blockquote>
+<p>2017-12-03  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>Magick++/lib/Image.cpp (colorMap): Try to eliminate Coverity CID
+172796 &quot;Dereference after null check&quot; which seems to be bogus.</li>
+<li>coders/png.c (WriteOnePNGImage): Fix Coverity CID 168053
+&quot;Dereference after null check&quot;.  The check for null and the error
+report which attempted to use the null value was not needed at
+all.</li>
+<li>coders/cut.c (GetCutColors): Fix Coverity CID 10181: &quot;Null
+pointer dereferences&quot;. SetImagePixels() may return NULL.</li>
+<li>coders/rgb.c (ReadRGBImage): Fix SourceForge issue #523
+&quot;heap-buffer-overflow&quot;.  Similar issue to cmyk.c.</li>
+<li>coders/gray.c (ReadGRAYImage): Fix SourceForge issue #522
+&quot;heap-buffer-overflow&quot;.  Similar issue to cmyk.c.</li>
+<li>coders/cmyk.c (ReadCMYKImage): Fix SourceForge issue #521
+&quot;heap-buffer-overflow&quot;. The requested tile must be within the
+bounds of the image.  As it happens, 'montage' passes size and
+tile information which is useless for reading a raw image so it is
+not possible to read raw CMYK using 'montage'.</li>
+</ul>
+</blockquote>
+<p>2017-12-02  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/pwp.c (ReadPWPImage): Eliminate dereference of null image
+pointer.  Addresses CVE-2017-11640.  Also address access to
+uninitialized memory.  Problem was reported via email from Petr
+Gajdos on Wed, 29 Nov 2017.</li>
+</ul>
+</blockquote>
+<p>2017-11-22  Fojtik Jaroslav  &lt;<a class="reference external" href="mailto:JaFojtik&#37;&#52;&#48;seznam&#46;cz">JaFojtik<span>&#64;</span>seznam<span>&#46;</span>cz</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/wpg.c Additional check for wrong bpp CVE-2017-14342.</li>
+</ul>
+</blockquote>
+<p>2017-11-22  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>Magick++/lib/Image.cpp (autoOrient): Add method to auto-orient
+an image so it looks right-side up by default.  Based on patch by
+Przemysław Sobala submitted as SourceForge patch #53 &quot;Add
+Magick::Image::autoOrient() method to Magick++ library&quot;.</li>
+<li>www/download.rst: Change &quot;Czechoslovakian ftp mirror&quot; to &quot;Czech
+ftp mirror&quot;.  Resolves SourceForge bug #520 &quot;[web] Download sites:
+non-existent country&quot;.</li>
+</ul>
+</blockquote>
+<p>2017-11-21  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/wpg.c (ReadWPGImage): Fix excessive use of disk resources
+due to unreasonable record length.  Addresses CVE-2017-14341.
+Notified of this issue (with suggested patch) via email by Petr
+Gajdos on Tue, 21 Nov 2017.</li>
+</ul>
+</blockquote>
+<p>2017-11-19  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>README.txt: Comprehensive white-space clean-up across
+GraphicsMagick core source files.  Hard TAB character is converted
+to spaces.  Trailing white-space garbage is stripped.</li>
+<li>magick/colormap.c (MagickConstrainColormapIndex): Deprecate use
+of MagickConstrainColormapIndex() and prefer use of
+VerifyColormapIndex() and VerifyColormapIndexWithColors() due to
+avoiding dependence on index type, allowing provision of colors
+other than image-&gt;colors, and capturing more useful source file
+and line information.</li>
+<li>coders/{rle.c, mat.c, xbm.c, sgi.c, png.c}: Eliminate size_t vs
+unsigned 32 conversion warnings in WIN64 build.</li>
+</ul>
+</blockquote>
+<p>2017-11-18  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>tiff: Import libtiff 4.0.9.</li>
+</ul>
+</blockquote>
+<p>2017-11-12  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/bmp.c (DecodeImage): &quot;Right-size&quot; and &quot;Right-type&quot;
+DecodeImage() variables and check for EOF at every point of the
+way.  Pass buffer size as an argument.</li>
+<li>coders/dib.c (DecodeImage): &quot;Right-size&quot; and &quot;Right-type&quot;
+DecodeImage() variables and check for EOF at every point of the
+way.  Pass buffer size as an argument.</li>
+<li>coders/bmp.c (_BMPInfo): &quot;Right-size&quot; BMPInfo members.  The
+'long' type is promoted to 64-bit on LP64 systems and the large
+size is not needed.</li>
+</ul>
+</blockquote>
+<p>2017-11-11  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/webp.c: Incorporate patch by Jan Spitalnik to add EXIF
+and ICC metadata support to the WebP coder.  While WebP is still
+supported back to libwebp 0.1.99, the metadata support requires at
+least libwebp 0.5.0.  Resolves SourceForge patch #52 &quot;Add EXIF/ICC
+metadata support to WebP coder&quot;.</li>
+<li>coders/png.c (ReadOneJNGImage): Fix JNG memory leaks when JPEG
+image fails to be read.
+(WriteOnePNGImage): Promotion of indexed PNG to RGBA lacked
+setting of image matte, resulting in undersized buffer allocation
+and heap overflow.  Fixes SourceForge bug #453 &quot;Heap overflow in
+source-gra/coders/png.c&quot;.</li>
+</ul>
+</blockquote>
+<p>2017-11-06  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/sfw.c (SFWScan): Fix heap buffer overflow
+(CVE-2017-13134).  Notified of problem via email (including a
+patch) from Petr Gajdos on Mon, 6 Nov 2017.</li>
+</ul>
+</blockquote>
+<p>2017-11-05  Fojtik Jaroslav  &lt;<a class="reference external" href="mailto:JaFojtik&#37;&#52;&#48;seznam&#46;cz">JaFojtik<span>&#64;</span>seznam<span>&#46;</span>cz</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/wpg.c Wrong MaxMap check condition - fixed.</li>
+</ul>
+</blockquote>
+<p>2017-11-04  Fojtik Jaroslav  &lt;<a class="reference external" href="mailto:JaFojtik&#37;&#52;&#48;seznam&#46;cz">JaFojtik<span>&#64;</span>seznam<span>&#46;</span>cz</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/wpg.c Check for InsertRow() return value.</li>
+</ul>
+</blockquote>
+<p>2017-11-04  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>magick/export.c: Add not-null check for indexes pointer where
+needed.</li>
+<li>magick/import.c: Add not-null check for indexes pointer with
+associated exception report where the indexes pointer is needed.
+(ImportCMYKQuantumType): Was wrongly importing an opacity channel
+in some cases. Would have crashed if these cases were ever used.</li>
+<li>coders/wpg.c (ReadWPGImage): Assure that colormapped image is a
+PseudoClass type with valid colormapped indexes.  Fixes
+SourceForge bug 519 &quot;Null Pointer Dereference (Write) with
+malformed WPG Image&quot;.</li>
+<li>coders/sfw.c (ReadSFWImage): Avoid possible heap overflow while
+copying JFIF magic into buffer. Reject runt files.  Fixes
+CVE-2017-12983.  Notified of problem via email from Petr Gajdos on
+Thu, 2 Nov 2017.</li>
+</ul>
+</blockquote>
+<p>2017-10-28  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>magick/render.c (DrawImage): Fix SourceForge bug #517 &quot;Push
+operations in DrawImage can lead to negative strncpy when looking
+for pop&quot;.  Interestingly, valgrind and ASAN only detected a
+problem with one of the test cases since exercised code which
+updated an array using the index.  It appears that Linux strncpy()
+simply ignores the bad request.</li>
+</ul>
+</blockquote>
+<p>2017-10-27  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/png.c (ReadOneJNGImage): Make sure that a reasonable
+exception is reported to the user when there is a read failure.</li>
+</ul>
+</blockquote>
+<p>2017-10-26  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/png.c (ReadOneJNGImage): Reject JNG files with
+unreasonable dimensions given the file size.</li>
+</ul>
+</blockquote>
+<p>2017-10-25  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/png.c (ReadOneJNGImage): Fix SourceForge bug #518 &quot;Null
+pointer in&quot;.  Also make sure that errors are reported properly due
+to problems with transferring JPEG scanlines.
+(ReadOneJNGImage): Add more checks for null value returned from
+SetImagePixels().</li>
+</ul>
+</blockquote>
+<p>2017-10-22  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>magick/describe.c (DescribeImage): Fix possible heap read
+overflow while accessing heap data, and possible information
+disclosure while describing the IPTC profile.  Report was provided
+via email from Maor Shwartz to the graphicsmagick-security mail
+alias on Thu, 19 Oct 2017.  Independent security researchers,
+Jeremy Heng (&#64;nn_amon) and Terry Chia (Ayrx), reported this
+vulnerability to Beyond Security’s SecuriTeam Secure Disclosure
+program. Please note that this interface is usually (but not
+exclusively) used from within the command-line utility program, in
+which case there is not much useful information which might be
+disclosed.
+(DescribeImage): Fix possible heap write overflow when describing
+visual image directory.  Report was provided via email from Maor
+Shwartz to the graphicsmagick-security mail alias on Thu, 19 Oct
+2017.  Independent security researchers, Jeremy Heng (&#64;nn_amon)
+and Terry Chia (Ayrx), reported this vulnerability to Beyond
+Security’s SecuriTeam Secure Disclosure program. Please note that
+this interface is usually (but not exclusively) used from within
+the command-line utility program, in which case the only harm
+would be a program crash.</li>
+<li>magick/constitute.c (WriteImage): Assure that the errno present
+when the blob error status first occured is reported to the user.</li>
+<li>magick/blob.c (GetBlobStatus): Blob error status is now updated
+immediately upon the first error reported.
+(GetBlobFirstErrno): Returns errno value when the first blob error
+was reported.  This is useful for error reporting.</li>
+</ul>
+</blockquote>
+<p>2017-10-21  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>magick/constitute.c (WriteImage): Restore use of GetBlobStatus()
+to test if an I/O error was encountered while writing output file.
+This assures that I/O failure in writers which do not themselves
+verify writes is assured to be reported.</li>
+</ul>
+</blockquote>
+<p>2017-10-17  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/webp.c (WriterCallback): WebP writer now detects partial
+write to output file.  Patch by Przemysław Sobala from a posting
+on Mon, 16 Oct 2017 via the graphicsmagick-help mailing list.</li>
+</ul>
+</blockquote>
+<p>2017-10-14  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>magick/command.c (MontageImageCommand): Fix memory leaks in
+error return path.  Only people doing leak testing or the few who
+execute MontageImageCommand() as a function will care about this.</li>
+<li>magick/studio.h (NumberOfObjectsInArray): The
+NumberOfObjectsInArray() macro is used to compute the number of
+whole objects in an array.  Instead it was rounding up, resulting
+in scrambling the heap beyond the allocation.  Fixes
+CVE-2017-13737 &quot;There is an invalid free in the MagickFree
+function in magick/memory.c in GraphicsMagick 1.3.26 that will
+lead to a remote denial of service attack.&quot;</li>
+</ul>
+</blockquote>
+<p>2017-10-09  Glenn Randers-Pehrson  &lt;<a class="reference external" href="mailto:glennrp&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">glennrp<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/png.c (ReadOnePNGImage): Suppress &quot;comparison between
+signed and unsigned integer expressions&quot; warning.</li>
+<li>coders/png.c (ReadJNGImage): Fix memory leak in SourceForge
+Issue #469 &quot;use after free in ReadJNGImage&quot;.</li>
+<li>coders/png.c (ReadJNGImage): Fix memory leak in SourceForge
+Issue #470 &quot;Assert failure in writeblob&quot;.</li>
+</ul>
+</blockquote>
+<p>2017-10-08  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>doc/options.imdoc: Fix SourceForge issue #444 &quot;gm mogrify: Wrong
+documentation for option -output-directory&quot;.</li>
+</ul>
+</blockquote>
+<p>2017-10-07  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>magick/module.c (InitializeModuleSearchPath): Verify that any
+component paths specified in MAGICK_CODER_MODULE_PATH and
+MAGICK_FILTER_MODULE_PATH exist before adding them to search paths
+actually used, and convert to real paths if possible.  This avoids
+possible use of relative paths to load modules (a possible
+security issue) and may improve efficiency by removing
+non-existent paths.</li>
+<li>coders/yuv.c (ReadYUVImage): Fix leak of scanline upon Image
+allocation failure.  Patch submitted by Petr Gajdos via email on
+Fri, 6 Oct 2017.</li>
+</ul>
+</blockquote>
+<p>2017-09-13  Glenn Randers-Pehrson  &lt;<a class="reference external" href="mailto:glennrp&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">glennrp<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/png.c: Attempt to fix SourceForge Issue #469 &quot;use after
+free in ReadJNGImage&quot;.  Note that this change was found to replace
+a use after free with a memory leak so the problem is not solved
+yet.</li>
+</ul>
+</blockquote>
+<p>2017-10-03  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/dcm.c (DCM_ReadNonNativeImages): Additional fix
+(improvement) for SourceForge issue #512 &quot;NULL Pointer Dereference
+in DICOM Decoder&quot;.</li>
+</ul>
+</blockquote>
+<p>2017-10-01  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/dcm.c (ReadDCMImage): Fix SourceForge issue #512 &quot;NULL
+Pointer Dereference in DICOM Decoder&quot;.</li>
+<li>coders/pict.c (ReadPICTImage): Fix SourceForge issue #511
+&quot;Memory Allocation error due to malformed image file&quot;.</li>
+<li>coders/pnm.c (WritePNMImage): Fix SourceForge issue #503 &quot;memory
+leak in WritePNMImage&quot;.</li>
+<li>coders/png.c (ReadMNGImage): Fix SourceForge issue #501 &quot;memory
+leak in ReadMNGImage&quot;.</li>
+<li>magick/segment.c (InitializeIntervalTree): Fix SourceForge issue
+#507 &quot;null pointer in segment.c&quot; and issue #508 &quot;null pointer in
+segment.c&quot;.</li>
+<li>coders/topol.c (ReadTOPOLImage): Fix SourceForge issue #510
+&quot;null pointer and meory leak in topol.c&quot;.</li>
+<li>magick/widget.c (MagickXFileBrowserWidget): Fix SourceForge
+issue #506 &quot;null pointer in widget.c&quot;.</li>
+<li>coders/tiff.c (WriteTIFFImage): Fix SourceForge issue #509
+&quot;Memory leak in tiff.c&quot;.</li>
+<li>magick/module.c (FindMagickModule): Fix SourceForge issue #502
+&quot;null pointer in module.c&quot;.</li>
+<li>coders/avs.c (ReadAVSImage): Fix Coverity CID 184115 &quot;Control
+flow issues (DEADCODE)&quot;.</li>
+</ul>
+</blockquote>
+<p>2017-09-30  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/avs.c (ReadAVSImage): Fix SourceForge issue #499 &quot;memory
+leak in avs.c&quot;.</li>
+<li>coders/cmyk.c (ReadCMYKImage): Fix SourceForge issue #498
+&quot;memory leak in cmyk.c&quot;.</li>
+<li>coders/cut.c (ReadCUTImage): Fix SourceForge issue #497 &quot;memory
+leak in cut.c&quot;.</li>
+<li>coders/dpx.c (ReadDPXImage): Fix SourceForge issue #496 &quot;memory
+leak in dpx.c&quot;.</li>
+<li>coders/hdf.c (ReadHDFImage): Fix SourceForge issue #495 &quot;memory
+leak in hdf.c&quot;.</li>
+<li>coders/pcx.c (ReadPCXImage): Fix SourceForge issue #494 &quot;memory
+leak in pcx.c&quot;.</li>
+<li>coders/pcd.c (ReadPCDImage): Fix SourceForge issue #493 &quot;memory
+leak in ReadPCDImage&quot;.</li>
+<li>coders/histogram.c (WriteHISTOGRAMImage): Fix SourceForge issue
+#492 &quot;memory leak in WriteHISTOGRAMImage&quot;.</li>
+<li>coders/gif.c (WriteGIFImage): Fix SourceForge issue #491 &quot;memory
+leak in WriteGIFImage&quot;.</li>
+<li>coders/fits.c (WriteFITSImage): Fix SourceForge issue #490
+&quot;memory leak in WriteFITSImage&quot;.</li>
+<li>coders/palm.c (WritePALMImage): Fix SourceForge issue #489
+&quot;memory leak in WritePALMImage&quot;.</li>
+<li>coders/rgb.c (ReadRGBImage): Fix SourceForge issue #488 &quot;Memory
+leak in rgb.c&quot;.</li>
+<li>coders/palm.c (ReadPALMImage): Fix SourceForge issue #487 &quot;NULL
+pointer dereference in ReadPALMImage&quot;.</li>
+<li>Magick++/lib/Options.cpp (strokeDashArray): Fix SourceForge
+issue #486 &quot;NULL pointer dereference in
+Magick::Options::strokeDashArray&quot;.</li>
+<li>magick/nt_feature.c (NTGetTypeList): Fix SourceForge issue #485
+&quot;NULL pointer dereference in NTGetTypeList&quot;.</li>
+<li>coders/sun.c (ReadSUNImage): Fix SourceForge issue #484 &quot;Memory
+leak in sun.c&quot;.</li>
+<li>coders/tim.c (ReadTIMImage): Fix SourceForge issue #483 &quot;Memory
+leak in tim.c&quot;.</li>
+<li>magick/nt_base.c (NTRegistryKeyLookup): Fix SourceForge issue
+#482 &quot;NULL pointer dereference in NTRegistryKeyLookup&quot;.</li>
+<li>coders/viff.c (ReadVIFFImage): Fix SourceForge issue #481
+&quot;Memory leak in viff.c&quot;.</li>
+<li>magick/profile.c (SetImageProfile): Fix SourceForge issue #480
+&quot;assertion failure in MagickMapAllocateMap&quot;.</li>
+<li>coders/yuv.c (ReadYUVImage): Fix SourceForge issue #478 &quot;Memory
+leak in yuv.c&quot;.</li>
+<li>magick/map.c (MagickMapCloneMap): Fix SourceForge issue #477
+&quot;assertion failure in MagickMapIterateNext&quot;.</li>
+<li>coders/emf.c (ReadEnhMetaFile): Fix SourceForge issue #475 &quot;NULL
+pointer dereference in ReadEnhMetaFile&quot;.</li>
+<li>coders/cineon.c (ReadCINEONImage): Fix SourceForge issue #473
+&quot;NULL pointer dereference in ReadCINEONImage&quot;</li>
+<li>coders/tiff.c (TIFFIgnoreTags): Fix SourceForge issue #476 &quot;NULL
+Pointer in tiff.c&quot;.</li>
+</ul>
+</blockquote>
+<p>2017-09-25  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>magick/blob.c (GetConfigureBlob): Fix SourceForge issue #472
+&quot;NULL Pointer in GetConfigureBlob&quot;.</li>
+</ul>
+</blockquote>
+<p>2017-09-24  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/rle.c (ReadRLEImage): Fix SourceForge issue #458 &quot;Heap
+out of bounds read in ReadRLEImage()&quot;.</li>
+</ul>
+</blockquote>
+<p>2017-09-19  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/sgi.c (ReadSGIImage): Check for EOF while reading SGI
+file header.  Issue was brought to our attention by Petr Gajdos
+via email on Fri, 1 Sep 2017.</li>
+</ul>
+</blockquote>
+<p>2017-09-17  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/tiff.c (ReadTIFFImage): Allow a single scanline, strip,
+tile, to be 1000X larger than the input file in order to not cause
+problems for extremely compressible images or tile sizes much
+larger than the pixel dimensions.</li>
+</ul>
+</blockquote>
+<p>2017-09-16  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>magick/symbols.h, wand/wand_symbols.h: Update C library symbols
+which should be prefixed with 'Gm'. However, GM will not move
+Magick++ namespace because of the ImageMagick version.  Resolves
+SourceForge issue #468 &quot;--enable-symbol-prefix does not prevent
+clashes with libMagick++ or libMagickWand?&quot;</li>
+<li>coders/png.c (DestroyJNG): DestroyJNG should be a static
+function.  Was wrongly exposed as DestroyJNGInfo in 1.3.26.  This
+is not a public function and was not intended to be part of the
+ABI.</li>
+<li>coders/tiff.c (ReadTIFFImage): Limit scanline, strip, and tile
+memory allocations based on file size multiplied by a maximum
+compression ratio.  Fixes SourceForge issues #460, #461, #462,
+#463, #464 &quot;allocation failure in ReadTIFFImage&quot;.</li>
+<li>coders/pnm.c (ReadPNMImage): Require that XV 332 format have 256
+colors.  Fixes SourceForge issue #465 &quot;NULL Pointer Dereference
+triggered by malformed file&quot;.  In our own testing the test case
+produced an assertion failure because assertions were enabled.</li>
+<li>magick/colormap.c (AllocateImageColormap): Use unsigned array
+index.</li>
+</ul>
+</blockquote>
+<p>2017-09-14  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/mat.c (ReadMATImage): Fix CVE-2016-10070, which is a heap
+overflow in the MAT reader due to an under-sized memory
+allocation.  Based on private email from Petr Gajdos on Mon, 11
+Sep 2017.</li>
+</ul>
+</blockquote>
+<p>2017-09-13  Glenn Randers-Pehrson  &lt;<a class="reference external" href="mailto:glennrp&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">glennrp<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/png.c: Check MemoryResource before allocating
+ping_pixel array.</li>
+</ul>
+</blockquote>
+<p>2017-09-11  Fojtik Jaroslav  &lt;<a class="reference external" href="mailto:JaFojtik&#37;&#52;&#48;seznam&#46;cz">JaFojtik<span>&#64;</span>seznam<span>&#46;</span>cz</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li><dl class="first docutils">
+<dt>magick/shear.c: Possible evil loop might waste CPU for long time</dt>
+<dd>without any reason.</dd>
+</dl>
+</li>
+</ul>
+</blockquote>
+<p>2017-09-10  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>magick/render.c (DrawImage): Fix SourceForge issue #448 &quot;Heap
+out of bounds read in DrawDashPolygon()&quot;.  Problem was reported by
+Kamil Frankowicz on August 28, 2017.</li>
+<li>coders/uil.c (WriteUILImage): Fix crash in UIL writer when
+writing image containing transparency.  Issue was reported by
+LCatro via email on 18 Jul 2017.</li>
+<li>coders/wpg.c (InsertRow): Fix crash which occurs if image is not
+PseudoClass but a PseudoColor scanline is needed.  Resolves
+SourceForge issue #449 &quot;Null pointer dereference in InsertRow()&quot;.</li>
+<li>coders/rle.c (ReadRLEImage): Impose image dimension limits
+according to Utah RLE specification. Cap number of planes handled
+internally at 4.  Remove non-standard multi-frame extension, which
+did not work anyway.</li>
+</ul>
+</blockquote>
+<p>2017-09-09  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/png.c (ReadJNGImage): Complete fixing CVE-2017-8350 crash
+while reading a malformed JNG file.</li>
+<li>coders/{html.c, map.c, plasma.c, png.c, psd.c, rle.c, stegano.c,
+uil.c}: Downgrade claimed coder stability level for HTML, SHTML,
+MAP, FRACTAL, PLASMA, JNG, MNG, RLE, STEGANO, and UIL formats.</li>
+</ul>
+</blockquote>
+<p>2017-09-08  Glenn Randers-Pehrson  &lt;<a class="reference external" href="mailto:glennrp&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">glennrp<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/png.c (ReadJNGImage): More efforts toward fixing
+CVE-2017-8350 while reading a malformed JNG file.</li>
+</ul>
+</blockquote>
+<p>2017-09-01  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>magick/error.c (ThrowLoggedException): Capture the first
+exception at ErrorException level or greater, or only capture
+exception if it is more severe than an already reported exception.
+This should help lead to better error reports since the first
+error is usually the most significant.</li>
+<li>coders/png.c (ReadJNGImage): Add &quot;improper header&quot; exception
+reporting.</li>
+</ul>
+</blockquote>
+<p>2017-09-01  Glenn Randers-Pehrson  &lt;<a class="reference external" href="mailto:glennrp&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">glennrp<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/png.c (ReadJNGImage): Efforts toward fixing CVE-2017-8350
+while reading a malformed JNG file.</li>
+</ul>
+</blockquote>
+<p>2017-08-30  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/wpg.c (ReadWPGImage): Patch submitted by Petr Gajdos to
+check that .Width and .Height are greater than zero before they
+are assigned to image-&gt;columns and image-&gt;rows respectively
+(CVE-2014-9815).
+(ReadWPGImage): Do more validations on WPG_Palette.StartIndex and
+WPG_Palette.NumOfEntries.</li>
+</ul>
+</blockquote>
+<p>2017-08-29  Glenn Randers-Pehrson  &lt;<a class="reference external" href="mailto:glennrp&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">glennrp<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/png.c (ReadOneJNGImage): Fix for SourceForge issue #440
+&quot;use-after-free in CloseBlob (blob.c) (INCOMPLETE FIX FOR
+CVE-2017-11403)&quot; and SourceForge issue #438 &quot;heap use after free
+in CloseBlob&quot;.</li>
+<li>coders/png.c (ReadOneJNGImage): Fix for SourceForge issue #439
+&quot;assertion failure in magick/pixel_cache.c&quot;</li>
+</ul>
+</blockquote>
+<p>2017-08-27  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/mpeg.c (WriteMPEGImage): Fix MPEG writer memory leak.
+Only the first image in the coalesce image list was being freed.
+Problem was reported by LCatro via email on July 15, 2017.</li>
+<li>magick/attribute.c (TracePSClippingPath, TraceSVGClippingPath):
+Fix SourceForge bug #447 &quot;Heap out of bounds read in
+ReadMSBShort()&quot;.</li>
+</ul>
+</blockquote>
+<p>2017-08-26  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/xbm.c (ReadXBMImage): Fix two denial of service (DOS)
+issues in ReadXBMImage() which result in the reader not
+returning. Problem was reported via email on Wed Aug 23 2017 by
+Xiaohei and Wangchu from Alibaba Security Team.</li>
+<li>coders/jnx.c (ReadJNXImage): Fix denial of service (DOS) issue
+in ReadJNXImage() whereby large amounts of CPU and memory
+resources may be consumed although the file itself does not
+support the requests.  Problem was reported via email on Wed Aug
+23 2017 by Xiaohei and Wangchu from Alibaba Security Team.</li>
+</ul>
+</blockquote>
+<p>2017-08-14  Glenn Randers-Pehrson  &lt;<a class="reference external" href="mailto:glennrp&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">glennrp<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/png.c (ReadOneMNGImage): Deal with invalid (too large)
+length of MNG chunks (bug #446).</li>
+</ul>
+</blockquote>
+<p>2017-08-20  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/pnm.c (ReadPNMImage): Verify that sufficient file data
+exists to support what the file header requires before allocating
+memory for it.  Fixes problem reported by Agostino Sarubbo via
+email on Wed, 12 Jul 2017 and reported yet again via SourceForge
+bug #441 &quot;memory allocation failure in MagickRealloc&quot;.</li>
+</ul>
+</blockquote>
+<p>2017-08-20  Fojtik Jaroslav  &lt;<a class="reference external" href="mailto:JaFojtik&#37;&#52;&#48;seznam&#46;cz">JaFojtik<span>&#64;</span>seznam<span>&#46;</span>cz</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/mat.c: Fix SourceForge bug #433 &quot;memory leak in
+ReadMATImage&quot;.  Credit for discovering and reporting the problem
+is &quot;ADLab of Venustech&quot;.</li>
+<li>coders/sun.c (ReadSUNImage): Fix failure to allocate memory due
+to inadequate file data to support claimed image width and height.
+First notified by email from Agostino Sarubbo on 14 Jul 2017 and
+then again as SourceForge bug #442 &quot;memory allocation failure in
+magickmalloc&quot;.</li>
+</ul>
+</blockquote>
+<p>2017-08-16  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/svg.c (GetStyleTokens): Fix SourceForge bugs 434 &quot;heap
+buffer overflow in GetStyleTokens&quot;, 435 &quot;null pointer
+dereference_in_SVGStartElement&quot;, and 436 &quot;heap buffer overflow in
+GetStyleTokens&quot; which all originated from a heap buffer overflow
+in GetStyleStokens(), or inconsistent initialization.  Now the
+implementation truncates parsing for poorly-formed input (to avoid
+buffer overflow) while still correctly parsing well-formed input.
+The reproducers and problem reports are attributed to &quot;ADLab of
+Venustech&quot;.</li>
+</ul>
+</blockquote>
+<p>2017-08-14  Glenn Randers-Pehrson  &lt;<a class="reference external" href="mailto:glennrp&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">glennrp<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/png.c (ReadOneJNGImage): Fixed double-free after
+reading a malformed JNG (Issue #438).</li>
+</ul>
+</blockquote>
+<p>2017-08-14  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/pcd.c (ReadPCDImage): Fix memory leak on return path due
+to corrupted header.  Patch included in email on 14 Aug 2017 by
+Petr Gajdos (ImageMagick CVE CVE-2017-8351).</li>
+</ul>
+</blockquote>
+<p>2017-08-11  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/gif.c (ReadGIFImage): Assure that global colormap is
+initialized.</li>
+<li>coders/pict.c (ReadPICTImage): Fix memory leaks in error return
+path.  ImageMagick CVE CVE-2017-8353.  Patch by Petr Gajdos.</li>
+</ul>
+</blockquote>
+<p>2017-08-11  Glenn Randers-Pehrson  &lt;<a class="reference external" href="mailto:glennrp&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">glennrp<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>tests/rwblob.c and rwfile.c: Write the reason for FAIL in
+test-suite.log.</li>
+<li>magick/image.h: Revised table of image orientations to show
+Exif ImageOrientation values (which happen to be the same as
+the enum values 1 to 8).</li>
+<li>coders/png.c: ReadJNGIMage(): fix memory leak (Issue 431).</li>
+</ul>
+</blockquote>
+<p>2017-08-09  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/mtv.c (ReadMTVImage): Fix memory leak in error return
+path upon unexpected EOF (ImageMagick CVE-2017-9142).  Problem was
+brought to our attention via email from Petr Gajdos on Wed, 9 Aug
+2017.  Also changed pixel cache access functions used to assure
+delivery of exception to the user.</li>
+</ul>
+</blockquote>
+<p>2017-08-05  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>configure.ac (SETJMP_IS_THREAD_SAFE): Decide if setjmp/longjmp
+are thread safe based on host OS.  Assume that these interfaces
+are thread safe by default.  Declared not to be thread safe under
+Solaris.  Declaring these interfaces to be thread safe increases
+available concurrency for coders which use setjmp/longjmp for
+error recovery (e.g. PNG and JPEG).</li>
+</ul>
+</blockquote>
+<p>2017-08-01  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/jpeg.c (RegisterJPEGImage): Add support for the
+SETJMP_IS_THREAD_SAFE preprocessor definition (already used by
+coders/png.c) to indicate if setjmp/longjmp are thread safe on
+this platform and that it is safe for multiple encoders/decoders
+to be active at one time.</li>
+</ul>
+</blockquote>
+<p>2017-07-31  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/sun.c: Fix heap read overflow while indexing into
+colormap. Problem was reported via email on 17 Jul 2017 by
+Agostino Sarubbo.</li>
+</ul>
+</blockquote>
+<p>2017-07-31  Glenn Randers-Pehrson  &lt;<a class="reference external" href="mailto:glennrp&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">glennrp<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/png.c (ReadMNGImage): Stop a leak when rejecting a
+MNG image with dimensions that are too large.</li>
+</ul>
+</blockquote>
+<p>2017-07-26  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/wmf.c (ReadWMFImage): Eliminate use of already freed heap
+data in error reporting path.  Problem was reported via email by
+Agostino Sarubbo on Fri, 14 Jul 2017</li>
+</ul>
+</blockquote>
+<p>2017-07-25  Glenn Randers-Pehrson  &lt;<a class="reference external" href="mailto:glennrp&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">glennrp<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/png.c (ReadMNGImage) Free chunk allocation that remains
+after attempting to read a truncated file.</li>
+<li>coders/png.c: Removed some redundant checks for chunk length
+before MagickFreeMemory(chunk), which is safe to call with a
+NULL argument.</li>
+<li>coders/png.c: Fixed writer bug due to missing brackets; a Log
+statement should have been inside the &quot;i&quot; loop but instead was
+using i++ left over from the loop.  Bug report by L. Catro.</li>
+<li>coders/png.c: Reject a MNG with dimensions greater than 65k
+by 65k.</li>
+<li>coders/png.c (WriteOnePNGImage): Return without crashing if
+WriteOnePNGImage is passed a NULL image. Fixes CVE-2017-11522.</li>
+</ul>
+</blockquote>
+<p>2017-07-22  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/pcl.c (WritePCLImage): Fix null pointer dereference in
+PCL writer when writing monochrome images.  Problem was reported
+by LCatro via email on July 18.</li>
+<li>magick/pixel_cache.c (PersistCache): Fix memory leak while
+writing a MPC file.  Problem was reported by LCatro via email on
+July 18.</li>
+<li>coders/map.c (WriteMAPImage): Fix null pointer dereference or
+segmentation violation in the MAP writer if the input image is not
+already colormapped.  Problem was reported by LCatro via email on
+July 18.</li>
+<li>coders/gray.c (WriteGRAYImage): Improve tracing and tidy up.</li>
+<li>coders/rgb.c (WriteRGBImage): Fix heap overwrite in raw RGB
+writer (all output subformats) given a multiframe sequence using
+different widths.  Problem was reported by LCatro via email on
+July 18.</li>
+<li>coders/cmyk.c (WriteCMYKImage): Fix heap overwrite in raw CMYK
+writer (all output subformats) given a multiframe sequence using
+different widths.  Also fix wrong output of CMYKA (and vice-versa)
+when CMYK was intended.  Problem was reported by LCatro via email
+on July 18.</li>
+<li>coders/palm.c: Disable the PALM writer since the writer is a
+work in progress and still has implementation problems.  Perhaps
+no one in the world remains who cares about the undocumented PALM
+format.  Resolves heap overflow and assertion issues reported by
+LCatro via emails on July 11th, and 12th, 2017.</li>
+<li>magick/colormap.c (ReplaceImageColormap): Throw an exception
+rather than assertion if the input image is not colormapped.</li>
+</ul>
+</blockquote>
+<p>2017-07-13  Glenn Randers-Pehrson  &lt;<a class="reference external" href="mailto:glennrp&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">glennrp<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/png.c: Implemented eXIf chunk support.</li>
+</ul>
+</blockquote>
+<p>2017-07-12  Glenn Randers-Pehrson  &lt;<a class="reference external" href="mailto:glennrp&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">glennrp<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/png.c: Fix typecast of left shifts (patch by Bob F)</li>
+</ul>
+</blockquote>
+<p>2017-07-12  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/ps.c (ReadPSImage): Fix reference to constant NULL image
+argument which is dereferenced to pass an exception to
+MagickMonitorFormatted().  Problem was reported by Agostino
+Sarubbo via email on Wed, 12 Jul 2017.</li>
+</ul>
+</blockquote>
+<p>2017-07-10  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>magick/blob.c: Add casts to fix undefined behavior in left
+shifts.  Issue was reported by Agostino Sarubbo via email on Mon,
+10 Jul 2017.</li>
+</ul>
+</blockquote>
+<p>2017-07-10  Glenn Randers-Pehrson  &lt;<a class="reference external" href="mailto:glennrp&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">glennrp<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/png.c (ReadOneJNGImage): Ignore out-of-bounds MOVE
+and CLIP object_id's.</li>
+<li>coders/png.c (ReadMNGImage): Fix apparent off-by-one error
+in MNG FRAM change_clipping processing.</li>
+<li>coders/png.c (ReadMNGImage): Fix out-of-order CloseBlob()
+and DestroyImageList() that caused a use-after-free crash.
+Fixes CVE-2017-11403.  This bug was discovered by Agostino Sarubbo.</li>
+</ul>
+</blockquote>
+<p>2017-07-08  Glenn Randers-Pehrson  &lt;<a class="reference external" href="mailto:glennrp&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">glennrp<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/png.c (ReadOneJngImage): Revised double-free fix.</li>
+</ul>
+</blockquote>
+<p>2017-07-08  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/png.c (ReadOneJNGImage): Fix double-frees caused by
+commit on 2017-07-06.</li>
+<li>coders/jpeg.c (ReadJPEGImage): Defer creating pixel cache until
+after successfully reading first scanline.  Classify some serious
+libjpeg reported &quot;warnings&quot; as errors and quit processing
+scanlines immediately upon first error so that corrupt JPEG does
+not consume excessive resources.  Resolves excessive resource
+consumption issue reported for two JPEG files provided via email
+by LCatro on Tue, 4 Jul 2017.</li>
+</ul>
+</blockquote>
+<p>2017-07-06  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/png.c (ReadOneJNGImage): Remove spurious 'n' from log
+statement.</li>
+</ul>
+</blockquote>
+<p>2017-07-06  Glenn Randers-Pehrson  &lt;<a class="reference external" href="mailto:glennrp&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">glennrp<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/png.c: Consolidate JNG cleanup into a new DestroyJNG()
+function.</li>
+</ul>
+</blockquote>
+<p>2017-07-05  Glenn Randers-Pehrson  &lt;<a class="reference external" href="mailto:glennrp&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">glennrp<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/png.c: prevent a crash due to zero-length color_image
+while reading a JNG image. (CVE-2017-11102)</li>
+</ul>
+</blockquote>
+<p>2017-07-04  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>NEWS.txt: Make sure is up to date.</li>
+<li>www/index.rst: Update for 1.3.26 release.</li>
+<li>version.sh: Update library versioning for 1.3.26 release.</li>
+<li>magick/command.c (BatchCommand): Add ferror() checks around
+batch input loop.</li>
+</ul>
+</blockquote>
+<p>2017-07-03  Glenn Randers-Pehrson  &lt;<a class="reference external" href="mailto:glennrp&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">glennrp<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/png.c: Reject a PNG file if the file size is too small
+(less than 61 bytes).  Reject a JNG file if it is too small (less
+than 147 bytes).</li>
+<li>coders/jpeg.c: Reject a JPEG file if the file size is too small
+(less than 107 bytes).</li>
+</ul>
+</blockquote>
+<p>2017-07-02  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/dpx.c (ReadDPXImage): Compute required file size and
+verify that sufficient data exists in file before allocating
+memory to decode the image data.  Resolves problem with DPX file
+with valid header (but a huge claimed image width) provided
+provided via email on Thu, 29 Jun 2017 by LCatro.  This issue has
+been assigned CVE-2017-10799.</li>
+</ul>
+</blockquote>
+<p>2016-07-02  Fojtik Jaroslav  &lt;<a class="reference external" href="mailto:JaFojtik&#37;&#52;&#48;seznam&#46;cz">JaFojtik<span>&#64;</span>seznam<span>&#46;</span>cz</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/mat.c Check whether reported object size overflows file size.</li>
+</ul>
+</blockquote>
+<p>2016-07-01  Fojtik Jaroslav  &lt;<a class="reference external" href="mailto:JaFojtik&#37;&#52;&#48;seznam&#46;cz">JaFojtik<span>&#64;</span>seznam<span>&#46;</span>cz</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/mat.c Safety check for forged and or corrupted data.
+This issue has been assigned CVE-2017-10800.</li>
+</ul>
+</blockquote>
+<p>2017-07-01  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/tiff.c (&quot;QuantumTransferMode&quot;): Use a generalized method
+to enforce that buffer overflow can not happen while importing
+pixels.  Resolves problem with RGB TIFF claiming only one sample
+per pixel provided via email on Thu, 29 Jun 2017 by LCatro.  This
+issue has been assigned CVE-2017-10794.</li>
+</ul>
+</blockquote>
+<p>2017-06-29  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>magick/command.c: Convert bare 'unsigned int' to MagickPassFail
+where suitable to make intentions clear.  Convert True/False to
+MagickTrue/MagickFalse or MagickPass/MagickFail according to
+purpose.  This is a continuation of a gradual migration and does
+not represent an API change.</li>
+</ul>
+</blockquote>
+<p>2017-06-25  Glenn Randers-Pehrson  &lt;<a class="reference external" href="mailto:glennrp&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">glennrp<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/png.c: Avoid NULL dereference when MAGN chunk processing
+fails (<a class="reference external" href="https://sourceforge.net/p/graphicsmagick/bugs/426/">https://sourceforge.net/p/graphicsmagick/bugs/426/</a>). Expand
+TABs.</li>
+</ul>
+</blockquote>
+<p>2017-06-25  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>NEWS.txt: Update NEWS with changes since the previous release.</li>
+<li>www/programming.rst: Switch the Lua link to
+<a class="reference external" href="https://github.com/arcapos/luagraphicsmagick">https://github.com/arcapos/luagraphicsmagick</a>, which is a more
+complete and direct interface from Lua to GraphicsMagick's Wand
+API.</li>
+</ul>
+</blockquote>
+<p>2017-06-24  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>VisualMagick/installer/gm-foo-dll.iss: Remove PerlMagick from
+the slim Inno Setup installer builder and remove mention of
+PerlMagick from the installer documentation.</li>
+<li>TclMagick/generic/TclMagick.c (magickCmd): Resolve SourceForge
+patch #51 &quot;TclMagick: memory access error; possible segfault&quot;.
+(newMagickObj): Fix formatting of pointer value so it is 64-bit
+safe.  Resolves SourceForge patch #50 &quot;TclMagick: 64-bit
+portability issue&quot;.</li>
+<li>coders/pict.c (ReadPICTImage): Avoid possible use of negative
+value when indexing array, which would cause buffer overflow.
+Resolves SourceForge issue #427 &quot;One possible buffer overflow
+vulnerability in
+GraphicsMagick-1.3.25/coders/pict.c:ReadPICTImage()&quot;.</li>
+</ul>
+</blockquote>
+<p>2017-06-22  Glenn Randers-Pehrson  &lt;<a class="reference external" href="mailto:glennrp&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">glennrp<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/png.c: Stop memory leak when reading invalid JNG image.
+Fixes CVE-2017-8350.</li>
+</ul>
+</blockquote>
+<p>2017-06-18  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/png.c: Fix lcms2.h inclusion logic.</li>
+<li>wand/magick_wand.c (MagickSetImageOrientation): Eliminate use of
+snprintf, which is not supported by older Visual Studio.</li>
+</ul>
+</blockquote>
+<p>2017-06-09  Glenn Randers-Pehrson  &lt;<a class="reference external" href="mailto:glennrp&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">glennrp<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/png.c: Accept exIf chunks whose data segment
+erroneously begins with &quot;Exif00&quot;.</li>
+</ul>
+</blockquote>
+<p>2017-06-01  Glenn Randers-Pehrson  &lt;<a class="reference external" href="mailto:glennrp&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">glennrp<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/png.c: Removed experimental zxIF chunk support.  That
+proposal is dead.</li>
+</ul>
+</blockquote>
+<p>2017-05-27  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>config/log.mgk: Added documentation suggested by SourceForge
+issue #419 &quot;Consider a small patch to log.mgk&quot;.</li>
+<li>www/Changes.rst: Add missing link to most recent changes.</li>
+</ul>
+</blockquote>
+<p>2017-05-24  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>www/Magick++/Image.rst: Improve documentation for Magick++
+Image::iccColorProfile() and Image::renderingIntent().</li>
+</ul>
+</blockquote>
+<p>2017-05-21  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>tiff: Update to libtiff 4.0.8.</li>
+</ul>
+</blockquote>
+<p>2017-03-19  Glenn Randers-Pehrson  &lt;<a class="reference external" href="mailto:glennrp&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">glennrp<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/png.c: Quieted a new Coverity complaint about a potential
+text buffer overrun.</li>
+</ul>
+</blockquote>
+<p>2017-03-19  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>magick/image.c (SetImageInfo): Ignore empty magic prefix
+specification and do not remove colon character from start of
+filename.  Resolves SourceForge bug #415 &quot;Inconsistent Behavior w/
+input_file Parameter&quot;.</li>
+</ul>
+</blockquote>
+<p>2017-03-18  Glenn Randers-Pehrson  &lt;<a class="reference external" href="mailto:glennrp&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">glennrp<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/png.c: Added new private orNT PNG chunk, to
+preserve image-&gt;orientation when it is defined and not
+the default TopLeft.</li>
+<li>coders/jpeg.c: Mention image-&gt;orientation in the log when
+writing a JPEG.</li>
+</ul>
+</blockquote>
+<p>2017-03-15  Glenn Randers-Pehrson  &lt;<a class="reference external" href="mailto:glennrp&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">glennrp<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/png.c (WriteOnePNGImage): Add version info about
+gm, libpng, zlib, and lcms to the PNG debug log.</li>
+</ul>
+</blockquote>
+<p>2017-03-04  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>magick/command.c (ImportImageCommand): Fix handling of -frame
+options. Option handling was incorrect due to option checking the
+frame option after it had been freed.  Checking the frame dash
+option before freeing the argument solves the problem.  From patch
+provided by Victor Ananjevsky as SourceForge patch #49 &quot;-frame
+doesn't work in gm import&quot;.</li>
+<li>Magick++/lib/Image.cpp (attribute): Added Image attribute method
+which accepts a 'char *' argument, and will remove the attribute
+if the value argument is NULL.  From patch provided by &quot;Gints&quot; as
+SourceForge patch #46 &quot;C++ api - method to clear/remove
+attribute&quot;.</li>
+<li>VisualMagick/configure/configure.cpp (InitInstance): Applied
+patch by Paul McConkey to allow the quantum command line argument
+to set the default value in the wizard drop list.  This allows
+setting the quantum depth when the /nowizard argument was
+supplied.  Resolves SourceForge patch #48 &quot;When running from the
+command line configure.exe does not use the quantum argument&quot;.
+The provided configure.exe still needs to be rebuilt to
+incorporate this change.</li>
+<li>magick/command.c (MogrifyImage): The -orient command now also
+updates the orientation in the EXIF profile, if it exists.</li>
+<li>Magick++/lib/Image.cpp (orientation): Update orientation in EXIF
+profile, if it exists.</li>
+</ul>
+</blockquote>
+<p>2017-03-03  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/jp2.c: Support PGX JPEG 2000 format for reading and
+writing (within the bounds of what JasPer supports).</li>
+</ul>
+</blockquote>
+<p>2017-02-23  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/tiff.c (QuantumTransferMode): Fix out of bounds read when
+reading CMYKA TIFF which claims to have only 2 samples per pixel.
+Problem was reported via email on February 15, 2017 by Valon
+Chu. This issue was assigned CVE-2017-6335.</li>
+</ul>
+</blockquote>
+<p>2017-01-29  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>doc/options.imdoc (-geometry): Geometry documentation changes
+suggested by Jon Wong.</li>
+</ul>
+</blockquote>
+<p>2017-01-26  Glenn Randers-Pehrson  &lt;<a class="reference external" href="mailto:glennrp&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">glennrp<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/png.c: Added support for a proposed new PNG chunk
+(zxIf, read-only) that is currently being discussed on the
+png-mng-misc at lists.sourceforge.net mailing list.  Enable
+exIf and zxIf with CPPFLAGS=&quot;-DexIf_SUPPORTED -DxzIf_SUPPORTED&quot;.
+If exIf is enabled, only the uncompressed exIF chunk will be
+written and the hex-encoded zTXt chunk containing the raw Exif
+profile won't be written.</li>
+</ul>
+</blockquote>
+<p>2017-01-25  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/msl.c (MSLStartElement): Change test for NULL image
+pointer to before it is used rather than after it is used.
+Problem reported by Petr Gajdos on 2017-01-25.</li>
+</ul>
+</blockquote>
+<p>2017-01-22  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>TclMagick/unix/m4/tcl.m4: Update tcl.m4 to TEA 3.10.  File
+supplied by Massimo Manghi.</li>
+</ul>
+</blockquote>
+<p>2017-01-21  Glenn Randers-Pehrson  &lt;<a class="reference external" href="mailto:glennrp&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">glennrp<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/png.c: Added support for a proposed new PNG
+chunk (exIf read-write, eXIf read-only) that is currently
+being discussed on the png-mng-misc at lists.sourceforge.net
+mailing list.</li>
+</ul>
+</blockquote>
+<p>2017-01-21  Glenn Randers-Pehrson  &lt;<a class="reference external" href="mailto:glennrp&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">glennrp<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/png.c: Added read_user_chunk_callback() function
+and used it to implement a private PNG caNv (canvas) chunk
+for remembering the original dimensions and offsets when an
+image is cropped.  Previously we used the oFFs chunk for this
+purpose, but this had potential conflicts with other applications
+that also use the oFFs chunk.</li>
+</ul>
+</blockquote>
+<p>2017-01-07  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>TclMagick/Makefile.am (AM_DISTCHECK_CONFIGURE_FLAGS): Applied
+patch by Massimo Manghi to set AM_DISTCHECK_CONFIGURE_FLAGS so
+that 'make distcheck' remembers configuration options, and also to
+uninstall pkgIndex.tcl.</li>
+<li>magick/image.c (SetImageEx): Use PixelIterateMonoSet() for
+possibly improved efficiency.</li>
+<li>magick/pixel_iterator.c (PixelIterateMonoSet): New pixel
+iterator intended for use when initializing image pixels, without
+regard to existing values.</li>
+</ul>
+</blockquote>
+<p>2017-01-01  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>Copyright.txt: Bump copyright years and rotate ChangeLog.</li>
+</ul>
+</blockquote>
+</div>
+</body>
+</html>

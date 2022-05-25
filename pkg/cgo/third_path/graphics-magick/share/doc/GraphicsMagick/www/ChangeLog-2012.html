@@ -1,0 +1,1058 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.15.2: http://docutils.sourceforge.net/" />
+<title>ChangeLog-2012.rst</title>
+<link rel="stylesheet" href="docutils-articles.css" type="text/css" />
+</head>
+<body>
+
+<div class="banner">
+<img src="images/gm-107x76.png" alt="GraphicMagick logo" width="107" height="76" />
+<span class="title">GraphicsMagick</span>
+<form action="http://www.google.com/search">
+	<input type="hidden" name="domains" value="www.graphicsmagick.org" />
+	<input type="hidden" name="sitesearch" value="www.graphicsmagick.org" />
+    <span class="nowrap"><input type="text" name="q" size="25" maxlength="255" />&nbsp;<input type="submit" name="sa" value="Search" /></span>
+</form>
+</div>
+
+<div class="navmenu">
+<ul>
+<li><a href="index.html">Home</a></li>
+<li><a href="project.html">Project</a></li>
+<li><a href="download.html">Download</a></li>
+<li><a href="README.html">Install</a></li>
+<li><a href="Hg.html">Source</a></li>
+<li><a href="NEWS.html">News</a> </li>
+<li><a href="utilities.html">Utilities</a></li>
+<li><a href="programming.html">Programming</a></li>
+<li><a href="reference.html">Reference</a></li>
+</ul>
+</div>
+<div class="document">
+
+
+<p>2012-12-31  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>magick/command.c: Added -auto-orient to 'convert' and 'mogrify'
+to automatically rotate the image upright for viewing based on its
+current orientation setting.
+Added -orient to support setting the image orientation.</li>
+<li>magick/shear.c (AutoOrientImage): New function to automatically
+orient the image so that it is upright for normal viewing.</li>
+</ul>
+</blockquote>
+<p>2012-12-29  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>scripts/tap-functions.shi: Tidy TAP tests so that they may be
+run alone, or via Perl's 'prove'.</li>
+</ul>
+</blockquote>
+<p>2012-12-28  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>tests/rwfile.c (main): Test file name generation was not
+correct.</li>
+</ul>
+</blockquote>
+<p>2012-12-27  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>tests/rwfile.tap: Added -stdio tests for most file formats.
+This tests I/O using an already-opened file handle passed via the
+ImageInfo file member.  Formats using the Ghostscript delegate are
+not working right yet.</li>
+</ul>
+</blockquote>
+<p>2012-12-26  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>tests/rwfile.c (main): Added a '-stdio' option to test
+reading/writing files using file handles opened by the API user.</li>
+<li>magick/blob.c (CloseBlob): It should be possible to invoke
+CloseBlob() multiple times, including blobs set to &quot;exempt&quot;.
+There were some issues when passing in file descriptors.</li>
+</ul>
+</blockquote>
+<p>2012-12-24  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>www/api/api.rst: Add another example Core C API example program.</li>
+<li>magick/blob.c (OpenBlob): Restore file position, rather than
+rewind, after reading header bytes.</li>
+<li>magick/image.c (SetImageInfo): Restore file position after
+reading header bytes.  Resolves SourceForge issue 3597486
+&quot;ReadImage not working with file descriptors&quot;.</li>
+</ul>
+</blockquote>
+<p>2012-12-23  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>VisualMagick: WIN64 (64-bit Windows) installer improvements to
+bring up to par with 32-bit installer.</li>
+</ul>
+</blockquote>
+<p>2012-12-16  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>VisualMagick: WIN64 (64-bit Windows) is supported now.</li>
+</ul>
+</blockquote>
+<p>2012-12-15  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>magick/blob.c: Eliminate support for experimental
+MAGICK_MMAP_WRITE, which never quite worked correctly and did not
+provide performance benefits.</li>
+</ul>
+</blockquote>
+<p>2012-12-09  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>magick/blob.c (FileToBlob): Rewrite to be based on stdio.</li>
+</ul>
+</blockquote>
+<p>2012-12-08  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>magick/magick_types.h.in: Changes to try to work better with the
+Windows WIN64 API.</li>
+</ul>
+</blockquote>
+<p>2012-12-02  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>magick/image.c (SetImageColorRegion): The provided color should
+be in the same colorspace as the image.  The image is no longer
+converted to RGB with the expectation that the provided color is
+always some particular RGB.
+(AppendImages): No longer transform the canvas image to RGB.  Now
+append uses the first listed image to determine the colorspace
+which should be used when appending the additional images and of
+the output image.  The additional images are converted to the
+canvas image colorspace.  Likewise, the background color is
+assumed to be in the same colorspace as the first listed image so
+that it is compatible and can be used to fill the background color
+without translation.</li>
+</ul>
+</blockquote>
+<p>2012-11-29  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>rungm.sh.in: Remove extraneous space in first line which
+prevents execution with T-shell (tsch).  Reported by William
+Langdon.</li>
+</ul>
+</blockquote>
+<p>2012-11-23  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>www/wand/wand.rst: Add a simple example of using the Wand API.</li>
+</ul>
+</blockquote>
+<p>2012-11-21  Glenn Randers-Pehrson  &lt;<a class="reference external" href="mailto:glennrp&#37;&#52;&#48;simplesystems&#46;org">glennrp<span>&#64;</span>simplesystems<span>&#46;</span>org</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/bmp.c (ReadBMPImage): Fixed an old bug with decoding
+chromaticity primaries.</li>
+</ul>
+</blockquote>
+<p>2012-11-19  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>wand/magick_wand.h (&quot;C&quot;): Need to include wand/wand_symbols.h
+after magick/api.h in order for options from magick_config.h to
+take effect.</li>
+<li>magick/symbols.h (PSPageGeometry): Fix typo. Should map to
+GmPSPageGeometry.</li>
+</ul>
+</blockquote>
+<p>2012-11-18  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>wand/wand_symbols.h, magick/symbol.h: MagickWand API is now
+prefixed with 'Gm' when the --enable-symbol-prefix configure
+option is supplied.  These changes are contributed by Ben Wu.
+Details of changes are as follows:<ol class="arabic">
+<li>A new header file wand/wand_symbols.h which prefixes all
+MagickWand API symbols with Gm.</li>
+<li>Modification to all the header files in wand/ to include
+wand_symbols.h.</li>
+<li>Modification to magick/symbols.h to include additional
+symbols which were colliding with names in ImageMagick.</li>
+<li>Modification to magick/error.c to exclude function
+definitions for MagickError, MagickFatalError,
+MagickWarning, and ThrowException when building with
+--enable-symbol-prefix option. There four names were also
+defined as macros so it appears that putting them in a
+symbol-remapping file wont work.</li>
+</ol>
+</li>
+<li>Makefile.am: Update Automake to 1.12.5.</li>
+</ul>
+</blockquote>
+<p>2012-11-15  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>Magick++/COPYING: Change Magick++ usage license to be exactly
+the MIT license without the additional sentence about retention of
+copyright (which was already legally implicit).</li>
+</ul>
+</blockquote>
+<p>2012-11-10  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>magick/symbols.h: Re-generate list of symbols to prefix.</li>
+<li>magick/utility.c (IsGlob): IsGlob can be more efficient.</li>
+<li>magick/floats.c: Use compile-time selection of endian-specific
+code rather than run-time.  Fix cast warning with 64-bit builds.</li>
+</ul>
+</blockquote>
+<p>2012-11-07  Glenn Randers-Pehrson  &lt;<a class="reference external" href="mailto:glennrp&#37;&#52;&#48;simplesystems&#46;org">glennrp<span>&#64;</span>simplesystems<span>&#46;</span>org</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/png.c (WriteOnePNGImage): The wrong QuantumType was
+sometimes passed to ExportImagePixelArea() by the PNG encoder.</li>
+<li>coders/png.c (ReadOnePNGImage): Let libpng unpack all sub-8-bit
+pixels (see change of 2012-08-31 which lets libpng unpack sub-8-bit
+palette images; this also lets libpng unpack the grayscale images).</li>
+<li>coders/png.c (ReadOnePNGImage): Corrected the reading of interlaced
+images (see SourceForge bug 3420695, in which all passes are
+displayed in a garbled manner instead of only the completed image).</li>
+</ul>
+</blockquote>
+<p>2012-10-29  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>wand/magick_wand.c (MagickGetImagePage): Need to use 'image'
+rather than 'images' in order to work with iterator.
+(MagickSetImagePage): Need to use 'image'
+rather than 'images' in order to work with iterator.</li>
+</ul>
+</blockquote>
+<p>2012-10-25  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>magick/utility.c (TranslateTextEx): Fix bug with input string
+read overrun if the input string ends with a single '%'.  This
+sometimes caused random heap data to be added to the output string
+until another null character is reached.  A simple work-around
+without this fix is to use &quot;%%&quot; rather than &quot;%&quot;.  Fixes
+SourceForge bug 3580219 &quot;strange results with '%' in Annotate()&quot;.</li>
+</ul>
+</blockquote>
+<p>2012-10-24  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>wand/magick_wand.c (MagickSetImagePage): New method to support
+setting the image page size and offsets.
+(MagickGetImagePage): New method to support getting image page
+size and offsets.</li>
+</ul>
+</blockquote>
+<p>2012-10-16  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>configure.ac: Report fatal error if doing modules build and
+libltdl is not found.</li>
+</ul>
+</blockquote>
+<p>2012-10-15  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>ltdl: Libltdl is no longer bundled.  Libltdl must be previously
+installed on the system in order to build the modules
+configuration.</li>
+</ul>
+</blockquote>
+<p>2012-10-13  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>www/index.rst: Update top index page for 1.3.17 release.</li>
+<li>NEWS.txt: Update NEWS for 1.3.17 release.</li>
+<li>version.sh: Update shared library versioning for 1.3.17 release.</li>
+<li>coders/jnx.c: Fix format string compilation warnings.  Remove
+MS-DOS line terminations.</li>
+<li>configure.ac: Module loading is now only supported by the
+modules build and not just because shared libraries are enabled.
+This means that libltdl is only depended upon by the modules
+build.  Sometime in the future, libltdl will no longer be bundled
+in the GraphicsMagick source tree.</li>
+</ul>
+</blockquote>
+<p>2012-10-10  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>configure.ac (LTDL_INIT): Request installable libltdl rather
+than convenience.</li>
+</ul>
+</blockquote>
+<p>2012-10-08  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/bmp.c: Support alpha channel in uncompressed 32-bit BMP.
+Resolves SourceForge issue 3566239 &quot;Can't open BMP with alpha
+created by photoshop&quot;.</li>
+</ul>
+</blockquote>
+<p>2012-10-07  Fojtik Jaroslav  &lt;<a class="reference external" href="mailto:JaFojtik&#37;&#52;&#48;seznam&#46;cz">JaFojtik<span>&#64;</span>seznam<span>&#46;</span>cz</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>dcraw/dcraw.c: Fixed situation when M_PI is not defined.</li>
+</ul>
+</blockquote>
+<p>2012-10-07  Fojtik Jaroslav  &lt;<a class="reference external" href="mailto:JaFojtik&#37;&#52;&#48;seznam&#46;cz">JaFojtik<span>&#64;</span>seznam<span>&#46;</span>cz</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/jnx.c: Add image attribute with geolocation.</li>
+</ul>
+</blockquote>
+<p>2012-10-06  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>dcraw: VisualMagick configure fixes to support linking with JPEG
+and JPEG2000.</li>
+</ul>
+</blockquote>
+<p>2012-09-30  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>dcraw: Add dcraw to VisualMagick build.</li>
+<li>libxml: Update libxml2 to 2.9.0 release.</li>
+</ul>
+</blockquote>
+<p>2012-09-29  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>tiff: Update libtiff to 4.0.3 release.</li>
+<li>lcms: Update liblcms2 to 2.4 release.</li>
+<li>png: Update libpng to 1.5.13 release.</li>
+</ul>
+</blockquote>
+<p>2012-09-19  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>Makefile.am: Update to Automake 1.12.4.</li>
+</ul>
+</blockquote>
+<p>2012-09-15  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>doc/options.imdoc: Fix Debian bug 687738 &quot;graphicsmagick:
+repeated words suitable for suitable for in gm manpage&quot; reported
+by Jonas Smedegaard.</li>
+</ul>
+</blockquote>
+<p>2012-09-08  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>NEWS.txt: Update with news since last release.</li>
+<li>configure.ac: Added the configure option
+--enable-quantum-library-names to enable that shared library name
+includes quantum depth to allow shared libraries with different
+quantum depths to co-exist in same directory (only one can be used
+for development).</li>
+</ul>
+</blockquote>
+<p>2012-09-03  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>magick/effect.c (AdaptiveThresholdImage): New implementation
+contributed by Roberto de Deus Barbosa Murta.  Executes in linear
+time as threhold area is increased rather than being quadratic.</li>
+</ul>
+</blockquote>
+<p>2012-09-02  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/svg.c: Fix improper injection of XML headers as rendered
+text.</li>
+<li>magick/render.c (DrawImage): Fix SourceForge issue 3499164
+&quot;Drawing of text fails if text starts with &quot;,&quot; character&quot;.  Fix
+SourceForge issue 3411492 &quot;Certain SVGs hang GraphicsMagick&quot;.  Fix
+SourceForge issue 1961000 &quot;Could not print ',' via convert draw
+text&quot;.</li>
+</ul>
+</blockquote>
+<p>2012-09-01  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/wmf.c (lite_font_stringwidth): Simply return zero.
+Returning a computed string width was causing text placement
+problems when testing with libwmf's fulltest.wmf.</li>
+</ul>
+</blockquote>
+<p>2012-08-31  Glenn Randers-Pehrson  &lt;<a class="reference external" href="mailto:glennrp&#37;&#52;&#48;simplesystems&#46;org">glennrp<span>&#64;</span>simplesystems<span>&#46;</span>org</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/png.c: ReadOnePNGImage: sub-8-bit palette images were
+getting unpacked twice; once by libpng via png_set_packing()
+and again by coders/png.c in a switch() statement around line 2500,
+resulting in horizontally stretched pixels.</li>
+</ul>
+</blockquote>
+<p>2012-08-31  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>Makefile.am (AUTOMAKE_OPTIONS): Include lzip as a distribution
+format again.</li>
+</ul>
+</blockquote>
+<p>2012-08-26  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>configure.ac: BrowseDelegate now defaults to 'xdg-open', but if
+it is not found, then configure will search for firefox,
+google-chrome, mozilla (in that order).</li>
+</ul>
+</blockquote>
+<p>2012-08-23  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>configure.ac: For testing on MinGW, assume that Postscript is
+available since we don't have a good way to check for that.</li>
+<li>scripts/tap-functions.shi (test_count): Always execute the test
+program rather than skipping execution since we want to make sure
+the test program fails correctly as well.</li>
+<li>coders/gif.c (DecodeImage): Add a log message for attempted LZW
+string data table overflow.</li>
+</ul>
+</blockquote>
+<p>2012-08-20  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>magick/effect.c (ConvolveImage): Allocate normalized convolution
+kernel using cache-line aligned memory allocator.</li>
+<li>configure.ac: Remove support for legacy LZWDecodeDelegate and
+LZWEncodeDelegate since these are not used any more.</li>
+</ul>
+</blockquote>
+<p>2012-08-19  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>scripts/tap-functions.shi: If a test declares that it needs
+certain features, skip the test if required features are not
+available.</li>
+<li>configure.ac: Build a supported features list and save to
+common.shi script for use by test scripts.</li>
+<li>Makefile.am (LOG_COMPILER): Run Bourne-shell based TAP scripts
+with the same shell $(SHELL) that configure selected for the
+Makefile to use.</li>
+</ul>
+</blockquote>
+<p>2012-08-18  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>Makefile.am (AUTOMAKE_OPTIONS): Update to Automake 1.12.3.
+Update test suite to use Automake TAP driver rather than legacy
+tests.</li>
+</ul>
+</blockquote>
+<p>2012-08-14  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/jnx.c (ExtractTileJPG): Add a trace of tile offset and size.</li>
+</ul>
+</blockquote>
+<p>2012-08-13  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/jnx.c (ExtractTileJPG): Use a memory buffer for the JPEG
+tile rather than a temporary file.</li>
+</ul>
+</blockquote>
+<p>2012-08-12  Fojtik Jaroslav  &lt;<a class="reference external" href="mailto:JaFojtik&#37;&#52;&#48;seznam&#46;cz">JaFojtik<span>&#64;</span>seznam<span>&#46;</span>cz</a>&gt;</p>
+<blockquote>
+* PerlMagick/t/input_jnx.jnx: Small JNX test file.</blockquote>
+<p>2012-08-11  Fojtik Jaroslav  &lt;<a class="reference external" href="mailto:JaFojtik&#37;&#52;&#48;seznam&#46;cz">JaFojtik<span>&#64;</span>seznam<span>&#46;</span>cz</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/jnx.c: speedup.</li>
+</ul>
+</blockquote>
+<p>2012-08-10  Fojtik Jaroslav  &lt;<a class="reference external" href="mailto:JaFojtik&#37;&#52;&#48;seznam&#46;cz">JaFojtik<span>&#64;</span>seznam<span>&#46;</span>cz</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/jnx.c: changed malloc/free to MagickMalloc/MagickFree.</li>
+</ul>
+</blockquote>
+<p>2012-08-06  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/jnx.c (ReadJNXImage): Add progress monitor support for
+JNX.</li>
+</ul>
+</blockquote>
+<p>2012-08-06  Fojtik Jaroslav  &lt;<a class="reference external" href="mailto:JaFojtik&#37;&#52;&#48;seznam&#46;cz">JaFojtik<span>&#64;</span>seznam<span>&#46;</span>cz</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/jnx.c: Image cache is turned off to work-around memory
+overflow.</li>
+</ul>
+</blockquote>
+<p>2012-08-05  Fojtik Jaroslav  &lt;<a class="reference external" href="mailto:JaFojtik&#37;&#52;&#48;seznam&#46;cz">JaFojtik<span>&#64;</span>seznam<span>&#46;</span>cz</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/jnx.c: Fixed.</li>
+</ul>
+</blockquote>
+<p>2012-08-05  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/jnx.c: Add JNX coder for &quot;Garmin proprietary Image
+Format&quot; (implementation by Jaroslav Fojtik) to the build.  Code is
+not yet working properly at this time.</li>
+</ul>
+</blockquote>
+<p>2012-08-04  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>configure.ac: Remove use of -Wl,-zlazyload under Solaris since
+it seems to decrease the stability of C++ exceptions in x86-64
+build and does not measurably improve runtimes.  Don't force use
+of liblzma because libtiff is used.  User should always have
+control.</li>
+</ul>
+</blockquote>
+<p>2012-07-29  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>magick/memory.c (MagickMallocAligned): Use RoundUpToAlignment()
+macro to compute aligned pointer.</li>
+<li>magick/effect.c (EnhanceImage): Eliminate use of ugly Enhance
+macro.  Only filter based on color channels (ignore opacity).</li>
+</ul>
+</blockquote>
+<p>2012-07-28  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>magick/studio.h (MAGICK_CACHE_LINE_SIZE): Assume a cache line
+size of 64 bytes except for on PowerPC which uses 128.</li>
+<li>magick/pixel_cache.c: Use aligned memory allocator to allocate
+structures and buffers which might suffer from false cache line
+sharing</li>
+<li>magick/memory.c (MagickMallocAligned): Also round up allocation
+size to alignment.</li>
+</ul>
+</blockquote>
+<p>2012-07-26  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>magick/effect.c, magick/random.c, magick/semaphore.c: Use
+aligned memory allocator to align allocations which should be
+aligned to cache line boundary.</li>
+</ul>
+</blockquote>
+<p>2012-07-24  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>magick/memory.h (MagickAllocateAlignedMemory): New macro to
+allocate aligned memory.
+(MagickFreeAlignedMemory): New macro to free aligned memory.</li>
+<li>magick/memory.c (MagickMallocAligned): New internal function to
+allocate aligned memory.
+(MagickFreeAligned): New internal function to free aligned memory.</li>
+</ul>
+</blockquote>
+<p>2012-07-21  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>magick/common.h (MAGICK_ASSUME_ALIGNED): Add some GCC attribute
+wrappers for useful features added by GCC 4.7.</li>
+</ul>
+</blockquote>
+<p>2012-07-10  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/gif.c (ReadGIFImage): Try to be better about reporting
+failure when ReadBlob() fails to return the requested number of
+bytes.</li>
+</ul>
+</blockquote>
+<p>2012-06-26  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>www/benchmarks.rst: Strip the outdated benchmark results from
+the benchmarks page.</li>
+<li>magick/command.c (ImportImageCommand): Status returned from the
+command was inverted.</li>
+</ul>
+</blockquote>
+<p>2012-06-23  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>Release GraphicsMagick 1.3.16</li>
+</ul>
+</blockquote>
+<p>2012-06-21  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>magick/command.c (MogrifyImage): -units was adjusting existing
+resolution the wrong way around.</li>
+</ul>
+</blockquote>
+<p>2012-06-16  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>jpeg: Updated to IJG 8d release.</li>
+<li>libxml: Updated libxml to 2.8.0 release.</li>
+<li>zlib: Updated zlib to 1.2.7 release.</li>
+<li>magick/blob.c (MagickFileHandle): Refer to stdio, bzip2, and
+gzip file handles using their own type.  Eliminates warnings
+observed when compiling with zlib 1.2.7.</li>
+<li>tiff: Updated libtiff to 4.0.2 release.</li>
+<li>png: Updated libpng to 1.5.11 release.</li>
+</ul>
+</blockquote>
+<p>2012-06-14  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>configure.ac: Fix typo which caused the --without-lzma option to
+be handled incorrectly.  Resolves SourceForge issue 3535309
+&quot;graphicsmagick from 1.3.13 to 1.3.15 has broken lzma support&quot;.</li>
+</ul>
+</blockquote>
+<p>2012-06-09  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>tests/rwfile.c (main): Verify that we can 'ping' the file using
+PingImage().  Tests for some formats may take longer to complete.</li>
+<li>tests/rwblob.c (main): Verify that we can 'ping' the blob using
+PingBlob().  Tests for some formats may take longer to complete.</li>
+<li>coders/xbm.c (ReadXBMImage): Fix memory leak of temporary X
+bitmap image allocation encountered when reading in 'ping' mode.</li>
+<li>magick/blob.c (PingBlob): Re-write to be based on BlobToImage()
+so that it works reliably.
+(BlobToImage): Restore original input file name to image if
+temporary file was used so that image 'filename' and
+'magick_filename' do not contain unexpected content due to using a
+temporary file.</li>
+</ul>
+</blockquote>
+<p>2012-06-07  Glenn Randers-Pehrson  &lt;<a class="reference external" href="mailto:glennrp&#37;&#52;&#48;simplesystems&#46;org">glennrp<span>&#64;</span>simplesystems<span>&#46;</span>org</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/png.c: Disable new libpng-1.5.10 test for invalid palette
+index when reading a PNG or MNG (for speed), or when writing a MNG
+(because a zero-length PLTE is valid in a MNG).</li>
+</ul>
+</blockquote>
+<p>2012-06-03  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>magick/attribute.c (SetImageAttribute): Don't translate
+'comment' and 'label' attributes if the request is made while a
+file is being read.  This is a temporary workaround until there is
+opportunity to modify the architecture so that there is a clear
+split between user-provided settings and values obtained from the
+input image.</li>
+<li>magick/blob.c (GetBlobIsOpen): New function to return if blob is
+currently open.</li>
+</ul>
+</blockquote>
+<p>2012-06-02  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>PerlMagick/typemap: Add typemap file needed by Perl 5.16.
+Resolves SourceForge issue 3531512 &quot;PerlMagick does not build with
+perl 5.16&quot;.</li>
+</ul>
+</blockquote>
+<p>2012-05-29  Glenn Randers-Pehrson  &lt;<a class="reference external" href="mailto:glennrp&#37;&#52;&#48;simplesystems&#46;org">glennrp<span>&#64;</span>simplesystems<span>&#46;</span>org</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/png.c: Ignore APNG chunks even if we are using a libpng
+that was built with the &quot;APNG patch&quot;.</li>
+</ul>
+</blockquote>
+<p>2012-05-23  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>magick/command.c (ConvertImageCommand): +repage does not require
+an argument.  Resolves SourceForge issue 3529158 &quot;+repage option
+not respected with convert command&quot;.</li>
+<li>configure: Update to Autoconf 2.69.</li>
+<li>magick/effect.c (MotionBlurImage): Motion blur does scale so
+remove DisableSlowOpenMP for it.</li>
+<li>magick/command.c (BenchmarkImageCommand): Remove parenthesis
+from output, and change &quot;iter/sec cpu&quot; to &quot;iter/cpu&quot; to ease
+parsing.</li>
+<li>magick/pixel_cache.c (GetPixelCacheInCore): Consider read-only
+memory-mapped cache as being &quot;in-core&quot;.  Otherwise MPC input files
+are penalized.</li>
+</ul>
+</blockquote>
+<p>2012-05-16  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>magick/api.h: Include &lt;sys/types.h&gt; on POSIX systems in order to
+help assure that 'size_t' and 'ssize_t' are declared.</li>
+</ul>
+</blockquote>
+<p>2012-05-15  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>magick/magick_config_api.h.in: Need to provide definitions for
+'size_t' and 'ssize_t' in case the system headers lack these types
+because the definition of MagickExtentImage() requires them.  This
+should resolve PHP bug #62034 &quot;gmagick does not compile&quot;.</li>
+</ul>
+</blockquote>
+<p>2012-05-14  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>magick/pixel_iterator.c (GetRegionThreads): Don't thread region
+if it is not memory-based.</li>
+</ul>
+</blockquote>
+<p>2012-05-09  Glenn Randers-Pehrson  &lt;<a class="reference external" href="mailto:glennrp&#37;&#52;&#48;simplesystems&#46;org">glennrp<span>&#64;</span>simplesystems<span>&#46;</span>org</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/png.c (ReadOnePNGImage): make transparent_color elements
+unsigned long instead of unsigned short, so 65537 is actually out of
+range as expected, and won't match any pixel if no tRNS chunk is
+present.</li>
+</ul>
+</blockquote>
+<p>2012-05-09  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/sfw.c (ReadSFWImage): Reader needs to be more robust
+against corrupt or maligned headers.  Resolves SourceForge issue
+&quot;sfw file crash&quot;.</li>
+</ul>
+</blockquote>
+<p>2012-05-05  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/pdf.c (WritePDFImage): Add file basename as the PDF
+document title.  Resolves SourceForge bug ID 2835140
+&quot;GraphicsMagick fails to add title attribute to PDF output&quot;.</li>
+<li>coders/sfw.c (ReadSFWImage): Restore original filename and
+format.</li>
+<li>PerlMagick/t/jpeg/read.t: Add a test for reading Seattle
+FilmWorks format based on the sample image from
+<a class="reference external" href="http://www.algonet.se/~cyren/sfw/">http://www.algonet.se/~cyren/sfw/</a>.  Image was approved for
+distribution in GraphicsMagick by Bengt Cyrén.</li>
+<li>magick/analyze.c (GetImageBoundingBox): Only apply opacity-based
+bounding box detection if all three test points are non-opaque and
+the same value.  Resolves SourceForge bug ID 3522804 &quot;convert
+-trim fails on 8-bit PNG that ImageMagick can trim&quot;.</li>
+<li>coders/sfw.c (ReadSFWImage): Fix variety of bugs related to
+closing Image and blob at wrong points.  SFW reader is working
+again.  Resolves SourceForge bug ID 523430 &quot;sfw file open failed&quot;.</li>
+</ul>
+</blockquote>
+<p>2012-05-01 Fojtik Jaroslav  &lt;<a class="reference external" href="mailto:JaFojtik&#37;&#52;&#48;seznam&#46;cz">JaFojtik<span>&#64;</span>seznam<span>&#46;</span>cz</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/mat.c Animated movies inside 4D matrices are loaded now.</li>
+</ul>
+</blockquote>
+<p>2012-04-29  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>magick/pixel_iterator.c: Limit the number of threads to use in
+the loop rather than the total number of threads available.</li>
+</ul>
+</blockquote>
+<p>2012-04-28  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>Release GraphicsMagick 1.3.15</li>
+</ul>
+</blockquote>
+<p>2012-04-23  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>magick/image.c (SetImageInfo): Remove automatic adjoin mode
+support logic.
+(AddDefinition): Fix use of uninitialized variable.</li>
+</ul>
+</blockquote>
+<p>2012-04-23  Glenn Randers-Pehrson  &lt;<a class="reference external" href="mailto:glennrp&#37;&#52;&#48;simplesystems&#46;org">glennrp<span>&#64;</span>simplesystems<span>&#46;</span>org</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>doc/*.imdoc: some example commandlines in the documentation
+were missing the leading &quot;gm &quot;.</li>
+</ul>
+</blockquote>
+<p>2012-04-22  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>magick/blob.c (FormMultiPartFilename): No longer add a
+printf-style scene formatting specification to filenames which do
+not have one and no longer automatically operate in 'adjoin' mode
+in such cases.  This is a BIG CHANGE for users who may have become
+used to this automatic functionality.  The simple solution to
+update existing scripts depending on this behavior is to change
+any bare filenames to include a format specification similar to
+&quot;image-%d.jpg&quot; and add +adjoin to the command line.  The reason
+why this change is made is that the output files produced by any
+given operation were unpredictable, and it was causing temporary
+files to be leaked due to the renaming.</li>
+</ul>
+</blockquote>
+<p>2012-04-21  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/bmp.c (WriteBMPImage): Enforce that image width and
+height do not exceed BMP dimensions.  BMP dimensions are
+represented by a signed type.  BMPv2 supports maximum dimensions
+of 32k by 32k.</li>
+</ul>
+</blockquote>
+<p>2012-04-19  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/info.c (WriteINFOImage): When driven by the 'convert'
+utility, -format produces user-controlled formatted output similar
+to -format in 'identify'.  This is accomplished via a
+'<a class="reference external" href="info:format=value">info:format=value</a>' define.</li>
+<li>magick/image.c (AddDefinition): New function for adding just one
+define to definitions list.</li>
+</ul>
+</blockquote>
+<p>2012-04-11  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/pnm.c (ReadPNMImage): Completely disable OpenMP in reader
+because there is too much contention.</li>
+<li>magick/pixel_iterator.c: Dereference image to be modified in
+non-threaded context in order to lessen contention.</li>
+<li>magick/semaphore.c (AllocateSemaphoreInfo): Make sure that
+SemaphoreInfo does not share cache lines with another semaphore.</li>
+</ul>
+</blockquote>
+<p>2012-04-11  Glenn Randers-Pehrson  &lt;<a class="reference external" href="mailto:glennrp&#37;&#52;&#48;simplesystems&#46;org">glennrp<span>&#64;</span>simplesystems<span>&#46;</span>org</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/png.c: fixed problem with bit depth when the encoder
+decides to write RGBA instead of indexed PNG, by delaying the
+call to png_set_tRNS() until after calling png_set_IHDR().</li>
+</ul>
+</blockquote>
+<p>2012-03-30  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>png: Update bundled libpng to 1.5.10 release.  Provides security
+fix for CVE-2011-3048.</li>
+<li>wand/magick_compat.c (ParseGeometry): Use strlcpy() rather than
+strncpy().
+(CopyMagickString): Depend on strlcpy() because we provide it if
+it is missing.
+(ConcatenateMagickString): Depend on strlcat().</li>
+<li>coders/xcf.c (ReadXCFImage): Now respects image subimage and
+subrange members so that returned image layers may be selected.
+Based on patch from SourceForge issue 3513025 &quot;XCF reads all
+layers all the time&quot;.</li>
+<li>magick/resize.c (ThumbnailImage): Thumbnail default filter is
+intended to be the box filter, but allow the user to override the
+filter used.  Resolves SourceForge issue 3513239 &quot;-filter command
+line argument ignored&quot;.</li>
+</ul>
+</blockquote>
+<p>2012-03-17  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>magick/command.c (ConvertImageCommand, MogrifyImageCommand):
+Added support for '+noise random' and '-operator noise-random' to
+'convert' and 'mogrify'.</li>
+<li>magick/effect.c (AddNoiseImage): Added support for RandomNoise.
+(AddNoiseImageChannel): Added support for RandomNoise.</li>
+<li>magick/enum_strings.c (StringToNoiseType): New function to
+convert a string to a NoiseType enumeration value.
+(NoiseTypeToString): New function to convert a NoiseType
+enumeration value into a string.</li>
+<li>PerlMagick/Magick.xs: Added support for RandomNoise.</li>
+<li>magick/operator.c (QuantumOperatorRegionImage): Added support for
+RandomNoise.</li>
+<li>magick/effect.c (AddNoiseImageChannel): Added support for
+RandomNoise.</li>
+<li>magick/gem.c (GenerateDifferentialNoise): Added support for
+RandomNoise.</li>
+<li>magick/random.h (MagickRandomRealInlined): The span of
+MagickRandomRealInlined() is now slightly more accurate.</li>
+<li>magick/image.h (enum NoiseType): New enumeration value RandomNoise.</li>
+</ul>
+</blockquote>
+<p>2012-03-04  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>magick/command.c (MogrifyImage): Add support for -repage option
+to composite, convert, mogrify, and montage subcommands.  Resets
+or adjusts the current image page offsets based on a provided
+geometry specification.</li>
+<li>magick/image.c (ResetImagePage): Add a function to adjust the
+current image page canvas and position based on a relative page
+specification.</li>
+</ul>
+</blockquote>
+<p>2012-03-03  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>magick/command.c (MogrifyImage): Add support for -strip option
+to composite, convert, mogrify, and montage subcommands.  Removes
+all profiles and text attributes from the image.</li>
+<li>magick/image.c (StripImage): New function to remove all profiles
+and text attributes from the image.</li>
+</ul>
+</blockquote>
+<p>2012-02-25  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>Release GraphicsMagick 1.3.14.</li>
+<li>NEWS.txt: Updated to describe updates since last release.</li>
+</ul>
+</blockquote>
+<p>2012-02-19  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>Downgrade to Automake 1.11.2 so that test suite can run on
+systems with limited command line length.  This means that lzip
+support is temporarily removed.</li>
+<li>magick/resize.c (ResizeImage): Resize filter argument was being
+ignored.  Filter from image 'filter' member was used instead.
+Problem was reported by Steven Bakhtiari.</li>
+</ul>
+</blockquote>
+<p>2012-02-18  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>tiff: Update bundled libtiff to 4.0.1 release.</li>
+<li>png: Update bundled libpng to 1.5.9 release.</li>
+<li>magick/memory.h: Decorate memory allocation functions with GCC
+attribute 'alloc_size'.</li>
+<li>magick/common.h: Add support for GCC 4.3+ attributes
+'alloc_size', 'hot', 'cold'.</li>
+<li>magick/{log.h,monitor.h,utility.h}: Use double-underscore syntax
+in GCC format attribute specifications to defend against
+accidental macro expansion.</li>
+</ul>
+</blockquote>
+<p>2012-02-09  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/xcf.c (ReadXCFImage): Fix reading XCF which is comprised
+of different sized layers.</li>
+</ul>
+</blockquote>
+<p>2012-02-08  Glenn Randers-Pehrson  &lt;<a class="reference external" href="mailto:glennrp&#37;&#52;&#48;simplesystems&#46;org">glennrp<span>&#64;</span>simplesystems<span>&#46;</span>org</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/txt.c: Added &quot;-define txt:with-im-header&quot; option.</li>
+</ul>
+</blockquote>
+<p>2012-02-05  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>png: Updated to libpng 1.5.8 release</li>
+<li>zlib: Updated to zlib 1.2.6 release</li>
+</ul>
+</blockquote>
+<p>2012-02-04  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>Makefile.am (AUTOMAKE_OPTIONS): Update to Automake 1.11.3.  Add
+lzip compressed archive to options.</li>
+</ul>
+</blockquote>
+<p>2012-01-30  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/dcraw.c (RegisterDCRAWImage): Add support for Mamiya
+Photo RAW &quot;MEF&quot; format.  Resolves SourceForge issue #3481508
+&quot;*.MEF file open incorrect&quot;.</li>
+</ul>
+</blockquote>
+<p>2012-01-29  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/jpeg.c (WriteJPEGImage): Convert RGB-compatible
+colorspaces (e.g. CineonLog) to RGB by default since that was the
+case prior to release 1.3.13.  User can still override it
+(avoiding removal of log encoding) by explicitly specifying the
+desired colorspace.  Problem was reported by Gary Margiotta.</li>
+</ul>
+</blockquote>
+<p>2012-01-21  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/dpx.c (ReadDPXImage): When reading, save input file
+endianness so that the endianness of the original file is
+preserved by default.  The user is able to override this default
+via -endian.  Problem was reported by JongAm Park.</li>
+</ul>
+</blockquote>
+<p>2012-01-19  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>www/OpenMP.rst: Updated OpenMP results based on latest OpenMP
+tunings and the Intel Xeon E5649 CPU.</li>
+</ul>
+</blockquote>
+<p>2012-01-17  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/dcraw.c (ReadDCRAWImage): Fix memory leak of ImageInfo.
+Resolves SourceForge bug #3475148 &quot;memery leaks&quot;.</li>
+<li>magick/module.c (ModuleAliases): EMF format is supported by EMF
+module and so mapping EMF to the WMF module caused EMF not to
+work.  Resolves SourceForge bug #3475147 &quot;emf files can not be
+opened&quot;.  Note that the EMF module only works for Microsoft
+Windows.</li>
+</ul>
+</blockquote>
+<p>2012-01-15  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>magick/gem.c (Hull): Improve performance.</li>
+<li>magick/effect.c (DespeckleImage): Improve performance.</li>
+</ul>
+</blockquote>
+<p>2012-01-12  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>magick/effect.c (DespeckleImage): Using schedule(static,4)
+blocks any opportunity for speedup.  This was a performance
+regression.  Oops!</li>
+</ul>
+</blockquote>
+<p>2012-01-10  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>wand/magick_wand.c (MagickExtentImage): Added
+MagickExtentImage() to Wand API.  Resolves SourceForge issue
+#3471915 &quot;MagickExtentImage in the Wand C API&quot;.</li>
+</ul>
+</blockquote>
+<p>2012-01-08  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>magick/export.c (ExportViewPixelArea): Break up implementation
+into subroutines to ease compilation.</li>
+</ul>
+</blockquote>
+<p>2012-01-03  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>magick/import.c (ImportViewPixelArea): Break up implementation
+into subroutines to ease compilation.</li>
+</ul>
+</blockquote>
+<p>2012-01-01  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>magick/studio.h: Use Magick prefixed macro names for ftruncate,
+mmap, and munmap in order to assure that introducing our macros
+does not cause trouble with system headers.</li>
+</ul>
+</blockquote>
+</div>
+</body>
+</html>

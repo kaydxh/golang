@@ -1,0 +1,1045 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.15.2: http://docutils.sourceforge.net/" />
+<title>pixel_cache</title>
+<link rel="stylesheet" href="../docutils-api.css" type="text/css" />
+</head>
+<body>
+
+<div class="banner">
+<img src="../images/gm-107x76.png" alt="GraphicMagick logo" width="107" height="76" />
+<span class="title">GraphicsMagick</span>
+<form action="http://www.google.com/search">
+	<input type="hidden" name="domains" value="www.graphicsmagick.org" />
+	<input type="hidden" name="sitesearch" value="www.graphicsmagick.org" />
+    <span class="nowrap"><input type="text" name="q" size="25" maxlength="255" />&nbsp;<input type="submit" name="sa" value="Search" /></span>
+</form>
+</div>
+
+<div class="navmenu">
+<ul>
+<li><a href="../index.html">Home</a></li>
+<li><a href="../project.html">Project</a></li>
+<li><a href="../download.html">Download</a></li>
+<li><a href="../README.html">Install</a></li>
+<li><a href="../Hg.html">Source</a></li>
+<li><a href="../NEWS.html">News</a> </li>
+<li><a href="../utilities.html">Utilities</a></li>
+<li><a href="../programming.html">Programming</a></li>
+<li><a href="../reference.html">Reference</a></li>
+</ul>
+</div>
+<div class="document" id="pixel-cache">
+<h1 class="title">pixel_cache</h1>
+<h2 class="subtitle" id="image-pixel-cache-working-pixels">Image pixel cache (working pixels).</h2>
+
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#accesscacheviewpixels" id="id63">AccessCacheViewPixels</a></li>
+<li><a class="reference internal" href="#accessimmutableindexes" id="id64">AccessImmutableIndexes</a></li>
+<li><a class="reference internal" href="#accessmutableindexes" id="id65">AccessMutableIndexes</a></li>
+<li><a class="reference internal" href="#accessmutablepixels" id="id66">AccessMutablePixels</a></li>
+<li><a class="reference internal" href="#acquirecacheviewpixels" id="id67">AcquireCacheViewPixels</a></li>
+<li><a class="reference internal" href="#acquirecacheviewindexes" id="id68">AcquireCacheViewIndexes</a></li>
+<li><a class="reference internal" href="#acquireimagepixels" id="id69">AcquireImagePixels</a></li>
+<li><a class="reference internal" href="#acquireonecacheviewpixel" id="id70">AcquireOneCacheViewPixel</a></li>
+<li><a class="reference internal" href="#acquireonepixel" id="id71">AcquireOnePixel</a></li>
+<li><a class="reference internal" href="#acquireonepixelbyreference" id="id72">AcquireOnePixelByReference</a></li>
+<li><a class="reference internal" href="#checkimagepixellimits" id="id73">CheckImagePixelLimits</a></li>
+<li><a class="reference internal" href="#destroycacheinfo" id="id74">DestroyCacheInfo</a></li>
+<li><a class="reference internal" href="#destroyimagepixels" id="id75">DestroyImagePixels</a></li>
+<li><a class="reference internal" href="#getcacheviewpixels" id="id76">GetCacheViewPixels</a></li>
+<li><a class="reference internal" href="#getcacheviewimage" id="id77">GetCacheViewImage</a></li>
+<li><a class="reference internal" href="#getcacheviewindexes" id="id78">GetCacheViewIndexes</a></li>
+<li><a class="reference internal" href="#getimagepixels" id="id79">GetImagePixels</a></li>
+<li><a class="reference internal" href="#getimagepixelsex" id="id80">GetImagePixelsEx</a></li>
+<li><a class="reference internal" href="#getimagevirtualpixelmethod" id="id81">GetImageVirtualPixelMethod</a></li>
+<li><a class="reference internal" href="#getindexes" id="id82">GetIndexes</a></li>
+<li><a class="reference internal" href="#getonepixel" id="id83">GetOnePixel</a></li>
+<li><a class="reference internal" href="#getpixels" id="id84">GetPixels</a></li>
+<li><a class="reference internal" href="#modifycache" id="id85">ModifyCache</a></li>
+<li><a class="reference internal" href="#opencacheview" id="id86">OpenCacheView</a></li>
+<li><a class="reference internal" href="#referencecache" id="id87">ReferenceCache</a></li>
+<li><a class="reference internal" href="#setcacheviewpixels" id="id88">SetCacheViewPixels</a></li>
+<li><a class="reference internal" href="#setimagepixels" id="id89">SetImagePixels</a></li>
+<li><a class="reference internal" href="#setimagepixelsex" id="id90">SetImagePixelsEx</a></li>
+<li><a class="reference internal" href="#setimagevirtualpixelmethod" id="id91">SetImageVirtualPixelMethod</a></li>
+<li><a class="reference internal" href="#synccacheviewpixels" id="id92">SyncCacheViewPixels</a></li>
+<li><a class="reference internal" href="#syncimagepixels" id="id93">SyncImagePixels</a></li>
+<li><a class="reference internal" href="#syncimagepixelsex" id="id94">SyncImagePixelsEx</a></li>
+</ul>
+</div>
+<div class="section" id="accesscacheviewpixels">
+<h1><a class="toc-backref" href="#id63">AccessCacheViewPixels</a></h1>
+<div class="section" id="synopsis">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#pixelpacket">PixelPacket</a> *AccessCacheViewPixels( const <a class="reference external" href="../api/types.html#viewinfo">ViewInfo</a> *view );
+</pre>
+</div>
+<div class="section" id="description">
+<h2>Description</h2>
+<p>Method AccessCacheViewPixels returns writeable pixels associated with
+the specified view.</p>
+<p>The format of the AccessCacheViewPixels method is:</p>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#pixelpacket">PixelPacket</a> *AccessCacheViewPixels( const <a class="reference external" href="../api/types.html#viewinfo">ViewInfo</a> *view );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>indexes:</dt>
+<dd>Method AccessCacheViewPixels returns the pixels associated with
+the specified view.</dd>
+<dt>view:</dt>
+<dd>The address of a structure of type ViewInfo.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="accessimmutableindexes">
+<h1><a class="toc-backref" href="#id64">AccessImmutableIndexes</a></h1>
+<div class="section" id="id1">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+const IndexPacket *AccessImmutableIndexes( const <a class="reference external" href="../api/types.html#image">Image</a> *image );
+</pre>
+</div>
+<div class="section" id="id2">
+<h2>Description</h2>
+<p>AccessImmutableIndexes() returns the colormap indexes associated with
+the last call to AcquireImagePixels(). NULL is returned if colormap
+indexes are not available.</p>
+<p>The format of the AccessImmutableIndexes() method is:</p>
+<pre class="literal-block">
+const IndexPacket *AccessImmutableIndexes( const <a class="reference external" href="../api/types.html#image">Image</a> *image );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>indexes:</dt>
+<dd>The indexes associated with the last call to
+AcquireImagePixels().</dd>
+<dt>image:</dt>
+<dd>The image.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="accessmutableindexes">
+<h1><a class="toc-backref" href="#id65">AccessMutableIndexes</a></h1>
+<div class="section" id="id3">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+IndexPacket *AccessMutableIndexes( <a class="reference external" href="../api/types.html#image">Image</a> *image );
+</pre>
+</div>
+<div class="section" id="id4">
+<h2>Description</h2>
+<p>AccessMutableIndexes() returns the colormap indexes associated with
+the last call to SetImagePixels() or GetImagePixels(). NULL is returned
+if colormap indexes are not available.</p>
+<p>The format of the AccessMutagleIndexes() method is:</p>
+<pre class="literal-block">
+IndexPacket *AccessMutableIndexes( <a class="reference external" href="../api/types.html#image">Image</a> *image );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>indexes:</dt>
+<dd>The indexes associated with the last call to
+AcquireImagePixels().</dd>
+<dt>image:</dt>
+<dd>The image.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="accessmutablepixels">
+<h1><a class="toc-backref" href="#id66">AccessMutablePixels</a></h1>
+<div class="section" id="id5">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#pixelpacket">PixelPacket</a> *AccessMutablePixels( <a class="reference external" href="../api/types.html#image">Image</a> image );
+</pre>
+</div>
+<div class="section" id="id6">
+<h2>Description</h2>
+<p>AccessMutablePixels() returns the pixels associated with the last call to
+SetImagePixels() or GetImagePixels(). This is useful in order to access
+an already selected region without passing the geometry of the region.</p>
+<p>The format of the GetPixels() method is:</p>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#pixelpacket">PixelPacket</a> *AccessMutablePixels( <a class="reference external" href="../api/types.html#image">Image</a> image );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>pixels:</dt>
+<dd>The pixels associated with the last call to SetImagePixels()
+or GetImagePixels().</dd>
+<dt>image:</dt>
+<dd>The image.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="acquirecacheviewpixels">
+<h1><a class="toc-backref" href="#id67">AcquireCacheViewPixels</a></h1>
+<div class="section" id="id7">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+const <a class="reference external" href="../api/types.html#pixelpacket">PixelPacket</a> *AcquireCacheViewPixels( <a class="reference external" href="../api/types.html#viewinfo">ViewInfo</a> *view, const long x, const long y,
+                                           const unsigned long columns,
+                                           const unsigned long rows,
+                                           <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+</div>
+<div class="section" id="id8">
+<h2>Description</h2>
+<p>Method AcquireCacheViewPixels gets pixels from the in-memory or disk pixel
+cache as defined by the geometry parameters for read-only access.   A
+pointer to the pixels is returned if the pixels are transferred, otherwise
+NULL is returned.</p>
+<p>The format of the AcquireCacheViewPixels method is:</p>
+<pre class="literal-block">
+const <a class="reference external" href="../api/types.html#pixelpacket">PixelPacket</a> *AcquireCacheViewPixels( <a class="reference external" href="../api/types.html#viewinfo">ViewInfo</a> *view, const long x, const long y,
+                                           const unsigned long columns,
+                                           const unsigned long rows,
+                                           <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+<dl class="docutils">
+<dt>pixels:</dt>
+<dd>Method AcquireCacheViewPixels returns a null pointer if an error
+occurs, otherwise a pointer to the view pixels.</dd>
+<dt>view:</dt>
+<dd>The address of a structure of type ViewInfo.</dd>
+<dt>x,y,columns,rows:</dt>
+<dd>These values define the perimeter of a region of
+pixels.</dd>
+<dt>exception:</dt>
+<dd>Return any errors or warnings in this structure.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="acquirecacheviewindexes">
+<h1><a class="toc-backref" href="#id68">AcquireCacheViewIndexes</a></h1>
+<div class="section" id="id9">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+const IndexPacket *AcquireCacheViewIndexes( const <a class="reference external" href="../api/types.html#viewinfo">ViewInfo</a> *view );
+</pre>
+</div>
+<div class="section" id="id10">
+<h2>Description</h2>
+<p>Method AcquireCacheViewIndexes returns read-only indexes associated with
+the specified view.</p>
+<p>The format of the AcquireCacheViewIndexes method is:</p>
+<pre class="literal-block">
+const IndexPacket *AcquireCacheViewIndexes( const <a class="reference external" href="../api/types.html#viewinfo">ViewInfo</a> *view );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>indexes:</dt>
+<dd>Method AcquireCacheViewIndexes returns the indexes
+associated with the specified view.</dd>
+<dt>view:</dt>
+<dd>The address of a structure of type ViewInfo.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="acquireimagepixels">
+<h1><a class="toc-backref" href="#id69">AcquireImagePixels</a></h1>
+<div class="section" id="id11">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+const <a class="reference external" href="../api/types.html#pixelpacket">PixelPacket</a> *AcquireImagePixels( const <a class="reference external" href="../api/types.html#image">Image</a> *image, const long x, const long y,
+                                       const unsigned long columns, const unsigned long rows,
+                                       <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+</div>
+<div class="section" id="id12">
+<h2>Description</h2>
+<p>AcquireImagePixels() obtains a pixel region for read-only access. If the
+region is successfully accessed, a pointer to it is returned, otherwise
+NULL is returned. The returned pointer may point to a temporary working
+copy of the pixels or it may point to the original pixels in memory.
+Performance is maximized if the selected area is part of one row, or one
+or more full rows, since then there is opportunity to access the pixels
+in-place (without a copy) if the image is in RAM, or in a memory-mapped
+file. The returned pointer should <em>never</em> be deallocated by the user.</p>
+<p>Pixels accessed via the returned pointer represent a simple array of type
+PixelPacket. If the image storage class is PsudeoClass, call GetIndexes()
+after invoking GetImagePixels() to obtain the colormap indexes (of type
+IndexPacket) corresponding to the region.</p>
+<p>If you plan to modify the pixels, use GetImagePixels() instead.</p>
+<p>The format of the AcquireImagePixels() method is:</p>
+<pre class="literal-block">
+const <a class="reference external" href="../api/types.html#pixelpacket">PixelPacket</a> *AcquireImagePixels( const <a class="reference external" href="../api/types.html#image">Image</a> *image, const long x, const long y,
+                                       const unsigned long columns, const unsigned long rows,
+                                       <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+<dl class="docutils">
+<dt>status:</dt>
+<dd>AcquireImagePixels() returns a pointer to the pixels if they
+are transferred, otherwise a NULL is returned.</dd>
+<dt>image:</dt>
+<dd>The image.</dd>
+<dt>x,y,columns,rows:</dt>
+<dd>These values define the perimeter of a region of
+pixels.</dd>
+<dt>exception:</dt>
+<dd>Return any errors or warnings in this structure.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="acquireonecacheviewpixel">
+<h1><a class="toc-backref" href="#id70">AcquireOneCacheViewPixel</a></h1>
+<div class="section" id="id13">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+MagickPassFail AcquireOneCacheViewPixel( const <a class="reference external" href="../api/types.html#viewinfo">ViewInfo</a> *view, <a class="reference external" href="../api/types.html#pixelpacket">PixelPacket</a> *pixel,
+                                         const long x, const long y,
+                                         <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+</div>
+<div class="section" id="id14">
+<h2>Description</h2>
+<p>Method AcquireOneCacheViewPixel gets one pixel from the in-memory or disk
+pixel cache as defined by the geometry parameters for read-only access.
+The image background color is returned if there is an error retrieving
+the pixel.</p>
+<p>The format of the AcquireOneCacheViewPixel method is:</p>
+<pre class="literal-block">
+MagickPassFail AcquireOneCacheViewPixel( const <a class="reference external" href="../api/types.html#viewinfo">ViewInfo</a> *view, <a class="reference external" href="../api/types.html#pixelpacket">PixelPacket</a> *pixel,
+                                         const long x, const long y,
+                                         <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+<dl class="docutils">
+<dt>view:</dt>
+<dd>The address of a structure of type ViewInfo.</dd>
+<dt>pixel:</dt>
+<dd>Pointer to PixelPacket to update.</dd>
+<dt>x,y:</dt>
+<dd>Coordinate of pixel to retrieve</dd>
+<dt>exception:</dt>
+<dd>Return any errors or warnings in this structure.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="acquireonepixel">
+<h1><a class="toc-backref" href="#id71">AcquireOnePixel</a></h1>
+<div class="section" id="id15">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#pixelpacket">PixelPacket</a> AcquireOnePixel( const <a class="reference external" href="../api/types.html#image">Image</a> image, const long x, const long y,
+                              <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> exception );
+</pre>
+</div>
+<div class="section" id="id16">
+<h2>Description</h2>
+<p>AcquireOnePixel() returns a single pixel at the specified (x,y) location.
+The image background color is returned if an error occurs.  If errors
+are to be returned to the image, use GetOnePixel() instead. This function
+is convenient but performance will be poor if it is used too often.</p>
+<p>The format of the AcquireOnePixel() method is:</p>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#pixelpacket">PixelPacket</a> AcquireOnePixel( const <a class="reference external" href="../api/types.html#image">Image</a> image, const long x, const long y,
+                              <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> exception );
+</pre>
+<dl class="docutils">
+<dt>pixels:</dt>
+<dd>AcquireOnePixel() returns a pixel at the specified (x,y)
+location.</dd>
+<dt>image:</dt>
+<dd>The image.</dd>
+<dt>x,y:</dt>
+<dd>These values define the location of the pixel to return.</dd>
+<dt>exception:</dt>
+<dd>Return any errors or warnings in this structure.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="acquireonepixelbyreference">
+<h1><a class="toc-backref" href="#id72">AcquireOnePixelByReference</a></h1>
+<div class="section" id="id17">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+MagickPassFail AcquireOnePixelByReference( const <a class="reference external" href="../api/types.html#image">Image</a> *image, <a class="reference external" href="../api/types.html#pixelpacket">PixelPacket</a> *pixel,
+                                           const long x, const long y,
+                                           <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+</div>
+<div class="section" id="id18">
+<h2>Description</h2>
+<p>AcquireOnePixelByReference() returns a single pixel at the specified (x,y)
+location. The image background color is returned if an error occurs. This
+function is convenient but performance will be poor if it is used too
+often.</p>
+<p>The format of the AcquireOnePixelByReference() method is:</p>
+<pre class="literal-block">
+MagickPassFail AcquireOnePixelByReference( const <a class="reference external" href="../api/types.html#image">Image</a> *image, <a class="reference external" href="../api/types.html#pixelpacket">PixelPacket</a> *pixel,
+                                           const long x, const long y,
+                                           <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+<dl class="docutils">
+<dt>pixels:</dt>
+<dd>AcquireOnePixel() returns a pixel at the specified (x,y)
+location.</dd>
+<dt>image:</dt>
+<dd>The image.</dd>
+<dt>pixel:</dt>
+<dd>A reference to the pixel to update.</dd>
+<dt>x,y:</dt>
+<dd>These values define the location of the pixel to return.</dd>
+<dt>exception:</dt>
+<dd>Return any errors or warnings in this structure.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="checkimagepixellimits">
+<h1><a class="toc-backref" href="#id73">CheckImagePixelLimits</a></h1>
+<div class="section" id="id19">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+MagickPassFail CheckImagePixelLimits( const <a class="reference external" href="../api/types.html#image">Image</a> *image, <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+</div>
+<div class="section" id="id20">
+<h2>Description</h2>
+<p>CheckImagePixelLimits() verifies that image dimensions are within current
+limits.  Returns MagickPass if image dimensions are within limits, or
+MagickFail (and updates exception) if dimensions exceed a limit.</p>
+<p>While this function is used within the pixel cache to prevent allocating
+an image which exceeds the limits, it may also be used to validate image
+dimensions obtained from file headers prior to allocating memory or doing
+further processing of the image.  Such additional limits should be after
+any 'ping' mode processing so that the image dimensions can still be
+shown by 'identify'.</p>
+<p>The format of the CheckImagePixelLimits() method is:</p>
+<pre class="literal-block">
+MagickPassFail CheckImagePixelLimits( const <a class="reference external" href="../api/types.html#image">Image</a> *image, <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+<dl class="docutils">
+<dt>image:</dt>
+<dd>Image to verify rows/columns.</dd>
+<dt>exception:</dt>
+<dd>Throw exception into this ExceptionInfo structure.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="destroycacheinfo">
+<h1><a class="toc-backref" href="#id74">DestroyCacheInfo</a></h1>
+<div class="section" id="id21">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+void DestroyCacheInfo( <a class="reference external" href="../api/types.html#cache">Cache</a> cache );
+</pre>
+</div>
+<div class="section" id="id22">
+<h2>Description</h2>
+<p>DestroyCacheInfo() deallocates memory associated with the pixel cache.</p>
+<p>The format of the DestroyCacheInfo() method is:</p>
+<pre class="literal-block">
+void DestroyCacheInfo( <a class="reference external" href="../api/types.html#cache">Cache</a> cache );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>cache:</dt>
+<dd>Specifies a pointer to a Cache structure.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="destroyimagepixels">
+<h1><a class="toc-backref" href="#id75">DestroyImagePixels</a></h1>
+<div class="section" id="id23">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+void DestroyImagePixels( <a class="reference external" href="../api/types.html#image">Image</a> *image );
+</pre>
+</div>
+<div class="section" id="id24">
+<h2>Description</h2>
+<p>DestroyImagePixels() deallocates memory associated with the pixel cache.</p>
+<p>The format of the DestroyImagePixels() method is:</p>
+<pre class="literal-block">
+void DestroyImagePixels( <a class="reference external" href="../api/types.html#image">Image</a> *image );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>image:</dt>
+<dd>The image.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="getcacheviewpixels">
+<h1><a class="toc-backref" href="#id76">GetCacheViewPixels</a></h1>
+<div class="section" id="id25">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#pixelpacket">PixelPacket</a> *GetCacheViewPixels( <a class="reference external" href="../api/types.html#viewinfo">ViewInfo</a> *view, const long x, const long y,
+                                 const unsigned long columns, const unsigned long rows,
+                                 <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+</div>
+<div class="section" id="id26">
+<h2>Description</h2>
+<p>GetCacheViewPixels() gets writeable pixels from the in-memory or disk pixel
+cache as defined by the geometry parameters.   A pointer to the pixels
+is returned if the pixels are transferred, otherwise a NULL is returned.</p>
+<p>The format of the GetCacheViewPixels method is:</p>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#pixelpacket">PixelPacket</a> *GetCacheViewPixels( <a class="reference external" href="../api/types.html#viewinfo">ViewInfo</a> *view, const long x, const long y,
+                                 const unsigned long columns, const unsigned long rows,
+                                 <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+<dl class="docutils">
+<dt>pixels:</dt>
+<dd>Method GetCacheViewPixels returns a null pointer if an error
+occurs, otherwise a pointer to the view pixels.</dd>
+<dt>view:</dt>
+<dd>The address of a structure of type ViewInfo.</dd>
+<dt>x,y,columns,rows:</dt>
+<dd>These values define the perimeter of a region of
+pixels.</dd>
+<dt>exception:</dt>
+<dd>Any errors are reported here.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="getcacheviewimage">
+<h1><a class="toc-backref" href="#id77">GetCacheViewImage</a></h1>
+<div class="section" id="id27">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#image">Image</a> *GetCacheViewImage( const <a class="reference external" href="../api/types.html#viewinfo">ViewInfo</a> *view );
+</pre>
+</div>
+<div class="section" id="id28">
+<h2>Description</h2>
+<p>Method GetCacheViewImage returns the image which allocated the view.</p>
+<p>The format of the GetCacheViewImage method is:</p>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#image">Image</a> *GetCacheViewImage( const <a class="reference external" href="../api/types.html#viewinfo">ViewInfo</a> *view );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>image:</dt>
+<dd>Method GetCacheViewImage returns the image which allocated
+the view.</dd>
+<dt>view:</dt>
+<dd>The address of a structure of type ViewInfo.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="getcacheviewindexes">
+<h1><a class="toc-backref" href="#id78">GetCacheViewIndexes</a></h1>
+<div class="section" id="id29">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+IndexPacket *GetCacheViewIndexes( const <a class="reference external" href="../api/types.html#viewinfo">ViewInfo</a> *view );
+</pre>
+</div>
+<div class="section" id="id30">
+<h2>Description</h2>
+<p>Method GetCacheViewIndexes returns writeable indexes associated with
+the specified view.</p>
+<p>The format of the GetCacheViewIndexes method is:</p>
+<pre class="literal-block">
+IndexPacket *GetCacheViewIndexes( const <a class="reference external" href="../api/types.html#viewinfo">ViewInfo</a> *view );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>indexes:</dt>
+<dd>Method GetCacheViewIndexes returns the indexes associated with
+the specified view.</dd>
+<dt>view:</dt>
+<dd>The address of a structure of type ViewInfo.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="getimagepixels">
+<h1><a class="toc-backref" href="#id79">GetImagePixels</a></h1>
+<div class="section" id="id31">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#pixelpacket">PixelPacket</a> *GetImagePixels( <a class="reference external" href="../api/types.html#image">Image</a> *image, const long x, const long y,
+                             const unsigned long columns, const unsigned long rows );
+</pre>
+</div>
+<div class="section" id="id32">
+<h2>Description</h2>
+<p>GetImagePixels() obtains a pixel region for read/write access. If the
+region is successfully accessed, a pointer to a PixelPacket array
+representing the region is returned, otherwise NULL is returned.</p>
+<p>The returned pointer may point to a temporary working copy of the pixels
+or it may point to the original pixels in memory. Performance is maximized
+if the selected area is part of one row, or one or more full rows, since
+then there is opportunity to access the pixels in-place (without a copy)
+if the image is in RAM, or in a memory-mapped file. The returned pointer
+should <em>never</em> be deallocated by the user.</p>
+<p>Pixels accessed via the returned pointer represent a simple array of type
+PixelPacket. If the image storage class is PsudeoClass, call GetIndexes()
+after invoking GetImagePixels() to obtain the colormap indexes (of type
+IndexPacket) corresponding to the region.  Once the PixelPacket (and/or
+IndexPacket) array has been updated, the changes must be saved back to
+the underlying image using SyncImagePixels() or they may be lost.</p>
+<p>The format of the GetImagePixels() method is:</p>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#pixelpacket">PixelPacket</a> *GetImagePixels( <a class="reference external" href="../api/types.html#image">Image</a> *image, const long x, const long y,
+                             const unsigned long columns, const unsigned long rows );
+</pre>
+<dl class="docutils">
+<dt>status:</dt>
+<dd>GetImagePixels() returns a pointer to the pixels if they are
+transferred, otherwise a NULL is returned.</dd>
+<dt>image:</dt>
+<dd>The image.</dd>
+<dt>x,y,columns,rows:</dt>
+<dd>These values define the perimeter of a region of
+pixels.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="getimagepixelsex">
+<h1><a class="toc-backref" href="#id80">GetImagePixelsEx</a></h1>
+<div class="section" id="id33">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#pixelpacket">PixelPacket</a> *GetImagePixelsEx( <a class="reference external" href="../api/types.html#image">Image</a> *image, const long x, const long y,
+                               const unsigned long columns, const unsigned long rows,
+                               <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+</div>
+<div class="section" id="id34">
+<h2>Description</h2>
+<p>GetImagePixelsEx() obtains a pixel region for read/write access.  It is
+similar to GetImagePixels() except that it reports any error information
+to a user provided exception structure.</p>
+<p>The format of the GetImagePixelsEx() method is:</p>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#pixelpacket">PixelPacket</a> *GetImagePixelsEx( <a class="reference external" href="../api/types.html#image">Image</a> *image, const long x, const long y,
+                               const unsigned long columns, const unsigned long rows,
+                               <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+<dl class="docutils">
+<dt>status:</dt>
+<dd>GetImagePixelsEx() returns a pointer to the pixels if they are
+transferred, otherwise a NULL is returned.</dd>
+<dt>image:</dt>
+<dd>The image.</dd>
+<dt>x,y,columns,rows:</dt>
+<dd>These values define the perimeter of a region of
+pixels.</dd>
+<dt>exception:</dt>
+<dd>Any error details are reported here.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="getimagevirtualpixelmethod">
+<h1><a class="toc-backref" href="#id81">GetImageVirtualPixelMethod</a></h1>
+<div class="section" id="id35">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#virtualpixelmethod">VirtualPixelMethod</a> GetImageVirtualPixelMethod( const <a class="reference external" href="../api/types.html#image">Image</a> *image );
+</pre>
+</div>
+<div class="section" id="id36">
+<h2>Description</h2>
+<p>GetImageVirtualPixelMethod() gets the &quot;virtual pixels&quot; method for the
+image.  A virtual pixel is any pixel access that is outside the boundaries
+of the image cache.</p>
+<p>The format of the GetImageVirtualPixelMethod() method is:</p>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#virtualpixelmethod">VirtualPixelMethod</a> GetImageVirtualPixelMethod( const <a class="reference external" href="../api/types.html#image">Image</a> *image );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>image:</dt>
+<dd>The image.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="getindexes">
+<h1><a class="toc-backref" href="#id82">GetIndexes</a></h1>
+<div class="section" id="id37">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+IndexPacket *GetIndexes( const <a class="reference external" href="../api/types.html#image">Image</a> *image );
+</pre>
+</div>
+<div class="section" id="id38">
+<h2>Description</h2>
+<p>GetIndexes() returns the colormap indexes associated with the last call to
+SetImagePixels() or GetImagePixels(). NULL is returned if colormap indexes
+are not available.</p>
+<p>The format of the GetIndexes() method is:</p>
+<pre class="literal-block">
+IndexPacket *GetIndexes( const <a class="reference external" href="../api/types.html#image">Image</a> *image );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>indexes:</dt>
+<dd>GetIndexes() returns the indexes associated with the last
+call to SetImagePixels() or GetImagePixels().</dd>
+<dt>image:</dt>
+<dd>The image.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="getonepixel">
+<h1><a class="toc-backref" href="#id83">GetOnePixel</a></h1>
+<div class="section" id="id39">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#pixelpacket">PixelPacket</a> GetOnePixel( const <a class="reference external" href="../api/types.html#image">Image</a> image, const long x, const long y );
+</pre>
+</div>
+<div class="section" id="id40">
+<h2>Description</h2>
+<p>GetOnePixel() returns a single pixel at the specified (x,y) location.
+The image background color is returned if an error occurs.  This function
+is convenient but performance will be poor if it is used too often.
+GetOnePixel() is identical to AcquireOnePixel() except that exceptions
+are implicitly delivered to the image.</p>
+<p>The format of the GetOnePixel() method is:</p>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#pixelpacket">PixelPacket</a> GetOnePixel( const <a class="reference external" href="../api/types.html#image">Image</a> image, const long x, const long y );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>image:</dt>
+<dd>The image.</dd>
+<dt>x,y:</dt>
+<dd>These values define the location of the pixel to return.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="getpixels">
+<h1><a class="toc-backref" href="#id84">GetPixels</a></h1>
+<div class="section" id="id41">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#pixelpacket">PixelPacket</a> *GetPixels( const <a class="reference external" href="../api/types.html#image">Image</a> image );
+</pre>
+</div>
+<div class="section" id="id42">
+<h2>Description</h2>
+<p>GetPixels() returns the pixels associated with the last call to
+SetImagePixels() or GetImagePixels(). This is useful in order to access
+an already selected region without passing the geometry of the region.</p>
+<p>The format of the GetPixels() method is:</p>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#pixelpacket">PixelPacket</a> *GetPixels( const <a class="reference external" href="../api/types.html#image">Image</a> image );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>pixels:</dt>
+<dd>GetPixels() returns the pixels associated with the last call
+to SetImagePixels() or GetImagePixels().</dd>
+<dt>image:</dt>
+<dd>The image.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="modifycache">
+<h1><a class="toc-backref" href="#id85">ModifyCache</a></h1>
+<div class="section" id="id43">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+MagickPassFail ModifyCache( <a class="reference external" href="../api/types.html#image">Image</a> *image, <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+</div>
+<div class="section" id="id44">
+<h2>Description</h2>
+<p>ModifyCache() ensures that there is only a single reference to the pixel
+cache to be modified, updating the provided cache pointer to point to
+a clone of the original pixel cache if necessary.  This is used to
+implement copy on write.</p>
+<p>The format of the ModifyCache method is:</p>
+<pre class="literal-block">
+MagickPassFail ModifyCache( <a class="reference external" href="../api/types.html#image">Image</a> *image, <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>image:</dt>
+<dd>The image.</dd>
+<dt>exception:</dt>
+<dd>Errors are reported here.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="opencacheview">
+<h1><a class="toc-backref" href="#id86">OpenCacheView</a></h1>
+<div class="section" id="id45">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#viewinfo">ViewInfo</a> *OpenCacheView( <a class="reference external" href="../api/types.html#image">Image</a> *image );
+</pre>
+</div>
+<div class="section" id="id46">
+<h2>Description</h2>
+<p>OpenCacheView() opens a view into the pixel cache.</p>
+<p>The format of the OpenCacheView method is:</p>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#viewinfo">ViewInfo</a> *OpenCacheView( <a class="reference external" href="../api/types.html#image">Image</a> *image );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>image:</dt>
+<dd>The image.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="referencecache">
+<h1><a class="toc-backref" href="#id87">ReferenceCache</a></h1>
+<div class="section" id="id47">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#cache">Cache</a> ReferenceCache( <a class="reference external" href="../api/types.html#cache">Cache</a> cache_info );
+</pre>
+</div>
+<div class="section" id="id48">
+<h2>Description</h2>
+<p>ReferenceCache() increments the reference count associated with the pixel
+cache returning a pointer to the cache.</p>
+<p>The format of the ReferenceCache method is:</p>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#cache">Cache</a> ReferenceCache( <a class="reference external" href="../api/types.html#cache">Cache</a> cache_info );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>cache_info:</dt>
+<dd>The cache_info.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="setcacheviewpixels">
+<h1><a class="toc-backref" href="#id88">SetCacheViewPixels</a></h1>
+<div class="section" id="id49">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#pixelpacket">PixelPacket</a> *SetCacheViewPixels( <a class="reference external" href="../api/types.html#viewinfo">ViewInfo</a> *view, const long x, const long y,
+                                 const unsigned long columns, const unsigned long rows );
+</pre>
+</div>
+<div class="section" id="id50">
+<h2>Description</h2>
+<p>SetCacheViewPixels() gets pixels from the in-memory or disk pixel cache as
+defined by the geometry parameters.   A pointer to the pixels is returned
+if the pixels are transferred, otherwise a NULL is returned.</p>
+<p>The format of the SetCacheViewPixels method is:</p>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#pixelpacket">PixelPacket</a> *SetCacheViewPixels( <a class="reference external" href="../api/types.html#viewinfo">ViewInfo</a> *view, const long x, const long y,
+                                 const unsigned long columns, const unsigned long rows );
+</pre>
+<dl class="docutils">
+<dt>view:</dt>
+<dd>The address of a structure of type ViewInfo.</dd>
+<dt>x,y,columns,rows:</dt>
+<dd>These values define the perimeter of a region of
+pixels.</dd>
+<dt>exception:</dt>
+<dd>Any errors are reported here.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="setimagepixels">
+<h1><a class="toc-backref" href="#id89">SetImagePixels</a></h1>
+<div class="section" id="id51">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#pixelpacket">PixelPacket</a> *SetImagePixels( <a class="reference external" href="../api/types.html#image">Image</a> *image, const long x, const long y,
+                             const unsigned long columns, const unsigned long rows );
+</pre>
+</div>
+<div class="section" id="id52">
+<h2>Description</h2>
+<p>SetImagePixels() initializes a pixel region for write-only access.
+If the region is successfully intialized a pointer to a PixelPacket
+array representing the region is returned, otherwise NULL is returned.
+The returned pointer may point to a temporary working buffer for the
+pixels or it may point to the final location of the pixels in memory.</p>
+<p>Write-only access means that any existing pixel values corresponding to
+the region are ignored.  This is useful while the initial image is being
+created from scratch, or if the existing pixel values are to be
+completely replaced without need to refer to their pre-existing values.
+The application is free to read and write the pixel buffer returned by
+SetImagePixels() any way it pleases. SetImagePixels() does not initialize
+the pixel array values. Initializing pixel array values is the
+application's responsibility.</p>
+<p>Performance is maximized if the selected area is part of one row, or
+one or more full rows, since then there is opportunity to access the
+pixels in-place (without a copy) if the image is in RAM, or in a
+memory-mapped file. The returned pointer should <em>never</em> be deallocated
+by the user.</p>
+<p>Pixels accessed via the returned pointer represent a simple array of type
+PixelPacket. If the image storage class is PsudeoClass, call GetIndexes()
+after invoking GetImagePixels() to obtain the colormap indexes (of type
+IndexPacket) corresponding to the region.  Once the PixelPacket (and/or
+IndexPacket) array has been updated, the changes must be saved back to
+the underlying image using SyncCacheNexus() or they may be lost.</p>
+<p>The format of the SetImagePixels() method is:</p>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#pixelpacket">PixelPacket</a> *SetImagePixels( <a class="reference external" href="../api/types.html#image">Image</a> *image, const long x, const long y,
+                             const unsigned long columns, const unsigned long rows );
+</pre>
+<dl class="docutils">
+<dt>pixels:</dt>
+<dd>SetImagePixels returns a pointer to the pixels if they are
+transferred, otherwise a NULL is returned.</dd>
+<dt>image:</dt>
+<dd>The image.</dd>
+<dt>x,y,columns,rows:</dt>
+<dd>These values define the perimeter of a region of
+pixels.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="setimagepixelsex">
+<h1><a class="toc-backref" href="#id90">SetImagePixelsEx</a></h1>
+<div class="section" id="id53">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#pixelpacket">PixelPacket</a> *SetImagePixelsEx( <a class="reference external" href="../api/types.html#image">Image</a> *image, const long x, const long y,
+                               const unsigned long columns, const unsigned long rows,
+                               <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+</div>
+<div class="section" id="id54">
+<h2>Description</h2>
+<p>SetImagePixelsEx() initializes a pixel region for write-only access.
+It is similar to SetImagePixels() except that any exception information
+is written to a user provided exception structure.</p>
+<p>The format of the SetImagePixelsEx() method is:</p>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#pixelpacket">PixelPacket</a> *SetImagePixelsEx( <a class="reference external" href="../api/types.html#image">Image</a> *image, const long x, const long y,
+                               const unsigned long columns, const unsigned long rows,
+                               <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+<dl class="docutils">
+<dt>pixels:</dt>
+<dd>SetImagePixelsEx returns a pointer to the pixels if they are
+transferred, otherwise a NULL is returned.</dd>
+<dt>image:</dt>
+<dd>The image.</dd>
+<dt>x,y,columns,rows:</dt>
+<dd>These values define the perimeter of a region of
+pixels.</dd>
+<dt>exception:</dt>
+<dd>Any error details are reported here.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="setimagevirtualpixelmethod">
+<h1><a class="toc-backref" href="#id91">SetImageVirtualPixelMethod</a></h1>
+<div class="section" id="id55">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+SetImageVirtualPixelMethod( const <a class="reference external" href="../api/types.html#image">Image</a> *image, const <a class="reference external" href="../api/types.html#virtualpixelmethod">VirtualPixelMethod</a> method );
+</pre>
+</div>
+<div class="section" id="id56">
+<h2>Description</h2>
+<p>SetImageVirtualPixelMethod() sets the &quot;virtual pixels&quot; method for the
+image.  A virtual pixel is any pixel access that is outside the boundaries
+of the image cache.</p>
+<p>The format of the SetImageVirtualPixelMethod() method is:</p>
+<pre class="literal-block">
+SetImageVirtualPixelMethod( const <a class="reference external" href="../api/types.html#image">Image</a> *image, const <a class="reference external" href="../api/types.html#virtualpixelmethod">VirtualPixelMethod</a> method );
+</pre>
+<dl class="docutils">
+<dt>image:</dt>
+<dd>The image.</dd>
+<dt>type:</dt>
+<dd>choose from these access types:</dd>
+</dl>
+<p>EdgeVPType:  the edge pixels of the image extend infinitely.
+Any pixel outside the image is assigned the same value as the
+pixel at the edge closest to it.</p>
+<p>TileVPType:  the image extends periodically or tiled.  The pixels
+wrap around the edges of the image.</p>
+<p>MirrorVPType:  mirror the image at the boundaries.</p>
+<p>ConstantVPType:  every value outside the image is a constant as
+defines by the pixel parameter.</p>
+</div>
+</div>
+<div class="section" id="synccacheviewpixels">
+<h1><a class="toc-backref" href="#id92">SyncCacheViewPixels</a></h1>
+<div class="section" id="id57">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+MagickPassFail SyncCacheViewPixels( const <a class="reference external" href="../api/types.html#viewinfo">ViewInfo</a> *view, <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+</div>
+<div class="section" id="id58">
+<h2>Description</h2>
+<p>SyncCacheViewPixels() saves the view pixels to the in-memory or disk cache.
+The method returns MagickPass if the pixel region is synced, otherwise
+MagickFail.</p>
+<p>The format of the SyncCacheViewPixels method is:</p>
+<pre class="literal-block">
+MagickPassFail SyncCacheViewPixels( const <a class="reference external" href="../api/types.html#viewinfo">ViewInfo</a> *view, <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+<dl class="docutils">
+<dt>view:</dt>
+<dd>The address of a structure of type ViewInfo.</dd>
+<dt>exception:</dt>
+<dd>Any errors are reported here.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="syncimagepixels">
+<h1><a class="toc-backref" href="#id93">SyncImagePixels</a></h1>
+<div class="section" id="id59">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+MagickPassFail SyncImagePixels( <a class="reference external" href="../api/types.html#image">Image</a> *image );
+</pre>
+</div>
+<div class="section" id="id60">
+<h2>Description</h2>
+<p>SyncImagePixels() saves the image pixels to the in-memory or disk cache.
+The method returns MagickPass if the pixel region is synced, otherwise MagickFail.</p>
+<p>The format of the SyncImagePixels() method is:</p>
+<pre class="literal-block">
+MagickPassFail SyncImagePixels( <a class="reference external" href="../api/types.html#image">Image</a> *image );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>status:</dt>
+<dd>SyncImagePixels() returns MagickPass if the image pixels are
+transferred to the in-memory or disk cache otherwise MagickFail.</dd>
+<dt>image:</dt>
+<dd>The image.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="syncimagepixelsex">
+<h1><a class="toc-backref" href="#id94">SyncImagePixelsEx</a></h1>
+<div class="section" id="id61">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+MagickPassFail SyncImagePixelsEx( <a class="reference external" href="../api/types.html#image">Image</a> *image, <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+</div>
+<div class="section" id="id62">
+<h2>Description</h2>
+<p>SyncImagePixelsEx() saves the image pixels to the in-memory or disk cache.
+The method returns MagickPass if the pixel region is synced, otherwise
+MagickFail.</p>
+<p>The format of the SyncImagePixelsEx() method is:</p>
+<pre class="literal-block">
+MagickPassFail SyncImagePixelsEx( <a class="reference external" href="../api/types.html#image">Image</a> *image, <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>status:</dt>
+<dd>SyncImagePixelsEx() returns MagickPass if the image pixels are
+transferred to the in-memory or disk cache otherwise MagickFail.</dd>
+<dt>image:</dt>
+<dd>The image.</dd>
+<dt>exception:</dt>
+<dd>Any error details are reported here.</dd>
+</dl>
+</div>
+</div>
+</div>
+</body>
+</html>

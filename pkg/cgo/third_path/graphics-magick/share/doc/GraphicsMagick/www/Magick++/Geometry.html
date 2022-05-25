@@ -1,0 +1,427 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.15.2: http://docutils.sourceforge.net/" />
+<title>Magick::Geometry</title>
+<link rel="stylesheet" href="../docutils-articles.css" type="text/css" />
+</head>
+<body>
+
+<div class="banner">
+<img src="../images/gm-107x76.png" alt="GraphicMagick logo" width="107" height="76" />
+<span class="title">GraphicsMagick</span>
+<form action="http://www.google.com/search">
+	<input type="hidden" name="domains" value="www.graphicsmagick.org" />
+	<input type="hidden" name="sitesearch" value="www.graphicsmagick.org" />
+    <span class="nowrap"><input type="text" name="q" size="25" maxlength="255" />&nbsp;<input type="submit" name="sa" value="Search" /></span>
+</form>
+</div>
+
+<div class="navmenu">
+<ul>
+<li><a href="../index.html">Home</a></li>
+<li><a href="../project.html">Project</a></li>
+<li><a href="../download.html">Download</a></li>
+<li><a href="../README.html">Install</a></li>
+<li><a href="../Hg.html">Source</a></li>
+<li><a href="../NEWS.html">News</a> </li>
+<li><a href="../utilities.html">Utilities</a></li>
+<li><a href="../programming.html">Programming</a></li>
+<li><a href="../reference.html">Reference</a></li>
+</ul>
+</div>
+<div class="document" id="magick-geometry">
+<h1 class="title">Magick::Geometry</h1>
+
+<!-- -*- mode: rst -*- -->
+<!-- This text is in reStucturedText format, so it may look a bit odd. -->
+<!-- See http://docutils.sourceforge.net/rst.html for details. -->
+<p>Geometry provides a convenient means to specify a geometry
+argument. The object may be initialized from a C string or C++ string
+containing a geometry specification. It may also be initialized by
+more efficient parameterized constructors.</p>
+<div class="section" id="x11-geometry-specifications">
+<h1>X11 Geometry Specifications</h1>
+<p>X11 geometry specifications are in the form
+&quot;&lt;width&gt;x&lt;height&gt;{+-}&lt;xoffset&gt;{+-}&lt;yoffset&gt;&quot; (where width, height,
+xoffset, and yoffset are numbers) for specifying the size and
+placement location for an object.</p>
+<p>The width and height parts of the geometry specification are measured
+in pixels. The xoffset and yoffset parts are also measured in pixels
+and are used to specify the distance of the placement coordinate from
+the left and top and edges of the image, respectively. Both types of
+offsets are measured from the indicated edge of the object to the
+corresponding edge of the image. The X offset may be specified in the
+following ways:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="87%" />
+</colgroup>
+<tbody valign="top">
+<tr><td>+xoffset</td>
+<td>The left edge of the object is to be placed xoffset
+pixels in from the left edge of the image.</td>
+</tr>
+<tr><td>-xoffset</td>
+<td>The left edge of the object is to be placed outside the
+image, xoffset pixels out from the left edge of the image.</td>
+</tr>
+</tbody>
+</table>
+<p>The Y offset has similar meanings:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="14%" />
+<col width="86%" />
+</colgroup>
+<tbody valign="top">
+<tr><td>+yoffset</td>
+<td>The top edge of the object is to be yoffset pixels below
+the top edge of the image.</td>
+</tr>
+<tr><td>-yoffset</td>
+<td>The top edge of the object is to be yoffset pixels above
+the top edge of the image.</td>
+</tr>
+</tbody>
+</table>
+<p>Offsets must be given as pairs; in other words, in order to specify
+either xoffset or yoffset both must be present.</p>
+</div>
+<div class="section" id="graphicsmagick-extensions-to-x11-geometry-specifications">
+<h1>GraphicsMagick Extensions To X11 Geometry Specifications</h1>
+<p>GraphicsMagick has added a number of qualifiers to the standard
+geometry string for use when resizing images. The form of an extended
+geometry string is
+&quot;&lt;width&gt;x&lt;height&gt;{+-}&lt;xoffset&gt;{+-}&lt;yoffset&gt;{%}{&#64;}{!}{^}{&lt;}{&gt;}&quot;. Extended
+geometry strings should only be used when resizing an image. Using an
+extended geometry string for other applications may cause the API call
+to fail. The available qualifiers are shown in the following table:</p>
+<table border="1" class="docutils">
+<caption>GraphicsMagick Geometry Qualifiers</caption>
+<colgroup>
+<col width="12%" />
+<col width="88%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Qualifier</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>%</td>
+<td>Interpret width and height as a percentage of the current size.</td>
+</tr>
+<tr><td>!</td>
+<td>Resize to width and height exactly, loosing original aspect ratio.</td>
+</tr>
+<tr><td>&lt;</td>
+<td>Resize only if the image is smaller than the geometry specification.</td>
+</tr>
+<tr><td>&gt;</td>
+<td>Resize only if the image is greater than the geometry specification.</td>
+</tr>
+<tr><td>&#64;</td>
+<td>Resize such that width and height are a maximum area in total pixels.</td>
+</tr>
+<tr><td>^</td>
+<td>Dimensions are treated as minimum rather than maximum values.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="postscript-page-size-extension-to-geometry-specifications">
+<h1>Postscript Page Size Extension To Geometry Specifications</h1>
+<p>Any geometry string specification supplied to the Geometry constructor
+is considered to be a Postscript page size nickname if the first
+character is not numeric. The page size nickname is not case
+sensitive. The Geometry constructor converts these page size
+specifications into the equivalent numeric geometry string
+specification (preserving any offset component) prior to conversion to
+the internal object format. Postscript page size specifications are
+short-hand for the pixel geometry required to fill a page of that
+size. Since the 11x17 inch page size used in the US starts with a
+digit, it is not supported as a Postscript page size
+nickname. Instead, substitute the geometry specification &quot;792x1224&gt;&quot;
+when 11x17 output is desired.</p>
+<table border="1" class="docutils">
+<caption>Postscript Page Size Nicknames</caption>
+<colgroup>
+<col width="32%" />
+<col width="68%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Postscript Nickname</th>
+<th class="head">Equivalent Extended Geometry Specification</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>A0</td>
+<td>2384x3370&gt;</td>
+</tr>
+<tr><td>A1</td>
+<td>1684x2384&gt;</td>
+</tr>
+<tr><td>A10</td>
+<td>73x105&gt;</td>
+</tr>
+<tr><td>A2</td>
+<td>1191x1684&gt;</td>
+</tr>
+<tr><td>A3</td>
+<td>842x1191&gt;</td>
+</tr>
+<tr><td>A4</td>
+<td>595x842&gt;</td>
+</tr>
+<tr><td>A4SMALL</td>
+<td>595x842&gt;</td>
+</tr>
+<tr><td>A5</td>
+<td>420x595&gt;</td>
+</tr>
+<tr><td>A6</td>
+<td>297x420&gt;</td>
+</tr>
+<tr><td>A7</td>
+<td>210x297&gt;</td>
+</tr>
+<tr><td>A8</td>
+<td>148x210&gt;</td>
+</tr>
+<tr><td>A9</td>
+<td>105x148&gt;</td>
+</tr>
+<tr><td>ARCHA</td>
+<td>648x864&gt;</td>
+</tr>
+<tr><td>ARCHB</td>
+<td>864x1296&gt;</td>
+</tr>
+<tr><td>ARCHC</td>
+<td>1296x1728&gt;</td>
+</tr>
+<tr><td>ARCHD</td>
+<td>1728x2592&gt;</td>
+</tr>
+<tr><td>ARCHE</td>
+<td>2592x3456&gt;</td>
+</tr>
+<tr><td>B0</td>
+<td>2920x4127&gt;</td>
+</tr>
+<tr><td>B1</td>
+<td>2064x2920&gt;</td>
+</tr>
+<tr><td>B10</td>
+<td>91x127&gt;</td>
+</tr>
+<tr><td>B2</td>
+<td>1460x2064&gt;</td>
+</tr>
+<tr><td>B3</td>
+<td>1032x1460&gt;</td>
+</tr>
+<tr><td>B4</td>
+<td>729x1032&gt;</td>
+</tr>
+<tr><td>B5</td>
+<td>516x729&gt;</td>
+</tr>
+<tr><td>B6</td>
+<td>363x516&gt;</td>
+</tr>
+<tr><td>B7</td>
+<td>258x363&gt;</td>
+</tr>
+<tr><td>B8</td>
+<td>181x258&gt;</td>
+</tr>
+<tr><td>B9</td>
+<td>127x181&gt;</td>
+</tr>
+<tr><td>C0</td>
+<td>2599x3676&gt;</td>
+</tr>
+<tr><td>C1</td>
+<td>1837x2599&gt;</td>
+</tr>
+<tr><td>C2</td>
+<td>1298x1837&gt;</td>
+</tr>
+<tr><td>C3</td>
+<td>918x1296&gt;</td>
+</tr>
+<tr><td>C4</td>
+<td>649x918&gt;</td>
+</tr>
+<tr><td>C5</td>
+<td>459x649&gt;</td>
+</tr>
+<tr><td>C6</td>
+<td>323x459&gt;</td>
+</tr>
+<tr><td>C7</td>
+<td>230x323&gt;</td>
+</tr>
+<tr><td>EXECUTIVE</td>
+<td>540x720&gt;</td>
+</tr>
+<tr><td>FLSA</td>
+<td>612x936&gt;</td>
+</tr>
+<tr><td>FLSE</td>
+<td>612x936&gt;</td>
+</tr>
+<tr><td>FOLIO</td>
+<td>612x936&gt;</td>
+</tr>
+<tr><td>HALFLETTER</td>
+<td>396x612&gt;</td>
+</tr>
+<tr><td>ISOB0</td>
+<td>2835x4008&gt;</td>
+</tr>
+<tr><td>ISOB1</td>
+<td>2004x2835&gt;</td>
+</tr>
+<tr><td>ISOB10</td>
+<td>88x125&gt;</td>
+</tr>
+<tr><td>ISOB2</td>
+<td>1417x2004&gt;</td>
+</tr>
+<tr><td>ISOB3</td>
+<td>1001x1417&gt;</td>
+</tr>
+<tr><td>ISOB4</td>
+<td>709x1001&gt;</td>
+</tr>
+<tr><td>ISOB5</td>
+<td>499x709&gt;</td>
+</tr>
+<tr><td>ISOB6</td>
+<td>354x499&gt;</td>
+</tr>
+<tr><td>ISOB7</td>
+<td>249x354&gt;</td>
+</tr>
+<tr><td>ISOB8</td>
+<td>176x249&gt;</td>
+</tr>
+<tr><td>ISOB9</td>
+<td>125x176&gt;</td>
+</tr>
+<tr><td>LEDGER</td>
+<td>1224x792&gt;</td>
+</tr>
+<tr><td>LEGAL</td>
+<td>612x1008&gt;</td>
+</tr>
+<tr><td>LETTER</td>
+<td>612x792&gt;</td>
+</tr>
+<tr><td>LETTERSMALL</td>
+<td>612x792&gt;</td>
+</tr>
+<tr><td>QUARTO</td>
+<td>610x780&gt;</td>
+</tr>
+<tr><td>STATEMENT</td>
+<td>396x612&gt;</td>
+</tr>
+<tr><td>TABLOID</td>
+<td>792x1224&gt;</td>
+</tr>
+</tbody>
+</table>
+<p>The following is the definition of the Magick::Geometry class:</p>
+<pre class="literal-block">
+class Geometry
+{
+public:
+
+  Geometry ( unsigned int width_,
+             unsigned int height_,
+             unsigned int xOff_ = 0,
+             unsigned int yOff_ = 0,
+             bool xNegative_ = false,
+             bool yNegative_ = false );
+  Geometry ( const std::string &amp;geometry_ );
+  Geometry ( const char * geometry_ );
+  Geometry ( const Geometry &amp;geometry_ );
+  Geometry ( );
+  ~Geometry ( void );
+
+  // Width
+  void          width ( unsigned int width_ );
+  unsigned int  width ( void ) const;
+
+  // Height
+  void          height ( unsigned int height_ );
+  unsigned int  height ( void ) const;
+
+  // X offset from origin
+  void          xOff ( unsigned int xOff_ );
+  unsigned int  xOff ( void ) const;
+
+  // Y offset from origin
+  void          yOff ( unsigned int yOff_ );
+  unsigned int  yOff ( void ) const;
+
+  // Sign of X offset negative? (X origin at right)
+  void          xNegative ( bool xNegative_ );
+  bool          xNegative ( void ) const;
+
+  // Sign of Y offset negative? (Y origin at bottom)
+  void          yNegative ( bool yNegative_ );
+  bool          yNegative ( void ) const;
+
+  // Width and height are expressed as percentages
+  void          percent ( bool percent_ );
+  bool          percent ( void ) const;
+
+  // Resize without preserving aspect ratio (!)
+  void          aspect ( bool aspect_ );
+  bool          aspect ( void ) const;
+
+  // Resize if image is greater than size (&gt;)
+  void          greater ( bool greater_ );
+  bool          greater ( void ) const;
+
+  // Resize if image is less than size (&lt;)
+  void          less ( bool less_ );
+  bool          less ( void ) const;
+
+  // Resize image to fit total pixel area specified by dimensions (&#64;).
+  void          limitPixels ( bool limitPixels_ );
+  bool          limitPixels ( void ) const;
+
+  // Dimensions are treated as minimum rather than maximum values (^)
+  void          fillArea ( bool fillArea_ );
+  bool          fillArea ( void ) const;
+
+  // Does object contain valid geometry?
+  void          isValid ( bool isValid_ );
+  bool          isValid ( void ) const;
+
+  // Set via geometry string
+  const Geometry&amp; operator = ( const std::string &amp;geometry_ );
+  const Geometry&amp; operator = ( const char * geometry_ );
+
+  // Assignment operator
+  Geometry&amp; operator= ( const Geometry&amp; Geometry_ );
+
+  // Return geometry string
+  operator std::string() const;
+
+};
+</pre>
+<p>Copyright © Bob Friesenhahn 1999 - 2020</p>
+</div>
+</div>
+</body>
+</html>

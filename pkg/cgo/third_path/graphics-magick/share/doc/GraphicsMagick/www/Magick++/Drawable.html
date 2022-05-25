@@ -1,0 +1,1127 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.15.2: http://docutils.sourceforge.net/" />
+<title>Magick::Drawable</title>
+<link rel="stylesheet" href="../docutils-articles.css" type="text/css" />
+</head>
+<body>
+
+<div class="banner">
+<img src="../images/gm-107x76.png" alt="GraphicMagick logo" width="107" height="76" />
+<span class="title">GraphicsMagick</span>
+<form action="http://www.google.com/search">
+	<input type="hidden" name="domains" value="www.graphicsmagick.org" />
+	<input type="hidden" name="sitesearch" value="www.graphicsmagick.org" />
+    <span class="nowrap"><input type="text" name="q" size="25" maxlength="255" />&nbsp;<input type="submit" name="sa" value="Search" /></span>
+</form>
+</div>
+
+<div class="navmenu">
+<ul>
+<li><a href="../index.html">Home</a></li>
+<li><a href="../project.html">Project</a></li>
+<li><a href="../download.html">Download</a></li>
+<li><a href="../README.html">Install</a></li>
+<li><a href="../Hg.html">Source</a></li>
+<li><a href="../NEWS.html">News</a> </li>
+<li><a href="../utilities.html">Utilities</a></li>
+<li><a href="../programming.html">Programming</a></li>
+<li><a href="../reference.html">Reference</a></li>
+</ul>
+</div>
+<div class="document" id="magick-drawable">
+<h1 class="title">Magick::Drawable</h1>
+
+<!-- -*- mode: rst -*- -->
+<!-- This text is in reStucturedText format, so it may look a bit odd. -->
+<!-- See http://docutils.sourceforge.net/rst.html for details. -->
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#coordinate-structure" id="id8">Coordinate structure</a></li>
+<li><a class="reference internal" href="#drawable-classes" id="id9">Drawable classes</a></li>
+<li><a class="reference internal" href="#vector-path-classes" id="id10">Vector Path Classes</a></li>
+</ul>
+</div>
+<p>Drawable provides a convenient interface for preparing vector, image,
+or text arguments for the Image::draw() method. Each instance of a
+Drawable sub-class represents a single drawable object. Drawable
+objects may be drawn &quot;one-by-one&quot; via multiple invocations of the
+Image <a class="reference external" href="Image.html#draw">draw()</a> method, or may be drawn
+&quot;all-at-once&quot; by passing a list of Drawable objects to the Image
+<a class="reference external" href="Image.html#draw">draw()</a> method. The one-by-one approach is
+convenient for simple drawings, while the list-based approach is
+appropriate for drawings which require more sophistication.</p>
+<p>The following is an example using the Drawable subclasses with a
+one-by-one approach to draw the following figure:</p>
+<img alt="Figure showing drawing example" src="Drawable_example_1.png" style="width: 300px; height: 200px;" />
+<pre class="literal-block">
+#include &lt;string&gt;
+#include &lt;iostream&gt;
+#include &lt;Magick++.h&gt;
+
+using namespace std;
+using namespace Magick;
+
+int main(int /*argc*/,char **argv)
+{
+  try {
+    InitializeMagick(*argv);
+
+    // Create base image (white image of 300 by 200 pixels)
+    Image image( Geometry(300,200), Color(&quot;white&quot;) );
+
+    // Set draw options
+    image.strokeColor(&quot;red&quot;); // Outline color
+    image.fillColor(&quot;green&quot;); // Fill color
+    image.strokeWidth(5);
+
+    // Draw a circle
+    image.draw( DrawableCircle(100,100, 50,100) );
+
+    // Draw a rectangle
+    image.draw( DrawableRectangle(200,200, 270,170) );
+
+    // Display the result
+    image.display( );
+  }
+  catch( exception &amp;error_ )
+    {
+      cout &lt;&lt; &quot;Caught exception: &quot; &lt;&lt; error_.what() &lt;&lt; endl;
+      return 1;
+    }
+
+  return 0;
+}
+</pre>
+<p>Since Drawable is an object it may be saved in an array or a list for
+later (perhaps repeated) use. The following example shows how to draw
+the same figure using the list-based approach:</p>
+<pre class="literal-block">
+#include &lt;string&gt;
+#include &lt;iostream&gt;
+#include &lt;list&gt;
+#include &lt;Magick++.h&gt;
+
+using namespace std;
+using namespace Magick;
+
+int main(int /*argc*/,char **/*argv*/)
+{
+  try {
+
+    InitializeMagick(*argv);
+
+    // Create base image (white image of 300 by 200 pixels)
+    Image image( Geometry(300,200), Color(&quot;white&quot;) );
+
+    // Construct drawing list
+    std::list&lt;Magick::Drawable&gt; drawList;
+
+    // Add some drawing options to drawing list
+    drawList.push_back(DrawableStrokeColor(&quot;red&quot;)); // Outline color
+    drawList.push_back(DrawableStrokeWidth(5)); // Stroke width
+    drawList.push_back(DrawableFillColor(&quot;green&quot;)); // Fill color
+
+    // Add a Circle to drawing list
+    drawList.push_back(DrawableCircle(100,100, 50,100));
+
+    // Add a Rectangle to drawing list
+    drawList.push_back(DrawableRectangle(200,100, 270,170));
+
+    // Draw everything using completed drawing list
+    image.draw(drawList);
+
+    // Display the result
+    image.display( );
+  }
+  catch( exception &amp;error_ )
+    {
+      cout &lt;&lt; &quot;Caught exception: &quot; &lt;&lt; error_.what() &lt;&lt; endl;
+      return 1;
+    }
+
+  return 0;
+}
+</pre>
+<div class="section" id="coordinate-structure">
+<h1><a class="toc-backref" href="#id8">Coordinate structure</a></h1>
+<p>Drawable depends on the simple Coordinate structure which represents a
+pair of x,y coodinates. The Coordinate structure is defined as
+follows:</p>
+<pre class="literal-block">
+class Coordinate
+{
+public:
+
+  // Default Constructor
+  Coordinate ( void );
+
+  // Constructor, setting first &amp; second
+  Coordinate ( double x_, double y_ );
+
+  // Destructor
+  virtual ~Coordinate ();
+
+  // x coordinate member
+  void   x ( double x_ );
+  double x ( void ) const;
+
+  // y coordinate member
+  void   y ( double y_ );
+  double y ( void ) const;
+};
+</pre>
+</div>
+<div class="section" id="drawable-classes">
+<h1><a class="toc-backref" href="#id9">Drawable classes</a></h1>
+<p>Drawable classes represent objects to be drawn on the image.</p>
+<div class="contents local topic" id="id2">
+<p class="topic-title first">Drawable classes</p>
+<ul class="simple">
+<li><a class="reference internal" href="#drawableaffine" id="id11">DrawableAffine</a></li>
+<li><a class="reference internal" href="#drawablearc" id="id12">DrawableArc</a></li>
+<li><a class="reference internal" href="#drawablebezier" id="id13">DrawableBezier</a></li>
+<li><a class="reference internal" href="#drawableclippath" id="id14">DrawableClipPath</a></li>
+<li><a class="reference internal" href="#drawablecircle" id="id15">DrawableCircle</a></li>
+<li><a class="reference internal" href="#drawablecolor" id="id16">DrawableColor</a></li>
+<li><a class="reference internal" href="#drawablecompositeimage" id="id17">DrawableCompositeImage</a></li>
+<li><a class="reference internal" href="#drawabledasharray" id="id18">DrawableDashArray</a></li>
+<li><a class="reference internal" href="#drawabledashoffset" id="id19">DrawableDashOffset</a></li>
+<li><a class="reference internal" href="#drawableellipse" id="id20">DrawableEllipse</a></li>
+<li><a class="reference internal" href="#drawablefillcolor" id="id21">DrawableFillColor</a></li>
+<li><a class="reference internal" href="#drawablefillrule" id="id22">DrawableFillRule</a></li>
+<li><a class="reference internal" href="#drawablefillopacity" id="id23">DrawableFillOpacity</a></li>
+<li><a class="reference internal" href="#drawablefont" id="id24">DrawableFont</a></li>
+<li><a class="reference internal" href="#drawablegravity" id="id25">DrawableGravity</a></li>
+<li><a class="reference internal" href="#drawableline" id="id26">DrawableLine</a></li>
+<li><a class="reference internal" href="#drawablematte" id="id27">DrawableMatte</a></li>
+<li><a class="reference internal" href="#drawablemiterlimit" id="id28">DrawableMiterLimit</a></li>
+<li><a class="reference internal" href="#drawablepath" id="id29">DrawablePath</a></li>
+<li><a class="reference internal" href="#drawablepoint" id="id30">DrawablePoint</a></li>
+<li><a class="reference internal" href="#drawablepointsize" id="id31">DrawablePointSize</a></li>
+<li><a class="reference internal" href="#drawablepolygon" id="id32">DrawablePolygon</a></li>
+<li><a class="reference internal" href="#drawablepolyline" id="id33">DrawablePolyline</a></li>
+<li><a class="reference internal" href="#drawablepopclippath" id="id34">DrawablePopClipPath</a></li>
+<li><a class="reference internal" href="#drawablepopgraphiccontext" id="id35">DrawablePopGraphicContext</a></li>
+<li><a class="reference internal" href="#drawablepushclippath" id="id36">DrawablePushClipPath</a></li>
+<li><a class="reference internal" href="#drawablepushgraphiccontext" id="id37">DrawablePushGraphicContext</a></li>
+<li><a class="reference internal" href="#drawablepushpattern" id="id38">DrawablePushPattern</a></li>
+<li><a class="reference internal" href="#drawablepoppattern" id="id39">DrawablePopPattern</a></li>
+<li><a class="reference internal" href="#drawablerectangle" id="id40">DrawableRectangle</a></li>
+<li><a class="reference internal" href="#drawablerotation" id="id41">DrawableRotation</a></li>
+<li><a class="reference internal" href="#drawableroundrectangle" id="id42">DrawableRoundRectangle</a></li>
+<li><a class="reference internal" href="#drawablescaling" id="id43">DrawableScaling</a></li>
+<li><a class="reference internal" href="#drawableskewx" id="id44">DrawableSkewX</a></li>
+<li><a class="reference internal" href="#drawableskewy" id="id45">DrawableSkewY</a></li>
+<li><a class="reference internal" href="#drawablestrokeantialias" id="id46">DrawableStrokeAntialias</a></li>
+<li><a class="reference internal" href="#drawablestrokecolor" id="id47">DrawableStrokeColor</a></li>
+<li><a class="reference internal" href="#drawablestrokelinecap" id="id48">DrawableStrokeLineCap</a></li>
+<li><a class="reference internal" href="#drawablestrokelinejoin" id="id49">DrawableStrokeLineJoin</a></li>
+<li><a class="reference internal" href="#drawablestrokeopacity" id="id50">DrawableStrokeOpacity</a></li>
+<li><a class="reference internal" href="#drawablestrokewidth" id="id51">DrawableStrokeWidth</a></li>
+<li><a class="reference internal" href="#drawabletext" id="id52">DrawableText</a></li>
+<li><a class="reference internal" href="#drawabletextantialias" id="id53">DrawableTextAntialias</a></li>
+<li><a class="reference internal" href="#drawabletextdecoration" id="id54">DrawableTextDecoration</a></li>
+<li><a class="reference internal" href="#drawabletextundercolor" id="id55">DrawableTextUnderColor</a></li>
+<li><a class="reference internal" href="#drawabletranslation" id="id56">DrawableTranslation</a></li>
+<li><a class="reference internal" href="#drawableviewbox" id="id57">DrawableViewbox</a></li>
+</ul>
+</div>
+<div class="section" id="drawableaffine">
+<h2><a class="toc-backref" href="#id11">DrawableAffine</a></h2>
+<p>Specify a transformation matrix to adjust scaling, rotation, and
+translation (coordinate transformation) for subsequently drawn objects
+in the same or decendent drawing context.  The <cite>sx_</cite> &amp; <cite>sy_</cite> parameters
+represent the x &amp; y scale factors, the <cite>rx_</cite> &amp; <cite>ry_</cite> parameters represent
+the x &amp; y rotation, and the <cite>tx_</cite> &amp; <cite>ty_</cite> parameters represent the x &amp; y
+translation:</p>
+<pre class="literal-block">
+DrawableAffine ( double sx_, double sy_,
+                 double rx_, double ry_,
+                 double tx_, double ty_ );
+</pre>
+<p>Specify a transformation matrix to adjust scaling, rotation, and
+translation (coordinate transformation) for subsequently drawn objects
+in the same or decendent drawing context. Initialized to unity (no
+effect) affine values. Use class methods (not currently documented but
+defined in the Drawable.h header file) to adjust individual parameters
+from their unity values:</p>
+<pre class="literal-block">
+DrawableAffine ( void );
+</pre>
+</div>
+<div class="section" id="drawablearc">
+<h2><a class="toc-backref" href="#id12">DrawableArc</a></h2>
+<p>Draw an arc using the stroke color and based on the circle starting at
+coordinates <cite>startX_</cite>,`startY_`, and ending with coordinates
+<cite>endX_</cite>,`endY_`, and bounded by the rotational arc
+<cite>startDegrees_</cite>,`endDegrees_`:</p>
+<pre class="literal-block">
+DrawableArc ( double startX_, double startY_,
+              double endX_, double endY_,
+              double startDegrees_, double endDegrees_ );
+</pre>
+</div>
+<div class="section" id="drawablebezier">
+<h2><a class="toc-backref" href="#id13">DrawableBezier</a></h2>
+<p>Draw a bezier curve using the stroke color and based on the
+coordinates specified by the <cite>coordinates_</cite> list:</p>
+<pre class="literal-block">
+DrawableBezier ( const CoordinateList &amp;coordinates_ );
+</pre>
+</div>
+<div class="section" id="drawableclippath">
+<h2><a class="toc-backref" href="#id14">DrawableClipPath</a></h2>
+<p>Select a drawing clip path matching <cite>id_</cite>:</p>
+<pre class="literal-block">
+DrawableClipPath ( const std::string &amp;id_ );
+</pre>
+</div>
+<div class="section" id="drawablecircle">
+<h2><a class="toc-backref" href="#id15">DrawableCircle</a></h2>
+<p>Draw a circle using the stroke color and thickness using specified
+origin and perimeter coordinates. If a fill color is specified, then
+the object is filled:</p>
+<pre class="literal-block">
+DrawableCircle ( double originX_, double originY_,
+                 double perimX_, double perimY_ )
+</pre>
+</div>
+<div class="section" id="drawablecolor">
+<h2><a class="toc-backref" href="#id16">DrawableColor</a></h2>
+<p>Color image according to paintMethod. The point method recolors the
+target pixel.  The replace method recolors any pixel that matches the
+color of the target pixel.  Floodfill recolors any pixel that matches
+the color of the target pixel and is a neighbor, whereas filltoborder
+recolors any neighbor pixel that is not the border color. Finally,
+reset recolors all pixels:</p>
+<pre class="literal-block">
+DrawableColor ( double x_, double y_,
+                PaintMethod paintMethod_ )
+</pre>
+</div>
+<div class="section" id="drawablecompositeimage">
+<h2><a class="toc-backref" href="#id17">DrawableCompositeImage</a></h2>
+<p>Composite current image with contents of specified image, at specified
+coordinates. If the matte attribute is set to true, then the image
+composition will consider an alpha channel, or transparency, present
+in the image file so that non-opaque portions allow part (or all) of
+the composite image to show through:</p>
+<pre class="literal-block">
+DrawableCompositeImage ( double x_, double y_,
+                         const std::string &amp;filename_ );
+DrawableCompositeImage ( double x_, double y_,
+                         const Image &amp;image_ );
+</pre>
+<p>Composite current image with contents of specified image, rendered
+with specified width and height, at specified coordinates. If the
+matte attribute is set to true, then the image composition will
+consider an alpha channel, or transparency, present in the image file
+so that non-opaque portions allow part (or all) of the composite image
+to show through. If the specified width or height is zero, then the
+image is composited at its natural size, without enlargement or
+reduction:</p>
+<pre class="literal-block">
+DrawableCompositeImage ( double x_, double y_,
+                         double width_, double height_,
+                         const std::string &amp;filename_ );
+
+DrawableCompositeImage ( double x_, double y_,
+                         double width_, double height_,
+                         const Image &amp;image_ );
+</pre>
+<p>Composite current image with contents of specified image, rendered
+with specified width and height, using specified composition
+algorithm, at specified coordinates. If the matte attribute is set to
+true, then the image composition will consider an alpha channel, or
+transparency, present in the image file so that non-opaque portions
+allow part (or all) of the composite image to show through. If the
+specified width or height is zero, then the image is composited at its
+natural size, without enlargement or reduction:</p>
+<pre class="literal-block">
+DrawableCompositeImage ( double x_, double y_,
+                         double width_, double height_,
+                         const std::string &amp;filename_,
+                         CompositeOperator composition_ );
+
+DrawableCompositeImage ( double x_, double y_,
+                         double width_, double height_,
+                         const Image &amp;image_,
+                         CompositeOperator composition_ );
+</pre>
+</div>
+<div class="section" id="drawabledasharray">
+<h2><a class="toc-backref" href="#id18">DrawableDashArray</a></h2>
+<p>Specify the pattern of dashes and gaps used to stroke paths. The
+strokeDashArray represents a zero-terminated array of numbers that
+specify the lengths of alternating dashes and gaps in pixels. If an
+odd number of values is provided, then the list of values is repeated
+to yield an even number of values.  A typical <cite>strokeDashArray_</cite> array
+might contain the members 5 3 2 0, where the zero value indicates the
+end of the pattern array:</p>
+<pre class="literal-block">
+DrawableDashArray( const double* dasharray_ );
+</pre>
+</div>
+<div class="section" id="drawabledashoffset">
+<h2><a class="toc-backref" href="#id19">DrawableDashOffset</a></h2>
+<p>Specify the distance into the dash pattern to start the dash. See
+documentation on SVG's <a class="reference external" href="http://www.w3.org/TR/SVG/painting.html#StrokeDashoffsetProperty">stroke-dashoffset</a>
+property for usage details:</p>
+<pre class="literal-block">
+DrawableDashOffset ( const double offset_ )
+</pre>
+</div>
+<div class="section" id="drawableellipse">
+<h2><a class="toc-backref" href="#id20">DrawableEllipse</a></h2>
+<p>Draw an ellipse using the stroke color and thickness, specified
+origin, x &amp; y radius, as well as specified start and end of arc in
+degrees. If a fill color is specified, then the object is filled:</p>
+<pre class="literal-block">
+DrawableEllipse ( double originX_, double originY_,
+                  double radiusX_, double radiusY_,
+                  double arcStart_, double arcEnd_ )
+</pre>
+</div>
+<div class="section" id="drawablefillcolor">
+<h2><a class="toc-backref" href="#id21">DrawableFillColor</a></h2>
+<p>Specify drawing object fill color:</p>
+<blockquote>
+DrawableFillColor ( const Color &amp;color_ );</blockquote>
+</div>
+<div class="section" id="drawablefillrule">
+<h2><a class="toc-backref" href="#id22">DrawableFillRule</a></h2>
+<p>Specify the algorithm which is to be used to determine what parts of
+the canvas are included inside the shape. See documentation on SVG's
+<a class="reference external" href="http://www.w3.org/TR/SVG/painting.html#FillRuleProperty">fill-rule</a>
+property for usage details:</p>
+<pre class="literal-block">
+DrawableFillRule ( const FillRule fillRule_ )
+</pre>
+</div>
+<div class="section" id="drawablefillopacity">
+<h2><a class="toc-backref" href="#id23">DrawableFillOpacity</a></h2>
+<p>Specify opacity to use when drawing using fill color:</p>
+<pre class="literal-block">
+DrawableFillOpacity ( double opacity_ )
+</pre>
+</div>
+<div class="section" id="drawablefont">
+<h2><a class="toc-backref" href="#id24">DrawableFont</a></h2>
+<p>Specify font family, style, weight (one of the set { 100 | 200 | 300 |
+400 | 500 | 600 | 700 | 800 | 900 } with 400 being the normal size),
+and stretch to be used to select the font used when drawing
+text. Wildcard matches may be applied to style via the AnyStyle
+enumeration, applied to weight if weight is zero, and applied to
+stretch via the AnyStretch enumeration:</p>
+<pre class="literal-block">
+DrawableFont ( const std::string &amp;font_ );
+
+DrawableFont ( const std::string &amp;family_,
+               StyleType style_,
+               const unsigned long weight_,
+               StretchType stretch_ );
+</pre>
+</div>
+<div class="section" id="drawablegravity">
+<h2><a class="toc-backref" href="#id25">DrawableGravity</a></h2>
+<p>Specify text positioning gravity:</p>
+<pre class="literal-block">
+DrawableGravity ( GravityType gravity_ )
+</pre>
+</div>
+<div class="section" id="drawableline">
+<h2><a class="toc-backref" href="#id26">DrawableLine</a></h2>
+<p>Draw a line using stroke color and thickness using starting and ending
+coordinates:</p>
+<pre class="literal-block">
+DrawableLine ( double startX_, double startY_,
+               double endX_, double endY_ )
+</pre>
+</div>
+<div class="section" id="drawablematte">
+<h2><a class="toc-backref" href="#id27">DrawableMatte</a></h2>
+<p>Change the pixel matte value to transparent. The point method changes
+the matte value of the target pixel.  The replace method changes the
+matte value of any pixel that matches the color of the target
+pixel. Floodfill changes the matte value of any pixel that matches the
+color of the target pixel and is a neighbor, whereas filltoborder
+changes the matte value of any neighbor pixel that is not the border
+color, Finally reset changes the matte value of all pixels:</p>
+<pre class="literal-block">
+DrawableMatte ( double x_, double y_,
+                PaintMethod paintMethod_ )
+</pre>
+</div>
+<div class="section" id="drawablemiterlimit">
+<h2><a class="toc-backref" href="#id28">DrawableMiterLimit</a></h2>
+<p>Specify miter limit. When two line segments meet at a sharp angle and
+miter joins have been specified for 'lineJoin', it is possible for the
+miter to extend far beyond the thickness of the line stroking the
+path. The miterLimit' imposes a limit on the ratio of the miter length
+to the 'lineWidth'. The default value of this parameter is 4:</p>
+<pre class="literal-block">
+DrawableMiterLimit ( unsigned int miterlimit_ )
+</pre>
+</div>
+<div class="section" id="drawablepath">
+<h2><a class="toc-backref" href="#id29">DrawablePath</a></h2>
+<p>Draw on image using vector path:</p>
+<pre class="literal-block">
+DrawablePath ( const VPathList &amp;path_ );
+</pre>
+</div>
+<div class="section" id="drawablepoint">
+<h2><a class="toc-backref" href="#id30">DrawablePoint</a></h2>
+<p>Draw a point using stroke color and thickness at coordinate:</p>
+<pre class="literal-block">
+DrawablePoint ( double x_, double y_ )
+</pre>
+</div>
+<div class="section" id="drawablepointsize">
+<h2><a class="toc-backref" href="#id31">DrawablePointSize</a></h2>
+<p>Set font point size:</p>
+<pre class="literal-block">
+DrawablePointSize ( double pointSize_ )
+</pre>
+</div>
+<div class="section" id="drawablepolygon">
+<h2><a class="toc-backref" href="#id32">DrawablePolygon</a></h2>
+<p>Draw an arbitrary polygon using stroke color and thickness consisting
+of three or more coordinates contained in an STL list. If a fill color
+is specified, then the object is filled:</p>
+<pre class="literal-block">
+DrawablePolygon ( const CoordinateList &amp;coordinates_ )
+</pre>
+</div>
+<div class="section" id="drawablepolyline">
+<h2><a class="toc-backref" href="#id33">DrawablePolyline</a></h2>
+<p>Draw an arbitrary polyline using stroke color and thickness consisting
+of three or more coordinates contained in an STL list. If a fill color
+is specified, then the object is filled:</p>
+<pre class="literal-block">
+DrawablePolyline ( const CoordinateList &amp;coordinates_ )
+</pre>
+</div>
+<div class="section" id="drawablepopclippath">
+<h2><a class="toc-backref" href="#id34">DrawablePopClipPath</a></h2>
+<p>Pop (terminate) clip path definition started by DrawablePushClipPath:</p>
+<pre class="literal-block">
+DrawablePopClipPath ( void )
+</pre>
+</div>
+<div class="section" id="drawablepopgraphiccontext">
+<h2><a class="toc-backref" href="#id35">DrawablePopGraphicContext</a></h2>
+<p>Pop Graphic Context. Removing the current graphic context from the
+graphic context stack restores the options to the values they had
+prior to the preceding <a class="reference internal" href="#drawablepushgraphiccontext">DrawablePushGraphicContext</a> operation:</p>
+<pre class="literal-block">
+DrawablePopGraphicContext ( void )
+</pre>
+</div>
+<div class="section" id="drawablepushclippath">
+<h2><a class="toc-backref" href="#id36">DrawablePushClipPath</a></h2>
+<p>Push (create) clip path definition with <cite>id_</cite>. Clip patch definition
+consists of subsequent drawing commands, terminated by
+<a class="reference internal" href="#drawablepopclippath">DrawablePopClipPath</a>:</p>
+<pre class="literal-block">
+DrawablePushClipPath ( const std::string &amp;id_)
+</pre>
+</div>
+<div class="section" id="drawablepushgraphiccontext">
+<h2><a class="toc-backref" href="#id37">DrawablePushGraphicContext</a></h2>
+<p>Push Graphic Context. When a graphic context is pushed, options set
+after the context is pushed (such as coordinate transformations, color
+settings, etc.) are saved to a new graphic context. This allows
+related options to be saved on a graphic context &quot;stack&quot; in order to
+support heirarchical nesting of options. When
+<a class="reference internal" href="#drawablepopgraphiccontext">DrawablePopGraphicContext</a> is used to pop the current graphic context,
+the options in effect during the last <a class="reference internal" href="#drawablepushgraphiccontext">DrawablePushGraphicContext</a>
+operation are restored:</p>
+<pre class="literal-block">
+DrawablePushGraphicContext ( void )
+</pre>
+</div>
+<div class="section" id="drawablepushpattern">
+<h2><a class="toc-backref" href="#id38">DrawablePushPattern</a></h2>
+<p>Start a pattern definition with arbitrary pattern name specified by
+<cite>id_</cite>, pattern offset specified by <cite>x_</cite> and <cite>y_</cite>, and pattern size
+specified by <cite>width_</cite> and <cite>height_</cite>. The pattern is defined within the
+coordinate system defined by the specified offset and size. Arbitrary
+drawing objects (including <a class="reference internal" href="#drawablecompositeimage">DrawableCompositeImage</a>) may be specified
+between <a class="reference internal" href="#drawablepushpattern">DrawablePushPattern</a> and <a class="reference internal" href="#drawablepoppattern">DrawablePopPattern</a> in order to draw
+the pattern. Normally the pair <a class="reference internal" href="#drawablepushgraphiccontext">DrawablePushGraphicContext</a> &amp;
+<a class="reference internal" href="#drawablepopgraphiccontext">DrawablePopGraphicContext</a> are used to enclose a pattern
+definition. Pattern definitions are terminated by a
+<a class="reference internal" href="#drawablepoppattern">DrawablePopPattern</a> object:</p>
+<pre class="literal-block">
+DrawablePushPattern ( const std::string &amp;id_, long x_, long y_,
+                      long width_, long height_ )
+</pre>
+</div>
+<div class="section" id="drawablepoppattern">
+<h2><a class="toc-backref" href="#id39">DrawablePopPattern</a></h2>
+<p>Terminate a pattern definition started via <a class="reference internal" href="#drawablepushpattern">DrawablePushPattern</a>:</p>
+<pre class="literal-block">
+DrawablePopPattern ( void )
+</pre>
+</div>
+<div class="section" id="drawablerectangle">
+<h2><a class="toc-backref" href="#id40">DrawableRectangle</a></h2>
+<p>Draw a rectangle using stroke color and thickness from upper-left
+coordinates to lower-right coordinates. If a fill color is specified,
+then the object is filled:</p>
+<pre class="literal-block">
+DrawableRectangle ( double upperLeftX_, double upperLeftY_,
+                    double lowerRightX_, double lowerRightY_ )
+</pre>
+</div>
+<div class="section" id="drawablerotation">
+<h2><a class="toc-backref" href="#id41">DrawableRotation</a></h2>
+<p>Set rotation to use when drawing (coordinate transformation):</p>
+<pre class="literal-block">
+DrawableRotation ( double angle_ )
+</pre>
+</div>
+<div class="section" id="drawableroundrectangle">
+<h2><a class="toc-backref" href="#id42">DrawableRoundRectangle</a></h2>
+<p>Draw a rounded rectangle using stroke color and thickness, with
+specified center coordinate, specified width and height, and specified
+corner width and height.  If a fill color is specified, then the
+object is filled:</p>
+<pre class="literal-block">
+DrawableRoundRectangle ( double centerX_, double centerY_,
+                         double width_, double hight_,
+                         double cornerWidth_, double cornerHeight_ )
+</pre>
+</div>
+<div class="section" id="drawablescaling">
+<h2><a class="toc-backref" href="#id43">DrawableScaling</a></h2>
+<p>Apply scaling in x and y direction while drawing objects (coordinate
+transformation):</p>
+<pre class="literal-block">
+DrawableScaling ( double x_, double y_ )
+</pre>
+</div>
+<div class="section" id="drawableskewx">
+<h2><a class="toc-backref" href="#id44">DrawableSkewX</a></h2>
+<p>Apply Skew in X direction (coordinate transformation):</p>
+<pre class="literal-block">
+DrawableSkewX ( double angle_ )
+</pre>
+</div>
+<div class="section" id="drawableskewy">
+<h2><a class="toc-backref" href="#id45">DrawableSkewY</a></h2>
+<p>Apply Skew in Y direction:</p>
+<pre class="literal-block">
+DrawableSkewY ( double angle_ )
+</pre>
+</div>
+<div class="section" id="drawablestrokeantialias">
+<h2><a class="toc-backref" href="#id46">DrawableStrokeAntialias</a></h2>
+<p>Antialias while drawing lines or object outlines:</p>
+<pre class="literal-block">
+DrawableStrokeAntialias ( bool flag_ )
+</pre>
+</div>
+<div class="section" id="drawablestrokecolor">
+<h2><a class="toc-backref" href="#id47">DrawableStrokeColor</a></h2>
+<p>Set color to use when drawing lines or object outlines:</p>
+<pre class="literal-block">
+DrawableStrokeColor ( const Color &amp;color_ )
+</pre>
+</div>
+<div class="section" id="drawablestrokelinecap">
+<h2><a class="toc-backref" href="#id48">DrawableStrokeLineCap</a></h2>
+<p>Specify the shape to be used at the end of open subpaths when they are
+stroked. Values of LineCap are UndefinedCap, ButtCap, RoundCap, and
+SquareCap:</p>
+<pre class="literal-block">
+DrawableStrokeLineCap ( LineCap linecap_ )
+</pre>
+</div>
+<div class="section" id="drawablestrokelinejoin">
+<h2><a class="toc-backref" href="#id49">DrawableStrokeLineJoin</a></h2>
+<p>Specify the shape to be used at the corners of paths (or other vector
+shapes) when they are stroked. Values of LineJoin are UndefinedJoin,
+MiterJoin, RoundJoin, and BevelJoin:</p>
+<pre class="literal-block">
+DrawableStrokeLineJoin ( LineJoin linejoin_ )
+</pre>
+</div>
+<div class="section" id="drawablestrokeopacity">
+<h2><a class="toc-backref" href="#id50">DrawableStrokeOpacity</a></h2>
+<p>Opacity to use when drawing lines or object outlines:</p>
+<pre class="literal-block">
+DrawableStrokeOpacity ( double opacity_ )
+</pre>
+</div>
+<div class="section" id="drawablestrokewidth">
+<h2><a class="toc-backref" href="#id51">DrawableStrokeWidth</a></h2>
+<p>Set width to use when drawing lines or object outlines:</p>
+<pre class="literal-block">
+DrawableStrokeWidth ( double width_ )
+</pre>
+</div>
+<div class="section" id="drawabletext">
+<h2><a class="toc-backref" href="#id52">DrawableText</a></h2>
+<p>Annotate image with text using stroke color, font, font pointsize, and
+box color (text background color), at specified coordinates. If text
+contains <a class="reference external" href="FormatCharacters.html">special format characters</a> the
+image filename, type, width, height, or other image attributes may be
+incorporated in the text (see label()):</p>
+<pre class="literal-block">
+DrawableText ( const double x_, const double y_,
+               const std::string &amp;text_ )
+</pre>
+<p>Annotate image with text represented with text encoding, using current
+stroke color, font, font pointsize, and box color (text background
+color), at specified coordinates. If text contains <a class="reference external" href="FormatCharacters.html">special format
+characters</a> the image filename, type, width,
+height, or other image attributes may be incorporated in the text (see
+label()).</p>
+<p>The text encoding specifies the code set to use for text
+annotations. The only character encoding which may be specified at
+this time is &quot;UTF-8&quot; for representing <a class="reference external" href="http://www.unicode.org/">Unicode</a> as a sequence of bytes. Specify an empty
+string to set text encoding to the system's default. Successful text
+annotation using Unicode may require fonts designed to support
+Unicode:</p>
+<pre class="literal-block">
+DrawableText ( const double x_, const double y_,
+               const std::string &amp;text_, const std::string &amp;encoding_)
+</pre>
+</div>
+<div class="section" id="drawabletextantialias">
+<h2><a class="toc-backref" href="#id53">DrawableTextAntialias</a></h2>
+<p>Antialias while drawing text (default true). The main reason to
+disable text antialiasing is to avoid adding new colors to the image:</p>
+<pre class="literal-block">
+DrawableTextAntialias ( bool flag_ )
+</pre>
+</div>
+<div class="section" id="drawabletextdecoration">
+<h2><a class="toc-backref" href="#id54">DrawableTextDecoration</a></h2>
+<p>Specify decoration (e.g. UnderlineDecoration) to apply to text:</p>
+<pre class="literal-block">
+DrawableTextDecoration ( DecorationType decoration_ )
+</pre>
+</div>
+<div class="section" id="drawabletextundercolor">
+<h2><a class="toc-backref" href="#id55">DrawableTextUnderColor</a></h2>
+<p>Draw a box under rendered text using the specified color:</p>
+<pre class="literal-block">
+DrawableTextUnderColor ( const Color &amp;color_ )
+</pre>
+</div>
+<div class="section" id="drawabletranslation">
+<h2><a class="toc-backref" href="#id56">DrawableTranslation</a></h2>
+<p>Apply coordinate translation (set new coordinate origin):</p>
+<pre class="literal-block">
+DrawableTranslation ( double x_, double y_ )
+</pre>
+</div>
+<div class="section" id="drawableviewbox">
+<h2><a class="toc-backref" href="#id57">DrawableViewbox</a></h2>
+<p>Dimensions of the output viewbox. If the image is to be written to a
+vector format (e.g. MVG or SVG), then a <a class="reference internal" href="#drawablepushgraphiccontext">DrawablePushGraphicContext</a>
+object should be pushed to the head of the list, followed by a
+<a class="reference internal" href="#drawableviewbox">DrawableViewbox</a> object to establish the output canvas size. A
+matching <a class="reference internal" href="#drawablepopgraphiccontext">DrawablePopGraphicContext</a> object should be pushed to the
+tail of the list:</p>
+<pre class="literal-block">
+DrawableViewbox(unsigned long x1_, unsigned long y1_,
+                unsigned long x2_, unsigned long y2_)
+</pre>
+</div>
+</div>
+<div class="section" id="vector-path-classes">
+<h1><a class="toc-backref" href="#id10">Vector Path Classes</a></h1>
+<p>The vector paths supported by Magick++ are based on those supported by
+the <a class="reference external" href="http://www.w3.org/TR/SVG/paths.html">SVG XML specification</a>. Vector paths are not directly
+drawable, they must first be supplied as a constructor argument to the
+<a class="reference internal" href="#drawablepath">DrawablePath</a> class in order to create a drawable object. The
+<a class="reference internal" href="#drawablepath">DrawablePath</a> class effectively creates a drawable compound component
+which may be replayed as desired. If the drawable compound component
+consists only of vector path objects using relative coordinates then
+the object may be positioned on the image by preceding it with a
+<a class="reference internal" href="#drawablepath">DrawablePath</a> which sets the current drawing coordinate. Alternatively
+coordinate transforms may be used to <a class="reference external" href="#DrawableTranslation">translate the origin</a> in order to position the object, rotate it,
+skew it, or scale it.</p>
+<div class="contents local topic" id="vector-path-commands">
+<p class="topic-title first">Vector path commands</p>
+<ul class="simple">
+<li><a class="reference internal" href="#the-moveto-commands" id="id58">The &quot;moveto&quot; commands</a></li>
+<li><a class="reference internal" href="#the-closepath-command" id="id59">The &quot;closepath&quot; command</a></li>
+<li><a class="reference internal" href="#the-lineto-commands" id="id60">The &quot;lineto&quot; commands</a></li>
+<li><a class="reference internal" href="#curve-commands" id="id61">Curve commands</a></li>
+</ul>
+</div>
+<div class="section" id="the-moveto-commands">
+<h2><a class="toc-backref" href="#id58">The &quot;moveto&quot; commands</a></h2>
+<p>The &quot;moveto&quot; commands establish a new current point. The effect is as
+if the &quot;pen&quot; were lifted and moved to a new location. A path data
+segment must begin with either one of the &quot;moveto&quot; commands or one of
+the &quot;arc&quot; commands. Subsequent &quot;moveto&quot; commands (i.e., when the
+&quot;moveto&quot; is not the first command) represent the start of a new
+subpath.</p>
+<p>Start a new sub-path at the given coordinate. PathMovetoAbs indicates
+that absolute coordinates will follow; PathMovetoRel indicates that
+relative coordinates will follow. If a relative moveto appears as the
+first element of the path, then it is treated as a pair of absolute
+coordinates. If a moveto is followed by multiple pairs of coordinates,
+the subsequent pairs are treated as implicit lineto commands.</p>
+<div class="section" id="pathmovetoabs">
+<h3>PathMovetoAbs</h3>
+<p>Simple moveto:</p>
+<pre class="literal-block">
+PathMovetoAbs ( const Magick::Coordinate &amp;coordinate_ )
+</pre>
+<p>Moveto followed by implicit linetos:</p>
+<pre class="literal-block">
+PathMovetoAbs ( const CoordinateList &amp;coordinates_ )
+</pre>
+</div>
+<div class="section" id="pathmovetorel">
+<h3>PathMovetoRel</h3>
+<p>Simple moveto:</p>
+<pre class="literal-block">
+PathMovetoRel ( const Magick::Coordinate &amp;coordinate_ );
+</pre>
+<p>Moveto followed by implicit linetos:</p>
+<pre class="literal-block">
+PathMovetoRel ( const CoordinateList &amp;coordinates_ );
+</pre>
+</div>
+</div>
+<div class="section" id="the-closepath-command">
+<h2><a class="toc-backref" href="#id59">The &quot;closepath&quot; command</a></h2>
+<p>The &quot;closepath&quot; command causes an automatic straight line to be drawn from the current point to the initial point of the current subpath.</p>
+<div class="section" id="pathclosepath">
+<h3>PathClosePath</h3>
+<p>Close the current subpath by drawing a straight line from the current
+point to current subpath's most recent starting point (usually, the
+most recent moveto point):</p>
+<pre class="literal-block">
+PathClosePath ( void )
+</pre>
+</div>
+</div>
+<div class="section" id="the-lineto-commands">
+<h2><a class="toc-backref" href="#id60">The &quot;lineto&quot; commands</a></h2>
+<p>The various &quot;lineto&quot; commands draw straight lines from the current
+point to a new point.</p>
+<div class="section" id="pathlinetoabs">
+<h3>PathLinetoAbs</h3>
+<p>Draw a line from the current point to the given coordinate which
+becomes the new current point.  <em>PathLinetoAbs</em> indicates that absolute
+coordinates are used. A number of coordinates pairs may be specified
+in a list to draw a polyline. At the end of the command, the new
+current point is set to the final set of coordinates provided.</p>
+<p>Draw to a single point:</p>
+<pre class="literal-block">
+PathLinetoAbs ( const Magick::Coordinate&amp; coordinate_  );
+</pre>
+<p>Draw to multiple points:</p>
+<pre class="literal-block">
+PathLinetoAbs ( const CoordinateList &amp;coordinates_ );
+</pre>
+</div>
+<div class="section" id="pathlinetorel">
+<h3>PathLinetoRel</h3>
+<p>Draw a line from the current point to the given coordinate which
+becomes the new current point. <em>PathLinetoRel</em> indicates that relative
+coordinates are used. A number of coordinates pairs may be specified
+in a list to draw a polyline. At the end of the command, the new
+current point is set to the final set of coordinates provided.</p>
+<p>Draw to a single point:</p>
+<pre class="literal-block">
+PathLinetoRel ( const Magick::Coordinate&amp; coordinate_ );
+</pre>
+<p>Draw to multiple points:</p>
+<pre class="literal-block">
+PathLinetoRel ( const CoordinateList &amp;coordinates_ );
+</pre>
+</div>
+<div class="section" id="pathlinetohorizontalabs">
+<h3>PathLinetoHorizontalAbs</h3>
+<p>Draws a horizontal line from the current point (cpx, cpy) to (x,
+cpy). <em>PathLinetoHorizontalAbs</em> indicates that absolute coordinates
+are supplied.  At the end of the command, the new current point
+becomes (x, cpy) for the final value of x:</p>
+<pre class="literal-block">
+PathLinetoHorizontalAbs ( double x_ )
+</pre>
+</div>
+<div class="section" id="pathlinetohorizontalrel">
+<h3>PathLinetoHorizontalRel</h3>
+<p>Draws a horizontal line from the current point (cpx, cpy) to (x,
+cpy). <em>PathLinetoHorizontalRel</em> indicates that relative coordinates
+are supplied. At the end of the command, the new current point becomes
+(x, cpy) for the final value of x:</p>
+<pre class="literal-block">
+PathLinetoHorizontalRel ( double x_ )
+</pre>
+</div>
+<div class="section" id="pathlinetoverticalabs">
+<h3>PathLinetoVerticalAbs</h3>
+<p>Draws a vertical line from the current point (cpx, cpy) to (cpx,
+y). <em>PathLinetoVerticalAbs</em> indicates that absolute coordinates are
+supplied.  At the end of the command, the new current point becomes
+(cpx, y) for the final value of y:</p>
+<pre class="literal-block">
+PathLinetoVerticalAbs ( double y_ )
+</pre>
+</div>
+<div class="section" id="pathlinetoverticalrel">
+<h3>PathLinetoVerticalRel</h3>
+<p>Draws a vertical line from the current point (cpx, cpy) to (cpx, y).
+<em>PathLinetoVerticalRel</em> indicates that relative coordinates are
+supplied.  At the end of the command, the new current point becomes
+(cpx, y) for the final value of y:</p>
+<pre class="literal-block">
+PathLinetoVerticalRel ( double y_ )
+</pre>
+</div>
+</div>
+<div class="section" id="curve-commands">
+<h2><a class="toc-backref" href="#id61">Curve commands</a></h2>
+<p>These three groups of commands draw curves:</p>
+<ul>
+<li><p class="first">Cubic Bézier commands.</p>
+<p>A cubic Bézier segment is defined by a start point, an end point,
+and two control points.</p>
+</li>
+<li><p class="first">Quadratic Bézier commands.</p>
+<p>A quadratic Bézier segment is defined by a start point, an end
+point, and one control point.</p>
+</li>
+<li><p class="first">Elliptical arc commands.</p>
+<p>An elliptical arc segment draws a segment of an ellipse.</p>
+</li>
+</ul>
+<div class="contents local topic" id="id4">
+<p class="topic-title first">Curve Commands</p>
+<ul class="simple">
+<li><a class="reference internal" href="#cubic-bezier-curve-commands" id="id62">Cubic Bézier curve commands</a></li>
+<li><a class="reference internal" href="#quadratic-bezier-curve-commands" id="id63">Quadratic Bézier curve commands</a></li>
+<li><a class="reference internal" href="#elliptical-arc-curve-commands" id="id64">Elliptical arc curve commands</a></li>
+</ul>
+</div>
+<div class="section" id="cubic-bezier-curve-commands">
+<h3><a class="toc-backref" href="#id62">Cubic Bézier curve commands</a></h3>
+<div class="contents local topic" id="id5">
+<p class="topic-title first">Cubic Bézier curve commands</p>
+<ul class="simple">
+<li><a class="reference internal" href="#pathcurvetoargs" id="id65">PathCurvetoArgs</a></li>
+<li><a class="reference internal" href="#pathcurvetoabs" id="id66">PathCurvetoAbs</a></li>
+<li><a class="reference internal" href="#pathcurvetorel" id="id67">PathCurvetoRel</a></li>
+<li><a class="reference internal" href="#pathsmoothcurvetoabs" id="id68">PathSmoothCurvetoAbs</a></li>
+<li><a class="reference internal" href="#pathsmoothcurvetorel" id="id69">PathSmoothCurvetoRel</a></li>
+</ul>
+</div>
+<div class="section" id="pathcurvetoargs">
+<h4><a class="toc-backref" href="#id65">PathCurvetoArgs</a></h4>
+<p>The cubic Bézier commands depend on the <a class="reference internal" href="#pathcurvetoargs">PathCurvetoArgs</a> argument
+class, which has the constructor signature:</p>
+<pre class="literal-block">
+PathCurvetoArgs( double x1_, double y1_,
+                 double x2_, double y2_,
+                 double x_, double y_ );
+</pre>
+<p>PathCurveto:</p>
+<p>Draws a cubic Bézier curve from the current point to (<em>x</em>,*y*) using
+(<em>x1</em>,*y1*) as the control point at the beginning of the curve and
+(<em>x2</em>,*y2*) as the control point at the end of the
+curve. <a class="reference internal" href="#pathcurvetoabs">PathCurvetoAbs</a> indicates that absolutecoordinates will follow;
+<a class="reference internal" href="#pathcurvetorel">PathCurvetoRel</a> indicates that relative coordinates will
+follow. Multiple sets of coordinates may be specified to draw a
+polybezier. At the end of the command, the new current point becomes
+the final (<em>x</em>,*y*) coordinate pair used in the polybezier.</p>
+</div>
+<div class="section" id="pathcurvetoabs">
+<h4><a class="toc-backref" href="#id66">PathCurvetoAbs</a></h4>
+<p>Draw a single curve:</p>
+<pre class="literal-block">
+PathCurvetoAbs ( const PathCurvetoArgs &amp;args_ );
+</pre>
+<p>Draw multiple curves:</p>
+<pre class="literal-block">
+PathCurvetoAbs ( const PathCurveToArgsList &amp;args_ );
+</pre>
+</div>
+<div class="section" id="pathcurvetorel">
+<h4><a class="toc-backref" href="#id67">PathCurvetoRel</a></h4>
+<p>Draw a single curve:</p>
+<pre class="literal-block">
+PathCurvetoRel ( const PathCurvetoArgs &amp;args_ );
+</pre>
+<p>Draw multiple curves:</p>
+<pre class="literal-block">
+PathCurvetoRel ( const PathCurveToArgsList &amp;args_ );
+</pre>
+<p>PathSmoothCurveto:</p>
+<p>Draws a cubic Bézier curve from the current point to (x,y). The first
+control point is assumed to be the reflection of the second control
+point on the previous command relative to the current point. (If there
+is no previous command or if the previous command was not an
+PathCurvetoAbs, PathCurvetoRel, PathSmoothCurvetoAbs or
+PathSmoothCurvetoRel, assume the first control point is coincident
+with the current point.) (x2,y2) is the second control point (i.e.,
+the control point at the end of the curve).  PathSmoothCurvetoAbs
+indicates that absolute coordinates will follow; PathSmoothCurvetoRel
+indicates that relative coordinates will follow. Multiple sets of
+coordinates may be specified to draw a polybezier. At the end of the
+command, the new current point becomes the final (x,y) coordinate pair
+used in the polybezier.</p>
+</div>
+<div class="section" id="pathsmoothcurvetoabs">
+<h4><a class="toc-backref" href="#id68">PathSmoothCurvetoAbs</a></h4>
+<p>Draw a single curve:</p>
+<pre class="literal-block">
+PathSmoothCurvetoAbs ( const Magick::Coordinate &amp;coordinates_ );
+</pre>
+<p>Draw multiple curves</p>
+<blockquote>
+PathSmoothCurvetoAbs ( const CoordinateList &amp;coordinates_ );</blockquote>
+</div>
+<div class="section" id="pathsmoothcurvetorel">
+<h4><a class="toc-backref" href="#id69">PathSmoothCurvetoRel</a></h4>
+<p>Draw a single curve:</p>
+<pre class="literal-block">
+PathSmoothCurvetoRel ( const Coordinate &amp;coordinates_ );
+</pre>
+<p>Draw multiple curves:</p>
+<pre class="literal-block">
+PathSmoothCurvetoRel ( const CoordinateList &amp;coordinates_ );
+</pre>
+</div>
+</div>
+<div class="section" id="quadratic-bezier-curve-commands">
+<h3><a class="toc-backref" href="#id63">Quadratic Bézier curve commands</a></h3>
+<div class="contents local topic" id="id6">
+<p class="topic-title first">Quadratic Bézier curve commands</p>
+<ul class="simple">
+<li><a class="reference internal" href="#pathquadraticcurvetoargs" id="id70">PathQuadraticCurvetoArgs</a></li>
+<li><a class="reference internal" href="#pathquadraticcurvetoabs" id="id71">PathQuadraticCurvetoAbs</a></li>
+<li><a class="reference internal" href="#pathquadraticcurvetorel" id="id72">PathQuadraticCurvetoRel</a></li>
+<li><a class="reference internal" href="#pathsmoothquadraticcurvetoabs" id="id73">PathSmoothQuadraticCurvetoAbs</a></li>
+<li><a class="reference internal" href="#pathsmoothquadraticcurvetorel" id="id74">PathSmoothQuadraticCurvetoRel</a></li>
+</ul>
+</div>
+<div class="section" id="pathquadraticcurvetoargs">
+<h4><a class="toc-backref" href="#id70">PathQuadraticCurvetoArgs</a></h4>
+<p>The quadratic Bézier commands depend on the <a class="reference internal" href="#pathquadraticcurvetoargs">PathQuadraticCurvetoArgs</a>
+argument class, which has the constructor signature:</p>
+<pre class="literal-block">
+PathQuadraticCurvetoArgs( double x1_, double y1_,
+                          double x_, double y_ );
+</pre>
+</div>
+<div class="section" id="pathquadraticcurvetoabs">
+<h4><a class="toc-backref" href="#id71">PathQuadraticCurvetoAbs</a></h4>
+<p>Draw a single curve:</p>
+<pre class="literal-block">
+PathQuadraticCurvetoAbs ( const Magick::PathQuadraticCurvetoArgs &amp;args_ );
+</pre>
+<p>Draw multiple curves:</p>
+<pre class="literal-block">
+PathQuadraticCurvetoAbs ( const PathQuadraticCurvetoArgsList &amp;args_ );
+</pre>
+</div>
+<div class="section" id="pathquadraticcurvetorel">
+<h4><a class="toc-backref" href="#id72">PathQuadraticCurvetoRel</a></h4>
+<p>Draw a single curve:</p>
+<pre class="literal-block">
+PathQuadraticCurvetoRel ( const Magick::PathQuadraticCurvetoArgs &amp;args_ );
+</pre>
+<p>Draw multiple curves:</p>
+<pre class="literal-block">
+PathQuadraticCurvetoRel ( const PathQuadraticCurvetoArgsList &amp;args_ );
+</pre>
+</div>
+<div class="section" id="pathsmoothquadraticcurvetoabs">
+<h4><a class="toc-backref" href="#id73">PathSmoothQuadraticCurvetoAbs</a></h4>
+<p>Draw a single curve:</p>
+<pre class="literal-block">
+PathSmoothQuadraticCurvetoAbs ( const Magick::Coordinate &amp;coordinate_ );
+</pre>
+<p>Draw multiple curves:</p>
+<pre class="literal-block">
+PathSmoothQuadraticCurvetoAbs ( const CoordinateList &amp;coordinates_ );
+</pre>
+</div>
+<div class="section" id="pathsmoothquadraticcurvetorel">
+<h4><a class="toc-backref" href="#id74">PathSmoothQuadraticCurvetoRel</a></h4>
+<p>Draw a single curve:</p>
+<pre class="literal-block">
+PathSmoothQuadraticCurvetoRel ( const Magick::Coordinate &amp;coordinate_ );
+</pre>
+<p>Draw multiple curves:</p>
+<pre class="literal-block">
+PathSmoothQuadraticCurvetoRel ( const CoordinateList &amp;coordinates_ );
+</pre>
+</div>
+</div>
+<div class="section" id="elliptical-arc-curve-commands">
+<h3><a class="toc-backref" href="#id64">Elliptical arc curve commands</a></h3>
+<div class="contents local topic" id="id7">
+<p class="topic-title first">Elliptical arc curve commands</p>
+<ul class="simple">
+<li><a class="reference internal" href="#patharcargs" id="id75">PathArcArgs</a></li>
+<li><a class="reference internal" href="#patharcabs" id="id76">PathArcAbs</a></li>
+<li><a class="reference internal" href="#patharcrel" id="id77">PathArcRel</a></li>
+</ul>
+</div>
+<div class="section" id="patharcargs">
+<h4><a class="toc-backref" href="#id75">PathArcArgs</a></h4>
+<p>The elliptical arc curve commands depend on the PathArcArgs argument
+class, which has the constructor signature:</p>
+<pre class="literal-block">
+PathArcArgs( double radiusX_, double radiusY_,
+             double xAxisRotation_, bool largeArcFlag_,
+             bool sweepFlag_, double x_, double y_ );
+</pre>
+<p>Draws an elliptical arc from the current point to (<em>x</em>, <em>y</em>). The size and
+orientation of the ellipse are defined by two radii (<em>radiusX</em>, <em>radiusY</em>)
+and an <em>xAxisRotation</em>, which indicates how the ellipse as a whole is
+rotated relative to the current coordinate system. The center (cx, cy)
+of the ellipse is calculated automatically to satisfy the constraints
+imposed by the other parameters. <em>largeArcFlag</em> and <em>sweepFlag</em> contribute
+to the automatic calculations and help determine how the arc is
+drawn. If <em>largeArcFlag</em> is true then draw the larger of the available
+arcs. If <em>sweepFlag</em> is true, then draw the arc matching a clock-wise
+rotation.</p>
+</div>
+<div class="section" id="patharcabs">
+<h4><a class="toc-backref" href="#id76">PathArcAbs</a></h4>
+<p>Draw a single arc segment:</p>
+<pre class="literal-block">
+PathArcAbs ( const PathArcArgs &amp;coordinates_ );
+</pre>
+<p>Draw multiple arc segments:</p>
+<pre class="literal-block">
+PathArcAbs ( const PathArcArgsList &amp;coordinates_ );
+</pre>
+</div>
+<div class="section" id="patharcrel">
+<h4><a class="toc-backref" href="#id77">PathArcRel</a></h4>
+<p>Draw a single arc segment:</p>
+<pre class="literal-block">
+PathArcRel ( const PathArcArgs &amp;coordinates_ );
+</pre>
+<p>Draw multiple arc segments:</p>
+<pre class="literal-block">
+PathArcRel ( const PathArcArgsList &amp;coordinates_ );
+</pre>
+<p>Copyright © Bob Friesenhahn 1999 - 2020</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

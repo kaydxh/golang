@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.15.2: http://docutils.sourceforge.net/" />
+<title>GraphicsMagick Core C API</title>
+<link rel="stylesheet" href="../docutils-articles.css" type="text/css" />
+</head>
+<body>
+
+<div class="banner">
+<img src="../images/gm-107x76.png" alt="GraphicMagick logo" width="107" height="76" />
+<span class="title">GraphicsMagick</span>
+<form action="http://www.google.com/search">
+	<input type="hidden" name="domains" value="www.graphicsmagick.org" />
+	<input type="hidden" name="sitesearch" value="www.graphicsmagick.org" />
+    <span class="nowrap"><input type="text" name="q" size="25" maxlength="255" />&nbsp;<input type="submit" name="sa" value="Search" /></span>
+</form>
+</div>
+
+<div class="navmenu">
+<ul>
+<li><a href="../index.html">Home</a></li>
+<li><a href="../project.html">Project</a></li>
+<li><a href="../download.html">Download</a></li>
+<li><a href="../README.html">Install</a></li>
+<li><a href="../Hg.html">Source</a></li>
+<li><a href="../NEWS.html">News</a> </li>
+<li><a href="../utilities.html">Utilities</a></li>
+<li><a href="../programming.html">Programming</a></li>
+<li><a href="../reference.html">Reference</a></li>
+</ul>
+</div>
+<div class="document" id="graphicsmagick-core-c-api">
+<h1 class="title">GraphicsMagick Core C API</h1>
+
+<!-- -*- mode: rst -*- -->
+<!-- This text is in reStucturedText format, so it may look a bit odd. -->
+<!-- See http://docutils.sourceforge.net/rst.html for details. -->
+<p>The GraphicsMagick core C library constitutes the implementation of
+GraphicsMagick and provides the lowest-level C language programming
+interface for GraphicsMagick.  The core C API provides many functions
+to read, manipulate, write, or display an image.  To invoke the
+functions, write your program in C (or C++) language while making
+calls to the core library functions and link with libGraphicsMagick.a,
+libGraphicsMagick.so, or GraphicsMagick.dll depending on your system.</p>
+<p>The API is divided into a number of categories. While reading this
+documentation, please reference the <a class="reference external" href="types.html">types</a> documentation as required:</p>
+<blockquote>
+<ul class="simple">
+<li><a class="reference external" href="animate.html">Animate</a>: Interactively animate an image sequence</li>
+<li><a class="reference external" href="annotate.html">Annotate</a>: Annotate an image with text</li>
+<li><a class="reference external" href="attribute.html">Attribute</a>: Access key, value image attributes</li>
+<li><a class="reference external" href="average.html">Average</a>: Average several images together</li>
+<li><a class="reference external" href="cdl.html">ASC CDL</a> : Apply ASC CDL to image</li>
+<li><a class="reference external" href="blob.html">Blob</a>: Read and write images to memory</li>
+<li><a class="reference external" href="channel.html">Channel</a>: Import and export image channels as well as compute channel depth</li>
+<li><a class="reference external" href="color.html">Color</a>: Methods to deal with image colors</li>
+<li><a class="reference external" href="colormap.html">Colormap</a>: Methods to deal with image colormaps</li>
+<li><a class="reference external" href="compare.html">Compare</a>: Compare images</li>
+<li><a class="reference external" href="composite.html">Composite</a>: Composite images</li>
+<li><a class="reference external" href="confirm_access.html">Confirm Access</a> : Confirm access to files and URLs.</li>
+<li><a class="reference external" href="constitute.html">Constitute</a>: Read, write, import, and export images</li>
+<li><a class="reference external" href="decorate.html">Decorate</a>: Add fancy borders to images</li>
+<li><a class="reference external" href="describe.html">Describe</a>: Describe an image</li>
+<li><a class="reference external" href="display.html">Display</a>: Interactively display and edit an image</li>
+<li><a class="reference external" href="draw.html">Draw</a>: Convenient methods to draw vectors and text</li>
+<li><a class="reference external" href="effect.html">Effect</a>:Threshold (various), blur, despeckle, edge, emboss, enhance,
+gaussian blur ...</li>
+<li><a class="reference external" href="enhance.html">Enhance</a>: Contrast, equalize, gamma, level, level channel, modulate, negate,
+and normalize</li>
+<li><a class="reference external" href="error.html">Error</a>: Error reporting methods</li>
+<li><a class="reference external" href="export.html">Export</a> : Export image pixels to common representations</li>
+<li><a class="reference external" href="fx.html">FX</a>: Special effects methods</li>
+<li><a class="reference external" href="hclut.html">Hald CLUT</a> : Apply Hald CLUT to image</li>
+<li><a class="reference external" href="image.html">Image</a>: Miscellaneous image methods</li>
+<li><a class="reference external" href="import.html">Import</a> : Import image pixels from common representations</li>
+<li><a class="reference external" href="list.html">List</a>: Manage image lists</li>
+<li><a class="reference external" href="magick.html">Magick</a>: Image format support interfaces</li>
+<li><a class="reference external" href="memory.html">Memory</a>: Memory allocation methods</li>
+<li><a class="reference external" href="monitor.html">Monitor</a>: Progress monitor callbacks</li>
+<li><a class="reference external" href="montage.html">Montage</a>: Create a montage of image thumbnails</li>
+<li><a class="reference external" href="operator.html">Operator</a>: Methods to apply mathematic or boolean operators to pixels</li>
+<li><a class="reference external" href="paint.html">Paint</a>: Fill pixel regions</li>
+<li><a class="reference external" href="pixel_cache.html">Pixel Cache</a>: Low-level access to image pixels</li>
+<li><a class="reference external" href="pixel_iterator.html">Pixel Iterator</a>: Pixel iterator design pattern support functions</li>
+<li><a class="reference external" href="plasma.html">Plasma</a>: Plasma fractal image generator</li>
+<li><a class="reference external" href="profile.html">Profile</a>: Attached profile access</li>
+<li><a class="reference external" href="quantize.html">Quantize</a>: Reduce image colors or assign image colors from colormap</li>
+<li><a class="reference external" href="registry.html">Registry</a>: Store and retrieve images in memory by ID</li>
+<li><a class="reference external" href="resize.html">Resize</a>: Resize an Image</li>
+<li><a class="reference external" href="resource.html">Resource</a>: Set and get resource limits</li>
+<li><a class="reference external" href="segment.html">Segment</a>: Coalese similar image colors</li>
+<li><a class="reference external" href="shear.html">Shear</a>: Rotate image, shear image, or apply a 2D affine transformation</li>
+<li><a class="reference external" href="signature.html">Signature</a>: Compute an image signature (checksum)</li>
+<li><a class="reference external" href="statistics.html">Statistics</a>: Compute image statistics</li>
+<li><a class="reference external" href="texture.html">Texture</a>: Create a tiled texture image or tile an image with a texture.</li>
+<li><a class="reference external" href="transform.html">Transform</a>: Chop, coalesce, deconstruct, flatten, flip, flop, mosiac, roll,
+or shave image</li>
+</ul>
+</blockquote>
+<p>Here are a few sample programs to get you started.</p>
+<p>This example program (convert.c) simply converts from one file name to
+another (and will automatically change formats based on file
+extension):</p>
+<pre class="literal-block">
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+#include &lt;time.h&gt;
+#include &lt;sys/types.h&gt;
+#include &lt;magick/api.h&gt;
+
+int main ( int argc, char **argv )
+{
+  Image
+    *image = (Image *) NULL;
+
+  char
+    infile[MaxTextExtent],
+    outfile[MaxTextExtent];
+
+  int
+    arg = 1,
+    exit_status = 0;
+
+  ImageInfo
+    *imageInfo;
+
+  ExceptionInfo
+    exception;
+
+  InitializeMagick(NULL);
+  imageInfo=CloneImageInfo(0);
+  GetExceptionInfo(&amp;exception);
+
+  if (argc != 3)
+    {
+      (void) fprintf ( stderr, &quot;Usage: %s infile outfile\n&quot;, argv[0] );
+      (void) fflush(stderr);
+      exit_status = 1;
+      goto program_exit;
+    }
+
+  (void) strncpy(infile, argv[arg], MaxTextExtent-1 );
+  arg++;
+  (void) strncpy(outfile, argv[arg], MaxTextExtent-1 );
+
+  (void) strcpy(imageInfo-&gt;filename, infile);
+  image = ReadImage(imageInfo, &amp;exception);
+  if (image == (Image *) NULL)
+    {
+      CatchException(&amp;exception);
+      exit_status = 1;
+      goto program_exit;
+    }
+
+  (void) strcpy(image-&gt;filename, outfile);
+  if (!WriteImage (imageInfo,image))
+    {
+      CatchException(&amp;image-&gt;exception);
+      exit_status = 1;
+      goto program_exit;
+    }
+
+ program_exit:
+
+  if (image != (Image *) NULL)
+    DestroyImage(image);
+
+  if (imageInfo != (ImageInfo *) NULL)
+    DestroyImageInfo(imageInfo);
+  DestroyMagick();
+
+  return exit_status;
+}
+</pre>
+<p>This example program (demo.c) which reads multiple input files
+(possibly animation files) specified on the command line, resizes the
+image frames to 106x80, and writes the resulting animation to disk:</p>
+<pre class="literal-block">
+#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+#include &lt;time.h&gt;
+#include &lt;sys/types.h&gt;
+#include &lt;magick/api.h&gt;
+
+int main(int argc,char **argv)
+{
+  ExceptionInfo
+    exception;
+
+  Image
+    *image,
+    *images,
+    *resize_image,
+    *thumbnails;
+
+  ImageInfo
+    *image_info;
+
+  int
+    i;
+
+  /*
+    Initialize the image info structure and read the list of files
+    provided by the user as a image sequence
+  */
+  InitializeMagick(*argv);
+  GetExceptionInfo(&amp;exception);
+  image_info=CloneImageInfo((ImageInfo *) NULL);
+  images=NewImageList();
+  for (i=1; i&lt; argc-1; i++)
+    {
+      (void) strcpy(image_info-&gt;filename,argv[i]);
+      printf(&quot;Reading %s ...&quot;, image_info-&gt;filename);
+      image=ReadImage(image_info,&amp;exception);
+      printf(&quot; %lu frames\n&quot;, GetImageListLength(image));
+      if (exception.severity != UndefinedException)
+        CatchException(&amp;exception);
+      if (image)
+        (void) AppendImageToList(&amp;images,image);
+    }
+
+  if (!images)
+    {
+      printf(&quot;Failed to read any images!\n&quot;);
+      exit(1);
+    }
+  /*
+    Create a thumbnail image sequence
+  */
+  thumbnails=NewImageList();
+  while ((image=RemoveFirstImageFromList(&amp;images)) != (Image *) NULL)
+    {
+      resize_image=ResizeImage(image,106,80,LanczosFilter,1.0,&amp;exception);
+      DestroyImage(image);
+      if (resize_image == (Image *) NULL)
+        {
+          CatchException(&amp;exception);
+          continue;
+        }
+      (void) AppendImageToList(&amp;thumbnails,resize_image);
+    }
+  /*
+    Write the thumbnail image sequence to file
+  */
+  if (thumbnails)
+    {
+      (void) strcpy(thumbnails-&gt;filename,argv[argc-1]);
+      image_info-&gt;adjoin=MagickTrue;
+      printf(&quot;Writing %s ... %lu frames\n&quot;, thumbnails-&gt;filename,
+             GetImageListLength(thumbnails));
+      WriteImage(image_info,thumbnails);
+    }
+
+  /*
+    Release resources
+  */
+  DestroyImageList(thumbnails);
+  DestroyImageInfo(image_info);
+  DestroyExceptionInfo(&amp;exception);
+  DestroyMagick();
+  return(0);
+}
+</pre>
+<p>To compile on Unix, the command would look something like this:</p>
+<pre class="literal-block">
+gcc -o demo demo.c -O `GraphicsMagick-config --cppflags --ldflags --libs`
+</pre>
+<p>As a usage example, with the input files in1.gif, in2.png, and in3.jpg, create
+the animation file out.miff:</p>
+<pre class="literal-block">
+demo in1.gif in2.png in3.jpg out.miff
+</pre>
+<p>The resulting animation may be played on an X11 display using 'gm animate
+out.miff'.</p>
+<p>The GraphicsMagick-config script reproduces the options which were used to
+compile the GraphicsMagick utilities. Using compatible options ensures that
+your program will compile and run.</p>
+<hr class="docutils" />
+<p>Copyright © GraphicsMagick Group 2002 - 2020</p>
+</div>
+</body>
+</html>

@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.15.2: http://docutils.sourceforge.net/" />
+<title>Magick::Exception</title>
+<link rel="stylesheet" href="../docutils-articles.css" type="text/css" />
+</head>
+<body>
+
+<div class="banner">
+<img src="../images/gm-107x76.png" alt="GraphicMagick logo" width="107" height="76" />
+<span class="title">GraphicsMagick</span>
+<form action="http://www.google.com/search">
+	<input type="hidden" name="domains" value="www.graphicsmagick.org" />
+	<input type="hidden" name="sitesearch" value="www.graphicsmagick.org" />
+    <span class="nowrap"><input type="text" name="q" size="25" maxlength="255" />&nbsp;<input type="submit" name="sa" value="Search" /></span>
+</form>
+</div>
+
+<div class="navmenu">
+<ul>
+<li><a href="../index.html">Home</a></li>
+<li><a href="../project.html">Project</a></li>
+<li><a href="../download.html">Download</a></li>
+<li><a href="../README.html">Install</a></li>
+<li><a href="../Hg.html">Source</a></li>
+<li><a href="../NEWS.html">News</a> </li>
+<li><a href="../utilities.html">Utilities</a></li>
+<li><a href="../programming.html">Programming</a></li>
+<li><a href="../reference.html">Reference</a></li>
+</ul>
+</div>
+<div class="document" id="magick-exception">
+<h1 class="title">Magick::Exception</h1>
+
+<!-- -*- mode: rst -*- -->
+<!-- This text is in reStucturedText format, so it may look a bit odd. -->
+<!-- See http://docutils.sourceforge.net/rst.html for details. -->
+<p><em>Exception</em> represents the base class of objects thrown when
+Magick++ reports an error. Magick++ throws C++ exceptions synchronous
+with the operation where the error occurred. This allows errors to be
+trapped within the enclosing code (perhaps the code to process a
+single image) while allowing the code to be written with a simple
+coding style.</p>
+<p>A try/catch block should be placed around any sequence of operations
+which can be considered an important body of work. For example, if
+your program processes lists of images and some of these images may be
+defective, by placing the try/catch block around the entire sequence
+of code that processes one image (including instantiating the image
+object), you can minimize the overhead of error checking while
+ensuring that all objects created to deal with that object are safely
+destroyed (C++ exceptions unroll the stack until the enclosing try
+block, destroying any objects on the stack).</p>
+<p>Note that any objects allocated via 'new' with a pointer on the stack
+are not automatically destroyed by unrolling the stack via a C++
+exception so that it may be necessary to catch the exception at each
+level, destroy any objects allocated via 'new' (or malloc()) and then
+re-throw the exception.  This includes constructors which might
+encounter an exception while the object is being constructed and
+should destroy any already-allocated data.  Magick++ classes are
+designed to be <strong>very</strong> tiny so it is recommended to automatically
+allocate them on the stack when possible rather than via 'new'.</p>
+<p>The pseudo code for the main loop of your program may look like:</p>
+<pre class="literal-block">
+ using namespace std;
+ for infile in list
+ {
+   try {
+     // Construct an image instance first so that we don't have to worry
+     // about object construction failure due to a minor warning exception
+     // being thrown.
+     Magick::Image image;
+
+     // Determine if Warning exceptions are thrown.
+     // Use is optional.  Set to true to block Warning exceptions.
+     image.quiet( false );
+
+     try {
+       // Try reading image file
+       image.read(infile);
+     }
+     catch( Magick::WarningCoder &amp;warning )
+     {
+       // Process coder warning while loading file (e.g. TIFF warning)
+       // Maybe the user will be interested in these warnings (or not).
+       // If a warning is produced while loading an image, the image
+       // can normally still be used (but not if the warning was about
+       // something important!)
+       cerr &lt;&lt; “Coder Warning: “ &lt;&lt; warning.what() &lt;&lt; endl;
+     }
+     catch( Magick::Warning &amp;warning )
+     {
+       // Handle any other Magick++ warning.
+       cerr &lt;&lt; “Warning: “ &lt;&lt; warning.what() &lt;&lt; endl;
+     }
+     catch( Magick::ErrorFileOpen &amp;error )
+     {
+       // Process Magick++ file open error
+       cerr &lt;&lt; “Error: “ &lt;&lt; error.what() &lt;&lt; endl;
+       continue; // Try next image.
+     }
+     try {
+       image.rotate(90);
+       image.write(“outfile”);
+     }
+     catch ( MagickExeption &amp; error)
+     {
+        // Handle problem while rotating or writing outfile.
+        cerr &lt;&lt; “Caught Magick++ exception: “ &lt;&lt; error.what() &lt;&lt; endl;
+     }
+   }
+   catch( std::exception &amp;error )
+   {
+      // Process any other exceptions derived from standard C++ exception
+      cerr &lt;&lt; “Caught C++ STD exception: “ &lt;&lt; error.what() &lt;&lt; endl;
+   }
+   catch( ... )
+   {
+     // Process *any* exception (last-ditch effort). There is not a lot
+     // you can do here other to retry the operation that failed, or exit
+     // the program.
+   }
+ }
+
+The desired location and number of try/catch blocks in your program
+depends how sophisticated its error handling must be. Very simple
+programs may use just one try/catch block.
+</pre>
+<p>The <em>Exception</em> class is derived from the C++ standard
+<em>std::exception</em> class. This means that it contains a C++ string
+containing additional information about the error (e.g to display to
+the user). Obtain access to this string via the what() method.  For
+example:</p>
+<pre class="literal-block">
+catch( Exception &amp;error_ )
+{
+  cout &lt;&lt; &quot;Caught exception: &quot; &lt;&lt; error_.what() &lt;&lt; endl;
+}
+</pre>
+<p>The classes <em>Warning</em> and <em>Error</em> derive from the <em>Exception</em>
+class. Exceptions derived from <em>Warning</em> are thrown to represent
+non-fatal errors which may effect the completeness or quality of the
+result (e.g. one image provided as an argument to montage is
+defective). In most cases, a <em>Warning</em> exception may be ignored by
+catching it immediately, processing it (e.g. printing a diagnostic)
+and continuing on. Exceptions derived from <em>Error</em> are thrown to
+represent fatal errors that can not produce a valid result
+(e.g. attempting to read a file which does not exist).</p>
+<p>The specific derived exception classes are shown in the following tables:</p>
+<table border="1" class="docutils">
+<caption>Warning (Suspect but completed) Sub-Classes</caption>
+<colgroup>
+<col width="35%" />
+<col width="65%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Warning</th>
+<th class="head">Warning Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>WarningUndefined</td>
+<td>Unspecified type.</td>
+</tr>
+<tr><td>WarningBlob</td>
+<td>NOT CURRENTLY USED</td>
+</tr>
+<tr><td>WarningCache</td>
+<td>NOT CURRENTLY USED</td>
+</tr>
+<tr><td>WarningCoder</td>
+<td>Issued by some coders.</td>
+</tr>
+<tr><td>WarningConfigure</td>
+<td>NOT CURRENTLY USED</td>
+</tr>
+<tr><td>WarningCorruptImage</td>
+<td>Issued when an image may be corrupt.</td>
+</tr>
+<tr><td>WarningDelegate</td>
+<td>Reported by a subordinate program.</td>
+</tr>
+<tr><td>WarningDraw</td>
+<td>Reported by the rendering subsystem.</td>
+</tr>
+<tr><td>WarningFileOpen</td>
+<td>Reported when file could not be opened.</td>
+</tr>
+<tr><td>WarningImage</td>
+<td>NOT CURRENTLY USED</td>
+</tr>
+<tr><td>WarningMissingDelegate</td>
+<td>NOT CURRENTLY USED</td>
+</tr>
+<tr><td>WarningModule</td>
+<td>NOT CURRENTLY USED</td>
+</tr>
+<tr><td>WarningMonitor</td>
+<td>NOT CURRENTLY USED</td>
+</tr>
+<tr><td>WarningOption</td>
+<td>Reported when an option is incorrect.</td>
+</tr>
+<tr><td>WarningRegistry</td>
+<td>NOT CURRENTLY USED</td>
+</tr>
+<tr><td>WarningResourceLimit</td>
+<td>Reported when a resource is exhausted.</td>
+</tr>
+<tr><td>WarningStream</td>
+<td>NOT CURRENTLY USED</td>
+</tr>
+<tr><td>WarningType</td>
+<td>NOT CURRENTLY USED</td>
+</tr>
+<tr><td>WarningXServer</td>
+<td>Warnings reported by the X11 subsystem.</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils">
+<caption>Error (Failed) Sub-Classes</caption>
+<colgroup>
+<col width="33%" />
+<col width="67%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Error</th>
+<th class="head">Error Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>ErrorUndefined</td>
+<td>Unspecified error type.</td>
+</tr>
+<tr><td>ErrorBlob</td>
+<td>Reported by BLOB I/O subsystem.</td>
+</tr>
+<tr><td>ErrorCache</td>
+<td>Reported by the pixel cache subsystem.</td>
+</tr>
+<tr><td>ErrorCoder</td>
+<td>Reported by coders (image format support).</td>
+</tr>
+<tr><td>ErrorConfigure</td>
+<td>Reported while loading configuration files.</td>
+</tr>
+<tr><td>ErrorCorruptImage</td>
+<td>Reported when the image file is corrupt.</td>
+</tr>
+<tr><td>ErrorDelegate</td>
+<td>Reported by a subordinate program</td>
+</tr>
+<tr><td>ErrorDraw</td>
+<td>Reported while drawing on image.</td>
+</tr>
+<tr><td>ErrorFileOpen</td>
+<td>Reported when the image file can not be opened.</td>
+</tr>
+<tr><td>ErrorImage</td>
+<td>Reported while drawing.</td>
+</tr>
+<tr><td>ErrorMissingDelegate</td>
+<td>Reported when optional add-on library or
+subordinate program is missing (but is needed).</td>
+</tr>
+<tr><td>ErrorModule</td>
+<td>Reported by the module loader subsystem.</td>
+</tr>
+<tr><td>ErrorMonitor</td>
+<td>Reported by the progress monitor.</td>
+</tr>
+<tr><td>ErrorOption</td>
+<td>Reported when option is malformed or out of range.</td>
+</tr>
+<tr><td>ErrorRegistry</td>
+<td>Reported by the image/BLOB registry subsystem.</td>
+</tr>
+<tr><td>ErrorResourceLimit</td>
+<td>Reported when a program resource is exhausted.</td>
+</tr>
+<tr><td>ErrorStream</td>
+<td>Reported by the pixel stream subsystem.</td>
+</tr>
+<tr><td>ErrorType</td>
+<td>Reported by the type (font) rendering subsystem.</td>
+</tr>
+<tr><td>ErrorXServer</td>
+<td>Reported by the X11 subsystem.</td>
+</tr>
+</tbody>
+</table>
+<p>Note that <em>ErrorMissingDelegate</em> is a &quot;catch-all&quot; error reported when
+GraphicsMagick is unable to figure out how to open the file.</p>
+<p>Copyright © Bob Friesenhahn 1999 - 2020</p>
+</div>
+</body>
+</html>

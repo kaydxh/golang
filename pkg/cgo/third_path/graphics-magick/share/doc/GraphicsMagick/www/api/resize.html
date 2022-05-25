@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.15.2: http://docutils.sourceforge.net/" />
+<title>resize</title>
+<link rel="stylesheet" href="../docutils-api.css" type="text/css" />
+</head>
+<body>
+
+<div class="banner">
+<img src="../images/gm-107x76.png" alt="GraphicMagick logo" width="107" height="76" />
+<span class="title">GraphicsMagick</span>
+<form action="http://www.google.com/search">
+	<input type="hidden" name="domains" value="www.graphicsmagick.org" />
+	<input type="hidden" name="sitesearch" value="www.graphicsmagick.org" />
+    <span class="nowrap"><input type="text" name="q" size="25" maxlength="255" />&nbsp;<input type="submit" name="sa" value="Search" /></span>
+</form>
+</div>
+
+<div class="navmenu">
+<ul>
+<li><a href="../index.html">Home</a></li>
+<li><a href="../project.html">Project</a></li>
+<li><a href="../download.html">Download</a></li>
+<li><a href="../README.html">Install</a></li>
+<li><a href="../Hg.html">Source</a></li>
+<li><a href="../NEWS.html">News</a> </li>
+<li><a href="../utilities.html">Utilities</a></li>
+<li><a href="../programming.html">Programming</a></li>
+<li><a href="../reference.html">Reference</a></li>
+</ul>
+</div>
+<div class="document" id="resize">
+<h1 class="title">resize</h1>
+<h2 class="subtitle" id="resize-an-image">Resize an image</h2>
+
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#magnifyimage" id="id11">MagnifyImage</a></li>
+<li><a class="reference internal" href="#minifyimage" id="id12">MinifyImage</a></li>
+<li><a class="reference internal" href="#resizeimage" id="id13">ResizeImage</a></li>
+<li><a class="reference internal" href="#sampleimage" id="id14">SampleImage</a></li>
+<li><a class="reference internal" href="#scaleimage" id="id15">ScaleImage</a></li>
+<li><a class="reference internal" href="#thumbnailimage" id="id16">ThumbnailImage</a></li>
+</ul>
+</div>
+<div class="section" id="magnifyimage">
+<h1><a class="toc-backref" href="#id11">MagnifyImage</a></h1>
+<div class="section" id="synopsis">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#image">Image</a> *MagnifyImage( const <a class="reference external" href="../api/types.html#image">Image</a> *image, <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+</div>
+<div class="section" id="description">
+<h2>Description</h2>
+<p>MagnifyImage() is a convenience method that scales an image proportionally
+to twice its size.</p>
+<p>The format of the MagnifyImage method is:</p>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#image">Image</a> *MagnifyImage( const <a class="reference external" href="../api/types.html#image">Image</a> *image, <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>image:</dt>
+<dd>The image.</dd>
+<dt>exception:</dt>
+<dd>Return any errors or warnings in this structure.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="minifyimage">
+<h1><a class="toc-backref" href="#id12">MinifyImage</a></h1>
+<div class="section" id="id1">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#image">Image</a> *MinifyImage( const <a class="reference external" href="../api/types.html#image">Image</a> *image, <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+</div>
+<div class="section" id="id2">
+<h2>Description</h2>
+<p>MinifyImage() is a convenience method that scales an image proportionally
+to half its size.</p>
+<p>The format of the MinifyImage method is:</p>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#image">Image</a> *MinifyImage( const <a class="reference external" href="../api/types.html#image">Image</a> *image, <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>image:</dt>
+<dd>The image.</dd>
+<dt>exception:</dt>
+<dd>Return any errors or warnings in this structure.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="resizeimage">
+<h1><a class="toc-backref" href="#id13">ResizeImage</a></h1>
+<div class="section" id="id3">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#image">Image</a> *ResizeImage( <a class="reference external" href="../api/types.html#image">Image</a> *image, const unsigned long columns, const unsigned long rows,
+                    const <a class="reference external" href="../api/types.html#filtertype">FilterTypes</a> filter, const double blur,
+                    <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+</div>
+<div class="section" id="id4">
+<h2>Description</h2>
+<p>ResizeImage() scales an image to the desired dimensions with one of these
+filters:</p>
+<p>Bessel   Blackman   Box
+Catrom   Cubic      Gaussian
+Hanning  Hermite    Lanczos
+Mitchell Point      Quandratic
+Sinc     Triangle</p>
+<p>Most of the filters are FIR (finite impulse response), however, Bessel,
+Gaussian, and Sinc are IIR (infinite impulse response).  Bessel and Sinc
+are windowed (brought down to zero) with the Blackman filter.</p>
+<p>ResizeImage() was inspired by Paul Heckbert's zoom program.</p>
+<p>The format of the ResizeImage method is:</p>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#image">Image</a> *ResizeImage( <a class="reference external" href="../api/types.html#image">Image</a> *image, const unsigned long columns, const unsigned long rows,
+                    const <a class="reference external" href="../api/types.html#filtertype">FilterTypes</a> filter, const double blur,
+                    <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+<dl class="docutils">
+<dt>image:</dt>
+<dd>The image.</dd>
+<dt>columns:</dt>
+<dd>The number of columns in the scaled image.</dd>
+<dt>rows:</dt>
+<dd>The number of rows in the scaled image.</dd>
+<dt>filter:</dt>
+<dd>Image filter to use.</dd>
+<dt>blur:</dt>
+<dd>The blur factor where &gt; 1 is blurry, &lt; 1 is sharp.</dd>
+<dt>exception:</dt>
+<dd>Return any errors or warnings in this structure.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="sampleimage">
+<h1><a class="toc-backref" href="#id14">SampleImage</a></h1>
+<div class="section" id="id5">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#image">Image</a> *SampleImage( const <a class="reference external" href="../api/types.html#image">Image</a> *image, const unsigned long columns,
+                    const unsigned long rows, <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+</div>
+<div class="section" id="id6">
+<h2>Description</h2>
+<p>SampleImage() scales an image to the desired dimensions with pixel
+sampling.  Unlike other scaling methods, this method does not introduce
+any additional color into the scaled image.</p>
+<p>The format of the SampleImage method is:</p>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#image">Image</a> *SampleImage( const <a class="reference external" href="../api/types.html#image">Image</a> *image, const unsigned long columns,
+                    const unsigned long rows, <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+<dl class="docutils">
+<dt>image:</dt>
+<dd>The image.</dd>
+<dt>columns:</dt>
+<dd>The number of columns in the sampled image.</dd>
+<dt>rows:</dt>
+<dd>The number of rows in the sampled image.</dd>
+<dt>exception:</dt>
+<dd>Return any errors or warnings in this structure.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="scaleimage">
+<h1><a class="toc-backref" href="#id15">ScaleImage</a></h1>
+<div class="section" id="id7">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#image">Image</a> *ScaleImage( const <a class="reference external" href="../api/types.html#image">Image</a> *image, const unsigned long columns,
+                   const unsigned long rows, <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+</div>
+<div class="section" id="id8">
+<h2>Description</h2>
+<p>ScaleImage() changes the size of an image to the given dimensions.</p>
+<p>The format of the ScaleImage method is:</p>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#image">Image</a> *ScaleImage( const <a class="reference external" href="../api/types.html#image">Image</a> *image, const unsigned long columns,
+                   const unsigned long rows, <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+<dl class="docutils">
+<dt>image:</dt>
+<dd>The image.</dd>
+<dt>columns:</dt>
+<dd>The number of columns in the scaled image.</dd>
+<dt>rows:</dt>
+<dd>The number of rows in the scaled image.</dd>
+<dt>exception:</dt>
+<dd>Return any errors or warnings in this structure.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="thumbnailimage">
+<h1><a class="toc-backref" href="#id16">ThumbnailImage</a></h1>
+<div class="section" id="id9">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#image">Image</a> *ThumbnailImage( const <a class="reference external" href="../api/types.html#image">Image</a> *image, const unsigned long columns,
+                       const unsigned long rows, <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+</div>
+<div class="section" id="id10">
+<h2>Description</h2>
+<p>ThumbnailImage() changes the size of an image to the given dimensions.
+This method was designed by Bob Friesenhahn as a low cost thumbnail
+generator.</p>
+<p>The format of the ThumbnailImage method is:</p>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#image">Image</a> *ThumbnailImage( const <a class="reference external" href="../api/types.html#image">Image</a> *image, const unsigned long columns,
+                       const unsigned long rows, <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+<dl class="docutils">
+<dt>image:</dt>
+<dd>The image.</dd>
+<dt>columns:</dt>
+<dd>The number of columns in the scaled image.</dd>
+<dt>rows:</dt>
+<dd>The number of rows in the scaled image.</dd>
+<dt>exception:</dt>
+<dd>Return any errors or warnings in this structure.</dd>
+</dl>
+</div>
+</div>
+</div>
+</body>
+</html>

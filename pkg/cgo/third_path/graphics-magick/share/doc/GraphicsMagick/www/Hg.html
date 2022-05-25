@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.15.2: http://docutils.sourceforge.net/" />
+<title>GraphicsMagick Mercurial</title>
+<meta content="GraphicsMagick is a robust collection of tools and libraries to read, write, and manipulate an image in any of the more popular image formats including GIF, JPEG, PNG, PDF, and Photo CD. With GraphicsMagick you can create GIFs dynamically making it suitable for Web applications.  You can also resize, rotate, sharpen, color reduce, or add special effects to an image and save your completed work in the same or differing image format. " name="description" />
+<meta content="GraphicsMagick, PerlMagick, visualization, image processing, software development, simulation, image, software, Magick++" name="keywords" />
+<link rel="stylesheet" href="docutils-articles.css" type="text/css" />
+</head>
+<body>
+
+<div class="banner">
+<img src="images/gm-107x76.png" alt="GraphicMagick logo" width="107" height="76" />
+<span class="title">GraphicsMagick</span>
+<form action="http://www.google.com/search">
+	<input type="hidden" name="domains" value="www.graphicsmagick.org" />
+	<input type="hidden" name="sitesearch" value="www.graphicsmagick.org" />
+    <span class="nowrap"><input type="text" name="q" size="25" maxlength="255" />&nbsp;<input type="submit" name="sa" value="Search" /></span>
+</form>
+</div>
+
+<div class="navmenu">
+<ul>
+<li><a href="index.html">Home</a></li>
+<li><a href="project.html">Project</a></li>
+<li><a href="download.html">Download</a></li>
+<li><a href="README.html">Install</a></li>
+<li><a href="Hg.html">Source</a></li>
+<li><a href="NEWS.html">News</a> </li>
+<li><a href="utilities.html">Utilities</a></li>
+<li><a href="programming.html">Programming</a></li>
+<li><a href="reference.html">Reference</a></li>
+</ul>
+</div>
+<div class="document" id="graphicsmagick-mercurial">
+<h1 class="title">GraphicsMagick Mercurial</h1>
+
+<!-- -*- mode: rst -*- -->
+<!-- This text is in reStucturedText format, so it may look a bit odd. -->
+<!-- See http://docutils.sourceforge.net/rst.html for details. -->
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#what-is-mercurial" id="id1">What is Mercurial?</a></li>
+<li><a class="reference internal" href="#web-access" id="id2">Web Access</a></li>
+<li><a class="reference internal" href="#cloning-the-mercurial-repository" id="id3">Cloning the Mercurial Repository</a></li>
+<li><a class="reference internal" href="#selecting-a-version-of-the-code" id="id4">Selecting a version of the code</a></li>
+<li><a class="reference internal" href="#updating-from-the-mercurial-repository" id="id5">Updating from the Mercurial Repository</a></li>
+<li><a class="reference internal" href="#mercurial-software" id="id6">Mercurial Software</a></li>
+<li><a class="reference internal" href="#mercurial-for-graphicsmagick-developers" id="id7">Mercurial for GraphicsMagick Developers</a></li>
+<li><a class="reference internal" href="#ssh-public-keys-for-hg-graphicsmagick-org" id="id8">SSH Public Keys For hg.GraphicsMagick.org</a></li>
+<li><a class="reference internal" href="#email-notifications" id="id9">Email Notifications</a></li>
+<li><a class="reference internal" href="#mercurial-topics" id="id10">Mercurial Topics</a></li>
+</ul>
+</div>
+<p>The GraphicsMagick source code is available via <a class="reference external" href="https://www.mercurial-scm.org/">Mercurial</a>. <a class="reference external" href="https://www.mercurial-scm.org/">Mercurial</a>
+is a convenient way for developers from around the country or world to
+download the GraphicsMagick source, fix bugs, or add new features.
+Due to the way <a class="reference external" href="https://www.mercurial-scm.org/">Mercurial</a> works, it may also be used to manage local
+changes to GraphicsMagick.</p>
+<div class="section" id="what-is-mercurial">
+<h1><a class="toc-backref" href="#id1">What is Mercurial?</a></h1>
+<p><a class="reference external" href="https://www.mercurial-scm.org/">Mercurial</a> (also known as <cite>Hg</cite> due to the abbreviation for Mercury in
+the periodic table of the elements) is a modern source control system
+which provides anyone who clones a repository with a stand-alone local
+repository containing the full development history and the ability to
+select any version of the code.  Since the local repository is
+fully-functional, you may use the same repository to manage your local
+changes to GraphicsMagick code and you may use the repository to share
+your changes with others.</p>
+</div>
+<div class="section" id="web-access">
+<h1><a class="toc-backref" href="#id2">Web Access</a></h1>
+<p>The <a class="reference external" href="http://hg.code.sf.net/p/graphicsmagick/code/">GraphicsMagick repository at SourceForge</a> web interface is
+available which may be used to interactively view the latest versions
+of files, or the changes to files, using your web browser.</p>
+</div>
+<div class="section" id="cloning-the-mercurial-repository">
+<h1><a class="toc-backref" href="#id3">Cloning the Mercurial Repository</a></h1>
+<p>To get the tree and place it in a sub-directory of your current working
+directory, issue the command:</p>
+<pre class="literal-block">
+hg clone http://hg.code.sf.net/p/graphicsmagick/code GM
+</pre>
+</div>
+<div class="section" id="selecting-a-version-of-the-code">
+<h1><a class="toc-backref" href="#id4">Selecting a version of the code</a></h1>
+<p>By default the cloned directory is populated with files from the
+<cite>default</cite> (i.e. head) branch of the code, which is where active
+development happens.</p>
+<p>If you require a specific release of GraphicsMagick (e.g. 1.3.23), you may select it like:</p>
+<pre class="literal-block">
+hg update -r GraphicsMagick-1_3_23
+</pre>
+<p>or if you require a specific branch of GraphicsMagick (e.g. 1.3), you may use:</p>
+<pre class="literal-block">
+hg update -r GraphicsMagick-1_3
+</pre>
+<p>or you may request the files which were current on a specific date:</p>
+<pre class="literal-block">
+hg update -d 2009-01-14
+</pre>
+<p>Use:</p>
+<pre class="literal-block">
+hg branches
+</pre>
+<p>to see the available branches, and:</p>
+<pre class="literal-block">
+hg tags
+</pre>
+<p>to see the available release tags.</p>
+</div>
+<div class="section" id="updating-from-the-mercurial-repository">
+<h1><a class="toc-backref" href="#id5">Updating from the Mercurial Repository</a></h1>
+<p>To pull more changes from the repository, execute:</p>
+<pre class="literal-block">
+hg pull
+</pre>
+<p>and to make them visible in your files (via a merge), execute:</p>
+<pre class="literal-block">
+hg update
+</pre>
+<p>or just:</p>
+<pre class="literal-block">
+hg pull -u
+</pre>
+<p>The latter pulls down any updates into your local repository and
+automatically does a merge.</p>
+</div>
+<div class="section" id="mercurial-software">
+<h1><a class="toc-backref" href="#id6">Mercurial Software</a></h1>
+<p>The best place to look for the latest version of Mercurial (<cite>Hg</cite>) is
+at the <a class="reference external" href="https://www.mercurial-scm.org/">Mercurial</a> web site.  Most free operating systems (e.g. Linux,
+OpenIndiana, and *BSD) will offer a version of Mercurial as an
+installable package and it may already be installed on your system.
+We recommend use of <a class="reference external" href="https://tortoisehg.bitbucket.io/">TortoiseHg</a> on Microsoft Windows systems since it
+provides a very nice graphical interface.  <a class="reference external" href="https://tortoisehg.bitbucket.io/">TortoiseHg</a> is also
+available on Linux and other systems.</p>
+</div>
+<div class="section" id="mercurial-for-graphicsmagick-developers">
+<h1><a class="toc-backref" href="#id7">Mercurial for GraphicsMagick Developers</a></h1>
+<p>Since <a class="reference external" href="https://www.mercurial-scm.org/">Mercurial</a> is a distributed revision control system, you may
+clone the GraphicsMagick repository and work for days or weeks (making
+your own local commits) before you decide to push some or all of your
+changes to the GraphicsMagick development repository.  GraphicsMagick
+developers first commit changes to their own local respository, then
+they push their changes to the GraphicsMagick development repository
+at hg.graphicsmagick.org, later on (after testing and possible fixes)
+I will push the changes to the stable repository at SourceForge.
+Pushes to the stable repository at SourceForge should occur at least
+as often as source code snapshots are produced.</p>
+<p>The repository hierarchy is as follows:</p>
+<ol class="arabic simple">
+<li>Local</li>
+</ol>
+<blockquote>
+The developer makes any local changes and commits what he likes in his
+own repository.  It is best to commit often and whenever all the
+files have been updated to implement a coherent change or feature
+(including the ChangeLog file!) since <a class="reference external" href="https://www.mercurial-scm.org/">Mercurial</a> stores related
+changes as a changeset along with the change message you enter.
+When you push your repository, these changesets and messages are
+preserved.</blockquote>
+<ol class="arabic simple" start="2">
+<li>Unstable</li>
+</ol>
+<blockquote>
+<p>The unstable development repository is available via ssh at
+&quot;<a class="reference external" href="ssh://yourid&#64;hg.GraphicsMagick.org//hg/GraphicsMagick">ssh://yourid&#64;hg.GraphicsMagick.org//hg/GraphicsMagick</a>&quot;.</p>
+<p>Where <cite>yourid</cite> is the Unix user ID on the GraphicsMagick server.
+The <cite>yourid&#64;</cite> part may left out if your client system uses the same
+user ID as on the GraphicsMagick server.</p>
+</blockquote>
+<ol class="arabic simple" start="3">
+<li>Stable</li>
+</ol>
+<blockquote>
+The stable repository is available via http at
+&quot;<a class="reference external" href="http://hg.code.sf.net/p/graphicsmagick/code">http://hg.code.sf.net/p/graphicsmagick/code</a>&quot;.  Any changes in the
+unstable development repository are pushed to the stable repository
+(by the developer responsible for this role) once any necessary
+adjustments have been made, documentation files have been generated,
+and the software test suite has passed on at least one machine.</blockquote>
+<p>To build your local development repository (as quickly as possible),
+you may use these steps:</p>
+<ol class="arabic">
+<li><p class="first">Clone the stable respository at SourceForge:</p>
+<pre class="literal-block">
+hg clone http://hg.code.sf.net/p/graphicsmagick/code GM
+</pre>
+</li>
+<li><p class="first">Adjust your local repository path default to use the unstable repository.</p>
+<p>Edit .hg/hgrc in your local repository so that it contains:</p>
+<pre class="literal-block">
+[paths]
+default = ssh://yourid&#64;hg.GraphicsMagick.org//hg/GraphicsMagick
+</pre>
+<p>where <cite>yourid</cite> is the Unix user ID on the GraphicsMagick server.</p>
+</li>
+<li><p class="first">Pull any additional pending updates from the unstable repository:</p>
+<pre class="literal-block">
+hg pull -u
+</pre>
+</li>
+</ol>
+<p>Please note that when ssh access is used, Mercurial uncompresses any
+data and sends it in uncompressed form.  Mercurial expects that
+compression will be enabled in ssh when needed.  One way to enable ssh
+compression is to put this in your local .hgrc:</p>
+<pre class="literal-block">
+[ui]
+ssh = ssh -C
+</pre>
+<p>but ssh also provides its own way to enable compression on a
+site-by-site basis (e.g. via .ssh/config).  For example an entry in
+.ssh/config will enable use of compression:</p>
+<pre class="literal-block">
+Host hg.GraphicsMagick.org
+  Compression yes
+</pre>
+</div>
+<div class="section" id="ssh-public-keys-for-hg-graphicsmagick-org">
+<h1><a class="toc-backref" href="#id8">SSH Public Keys For hg.GraphicsMagick.org</a></h1>
+<p>For reference, these are the ssh public keys for the server at hg.GraphicsMagick.org:</p>
+<p>DSS (DSA):</p>
+<pre class="literal-block">
+ssh-dss AAAAB3NzaC1kc3MAAACBANZAsDZ9fUWQNwUoRw8HoNl8aLLs97KmyiaA6mSPeM1NeQKrxk0PAFEXMR05CNcZHSyopUx6B8PuTWE4+4rDhFCw7J0JkfFS4uIG3bu3YCRqQrg2k4VsDw60zK9sNum5BcLEWd+qs8X7DrEff5fGmXkc8IdMXPgHTzaJWCT9YJU1AAAAFQCJaFq4/7FqHcHm5abhW5qJyH0RgQAAAIEAgv6s3gfB8p/Elf0ZcIZ5eITCpI9aZFaSLSeKHMmhYps1uMuZ9LtWjZ11cotcuOh0tlwGUixlu/5soZqX6VbnJAuyvfI+7WSUFuJmRjsbXJVCBuSPZ7YgMNuLYlLst7sZLCs5hU61jxnaR2zmkUjDWP4GWROC6AYZXlbJX1qRJ7YAAACBAMsIbVVgz/aP95yCPk1Pw0FjoL5t6C3BpxdA9aiIFBMg14ElaHh+gaXQoZfjAuafZ8pc5woYtQLLkzinCQnmvH/EqqYCe+Fu7jcsYU7oWUXG1O9ZBKI7QZkeCTaYMXIWBplgVD+tkRpH/gxn5iweNMM9e43qPB0b2JYObliqD1E9 root&#64;src
+</pre>
+<p>RSA:</p>
+<pre class="literal-block">
+ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA1IuJDYT85qz/w6+vn5hkpzM5Ju5dsMeJD9GnATj3op5dhBWyfbaJpS7yyK2Vhhz26GBUvUtO3LGm0dQvdj83P3DX3aUuzfnC3Bc9dWeARomQPtDy9MfDikD6kqjD9/Lemgvv8I4Na9vUEmYvXUpTrtawJ4S7A7IctPnvKLPGA5+qY5XzMSE0wcOSBdbeV1PAIDOXYH2hKakZwtxXlvfTv6CZphz/jG5nmf+/Zlkr4yopNvPFbtd3vbaaqSuCoGHXKfmpRko2gXf6EGF92wXzbsE1tW3AkSJ2xdhFHRNmQEu2y9F1l9zb8IETBtKMWRJWAsPPpUSkht0DRsTXt/f+Zw== root&#64;src
+</pre>
+<p>ECDSA:</p>
+<pre class="literal-block">
+ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBOrGQ6tjmZvm8w+GP7yLFJ1/vkImKkpXv7kPNxA0+Sfx6WCqAjV0pWP5MVCraP8SNbphL8jiS/x3WADXlf+R2KQ= root&#64;src
+</pre>
+<p>ED25519:</p>
+<pre class="literal-block">
+ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAtwIcJEBiSUWsB2sydInR76gE84Jp1rxmc8lTGPg5cB root&#64;src
+</pre>
+</div>
+<div class="section" id="email-notifications">
+<h1><a class="toc-backref" href="#id9">Email Notifications</a></h1>
+<p>An email notification is sent to the <a class="reference external" href="https://lists.sourceforge.net/lists/listinfo/graphicsmagick-commit">graphicsmagick-commit</a> mailing
+list at SourceForge whenever a change is submitted to the development
+(unstable) repository.  Subscribe to this list if you would like to be
+notified by email of changes when they occur.</p>
+</div>
+<div class="section" id="mercurial-topics">
+<h1><a class="toc-backref" href="#id10">Mercurial Topics</a></h1>
+<ul class="simple">
+<li><a class="reference external" href="https://www.mercurial-scm.org/wiki/MergeToolConfiguration">Merge Tool Configuration</a></li>
+<li><a class="reference external" href="https://www.mercurial-scm.org/wiki/TipsAndTricks#Keep_.22My.22_or_.22Their.22_files_when_doing_a_merge">Keep &quot;My&quot; or &quot;Their&quot; files when doing a merge</a></li>
+</ul>
+<hr class="docutils" />
+<p>Copyright © GraphicsMagick Group 2012 - 2020</p>
+</div>
+</div>
+</body>
+</html>

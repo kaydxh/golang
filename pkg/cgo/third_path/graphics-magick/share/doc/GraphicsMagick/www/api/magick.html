@@ -1,0 +1,478 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.15.2: http://docutils.sourceforge.net/" />
+<title>magick</title>
+<link rel="stylesheet" href="../docutils-api.css" type="text/css" />
+</head>
+<body>
+
+<div class="banner">
+<img src="../images/gm-107x76.png" alt="GraphicMagick logo" width="107" height="76" />
+<span class="title">GraphicsMagick</span>
+<form action="http://www.google.com/search">
+	<input type="hidden" name="domains" value="www.graphicsmagick.org" />
+	<input type="hidden" name="sitesearch" value="www.graphicsmagick.org" />
+    <span class="nowrap"><input type="text" name="q" size="25" maxlength="255" />&nbsp;<input type="submit" name="sa" value="Search" /></span>
+</form>
+</div>
+
+<div class="navmenu">
+<ul>
+<li><a href="../index.html">Home</a></li>
+<li><a href="../project.html">Project</a></li>
+<li><a href="../download.html">Download</a></li>
+<li><a href="../README.html">Install</a></li>
+<li><a href="../Hg.html">Source</a></li>
+<li><a href="../NEWS.html">News</a> </li>
+<li><a href="../utilities.html">Utilities</a></li>
+<li><a href="../programming.html">Programming</a></li>
+<li><a href="../reference.html">Reference</a></li>
+</ul>
+</div>
+<div class="document" id="magick">
+<h1 class="title">magick</h1>
+<h2 class="subtitle" id="image-format-support-interfaces">Image format support interfaces</h2>
+
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#destroymagick" id="id31">DestroyMagick</a></li>
+<li><a class="reference internal" href="#destroymagickinfo" id="id32">DestroyMagickInfo</a></li>
+<li><a class="reference internal" href="#destroymagickinfolist" id="id33">DestroyMagickInfoList</a></li>
+<li><a class="reference internal" href="#getimagemagick" id="id34">GetImageMagick</a></li>
+<li><a class="reference internal" href="#getmagickinfo" id="id35">GetMagickInfo</a></li>
+<li><a class="reference internal" href="#getmagickinfoarray" id="id36">GetMagickInfoArray</a></li>
+<li><a class="reference internal" href="#initializemagick" id="id37">InitializeMagick</a></li>
+<li><a class="reference internal" href="#initializemagickex" id="id38">InitializeMagickEx</a></li>
+<li><a class="reference internal" href="#ismagickconflict" id="id39">IsMagickConflict</a></li>
+<li><a class="reference internal" href="#listmagickinfo" id="id40">ListMagickInfo</a></li>
+<li><a class="reference internal" href="#listmodulemap" id="id41">ListModuleMap</a></li>
+<li><a class="reference internal" href="#magicktomime" id="id42">MagickToMime</a></li>
+<li><a class="reference internal" href="#registermagickinfo" id="id43">RegisterMagickInfo</a></li>
+<li><a class="reference internal" href="#panicdestroymagick" id="id44">PanicDestroyMagick</a></li>
+<li><a class="reference internal" href="#setmagickinfo" id="id45">SetMagickInfo</a></li>
+<li><a class="reference internal" href="#unregistermagickinfo" id="id46">UnregisterMagickInfo</a></li>
+</ul>
+</div>
+<div class="section" id="destroymagick">
+<h1><a class="toc-backref" href="#id31">DestroyMagick</a></h1>
+<div class="section" id="synopsis">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+DestroyMagick( void );
+</pre>
+</div>
+<div class="section" id="description">
+<h2>Description</h2>
+<p>DestroyMagick() destroys the GraphicsMagick environment, releasing all
+allocated semaphores, memory, and temporary files.  This function
+should be invoked in the primary (original) thread of the application's
+process while shutting down, and only after any threads which might be
+using GraphicsMagick functions have terminated.  Since GraphicsMagick
+uses threads internally via OpenMP, it is also necessary for any function
+calls into GraphicsMagick to have already returned so that OpenMP worker
+threads are quiesced and won't be accessing any semaphores or data
+structures which are destroyed by this function.</p>
+<p>The format of the DestroyMagick function is:</p>
+<pre class="literal-block">
+DestroyMagick( void );
+</pre>
+</div>
+</div>
+<div class="section" id="destroymagickinfo">
+<h1><a class="toc-backref" href="#id32">DestroyMagickInfo</a></h1>
+<div class="section" id="id1">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+void DestroyMagickInfo( <a class="reference external" href="../api/types.html#magickinfo">MagickInfo</a> ** magick_info );
+</pre>
+</div>
+<div class="section" id="id2">
+<h2>Description</h2>
+<p>DestroyMagickInfo() destroys a MagickInfo structure.</p>
+<p>The format of the DestroyMagickInfoList method is:</p>
+<pre class="literal-block">
+void DestroyMagickInfo( <a class="reference external" href="../api/types.html#magickinfo">MagickInfo</a> ** magick_info );
+</pre>
+</div>
+</div>
+<div class="section" id="destroymagickinfolist">
+<h1><a class="toc-backref" href="#id33">DestroyMagickInfoList</a></h1>
+<div class="section" id="id3">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+void DestroyMagickInfoList( void );
+</pre>
+</div>
+<div class="section" id="id4">
+<h2>Description</h2>
+<p>DestroyMagickInfo() deallocates memory associated with the MagickInfo list.</p>
+<p>The format of the DestroyMagickInfoList method is:</p>
+<pre class="literal-block">
+void DestroyMagickInfoList( void );
+</pre>
+</div>
+</div>
+<div class="section" id="getimagemagick">
+<h1><a class="toc-backref" href="#id34">GetImageMagick</a></h1>
+<div class="section" id="id5">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+const char *GetImageMagick( const unsigned char *magick, const size_t length );
+</pre>
+</div>
+<div class="section" id="id6">
+<h2>Description</h2>
+<p>GetImageMagick() searches for an image format that matches the specified
+magick string.  If one is found the name is returned otherwise NULL.</p>
+<p>The format of the GetImageMagick method is:</p>
+<pre class="literal-block">
+const char *GetImageMagick( const unsigned char *magick, const size_t length );
+</pre>
+<dl class="docutils">
+<dt>magick:</dt>
+<dd>The image format we are searching for.</dd>
+<dt>length:</dt>
+<dd>The length of the binary string.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="getmagickinfo">
+<h1><a class="toc-backref" href="#id35">GetMagickInfo</a></h1>
+<div class="section" id="id7">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+const <a class="reference external" href="../api/types.html#magickinfo">MagickInfo</a> *GetMagickInfo( const char *name, <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+</div>
+<div class="section" id="id8">
+<h2>Description</h2>
+<p>GetMagickInfo() returns a pointer MagickInfo structure that matches
+the specified name.  If name is NULL, the head of the image format list
+is returned. It is not safe to traverse the list by using the previous and
+next pointers in the MagickInfo structure since the list contents or order
+may be altered while the list is being traversed. If the list must be
+traversed, access it via the GetMagickInfoArray function instead.</p>
+<p>If GraphicsMagick has not been initialized via InitializeMagick()
+then this function will not work.</p>
+<p>The format of the GetMagickInfo method is:</p>
+<pre class="literal-block">
+const <a class="reference external" href="../api/types.html#magickinfo">MagickInfo</a> *GetMagickInfo( const char *name, <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>name:</dt>
+<dd>The image format we are looking for.</dd>
+<dt>exception:</dt>
+<dd>Return any errors or warnings in this structure.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="getmagickinfoarray">
+<h1><a class="toc-backref" href="#id36">GetMagickInfoArray</a></h1>
+<div class="section" id="id9">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#magickinfo">MagickInfo</a> ** GetMagickInfoArray( <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+</div>
+<div class="section" id="id10">
+<h2>Description</h2>
+<p>GetMagickInfoArray() returns a sorted null-terminated array of MagickInfo
+pointers corresponding to the available format registrations. If necessarly
+all modules are loaded in order to return a complete list. This function
+should be used to access the entire list rather than GetMagickInfo since
+the list returned by GetMagickInfo may be re-ordered every time it is
+invoked. Once the returned array is no longer needed, the allocated array
+should be deallocated. Do not attempt to deallocate the MagickInfo
+structures based on pointers in the array!</p>
+<p>The format of the GetMagickList method is:</p>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#magickinfo">MagickInfo</a> ** GetMagickInfoArray( <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>exception:</dt>
+<dd>Return any errors or warnings in this structure.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="initializemagick">
+<h1><a class="toc-backref" href="#id37">InitializeMagick</a></h1>
+<div class="section" id="id11">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+InitializeMagick( const char *path );
+</pre>
+</div>
+<div class="section" id="id12">
+<h2>Description</h2>
+<p>InitializeMagick() initializes the GraphicsMagick environment.</p>
+<p>InitializeMagick() or InitializeMagickEx() MUST be invoked by the using
+program before making use of GraphicsMagick functions or else the library
+will be unusable and any usage is likely to cause a crash.</p>
+<p>This function should be invoked in the primary (original) thread of the
+application's process, and before starting any OpenMP threads, as part
+of program initialization.</p>
+<p>If alternate memory allocations are provided via MagickAllocFunctions()
+then that function should be invoked before InitializeMagickEx() since
+the memory allocation functions need to be consistent.</p>
+<p>The format of the InitializeMagick function is:</p>
+<pre class="literal-block">
+InitializeMagick( const char *path );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>path:</dt>
+<dd>The execution path of the current GraphicsMagick client (or NULL)</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="initializemagickex">
+<h1><a class="toc-backref" href="#id38">InitializeMagickEx</a></h1>
+<div class="section" id="id13">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+MagickPassFail InitializeMagickEx( const char *path, unsigned int options,
+                                   <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+</div>
+<div class="section" id="id14">
+<h2>Description</h2>
+<p>InitializeMagickEx() initializes the GraphicsMagick environment,
+providing a bit more more control and visibility over initialization
+than the original InitializeMagick().</p>
+<p>InitializeMagick() or InitializeMagickEx() MUST be invoked by the using
+program before making use of GraphicsMagick functions or else the library
+will be unusable and any usage is likely to cause a crash.</p>
+<p>This function should be invoked in the primary (original) thread of the
+application's process, and before starting any OpenMP threads, as part
+of program initialization.</p>
+<p>If alternate memory allocations are provided via MagickAllocFunctions()
+then that function should be invoked before InitializeMagickEx() since
+the memory allocation functions need to be consistent.</p>
+<p>The format of the InitializeMagickEx function is:</p>
+<pre class="literal-block">
+MagickPassFail InitializeMagickEx( const char *path, unsigned int options,
+                                   <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+<dl class="docutils">
+<dt>path:</dt>
+<dd>The execution path of the current GraphicsMagick client (or NULL)</dd>
+<dt>options:</dt>
+<dd>Options flags tailoring initializations performed</dd>
+<dt>exception:</dt>
+<dd>Information about initialization failure is reported here.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="ismagickconflict">
+<h1><a class="toc-backref" href="#id39">IsMagickConflict</a></h1>
+<div class="section" id="id15">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+MagickBool IsMagickConflict( const char *magick );
+</pre>
+</div>
+<div class="section" id="id16">
+<h2>Description</h2>
+<p>Method IsMagickConflict returns true if the image format conflicts with
+a logical drive (.e.g. X:).</p>
+<p>The format of the IsMagickConflict method is:</p>
+<pre class="literal-block">
+MagickBool IsMagickConflict( const char *magick );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>status:</dt>
+<dd>Method IsMagickConflict returns true if the image format
+conflicts with a logical drive.</dd>
+<dt>magick:</dt>
+<dd>Specifies the image format.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="listmagickinfo">
+<h1><a class="toc-backref" href="#id40">ListMagickInfo</a></h1>
+<div class="section" id="id17">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+MagickPassFail ListMagickInfo( FILE *file, <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+</div>
+<div class="section" id="id18">
+<h2>Description</h2>
+<p>ListMagickInfo() lists the image formats to a file.</p>
+<p>The format of the ListMagickInfo method is:</p>
+<pre class="literal-block">
+MagickPassFail ListMagickInfo( FILE *file, <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+<p>A description of each parameter follows.</p>
+<dl class="docutils">
+<dt>file:</dt>
+<dd>A file handle.</dd>
+<dt>exception:</dt>
+<dd>Return any errors or warnings in this structure.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="listmodulemap">
+<h1><a class="toc-backref" href="#id41">ListModuleMap</a></h1>
+<div class="section" id="id19">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+MagickPassFail ListModuleMap( FILE *file, <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+</div>
+<div class="section" id="id20">
+<h2>Description</h2>
+<p>Method ListModuleMap lists the module alias info to a file in the XML
+format used by modules.mgk. True is returned on success.</p>
+<p>The format of the ListModuleMap method is:</p>
+<pre class="literal-block">
+MagickPassFail ListModuleMap( FILE *file, <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+<p>A description of each parameter follows.</p>
+<dl class="docutils">
+<dt>file:</dt>
+<dd>An pointer to a FILE.</dd>
+<dt>exception:</dt>
+<dd>Return any errors or warnings in this structure.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="magicktomime">
+<h1><a class="toc-backref" href="#id42">MagickToMime</a></h1>
+<div class="section" id="id21">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+char *MagickToMime( const char *magick );
+</pre>
+</div>
+<div class="section" id="id22">
+<h2>Description</h2>
+<p>Method MagickToMime returns the officially registered (or de facto) MIME
+media-type corresponding to a magick string.  If there is no registered
+media-type, then the string &quot;image/x-magick&quot; (all lower case) is returned.
+The returned string must be deallocated by the user.</p>
+<p>The format of the MagickToMime method is:</p>
+<pre class="literal-block">
+char *MagickToMime( const char *magick );
+</pre>
+<p>A description of each parameter follows.</p>
+<dl class="docutils">
+<dt>magick:</dt>
+<dd>GraphicsMagick format specification &quot;magick&quot; tag.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="registermagickinfo">
+<h1><a class="toc-backref" href="#id43">RegisterMagickInfo</a></h1>
+<div class="section" id="id23">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#magickinfo">MagickInfo</a> *RegisterMagickInfo( <a class="reference external" href="../api/types.html#magickinfo">MagickInfo</a> *magick_info );
+</pre>
+</div>
+<div class="section" id="id24">
+<h2>Description</h2>
+<p>RegisterMagickInfo() adds attributes for a particular image format to the
+list of supported formats.  The attributes include the image format name,
+a method to read and/or write the format, whether the format supports the
+saving of more than one frame to the same file or blob, whether the format
+supports native in-memory I/O, and a brief description of the format.</p>
+<p>The format of the RegisterMagickInfo method is:</p>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#magickinfo">MagickInfo</a> *RegisterMagickInfo( <a class="reference external" href="../api/types.html#magickinfo">MagickInfo</a> *magick_info );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>magick_info:</dt>
+<dd>The magick info.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="panicdestroymagick">
+<h1><a class="toc-backref" href="#id44">PanicDestroyMagick</a></h1>
+<div class="section" id="id25">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+void PanicDestroyMagick( void );
+</pre>
+</div>
+<div class="section" id="id26">
+<h2>Description</h2>
+<p>PanicDestroyMagick() destroys only persistent allocations such as
+temporary files.  Other allocations (e.g. semaphores and heap memory)
+remain allocated.  This function is an alternative to DestroyMagick()
+which is async-safe so it may be invoked from signal handers, and
+may be invoked from thread context.  No semaphores are taken and no
+additional heap memory is allocated by this function.  The program
+must quit immediately after invoking this function.</p>
+<p>The format of the PanicDestroyMagick function is:</p>
+<pre class="literal-block">
+void PanicDestroyMagick( void );
+</pre>
+</div>
+</div>
+<div class="section" id="setmagickinfo">
+<h1><a class="toc-backref" href="#id45">SetMagickInfo</a></h1>
+<div class="section" id="id27">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#magickinfo">MagickInfo</a> *SetMagickInfo( const char *name );
+</pre>
+</div>
+<div class="section" id="id28">
+<h2>Description</h2>
+<p>Method SetMagickInfo allocates a MagickInfo structure and initializes the
+members to default values.</p>
+<p>The format of the SetMagickInfo method is:</p>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#magickinfo">MagickInfo</a> *SetMagickInfo( const char *name );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>magick_info:</dt>
+<dd>Method SetMagickInfo returns the allocated and initialized
+MagickInfo structure.</dd>
+<dt>name:</dt>
+<dd>a character string that represents the image format associated
+with the MagickInfo structure.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="unregistermagickinfo">
+<h1><a class="toc-backref" href="#id46">UnregisterMagickInfo</a></h1>
+<div class="section" id="id29">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+unsigned int UnregisterMagickInfo( const char *name );
+</pre>
+</div>
+<div class="section" id="id30">
+<h2>Description</h2>
+<p>Method UnregisterMagickInfo removes a name from the magick info list.  It
+returns MagickFail if the name does not exist in the list otherwise
+MagickPass.</p>
+<p>The format of the UnregisterMagickInfo method is:</p>
+<pre class="literal-block">
+unsigned int UnregisterMagickInfo( const char *name );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>status:</dt>
+<dd>Method UnregisterMagickInfo returns False if the name does not
+exist in the list otherwise True.</dd>
+<dt>name:</dt>
+<dd>a character string that represents the image format we are
+looking for.</dd>
+</dl>
+</div>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,787 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.15.2: http://docutils.sourceforge.net/" />
+<title>GraphicsMagick Windows Installation</title>
+<link rel="stylesheet" href="docutils-articles.css" type="text/css" />
+</head>
+<body>
+
+<div class="banner">
+<img src="images/gm-107x76.png" alt="GraphicMagick logo" width="107" height="76" />
+<span class="title">GraphicsMagick</span>
+<form action="http://www.google.com/search">
+	<input type="hidden" name="domains" value="www.graphicsmagick.org" />
+	<input type="hidden" name="sitesearch" value="www.graphicsmagick.org" />
+    <span class="nowrap"><input type="text" name="q" size="25" maxlength="255" />&nbsp;<input type="submit" name="sa" value="Search" /></span>
+</form>
+</div>
+
+<div class="navmenu">
+<ul>
+<li><a href="index.html">Home</a></li>
+<li><a href="project.html">Project</a></li>
+<li><a href="download.html">Download</a></li>
+<li><a href="README.html">Install</a></li>
+<li><a href="Hg.html">Source</a></li>
+<li><a href="NEWS.html">News</a> </li>
+<li><a href="utilities.html">Utilities</a></li>
+<li><a href="programming.html">Programming</a></li>
+<li><a href="reference.html">Reference</a></li>
+</ul>
+</div>
+<div class="document" id="graphicsmagick-windows-installation">
+<h1 class="title">GraphicsMagick Windows Installation</h1>
+
+<!-- -*- mode: rst -*- -->
+<!-- This text is in reStucturedText format, so it may look a bit odd. -->
+<!-- See http://docutils.sourceforge.net/rst.html for details. -->
+<div class="contents local topic" id="contents">
+<ul class="simple">
+<li><a class="reference internal" href="#installing-using-installer-package" id="id1">Installing Using Installer Package</a><ul>
+<li><a class="reference internal" href="#prerequisites" id="id2">Prerequisites</a></li>
+<li><a class="reference internal" href="#retrieve-install-package" id="id3">Retrieve Install Package</a></li>
+<li><a class="reference internal" href="#start-installation-wizard" id="id4">Start Installation Wizard</a></li>
+<li><a class="reference internal" href="#read-installation-information" id="id5">Read Installation Information</a></li>
+<li><a class="reference internal" href="#select-destination-directory" id="id6">Select Destination Directory</a></li>
+<li><a class="reference internal" href="#select-start-menu-folder" id="id7">Select Start Menu Folder</a></li>
+<li><a class="reference internal" href="#select-additional-tasks" id="id8">Select Additional Tasks</a></li>
+<li><a class="reference internal" href="#ready-to-install" id="id9">Ready to Install</a></li>
+<li><a class="reference internal" href="#installation-progress" id="id10">Installation Progress</a></li>
+<li><a class="reference internal" href="#final-information" id="id11">Final Information</a></li>
+<li><a class="reference internal" href="#finishing-up" id="id12">Finishing Up</a></li>
+<li><a class="reference internal" href="#testing-the-installation" id="id13">Testing The Installation</a></li>
+<li><a class="reference internal" href="#uninstall" id="id14">Uninstall</a></li>
+<li><a class="reference internal" href="#use-from-another-package-or-program" id="id15">Use From Another Package or Program</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#installing-from-source-code" id="id16">Installing From Source Code</a><ul>
+<li><a class="reference internal" href="#applicability" id="id17">Applicability</a></li>
+<li><a class="reference internal" href="#important-notes" id="id18">Important Notes</a></li>
+<li><a class="reference internal" href="#windows-xp-vista-7-visual-c-6-0-through-19-0-compilation" id="id19">Windows XP, Vista, 7 Visual C++ 6.0 through 19.0 Compilation</a></li>
+<li><a class="reference internal" href="#environment-variables" id="id20">Environment Variables</a></li>
+<li><a class="reference internal" href="#windows-distribution-build-procedure" id="id21">Windows Distribution Build Procedure</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="installing-using-installer-package">
+<h1><a class="toc-backref" href="#id1">Installing Using Installer Package</a></h1>
+<blockquote>
+This section provides information specific to GraphicsMagick installed
+via a &quot;setup.exe&quot; style installation wizard under Microsoft Windows. It
+applies only to the pre-built &quot;binaries&quot; package, and not to versions
+compiled from source code. If you would like to install GraphicsMagick
+from source code, then please refer to the Installing From Source Code
+section.</blockquote>
+<div class="section" id="prerequisites">
+<h2><a class="toc-backref" href="#id2">Prerequisites</a></h2>
+<blockquote>
+<p>While multiple versions of GraphicsMagick may be installed at one
+time, if your intention is to replace a prior installation of
+GraphicsMagick with a newer version, then it is wise to uninstall
+the existing GraphicsMagick (see uninstall procedure) prior to
+installing the newer version.</p>
+<p>While it is not a requirement, it is strongly recommended that the
+<a class="reference external" href="http://sourceforge.net/projects/ghostscript/">Ghostscript</a>
+package (GraphicsMagick is tested with version 9.27) be
+installed. GraphicsMagick uses Ghostscript to render Postscript and
+PDF files, as well as formats where a translator to Postscript is
+available. GraphicsMagick will use the <a class="reference external" href="http://sourceforge.net/projects/gs-fonts/">Ghostscript Fonts</a> (also known as &quot;URW
+Fonts&quot;) to support the standard set of Adobe Postscript fonts like
+&quot;Helvetica&quot; and &quot;Times Roman&quot; if these fonts are not available as
+TrueType fonts.  The Ghostscript fonts need to manually installed
+with administrator privileges in the Ghostscript installation
+directory (e.g. as <tt class="docutils literal"><span class="pre">C:\Program</span> Files\gs\fonts</tt> or <tt class="docutils literal">C:Program
+Files\gs\gs9.27\fonts</tt>).</p>
+<p>The algorithm used to find the fonts consults the Windows registry
+to learn Ghostscript installation paths, and then looks for a
+&quot;fonts/n019003l.pfb&quot; file in each path until it finds a match.</p>
+<p>Make sure to install a Ghostscript which is compatible with the
+GraphicsMagick you are installing.  For example, if you are
+installing a 64-bit GraphicsMagick, you should install a 64-bit
+Ghostscript.  The installation order of the two packages is not
+important.  Both 32 and 64-bit versions of GraphicsMagick and
+Ghostscript may be installed at the same time.</p>
+</blockquote>
+</div>
+<div class="section" id="retrieve-install-package">
+<h2><a class="toc-backref" href="#id3">Retrieve Install Package</a></h2>
+<blockquote>
+<p>Retrieve the GraphicsMagick Windows binary install package from a one
+of the ftp sites listed at the <a class="reference external" href="download.html">GraphicsMagick Download Sites</a> page. The available install packages are as follows</p>
+<p>Windows Dynamic-Multithread (DLL-based) install package with utilities,
+ImageMagickObject COM object, and web pages:</p>
+<blockquote>
+<pre class="literal-block">
+GraphicsMagick-1.3-Q8-win32-dll.exe
+GraphicsMagick-1.3-Q16-win32-dll.exe
+GraphicsMagick-1.3-Q8-win64-dll.exe
+GraphicsMagick-1.3-Q16-win64-dll.exe
+</pre>
+</blockquote>
+<p>Note that the QuantumDepth=8 version (Q8) which provides industry
+standard 24/32 bit pixels consumes half the memory and about 30% less
+CPU than the QuantumDepth=16 version (Q16) which provides 48/64 bit
+pixels for high-resolution color. A Q8 version is fine for processing
+typical photos intended for viewing on a computer screen. If you are
+dealing with film, scientific, or medical images, use ICC color
+profiles, or deal with images that have limited contrast, then the Q16
+version is recommended.</p>
+<p>The <cite>win32</cite> packages are for 32-bit or 64-bit Windows, whereas the
+<cite>win64</cite> packages are only for 64-bit Windows.  The 64-bit version
+allows processing larger images in memory (rather than disk files),
+provided that the system has more than 2GB of RAM installed.  Memory
+access is 1000 times faster than disk access.</p>
+</blockquote>
+</div>
+<div class="section" id="start-installation-wizard">
+<h2><a class="toc-backref" href="#id4">Start Installation Wizard</a></h2>
+<blockquote>
+Execute the downloaded file from your browser or by double-clicking on
+the filename from within Windows Explorer. The GraphicsMagick Setup
+Wizard will appear. Click on &quot;<em>Next&gt;</em>&quot; to continue.</blockquote>
+</div>
+<div class="section" id="read-installation-information">
+<h2><a class="toc-backref" href="#id5">Read Installation Information</a></h2>
+<blockquote>
+An informational screen is presented which provides a summary of things
+you should know before you proceed. Please take care to read this
+information. Once you have finished, Click on &quot;<em>Next&gt;</em>&quot; to continue.</blockquote>
+</div>
+<div class="section" id="select-destination-directory">
+<h2><a class="toc-backref" href="#id6">Select Destination Directory</a></h2>
+<blockquote>
+Specify what drive and directory to install GraphicsMagick into.
+Approximately 15MB of free disk space is required to install all of
+GraphicsMagick (you may choose to install a subset to save space). A
+message at the bottom of the screen will tell you exactly how much
+space is required to install the complete package. The default
+installation directory is similar to <tt class="docutils literal"><span class="pre">C:\Program</span>
+<span class="pre">Files\GraphicsMagick-1.3-Q8</span></tt>. Once you have entered the desired
+installation directory, then select &quot;<em>Next&gt;</em>&quot; to continue.</blockquote>
+</div>
+<div class="section" id="select-start-menu-folder">
+<h2><a class="toc-backref" href="#id7">Select Start Menu Folder</a></h2>
+<blockquote>
+Select the folder where you would like the program's shortcuts to
+appear. The default should normally be satisfactory. Click on &quot;<em>Next&gt;</em>&quot;
+to continue.</blockquote>
+</div>
+<div class="section" id="select-additional-tasks">
+<h2><a class="toc-backref" href="#id8">Select Additional Tasks</a></h2>
+<blockquote>
+<p>A screen is displayed which presents some (or all) of the following
+options:</p>
+<ul class="simple">
+<li>Create a desktop icon</li>
+<li>Update executable search path</li>
+<li>Associate supported file extensions with GraphicsMagick</li>
+</ul>
+<p>&quot;Creating a desktop icon&quot; and &quot;Update the executable search path&quot;
+are selected by default. The remaining options default to
+un-selected.  Select the options you prefer.</p>
+<p>Think twice before selecting &quot;<em>Associate supported file extensions
+with GraphicsMagick</em>&quot; since this will set up approximately fifty
+file associations, including common formats like JPEG, GIF, PNG,
+TIFF, and PDF. These file associations will be to the 'gmdisplay'
+program which is suitable for displaying images, but currently
+offers little more than that.  Associations for GraphicsMagick's
+native formats (such as <a class="reference external" href="miff.html">MIFF</a>) will always be made.</p>
+<p>Once you have made your selections, click on &quot;<em>Next&gt;</em>&quot; to continue.</p>
+</blockquote>
+</div>
+<div class="section" id="ready-to-install">
+<h2><a class="toc-backref" href="#id9">Ready to Install</a></h2>
+<blockquote>
+A screen is displayed which displays the selected options. If you are
+not satisfied with a selected option, then click on &quot;<em>&lt;Back</em>&quot; to go back
+to a previous screen so that the option may be adjusted. If you are
+satisfied with the options and are ready to install, then select
+&quot;<em>Install</em>&quot;. To abort the installation entirely, select &quot;<em>Cancel</em>&quot;.</blockquote>
+</div>
+<div class="section" id="installation-progress">
+<h2><a class="toc-backref" href="#id10">Installation Progress</a></h2>
+<blockquote>
+While the install program is performing the installation, it will
+display what it is doing in an installation progress window.</blockquote>
+</div>
+<div class="section" id="final-information">
+<h2><a class="toc-backref" href="#id11">Final Information</a></h2>
+<blockquote>
+A summary of post-install steps is provided. These steps include some
+commands you can execute to make sure that GraphicsMagick is working,
+as well as some notes about what has been installed on your system, and
+where to find additional information. Once you have read this
+information, click on &quot;<em>Next&gt;</em>&quot; to continue.</blockquote>
+</div>
+<div class="section" id="finishing-up">
+<h2><a class="toc-backref" href="#id12">Finishing Up</a></h2>
+<blockquote>
+By default &quot;<em>View GraphicsMagick.html</em>&quot; is check-marked. This causes the
+GraphicsMagick web pages to be displayed in your web browser when
+&quot;<em>Finish</em>&quot; is selected. If you do not want to view the web pages, then
+de-select &quot;<em>View GraphicsMagick.html</em>&quot;. Select &quot;<em>Finish</em>&quot; to exit the
+installation program.</blockquote>
+</div>
+<div class="section" id="testing-the-installation">
+<h2><a class="toc-backref" href="#id13">Testing The Installation</a></h2>
+<blockquote>
+<p>Select &quot;<em>Command Prompt</em>&quot; from the Windows Start menu. Within the window
+type</p>
+<blockquote>
+<pre class="literal-block">
+gm convert logo: logo.miff
+gm convert logo.miff win:
+</pre>
+</blockquote>
+<p>and the GraphicsMagick logo should be displayed in a window.</p>
+</blockquote>
+</div>
+<div class="section" id="uninstall">
+<h2><a class="toc-backref" href="#id14">Uninstall</a></h2>
+<blockquote>
+<p>The GraphicsMagick package incorporates its own uninstall
+functionality. Always remove an installed GraphicsMagick via its
+uninstall function since manually removing it (such as by removing its
+installation directory) will leave behind the registry entries and path
+settings established at install time.</p>
+<p>GraphicsMagick should be removed via the &quot;<em>Add or Remove Programs</em>&quot;
+area of the Windows Control Panel. Select the GraphicsMagick package
+from the list, and click on &quot;<em>Change/Remove</em>&quot; to uninstall it.</p>
+</blockquote>
+</div>
+<div class="section" id="use-from-another-package-or-program">
+<h2><a class="toc-backref" href="#id15">Use From Another Package or Program</a></h2>
+<blockquote>
+<p>The GraphicsMagick gm utility may be executed as a sub-process by
+other programs. If gm utility is not in the systems executable
+search path (it should be since the GraphicsMagick install extends
+the path by default), then the utility should be executed via the
+complete path to the executable.</p>
+<p>The <a class="reference external" href="ImageMagickObject.html">ImageMagickObject</a> COM object may be
+used to execute the gm sub-functions (e.g. &quot;convert&quot;) without
+spawning a new process or causing Windows to pop up a window. The
+COM object supports multi-threaded concurrent use.  Note that the
+COM object (and other components depending on proprietary libraries)
+is no longer included in the installation packages we create.  If
+you need this, then you will need to build GraphicsMagick from
+source code.</p>
+<p>When GraphicsMagick is installed, entries are added to the Windows
+Registry so that other programs may obtain information regarding the
+most recently installed GraphicsMagick. These entries are available
+under the registry path <tt class="docutils literal">HKEY_LOCAL_MACHINE\SOFTWARE\GraphicsMagick\Current</tt>.</p>
+<p>These registry keys are currently available:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="25%" />
+<col width="12%" />
+<col width="64%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Key Name</th>
+<th class="head">Key Type</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>BinPath</td>
+<td>REG_SZ</td>
+<td>Directory where GraphicsMagick executables
+are installed</td>
+</tr>
+<tr><td>ConfigurePath</td>
+<td>REG_SZ</td>
+<td>Directory where configuration files are
+installed</td>
+</tr>
+<tr><td>LibPath</td>
+<td>REG_SZ</td>
+<td>Directory where GraphicsMagick core DLLs
+are installed</td>
+</tr>
+<tr><td>CoderModulesPath</td>
+<td>REG_SZ</td>
+<td>Directory where GraphicsMagick loadable
+coder modules are installed</td>
+</tr>
+<tr><td>FilterModulesPath</td>
+<td>REG_SZ</td>
+<td>Directory where GraphicsMagick loadable
+filter modules are installed</td>
+</tr>
+<tr><td>SharePath</td>
+<td>REG_SZ</td>
+<td>Directory where configuration files are
+installed</td>
+</tr>
+</tbody>
+</table>
+</blockquote>
+</div>
+</div>
+<div class="section" id="installing-from-source-code">
+<h1><a class="toc-backref" href="#id16">Installing From Source Code</a></h1>
+<div class="section" id="applicability">
+<h2><a class="toc-backref" href="#id17">Applicability</a></h2>
+<blockquote>
+This section provides instructions for building GraphicsMagick
+Microsoft Windows using the Visual C++ (Visual Studio, etc.)
+IDE. For building using the free Cygwin or MinGW compilers (e.g. as
+part of <a class="reference external" href="https://www.msys2.org/">MSYS2</a>), follow the instructions
+in INSTALL-unix.txt.</blockquote>
+</div>
+<div class="section" id="important-notes">
+<h2><a class="toc-backref" href="#id18">Important Notes</a></h2>
+<blockquote>
+On some platforms Visual C++ may fail with an internal compiler
+error.  If this happens to you, then make sure that your compiler is
+updated with the latest fixes from the Microsoft web site and the
+problem will hopefully go away.  If the problem does not go away,
+then adjust the settings for the module which failed and disable
+optimization, and the problem is likely to go away (but with less
+performance).</blockquote>
+</div>
+<div class="section" id="windows-xp-vista-7-visual-c-6-0-through-19-0-compilation">
+<h2><a class="toc-backref" href="#id19">Windows XP, Vista, 7 Visual C++ 6.0 through 19.0 Compilation</a></h2>
+<blockquote>
+<p>The Visual C++ distribution targeted at Windows 2000 through Windows
+10 does not provide any stock workspace (DSW) or project files (DSP)
+except for those included with third party libraries. Instead, there
+is a &quot;configure&quot; program that must run to create build
+environments to satisfy various requirements.</p>
+<p>The configure program resides in <tt class="docutils literal">VisualMagick\configure</tt> in the
+GraphicsMagick source tree.  A pre-compiled configure.exe is
+provided, as well as Visual Studio project files to recompile it
+from source code if needed.</p>
+<p>Once started, the configure program provides this configuration
+dialog after proceeding past the initial notifications screen:</p>
+<img alt="Configure program screen shot" class="align-center" src="configure-target-setup.png" style="width: 498.0px; height: 473.0px;" />
+<p>In addition to (or as a replacement to) the above dialog, the
+configure.exe program supports these command-line options:</p>
+<dl class="docutils">
+<dt><cite>/Q8 /Q16 /Q32</cite></dt>
+<dd>Set quantum depth</dd>
+<dt><cite>/x64</cite></dt>
+<dd>Add x64 configuration</dd>
+<dt><cite>/mtd /sts /mts /mtsd</cite></dt>
+<dd>Set project type</dd>
+<dt><cite>/noWizard</cite></dt>
+<dd>Do not show the wizard</dd>
+<dt><cite>/openMP</cite></dt>
+<dd>Enable openMP</dd>
+</dl>
+<p>The Visual C++ system provides three different types of &quot;runtimes&quot;
+that must match across all application, library, and DLL code that is
+built. The &quot;configure&quot; program creates a set of build files that are
+consistent for a specific runtime selection.</p>
+<p>The three options for runtime support are:</p>
+<ol class="arabic simple">
+<li>Dynamic Multi-threaded DLL runtimes (VisualDynamicMT), <cite>/mtd</cite> option</li>
+<li>Static Single-threaded runtimes (<cite>VisualStaticST</cite>), <cite>/sts</cite> option</li>
+<li>Static Multi-threaded runtimes (VisualStaticMT), <cite>/mts</cite> option</li>
+<li>Static Multi-threaded DLL runtimes (VisualStaticMTDLL), <cite>/mtsd</cite> option</li>
+</ol>
+<p>In addition to these runtimes, the VisualMagick build environment allows
+you to select whether to include the X11 libraries in the build or not.
+X11 DLLs and headers are provided with the VisualMagick build
+environment. Most Windows users do not use X11 so they will prefer to
+build without X11 support. When X11 is not supported, gm subcommands
+'animate', 'display', and 'import' will not work.</p>
+<p>This leads to five different possible build options, which should
+cover almost any particular situation. The default binary
+distribution is built using #1 from above with the X11 libraries
+excluded. This results build using all DLL's for everything and
+multi-threaded support (the only option for DLL's).</p>
+<p>To do a build for your requirements, simply go to the configure sub-
+directory under VisualMagick and open the configure.dsw workspace
+(for Visual C++ 6.0) or configure.sln (for Visual C++ 7.X through
+9.X). Set the build configuration to &quot;Release&quot; under the</p>
+<blockquote>
+&quot;Build..., Set Active Configuration...&quot;  menu.</blockquote>
+<p>Build and execute the configure program and follow the on-screen
+instructions. You should not change any of the defaults unless you have a
+specific reason to do so.</p>
+<p>The configure program provides a button entitled</p>
+<blockquote>
+Edit &quot;magick_config.h&quot;</blockquote>
+<p>Clicking this button brings up magick_config.h in Windows notepad
+for optionally changing any preprocessor defines in GraphicsMagick's
+magick_config.h file. This file is copied to
+<tt class="docutils literal">magick\magick_config.h</tt>. You may safely open
+<tt class="docutils literal">magick\magick_config.h</tt>, modify it, and recompile without
+re-running the configure program. In fact, using Visual Studio to
+edit the copied file may be preferable since it preserves the
+original magick_config.h file.</p>
+<p>Key user tunables in magick_config.h include:</p>
+<blockquote>
+<p>QuantumDepth (default 8)</p>
+<blockquote>
+Specify size of PixelPacket color Quantums (8, 16, or 32) A value of
+8 uses half the memory than 16 and may run 30% faster, but provides
+256 times less color resolution than a value of 16.</blockquote>
+<p>UseInstalledMagick (default undefined)</p>
+<blockquote>
+Define to build a GraphicsMagick which uses registry settings or
+embedded paths to locate installed components (coder modules and
+configuration files). The default is to look for all files in the
+same directory as the executable.</blockquote>
+<p>ProvideDllMain (default undefined)</p>
+<blockquote>
+Define to include a DllMain() function ensures that the GraphicsMagick
+DLL is properly initialized without participation from dependent
+applications. This avoids the requirement to invoke IntializeMagick()
+from dependent applications but only works for DLL builds.</blockquote>
+<p>EnableBrokenCoders (default undefined)</p>
+<blockquote>
+Define to enable broken/dangerous file format support.  Only
+enable this if you have complete control over the input files
+and not for arbitrary files such as uploaded from untrusted
+sources via the Internet.  Currently this must be enabled to
+enable Adobe Photoshop Format (PSD).</blockquote>
+</blockquote>
+<p>After creating your build environment you can proceed to open the DSW (or
+SLN) file that was generated in the VisualMagick directory and build
+everything from there.</p>
+<p>In the final DSW file you will find a project call &quot;All&quot;. In order to
+build everything in the distribution, select this project and make it
+the &quot;active&quot; project. Set the build configuration to the desired one
+(Debug, or Release) and do a &quot;clean&quot; followed by a &quot;build&quot;. You should
+do the build in a specific way:</p>
+<blockquote>
+<ol class="arabic simple">
+<li>Make the &quot;All&quot; project the active project (Bold)
+Right click on the All project and select &quot;Set As Active Project&quot;</li>
+<li>Select &quot;Build..., Clean&quot;</li>
+<li>Select &quot;Build..., Build&quot;</li>
+<li>Go get some coffee unless you have a very fast machine!.</li>
+</ol>
+</blockquote>
+<p>The &quot;Clean&quot; step is needed in order to make sure that all of the target
+support libraries are updated with any patches needed to get them to
+compile properly under Visual C++.</p>
+<p>All of the required files that are needed to run any of the command
+line tools will be found in the &quot;bin&quot; subdirectory of the VisualMagick
+subdirectory. This includes EXE, and DLL files. You should be able
+to test the build directly from this directory without having to move
+anything to any of the global SYSTEM or SYSTEM32 areas in the operating
+system installation.</p>
+<p>Note #1:</p>
+<p>The Visual C++ distribution of GraphicsMagick comes with the Magick++
+C++ wrapper by default. This add-on layer has a large number of demo
+and test files that can be found in <tt class="docutils literal"><span class="pre">GraphicsMagick\Magick++\demo</span></tt>, and
+<tt class="docutils literal"><span class="pre">GraphicsMagick\Magick++\tests</span></tt>. There are also a variety of tests that
+use the straight C API as well in <tt class="docutils literal">GraphicsMagick\tests</tt>.</p>
+<p>All of these programs are NOT configured to be built in the default
+workspace created by the configure program. You can cause all of these
+demos and test programs to be built by checking the box in configure
+that says:</p>
+<blockquote>
+&quot;Include all demo and test programs&quot;</blockquote>
+<p>In addition, there is another related checkbox (checked by default)
+that causes all generated project files to be created standalone so
+that they can be copied to other areas of you system.</p>
+<p>This is the checkbox:</p>
+<blockquote>
+&quot;Generate all utility projects with full paths rather then relative
+paths&quot;</blockquote>
+<p>WOW - that a mouthfull - eh?</p>
+<p>Visual C++ uses a concept of &quot;dependencies&quot; that tell it what other
+components need to be build when a particular project is being build. This
+mechanism is also used to ensure that components link properly. In my normal
+development environment, I want to be able to make changes and debug the
+system as a whole, so I like and NEED to use dependencies. However, most
+end users don't want to work this way.</p>
+<p>Instead they really just want to build the package and then get down
+to business working on their application. The solution is to make all
+the utility projects (UTIL_xxxx_yy_exe.dsp) use full absolute paths
+to all the things they need. This way the projects stand on their own
+and can actually be copied and used as templates to get a particular
+custom application compiling with little effort.</p>
+<p>With this feature enabled, you should be able to nab a copy of...</p>
+<blockquote>
+<p><tt class="docutils literal">VisualMagick\utilities\UTIL_gm_xxx_exe.dsp</tt>  (for C)</p>
+<blockquote>
+-or-</blockquote>
+<p><tt class="docutils literal"><span class="pre">VisualMagick\Magick++\demo\UTIL_demo_xxx_exe.dsp</span></tt> (for C++)</p>
+</blockquote>
+<p>... and pop it into notepad, modify it (carefully) to your needs and
+be on your way to happy compiling and linking.</p>
+<p>You can feel free to pick any of the standard utilities, tests, or
+demo programs as the basis for a new program by copying the project
+and the source and hacking away.</p>
+<p>The choice of what to use as a starting point is very easy...</p>
+<p>For straight C API command line applications use something from</p>
+<blockquote>
+<p><tt class="docutils literal">GraphicsMagick\tests</tt> or <tt class="docutils literal">GraphicsMagick\utilities</tt> (source code)</p>
+<p><tt class="docutils literal">GraphicsMagick\VisualMagick\tests</tt> or <tt class="docutils literal">GraphicsMagick\Visualmagick\utilities</tt>
+(project - DSP)</p>
+</blockquote>
+<p>For C++ and Magick++ command line applications use something from</p>
+<blockquote>
+<p><tt class="docutils literal"><span class="pre">GraphicsMagick\Magick++\tests</span></tt> or <tt class="docutils literal"><span class="pre">GraphicsMagick\Magick++\demo</span></tt> (source code)</p>
+<p><tt class="docutils literal"><span class="pre">GraphicsMagick\VisualMagick\Magick++\tests</span></tt> or
+<tt class="docutils literal"><span class="pre">GraphicsMagick\VisualMagick\Magick++\demo</span></tt> (project - DSP)</p>
+</blockquote>
+<p>For C++ and Magick++ and MFC windows applications use</p>
+<blockquote>
+<p><tt class="docutils literal">GraphicsMagick\win2k\IMDisplay</tt> (source code)</p>
+<p><tt class="docutils literal">GraphicsMagick\VisualMagick\win32\NtMagick</tt> (project - DSP)</p>
+</blockquote>
+<p>Note #2:</p>
+<p>The GraphicsMagick distribution is very modular. The default
+configuration is there to get you rolling, but you need to make some
+serious choices when you wish to change things around.</p>
+<p>The default options are all targeted at having all the components in one
+place (e.g. the &quot;bin&quot; directory of the VisualMagick build tree). These
+components may be copied to another folder (such as to another computer).</p>
+<p>The folder containing the executables and DLLs should contain the
+following files:</p>
+<blockquote>
+<ol class="arabic simple">
+<li>colors.mgk</li>
+<li>delegates.mgk</li>
+<li>log.mgk</li>
+<li>magic.mgk</li>
+<li>modules.mgk</li>
+<li>type.mgk</li>
+<li>type-ghostscript.mgk (if Ghostscript is used)</li>
+</ol>
+</blockquote>
+<p>The &quot;bin&quot; folder should contains all EXE's and DLL's as well as the
+very important &quot;modules.mgk&quot; file.</p>
+<p>With this default setup, you can use any of the command line tools
+and run scripts as normal. You can actually get by quite nicely this
+way by doing something like <tt class="docutils literal">pushd <span class="pre">e:\xxx\yyy\bin</span></tt> in any scripts you
+write to execute &quot;out of&quot; this directory.</p>
+<p>By default the core of GraphicsMagick on Win32 always looks in the place
+were the exe program is run from in order to find all of the files as
+well as the DLL's it needs.</p>
+</blockquote>
+</div>
+<div class="section" id="environment-variables">
+<h2><a class="toc-backref" href="#id20">Environment Variables</a></h2>
+<blockquote>
+<p>You can use the &quot;System&quot; control panel to allow you to add and delete
+what is in any of the environment variables. You can even have user
+specific environment variables if you wish.</p>
+<p>PATH</p>
+<blockquote>
+<p>This sets the default list of places were Windows looks for EXE's and
+DLL's. Windows CMD shell seems to look in the &quot;current&quot; directory first
+- no matter what, which may make it unnecessary to update the PATH. If
+you wish to run any of utilities from another location then you must
+add the path to your &quot;bin&quot; directory in. For instance, you might add:</p>
+<blockquote>
+<tt class="docutils literal"><span class="pre">D:\Devel\GraphicsMagick\VisualMagick\bin</span></tt></blockquote>
+<p>to do this for the default build environment like I do.</p>
+</blockquote>
+<p>MAGICK_HOME</p>
+<blockquote>
+<p>If all you do is modify the PATH variable, the first problem you
+will run into is that GraphicsMagick may not be able to find any of
+its &quot;modules. Modules are all the IM_MOD*.DLL files you see in the
+distribution. There is one of these for each and every file format
+that GraphicsMagick supports. This environment variable tells the system
+were to look for these DLL's. The compiled in &quot;default&quot; is &quot;execution
+path&quot; - which says - look in the same place that the application is
+running &quot;in&quot;. If you are running from somewhere other then &quot;bin&quot; -
+this will no longer work and you must use this variable. If you elect
+to leave the modules in the same place as the EXE's (a good idea)
+then you can simply set this to the same place
+as you did the PATH variable. In my case:</p>
+<blockquote>
+<tt class="docutils literal"><span class="pre">D:\\GraphicsMagick\coders</span></tt></blockquote>
+<p>This is also the place were GraphicsMagick expects to find the
+&quot;colors.mgk&quot;, &quot;delegates.mgk&quot;, &quot;magic.mgk&quot;, &quot;modules.mgk&quot;, and
+&quot;type.mgk&quot; files.</p>
+<p>One cool thing about the modules build of GraphicsMagick is that you can
+now leave out file formats and lighten you load. If all you ever need
+is GIF and JPEG, then simply drop all the other DLL's into the local
+trash can and get on with your life.</p>
+<p>WARNING: Always keep the &quot;xc&quot; format, since GM uses it for internal
+purposes.</p>
+</blockquote>
+<p>ALSO. You can elect to changes these things the good old &quot;hard-coded&quot;
+way. Two #defines are applicable.</p>
+<p>defines.h has</p>
+<blockquote>
+<tt class="docutils literal">#define MagickConfigurePath&nbsp; <span class="pre">&quot;c:\\GraphicsMagick\\&quot;</span></tt></blockquote>
+<p>To view any image in a Microsoft window, type</p>
+<blockquote>
+<tt class="docutils literal">gm convert image.ext win:</tt></blockquote>
+<p>Make sure Ghostscript is installed, otherwise, you will be unable to
+convert or view a Postscript document, and Postscript standard fonts will
+not be available.</p>
+<p>You may use any standard web browser (e.g. Internet Explorer) to browse
+the GraphicsMagick documentation.</p>
+<p>The Win2K executables will work under Windows '98 and later.</p>
+</blockquote>
+</div>
+<div class="section" id="windows-distribution-build-procedure">
+<h2><a class="toc-backref" href="#id21">Windows Distribution Build Procedure</a></h2>
+<blockquote>
+<p>The following are the instructions for how to build a Q:8 (or Q:16)
+DLL-based distribution installer package using Visual Studio 2008
+Professional.  This is the same procedure used to produce the
+release packages.  The PerlMagick steps are skipped as of
+GraphicsMagick 1.3.26):</p>
+<ol class="arabic simple">
+<li>Install prerequisite software:</li>
+</ol>
+<blockquote>
+<ol class="loweralpha simple">
+<li>Install Microsoft Visual Studio.</li>
+<li>Download and install Inno Setup 6
+&lt;&quot;<a class="reference external" href="http://www.jrsoftware.org/isinfo.php">http://www.jrsoftware.org/isinfo.php</a>&quot;&gt;.</li>
+<li>Download and install ActiveState ActivePerl (optional)
+&lt;&quot;<a class="reference external" href="http://www.activestate.com/activeperl/downloads/">http://www.activestate.com/activeperl/downloads/</a>&quot;&gt;.</li>
+</ol>
+</blockquote>
+<ol class="arabic" start="2">
+<li><p class="first">Disable automatic indexing and virus scanning for the
+GraphicsMagick source tree.  In particular, &quot;Windows Defender&quot; in
+Windows 10 (and similar software in earlier Windows releases) has
+been observed to cause Visual Studio builds to fail since the
+virus scanner opens built libraries and executables to inspect
+whem while Visual Studio is still using them.  Indexing and
+scanning also cause significant slowdowns since there are many
+megabytes of files to index.</p>
+</li>
+<li><p class="first">Build <cite>GMVisualMagickconfigureconfigure.exe</cite> (if
+missing/outdated)</p>
+<ol class="loweralpha simple">
+<li>Open workspace <cite>GMVisualMagickconfigureconfigure.dsp</cite> by
+double-clicking from Windows Explorer.</li>
+<li>Upgrade Visual Studio project (as required)</li>
+<li>Select <cite>Rebuild All</cite> to build configure.exe</li>
+<li>Close the project.</li>
+</ol>
+</li>
+<li><p class="first">Configure Initial GraphicsMagick Visual Studio Workspace</p>
+<ol class="loweralpha simple">
+<li>Use Windows Explorer to navigate to <cite>GMVisualMagickconfigure</cite>.</li>
+<li>Double-click on <cite>configure.exe</cite> to run configure program.</li>
+<li>Select desired build options: DLL build, Quantum Depth, 64-bit, OpenMP)</li>
+<li>Check <cite>Build demo and test programs</cite>.</li>
+<li>Finish remaining configure wizard screens to complete.</li>
+<li><cite>File</cite> -&gt; <cite>Close Workspace</cite>.</li>
+</ol>
+</li>
+<li><p class="first">Open Workspace, set build configuration, build GraphicsMagick software.</p>
+<ol class="loweralpha simple">
+<li>Open workspace <cite>GMVisualMagickconfigureconfigure.sln</cite> by
+double-clicking from Windows Explorer.</li>
+<li>Build -&gt; &quot;Set Active Configuration&quot; -&gt; &quot;All - Win32 Release&quot; -&gt; OK</li>
+<li>Optionally enable 64-bit (WIN64) compilation.  &quot;<cite>Build</cite> /
+<cite>Configuration Manager...</cite> / <cite>Active Solution Platform</cite> /
+<cite>New</cite> / <cite>x64</cite>&quot;.</li>
+<li>Open <cite>CORE_magickmagickmagick_config.h</cite> and edit any
+configuration settings you would like to change.  For example,
+you might change QuantumDepth to 16 for a&quot;Q:16&quot; build.</li>
+<li>If using Visual Studio Professional Edition, and OpenMP
+support is desired, then select <cite>CORE_magick</cite> in the Solution
+Explorer pane and use the right mouse button menu to select
+<cite>Properties</cite>.  In <cite>Configuration Properties</cite> / <cite>C/C++</cite> /
+<cite>Language</cite> set OpenMP support to 'yes'.</li>
+<li>Select &quot;Rebuild All&quot;</li>
+<li>Click on '!' icon to run configure program</li>
+<li>Select DLL build</li>
+<li>Check <cite>Build demo and test programs</cite>.</li>
+<li>Click on Edit <cite>magick_config.h</cite> and verify desired settings
+such as QuantumDepth.  You can also defer this step to later
+by opening the header file
+<tt class="docutils literal">CORE_magick\include\magick_config.h</tt> in the Visual Studio
+project.</li>
+<li>Finish remaining configure wizard screens to complete.</li>
+<li>File -&gt; <cite>Close Workspace</cite></li>
+</ol>
+</li>
+<li><p class="first">Build ImageMagickObject</p>
+<ol class="loweralpha simple">
+<li>Open Visual Studio Command Shell Window for WIN32 or WIN64</li>
+<li>Change to GraphicsMagick project directory <tt class="docutils literal">GM</tt></li>
+<li><tt class="docutils literal">cd GM\contrib\win32\ATL7\ImageMagickObject</tt></li>
+<li><tt class="docutils literal">BuildImageMagickObject clean</tt></li>
+<li><tt class="docutils literal">BuildImageMagickObject release</tt></li>
+<li><tt class="docutils literal">cd <span class="pre">..\..\..\..</span></tt></li>
+</ol>
+</li>
+<li><p class="first">Build PerlMagick extension (optional and now rarely done)</p>
+<ol class="loweralpha">
+<li><p class="first">Open Visual Studio Command Shell Window for WIN32  or WIN64</p>
+</li>
+<li><p class="first">Change to GraphicsMagick project directory <tt class="docutils literal">GM</tt></p>
+</li>
+<li><p class="first"><tt class="docutils literal">cd GM\PerlMagick</tt></p>
+</li>
+<li><p class="first"><tt class="docutils literal">nmake clean</tt> (only if this is a rebuild)</p>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">C:\Perl32\bin\perl.exe</span> Makefile.nt</tt> (or Perl64)</p>
+<p>Note that if multiple Perl's are installed, then it may be
+necessary to specify the full path to perl.exe in order to use
+the correct Perl.</p>
+</li>
+<li><p class="first"><tt class="docutils literal">nmake release</tt></p>
+</li>
+</ol>
+</li>
+</ol>
+<p>NOTE: access to <em>nmake</em> requires that there be a path to it. Depending on
+how the install of Visual Studio was done, this may not be the case.
+Visual Studio provides a batch script in VC98Bin called VCVARS32.BAT
+that can be used to do this manually after you open up a command prompt.</p>
+<ol class="arabic simple" start="8">
+<li>Open <cite>GMVisualMagickinstallergm-win32-Q8-dll-full.iss</cite> (or
+<cite>gm-win32-Q16-dll-full.iss</cite> if QuantumDepth=16) by
+double-clicking from Windows Explorer.<ol class="loweralpha">
+<li><cite>File</cite> -&gt; <cite>Compile</cite></li>
+<li>Test install by clicking on green triangle</li>
+</ol>
+</li>
+<li>Test PerlMagick (optional).<ol class="loweralpha">
+<li><tt class="docutils literal">cd PerlMagick</tt></li>
+<li><tt class="docutils literal">nmake test</tt> (All tests must pass!)</li>
+</ol>
+</li>
+<li>Test file format read and write.</li>
+</ol>
+<blockquote>
+<ol class="loweralpha simple">
+<li><tt class="docutils literal">cd VisualMagick\tests</tt></li>
+<li><tt class="docutils literal">run_rwfile.bat</tt> (All tests must pass!)</li>
+<li><tt class="docutils literal">run_rwblob.bat</tt> (All tests must pass!)</li>
+</ol>
+</blockquote>
+<ol class="arabic simple" start="11">
+<li>Run Magick++ test programs.</li>
+</ol>
+<blockquote>
+<ol class="loweralpha simple">
+<li><tt class="docutils literal">cd <span class="pre">Magick++/tests</span></tt></li>
+<li><tt class="docutils literal">run_tests.bat</tt> (All tests must pass!)</li>
+</ol>
+</blockquote>
+<ol class="arabic simple" start="12">
+<li>Run Magick++ demo programs.</li>
+</ol>
+<blockquote>
+<ol class="loweralpha simple">
+<li><tt class="docutils literal">cd <span class="pre">Magick++/demo</span></tt></li>
+<li><tt class="docutils literal">run_demos.bat</tt></li>
+<li>Use <em>gmdisplay</em> to visually inspect all output files.</li>
+</ol>
+</blockquote>
+<ol class="arabic simple" start="13">
+<li>Distribution package is available named similar to
+<tt class="docutils literal"><span class="pre">GM\VisualMagick\bin\GraphicsMagick-1.3-Q8-dll.exe</span></tt></li>
+</ol>
+</blockquote>
+<p>Copyright © GraphicsMagick Group 2002 - 2020</p>
+</div>
+</div>
+</div>
+</body>
+</html>

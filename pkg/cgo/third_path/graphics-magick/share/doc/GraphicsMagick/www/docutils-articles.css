@@ -1,0 +1,678 @@
+body,
+p,
+td,
+th,
+ul,
+ol {
+    font-size : medium;
+    font-family : sans-serif;
+}
+
+body {
+    color : #000000;
+    text-align : left;
+    margin : 0;
+    background-color : #FFFFFF;
+    padding-bottom : 20px;
+}
+
+h1 {
+    font-size : 120%;
+}
+
+h2 {
+    font-size : 110%;
+}
+
+h3,
+h4 {
+    font-size : 105%;
+}
+
+a:link {
+    color : #007F40;
+    text-decoration : underline;
+}
+
+a:visited {
+    color : #006030;
+    text-decoration : underline;
+}
+
+a:hover {
+    color : #006030;
+}
+
+.small {
+    font-size : smaller;
+}
+
+.tiny {
+    font-size : smaller;
+}
+
+div.banner {
+    border-bottom : 1px solid #3A4841;
+    padding : 2ex 0 1ex 4%;
+    border-top : 1px solid #3A4841;
+    background : #fff url(images/banner_bg.png) repeat-x;
+    overflow : hidden;
+    margin : 0;
+}
+
+span.nowrap {
+    white-space:nowrap;
+    margin: 2ex 2% 0 0;
+}
+
+.right {
+    float: right;
+    width: auto;
+}
+
+div.banner img {
+    vertical-align : middle;
+    margin-left : 0em;
+}
+
+div.banner form {
+    margin-left : 2em;
+    display : inline;
+    text-align : center;
+}
+
+div.banner .title {
+    color : #002A15;
+    font-size : 2.2em;
+    font-weight : bold;
+}
+
+div.banner .subtitle {
+    color : #002A15;
+    font-size : 1em;
+    font-weight : normal;
+    margin-left : 1em;
+}
+
+div.navmenu {
+    font-size : 90%;
+    border-bottom : 1px solid #75867E;
+    padding : 0;
+    margin : 0;
+    background-color : #005C30;
+    text-align : center;
+}
+
+div.navmenu ul {
+    max-width : 960px;
+    padding : 5px;
+    margin : 0;
+}
+
+div.navmenu ul li {
+    padding : 0 .5em 0 .5em;
+    list-style-type : none;
+    margin : 0 0 0 4px;
+    display : inline;
+    text-align : center;
+}
+
+div.navmenu ul li a {
+    color : #FFFFFF;
+    text-decoration : none;
+}
+
+div.navmenu ul li a:hover {
+    border-bottom : 1px solid #FFFFFF;
+}
+
+div.document {
+    height : auto;
+    padding : 1em 1% 1em 1%;
+    width : auto;
+    background : #FFFFFF;
+    max-width : 960px;
+    margin : 2ex 3% 1ex 3%;
+    line-height : 140%;
+    text-align : left;
+}
+
+div.document h1.title {
+    font-size : 140%;
+    padding : 0;
+    padding-bottom : .4ex;
+    font-weight : bold;
+    margin : 0 0 0.5em 0;
+    text-align : center;
+}
+
+div.document hr.end {
+    color : #808080;
+    width : 50%;
+    height : 1px;
+}
+
+hr.divider {
+    color : #A0A0A0;
+    clear : both;
+    height : 3px;
+    width : 62%;
+    border : none;
+    background-color : #A0A0A0;
+}
+
+div.footer {
+    color : #606060;
+    clear : both;
+    width : 100%;
+    background : #FFFFFF;
+    max-width : 960px;
+    padding-top : 1ex;
+    font-family : sans-serif;
+}
+
+div.footer p {
+    font-size : 9pt;
+    margin : .5ex 0 0 0;
+    text-align : left;
+}
+
+div.footer a {
+    color : #000000;
+    font-size : 9pt;
+    margin : 0 .5em 0 .5em;
+    text-decoration : none;
+}
+
+div.footer a:hover {
+    text-decoration : underline;
+}
+
+h2 {
+    font-size : 14pt;
+}
+
+h3 {
+    font-size : 12pt;
+}
+
+h4 {
+    font-size : 11pt;
+}
+
+h5,
+h6 {
+    font-size : 10pt;
+}
+
+a {
+    text-decoration : none;
+}
+
+a:hover {
+    text-decoration : underline;
+}
+
+h1 a:hover {
+    color : inherit;
+    background-color : inherit;
+}
+
+tt {
+    background-color : #C9EEDC;
+}
+
+dl.docutils dd {
+    margin-bottom : 1em;
+}
+
+dl.docutils dt {
+    padding-top : 0.1cm;
+    font-weight : bold;
+    padding-bottom : 0.1cm;
+}
+
+dl.docutils dt tt {
+    font-style : normal;
+}
+
+dl.docutils dt tt span {
+    background-color : #FFFFFF;
+}
+
+dl.docutils dt span {
+    padding-top : 0.2ex;
+    padding-bottom : 0.2ex;
+}
+
+hr {
+    width : 75%;
+    page-break-after : always;
+}
+
+li {
+    padding-top : 0.5ex;
+    padding-bottom : 0.5ex;
+}
+
+div.document h1.title {
+    font-weight : bold;
+    font-size : 1.5em;
+    text-align : center;
+    margin-top : 1ex;
+    padding-bottom : 1ex;
+}
+
+div.section h1 {
+    color : black;
+    margin-top : 3.5ex;
+    font-weight : bold;
+    font-size : 120%;
+    margin-bottom : 0.5ex;
+}
+
+div.section h1 a {
+    color : #224433;
+    font-size : inherit;
+    text-decoration : none;
+}
+
+div.section h1 a.toc-backref {
+    color : #104028;
+}
+
+h2.subtitle {
+    padding-top : 0cm;
+    font-size : 1.1em;
+    text-align : center;
+}
+
+div.section h2 {
+    color : black;
+    font-size : 110%;
+    margin-top : 2ex;
+    margin-bottom : 1ex;
+}
+
+div.section h2 a {
+    color : #426453;
+    font-size : inherit;
+    background-color : #FFFFFF;
+    text-decoration : none;
+}
+
+div.section h3 {
+    color : #224433;
+    font-size : inherit;
+}
+
+div.section h3 a {
+    color : #608070;
+    font-size : inherit;
+    background-color : #FFFFFF;
+    text-decoration : none;
+}
+
+a.toc-backref {
+    color : black;
+    text-decoration : none;
+}
+
+div.abstract {
+    margin : 2em 5em;
+}
+
+div.abstract p.topic-title {
+    font-weight : bold;
+    text-align : center;
+}
+
+div.admonition,
+div.attention,
+div.caution,
+div.danger,
+div.error,
+div.hint,
+div.important,
+div.note,
+div.tip,
+div.warning {
+    padding : 1em;
+    margin : 2em;
+    border : medium outset;
+}
+
+div.hint,
+div.note,
+div.tip {
+    margin : 1em;
+    padding-right : .5em;
+    padding-bottom : .5ex;
+    padding-top : .5ex;
+    border : 1pt solid #CCCCCC;
+    background-color : #BFD5CA;
+    padding-left : .5em;
+}
+
+div.attention p.admonition-title,
+div.caution p.admonition-title,
+div.danger p.admonition-title,
+div.error p.admonition-title,
+div.warning p.admonition-title div.hint p.admonition-title,
+div.important p.admonition-title,
+div.note p.admonition-title,
+div.tip p.admonition-title {
+    color : red;
+    font-size : 12pt;
+    font-weight : bold;
+    font-family : sans-serif;
+}
+
+div.hint p.admonition-title,
+div.important p.admonition-title,
+div.note p.admonition-title,
+div.tip p.admonition-title {
+    color : #70AD8E;
+    font-size : 11pt;
+    font-weight : bold;
+    font-family : sans-serif;
+}
+
+div.dedication {
+    margin : 2em 5em;
+    font-style : italic;
+    text-align : center;
+}
+
+div.contents p.topic-title {
+    color : black;
+    font-size : 16pt;
+    font-weight : bold;
+    font-style : normal;
+}
+
+div.dedication p.topic-title {
+    font-weight : bold;
+    font-style : normal;
+}
+
+div.figure {
+    margin-left : 2em;
+}
+
+div.footer,
+div.header {
+	font-size : smaller;
+	margin-bottom : 0.5ex;
+}
+
+div.system-messages {
+    margin : 5em;
+}
+
+div.system-messages h1 {
+    color : red;
+    font-size : 1em;
+}
+
+div.system-message {
+    padding : 1em;
+    border : medium outset;
+}
+
+div.system-message p.system-message-title {
+    color : red;
+    font-weight : bold;
+}
+
+div.topic {
+    margin : 2em;
+}
+
+div.line-block {
+    margin-top : 1ex;
+    border-left : 2pt solid #606060;
+    padding-left : .5em;
+    background-color : #FFFFFF;
+    margin-bottom : 1ex;
+}
+
+ul.simple {
+    padding-left : 0;
+    margin-left : 1.0em;
+    margin-bottom : 1em;
+}
+
+ol.simple {
+    margin-left : 1.0em;
+    margin-bottom : 1em;
+}
+
+ol.arabic {
+    list-style : decimal;
+}
+
+ol.loweralpha {
+    list-style : lower-alpha;
+}
+
+ol.upperalpha {
+    list-style : upper-alpha;
+}
+
+ol.lowerroman {
+    list-style : lower-roman;
+}
+
+ol.upperroman {
+    list-style : upper-roman;
+}
+
+p.caption {
+    font-style : italic;
+}
+
+p.credits {
+    font-size : smaller;
+    font-style : italic;
+}
+
+p.label {
+    white-space : nowrap;
+}
+
+p.topic-title {
+    font-weight : bold;
+}
+
+pre.address {
+    font-size : 10pt;
+    font-family : serif;
+    margin-top : 0;
+    margin-bottom : 0;
+}
+
+pre.line-block {
+    font-size : 10pt;
+    font-family : serif;
+}
+
+pre.literal-block,
+pre.doctest-block {
+    font-size : 10pt;
+    color : #000000;
+    border-width : 1px;
+    padding : 2pt;
+    border-color : #E0E0E0;
+    border-style : solid;
+    line-height : 13pt;
+    background-color : #E8F8F0;
+    overflow:auto; /* auto scroll */
+}
+
+span.classifier {
+    font-style : oblique;
+}
+
+span.classifier-delimiter {
+    font-weight : bold;
+}
+
+span.interpreted {
+    font-family : arial,helvetica,sans-serif;
+}
+
+span.option-argument {
+    font-style : italic;
+}
+
+span.pre {
+    white-space : pre;
+}
+
+span.problematic {
+    color : red;
+}
+
+span.field-argument {
+    font-size : 10pt;
+}
+
+table.docutils {
+    /*table-layout:fixed;*/
+    font-size : 100%;
+    margin-bottom : 1ex;
+    /*width : auto;*/
+    width: 98%;
+    margin-top : 1ex;
+    border : none;
+    background-color : #FFFFFF;
+}
+
+table.docutils caption {
+    font-weight : bold;
+}
+
+table.docutils th,
+table.docutils td {
+    padding : 6px;
+    border-color : #C8C8C8;
+    border-style : solid;
+    vertical-align : top;
+}
+
+
+table.docutils th {
+    border-top : 1px solid black;
+    background-color : #80C6A3;
+    border-bottom : 1px solid black;
+}
+
+table.docutils td {
+    background-color : #F8F8F8;
+}
+
+table.docutils td.decimal {
+    background-color : #F8F8F8;
+    text-align : right;
+}
+
+table.citation {
+    border-left : solid thin gray;
+    padding-left : 0.5ex;
+}
+
+table.docinfo {
+    font-size : 90%;
+    border-right : none;
+    border-top : 1pt solid #DDDDDD;
+    border-bottom : 1pt solid #DDDDDD;
+    margin-top : 1em;
+    margin-left : 0em;
+    border-left : none;
+    margin-bottom : 2em;
+    background-color : #EEEEEE;
+}
+
+table.docinfo th,
+table.docinfo td {
+    border : none;
+    background-color : #EEEEEE;
+    padding-left : 0.5em;
+}
+
+table.footnote {
+    text-align : left;
+    font-size : smaller;
+    border-left : solid thin black;
+    padding-left : 0.5ex;
+}
+
+table.footnote td {
+    background-color : #F0F0F0;
+}
+
+th.docinfo-name,
+th.field-name {
+    white-space : nowrap;
+    font-weight : bold;
+    background-color : #EEEEEE;
+    text-align : left;
+}
+
+table.option-list {
+    border : none;
+    padding : 0;
+    background-color : #FFFFFF;
+    border-collapse : collapse;
+}
+
+table.option-list tr {
+    border : none;
+    margin : 0;
+    padding : 0;
+}
+
+table.option-list td {
+    border : none;
+    background-color : #FFFFFF;
+}
+
+table.option-list td.option-group {
+    background-color : #FFFFFF;
+}
+
+span.option {
+    font-weight : bold;
+    background-color : #E8F8F0;
+}
+
+kbd { font-family : monospace; }
+
+h1 tt,
+h2 tt,
+h3 tt,
+h4 tt,
+h5 tt,
+h6 tt {
+    font-size : inherit;
+    background-color : inherit;
+}
+
+ul.auto-toc {
+    list-style-type : none;
+}
+
+img.align-left {
+}
+
+img.align-right {
+}
+
+/* Try to hide the page banner on portable devices */
+@media handheld
+{
+    div.banner {
+        display:none;
+    }
+}

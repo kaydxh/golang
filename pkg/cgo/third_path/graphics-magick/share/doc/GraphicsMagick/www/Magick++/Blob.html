@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.15.2: http://docutils.sourceforge.net/" />
+<title>Magick::Blob</title>
+<link rel="stylesheet" href="../docutils-articles.css" type="text/css" />
+</head>
+<body>
+
+<div class="banner">
+<img src="../images/gm-107x76.png" alt="GraphicMagick logo" width="107" height="76" />
+<span class="title">GraphicsMagick</span>
+<form action="http://www.google.com/search">
+	<input type="hidden" name="domains" value="www.graphicsmagick.org" />
+	<input type="hidden" name="sitesearch" value="www.graphicsmagick.org" />
+    <span class="nowrap"><input type="text" name="q" size="25" maxlength="255" />&nbsp;<input type="submit" name="sa" value="Search" /></span>
+</form>
+</div>
+
+<div class="navmenu">
+<ul>
+<li><a href="../index.html">Home</a></li>
+<li><a href="../project.html">Project</a></li>
+<li><a href="../download.html">Download</a></li>
+<li><a href="../README.html">Install</a></li>
+<li><a href="../Hg.html">Source</a></li>
+<li><a href="../NEWS.html">News</a> </li>
+<li><a href="../utilities.html">Utilities</a></li>
+<li><a href="../programming.html">Programming</a></li>
+<li><a href="../reference.html">Reference</a></li>
+</ul>
+</div>
+<div class="document" id="magick-blob">
+<h1 class="title">Magick::Blob</h1>
+
+<!-- -*- mode: rst -*- -->
+<!-- This text is in reStucturedText format, so it may look a bit odd. -->
+<!-- See http://docutils.sourceforge.net/rst.html for details. -->
+<p>Blob provides the means to contain any opaque data. It is named after
+the term <a class="reference external" href="http://en.wikipedia.org/wiki/Binary_large_object">Binary Large OBject</a> commonly used to
+describe unstructured data (such as encoded images) which are stored
+in a database. While the function of Blob is very simple (store a
+pointer and and size associated with allocated data), the Blob class
+provides some very useful capabilities. In particular, it is fully
+reference counted just like the Image class.</p>
+<p>The Blob class supports value assignment while preserving any
+outstanding earlier versions of the object. Since assignment is via a
+pointer internally, Blob is efficient enough to be stored directly in
+an STL container or any other data structure which requires
+assignment. In particular, by storing a Blob in an <a class="reference external" href="http://www.sgi.com/tech/stl/AssociativeContainer.html">associative
+container</a>
+(such as STL's <a class="reference external" href="http://www.sgi.com/tech/stl/Map.html">map</a>) it is
+possible to create simple indexed in-memory &quot;database&quot; of Blobs.</p>
+<p>Magick++ currently uses Blob to contain encoded images (e.g. JPEG) as
+well as ICC and IPTC profiles. Since Blob is a general-purpose class,
+it may be used for other purposes as well.</p>
+<p>The following is the definition of the Magick::Blob class:</p>
+<pre class="literal-block">
+class Blob
+{
+
+public:
+
+  enum Allocator
+  {
+    MallocAllocator,
+    NewAllocator
+  };
+
+  // Default constructor
+  Blob ( void );
+
+  // Construct object with data, making a copy of the supplied data.
+  Blob ( const void* data_, size_t length_ );
+
+  // Copy constructor (reference counted)
+  Blob ( const Blob&amp; blob_ );
+
+  // Destructor (reference counted)
+  virtual       ~Blob ();
+
+  // Assignment operator (reference counted)
+  Blob&amp;         operator= ( const Blob&amp; blob_ );
+
+  // Update object contents from Base64-encoded string representation.
+  void          base64 ( const std::string base64_ );
+  // Return Base64-encoded string representation.
+  std::string   base64 ( void );
+
+  // Update object contents, making a copy of the supplied data.
+  // Any existing data in the object is deallocated.
+  void          update ( const void* data_, size_t length_ );
+
+  // Update object contents, using supplied pointer directly (no
+  // copy). Any existing data in the object is deallocated.  The user
+  // must ensure that the pointer supplied is not deleted or
+  // otherwise modified after it has been supplied to this method.
+  // Specify allocator_ as &quot;MallocAllocator&quot; if memory is allocated
+  // via the C language malloc() function, or &quot;NewAllocator&quot; if
+  // memory is allocated via C++ 'new'.
+  void          updateNoCopy ( void* data_, size_t length_,
+                               Allocator allocator_ = NewAllocator );
+
+  // Obtain pointer to data. The user should never try to modify or
+  // free this data since the Blob class manages its own data. The
+  // user must be finished with the data before allowing the Blob to
+  // be destroyed since the pointer is invalid once the Blob is
+  // destroyed.
+  const void*   data ( void ) const;
+
+  // Obtain data length
+  size_t length ( void ) const;
+
+};
+</pre>
+<p>Copyright © Bob Friesenhahn 1999 - 2020</p>
+</div>
+</body>
+</html>
