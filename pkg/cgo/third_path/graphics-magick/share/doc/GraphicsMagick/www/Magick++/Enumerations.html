@@ -1,0 +1,1321 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.15.2: http://docutils.sourceforge.net/" />
+<title>Enumerations</title>
+<link rel="stylesheet" href="../docutils-articles.css" type="text/css" />
+</head>
+<body>
+
+<div class="banner">
+<img src="../images/gm-107x76.png" alt="GraphicMagick logo" width="107" height="76" />
+<span class="title">GraphicsMagick</span>
+<form action="http://www.google.com/search">
+	<input type="hidden" name="domains" value="www.graphicsmagick.org" />
+	<input type="hidden" name="sitesearch" value="www.graphicsmagick.org" />
+    <span class="nowrap"><input type="text" name="q" size="25" maxlength="255" />&nbsp;<input type="submit" name="sa" value="Search" /></span>
+</form>
+</div>
+
+<div class="navmenu">
+<ul>
+<li><a href="../index.html">Home</a></li>
+<li><a href="../project.html">Project</a></li>
+<li><a href="../download.html">Download</a></li>
+<li><a href="../README.html">Install</a></li>
+<li><a href="../Hg.html">Source</a></li>
+<li><a href="../NEWS.html">News</a> </li>
+<li><a href="../utilities.html">Utilities</a></li>
+<li><a href="../programming.html">Programming</a></li>
+<li><a href="../reference.html">Reference</a></li>
+</ul>
+</div>
+<div class="document" id="enumerations">
+<h1 class="title">Enumerations</h1>
+
+<!-- -*- mode: rst -*- -->
+<!-- This text is in reStucturedText format, so it may look a bit odd. -->
+<!-- See http://docutils.sourceforge.net/rst.html for details. -->
+<div class="contents topic" id="magick-enumerations">
+<p class="topic-title first">Magick++ Enumerations</p>
+<ul class="simple">
+<li><a class="reference internal" href="#channeltype" id="id2">ChannelType</a></li>
+<li><a class="reference internal" href="#classtype" id="id3">ClassType</a></li>
+<li><a class="reference internal" href="#colorspacetype" id="id4">ColorspaceType</a></li>
+<li><a class="reference internal" href="#compositeoperator" id="id5">CompositeOperator</a></li>
+<li><a class="reference internal" href="#compressiontype" id="id6">CompressionType</a></li>
+<li><a class="reference internal" href="#decorationtype" id="id7">DecorationType</a></li>
+<li><a class="reference internal" href="#endiantype" id="id8">EndianType</a></li>
+<li><a class="reference internal" href="#fillrule" id="id9">FillRule</a></li>
+<li><a class="reference internal" href="#filtertypes" id="id10">FilterTypes</a></li>
+<li><a class="reference internal" href="#gravitytype" id="id11">GravityType</a></li>
+<li><a class="reference internal" href="#imagetype" id="id12">ImageType</a></li>
+<li><a class="reference internal" href="#interlacetype" id="id13">InterlaceType</a></li>
+<li><a class="reference internal" href="#id1" id="id14">ChannelType</a></li>
+<li><a class="reference internal" href="#linecap" id="id15">LineCap</a></li>
+<li><a class="reference internal" href="#linejoin" id="id16">LineJoin</a></li>
+<li><a class="reference internal" href="#noisetype" id="id17">NoiseType</a></li>
+<li><a class="reference internal" href="#orientationtype" id="id18">OrientationType</a></li>
+<li><a class="reference internal" href="#paintmethod" id="id19">PaintMethod</a></li>
+<li><a class="reference internal" href="#quantumtypes" id="id20">QuantumTypes</a></li>
+<li><a class="reference internal" href="#renderingintent" id="id21">RenderingIntent</a></li>
+<li><a class="reference internal" href="#resolutiontype" id="id22">ResolutionType</a></li>
+<li><a class="reference internal" href="#storagetype" id="id23">StorageType</a></li>
+<li><a class="reference internal" href="#stretchtype" id="id24">StretchType</a></li>
+<li><a class="reference internal" href="#styletype" id="id25">StyleType</a></li>
+</ul>
+</div>
+<div class="section" id="channeltype">
+<h1><a class="toc-backref" href="#id2">ChannelType</a></h1>
+<p><em>ChannelType</em> is used as an argument when doing color separations. Use
+<em>ChannelType</em> when extracting a layer from an image. <em>MatteChannel</em> is
+useful for extracting the opacity values from an image. Note that an
+image may be represented in RGB, RGBA, CMYK, or CMYKA, pixel formats
+and a channel may only be extracted if it is valid for the current
+pixel format.</p>
+<table border="1" class="docutils">
+<caption>ChannelType</caption>
+<colgroup>
+<col width="30%" />
+<col width="70%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Enumeration</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>UndefinedChannel</td>
+<td>Unset value.</td>
+</tr>
+<tr><td>RedChannel</td>
+<td>RGB Red channel</td>
+</tr>
+<tr><td>CyanChannel</td>
+<td>CMYK Cyan channel</td>
+</tr>
+<tr><td>GreenChannel</td>
+<td>RGB Green channel</td>
+</tr>
+<tr><td>MagentaChannel</td>
+<td>CMYK Magenta channel</td>
+</tr>
+<tr><td>BlueChannel</td>
+<td>RGB Blue channel</td>
+</tr>
+<tr><td>YellowChannel</td>
+<td>CMYK Yellow channel</td>
+</tr>
+<tr><td>OpacityChannel</td>
+<td>Opacity channel (inverse of transparency)</td>
+</tr>
+<tr><td>BlackChannel</td>
+<td>CMYK Black (K) channel</td>
+</tr>
+<tr><td>MatteChannel</td>
+<td>Same as Opacity channel (deprecated)</td>
+</tr>
+<tr><td>AllChannels</td>
+<td>All color channels</td>
+</tr>
+<tr><td>GrayChannel</td>
+<td>Color channels represent an intensity</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="classtype">
+<h1><a class="toc-backref" href="#id3">ClassType</a></h1>
+<p><em>ClassType</em> specifies the image storage class.</p>
+<table border="1" class="docutils">
+<caption>ClassType</caption>
+<colgroup>
+<col width="30%" />
+<col width="70%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Enumeration</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>UndefinedClass</td>
+<td>Unset value.</td>
+</tr>
+<tr><td>DirectClass</td>
+<td>Image is composed of pixels which represent
+literal color values.</td>
+</tr>
+<tr><td>PseudoClass</td>
+<td>Image is composed of pixels which specify an index
+in a color palette.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="colorspacetype">
+<h1><a class="toc-backref" href="#id4">ColorspaceType</a></h1>
+<p>The <em>ColorspaceType</em> enumeration is used to specify the colorspace that
+quantization (color reduction and mapping) is done under or to specify
+the colorspace when encoding an output image. Colorspaces are ways of
+describing colors to fit the requirements of a particular application
+(e.g. Television, offset printing, color monitors).  Color reduction,
+by default, takes place in the <em>RGBColorspace</em>. Empirical evidence
+suggests that distances in color spaces such as <em>YUVColorspace</em> or
+<em>YIQColorspace</em> correspond to perceptual color differences more closely
+han do distances in RGB space. These color spaces may give better
+results when color reducing an image. Refer to quantize for more
+details.</p>
+<p>When encoding an output image, the colorspaces <em>RGBColorspace</em>,
+<em>CMYKColorspace</em>, <em>GRAYColorspace</em>, or <em>YCbCrColorspace</em> may be
+specified. The CMYKColorspace option is only applicable when writing
+TIFF, JPEG, and Adobe Photoshop bitmap (PSD) files.</p>
+<table border="1" class="docutils">
+<caption>ColorspaceType</caption>
+<colgroup>
+<col width="29%" />
+<col width="71%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Enumeration</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>UndefinedColorspace</td>
+<td>Unset value.</td>
+</tr>
+<tr><td>RGBColorspace</td>
+<td>Red-Green-Blue colorspace.</td>
+</tr>
+<tr><td>GRAYColorspace</td>
+<td>Grayscale colorspace</td>
+</tr>
+<tr><td>TransparentColorspace</td>
+<td>The Transparent color space behaves uniquely in
+that it preserves the matte channel of the image
+if it exists.</td>
+</tr>
+<tr><td>OHTAColorspace</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>XYZColorspace</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>YCbCrColorspace</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>YCCColorspace</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>YIQColorspace</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>YPbPrColorspace</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>YUVColorspace</td>
+<td>Y-signal, U-signal, and V-signal colorspace. YUV is
+most widely used to encode color for use in
+television transmission.</td>
+</tr>
+<tr><td>CMYKColorspace</td>
+<td>Cyan-Magenta-Yellow-Black colorspace. CYMK is a
+subtractive color system used by printers and
+photographers for the rendering of colors with ink
+or emulsion,
+normally on a white surface.</td>
+</tr>
+<tr><td>sRGBColorspace</td>
+<td>Kodak PhotoCD sRGB</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="compositeoperator">
+<h1><a class="toc-backref" href="#id5">CompositeOperator</a></h1>
+<p><em>CompositeOperator</em> is used to select the image composition algorithm
+used to compose a composite image with an image. By default, each of
+the composite image pixels are replaced by the corresponding image
+tile pixel. Specify <em>CompositeOperator</em> to select a different
+algorithm.</p>
+<table border="1" class="docutils">
+<caption>CompositeOperator</caption>
+<colgroup>
+<col width="31%" />
+<col width="69%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Enumeration</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>UndefinedCompositeOp</td>
+<td>Not defined.</td>
+</tr>
+<tr><td>OverCompositeOp</td>
+<td>Union of the two image shapes, with
+opaque areas of change-image obscuring base-image
+in the region of overlap.</td>
+</tr>
+<tr><td>InCompositeOp</td>
+<td>Change-image cut by the shape of base-image.
+None of the image data of base-image will be
+in the result.</td>
+</tr>
+<tr><td>OutCompositeOp</td>
+<td>Change-image with the shape of base-image cut out.</td>
+</tr>
+<tr><td>AtopCompositeOp</td>
+<td>Same shape as base-image, with change-image
+obscuring base-image where the image shapes
+overlap. Note this differs from over because the
+portion of change-image outside base-image's shape
+does not appear in the result.</td>
+</tr>
+<tr><td>XorCompositeOp</td>
+<td>Image data from both change-image and base-image
+that is outside the overlap region. The overlap
+region will be blank</td>
+</tr>
+<tr><td>PlusCompositeOp</td>
+<td>Sum of the image data. Output values are
+cropped to MaxRGB (no overflow). This operation is
+independent of the matte channels.</td>
+</tr>
+<tr><td>MinusCompositeOp</td>
+<td>Change-image - base-image, with underflow cropped
+to zero. The matte channel is ignored (set to
+opaque, full coverage)</td>
+</tr>
+<tr><td>AddCompositeOp</td>
+<td>Change-image + base-image, with overflow wrapping
+around (mod MaxRGB+1)</td>
+</tr>
+<tr><td>SubtractCompositeOp</td>
+<td>Change-image - base-image, with underflow wrapping
+around (mod MaxRGB+1). The add and subtract
+operators can be used to perform reversible
+transformations</td>
+</tr>
+<tr><td>DifferenceCompositeOp</td>
+<td>Absolute value of change-image minus base-image.</td>
+</tr>
+<tr><td>MultiplyCompositeOp</td>
+<td>Change-image * base-image. This is useful for the
+creation of drop-shadows.</td>
+</tr>
+<tr><td>BumpmapCompositeOp</td>
+<td>Base-image shaded by change-image</td>
+</tr>
+<tr><td>CopyCompositeOp</td>
+<td>Base-image replaced with change-image. Here
+the matte information is ignored</td>
+</tr>
+<tr><td>CopyRedCompositeOp</td>
+<td>Red channel in base-image replaced with
+the red channel in change-image. The other channels
+are copied untouched</td>
+</tr>
+<tr><td>CopyGreenCompositeOp</td>
+<td>Green channel in base-image replaced with the green
+channel in change-image. The other channels are
+copied untouched.</td>
+</tr>
+<tr><td>CopyBlueCompositeOp</td>
+<td>Blue channel in base-image replaced with the blue
+channel in change-image. The other channels are
+copied untouched.</td>
+</tr>
+<tr><td>CopyOpacityCompositeOp</td>
+<td>Opacity channel in base-image replaced with the
+opacity channel in change-image.  The other
+channels are copied untouched.</td>
+</tr>
+<tr><td>ClearCompositeOp</td>
+<td>Pixels are set to transparent.</td>
+</tr>
+<tr><td>DissolveCompositeOp</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>DisplaceCompositeOp</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>ModulateCompositeOp</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>ThresholdCompositeOp</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>NoCompositeOp</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>DarkenCompositeOp</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>LightenCompositeOp</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>HueCompositeOp</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>SaturateCompositeOp</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>ColorizeCompositeOp</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>LuminizeCompositeOp</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>ScreenCompositeOp</td>
+<td>Not yet implemented (Photoshop &amp; PDF)</td>
+</tr>
+<tr><td>OverlayCompositeOp</td>
+<td>Not yet implemented (Photoshop &amp; PDF)</td>
+</tr>
+<tr><td>CopyCyanCompositeOp</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>CopyMagentaCompositeOp</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>CopyYellowCompositeOp</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>CopyBlackCompositeOp</td>
+<td>Copy CMYK Black (K) channel.</td>
+</tr>
+<tr><td>DivideCompositeOp</td>
+<td>Change-image / base-image. This is useful for
+improving the readability of text on unevenly
+illuminated photos. (by using a gaussian blurred
+copy of change-image as base-image)</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="compressiontype">
+<h1><a class="toc-backref" href="#id6">CompressionType</a></h1>
+<p><em>CompressionType</em> is used to express the desired compression type when
+encoding an image. Be aware that most image types only support a
+sub-set of the available compression types. If the compression type
+specified is incompatable with the image, GraphicsMagick selects a
+compression type compatable with the image type.</p>
+<table border="1" class="docutils">
+<caption>CompressionType</caption>
+<colgroup>
+<col width="32%" />
+<col width="68%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Enumeration</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>UndefinedCompression</td>
+<td>Unset value.</td>
+</tr>
+<tr><td>NoCompression</td>
+<td>No compression</td>
+</tr>
+<tr><td>BZipCompression</td>
+<td>BZip as used by bzip2 utilities</td>
+</tr>
+<tr><td>FaxCompression</td>
+<td>CCITT Group 3 FAX compression</td>
+</tr>
+<tr><td>Group4Compression</td>
+<td>CCITT Group 4 FAX compression (used only for TIFF)</td>
+</tr>
+<tr><td>JPEGCompression</td>
+<td>JPEG compression</td>
+</tr>
+<tr><td>LZWCompression</td>
+<td>Lempel-Ziv-Welch (LZW) compression</td>
+</tr>
+<tr><td>RLECompression</td>
+<td>Run-Length encoded (RLE) compression</td>
+</tr>
+<tr><td>ZipCompression</td>
+<td>Lempel-Ziv compression (LZ77) as used in GNU gzip.</td>
+</tr>
+<tr><td>LZMACompression</td>
+<td>Lempel-Ziv-Markov chain algorithm</td>
+</tr>
+<tr><td>JPEG2000Compression</td>
+<td>ISO/IEC std 15444-1</td>
+</tr>
+<tr><td>JBIG1Compression</td>
+<td>ISO/IEC std 11544 / ITU-T rec T.82</td>
+</tr>
+<tr><td>JBIG2Compression</td>
+<td>ISO/IEC std 14492 / ITU-T rec T.88</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="decorationtype">
+<h1><a class="toc-backref" href="#id7">DecorationType</a></h1>
+<p>The <em>DecorationType</em> enumerations are used to specify line decorations
+of rendered text.</p>
+<table border="1" class="docutils">
+<caption>DecorationType</caption>
+<colgroup>
+<col width="32%" />
+<col width="68%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Enumeration</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>NoDecoration</td>
+<td>No decoration</td>
+</tr>
+<tr><td>UnderlineDecoration</td>
+<td>Underlined text</td>
+</tr>
+<tr><td>OverlineDecoration</td>
+<td>Overlined text</td>
+</tr>
+<tr><td>LineThroughDecoration</td>
+<td>Strike-through text</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="endiantype">
+<h1><a class="toc-backref" href="#id8">EndianType</a></h1>
+<p>The <em>EndianType</em> enumerations are used to specify the endian option
+for formats which support it (e.g. TIFF).</p>
+<table border="1" class="docutils">
+<caption>EndianType</caption>
+<colgroup>
+<col width="32%" />
+<col width="68%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Enumeration</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>UndefinedEndian</td>
+<td>Not defined (default)</td>
+</tr>
+<tr><td>LSBEndian</td>
+<td>Little endian (like Intel X86 and DEC Alpha)</td>
+</tr>
+<tr><td>MSBEndian</td>
+<td>Big endian (like Motorola 68K, Mac PowerPC, &amp;
+SPARC)</td>
+</tr>
+<tr><td>NativeEndian</td>
+<td>Use native endian of this CPU</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="fillrule">
+<h1><a class="toc-backref" href="#id9">FillRule</a></h1>
+<p><em>FillRule</em> specifies the algorithm which is to be used to determine
+what parts of the canvas are included inside the shape. See the
+documentation on SVG's <a class="reference external" href="http://www.w3.org/TR/SVG/painting.html#FillRuleProperty">fill-rule</a> property
+for usage details.</p>
+<table border="1" class="docutils">
+<caption>FillRule</caption>
+<colgroup>
+<col width="32%" />
+<col width="68%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Enumeration</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>UndefinedRule</td>
+<td>Fill rule not specified</td>
+</tr>
+<tr><td>EvenOddRule</td>
+<td>See SVG fill-rule evenodd rule.</td>
+</tr>
+<tr><td>NonZeroRule</td>
+<td>See SVG fill-rule nonzero rule.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="filtertypes">
+<h1><a class="toc-backref" href="#id10">FilterTypes</a></h1>
+<p><em>FilterTypes</em> is used to adjust the filter algorithm used when
+resizing images. Different filters experience varying degrees of
+success with various images and can take sipngicantly different
+amounts of processing time. GraphicsMagick uses the <em>LanczosFilter</em> by
+default since this filter has been shown to provide the best results
+for most images in a reasonable amount of time. Other filter types
+(e.g. <em>TriangleFilter</em>) may execute much faster but may show artifacts
+when the image is re-sized or around diagonal lines. The only way to
+be sure is to test the filter with sample images.</p>
+<table border="1" class="docutils">
+<caption>FilterTypes</caption>
+<colgroup>
+<col width="32%" />
+<col width="68%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Enumeration</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>UndefinedFilter</td>
+<td>Unset value.</td>
+</tr>
+<tr><td>PointFilter</td>
+<td>Point Filter</td>
+</tr>
+<tr><td>BoxFilter</td>
+<td>Box Filter</td>
+</tr>
+<tr><td>TriangleFilter</td>
+<td>Triangle Filter</td>
+</tr>
+<tr><td>HermiteFilter</td>
+<td>Hermite Filter</td>
+</tr>
+<tr><td>HanningFilter</td>
+<td>Hanning Filter</td>
+</tr>
+<tr><td>HammingFilter</td>
+<td>Hamming Filter</td>
+</tr>
+<tr><td>BlackmanFilter</td>
+<td>Blackman Filter</td>
+</tr>
+<tr><td>GaussianFilter</td>
+<td>Gaussian Filter</td>
+</tr>
+<tr><td>QuadraticFilter</td>
+<td>Quadratic Filter</td>
+</tr>
+<tr><td>CubicFilter</td>
+<td>Cubic Filter</td>
+</tr>
+<tr><td>CatromFilter</td>
+<td>Catrom Filter</td>
+</tr>
+<tr><td>MitchellFilter</td>
+<td>Mitchell Filter</td>
+</tr>
+<tr><td>LanczosFilter</td>
+<td>Lanczos Filter</td>
+</tr>
+<tr><td>BesselFilter</td>
+<td>Bessel Filter</td>
+</tr>
+<tr><td>SincFilter</td>
+<td>Sinc Filter</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="gravitytype">
+<h1><a class="toc-backref" href="#id11">GravityType</a></h1>
+<p><em>GravityType</em> specifies positioning of an object (e.g. text, image)
+within a bounding region (e.g. an image). Gravity provides a
+convenient way to locate objects irrespective of the size of the
+bounding region, in other words, you don't need to provide absolute
+coordinates in order to position an object. A common default for
+gravity is <em>NorthWestGravity</em>.</p>
+<table border="1" class="docutils">
+<caption>GravityType</caption>
+<colgroup>
+<col width="32%" />
+<col width="68%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Enumeration</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>ForgetGravity</td>
+<td>Don't use gravity.</td>
+</tr>
+<tr><td>NorthWestGravity</td>
+<td>Position object at top-left of region.</td>
+</tr>
+<tr><td>NorthGravity</td>
+<td>Postiion object at top-center of region</td>
+</tr>
+<tr><td>NorthEastGravity</td>
+<td>Position object at top-right of region</td>
+</tr>
+<tr><td>WestGravity</td>
+<td>Position object at left-center of region</td>
+</tr>
+<tr><td>CenterGravity</td>
+<td>Position object at center of region</td>
+</tr>
+<tr><td>EastGravity</td>
+<td>Position object at right-center of region</td>
+</tr>
+<tr><td>SouthWestGravity</td>
+<td>Position object at left-bottom of region</td>
+</tr>
+<tr><td>SouthGravity</td>
+<td>Position object at bottom-center of region</td>
+</tr>
+<tr><td>SouthEastGravity</td>
+<td>Position object at bottom-right of region</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="imagetype">
+<h1><a class="toc-backref" href="#id12">ImageType</a></h1>
+<p><em>ImageType</em> indicates the type classification of the image.</p>
+<table border="1" class="docutils">
+<caption>ImageType</caption>
+<colgroup>
+<col width="32%" />
+<col width="68%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Enumeration</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>UndefinedType</td>
+<td>Unset value.</td>
+</tr>
+<tr><td>BilevelType</td>
+<td>Monochrome bi-level image</td>
+</tr>
+<tr><td>GrayscaleType</td>
+<td>Grayscale image</td>
+</tr>
+<tr><td>GrayscaleMatteType</td>
+<td>Grayscale image with opacity</td>
+</tr>
+<tr><td>PaletteType</td>
+<td>Indexed color (palette) image</td>
+</tr>
+<tr><td>PaletteMatteType</td>
+<td>Indexed color (palette) image with opacity</td>
+</tr>
+<tr><td>TrueColorType</td>
+<td>Truecolor image</td>
+</tr>
+<tr><td>TrueColorMatteType</td>
+<td>Truecolor image with opacity</td>
+</tr>
+<tr><td>ColorSeparationType</td>
+<td>Cyan/Yellow/Magenta/Black (CYMK) image</td>
+</tr>
+<tr><td>OptimizeType</td>
+<td>Optimize type based on image characteristics</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="interlacetype">
+<h1><a class="toc-backref" href="#id13">InterlaceType</a></h1>
+<p><em>InterlaceType</em> specifies the ordering of the red, green, and blue
+pixel information in the image. Interlacing is often used to make
+image information available to the user faster by taking advantage of
+the space vs time tradeoff. For example, interlacing allows images on
+the Web to be recognizable sooner and satellite images to
+accumulate/render with image resolution increasing over time.</p>
+<p>Use <em>LineInterlace</em> or <em>PlaneInterlace</em> to create an interlaced GIF or
+progressive JPEG image.</p>
+<table border="1" class="docutils">
+<caption>InterlaceType</caption>
+<colgroup>
+<col width="31%" />
+<col width="69%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Enumeration</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>UndefinedInterlace</td>
+<td>Unset value.</td>
+</tr>
+<tr><td>NoInterlace</td>
+<td>Don't interlace image (RGBRGBRGBRGBRGBRGB...)</td>
+</tr>
+<tr><td>LineInterlace</td>
+<td>Use scanline interlacing
+(RRR...GGG...BBB...RRR...GGG...BBB...)</td>
+</tr>
+<tr><td>PlaneInterlace</td>
+<td>Use plane interlacing (RRRRRR...GGGGGG...BBBBBB...)</td>
+</tr>
+<tr><td>PartitionInterlace</td>
+<td>Similar to plane interlaing except that the
+different planes are saved to individual files
+(e.g. image.R, image.G, and image.B)</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="id1">
+<h1><a class="toc-backref" href="#id14">ChannelType</a></h1>
+<p><em>ChannelType</em> is used as an argument when doing color separations. Use
+<em>ChannelType</em> when extracting a layer from an image. <em>MatteLayer</em> is
+useful for extracting the opacity values from an image.</p>
+<table border="1" class="docutils">
+<caption>ChannelType</caption>
+<colgroup>
+<col width="32%" />
+<col width="68%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Enumeration</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>UndefinedLayer</td>
+<td>Unset value.</td>
+</tr>
+<tr><td>RedLayer</td>
+<td>Select red layer</td>
+</tr>
+<tr><td>GreenLayer</td>
+<td>Select green layer</td>
+</tr>
+<tr><td>BlueLayer</td>
+<td>Select blue layer</td>
+</tr>
+<tr><td>MatteLayer</td>
+<td>Select matte (opacity values) layer</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="linecap">
+<h1><a class="toc-backref" href="#id15">LineCap</a></h1>
+<p>The <em>LineCap</em> enumerations specify shape to be used at the end of open
+subpaths when they are stroked. See SVG's <a class="reference external" href="http://www.w3.org/TR/SVG/painting.html#StrokeLinecapProperty">stroke-linecap</a> for
+examples.</p>
+<table border="1" class="docutils">
+<caption>LineCap</caption>
+<colgroup>
+<col width="32%" />
+<col width="68%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Enumeration</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>UndefinedCap</td>
+<td>Unset value.</td>
+</tr>
+<tr><td>ButtCap</td>
+<td>Square ending.</td>
+</tr>
+<tr><td>RoundCap</td>
+<td>Rounded ending (half-circle end with radius of 1/2
+stroke width).</td>
+</tr>
+<tr><td>SquareCap</td>
+<td>Square ending, extended by 1/2 the stroke width at
+end.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="linejoin">
+<h1><a class="toc-backref" href="#id16">LineJoin</a></h1>
+<p>The <em>LineJoin</em> enumerations specify the shape to be used at the
+corners of paths or basic shapes when they are stroked. See SVG's
+<a class="reference external" href="http://www.w3.org/TR/SVG/painting.html#StrokeLinejoinProperty">stroke-linejoin</a> for
+examples.</p>
+<table border="1" class="docutils">
+<caption>LineJoin</caption>
+<colgroup>
+<col width="32%" />
+<col width="68%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Enumeration</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>UndefinedJoin</td>
+<td>Unset value.</td>
+</tr>
+<tr><td>MiterJoin</td>
+<td>Sharp-edged join</td>
+</tr>
+<tr><td>RoundJoin</td>
+<td>Rounded-edged join</td>
+</tr>
+<tr><td>BevelJoin</td>
+<td>Beveled-edged join</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="noisetype">
+<h1><a class="toc-backref" href="#id17">NoiseType</a></h1>
+<p><em>NoiseType</em> is used as an argument to select the type of noise to be
+added to the image.</p>
+<table border="1" class="docutils">
+<caption>NoiseType</caption>
+<colgroup>
+<col width="37%" />
+<col width="63%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Enumeration</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>UndefinedNoise</td>
+<td>Unset value.</td>
+</tr>
+<tr><td>UniformNoise</td>
+<td>Uniform noise</td>
+</tr>
+<tr><td>GaussianNoise</td>
+<td>Gaussian noise</td>
+</tr>
+<tr><td>MultiplicativeGaussianNoise</td>
+<td>Multiplicative Gaussian noise</td>
+</tr>
+<tr><td>ImpulseNoise</td>
+<td>Impulse noise</td>
+</tr>
+<tr><td>LaplacianNoise</td>
+<td>Laplacian noise</td>
+</tr>
+<tr><td>PoissonNoise</td>
+<td>Poisson noise</td>
+</tr>
+<tr><td>RandomNoise</td>
+<td>Random noise</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="orientationtype">
+<h1><a class="toc-backref" href="#id18">OrientationType</a></h1>
+<p><em>OrientationType</em> specifies the orientation of the image. Useful for
+when the image is produced via a different ordinate system, the camera
+was turned on its side, or the page was scanned sideways.</p>
+<table border="1" class="docutils">
+<caption>OrientationType</caption>
+<colgroup>
+<col width="38%" />
+<col width="28%" />
+<col width="34%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Enumeration</th>
+<th class="head">Scanline Direction</th>
+<th class="head">Frame Direction</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>UndefinedOrientation</td>
+<td>Unknown</td>
+<td>Unknown</td>
+</tr>
+<tr><td>TopLeftOrientation</td>
+<td>Left to right</td>
+<td>Top to bottom</td>
+</tr>
+<tr><td>TopRightOrientation</td>
+<td>Right to left</td>
+<td>Top to bottom</td>
+</tr>
+<tr><td>BottomRightOrientation</td>
+<td>Right to left</td>
+<td>Bottom to top</td>
+</tr>
+<tr><td>BottomLeftOrientation</td>
+<td>Left to right</td>
+<td>Bottom to top</td>
+</tr>
+<tr><td>LeftTopOrientation</td>
+<td>Top to bottom</td>
+<td>Left to right</td>
+</tr>
+<tr><td>RightTopOrientation</td>
+<td>Top to bottom</td>
+<td>Right to left</td>
+</tr>
+<tr><td>RightBottomOrientation</td>
+<td>Bottom to top</td>
+<td>Right to left</td>
+</tr>
+<tr><td>LeftBottomOrientation</td>
+<td>Bottom to top</td>
+<td>Left to right</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="paintmethod">
+<h1><a class="toc-backref" href="#id19">PaintMethod</a></h1>
+<p><em>PaintMethod</em> specifies how pixel colors are to be replaced in the
+image. It is used to select the pixel-filling algorithm employed.</p>
+<table border="1" class="docutils">
+<caption>PaintMethod</caption>
+<colgroup>
+<col width="37%" />
+<col width="63%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Enumeration</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>PointMethod</td>
+<td>Replace pixel color at point.</td>
+</tr>
+<tr><td>ReplaceMethod</td>
+<td>Replace color for all image pixels matching
+color at point.</td>
+</tr>
+<tr><td>FloodfillMethod</td>
+<td>Replace color for pixels surrounding point
+until encountering pixel that fails to match
+color at point.</td>
+</tr>
+<tr><td>FillToBorderMethod</td>
+<td>Replace color for pixels surrounding point
+until encountering pixels matching border
+color.</td>
+</tr>
+<tr><td>ResetMethod</td>
+<td>Replace colors for all pixels in image with
+pen color.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="quantumtypes">
+<h1><a class="toc-backref" href="#id20">QuantumTypes</a></h1>
+<p><em>QuantumTypes</em> is used to indicate the source or destination format of
+entire pixels, or components of pixels (&quot;Quantums&quot;) while they are
+being read, or written to, a pixel cache. The validity of these format
+specifications depends on whether the Image pixels are in RGB format,
+RGBA format, or CMYK format. The pixel Quantum size is determined by
+the Image depth (typically 8, 16, or 32 bits, but any value from 1-64
+bits integer or float is supported).</p>
+<table border="1" class="docutils">
+<caption>RGB(A) Image Quantums</caption>
+<colgroup>
+<col width="37%" />
+<col width="63%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Enumeration</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>IndexQuantum</td>
+<td>PseudoColor colormap indices</td>
+</tr>
+<tr><td>RedQuantum</td>
+<td>Red pixel Quantum</td>
+</tr>
+<tr><td>GreenQuantum</td>
+<td>Green pixel Quantum</td>
+</tr>
+<tr><td>BlueQuantum</td>
+<td>Blue pixel Quantum</td>
+</tr>
+<tr><td>OpacityQuantum</td>
+<td>Opacity (Alpha) Quantum</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils">
+<caption>CMY(K) Image Quantum</caption>
+<colgroup>
+<col width="37%" />
+<col width="63%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Enumeration</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>CyanQuantum</td>
+<td>Cyan pixel Quantum</td>
+</tr>
+<tr><td>MagentaQuantum</td>
+<td>Magenta pixel Quantum</td>
+</tr>
+<tr><td>YellowQuantum</td>
+<td>Yellow pixel Quantum</td>
+</tr>
+<tr><td>BlackQuantum</td>
+<td>Black pixel Quantum</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils">
+<caption>Grayscale Image Quantums</caption>
+<colgroup>
+<col width="37%" />
+<col width="63%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Enumeration</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>GrayQuantum</td>
+<td>Gray pixel</td>
+</tr>
+<tr><td>GrayOpacityQuantum</td>
+<td>Pixel opacity</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils">
+<caption>Entire Pixels (Expressed in Byte Order)</caption>
+<colgroup>
+<col width="37%" />
+<col width="63%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Enumeration</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>RGBQuantum</td>
+<td>RGB pixel (1 to 64 bits)</td>
+</tr>
+<tr><td>RGBAQuantum</td>
+<td>RGBA pixel (1 to 64 bits)</td>
+</tr>
+<tr><td>CMYKQuantum</td>
+<td>CMYK pixel (1 to 64 bits)</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="renderingintent">
+<h1><a class="toc-backref" href="#id21">RenderingIntent</a></h1>
+<p>Rendering intent is a concept defined by <a class="reference external" href="http://www.color.org/">ICC</a> Spec ICC.1:1998-09, &quot;File Format for Color
+Profiles&quot;. GraphicsMagick uses RenderingIntent in order to support ICC
+Color Profiles.</p>
+<p>From the specification: &quot;Rendering intent specifies the style of
+reproduction to be used during the evaluation of this profile in a
+sequence of profiles. It applies specifically to that profile in the
+sequence and not to the entire sequence. Typically, the user or
+application will set the rendering intent dynamically at runtime or
+embedding time.&quot;</p>
+<table border="1" class="docutils">
+<caption>RenderingIntent</caption>
+<colgroup>
+<col width="36%" />
+<col width="64%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Enumeration</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>UndefinedIntent</td>
+<td>Unset value.</td>
+</tr>
+<tr><td>SaturationIntent</td>
+<td>A rendering intent that specifies the saturation
+of the pixels in the image is preserved perhaps
+at the expense of accuracy in hue and lightness.</td>
+</tr>
+<tr><td>PerceptualIntent</td>
+<td>A rendering intent that specifies the full gamut
+of the image is compressed or expanded to fill
+the gamut of the destination device. Gray
+balance is preserved but colorimetric accuracy
+might not be preserved.</td>
+</tr>
+<tr><td>AbsoluteIntent</td>
+<td>Absolute colorimetric</td>
+</tr>
+<tr><td>RelativeIntent</td>
+<td>Relative colorimetric</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="resolutiontype">
+<h1><a class="toc-backref" href="#id22">ResolutionType</a></h1>
+<p>By default, GraphicsMagick defines resolutions in pixels per
+inch. <em>ResolutionType</em> provides a means to adjust this.</p>
+<table border="1" class="docutils">
+<caption>ResolutionType</caption>
+<colgroup>
+<col width="39%" />
+<col width="61%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Enumeration</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>UndefinedResolution</td>
+<td>Unset value.</td>
+</tr>
+<tr><td>PixelsPerInchResolution</td>
+<td>Density specifications are specified in units
+of pixels per inch (english units).</td>
+</tr>
+<tr><td>PixelsPerCentimeterResolution</td>
+<td>Density specifications are specified in units
+of pixels per centimeter (metric units).</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="storagetype">
+<h1><a class="toc-backref" href="#id23">StorageType</a></h1>
+<p>The <em>StorageType</em> enumerations are used to specify the storage format
+of pixels in the source or destination pixel array.</p>
+<table border="1" class="docutils">
+<caption>StorageType</caption>
+<colgroup>
+<col width="37%" />
+<col width="63%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Enumeration</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>CharPixel</td>
+<td>Character type</td>
+</tr>
+<tr><td>ShortPixel</td>
+<td>Short type</td>
+</tr>
+<tr><td>IntegerPixel</td>
+<td>Integer type</td>
+</tr>
+<tr><td>FloatPixel</td>
+<td>Float type</td>
+</tr>
+<tr><td>DoublePixel</td>
+<td>Double type</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="stretchtype">
+<h1><a class="toc-backref" href="#id24">StretchType</a></h1>
+<p>The <em>StretchType</em> enumerations are used to specify the relative width
+of a font to the regular width for the font family. If the width is
+not important, the <em>AnyStretch</em> enumeration may be specified for a
+wildcard match.</p>
+<table border="1" class="docutils">
+<caption>StretchType</caption>
+<colgroup>
+<col width="37%" />
+<col width="63%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Enumeration</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>AnyStretch</td>
+<td>Wildcard match for font stretch</td>
+</tr>
+<tr><td>NormalStretch</td>
+<td>Normal width font</td>
+</tr>
+<tr><td>UltraCondensedStretch</td>
+<td>Ultra-condensed (narrowest) font</td>
+</tr>
+<tr><td>ExtraCondensedStretch</td>
+<td>Extra-condensed font</td>
+</tr>
+<tr><td>CondensedStretch</td>
+<td>Condensed font</td>
+</tr>
+<tr><td>SemiCondensedStretch</td>
+<td>Semi-Condensed font</td>
+</tr>
+<tr><td>SemiExpandedStretch</td>
+<td>Semi-Expanded font</td>
+</tr>
+<tr><td>ExpandedStretch</td>
+<td>Expanded font</td>
+</tr>
+<tr><td>ExtraExpandedStretch</td>
+<td>Extra-Expanded font</td>
+</tr>
+<tr><td>UltraExpandedStretch</td>
+<td>Ultra-expanded (widest) font</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="styletype">
+<h1><a class="toc-backref" href="#id25">StyleType</a></h1>
+<p>The <em>StyleType</em> enumerations are used to specify the style
+(e.g. Italic) of a font. If the style is not important, the <em>AnyStyle</em>
+enumeration may be specified for a wildcard match.</p>
+<table border="1" class="docutils">
+<caption>StyleType</caption>
+<colgroup>
+<col width="37%" />
+<col width="63%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Enumeration</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>AnyStyle</td>
+<td>Wildcard match for font style</td>
+</tr>
+<tr><td>NormalStyle</td>
+<td>Normal font style</td>
+</tr>
+<tr><td>ItalicStyle</td>
+<td>Italic font style</td>
+</tr>
+<tr><td>ObliqueStyle</td>
+<td>Oblique font style</td>
+</tr>
+</tbody>
+</table>
+<p>Copyright © Bob Friesenhahn 1999 - 2020</p>
+</div>
+</div>
+</body>
+</html>

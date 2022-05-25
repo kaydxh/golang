@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.15.2: http://docutils.sourceforge.net/" />
+<title>GraphicsMagick Thanks</title>
+<link rel="stylesheet" href="docutils-articles.css" type="text/css" />
+</head>
+<body>
+
+<div class="banner">
+<img src="images/gm-107x76.png" alt="GraphicMagick logo" width="107" height="76" />
+<span class="title">GraphicsMagick</span>
+<form action="http://www.google.com/search">
+	<input type="hidden" name="domains" value="www.graphicsmagick.org" />
+	<input type="hidden" name="sitesearch" value="www.graphicsmagick.org" />
+    <span class="nowrap"><input type="text" name="q" size="25" maxlength="255" />&nbsp;<input type="submit" name="sa" value="Search" /></span>
+</form>
+</div>
+
+<div class="navmenu">
+<ul>
+<li><a href="index.html">Home</a></li>
+<li><a href="project.html">Project</a></li>
+<li><a href="download.html">Download</a></li>
+<li><a href="README.html">Install</a></li>
+<li><a href="Hg.html">Source</a></li>
+<li><a href="NEWS.html">News</a> </li>
+<li><a href="utilities.html">Utilities</a></li>
+<li><a href="programming.html">Programming</a></li>
+<li><a href="reference.html">Reference</a></li>
+</ul>
+</div>
+<div class="document" id="graphicsmagick-thanks">
+<h1 class="title">GraphicsMagick Thanks</h1>
+
+<!-- -*- mode: rst -*- -->
+<!-- This text is in reStucturedText format, so it may look a bit odd. -->
+<!-- See http://docutils.sourceforge.net/rst.html for details. -->
+<p>We would like to thank the following organizations or individuals who
+may have not contributed code but contributed substantially in other
+ways:</p>
+<div class="contents local topic" id="contents">
+<ul class="simple">
+<li><a class="reference internal" href="#fuzz-testing" id="id1">Fuzz Testing</a></li>
+<li><a class="reference internal" href="#security-analysis-reports" id="id2">Security Analysis/Reports</a></li>
+<li><a class="reference internal" href="#static-code-analysis" id="id3">Static Code Analysis</a></li>
+<li><a class="reference internal" href="#software-analysis-tools" id="id4">Software Analysis Tools</a></li>
+<li><a class="reference internal" href="#additional-acknowledgements" id="id5">Additional Acknowledgements</a></li>
+</ul>
+</div>
+<div class="section" id="fuzz-testing">
+<h1><a class="toc-backref" href="#id1">Fuzz Testing</a></h1>
+<blockquote>
+<ul class="simple">
+<li>Gustavo Grieco</li>
+<li>Agostino Sarubbo</li>
+<li>Jodie Cunningham</li>
+<li>Gynvael Coldwind and Mateusz Jurczyk of the Google Security Team</li>
+<li>Hanno Böck</li>
+<li>Tobias Ospelt</li>
+<li>Michal Zalewski</li>
+<li>Moshe Kaplan</li>
+</ul>
+</blockquote>
+</div>
+<div class="section" id="security-analysis-reports">
+<h1><a class="toc-backref" href="#id2">Security Analysis/Reports</a></h1>
+<blockquote>
+<ul class="simple">
+<li>John Lightsey</li>
+<li>David Chan</li>
+<li>Federico Larumbe</li>
+<li>Petr Gajdos</li>
+</ul>
+</blockquote>
+</div>
+<div class="section" id="static-code-analysis">
+<h1><a class="toc-backref" href="#id3">Static Code Analysis</a></h1>
+<blockquote>
+<ul class="simple">
+<li><a class="reference external" href="http://www.synopsys.com/software/coverity/">Coverity</a> was used (free of charge) to perform static code
+analysis of the software.  After resolving many issues, there are
+now zero reported defects per 1000 lines of code.</li>
+</ul>
+</blockquote>
+</div>
+<div class="section" id="software-analysis-tools">
+<h1><a class="toc-backref" href="#id4">Software Analysis Tools</a></h1>
+<blockquote>
+<ul class="simple">
+<li><a class="reference external" href="http://lcamtuf.coredump.cx/afl/">American fuzzy lop</a> was used (by many) to produce and discover
+many of the files which caused problems for the software.</li>
+<li><a class="reference external" href="http://quickfuzz.org/">QuickFuzz</a> was used (by Gustavo Grieco) to discover issues in the
+SVG renderer.  <a class="reference external" href="http://quickfuzz.org/">QuickFuzz</a> provides specific support for a set of
+file formats and is very good at chasing down and isolating
+weaknesses.</li>
+<li><a class="reference external" href="https://code.google.com/p/address-sanitizer/">AddressSanitizer</a> (ASan) was used to detect and isolate memory
+access issues.</li>
+<li><a class="reference external" href="http://www.valgrind.org/">Valgrind</a> was used to detect and isolate memory access issues as
+well as memory leaks.</li>
+</ul>
+</blockquote>
+</div>
+<div class="section" id="additional-acknowledgements">
+<h1><a class="toc-backref" href="#id5">Additional Acknowledgements</a></h1>
+<dl class="docutils">
+<dt>David Pensak, E. I. du Pont de Nemours and Company</dt>
+<dd>For providing the computing environment that made
+developing ImageMagick possible.</dd>
+<dt>Alexander Zimmermann</dt>
+<dd>Responsible for the ImageMagick Linux binary
+distributions for many years. His efforts are very much
+appreciated.</dd>
+<dt>Paul Heckbert, Carnegie Mellon University</dt>
+<dd>Image resizing is based on Paul Heckbert's Zoom program.</dd>
+<dt>Paul Raveling, USC Information Sciences Institute</dt>
+<dd>The spatial subdivision color reduction algorithm is
+based on his Img software.</dd>
+<dt>Michael Halle, Spatial Imaging Group at MIT</dt>
+<dd>For the initial implementation of Alan Paeth's image
+rotation algorithm.</dd>
+<dt>Peder Langlo, Hewlett Packard</dt>
+<dd>Made hundreds of suggestions and bug reports. Without
+Peder, this software would not be nearly as useful as it
+is today.</dd>
+<dt>Rod Bogart and John W. Peterson, University of Utah</dt>
+<dd>Image compositing is loosely based on rlecomp of the
+Utah Raster Toolkit.</dd>
+<dt>Alvy Ray Smith and Eric Ray Lyons</dt>
+<dd>HWB color transform and algorithm.</dd>
+<dt>Thomas R Crimmins</dt>
+<dd>Inventor of the eight hull algorithm used for speckle
+reduction.</dd>
+</dl>
+<hr class="docutils" />
+<div class="line-block">
+<div class="line">Copyright © GraphicsMagick Group 2002 - 2020</div>
+</div>
+<p>This program is covered by multiple licenses, which are described in
+Copyright.txt. You should have received a copy of Copyright.txt with this
+package; otherwise see <a class="reference external" href="http://www.graphicsmagick.org/Copyright.html">http://www.graphicsmagick.org/Copyright.html</a>.</p>
+</div>
+</div>
+</body>
+</html>

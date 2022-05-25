@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.15.2: http://docutils.sourceforge.net/" />
+<title>render</title>
+<link rel="stylesheet" href="../docutils-api.css" type="text/css" />
+</head>
+<body>
+
+<div class="banner">
+<img src="../images/gm-107x76.png" alt="GraphicMagick logo" width="107" height="76" />
+<span class="title">GraphicsMagick</span>
+<form action="http://www.google.com/search">
+	<input type="hidden" name="domains" value="www.graphicsmagick.org" />
+	<input type="hidden" name="sitesearch" value="www.graphicsmagick.org" />
+    <span class="nowrap"><input type="text" name="q" size="25" maxlength="255" />&nbsp;<input type="submit" name="sa" value="Search" /></span>
+</form>
+</div>
+
+<div class="navmenu">
+<ul>
+<li><a href="../index.html">Home</a></li>
+<li><a href="../project.html">Project</a></li>
+<li><a href="../download.html">Download</a></li>
+<li><a href="../README.html">Install</a></li>
+<li><a href="../Hg.html">Source</a></li>
+<li><a href="../NEWS.html">News</a> </li>
+<li><a href="../utilities.html">Utilities</a></li>
+<li><a href="../programming.html">Programming</a></li>
+<li><a href="../reference.html">Reference</a></li>
+</ul>
+</div>
+<div class="document" id="render">
+<h1 class="title">render</h1>
+<h2 class="subtitle" id="low-level-methods-to-draw-on-an-image">Low-level methods to draw on an image</h2>
+
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#clonedrawinfo" id="id13">CloneDrawInfo</a></li>
+<li><a class="reference internal" href="#destroydrawinfo" id="id14">DestroyDrawInfo</a></li>
+<li><a class="reference internal" href="#drawaffineimage" id="id15">DrawAffineImage</a></li>
+<li><a class="reference internal" href="#drawclippath" id="id16">DrawClipPath</a></li>
+<li><a class="reference internal" href="#drawcompositemask" id="id17">DrawCompositeMask</a></li>
+<li><a class="reference internal" href="#drawimage" id="id18">DrawImage</a></li>
+<li><a class="reference internal" href="#drawpatternpath" id="id19">DrawPatternPath</a></li>
+</ul>
+</div>
+<div class="section" id="clonedrawinfo">
+<h1><a class="toc-backref" href="#id13">CloneDrawInfo</a></h1>
+<div class="section" id="synopsis">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#drawinfo">DrawInfo</a> *CloneDrawInfo( const <a class="reference external" href="../api/types.html#imageinfo">ImageInfo</a> *image_info, const <a class="reference external" href="../api/types.html#drawinfo">DrawInfo</a> *draw_info );
+</pre>
+</div>
+<div class="section" id="description">
+<h2>Description</h2>
+<p>CloneDrawInfo() makes a copy of the given draw info structure.  If NULL
+is specified, a new DrawInfo structure is created initialized to
+default values.</p>
+<p>The format of the CloneDrawInfo method is:</p>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#drawinfo">DrawInfo</a> *CloneDrawInfo( const <a class="reference external" href="../api/types.html#imageinfo">ImageInfo</a> *image_info, const <a class="reference external" href="../api/types.html#drawinfo">DrawInfo</a> *draw_info );
+</pre>
+<dl class="docutils">
+<dt>image_info:</dt>
+<dd>The image info.</dd>
+<dt>draw_info:</dt>
+<dd>The draw info.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="destroydrawinfo">
+<h1><a class="toc-backref" href="#id14">DestroyDrawInfo</a></h1>
+<div class="section" id="id1">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+void DestroyDrawInfo( <a class="reference external" href="../api/types.html#drawinfo">DrawInfo</a> *draw_info );
+</pre>
+</div>
+<div class="section" id="id2">
+<h2>Description</h2>
+<p>DestroyDrawInfo() deallocates memory associated with an DrawInfo
+structure.</p>
+<p>The format of the DestroyDrawInfo method is:</p>
+<pre class="literal-block">
+void DestroyDrawInfo( <a class="reference external" href="../api/types.html#drawinfo">DrawInfo</a> *draw_info );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>draw_info:</dt>
+<dd>The draw info.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="drawaffineimage">
+<h1><a class="toc-backref" href="#id15">DrawAffineImage</a></h1>
+<div class="section" id="id3">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+unsigned int DrawAffineImage( <a class="reference external" href="../api/types.html#image">Image</a> *image, const <a class="reference external" href="../api/types.html#image">Image</a> *composite,
+                              const <a class="reference external" href="../api/types.html#affinematrix">AffineMatrix</a> *affine );
+</pre>
+</div>
+<div class="section" id="id4">
+<h2>Description</h2>
+<p>DrawAffineImage() composites the source over the destination image as
+dictated by the affine transform.</p>
+<p>The format of the DrawAffineImage method is:</p>
+<pre class="literal-block">
+unsigned int DrawAffineImage( <a class="reference external" href="../api/types.html#image">Image</a> *image, const <a class="reference external" href="../api/types.html#image">Image</a> *composite,
+                              const <a class="reference external" href="../api/types.html#affinematrix">AffineMatrix</a> *affine );
+</pre>
+<dl class="docutils">
+<dt>image:</dt>
+<dd>The image.</dd>
+<dt>image:</dt>
+<dd>The composite image.</dd>
+<dt>affine:</dt>
+<dd>The affine transform.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="drawclippath">
+<h1><a class="toc-backref" href="#id16">DrawClipPath</a></h1>
+<div class="section" id="id5">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+MagickPassFail DrawClipPath( <a class="reference external" href="../api/types.html#image">Image</a> *image, const <a class="reference external" href="../api/types.html#drawinfo">DrawInfo</a> *draw_info,
+                             const char *name );
+</pre>
+</div>
+<div class="section" id="id6">
+<h2>Description</h2>
+<p>DrawClipPath() draws the clip path on the image mask.</p>
+<p>The format of the DrawClipPath method is:</p>
+<pre class="literal-block">
+MagickPassFail DrawClipPath( <a class="reference external" href="../api/types.html#image">Image</a> *image, const <a class="reference external" href="../api/types.html#drawinfo">DrawInfo</a> *draw_info,
+                             const char *name );
+</pre>
+<dl class="docutils">
+<dt>image:</dt>
+<dd>The image.</dd>
+<dt>draw_info:</dt>
+<dd>The draw info.</dd>
+<dt>name:</dt>
+<dd>The name of the clip path.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="drawcompositemask">
+<h1><a class="toc-backref" href="#id17">DrawCompositeMask</a></h1>
+<div class="section" id="id7">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+MagickPassFail DrawCompositeMask( <a class="reference external" href="../api/types.html#image">Image</a> *image, const <a class="reference external" href="../api/types.html#drawinfo">DrawInfo</a> *draw_info,
+                                  const char *name );
+</pre>
+</div>
+<div class="section" id="id8">
+<h2>Description</h2>
+<p>DrawCompositeMask() draws the composite mask on the image mask.</p>
+<p>The format of the DrawCompositeMask method is:</p>
+<pre class="literal-block">
+MagickPassFail DrawCompositeMask( <a class="reference external" href="../api/types.html#image">Image</a> *image, const <a class="reference external" href="../api/types.html#drawinfo">DrawInfo</a> *draw_info,
+                                  const char *name );
+</pre>
+<dl class="docutils">
+<dt>image:</dt>
+<dd>The image.</dd>
+<dt>draw_info:</dt>
+<dd>The draw info.</dd>
+<dt>name:</dt>
+<dd>The name of the composite mask.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="drawimage">
+<h1><a class="toc-backref" href="#id18">DrawImage</a></h1>
+<div class="section" id="id9">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+MagickPassFail DrawImage( <a class="reference external" href="../api/types.html#image">Image</a> *image, const <a class="reference external" href="../api/types.html#drawinfo">DrawInfo</a> *draw_info );
+</pre>
+</div>
+<div class="section" id="id10">
+<h2>Description</h2>
+<p>Use DrawImage() to draw a graphic primitive on your image.  The primitive
+may be represented as a string or filename.  Precede the filename with an
+&quot;at&quot; sign (&#64;) and the contents of the file are drawn on the image.  You
+can affect how text is drawn by setting one or more members of the draw
+info structure.</p>
+<p>The format of the drawing primitive text is known as &quot;MVG&quot; (&quot;Magick
+Vector Graphics&quot;), which is a powerful yet simple drawing syntax fronted
+by the &quot;MVG&quot; coder, and substantially supporting W3C SVG 1.1
+(<a class="reference external" href="https://www.w3.org/TR/SVG11/">https://www.w3.org/TR/SVG11/</a>) rendering when fronted by the &quot;SVG&quot; coder
+(which translates SVG into MVG).  The parser is non-validating and in fact
+is designed to attempt to skip over unhandled textual elements which may be
+passed through from the SVG coder. While being used as the basis of a useful
+W3C SVG implementation and while SVG is commonly used on the &quot;web&quot; as an
+untrusted input such as within web browsers, this implementation is not
+designed to handle arbitrary untrusted inputs delivered from the &quot;Internet&quot;.
+The drawing capabilities are best used under controlled circumstances
+where drawing inputs can be reasonably trusted.</p>
+<p>Note that this is a legacy interface. Authors of new code should consider
+using the Draw* methods defined by magick/draw.h since they are better
+documented and less error prone.</p>
+<p>The format of the DrawImage method is:</p>
+<pre class="literal-block">
+MagickPassFail DrawImage( <a class="reference external" href="../api/types.html#image">Image</a> *image, const <a class="reference external" href="../api/types.html#drawinfo">DrawInfo</a> *draw_info );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>image:</dt>
+<dd>The image.</dd>
+<dt>draw_info:</dt>
+<dd>The draw info.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="drawpatternpath">
+<h1><a class="toc-backref" href="#id19">DrawPatternPath</a></h1>
+<div class="section" id="id11">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+MagickPassFail DrawPatternPath( <a class="reference external" href="../api/types.html#image">Image</a> *image, const <a class="reference external" href="../api/types.html#drawinfo">DrawInfo</a> *draw_info,
+                                const char *name, <a class="reference external" href="../api/types.html#image">Image</a> ** pattern );
+</pre>
+</div>
+<div class="section" id="id12">
+<h2>Description</h2>
+<p>DrawPatternPath() draws a pattern.</p>
+<p>The format of the DrawPatternPath method is:</p>
+<pre class="literal-block">
+MagickPassFail DrawPatternPath( <a class="reference external" href="../api/types.html#image">Image</a> *image, const <a class="reference external" href="../api/types.html#drawinfo">DrawInfo</a> *draw_info,
+                                const char *name, <a class="reference external" href="../api/types.html#image">Image</a> ** pattern );
+</pre>
+<dl class="docutils">
+<dt>image:</dt>
+<dd>The image.</dd>
+<dt>draw_info:</dt>
+<dd>The draw info.</dd>
+<dt>name:</dt>
+<dd>The pattern name.</dd>
+<dt>image:</dt>
+<dd>The image.</dd>
+</dl>
+</div>
+</div>
+</div>
+</body>
+</html>

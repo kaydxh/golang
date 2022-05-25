@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.15.2: http://docutils.sourceforge.net/" />
+<title>GraphicsMagick Image Processing System</title>
+<meta content="GraphicsMagick is a robust collection of tools and libraries to read, write, and manipulate an image in any of the more popular image formats including GIF, JPEG, PNG, PDF, and WebP. With GraphicsMagick you can create GIFs dynamically making it suitable for Web applications. You can also resize, rotate, sharpen, color reduce, or add special effects to an image and save your completed work in the same or differing image format. " name="description" />
+<meta content="GraphicsMagick, GM, PerlMagick, Perl Magick, Perl Magic, image processing, software development, TclMagick, Magick++" name="keywords" />
+<link rel="stylesheet" href="docutils-articles.css" type="text/css" />
+</head>
+<body>
+
+<div class="banner">
+<img src="images/gm-107x76.png" alt="GraphicMagick logo" width="107" height="76" />
+<span class="title">GraphicsMagick</span>
+<form action="http://www.google.com/search">
+	<input type="hidden" name="domains" value="www.graphicsmagick.org" />
+	<input type="hidden" name="sitesearch" value="www.graphicsmagick.org" />
+    <span class="nowrap"><input type="text" name="q" size="25" maxlength="255" />&nbsp;<input type="submit" name="sa" value="Search" /></span>
+</form>
+</div>
+
+<div class="navmenu">
+<ul>
+<li><a href="index.html">Home</a></li>
+<li><a href="project.html">Project</a></li>
+<li><a href="download.html">Download</a></li>
+<li><a href="README.html">Install</a></li>
+<li><a href="Hg.html">Source</a></li>
+<li><a href="NEWS.html">News</a> </li>
+<li><a href="utilities.html">Utilities</a></li>
+<li><a href="programming.html">Programming</a></li>
+<li><a href="reference.html">Reference</a></li>
+</ul>
+</div>
+<div class="document" id="graphicsmagick-image-processing-system">
+<h1 class="title">GraphicsMagick Image Processing System</h1>
+
+<!-- -*- mode: rst -*- -->
+<!-- This text is in reStucturedText format, so it may look a bit odd. -->
+<!-- See http://docutils.sourceforge.net/rst.html for details. -->
+<table border="1" class="docutils">
+<colgroup>
+<col width="33%" />
+<col width="67%" />
+</colgroup>
+<tbody valign="top">
+<tr><td>Current Release</td>
+<td>1.3.35 (Released February 23, 2020) <a class="reference external" href="http://sourceforge.net/projects/graphicsmagick/files/">download release</a></td>
+</tr>
+<tr><td>Development Snapshots</td>
+<td>(Updated frequently) <a class="reference external" href="ftp://ftp.graphicsmagick.org/pub/GraphicsMagick/snapshots/">download development snapshots</a></td>
+</tr>
+<tr><td>Mercurial Repository</td>
+<td>(Updated frequently) <a class="reference external" href="http://sourceforge.net/p/graphicsmagick/code/">visit Mercurial repository</a></td>
+</tr>
+</tbody>
+</table>
+<p>Check <a class="reference external" href="http://www.GraphicsMagick.org/">http://www.GraphicsMagick.org/</a> for the latest version of this page.</p>
+<p>GraphicsMagick is the swiss army knife of image processing. Comprised
+of 267K physical lines (according to David A. Wheeler's <a class="reference external" href="http://www.dwheeler.com/sloccount/">SLOCCount</a>)
+of source code in the base package (or 1,225K including 3rd party
+libraries) it provides a robust and efficient collection of tools and
+libraries which support reading, writing, and manipulating an image in
+over 89 major formats including important formats like DPX, GIF, JPEG,
+JPEG-2000, PNG, PDF, PNM, TIFF, and WebP.</p>
+<p>Image processing is multi-threaded using <a class="reference external" href="http://www.openmp.org/">OpenMP</a> (<a class="reference external" href="OpenMP.html">read about OpenMP
+in GraphicsMagick</a>) so that CPU-bound tasks scale linearly as
+processor cores are added. <a class="reference external" href="http://www.openmp.org/">OpenMP</a> support requires compilation with
+GCC 4.2 (or later), or use of any C compiler supporting at least the
+<a class="reference external" href="http://www.openmp.org/">OpenMP</a> 2.0 specification.</p>
+<p>GraphicsMagick is quite portable, and compiles under almost every general
+purpose operating system that runs on 32-bit or 64-bit CPUs.
+GraphicsMagick is available for virtually any Unix or Unix-like system,
+including Linux. It also runs under <a class="reference external" href="INSTALL-windows.html">Windows</a>
+2000 and later (Windows 2000, XP, Vista, 7, 8.X, 10), and MacOS-X.</p>
+<p>GraphicsMagick supports huge images and has been tested with
+gigapixel-size images. GraphicsMagick can create new images on the
+fly, making it suitable for building dynamic Web
+applications. GraphicsMagick may be used to resize, rotate, sharpen,
+color reduce, or add special effects to an image and save the result
+in the same or different image format. Image processing operations are
+available from the command line, as well as through C, C++, Lua, Perl,
+PHP, Python, Tcl, Ruby, Windows .NET, or Windows COM programming
+interfaces. With some modification, language extensions for
+ImageMagick may be used.</p>
+<p>GraphicsMagick is originally derived from <a class="reference external" href="http://www.imagemagick.org/">ImageMagick</a> 5.5.2 as of
+November 2002 but has been completely independent of the ImageMagick
+project since then. Since the fork from ImageMagick many improvements
+have been made (see <a class="reference external" href="NEWS.html">NEWS</a>) by many <a class="reference external" href="authors.html">authors</a> using an open
+development model but without breaking the API or utilities operation.</p>
+<p>Here are some reasons to prefer GraphicsMagick over ImageMagick or
+other popular software:</p>
+<blockquote>
+<ul class="simple">
+<li>GM is more efficient than ImageMagick so it gets the job done
+faster using fewer resources.</li>
+<li>GM is much smaller and lighter than ImageMagick (3-5X smaller
+installation footprint).</li>
+<li>GM is used to process billions of files at the world's largest photo
+sites (e.g. <a class="reference external" href="http://www.kitchensoap.com/2009/04/03/slides-from-web20-expo-2009-and-somethin-else-interestin/">Flickr</a> and <a class="reference external" href="http://codeascraft.etsy.com/2010/07/09/batch-processing-millions-of-images/">Etsy</a>).</li>
+<li>GM does not conflict with other installed software.</li>
+<li>GM suffers from fewer security issues and exploits than ImageMagick.</li>
+<li>GM participates in Google's <a class="reference external" href="https://github.com/google/oss-fuzz">oss-fuzz</a> project (since February, 2018).</li>
+<li>GM <a class="reference external" href="http://www.valgrind.org/">valgrind</a>'s 100% clean (memcheck and helgrind).</li>
+<li>GM passes rigorous memory error testing using <a class="reference external" href="https://github.com/google/sanitizers/wiki/AddressSanitizer">ASan</a>.</li>
+<li>GM passes undefined behavior testing using <a class="reference external" href="https://clang.llvm.org/docs/UndefinedBehaviorSanitizer.html">UBSan</a>.</li>
+<li>GM comes with a comprehensive <a class="reference external" href="GraphicsMagick.html">manual page</a>.</li>
+<li>GM provides API and ABI stability and managed releases that you can
+count on (ImageMagick does not).</li>
+<li>GM provides detailed yet comprehensible <a class="reference external" href="Changelog.html">ChangeLog</a> and <a class="reference external" href="NEWS.html">NEWS</a>
+files (ImageMagick does not).</li>
+<li>GM is available for free, and may be used to support both open and
+proprietary applications.</li>
+<li>GM is distributed under an X11-style license (<a class="reference external" href="http://opensource.org/licenses/MIT">MIT License</a>),
+approved by the <a class="reference external" href="http://www.opensource.org/">Open Source Initiative</a>, recommended for use by
+the <a class="reference external" href="http://www.osscc.net/en/index.html">OSSCC</a>, and compatible with the <a class="reference external" href="http://www.fsf.org/licenses/licenses.html">GNU GPL</a>.</li>
+<li>GM source code is managed in <a class="reference external" href="https://www.mercurial-scm.org/">Mercurial</a>, a distributed source
+control management tool which supports management of local
+changes.  The repository history goes back to 1998.</li>
+<li>GM has 0.00 (zero) defects per 1000 lines of code (293,341 total
+lines included) according to Coverity analysis on May 25, 2015.</li>
+<li>GM developers contribute to other free projects for the public good.</li>
+</ul>
+</blockquote>
+<p>GraphicsMagick is <a class="reference external" href="Copyright.html">copyrighted</a> by the GraphicsMagick
+Group as well as many others.</p>
+<p>Here are just a few examples of what GraphicsMagick can do:</p>
+<blockquote>
+<ul class="simple">
+<li>Convert an image from one format to another (e.g. TIFF to JPEG)</li>
+<li>Resize, rotate, sharpen, color reduce, or add special effects to an
+image</li>
+<li>Create a montage of image thumbnails</li>
+<li>Create a transparent image suitable for use on the Web</li>
+<li>Compare two images</li>
+<li>Turn a group of images into a GIF animation sequence</li>
+<li>Create a composite image by combining several separate images</li>
+<li>Draw shapes or text on an image</li>
+<li>Decorate an image with a border or frame</li>
+<li>Describe the format and characteristics of an image</li>
+</ul>
+</blockquote>
+<hr class="docutils" />
+<p>Copyright © GraphicsMagick Group 2002 - 2020</p>
+</div>
+</body>
+</html>

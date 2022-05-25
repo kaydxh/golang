@@ -1,0 +1,422 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.15.2: http://docutils.sourceforge.net/" />
+<title>Installing GraphicsMagick</title>
+<link rel="stylesheet" href="docutils-articles.css" type="text/css" />
+</head>
+<body>
+
+<div class="banner">
+<img src="images/gm-107x76.png" alt="GraphicMagick logo" width="107" height="76" />
+<span class="title">GraphicsMagick</span>
+<form action="http://www.google.com/search">
+	<input type="hidden" name="domains" value="www.graphicsmagick.org" />
+	<input type="hidden" name="sitesearch" value="www.graphicsmagick.org" />
+    <span class="nowrap"><input type="text" name="q" size="25" maxlength="255" />&nbsp;<input type="submit" name="sa" value="Search" /></span>
+</form>
+</div>
+
+<div class="navmenu">
+<ul>
+<li><a href="index.html">Home</a></li>
+<li><a href="project.html">Project</a></li>
+<li><a href="download.html">Download</a></li>
+<li><a href="README.html">Install</a></li>
+<li><a href="Hg.html">Source</a></li>
+<li><a href="NEWS.html">News</a> </li>
+<li><a href="utilities.html">Utilities</a></li>
+<li><a href="programming.html">Programming</a></li>
+<li><a href="reference.html">Reference</a></li>
+</ul>
+</div>
+<div class="document" id="installing-graphicsmagick">
+<h1 class="title">Installing GraphicsMagick</h1>
+
+<!-- -*- mode: rst -*- -->
+<!-- This text is in reStucturedText format, so it may look a bit odd. -->
+<!-- See http://docutils.sourceforge.net/rst.html for details. -->
+<div class="contents local topic" id="contents">
+<ul class="simple">
+<li><a class="reference internal" href="#executive-summary" id="id1">Executive Summary</a></li>
+<li><a class="reference internal" href="#availability" id="id2">Availability</a></li>
+<li><a class="reference internal" href="#documentation" id="id3">Documentation</a></li>
+<li><a class="reference internal" href="#installation" id="id4">Installation</a></li>
+<li><a class="reference internal" href="#add-on-libraries-programs" id="id5">Add-On Libraries &amp; Programs</a></li>
+</ul>
+</div>
+<div class="section" id="executive-summary">
+<h1><a class="toc-backref" href="#id1">Executive Summary</a></h1>
+<p>GraphicsMagick provides a comprehensive collection of utilities,
+programming interfaces, and GUIs, to support file format conversion,
+image processing, and 2D vector rendering.</p>
+<p>GraphicsMagick is originally based on ImageMagick from ImageMagick Studio
+(which was originally written by John Cristy at Dupont). The goal of
+GraphicsMagick is to provide the highest quality product possible while
+encouraging open and active participation from all interested developers.
+The GraphicsMagick usage license is designed to allow it to be used for
+any application, including proprietary or GPLed applications. Please see
+the file <a class="reference external" href="Copyright.html">Copyright.txt</a> for the GraphicsMagick licence.</p>
+</div>
+<div class="section" id="availability">
+<h1><a class="toc-backref" href="#id2">Availability</a></h1>
+<p>The master ftp site for GraphicsMagick distributions is
+<a class="reference external" href="ftp://ftp.graphicsmagick.org/pub/GraphicsMagick/">ftp://ftp.graphicsmagick.org/pub/GraphicsMagick/</a>. Bandwidth on this
+site is very limited, so it is recommended to download from SourceForge
+at <a class="reference external" href="http://sourceforge.net/projects/graphicsmagick/files/">http://sourceforge.net/projects/graphicsmagick/files/</a> if
+possible.</p>
+<p>GraphicsMagick is a continual work in progress. The very latest code
+is available via the Mercurial distributed source control management
+tool (<a class="reference external" href="https://www.mercurial-scm.org/">https://www.mercurial-scm.org/</a>). GraphicsMagick may be retrieved
+via the following command:</p>
+<blockquote>
+hg clone <a class="reference external" href="http://hg.code.sf.net/p/graphicsmagick/code/">http://hg.code.sf.net/p/graphicsmagick/code/</a> GM</blockquote>
+<p>Mercurial provides a complete stand-alone repository which contains
+the full history of the GraphicsMagick project.  You may use the
+cloned repository for your own purposes related to GraphicsMagick
+(e.g. manage local GraphicsMagick changes), and can easily pull
+GraphicsMagick updates from the main repository whenever you like.</p>
+</div>
+<div class="section" id="documentation">
+<h1><a class="toc-backref" href="#id3">Documentation</a></h1>
+<blockquote>
+Open the file index.html in a web browser, or refer to the gm(1) manual
+page. Also read the GraphicsMagick frequently asked questions in the
+file <a class="reference external" href="FAQ.html">www/FAQ.html</a>.</blockquote>
+</div>
+<div class="section" id="installation">
+<h1><a class="toc-backref" href="#id4">Installation</a></h1>
+<blockquote>
+<p>GraphicsMagick may be compiled from source code for virtually any
+modern Unix system (including Linux and MacOS X) and Microsoft Windows.
+Installation instructions may be found in the following files (or their
+HTML equivalents):</p>
+<ul>
+<li><p class="first">Unix / Linux / *BSD / MacOS-X / Cygwin / MinGW:</p>
+<p><a class="reference external" href="INSTALL-unix.html">Installation on Unix-like systems</a></p>
+</li>
+<li><p class="first">Microsoft Windows (Via &quot;setup&quot; style installer or from source code):</p>
+<p><a class="reference external" href="INSTALL-windows.html">Installation on Microsoft Windows</a></p>
+</li>
+</ul>
+</blockquote>
+</div>
+<div class="section" id="add-on-libraries-programs">
+<h1><a class="toc-backref" href="#id5">Add-On Libraries &amp; Programs</a></h1>
+<p>To further enhance the capabilities of GraphicsMagick, you may want to
+get these programs or libraries. Note that these packages are already
+integrated into the GraphicsMagick Mercurial repository for use when
+building under Microsoft Windows:</p>
+<ul>
+<li><p class="first">GraphicsMagick requires the BZLIB library from</p>
+<blockquote>
+<p><a class="reference external" href="http://www.sourceware.org/bzip2/">http://www.sourceware.org/bzip2/</a></p>
+</blockquote>
+<p>to read and write BZip compressed MIFF images.</p>
+</li>
+<li><p class="first">GraphicsMagick requires 'ralcgm' from</p>
+<blockquote>
+<p><a class="reference external" href="http://www.agocg.ac.uk/train/cgm/ralcgm.htm">http://www.agocg.ac.uk/train/cgm/ralcgm.htm</a></p>
+</blockquote>
+<p>to read the Computer Graphics Metafile (CGM) image format. You also
+need Ghostscript and Ghostscript Fonts (see below).</p>
+</li>
+<li><p class="first">GraphicsMagick requires 'dcraw' (version 8.95 or later) from</p>
+<blockquote>
+<p><a class="reference external" href="http://www.cybercom.net/~dcoffin/dcraw/">http://www.cybercom.net/~dcoffin/dcraw/</a></p>
+</blockquote>
+<p>to read raw images from digital cameras.  Dcraw is invoked
+automatically when used to read files using a common RAW file format
+extension.</p>
+</li>
+<li><p class="first">GraphicsMagick requires 'fig2dev' provided in the transfig package
+from</p>
+<blockquote>
+<p><a class="reference external" href="http://www.xfig.org/">http://www.xfig.org/</a></p>
+</blockquote>
+<p>to read the Fig image format. Ghostscript and Ghostscript Fonts (see
+below) are also required.</p>
+</li>
+<li><p class="first">GraphicsMagick requires the FreeType software, version 2.0 or above,
+available as</p>
+<blockquote>
+<p><a class="reference external" href="http://www.freetype.org/">http://www.freetype.org/</a></p>
+</blockquote>
+<p>to annotate with TrueType and Postscript Type 1 fonts.</p>
+</li>
+<li><p class="first">GraphicsMagick requires Ghostscript software available from</p>
+<blockquote>
+<p><a class="reference external" href="http://pages.cs.wisc.edu/~ghost/">http://pages.cs.wisc.edu/~ghost/</a></p>
+<blockquote>
+<p>or</p>
+</blockquote>
+<p><a class="reference external" href="http://sourceforge.net/projects/ghostscript/">http://sourceforge.net/projects/ghostscript/</a></p>
+</blockquote>
+<p>to read the Postscript or the Portable Document Format (PDF).</p>
+<p>Ghostscript Fonts (also known as &quot;URW Standard postscript fonts
+(cyrillicized)&quot;) are available from</p>
+<blockquote>
+<p><a class="reference external" href="https://sourceforge.net/projects/gs-fonts/">https://sourceforge.net/projects/gs-fonts/</a></p>
+</blockquote>
+<p>Ghostscript (at the time this text is written in October, 2018) has
+been observed to have severe security issues when reading untrusted
+Postscript files (does not apply to PDF).  Examples of these severe
+security issues are being tricked into reading or writing arbitrary
+files when executing in &quot;-dSAFER&quot; mode, which which is supposed to
+prevent such access.  Users of Ghostscript who may encounter
+untrusted Postscript files are recommended to assure that all
+security patches have been applied and it might be necessary to use
+the latest upstream release.</p>
+<p>Ghostscript is available for use under both free (GPL) and
+commercial licenses.  We are not lawyers so we can not provide
+advice as to when the commercial license from Artifex is required.
+Please make sure that you are aware of Ghostscript licencing and
+usage terms if you plan to use it in some sort of commercial
+situation.</p>
+<p>Ghostscript (release 7.0 and later) may optionally install a library
+(libgs) under Linux. If this library is installed, GraphicsMagick may
+be configured to use it. We do <strong>NOT</strong> recommend using this library
+under Unix type systems. The Ghostscript library does not support
+concurrency since only one instance of the interpreter is available.
+Unix systems will obtain better performance from executing Ghostscript as
+an external process since then multiple interpreters may execute at
+once on multiple CPU cores.</p>
+<p>If the Ghostscript library is used, then please be aware that
+Ghostscript provides its own modified version of libjpeg and
+libJasper while GraphicsMagick will be using these libraries as
+provided with the system. If Ghostscript is not using the same
+libraries, then identically named symbols may be used from the wrong
+code, causing confusion or a program crash. If conflicts cause JPEG
+to fail (JPEG returns an error regarding expected structure sizes),
+it may be necessary to use Ghostscript's copy of libjpeg for
+GraphicsMagick, and all delegate libraries which depend on libjpeg,
+or convince Ghostscript to build against an unmodified installed
+JPEG library (and lose compatibility with some Postscript files).</p>
+</li>
+<li><p class="first">GraphicsMagick requires hp2xx available from</p>
+<blockquote>
+<p><a class="reference external" href="http://www.gnu.org/software/hp2xx/hp2xx.html">http://www.gnu.org/software/hp2xx/hp2xx.html</a></p>
+</blockquote>
+<p>to read the HP-GL image format. Note that HPGL is a plotter file
+format. HP printers usually accept PCL format rather than HPGL
+format.  Ghostscript (see above) is also required.</p>
+</li>
+<li><p class="first">GraphicsMagick requires the lcms library (2.0 or later) available
+from</p>
+<blockquote>
+<p><a class="reference external" href="http://www.littlecms.com/">http://www.littlecms.com/</a></p>
+</blockquote>
+<p>to perform ICC CMS color management.</p>
+</li>
+<li><p class="first">GraphicsMagick requires Graphviz available from</p>
+<blockquote>
+<p><a class="reference external" href="http://www.graphviz.org/">http://www.graphviz.org/</a></p>
+</blockquote>
+<p>to read Graphvis 'dot' digraph files (with extension dot).
+Ghostscript (see above) is also required.</p>
+</li>
+<li><p class="first">GraphicsMagick requires html2ps available from</p>
+<blockquote>
+<p><a class="reference external" href="http://user.it.uu.se/~jan/html2ps.html">http://user.it.uu.se/~jan/html2ps.html</a></p>
+</blockquote>
+<p>to rasterize HTML files.  Ghostscript (see above) is also required.</p>
+</li>
+<li><p class="first">GraphicsMagick requires the JBIG-Kit software available via
+HTTP from</p>
+<blockquote>
+<p><a class="reference external" href="http://www.cl.cam.ac.uk/~mgk25/jbigkit/">http://www.cl.cam.ac.uk/~mgk25/jbigkit/</a></p>
+</blockquote>
+<p>to read and write the JBIG image format.</p>
+</li>
+<li><p class="first">GraphicsMagick requires the WebP library version 0.1.99 (or later)
+available via HTTPS from</p>
+<blockquote>
+<p><a class="reference external" href="https://developers.google.com/speed/webp/">https://developers.google.com/speed/webp/</a></p>
+</blockquote>
+<p>to read and write the WebP image format.</p>
+</li>
+<li><p class="first">GraphicsMagick requires the Independent JPEG Group's software
+available from</p>
+<blockquote>
+<p><a class="reference external" href="http://www.ijg.org/">http://www.ijg.org/</a></p>
+</blockquote>
+<p>or libjpeg-turbo available from</p>
+<blockquote>
+<p><a class="reference external" href="https://libjpeg-turbo.org/">https://libjpeg-turbo.org/</a> or <a class="reference external" href="https://github.com/libjpeg-turbo/libjpeg-turbo">https://github.com/libjpeg-turbo/libjpeg-turbo</a></p>
+</blockquote>
+<p>to read and write the JPEG v1 image format.  The 'turbo' releases
+are much faster than the IJG releases on certain targets (due to
+using assembly code and other optimizations), but lack the
+SmartScale JPEG extension introduced in IJG JPEG v8, and the
+lossless coding mode JPEG extension introduced in IJG JPEG v9 (which
+is not compatible with standard lossless JPEG!).</p>
+<p>GraphicsMagick supports both 8-bit and 12-bit JPEG, but
+unfortunately it does not yet support both at once.</p>
+<p>Apply this JPEG patch to Independent JPEG Group's (6b release!)
+source distribution if you want to read lossless jpeg-encoded DICOM
+(medical) images:</p>
+<blockquote>
+<p><a class="reference external" href="ftp://ftp.graphicsmagick.org/pub/GraphicsMagick/delegates/ljpeg-6b.tar.gz">ftp://ftp.graphicsmagick.org/pub/GraphicsMagick/delegates/ljpeg-6b.tar.gz</a></p>
+</blockquote>
+<p>Use of lossless JPEG is not encouraged. Unless you have a requirement
+to read lossless jpeg-encoded DICOM images, please disregard the patch.</p>
+</li>
+<li><p class="first">GraphicsMagick requires the JasPer Project's JasPer library version
+1.701.0 (or later) available via http from</p>
+<blockquote>
+<p><a class="reference external" href="http://www.ece.uvic.ca/~mdadams/jasper/">http://www.ece.uvic.ca/~mdadams/jasper/</a></p>
+</blockquote>
+<p>to read and write the JPEG-2000 format. Please note that JasPer 1.900.1
+may have a problem when used with GraphicsMagick's modules build. To
+solve this problem, edit the file src/libjasper/base/jas_init.c and
+comment out the line which invokes atexit().</p>
+</li>
+<li><p class="first">On Unix-type systems, Windows/MinGW, and Windows/Cygwin,
+GraphicsMagick requires libltdl from libtool in order to support
+building GraphicsMagick with dynamically loadable modules.  Libtool
+is available via anonymous FTP from</p>
+<blockquote>
+<p><a class="reference external" href="ftp://ftp.gnu.org/pub/gnu/libtool/">ftp://ftp.gnu.org/pub/gnu/libtool/</a></p>
+</blockquote>
+</li>
+<li><p class="first">GraphicsMagick requires the MPEG utilities from the MPEG Software
+Simulation Group, which are available via anonymous FTP as</p>
+<blockquote>
+<p><a class="reference external" href="ftp://ftp.GraphicsMagick.org/pub/GraphicsMagick/delegates/mpeg2vidcodec_v12.tar.gz">ftp://ftp.GraphicsMagick.org/pub/GraphicsMagick/delegates/mpeg2vidcodec_v12.tar.gz</a></p>
+</blockquote>
+<p>to read or write the MPEG image format.</p>
+</li>
+<li><p class="first">GraphicsMagick requires the LIBPNG library, version 1.0 or above, from</p>
+<blockquote>
+<p><a class="reference external" href="http://www.libpng.org/pub/png/pngcode.html">http://www.libpng.org/pub/png/pngcode.html</a></p>
+</blockquote>
+<p>to read or write the PNG, MNG, or JNG image formats.  LIBPNG depends
+upon the ZLIB library (see below).</p>
+</li>
+<li><p class="first">GraphicsMagick requires Sam Leffler's TIFF software available via
+HTTP at</p>
+<blockquote>
+<p><a class="reference external" href="http://www.simplesystems.org/libtiff/">http://www.simplesystems.org/libtiff/</a></p>
+</blockquote>
+<p>to read the TIFF image format. It in turn optionally requires the
+JPEG and ZLIB libraries.  Libtiff 3.8.2 or later is recommended.</p>
+</li>
+<li><p class="first">GraphicsMagick may optionally use the TRIO library from</p>
+<blockquote>
+<p><a class="reference external" href="http://sourceforge.net/projects/ctrio/">http://sourceforge.net/projects/ctrio/</a></p>
+</blockquote>
+<p>to substitute for the vsnprintf function when the operating system
+does not provide one. Older operating systems (e.g. Solaris 2.5)
+may not provide a vsnprintf function. If vsnprintf (or the TRIO
+replacement) is not used, then vsprintf is used instead, which
+decreases the security of GraphicsMagick due to possible buffer
+overrun exploits.</p>
+</li>
+<li><p class="first">GraphicsMagick may optionally use the 'tcmalloc' library provided as
+part of Google gperftools available from</p>
+<blockquote>
+<p><a class="reference external" href="https://github.com/gperftools/gperftools">https://github.com/gperftools/gperftools</a></p>
+</blockquote>
+<p>to provide enhanced versions of the standard memory allocation
+facilities.  Use of tcmalloc may improve performance for both
+single-threaded and multi-threaded programs.  Benchmarking under
+Linux shows a doubling of performance with tcmalloc over the default
+glibc malloc when images are repeatedly allocated, cleared, and
+de-allocated.</p>
+</li>
+<li><p class="first">GraphicsMagick may optionally use the umem memory allocation library
+which is included in Sun's Solaris operating system, and
+OpenSolaris/Illumos derivatives, or available from</p>
+<blockquote>
+<p><a class="reference external" href="https://labs.omniti.com/trac/portableumem">https://labs.omniti.com/trac/portableumem</a></p>
+</blockquote>
+<p>to provide enhanced versions of the standard memory allocation
+facilities. Use of umem may improve performance for multi-threaded
+programs and provides access to debugging features that detect memory
+leaks, buffer overruns, multiple frees, use of uninitialized data, use
+of freed data, and many other common programming errors.</p>
+</li>
+<li><p class="first">GraphicsMagick requires libwmflite from libwmf 0.2.5 (or later) from</p>
+<blockquote>
+<p><a class="reference external" href="http://sourceforge.net/projects/wvware/">http://sourceforge.net/projects/wvware/</a></p>
+</blockquote>
+<p>to render files in the Windows Meta File (WMF) metafile format
+(16-bit WMF files only, not 32-bit &quot;EMF&quot;). This is the format
+commonly used for Windows clipart (available on CD at your local
+computer or technical book store). WMF support requires the FreeType
+2 library in order to render TrueType and Postscript fonts.</p>
+<p>While GraphicsMagick uses the libwmflite (parser) component of the
+libwmf package which does not depend on any special libraries, the
+libwmf package as a whole depends on FreeType 2 and either the
+xmlsoft libxml, or expat libraries. Since GraphicsMagick already uses
+libxml (for reading SVG and to retrieve files via HTTP or FTP), it is
+recommended that the options '--without-expat --with-xml' be supplied
+to libwmf's configure script.  If the other features of libwmf are
+not needed, then the '--disable-heavy' option may be used to only
+build libwmflite.</p>
+<p>GraphicsMagick's WMF renderer provides some of the finest WMF
+rendering available due its use of antialiased drawing algorithms.
+You may select a background color or texture image to render on. For
+example, &quot;-background '#ffffffff'&quot; renders on a transparent
+background while &quot;-texture plasma:fractal&quot; renders on a fractal image.</p>
+<blockquote>
+<p>A free set of Microsoft Windows fonts may be retrieved from
+<a class="reference external" href="http://sourceforge.net/projects/corefonts/">http://sourceforge.net/projects/corefonts/</a>. Note that the license
+for these fonts requires that they be distributed in the original
+.exe form, but the Linux folks have found ways to deal with that on
+non-Windows systems.</p>
+</blockquote>
+</li>
+<li><p class="first">GraphicsMagick requires an X server for the 'display', 'animate', and
+'import' functions to work properly. Unix systems usually provide an X
+server as part of their standard installation. For MacOS-X, X11 is a
+system install time option.</p>
+<p>A free X server for Microsoft Windows is included as part of
+Cygwin and may be selected from the Cygwin installer. Cygwin is
+available from</p>
+<blockquote>
+<p><a class="reference external" href="http://www.cygwin.com/">http://www.cygwin.com/</a></p>
+</blockquote>
+<p>There is a nearly free X server available for Windows and Macintosh at</p>
+<blockquote>
+<p><a class="reference external" href="http://www.microimages.com/downloads/mix/">http://www.microimages.com/downloads/mix/</a></p>
+</blockquote>
+</li>
+<li><p class="first">GraphicsMagick requires libxml2 available from</p>
+<blockquote>
+<p><a class="reference external" href="http://xmlsoft.org/">http://xmlsoft.org/</a></p>
+</blockquote>
+<p>to read the SVG image format and to retrieve files from over a
+network via FTP and HTTP.</p>
+</li>
+<li><p class="first">GraphicsMagick requires the liblzma library from XZ Utils available from</p>
+<blockquote>
+<p><a class="reference external" href="http://www.tukaani.org/xz/">http://www.tukaani.org/xz/</a></p>
+</blockquote>
+<p>to support TIFF with LZMA compression and future LZMA-compression
+features (yet to be developed).  The utilities from this package are
+also necessary in order to decompress GraphicsMagick packages
+distributed with &quot;.xz&quot; or &quot;.lzma&quot; extensions.</p>
+</li>
+<li><p class="first">GraphicsMagick requires the ZLIB library from</p>
+<blockquote>
+<p><a class="reference external" href="http://www.zlib.net/">http://www.zlib.net/</a></p>
+</blockquote>
+<p>to read or write the PNG or Zip compressed MIFF images.</p>
+</li>
+<li><p class="first">GraphicsMagick requires the Zstd library from</p>
+<blockquote>
+<p><a class="reference external" href="https://facebook.github.io/zstd/">https://facebook.github.io/zstd/</a></p>
+</blockquote>
+<p>to read or write Zstd compressed TIFF images.  In the future it is
+likely that other purposes will be found for Zstd.</p>
+</li>
+</ul>
+<hr class="docutils" />
+<p>Copyright © GraphicsMagick Group 2002 - 2020</p>
+</div>
+</div>
+</body>
+</html>

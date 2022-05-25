@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.15.2: http://docutils.sourceforge.net/" />
+<title>display</title>
+<link rel="stylesheet" href="../docutils-api.css" type="text/css" />
+</head>
+<body>
+
+<div class="banner">
+<img src="../images/gm-107x76.png" alt="GraphicMagick logo" width="107" height="76" />
+<span class="title">GraphicsMagick</span>
+<form action="http://www.google.com/search">
+	<input type="hidden" name="domains" value="www.graphicsmagick.org" />
+	<input type="hidden" name="sitesearch" value="www.graphicsmagick.org" />
+    <span class="nowrap"><input type="text" name="q" size="25" maxlength="255" />&nbsp;<input type="submit" name="sa" value="Search" /></span>
+</form>
+</div>
+
+<div class="navmenu">
+<ul>
+<li><a href="../index.html">Home</a></li>
+<li><a href="../project.html">Project</a></li>
+<li><a href="../download.html">Download</a></li>
+<li><a href="../README.html">Install</a></li>
+<li><a href="../Hg.html">Source</a></li>
+<li><a href="../NEWS.html">News</a> </li>
+<li><a href="../utilities.html">Utilities</a></li>
+<li><a href="../programming.html">Programming</a></li>
+<li><a href="../reference.html">Reference</a></li>
+</ul>
+</div>
+<div class="document" id="display">
+<h1 class="title">display</h1>
+<h2 class="subtitle" id="interactively-display-and-edit-an-image">Interactively display and edit an image</h2>
+
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#magickxdisplaybackgroundimage" id="id3">MagickXDisplayBackgroundImage</a></li>
+<li><a class="reference internal" href="#magickxdisplayimage" id="id4">MagickXDisplayImage</a></li>
+</ul>
+</div>
+<div class="section" id="magickxdisplaybackgroundimage">
+<h1><a class="toc-backref" href="#id3">MagickXDisplayBackgroundImage</a></h1>
+<div class="section" id="synopsis">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+unsigned int MagickXDisplayBackgroundImage( Display *display,
+                                            <a class="reference external" href="../api/types.html#magickxresourceinfo">MagickXResourceInfo</a> *resource_info,
+                                            <a class="reference external" href="../api/types.html#image">Image</a> *image );
+</pre>
+</div>
+<div class="section" id="description">
+<h2>Description</h2>
+<p>MagickXDisplayBackgroundImage() displays an image in the background of a window.</p>
+<p>The format of the MagickXDisplayBackgroundImage method is:</p>
+<pre class="literal-block">
+unsigned int MagickXDisplayBackgroundImage( Display *display,
+                                            <a class="reference external" href="../api/types.html#magickxresourceinfo">MagickXResourceInfo</a> *resource_info,
+                                            <a class="reference external" href="../api/types.html#image">Image</a> *image );
+</pre>
+<dl class="docutils">
+<dt>display:</dt>
+<dd>Specifies a connection to an X server;  returned from
+XOpenDisplay.</dd>
+<dt>resource_info:</dt>
+<dd>Specifies a pointer to a X11 MagickXResourceInfo structure.</dd>
+<dt>image:</dt>
+<dd>Specifies a pointer to an Image structure; returned from
+ReadImage.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="magickxdisplayimage">
+<h1><a class="toc-backref" href="#id4">MagickXDisplayImage</a></h1>
+<div class="section" id="id1">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#image">Image</a> *MagickXDisplayImage( Display *display, <a class="reference external" href="../api/types.html#magickxresourceinfo">MagickXResourceInfo</a> *resource_info,
+                            char ** argv, int argc, <a class="reference external" href="../api/types.html#image">Image</a> ** image,
+                            unsigned long *state );
+</pre>
+</div>
+<div class="section" id="id2">
+<h2>Description</h2>
+<p>MagickXDisplayImage() displays an image via X11.  A new image is created and
+returned if the user interactively transforms the displayed image.</p>
+<p>The format of the MagickXDisplayImage method is:</p>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#image">Image</a> *MagickXDisplayImage( Display *display, <a class="reference external" href="../api/types.html#magickxresourceinfo">MagickXResourceInfo</a> *resource_info,
+                            char ** argv, int argc, <a class="reference external" href="../api/types.html#image">Image</a> ** image,
+                            unsigned long *state );
+</pre>
+<dl class="docutils">
+<dt>nexus:</dt>
+<dd>Method MagickXDisplayImage returns an image when the
+user chooses 'Open Image' from the command menu or picks a tile
+from the image directory.  Otherwise a null image is returned.</dd>
+<dt>display:</dt>
+<dd>Specifies a connection to an X server;  returned from
+XOpenDisplay.</dd>
+<dt>resource_info:</dt>
+<dd>Specifies a pointer to a X11 MagickXResourceInfo structure.</dd>
+<dt>argv:</dt>
+<dd>Specifies the application's argument list.</dd>
+<dt>argc:</dt>
+<dd>Specifies the number of arguments.</dd>
+<dt>image:</dt>
+<dd>Specifies an address to an address of an Image structure;
+returned from ReadImage.</dd>
+</dl>
+</div>
+</div>
+</div>
+</body>
+</html>

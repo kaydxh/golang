@@ -1,0 +1,400 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.15.2: http://docutils.sourceforge.net/" />
+<title>transform</title>
+<link rel="stylesheet" href="../docutils-api.css" type="text/css" />
+</head>
+<body>
+
+<div class="banner">
+<img src="../images/gm-107x76.png" alt="GraphicMagick logo" width="107" height="76" />
+<span class="title">GraphicsMagick</span>
+<form action="http://www.google.com/search">
+	<input type="hidden" name="domains" value="www.graphicsmagick.org" />
+	<input type="hidden" name="sitesearch" value="www.graphicsmagick.org" />
+    <span class="nowrap"><input type="text" name="q" size="25" maxlength="255" />&nbsp;<input type="submit" name="sa" value="Search" /></span>
+</form>
+</div>
+
+<div class="navmenu">
+<ul>
+<li><a href="../index.html">Home</a></li>
+<li><a href="../project.html">Project</a></li>
+<li><a href="../download.html">Download</a></li>
+<li><a href="../README.html">Install</a></li>
+<li><a href="../Hg.html">Source</a></li>
+<li><a href="../NEWS.html">News</a> </li>
+<li><a href="../utilities.html">Utilities</a></li>
+<li><a href="../programming.html">Programming</a></li>
+<li><a href="../reference.html">Reference</a></li>
+</ul>
+</div>
+<div class="document" id="transform">
+<h1 class="title">transform</h1>
+<h2 class="subtitle" id="crop-flip-flop-roll-coalesce-etc">Crop, flip, flop, roll, coalesce, etc.</h2>
+
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#chopimage" id="id23">ChopImage</a></li>
+<li><a class="reference internal" href="#coalesceimages" id="id24">CoalesceImages</a></li>
+<li><a class="reference internal" href="#cropimage" id="id25">CropImage</a></li>
+<li><a class="reference internal" href="#deconstructimages" id="id26">DeconstructImages</a></li>
+<li><a class="reference internal" href="#extentimage" id="id27">ExtentImage</a></li>
+<li><a class="reference internal" href="#flattenimage" id="id28">FlattenImage</a></li>
+<li><a class="reference internal" href="#flipimage" id="id29">FlipImage</a></li>
+<li><a class="reference internal" href="#flopimage" id="id30">FlopImage</a></li>
+<li><a class="reference internal" href="#mosaicimages" id="id31">MosaicImages</a></li>
+<li><a class="reference internal" href="#rollimage" id="id32">RollImage</a></li>
+<li><a class="reference internal" href="#shaveimage" id="id33">ShaveImage</a></li>
+<li><a class="reference internal" href="#transformimage" id="id34">TransformImage</a></li>
+</ul>
+</div>
+<div class="section" id="chopimage">
+<h1><a class="toc-backref" href="#id23">ChopImage</a></h1>
+<div class="section" id="synopsis">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#image">Image</a> *ChopImage( const <a class="reference external" href="../api/types.html#image">Image</a> *image,
+                  const <a class="reference external" href="../api/types.html#rectangleinfo">RectangleInfo</a> *chop_info <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+</div>
+<div class="section" id="description">
+<h2>Description</h2>
+<p>Chop() removes a region of an image and collapses the image to occupy the
+removed portion.</p>
+<p>The format of the ChopImage method is:</p>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#image">Image</a> *ChopImage( const <a class="reference external" href="../api/types.html#image">Image</a> *image,
+                  const <a class="reference external" href="../api/types.html#rectangleinfo">RectangleInfo</a> *chop_info <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+<dl class="docutils">
+<dt>image:</dt>
+<dd>The image.</dd>
+<dt>chop_info:</dt>
+<dd>Define the region of the image to chop.</dd>
+<dt>exception:</dt>
+<dd>Return any errors or warnings in this structure.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="coalesceimages">
+<h1><a class="toc-backref" href="#id24">CoalesceImages</a></h1>
+<div class="section" id="id1">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#image">Image</a> *CoalesceImages( const <a class="reference external" href="../api/types.html#image">Image</a> *image, <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+</div>
+<div class="section" id="id2">
+<h2>Description</h2>
+<p>CoalesceImages() composites a set of images while respecting any page
+offsets and disposal methods.  GIF, MIFF, and MNG animation sequences
+typically start with an image background and each subsequent image
+varies in size and offset.  CoalesceImages() returns a new sequence
+where each image in the sequence is the same size as the first and
+composited with the next image in the sequence.</p>
+<p>The format of the CoalesceImages method is:</p>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#image">Image</a> *CoalesceImages( const <a class="reference external" href="../api/types.html#image">Image</a> *image, <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>image:</dt>
+<dd>The image sequence.</dd>
+<dt>exception:</dt>
+<dd>Return any errors or warnings in this structure.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="cropimage">
+<h1><a class="toc-backref" href="#id25">CropImage</a></h1>
+<div class="section" id="id3">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#image">Image</a> *CropImage( const <a class="reference external" href="../api/types.html#image">Image</a> *image, const <a class="reference external" href="../api/types.html#rectangleinfo">RectangleInfo</a> *geometry,
+                  <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+</div>
+<div class="section" id="id4">
+<h2>Description</h2>
+<p>Use CropImage() to extract a region of the image starting at the offset
+defined by geometry.  As a special feature, if the geometry &quot;0x0&quot; is
+is passed, GetImageBoundingBox() is used to locate the edges of the
+image and the image is cropped (&quot;trimmed&quot;) to that boundary.</p>
+<p>The format of the CropImage method is:</p>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#image">Image</a> *CropImage( const <a class="reference external" href="../api/types.html#image">Image</a> *image, const <a class="reference external" href="../api/types.html#rectangleinfo">RectangleInfo</a> *geometry,
+                  <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+<dl class="docutils">
+<dt>image:</dt>
+<dd>The image.</dd>
+<dt>geometry:</dt>
+<dd>Define the region of the image to crop with members
+x, y, width, and height.</dd>
+<dt>exception:</dt>
+<dd>Return any errors or warnings in this structure.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="deconstructimages">
+<h1><a class="toc-backref" href="#id26">DeconstructImages</a></h1>
+<div class="section" id="id5">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#image">Image</a> *DeconstructImages( const <a class="reference external" href="../api/types.html#image">Image</a> *image, <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+</div>
+<div class="section" id="id6">
+<h2>Description</h2>
+<p>DeconstructImages() compares each image with the next in a sequence and
+returns the maximum bounding region of any pixel differences it discovers.</p>
+<p>The format of the DeconstructImages method is:</p>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#image">Image</a> *DeconstructImages( const <a class="reference external" href="../api/types.html#image">Image</a> *image, <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>image:</dt>
+<dd>The image.</dd>
+<dt>exception:</dt>
+<dd>Return any errors or warnings in this structure.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="extentimage">
+<h1><a class="toc-backref" href="#id27">ExtentImage</a></h1>
+<div class="section" id="id7">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#image">Image</a> *ExtentImage( const <a class="reference external" href="../api/types.html#image">Image</a> *image, const <a class="reference external" href="../api/types.html#rectangleinfo">RectangleInfo</a> *geometry,
+                    <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+</div>
+<div class="section" id="id8">
+<h2>Description</h2>
+<p>Use ExtentImage() to change the image dimensions as specified by geometry
+width and height.  The existing image content is composited at the position
+specified by geometry x and y using the image compose method.  Existing
+image content which falls outside the bounds of the new image dimensions
+is discarded.</p>
+<p>The format of the ExtentImage method is:</p>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#image">Image</a> *ExtentImage( const <a class="reference external" href="../api/types.html#image">Image</a> *image, const <a class="reference external" href="../api/types.html#rectangleinfo">RectangleInfo</a> *geometry,
+                    <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+<dl class="docutils">
+<dt>image:</dt>
+<dd>The image.</dd>
+<dt>geometry:</dt>
+<dd>Define the new image dimension with width and height, and
+the top left coordinate to place the existing image content with
+x and y.</dd>
+<dt>exception:</dt>
+<dd>Return any errors or warnings in this structure.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="flattenimage">
+<h1><a class="toc-backref" href="#id28">FlattenImage</a></h1>
+<div class="section" id="id9">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#image">Image</a> *FlattenImage( const <a class="reference external" href="../api/types.html#image">Image</a> *image, <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+</div>
+<div class="section" id="id10">
+<h2>Description</h2>
+<p>Method FlattenImage merges a sequence of images.  This is useful for
+combining Photoshop layers into a single image.</p>
+<p>The format of the FlattenImage method is:</p>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#image">Image</a> *FlattenImage( const <a class="reference external" href="../api/types.html#image">Image</a> *image, <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>image:</dt>
+<dd>The image sequence.</dd>
+<dt>exception:</dt>
+<dd>Return any errors or warnings in this structure.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="flipimage">
+<h1><a class="toc-backref" href="#id29">FlipImage</a></h1>
+<div class="section" id="id11">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#image">Image</a> *FlipImage( const <a class="reference external" href="../api/types.html#image">Image</a> *image, <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+</div>
+<div class="section" id="id12">
+<h2>Description</h2>
+<p>FlipImage() creates a vertical mirror image by reflecting the pixels
+around the central x-axis.</p>
+<p>The format of the FlipImage method is:</p>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#image">Image</a> *FlipImage( const <a class="reference external" href="../api/types.html#image">Image</a> *image, <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>image:</dt>
+<dd>The image.</dd>
+<dt>exception:</dt>
+<dd>Return any errors or warnings in this structure.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="flopimage">
+<h1><a class="toc-backref" href="#id30">FlopImage</a></h1>
+<div class="section" id="id13">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#image">Image</a> *FlopImage( const <a class="reference external" href="../api/types.html#image">Image</a> *image, <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+</div>
+<div class="section" id="id14">
+<h2>Description</h2>
+<p>FlopImage() creates a horizontal mirror image by reflecting the pixels
+around the central y-axis.</p>
+<p>The format of the FlopImage method is:</p>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#image">Image</a> *FlopImage( const <a class="reference external" href="../api/types.html#image">Image</a> *image, <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>image:</dt>
+<dd>The image.</dd>
+<dt>exception:</dt>
+<dd>Return any errors or warnings in this structure.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="mosaicimages">
+<h1><a class="toc-backref" href="#id31">MosaicImages</a></h1>
+<div class="section" id="id15">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#image">Image</a> *MosaicImages( const <a class="reference external" href="../api/types.html#image">Image</a> *image, <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+</div>
+<div class="section" id="id16">
+<h2>Description</h2>
+<p>MosaicImages() inlays an image sequence to form a single coherent picture.
+It returns a single image with each image in the sequence composited at
+the location defined by the page member of the image structure.</p>
+<p>The format of the MosaicImage method is:</p>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#image">Image</a> *MosaicImages( const <a class="reference external" href="../api/types.html#image">Image</a> *image, <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>image:</dt>
+<dd>The image.</dd>
+<dt>exception:</dt>
+<dd>Return any errors or warnings in this structure.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="rollimage">
+<h1><a class="toc-backref" href="#id32">RollImage</a></h1>
+<div class="section" id="id17">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#image">Image</a> *RollImage( const <a class="reference external" href="../api/types.html#image">Image</a> *image, const long x_offset, const long y_offset,
+                  <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+</div>
+<div class="section" id="id18">
+<h2>Description</h2>
+<p>RollImage() offsets an image as defined by x_offset and y_offset.</p>
+<p>The format of the RollImage method is:</p>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#image">Image</a> *RollImage( const <a class="reference external" href="../api/types.html#image">Image</a> *image, const long x_offset, const long y_offset,
+                  <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+<dl class="docutils">
+<dt>image:</dt>
+<dd>The image.</dd>
+<dt>x_offset:</dt>
+<dd>The number of columns to roll in the horizontal direction.</dd>
+<dt>y_offset:</dt>
+<dd>The number of rows to roll in the vertical direction.</dd>
+<dt>exception:</dt>
+<dd>Return any errors or warnings in this structure.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="shaveimage">
+<h1><a class="toc-backref" href="#id33">ShaveImage</a></h1>
+<div class="section" id="id19">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#image">Image</a> *ShaveImage( const <a class="reference external" href="../api/types.html#image">Image</a> *image, const <a class="reference external" href="../api/types.html#rectangleinfo">RectangleInfo</a> *shave_info,
+                   <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+</div>
+<div class="section" id="id20">
+<h2>Description</h2>
+<p>Method ShaveImage shaves pixels from the image edges.  It allocates the
+memory necessary for the new Image structure and returns a pointer to the
+new image.</p>
+<p>The format of the ShaveImage method is:</p>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#image">Image</a> *ShaveImage( const <a class="reference external" href="../api/types.html#image">Image</a> *image, const <a class="reference external" href="../api/types.html#rectangleinfo">RectangleInfo</a> *shave_info,
+                   <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+<dl class="docutils">
+<dt>shave_image:</dt>
+<dd>Method ShaveImage returns a pointer to the shaved
+image.  A null image is returned if there is a memory shortage or
+if the image width or height is zero.</dd>
+<dt>image:</dt>
+<dd>The image.</dd>
+<dt>shave_info:</dt>
+<dd>Specifies a pointer to a RectangleInfo which defines the
+region of the image to shave.</dd>
+<dt>exception:</dt>
+<dd>Return any errors or warnings in this structure.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="transformimage">
+<h1><a class="toc-backref" href="#id34">TransformImage</a></h1>
+<div class="section" id="id21">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+MagickPassFail TransformImage( <a class="reference external" href="../api/types.html#image">Image</a> ** image, const char *crop_geometry,
+                               const char *image_geometry );
+</pre>
+</div>
+<div class="section" id="id22">
+<h2>Description</h2>
+<p>TransformImage() is a convenience method that behaves like ResizeImage() or
+CropImage() but accepts scaling and/or cropping information as a region
+geometry specification.  If the operation fails, the original image handle
+is returned.</p>
+<p>The format of the TransformImage method is:</p>
+<pre class="literal-block">
+MagickPassFail TransformImage( <a class="reference external" href="../api/types.html#image">Image</a> ** image, const char *crop_geometry,
+                               const char *image_geometry );
+</pre>
+<dl class="docutils">
+<dt>image:</dt>
+<dd>The image The transformed image is returned as this parameter.</dd>
+<dt>crop_geometry:</dt>
+<dd>A crop geometry string.  This geometry defines a
+subregion of the image to crop.</dd>
+<dt>image_geometry:</dt>
+<dd>An image geometry string.  This geometry defines the
+final size of the image.</dd>
+</dl>
+</div>
+</div>
+</div>
+</body>
+</html>

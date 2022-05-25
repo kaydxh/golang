@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.15.2: http://docutils.sourceforge.net/" />
+<title>shear</title>
+<link rel="stylesheet" href="../docutils-api.css" type="text/css" />
+</head>
+<body>
+
+<div class="banner">
+<img src="../images/gm-107x76.png" alt="GraphicMagick logo" width="107" height="76" />
+<span class="title">GraphicsMagick</span>
+<form action="http://www.google.com/search">
+	<input type="hidden" name="domains" value="www.graphicsmagick.org" />
+	<input type="hidden" name="sitesearch" value="www.graphicsmagick.org" />
+    <span class="nowrap"><input type="text" name="q" size="25" maxlength="255" />&nbsp;<input type="submit" name="sa" value="Search" /></span>
+</form>
+</div>
+
+<div class="navmenu">
+<ul>
+<li><a href="../index.html">Home</a></li>
+<li><a href="../project.html">Project</a></li>
+<li><a href="../download.html">Download</a></li>
+<li><a href="../README.html">Install</a></li>
+<li><a href="../Hg.html">Source</a></li>
+<li><a href="../NEWS.html">News</a> </li>
+<li><a href="../utilities.html">Utilities</a></li>
+<li><a href="../programming.html">Programming</a></li>
+<li><a href="../reference.html">Reference</a></li>
+</ul>
+</div>
+<div class="document" id="shear">
+<h1 class="title">shear</h1>
+<h2 class="subtitle" id="rotate-image-shear-image-or-apply-a-2d-affine-transformation">Rotate image, shear image, or apply a 2D affine transformation</h2>
+
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#affinetransformimage" id="id7">AffineTransformImage</a></li>
+<li><a class="reference internal" href="#autoorientimage" id="id8">AutoOrientImage</a></li>
+<li><a class="reference internal" href="#rotateimage" id="id9">RotateImage</a></li>
+<li><a class="reference internal" href="#shearimage" id="id10">ShearImage</a></li>
+</ul>
+</div>
+<div class="section" id="affinetransformimage">
+<h1><a class="toc-backref" href="#id7">AffineTransformImage</a></h1>
+<div class="section" id="synopsis">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#image">Image</a> *AffineTransformImage( const <a class="reference external" href="../api/types.html#image">Image</a> *image, <a class="reference external" href="../api/types.html#affinematrix">AffineMatrix</a> *affine,
+                             <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+</div>
+<div class="section" id="description">
+<h2>Description</h2>
+<p>AffineTransformImage() transforms an image as dictated by the affine matrix.
+It allocates the memory necessary for the new Image structure and returns
+a pointer to the new image.</p>
+<p>The format of the AffineTransformImage method is:</p>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#image">Image</a> *AffineTransformImage( const <a class="reference external" href="../api/types.html#image">Image</a> *image, <a class="reference external" href="../api/types.html#affinematrix">AffineMatrix</a> *affine,
+                             <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+<dl class="docutils">
+<dt>image:</dt>
+<dd>The image.</dd>
+<dt>affine:</dt>
+<dd>The affine transform.</dd>
+<dt>exception:</dt>
+<dd>Return any errors or warnings in this structure.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="autoorientimage">
+<h1><a class="toc-backref" href="#id8">AutoOrientImage</a></h1>
+<div class="section" id="id1">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#image">Image</a> *AutoOrientImage( const <a class="reference external" href="../api/types.html#image">Image</a> *image, const OrientationType current_orientation,
+                        <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+</div>
+<div class="section" id="id2">
+<h2>Description</h2>
+<p>AutoOrientImage() returns an image adjusted so that its orientation is
+suitable for viewing (i.e. top-left orientation).</p>
+<p>The format of the AutoOrientImage method is:</p>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#image">Image</a> *AutoOrientImage( const <a class="reference external" href="../api/types.html#image">Image</a> *image, const OrientationType current_orientation,
+                        <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+<dl class="docutils">
+<dt>image:</dt>
+<dd>The image.</dd>
+<dt>current_orientation:</dt>
+<dd>Current image orientation (normally same as
+image-&gt;orientation).</dd>
+<dt>exception:</dt>
+<dd>Return any errors or warnings in this structure.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="rotateimage">
+<h1><a class="toc-backref" href="#id9">RotateImage</a></h1>
+<div class="section" id="id3">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#image">Image</a> *RotateImage( const <a class="reference external" href="../api/types.html#image">Image</a> *image, const double degrees,
+                    <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+</div>
+<div class="section" id="id4">
+<h2>Description</h2>
+<p>Method RotateImage creates a new image that is a rotated copy of an
+existing one.  Positive angles rotate counter-clockwise (right-hand rule),
+while negative angles rotate clockwise.  Rotated images are usually larger
+than the originals and have 'empty' triangular corners.  X axis.  Empty
+triangles left over from shearing the image are filled with the color
+specified by the image background_color.  RotateImage allocates the memory
+necessary for the new Image structure and returns a pointer to the new
+image.</p>
+<p>Method RotateImage is based on the paper &quot;A Fast Algorithm for General
+Raster Rotatation&quot; by Alan W. Paeth.  RotateImage is adapted from a similar
+method based on the Paeth paper written by Michael Halle of the Spatial
+Imaging Group, MIT Media Lab.</p>
+<p>The format of the RotateImage method is:</p>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#image">Image</a> *RotateImage( const <a class="reference external" href="../api/types.html#image">Image</a> *image, const double degrees,
+                    <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+<dl class="docutils">
+<dt>status:</dt>
+<dd>Method RotateImage returns a pointer to the image after
+rotating.  A null image is returned if there is a memory shortage.</dd>
+<dt>image:</dt>
+<dd>The image;  returned from
+ReadImage.</dd>
+<dt>degrees:</dt>
+<dd>Specifies the number of degrees to rotate the image.</dd>
+<dt>exception:</dt>
+<dd>Return any errors or warnings in this structure.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="shearimage">
+<h1><a class="toc-backref" href="#id10">ShearImage</a></h1>
+<div class="section" id="id5">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#image">Image</a> *ShearImage( const <a class="reference external" href="../api/types.html#image">Image</a> *image, const double x_shear, const double y_shear,
+                   <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+</div>
+<div class="section" id="id6">
+<h2>Description</h2>
+<p>Method ShearImage creates a new image that is a shear_image copy of an
+existing one.  Shearing slides one edge of an image along the X or Y
+axis, creating a parallelogram.  An X direction shear slides an edge
+along the X axis, while a Y direction shear slides an edge along the Y
+axis.  The amount of the shear is controlled by a shear angle.  For X
+direction shears, x_shear is measured relative to the Y axis, and
+similarly, for Y direction shears y_shear is measured relative to the
+X axis.  Empty triangles left over from shearing the image are filled
+with the color defined by the pixel at location (0,0).  ShearImage
+allocates the memory necessary for the new Image structure and returns
+a pointer to the new image.</p>
+<p>Method ShearImage is based on the paper &quot;A Fast Algorithm for General
+Raster Rotatation&quot; by Alan W. Paeth.</p>
+<p>The format of the ShearImage method is:</p>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#image">Image</a> *ShearImage( const <a class="reference external" href="../api/types.html#image">Image</a> *image, const double x_shear, const double y_shear,
+                   <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+<dl class="docutils">
+<dt>status:</dt>
+<dd>Method ShearImage returns a pointer to the image after
+rotating.  A null image is returned if there is a memory shortage.</dd>
+<dt>image:</dt>
+<dd>The image;  returned from
+ReadImage.</dd>
+<dt>x_shear, y_shear:</dt>
+<dd>Specifies the number of degrees to shear the image.</dd>
+<dt>exception:</dt>
+<dd>Return any errors or warnings in this structure.</dd>
+</dl>
+</div>
+</div>
+</div>
+</body>
+</html>

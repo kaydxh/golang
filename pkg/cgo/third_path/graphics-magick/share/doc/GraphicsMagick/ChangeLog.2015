@@ -1,0 +1,2066 @@
+2015-12-12  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* ttf: Update bundled freetype to release 2.6.2.
+
+	* libxml: Update bundled libxml2 to release 2.9.3.
+
+2015-11-28  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* webp: Updated bundled libwebp to release 0.4.4.
+
+	* png: Updated bundled libpng to release 1.6.19.
+
+2015-11-05  Glenn Randers-Pehrson  <glennrp@simple.dallas.tx.us>
+
+	* coders/png.c (WriteOnePNGImage): Added "volatile" to
+	several declarations to stop "might be clobbered" warnings.
+
+2015-11-07  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* NEWS.txt: Update NEWS for 1.3.23 release.
+
+2015-11-06  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* magick/command.c (IdentifyImageCommand): Fix problem that
+	identify with -format "%A" does not always report correct answer
+	due to insufficient analysis of image.  Fixes SourceForge bug #326
+	"gm identify: transparency detection bug ".
+
+2015-11-05  Glenn Randers-Pehrson  <glennrp@simple.dallas.tx.us>
+
+	* coders/png.c (WriteOnePNGImage): Restored a "volatile"
+	declaration that was accidentally deleted on 2015-11-03.
+
+2015-11-04  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* configure.ac: Add checks for 'ps2write' and 'eps2write' as
+	Ghostscript Postscript and Encapsulated Postscript
+	writers. Resolves issue reported to graphicsmagick-bugs mailing
+	list on 2015-11-01 entitled "Failure to detect pswrite and
+	epswrite Ghostscript devices".
+
+2015-11-03  Glenn Randers-Pehrson  <glennrp@simple.dallas.tx.us>
+
+	* coders/png.c (ReadRawProfile): Issue a warning instead of
+	an error when attempting to read a zero-length profile.
+
+2015-11-01  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* magick/studio.h (MagickSleep): Provide the macro 'MagickSleep'
+	to call a function which delays for one second.  No longer provide
+	a macro 'sleep' in WIN32 compiles.  Resolves issue reported to
+	graphicsmagick-bugs mailing list on 2005-11-01 entitled "MinGW
+	build error when sleep re#defined as Sleep".
+
+2015-10-30  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* Magick++/demo/demos.tap: Add zoom test cases to test resize to
+	original dimensions, change height, and change width.
+
+	* magick/resize.c (ScaleImage): Fix regression introduced in
+	1.3.22 release which results in pixel cache not open if the scale
+	width and height match the original.  Patch by Troy Patteson.
+	Fixes part of SourceForge bug #323 "ScaleImage() issues in
+	v1.3.22".
+	(ScaleImage): Fix double free problem when scaled rows equals
+	original rows.  This regression was added in the 1.3.22 release
+	via changset 080b99bba574.  Based on patch by Troy Patteson.
+	Fixes remaining part SourceForge bug #323 "ScaleImage() issues in
+	v1.3.22".
+
+2015-10-24  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* www/Magick++/Image.rst (thumbnail): Paragraph heading fix.
+	Resolves SourceForge issue #321 "find tiny error in
+	Magick++/Image.html document".
+
+2015-10-06  Glenn Randers-Pehrson  <glennrp@simple.dallas.tx.us>
+
+	* docs/*.imdoc: Changed synopses in manpages to add "gm "
+	prefix to commands. Updated synopsis for "convert" to agree
+	with what's in the "gm" manpage.
+
+2015-10-05  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* configure.ac: Remove CFLAGS and LDFLAGS deduplication code.
+	Resolves SourceForge bug #320 OS X "universal build failure".
+
+2015-10-04  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* www/index.rst: Updated for 1.3.22 release.
+
+	* NEWS.txt: Updated for 1.3.22 release.
+
+2015-09-27  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* NEWS.txt: Brought up to date with changes thus far since last
+	release.
+
+	* magick/blob.c (OpenBlob): Disable fflush() of read-only handle
+	under Microsoft Windows, which produced a spurious error status,
+	blocking file reads for Visual Studio 2015 on Windows 2012 server.
+	Problem was reported and diagnosed by Dirk Lemstra.
+
+2015-09-19  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* tiff: Update bundled libtiff sources to 4.0.6 release.
+
+	* magick/module.c (InitializeModuleSearchPath): Fix compilation
+	problem when UseInstalledMagick is not defined.
+
+2015-09-13  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* coders/xpm.c: Static string/array allocations are now more
+	const.
+
+	* coders/{ps.c, ps2.c, ps3.c}: Static string/array allocations are
+	now more const.
+
+	* coders/palm.c: Palm static arrays should be 'const'.
+
+	* coders/meta.c (jpeg_embed): Stop sharing writeable static string
+	'psheader'.
+	(tag_spec): The 'tags' static array should be all 'const'.
+
+	* coders/jp2.c: Try to reduce the amount of non-const static data.
+
+	* coders/dcm.c (dicom_info): Try to make dicom_info array more
+	'const'.
+
+	* coders/dpx.c: Eliminate use of static buffer strings.
+
+	* coders/png.c: Make MNG chunk id strings constant rather than
+	initialized data.
+
+	* magick/render.c (DrawAffineImage): Fix problem that sometimes
+	output rows are skipped when using OpenMP.  Problem identification
+	and patch by Kevin Matzen.  Resolves SourceForge issue #316
+	"-affine sometimes produces output with missing rows".
+
+2015-08-30  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* tests/rwblob.tap: Add specific tests for BMP2 BMP3 subformats.
+
+	* tests/rwfile.tap: Add specific tests for BMP2 BMP3 PS2 PS3
+	subformats.
+
+2015-08-30  Jaroslav Fojtik  <JaFojtik@seznam.cz>
+
+        * magick/ImageMagick.rc Replace Imagemagick.ico by GraphicsMagick.ico
+
+        * magick/Imagemagick.ico is no longer needed and not referenced anywhere.
+
+2015-08-22  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* README.txt: Fix SourceForge bug 314 "README: bad hg clone URL".
+
+	* magick/module.c (GetModuleListForDirectory): Fix Coverity 107017
+	"Copy into fixed size buffer" and 107013 "Overlapping buffer in
+	memory copy".
+	(UnloadModule): Fix SourceForge bug 312 "uninitialized variable
+	"name" in UnloadModule".
+
+	* coders/bmp.c (WriteBMPImage): Fix typo in fix on 2015-08-17.
+	Fixes Coverity 107014 "Test should be assignment".
+
+	* magick/module.c (OpenModules): Fix Coverity 107016 "Resource
+	leak".
+	(GetModuleListForDirectory): Fix Coverity 107015 "Resource leak".
+
+2015-08-17  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* coders/bmp.c (WriteBMPImage): Fix inverted alpha channel when
+	writing BGRA8888 format.  Problem was reported by 张铎 via the
+	graphicsmagick-help discussion list on 2015-08-17.
+
+2015-08-10  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* magick/attribute.c (GenerateEXIFAttribute): Verify that entry
+	pointer is within the metadata buffer in order to avoid buffer
+	overflow.  Resolution and patch by Federico Larumbe.
+
+	* magick/profile.c (SetImageProfile): Avoid crash given NULL
+	profile pointer.  Resolution and patch by Federico Larumbe.
+
+2015-08-09  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* magick/attribute.c (GenerateEXIFAttribute): Fix logic problem
+	while validating EXIF GPS_OFFSET.  Problem reported by Federico
+	Larumbe.
+
+2015-07-27  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* coders/miff.c (ReadMIFFImage): Applied fix
+	(http://hg.code.sf.net/u/zacmorris/graphicsmagick/rev/edcc4c184b42)
+	by Zac Morris to detect buffer overrun while reading zip
+	compressed data.
+	(ReadMIFFImage): Fixed some memory leaks which were occuring when
+	an exception was thrown from zip-compressed data reader.
+
+2015-07-26  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* coders/tiff.c (WritePTIFImage): Fix SourceForge issue #269
+	"Convert creates SubfileType 0x2 instead of 0x1".  From looking at
+	the code, this is a regression since the time support for the page
+	subfile type was added (probably via changeset 11831
+	(037eef0f67f2) on 2007-08-17).
+
+2015-07-19  Jaroslav Fojtik  <JaFojtik@seznam.cz>
+
+	* dcraw/dcraw.c: Fixed bad define WIN32.
+
+2015-07-18  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* NEWS.txt, www/Hg.rst, www/index.rst: Applied English bugs patch
+	by Amadu Jalloh.
+
+	* dcraw/dcraw.c: Add a port replacement for strnlen().
+
+2015-07-14  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* wand/magick_wand.h: The declaration for MagickGetImageGravity()
+	was missing.  Resolves SourceForge bug #308 magick_wand.h misses
+	declaration of MagickGetImageGravity.
+
+2015-07-12  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* dcraw: Update bundled dcraw to release 9.26.0.
+
+	* png: Updated bundled libpng to release 1.6.17.
+
+	* lcms: Update bundled lcms2 to release 2.7.
+
+2015-07-11  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* NEWS.txt: Brought up to date with changes thus far since last
+	release.
+
+	* magick/version.h.in (MagickCopyright): Update most recent
+	copyright year.
+
+	* magick/render.c (DrawAffineImage): Fix problem with negative x
+	offset.  Resolves SourceForge issue #306 "gm fails to convert svg
+	to jpeg if svg has images with negative coordinates".
+
+	* magick/pixel_cache.c (ReadCachePixels): Add checks for integer
+	overflows.
+
+2015-07-07  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* magick/module.c (ModuleAliases): Add a module alias for GRAYA.
+
+2015-07-05  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* magick/montage.c (MontageImages): Fix Coverity 101317 "Resource
+	leak".
+
+	* magick/blob.c: Limit the data size passed to the read/write
+	calls to the filesystem blocksize and make multiple calls if
+	required.
+
+	* magick/pixel_cache.c: Limit the data size passed to the
+	read/write, pread/prwite calls and make multiple calls if
+	required.
+
+2015-07-04  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* magick/blob.c (WriteBlobFile): Properly handle short read. Read
+	data in units of filesystem block size.
+	(BlobToFile): Write data in units of filesystem block size.
+
+	* patches: Added directory of patches which may be useful when
+	integrating new versions of 3rd-party programs or libraries into
+	the VisualMagick build.
+
+	* libxml: Re-applied libxml changes which were used in prior
+	release.
+
+2015-07-03  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* webp: Updated bundled libwebp to release 0.4.3.
+
+	* ttf: Update bundled freetype to release 2.6.
+
+	* libxml: Update bundled libxml2 to release 2.9.2.
+
+	* tiff/VERSION: Update bundled libtiff to release 4.0.4.
+
+	* magick/nt_base.h (HAVE_TIFFISCODECCONFIGURED): Enable use of
+	TIFFIsCODECConfigured in MSVC build.
+
+	* coders/tiff.c: I am too lazy to modify VisualMagick configure so
+	it is possible to include jpeglib.h in tiff.c, so block out this
+	low-value code just for MSVC builds.
+
+2015-06-28  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* configure.ac, magick/profile.c: Removed support for lcms 1.X.
+	No one should be using a lesser version than lcms 2.0.
+
+2015-06-23  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* magick/blob.c (DisassociateBlob): Applied patch by Dirk Lemstra
+	to assure that the image blob is no longer shared with other
+	images when the image is written. This helps with thread safety.
+
+2015-06-14  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* magick/command.c: Add/fix utility usage messages for -box,
+	-convolve, -gravity, -linewidth, -list, -mattecolor, -render and
+	-shave.  Resolves SourceForge issue #302 "MogrifyUsage prints
+	incomplete information ".
+
+2015-06-10  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* coders/tiff.c (WriteTIFFImage): Include JPEG headers to obtain
+	its BITS_IN_JSAMPLE definition.  This is needed so we can know
+	what JPEG depth libtiff supports.
+
+	* www/index.rst: Add mention of GraphicsMagick having zero defects
+	reported by Coverity.
+
+2015-06-07  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* Magick++/lib/STL.cpp (adaptiveThresholdImage): Add a new
+	constructor which accepts a 'double' offset value.  The previous
+	version of this constructor is deprecated and subject to removal
+	in the future.  The size of the class is enlarged to store a
+	'double' and so this is a break in the ABI when this class was
+	used.  Code using this class should be re-compiled.
+
+	* Magick++/lib/Image.cpp (adaptiveThreshold): Add a new version of
+	this method which accepts a 'double' offset value.  The previous
+	version of the method is deprecated and subject to removal in the
+	future.  Problem was reported by Dirk Lemstra.
+
+2015-05-27  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* coders/gray.c (ReadGRAYImage): Based on feedback from Glenn,
+	return a gray image from the reader, even if a channelized format
+	specifier is given.
+
+2015-05-26  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* coders/gray.c (ReadGRAYImage): Fix read glitch caused by
+	incorrect memset(). Added missing break statement to switch.
+	Added more logging.
+	(RegisterGRAYImage): Register "gray" formats R, G, B, C, M, Y, K,
+	O such that they are not triggered by file extension.  It is
+	necessary to apply a magick prefix to the file name (or set image
+	magick in the API) in order to force using these formats.  This
+	avoids accidents in case the file extension was used for some
+	other purpose.
+
+2015-05-25  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* coders/gray.c: Added support for "GRAYA" format.  Format
+	specifiers "R", "G", "B", "A", "C", "M", and "Y" may now be used
+	to save and restore the associated channel using the same raw
+	format as "GRAY".  These format specifiers were already supported
+	but did not appear to serve any useful function.
+
+2015-05-24  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* configure.ac: Improve handling of libxml2 dependencies.  Only
+	test for and use libwmflite.  Full-up libwmf is no longer used.
+	* configure.ac: Deduplicate CFLAGS and LDFLAGS.
+
+2015-05-23  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* coders/png.c (WriteOnePNGImage): Eliminate a "clobber"
+	compilation warning.
+
+	* coders/jpeg.c (WriteJPEGImage): Eliminate a "clobber"
+	compilation warning.
+
+	* configure.ac: Don't compute libwmf2 and libxml2 linkage path
+	based on claimed installation prefix.  This is hoped to improve
+	configure reliability on multi-arch type systems.
+
+2015-05-17  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* configure.ac: Use the first -I, -L, and -l arguments produced by
+	freetype-config and don't produce arguments based on installation
+	prefix.  This is hoped to improve configure reliability on
+	multi-arch type systems.
+
+2015-05-16  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* magick/tempfile.c (AcquireTemporaryFileDescriptor): P_tmpdir is
+	not an environment variable.  Need to consider Windows environment
+	variables for Cygwin.
+
+	* magick/random.c (InitializeMagickRandomKernel): For Microsoft
+	Windows, use CryptGenRandom() to salt the built-in random number
+	generator.
+
+2015-05-13  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* magick/utility.c (MagickRandReentrant): Quiet Coverity 10092
+	"Calling risky function".
+	(MagickRandNewSeed): Quiet Coverity 10093 "Calling risky
+	function".
+
+	* coders/tga.c (ReadTGAImage): Quiet Coverity 10201 "Identical
+	code for different branches".
+
+	* coders/pcx.c (ReadPCXImage): Quiet Coverity 10218 "Identical
+	code for different branches".
+
+2015-05-10  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* magick/utility.c (GetGeometry): Fix handling of area geometries
+	in the form "5000000@".  Resolves SourceForge issue #299 "-resize
+	with @ and > in geometry specification".
+
+2015-05-09  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* coders/tiff.c (WriteTIFFImage): Disable matte channel for
+	compression types which don't support it.  Resolves SourceForge
+	bug #297 "GM distorts image using -transform".
+	(WriteTIFFImage): When type is Optimize, disable matte channel if
+	image is opaque.
+
+2015-05-09  Jaroslav Fojtik  <JaFojtik@seznam.cz>
+
+	* webp/src/utils/endian_inl.h: Fixed defect in intrinsic function
+	byteswap_ulong for Visual Studio less than 2005.
+
+2015-05-08  Jaroslav Fojtik  <JaFojtik@seznam.cz>
+
+	* VisualMagick/configure/system_page.cpp,
+	VisualMagick/configure/system_page.h: Suppress reloading .vcproj
+	when configuration type does not change.
+
+2015-05-08  Jaroslav Fojtik  <JaFojtik@seznam.cz>
+
+	* VisualMagick/configure/system_page.cpp,
+	VisualMagick/configure/system_page.h,
+	VisualMagick/configure/target_page.h: Ability to re-use already
+	given paths. It is highly frustrating to enter path for different
+	configurations again and again.
+
+2015-05-07  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* coders/vid.c (ReadVIDImage): Fix use of uninitialized variable
+	reported by MSVC 2003 (but not GCC, Clang, or Coverity).
+
+2015-05-05  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* coders/miff.c (ReadMIFFImage): Fix possible leak of profiles in
+	error path.
+
+	* coders/mpc.c (ReadMPCImage): Fix memory leak of values
+	allocation.
+	(ReadMPCImage): Fix possible leak of profiles in error path. Fixes
+	Coverity 80697 "Resource leak".
+
+2015-05-04  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* coders/miff.c (ReadMIFFImage): Fix memory leak of values
+	allocation.
+
+2015-05-03  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* coders/dpx.c (ReadDPXImage): Hopefully quiet Coverity 10305
+	"Untrusted loop bound".
+
+	* coders/tga.c (ReadTGAImage): Hopefully quiet Coverity 53418
+	"Untrusted loop bound".
+
+	* magick/tempfile.c (AcquireTemporaryFileDescriptor): Eliminate
+	all use of operating system provided temporary file allocation
+	functions (all apparently flawed in one way or another) and rely
+	exclusively on our own implementation.
+
+	* magick/constitute.c (ConstituteImage): Quiet Coverity 53399
+	"Logically dead code".
+
+	* coders/webp.c (ReadWEBPImage): Quiet Coverity 53400 "Logically dead
+	code".
+
+	* coders/miff.c (WriteRunlengthPacket): More work to quiet
+	Coverity 10186 and 10214 "Missing break in switch".
+
+2015-05-02  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* magick/tempfile.c (AcquireTemporaryFileDescriptor): Thoroughly
+	vet temporary file path.  Might quiet Coverity 64613 "Use of
+	untrusted string value".
+
+	* wand/magick_compat.c (ParseGeometry): Another try at quieting
+	Coverity 10248 "Copy into fixed size buffer" and 10078
+	"Overlapping buffer in memory copy" in this dead code.
+
+	* magick/tempfile.c (AcquireTemporaryFileDescriptor): Remove
+	unneeded, almost certainly never used, and potentially insecure
+	use of mkstemp().  Will quiet Coverity 10315 "Insecure temporary
+	file".
+
+2015-04-30  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* configure.ac: Keep Ghostscript gibberish from appearing in
+	Configure output.
+
+	* coders/miff.c (WriteRunlengthPacket): Quiet Coverity 10186 and
+	10214 "Missing break in switch".
+
+	* magick/pixel_cache.c (GetCacheInfo): Quiet Coverity 10208 "Data
+	race condition".
+
+	* magick/blob.c (CloneBlobInfo): Quiet Coverity 10188 "Data race
+	condition".
+	(GetBlobInfo): Quiet Coverity 10191 "Data race condition".
+
+	* magick/image.c (AllocateImage): Quiet Coverity 10196 "Data race
+	condition".
+	(CloneImage): Quiet Coverity 10206 "Data race condition".
+
+	* magick/map.c (MagickMapAllocateMap): Quiet Coverity 10192, 10193
+	and 10228 "Data race condition".
+
+	* configure.ac: Use an algorithm to try to discover the best value
+	for GSCMYKDevice.
+
+	* VisualMagick/bin/delegates.mgk: Recipe for 'gs-cmyk' contained a
+	typo which breaks using '-type ColorSeparation'.
+
+	* coders/pwp.c (ReadPWPImage): Fix Coverity CID 64491 "Integer
+	handling issues".
+
+2015-04-29  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* coders/xcf.c (load_tile_rle): Quiet Coverity 10259 "Untrusted
+	loop bound".
+
+	* coders/sct.c (ReadSCTImage): Quiet Coverity 10285 "Untrusted
+	loop bound".
+
+	* coders/pwp.c (ReadPWPImage): Quiet Coverity 10299 "Untrusted
+	loop bound".
+
+	* coders/pcd.c (ReadPCDImage): Quiet Coverity 10301 "Untrusted
+	loop bound".
+
+	* coders/tga.c (ReadTGAImage): Quiet Coverity 53418 "Untrusted
+	loop bound".
+
+	* wand/magick_compat.c (ParseGeometry): Fix overlap strcpy() in
+	dead code.  Quiets Coverity 10078 "Overlapping buffer in memory
+	copy" and 10248 "Copy into fixed size buffer".
+
+	* magick/segment.c (Classify): Fix Coverity 64317 "Resource leak".
+
+2015-04-28  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* coders/xcf.c (ReadXCFImage): Fix Coverity 64064 "Resource leak".
+
+	* coders/txt.c (ReadTXTImage): Fix Coverity 64061 "Resource leak".
+
+	* coders/rla.c (ReadRLAImage): Fix Coverity 64063 "Resource leak".
+
+	* coders/dib.c (ReadDIBImage): Fix Coverity 64057 Resource leak".
+
+	* magick/segment.c (Classify): Fix Coverity 64056 "Resource leak".
+
+	* magick/resize.c (SampleImage): Fix Coverity 64053, 64054, and
+	64062 "Resource leak".
+
+	* magick/render.c (TraceStrokePolygon): Fix Coverity 64055, 64059,
+	and 64060 "Resource leak".
+
+	* magick/magick.c (ListModuleMap): Quiet Coverity 64058 "Resource
+	leak".
+
+2015-04-28  Glenn Randers-Pehrson  <glennrp@simple.dallas.tx.us>
+
+	* coders/dpx.c: Fix Coverity 10305 "Untrusted loop bound".
+
+	* coders/cineon.c: Fix Coverity 10310 "Untrusted loop bound".
+
+2015-04-27  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* magick/memory.c: All use of user-provided allocation functions
+	is done via MagickFree(), MagickMalloc(), and MagickRealloc().
+
+2015-04-26  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* magick/colormap.c (MagickConstrainColormapIndex): For out of
+	range condition, specifically return 0 rather than setting index
+	to zero, and then returning index.
+
+	* coders/pcx.c (ReadPCXImage): Fix Coverity 10197 "Negative loop
+	bound".
+
+	* coders/map.c (ReadMAPImage): Allocate pixels after return case
+	for 'ping' mode.
+	(ReadMAPImage): Fix problem added in last commit due to multiple
+	uses of 'packet_size'.
+
+	* magick/floats.c (_Gm_convert_fp16_to_fp32)
+	(_Gm_convert_fp24_to_fp32): Fix Coverity 10094 "Logically dead
+	code".
+
+	* coders/pcx.c (ReadPCXImage): Fix Coverity 10197 "Negative loop
+	bound".
+
+	* coders/wpg.c (UnpackWPG2Raster): Always test for EOF from
+	ReadBlobByte().  Should fix Coverity 10205 "Negative loop bound".
+
+2015-04-25  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* coders/pcx.c (ReadPCXImage): Add some more integer-overflow
+	safety to computations.  Add some casts.
+
+	* coders/meta.c (formatIPTC): Fix Coverity 10221 "Infinite loop".
+
+	* magick/attribute.c (GenerateEXIFAttribute): Fix Coverity 10320
+	"Untrusted array index read" and "Untrusted loop bound".
+
+2015-04-24  Glenn Randers-Pehrson  <glennrp@simple.dallas.tx.us>
+
+	* coders/gif.c (ReadGIFImage): Attempt to fix Coverity issue
+	10284 by using "opacity = (header[3] & 0xff)".
+
+2015-04-23  Glenn Randers-Pehrson  <glennrp@simple.dallas.tx.us>
+
+	* magick/blob.c (ReadBlobMSBLong, ReadBlobLSBLong): Attempt
+	to fix various "tainted" or "untrusted" variables
+	by masking off all but the lower 32 bits returned.
+
+2015-04-23  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* coders/xcf.c (ReadXCFImage): Fix Coverity 10216 "Integer
+	overflowed argument".
+
+	* magick/transform.c (FlipImage): Fix Coverity 61461 "Division or
+	modulo by zero".
+
+	* coders/gif.c: Protect against integer overflow in array size
+	calculations.  Used unsigned type for colormap index.
+
+2015-04-22  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* coders/map.c (ReadMAPImage): Maybe quiet Coverity 10326
+	"Untrusted pointer read".
+
+	* magick/utility.c (GlobExpression): See if testing for null
+	terminating character quiets Coverity 10246 "Untrusted value as
+	argument".
+
+	* magick/transform.c (FlipImage): Possibly quiet case #4 of
+	Coverity 10311 "Untrusted value as argument".
+
+	* magick/utility.c (Base64Encode): Quiet Coverity 10296 and 10272
+	"Use of untrusted scalar value".
+
+2015-04-22  Glenn Randers-Pehrson  <glennrp@simple.dallas.tx.us>
+
+	* magick/blob.c (ReadBlobMSBShort, ReadBlobLSBShort): Attempt
+	to fix various "tainted" or "untrusted" variables, e.g., in
+	coders/gif.c and coders/sgi.c by masking off all but the lower
+	16 bits returned.
+
+2015-04-21  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* coders/tim.c (ReadTIMImage): Make TIM reader more robust against
+	EOF.
+
+	* coders/sct.c (ReadSCTImage): Make SCT reader more robust against
+	EOF.
+
+	* coders/pwp.c (ReadPWPImage): Test loop for EOF.
+
+	* coders/otb.c (ReadOTBImage): Make error reporting a bit more
+	robust.
+
+	* coders/jnx.c (ExtractTileJPG): Add some EOF checks.
+
+	* coders/cut.c (ReadCUTImage): Limit width/height to range of
+	signed integer.
+
+	* tests/rwfile.tap: Add a R/W file test for ART.
+
+	* tests/rwblob.tap: Add a R/W blob test for ART.
+
+	* coders/art.c (ReadARTImage): Improve error checking.
+
+2015-04-20  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* coders/sun.c (ReadSUNImage): Try to quench Coverity 10280
+	"Untrusted loop bound".
+
+	* coders/mpc.c (ReadMPCImage): Port MIFF header reading fixes.
+
+2015-04-19  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* coders/miff.c (ReadMIFFImage): MIFF reader failed to read some
+	MIFF headers properly.  Fixes SourceForge issue #298 "invalid next
+	size (normal)/memory corruption".
+
+2015-04-18  Glenn Randers-Pehrson  <glennrp@simple.dallas.tx.us>
+
+	* coders/png.c (ReadMNGImage): Fix Coverity 55862 "Resource leak"
+	and quiet Coverity 55825, 55826, and 55827 "Data race condition".
+
+2015-04-18  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* magick/utility.c (GetToken): Fix an overlapping strlcpy() which
+	caused a crash in pedantic strlcpy() implementations while parsing
+	a SVG-style URL from text.  Several other issues remain.
+
+2015-04-16  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* magick/command.c (ParseUnixCommandLine): Fix Coverity 59256
+	"Unused value".
+
+2015-04-15  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* magick/display.c (MagickXROIImage): Fix Coverity 10179 "Missing
+	break in switch".
+	(MagickXCropImage): Fix Coverity 10211 "Missing break in switch".
+
+	* magick/utility.c (Base64Decode): Fix Coverity 10203 "Missing
+	break in switch".
+	(Tokenizer): Quench Coverity 10182 "Missing break in switch".  Not
+	believed to be an actual problem.
+
+	* magick/command.c (ParseUnixCommandLine): Fix Coverity 10174 and
+	10178 "Missing break in switch".
+	(ProcessBatchOptions): Fix Coverity 10180 "Missing break in
+	switch".
+	(ParseWindowsCommandLine): Fix Coverity 10220 "Missing break in
+	switch".
+
+	* coders/xwd.c (ReadXWDImage): Fix Coverity 10095 "Division or
+	modulo by zero".  3rd try.
+
+2015-04-14  Glenn Randers-Pehrson  <glennrp@simple.dallas.tx.us>
+
+	* coders/png.c (ReadOneJNGImage): Fix Coverity 55829 and 55846
+	"Resource leak".
+
+2015-04-13  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* magick/quantize.c (GrayscalePseudoClassImage): Fix Coverity
+	55831 "Resource leak".  2nd try.
+
+	* coders/vid.c (ReadVIDImage): Fix Coverity 55868 and 55874
+	"Resource leak".  2nd try.
+
+2015-04-12  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* coders/psd.c (ReadPSDImage): Fix Coverity 55855 "Resource
+	leak". 2nd try.
+
+	* coders/pict.c (PictPixmapOp): Fix Coverity 55875 and 55883
+	"Resource leak". 2nd try.
+
+	* coders/pcx.c (WritePCXImage): Fix Coverity 55877 "Resource
+	leak". 2nd try.
+
+	* coders/meta.c (format8BIM): Fix Coverity 55842 "Resource
+	leak". 2nd try.
+
+	* coders/mat.c (WriteMATLABImage): Fix Coverity 55850 "Resource
+	leak". 2nd try.
+
+	* coders/dpx.c (ReadDPXImage): Fix Coverity 55878 "Resource leak".
+	2nd try.
+
+	* coders/preview.c (WritePreviewImage): Fix Coverity 55988
+	"Resource leak".
+
+2015-04-12  Glenn Randers-Pehrson  <glennrp@simple.dallas.tx.us>
+
+	* coders/png.c (ReadOneJNGImage): Avoid some memory leaks
+	newly reported by Coverity (work in progress)
+
+2015-04-12  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* magick/resize.c (ScaleImage): Fix Coverity 55824 "Division or
+	modulo by float zero".
+
+	* magick/annotate.c (AnnotateImage): Fix Coverity 55863
+	"Uninitialized scalar variable".
+
+	* wand/magick_wand.c (MagickDrawImage): Fix Coverity 55828
+	"Resource leak".
+	(MagickMontageImage): Fix Coverity 55835 "Resource leak".
+
+	* wand/drawing_wand.c (DrawComposite): Fix Coverity 55849
+	"Resource leak".
+
+	* magick/widget.c (MagickXColorBrowserWidget): Fix Coverity 55854
+	"Resource leak".
+
+	* magick/resize.c (ScaleImage): Fix Coverity 55841, 55853, 55858,
+	and 55860 "Resource leak".
+
+	* magick/render.c (ConvertPathToPolygon): Fix Coverity 55836
+	"Resource leak".
+	(DrawDashPolygon): Fix Coverity 55837 "Resource leak".
+
+	* magick/quantize.c (GrayscalePseudoClassImage): Fix Coverity
+	55831 "Resource leak".
+
+	* magick/paint.c (ColorFloodfillImage): Fix Coverity 55886
+	"Resource leak".
+
+	* magick/map.c (MagickMapAddEntry): Possibly silence 55844
+	"Resource leak".
+
+	* magick/image.c (CloneImage): Fix Coverity 55833 "Resource leak".
+
+	* magick/effect.c (BlurImage): Fix Coverity 55851 "Resource leak".
+
+	* magick/display.c (MagickXAnnotateEditImage): Fix Coverity 55830
+	"Resource leak".
+	(MagickXVisualDirectoryImage): Fix Coverity 55894 "Resource leak".
+
+	* magick/constitute.c (ReadImages): Fix Coverity 55834 "Resource
+	leak".
+	(ReadInlineImage): Fix Coverity 55843 "Resource leak".
+
+	* magick/compress.c (HuffmanEncode2Image): Fix Coverity 55839
+	"Resource leak".
+	(HuffmanDecodeImage): Fix Coverity 55859 "Resource leak".
+
+	* magick/color.c (GetColorHistogram): Fix Coverity 55845 "Resource
+	leak".
+	(ComputeCubeInfo): Fix Coverity 55857 "Resource leak".
+
+	* coders/yuv.c (ReadYUVImage): Fix Coverity 55890 "Resource leak".
+
+	* coders/wpg.c (UnpackWPG2Raster): Fix Coverity 55832 and 55848
+	"Resource leak".
+
+2015-04-11  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* coders/vid.c (ReadVIDImage): Fix Coverity 55868 "Resource leak"
+	(ReadVIDImage): Fix Coverity 55874 "Resource leak".
+
+	* coders/txt.c (ReadTXTImage): Fix Coverity 55866 "Resource leak".
+
+	* coders/topol.c (ReadTOPOLImage): Fix Coverity 55865 "Resource
+	leak".
+
+	* coders/sgi.c (WriteSGIImage): Fix Coverity 55891 "Resource leak".
+
+	* coders/psd.c (ReadPSDImage): Fix Coverity 55855 "Resource leak".
+
+	* coders/pict.c (WritePICTImage): Fix Coverity 55867, 55875, 55883
+	"Resource leak".  Fix Coverity 55892 "Resource leak".
+
+	* coders/pdb.c (ReadPDBImage): Fix Coverity 55840, 55856, and
+	55885 "Resource leak".
+
+	* coders/pcx.c (WritePCXImage): Fix Coverity 55877 "Resource
+	leak".
+
+	* coders/mvg.c (ReadMVGImage): Fix Coverity 55873 "Resource leak".
+
+	* coders/mpeg.c (WriteMPEGImage): Fix Coverity 55880 "Resource
+	leak".
+
+	* coders/miff.c (WriteMIFFImage): Fix Coverity 55864 "Resource
+	leak".
+	(WriteMIFFImage): Fix Coverity 55872 "Resource leak".
+
+	* coders/meta.c (formatIPTCfromBuffer): Fix Coverity 55838
+	"Resource leak".
+	(format8BIM): Fix Coverity 55842 and 55852 "Resource leak".
+	(formatIPTC): Fix Coverity 5882 "Resource leak".
+
+	* coders/mat.c (ReadMATImage): Fix Coverity 55850 "Resource leak".
+
+	* coders/map.c (ReadMAPImage): Fix Coverity 55876 "Resource leak".
+
+	* coders/logo.c (ReadLOGOImage): Fix Coverity 55870 "Resource
+	leak".
+
+	* coders/label.c (ReadLABELImage): Fix Coverity 55869 "Resource
+	leak".
+
+	* coders/icon.c (ReadIconImage): Fix Coverity 55887 "Resource
+	leak".
+
+	* coders/fits.c (WriteFITSImage): Fix Coverity 55884 "Resource
+	leak".
+
+	* coders/dpx.c (WriteDPXImage): Fix Coverity 55861 "Resource
+	leak".
+	(ReadDPXImage): Fix Coverity 55878 "Resource leak".
+	(ReadDPXImage): Fix Coverity 55879 "Resource leak".
+
+	* coders/dib.c (WriteDIBImage): Fix Coverity 55881 "Resource
+	leak".
+	(WriteDIBImage): Fix Coverity 55895 "Resource leak".
+
+	* coders/cut.c (ReadCUTImage): Fix Coverity 55893 "Resource leak".
+
+	* coders/caption.c (ReadCAPTIONImage): Fix Coverity 55888
+	"Resource leak".
+	(ReadCAPTIONImage): Fix Coverity 55889 "Resource leak".
+	(ReadCAPTIONImage): Fix Coverity 55896 "Resource leak".
+
+	* magick/annotate.c (RenderX11): Silence Coverity 10106 "Logically
+	dead code".
+
+	* coders/xcf.c: Silence Coverity 10224, 10233, and 10236 "Improper
+	use of negative value".
+
+	* coders/mat.c (ReadMATImage): Silence Coverity 10175 "Improper
+	use of negative value"
+
+	* coders/tga.c (ReadTGAImage): Silence Coverity 10088 "Operands
+	don't affect result".
+
+	* magick/annotate.c (RenderFreetype): Silence Coverity 14396 and
+	44755 "Unused value".
+
+	* coders/wpg.c (LoadWPG2Flags): Silence Coverity 10273 and 10253
+	"Unused value".
+
+	* magick/montage.c (MontageImages): Silence Coverity 10255 "Unused
+	value".
+	(MontageImages): Silence Coverity 10264 "Unused value".
+
+2015-04-09  Glenn Randers-Pehrson  <glennrp@simple.dallas.tx.us>
+
+	* coders/png.c (ReadOneJNGImage): Avoid using a NULL alpha_image
+	or color_image. (ReadJNGImage): Removed an extraneous CloseBlob().
+
+2015-04-08  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* magick/utility.c (MagickCreateDirectoryPath): Silence Coverity
+	10098 "Logically dead code".
+
+	* magick/resource.c (InitializeMagickResources): Silence Coverity
+	10101 "Logically dead code".
+
+	* magick/magick.c (MagickSignalHandlerMessage): Fix Coverity 44725
+	"Logically dead code".
+
+	* magick/log.c (DestroyLogInfo): Silence Coverity 53659 and 53661
+	"Data race condition".
+	(ReadLogConfigureFile): Silence Coverity 53660 "Data race
+	condition".
+
+	* magick/effect.c (DespeckleImage): Fix error handling issue
+	caused by shadowed variable.  Fixes Coverity 10099 "Logically dead
+	code".
+
+	* magick/command.c (TimeImageCommand): Fix Coverity 10097
+	"Logically dead code".
+
+	* magick/attribute.c (ReadMSBLong): Hopefully silence Coverity
+	10276 "Unintended sign extension".
+
+	* coders/sgi.c (ReadSGIImage, WriteSGIImage): Fix Coverity 10243,
+	10244, 10247, 10254, and 10294 "Unintended sign extension".
+
+2015-04-07  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* magick/xwindow.c (MagickXMakeImage): Quiet Coverity 10282
+	"Unused value".
+
+2015-04-06  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* coders/tiff.c (WriteTIFFImage): Another change targeting
+	Coverity 44742 and 44746 "Unintended sign extension".
+
+2015-04-05  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* magick/render.c (TracePath): Fix Coverity 10258 "Uninitialized
+	scalar variable".
+
+	* magick/widget.c (MagickXFontBrowserWidget): Fix Coverity 10323
+	"Sizeof not portable".  2nd try.
+
+	* coders/xwd.c (ReadXWDImage): Fix Coverity 10095, 10100, 10104
+	"Division or modulo by zero".  2nd try.
+
+	* magick/analyze.c (GetImageCharacteristics): Fix Coverity 10096
+	"Logically dead code".
+
+	* coders/yuv.c (ReadYUVImage): Fix Coverity 10260 "Structurally
+	dead code".
+
+	* coders/xcf.c (ReadXCFImage): Fix Coverity 10226 "Missing break
+	in switch".
+
+	* coders/tim.c (ReadTIMImage): Fix Coverity 10249 "Unused value".
+
+	* coders/tiff.c (CompressionSupported): Fix Coverity 44723
+	"Logically dead code".
+	(WriteTIFFImage): Fix Coverity 44742 and 44746 "Unintended sign
+	extension".
+
+	* coders/ps3.c (WritePS3Image): Validate results from TellBlob()
+	and SeekBlob().  Should quiet Coverity 10198 "Improper use of
+	negative value".
+
+	* coders/ps2.c (WritePS2Image): Validate results from TellBlob()
+	and SeekBlob().  Should quiet Coverity 10230 "Improper use of
+	negative value".
+
+	* coders/mpeg.c (WriteMPEGImage): Quiet Coverity 10176 "Missing
+	break in switch".
+
+	* coders/map.c (WriteMAPImage): Make MAP reader/writer more
+	robust.  May quiet 10326 "Untrusted pointer read".
+
+	* coders/locale.c (ReadLOCALEImage): Quiet Coverity 10108
+	"Logically dead code".
+
+	* coders/rle.c: Make URT RLE reader more robust.  Should quiet
+	Coverity CID 10070 "Bad bit shift operation", as well as 10235
+	"Improper use of negative value".
+
+2015-04-04  Glenn Randers-Pehrson  <glennrp@simple.dallas.tx.us>
+
+	* coders/png.c (WriteOneJNGImage): Quiet Coverity CID issue 14370,
+	"Unused value" (status was ignored).
+
+	* coders/png.c (ReadOneJNGImage): Quiet Coverity CID issue 44724,
+	"Logically dead code" (skip_to_iend can't be true).
+
+	* coders/png.c (ReadOnePNGImage): Attempt to quiet Coverity
+	CID 10232 "Missing unlock", by using png_error() instead of
+	throwing an exception.
+
+2015-04-04  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* coders/xwd.c (ReadXWDImage): Fix Coverity 10104 "Division or
+	modulo by zero".
+
+	* magick/resize.c (ResizeImage): Fix Coverity 53404 "Division or
+	modulo by zero".
+
+	* coders/ps3.c (WritePS3MaskImage): Fix Coverity 53415 "Improper
+	use of negative value".
+
+	* coders/meta.c (parse8BIM): Fix Coverity 53413 "Improper use of
+	negative value".
+	(parse8BIMW): Fix Coverity 53414 "Improper use of negative value".
+
+	* magick/utility.c (GetMagickGeometry): Fix Coverity 53403 and
+	53405 "Division or modulo by float zero".
+	(GetPathComponent): Fix Coverity 53417 "Wrong sizeof argument.
+
+	* magick/quantize.c (GrayscalePseudoClassImage): Fix Coverity
+	10256 "Wrong sizeof argument".
+
+	* magick/image.c (ResetImagePage): Fix Coverity 53401 "Division or
+	modulo by float zero" and 53402 "Division or modulo by float
+	zero".
+
+	* coders/histogram.c (WriteHISTOGRAMImage): Silence Coverity 10107
+	"Division or modulo by float zero".  2nd try.
+
+	* magick/xwindow.c (MagickXImportImage): Silence Coverity 10207
+	"Array compared against 0".
+
+	* magick/widget.c (MagickXColorBrowserWidget): Silence Coverity
+	53406 "Identical code for different branches".
+	(MagickXListBrowserWidget): Silence Coverity 53407 "Identical code
+	for different branches".
+
+	* magick/animate.c (MagickXMagickCommand): Silence Coverity 53410
+	"Identical code for different branches".
+
+	* coders/rgb.c (WriteRGBImage): Silence Coverity 53409 "Identical
+	code for different branches".
+
+	* coders/cmyk.c (WriteCMYKImage): Silence Coverity 53408
+	"Identical code for different branches".
+
+	* magick/xwindow.c (MagickXMakeImage): Silence Coverity 44727
+	"Dereference after null check".  2nd try.
+
+	* magick/utility.c (EscapeString): Silence Coverity 53416
+	"Dereference before null check".
+
+	* coders/gif.c (WriteGIFImage): Fix Coverity 10219 "Dereference
+	null return value".
+
+	* magick/log.c (InitializeLogInfo): Hopefully silence Coverity
+	53411 and 53412 "Data race condition".
+
+	* coders/cineon.c (AttributeToString): Silence Coverity 10079
+	"Buffer not null terminated".  2nd try.  The buffer is not
+	required to be null terminated!
+
+	* coders/pict.c (ReadPICTImage): 10171 "Resource leak".  2nd try.
+
+	* coders/wmf.c (util_set_brush): Silence Coverity 44739
+	"Out-of-bounds access".  2nd try.
+
+2015-03-29  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* magick/log.c (SetLogEventMask): Silence Coverity 10069 "Value
+	not atomically updated".  Logging initialization is done
+	single-threaded entirely in InitializeLogInfo() now.
+
+2015-03-28  Glenn Randers-Pehrson  <glennrp@simple.dallas.tx.us>
+
+	* coders/png.c (ReadOnePNGImage): Attempt to quiet Coverity
+	44734 "Data race condition" by freeing mng_info->png_pixels
+	and mng_info->quantum_scanline separately from MngInfoFreeStruct.
+
+2015-03-28  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* magick/widget.c (XEditText): Silence Coverity 10072 "Overlapping
+	buffer in memory copy"
+
+	* coders/locale.c (ReadConfigureFile): Silence Coverity 10075
+	"Overlapping buffer in memory copy".
+
+	* magick/xwindow.c (MagickXMakeWindow): Silence Coverity 10076
+	"Overlapping buffer in memory copy".
+
+	* coders/dcm.c (funcDCM_TransferSyntax): Silence Coverity 10083
+	"Unchecked return value".
+
+	* magick/static.c (ExecuteStaticModuleProcess): Silence Coverity
+	10082 "Unchecked return value".
+
+	* coders/cals.c (ReadCALSImage): Silence Coverity 10086 "Unchecked
+	return value from library".
+	(ReadCALSImage): Silence Coverity 10085 "Unchecked return value".
+	(ReadCALSImage): Silence Coverity 10084 "Unchecked return value
+	from library".
+
+	* magick/enhance.c (ModulateImage): Silence Coverity 10087
+	"Unchecked return value".
+
+2014-03-24  Jaroslav Fojtik  <JaFojtik@seznam.cz>
+
+        * coders/wpg.c More paranoa in checking ReadBlobByte() negative return.
+
+2015-03-23  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* magick/attribute.c (Generate8BIMAttribute): Silence Coverity
+	10195 "Argument cannot be negative".
+
+	* Magick++/lib/Image.cpp (syncPixels): Silence Coverity 44722
+	"Unchecked return value".
+	(fontTypeMetrics): Silence Coverity 44721 "Unchecked return
+	value".
+
+	* magick/render.c (ConvertPathToPolygon): Silence Coverity 10120
+	"Dereference after null check".
+
+	* magick/effect.c (EmbossImage): Silence Coverity 10114
+	"Dereference after null check".
+	(AdaptiveThresholdImage): Silence Coverity 10118 "Explicit null
+	dereferenced".
+
+	* coders/msl.c (MSLPushImage): Silence Coverity 10128 "Dereference
+	after null check".
+
+	* magick/render.c (DrawPolygonPrimitive): Silence Coverity 10136
+	"Dereference after null check".
+
+	* wand/drawing_wand.c (DrawSetStrokeDashArray): Silence Coverity
+	10117 "Dereference after null check".
+
+	* magick/draw.c (DrawSetStrokeDashArray): Silence Coverity 10150
+	"Dereference after null check".
+
+	* wand/drawing_wand.c (DrawPushGraphicContext): Silence Coverity
+	10151 "Dereference after null check".
+
+2015-03-22  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* coders/meta.c (parse8BIM): Silence Coverity 10159 "Explicit null
+	dereferenced".
+	(parse8BIMW): Silence Coverity 10144 "Explicit null dereferenced".
+
+	* coders/uil.c (WriteUILImage): Silence Coverity 10202
+	"Dereference after null check".  In fact, UIL output was not
+	working at all due to this bug.
+
+	* magick/xwindow.c (MagickXMakeImage): Silence Coverity 44727
+	"Dereference after null check".
+
+	* Magick++/lib/Image.cpp (colorMapSize): Silence Coverity 44728
+	"Dereference after null check".
+
+	* coders/vid.c (ReadVIDImage): Silence Coverity 44730 "Explicit
+	null dereferenced".
+
+	* coders/mpc.c (ReadMPCImage): Silence Coverity 44732 "Dereference
+	after null check".
+
+	* Magick++/lib/Image.cpp (signature): Silence Coverity 44735
+	"Dereference null return value".
+
+	* coders/ps.c (ReadPSImage): Ghostscript options concatenation
+	should be more secure against buffer overflow.
+
+	* coders/pdf.c (ReadPDFImage): Applied patch by Chris Gilling such
+	that '-define pdf:stop-on-error=true' will stop PDF processing
+	immediately upon an error.
+	(ReadPDFImage): Ghostscript options concatenation should be more
+	secure against buffer overflow.
+
+2015-03-19  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* magick/animate.c (MagickXAnimateImages): Silence Coverity 44736
+	"Dereference null return value".  Also fixed apparent memory leak
+	that Coverity did not notice.
+
+	* coders/fits.c (ReadFITSImage): Silence Coverity 10209
+	"Dereference before null check".
+
+	* magick/color_lookup.c (ReadColorConfigureFile): Silence Coverity
+	44743 "Dereference before null check".
+
+	* magick/xwindow.c (MagickXMakeImage): Silence Coverity 44745
+	"Dereference before null check".
+
+	* coders/pict.c (ReadPICTImage): Hopefully address consequences of
+	Coverity 10292 "Untrusted loop bound" although it will likely
+	still complain.
+
+	* magick/utility.c (LocaleCompare, LocaleNCompare): Try to create
+	an implementation that Coverity won't label an "tainted sink", and
+	therefore result in a Coverity "Use of untrusted scalar value"
+	report whenever a string from an external source is compared.  The
+	original implementations are not believed to be faulty.
+
+2015-03-17  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* magick/command.c (ProcessBatchOptions): Silence Coverity 10080
+	"Buffer not null terminated".
+
+	* magick/widget.c (MagickXConfirmWidget): Silence Coverity 10089
+	"Copy-paste error".  This is an amazing find by Coverity.
+
+	* magick/xwindow.c (MagickXImportImage): Silence Coverity 10207
+	"Array compared against 0".
+
+	* magick/quantize.c (GrayscalePseudoClassImage): Silence Coverity
+	10256 "Wrong sizeof argument".
+
+	* coders/tiff.c (ReadTIFFImage): Fix Coverity 44747 and 44748
+	"Extra sizeof expression".
+
+2015-03-16  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* Magick++/lib/Magick++/Include.h (Magick): Fix compilation with
+	'clang' under Linux.  Build was broken yesterday.
+
+	* coders/tiff.c (QuantumTransferMode): Fix reading Old JPEG and
+	YCbCr sample images from libtiff pics-3.8.0.tar.gz image file
+	collection.  There was a regression for YCbCr added in last
+	release.
+
+2015-03-15  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* coders/bmp.c (ReadBMPImage): Fix Coverity 44726 "Division or
+	modulo by float zero".  I don't think that this can actually
+	happen due to prior checks.
+
+	* magick/xwindow.c (MagickXMakeWindow): Silence Coverity 10281
+	"Copy into fixed size buffer".
+
+	* coders/pdf.c (ReadPDFImage): Silence Coverity 10241 "Copy into
+	fixed size buffer".
+
+	* magick/type.c (ReadTypeConfigureFile): Silence Coverity 10242
+	"Copy into fixed size buffer".
+
+	* magick/utility.c (GetPathComponent): Silence Coverity 10263
+	"Copy into fixed size buffer".
+
+	* coders/txt.c (ReadTXTImage): Silence Coverity 10287 "Copy into
+	fixed size buffer".
+
+	* coders/ps.c (WritePSImage): Silence Coverity 10289 "Copy into
+	fixed size buffer".
+
+	* magick/delegate.c (ReadConfigureFile): Silence Coverity 10297
+	"Copy into fixed size buffer".
+
+	* magick/log.c (ReadLogConfigureFile): Silence Coverity 10300
+	"Copy into fixed size buffer".
+
+	* coders/ps3.c (WritePS3Image): Silence Coverity 10303 "Copy into
+	fixed size buffer".
+
+	* coders/pdf.c (WritePDFImage): Silence Coverity 10304 "Copy into
+	fixed size buffer".
+
+	* coders/ps.c (ReadPSImage): Silence Coverity 10306 "Copy into
+	fixed size buffer".
+
+	* coders/msl.c (MSLStartElement): Silence Coverity 10308 "Copy
+	into fixed size buffer".
+
+	* coders/ps2.c (WritePS2Image): Silence Coverity 10309 "Copy into
+	fixed size buffer".
+
+	* Magick++/lib/Geometry.cpp (operator): Silence Coverity 44749
+	"Copy into fixed size buffer".
+
+	* Magick++/lib/Image.cpp (annotate): Silence Coverity 44750 "Copy
+	into fixed size buffer".
+
+	* coders/ept.c (ReadEPTImage): Silence Coverity 44751 "Copy into
+	fixed size buffer".
+
+	* coders/wmf.c (ipa_device_begin): Silence Coverity 44753 "Copy
+	into fixed size buffer".
+	(lite_font_map): Silence Coverity 44752 "Copy into fixed size
+	buffer".
+
+	* magick/random.c (InitializeMagickRandomKernel): Silence Coverity
+	10091 "Don't Call" in the case where /dev/random is available.
+
+	* coders/mpeg.c (WriteMPEGParameterFiles): Fix Coverity 10190
+	"Resource leak".  File descriptor was leaked under certain error
+	conditions.
+
+	* coders/wpg.c (UnpackWPG2Raster): Fix Coverity 10312
+	"Uninitialized scalar variable" gripe.
+
+	* magick/utility.c (ListFiles): Possibly address
+	Coverity 10245 "Sizeof not portable" gripe.
+
+	* magick/widget.c (MagickXFontBrowserWidget): Possibly address
+	Coverity 10323 "Sizeof not portable" gripe.
+
+	* coders/mat.c (WriteMATLABImage): FormatString() requires a
+	buffer of MaxTextExtent bytes.  Use sprintf instead.  Fix for
+	Coverity issue 10170.
+
+	* Magick++/lib/Geometry.cpp (string): FormatString() requires a
+	buffer of MaxTextExtent bytes. Fix for Coverity issue 44737.
+
+	* coders/wmf.c (draw_pattern_push): FormatString() requires a
+	buffer of MaxTextExtent bytes.  Fix for Coverity issue 44741.
+	(ipa_device_begin): FormatString() requires a buffer of
+	MaxTextExtent bytes.  Fix for Coverity issue 44740.
+	(util_set_brush): FormatString() requires a buffer of
+	MaxTextExtent bytes. Fix for Coverity issue 44739.
+	(ipa_region_clip): FormatString() requires a buffer of
+	MaxTextExtent bytes. Fix for Coverity issue 44738.
+
+2015-03-15  Glenn Randers-Pehrson  <glennrp@simple.dallas.tx.us>
+
+	* coders/png.c (WritePNGImage) Avoid a Coverity gripe about
+	potential NULL dereference (actually it is impossible because
+	png_error() does not return. Fix for Coverity gripe 44731.
+
+	* coders/png.c (WritePNGImage) Avoid a null pointer dereference
+	while logging inherited color_type. Fix for Coverity issue 10185.
+
+	* coders/png.c (WriteOneJNGImage) Avoid possible unintended sign
+	extension. Fix for Coverity issue 44744.
+
+	* coders/png.c (WriteOnePNGImage) Quiet a false Coverity warning
+	about dereference after NULL check.  Fix for Coverity issue 44729.
+
+	* coders/png.c (ReadOnePNGImage): Redid the "Respect the
+	PixelsResource limit" patch of March 7, using unsigned arithmetic
+	to determine the width limit.  Sometimes the calculated
+	width limit was incorrectly zero.
+
+2015-03-14  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* magick/image.c (SetImageInfo): Fix problems with reading
+	filenames that include a colon.  Resolves SourceForge bug #294
+	"display and convert (probably other things too) choke on
+	filenames with colons in".
+
+	* magick/utility.c (GetPathComponent): Fix SubImagePath
+	extraction. Fixes SourceForge bug #66 "converting runs slowly when
+	subimage is specified".
+
+2015-03-11  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* doc/options.imdoc (-geometry): Document the significance of 'x'
+	as used in a geometry specification.  In particular, document that
+	if width is specified without a trailing 'x' that height is set to
+	width.  This is in response to SourceForge bug #296 "Strange
+	-resize WIDTH results with version 1.3.21".
+
+2015-03-10  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* magick/utility.c (GlobExpression): Remove use of IsSubimage().
+
+	* magick/image.c (IsSubimage): Re-implement with a more robust
+	solution.  Combined with fixes to ps.c and pdf.c, allows selecting
+	specific pages, as well as re-ordering.
+
+	* coders/ps.c (ReadPSImage): Set image frame scene ids
+	appropriately.
+
+	* coders/pdf.c (ReadPDFImage): Set image frame scene ids
+	appropriately.
+
+	* magick/utility.c (TranslateTextEx): -format %Q should report
+	JPEG quality estimate if it is available.  Resolves SourceForge
+	bug #293 "gm identify bug?".
+
+	* doc/options.imdoc: Documented JPEG-specific -format tags.
+
+2015-03-07  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* Magick++/lib/Image.cpp (repage): New method to reset page
+	settings.  Contributed by Dirk Lemstra.
+
+2015-03-07  Glenn Randers-Pehrson  <glennrp@simple.dallas.tx.us>
+
+	* coders/png.c (ReadOnePNGImage): Respect the PixelsResource
+	limit.
+
+	* coders/png.c (ReadOnePNGImage): Moved quantum_scanline
+	and png_pixels into the MngInfo struct.  This prevents
+	memory leaks when reading malformed PNG images, but unfortunately
+	triggers a new complaint about a possible race condition.
+
+	* coders/png.c (ReadOnePNGImage): Removed two superflous calls to
+	CloseBlob().
+
+	* coders/png.c (ReadOnePNGImage): Do the allocation and free of
+	quantum_scanline outside the "pass" loop, i.e., do it once per
+	image rather than once per pass while decoding interlaced PNG
+	images.  Log these when -debug coders is enabled.
+
+	* coders/png.c: Fixed typo recently introduced in the JNG reader
+	(status != MagickFalse should be status == MagickFalse).
+
+2015-03-05  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* coders/xwd.c (ReadXWDImage): Fix memory leaks in error paths.
+
+	* coders/xpm.c (ReadXPMImage): Fix memory leaks in error paths.
+
+	* coders/miff.c (ReadMIFFImage): Fix memory leak of Image in error
+	case.
+	(ReadMIFFImage): Fix memory leaks of zlib and bzlib2 context in
+	error path which reports decompression failure.
+
+	* coders/bmp.c (ReadBMPImage): BMP reader was wrongly rejecting
+	RLE-compressed files as being too small.  Fixes SourceForge bug
+	#295 "1.3.21 identify regression".  Also fixed 'ping' support code
+	which was still reading the pixels in 'ping' mode.
+	(ReadBMPImage): Fix memory leak when BMP is handled as a sequence.
+
+2015-03-01  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* coders/palm.c (ReadPALMImage): PALM reader now applies PALM's
+	special non-linear colormap if the file does not provide a custom
+	colormap.  Custom colormap size is verified to not exceed image
+	colors.  Added logging statements regarding colormap.
+
+2015-02-28  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* www/index.rst: Update for 1.3.21 release.
+
+	* www/Changes.rst: Update for 1.3.21 release.
+
+	* NEWS.txt: Update NEWS for 1.3.21 release.
+
+	* version.sh: Bump/adjust library versioning.
+
+2015-02-25  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* magick/delegate.c: Fix compilation under Cygwin. Thanks to Marco
+	Atzeri for advising us of this problem.
+
+2015-02-24  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* magick/error.h (ThrowReaderException): More significant
+	exceptions (e.g. errors) should overwrite less significant
+	exceptions (e.g. warnings) thrown earlier.
+
+	* coders/bmp.c (ReadBMPImage): Detect 32-bit integer overflows and
+	other annoyances caused by intentionally broken files.  Also, only
+	warn if the file header claims the file is larger than it is since
+	this is a benign issue.
+
+	* magick/blob.c (OpenBlob): Fix "magic header bytes" log message
+	count value.
+
+2015-02-22  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* NEWS.txt: Updated NEWS with more changes.
+
+	* Magick++/lib/Magick++/Include.h (Magick): Add GetImageGeometry
+	to MagickLib namespace in order to avoid a compilation problem
+	noticed with Visual C++ 6.0.
+
+2014-02-22  Jaroslav Fojtik  <JaFojtik@seznam.cz>
+
+	* VisualMagick\configure\configure.cpp Fixed crash.
+        Renamed debug to configure_d.exe to prevent mess.
+
+2015-02-21  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* magick/magick.c (InitializeMagick): Invoke
+	NTInitializeExceptionHandlers() under Windows.
+
+	* magick/nt_base.c (NTInitializeExceptionHandlers): Add a new
+	private function which disables pop-up Windows on exceptions and
+	registers a handler for Windows exceptions to clean up temporary
+	files prior to program exit.
+
+	* magick/magick.c (PanicDestroyMagick): Use
+	PurgeTemporaryFilesAsyncSafe() rather than PurgeTemporaryFiles().
+	(InitializeMagickSignalHandlers): Always register for SIGINT, even
+	under Microsoft Windows.
+
+	* magick/tempfile.c (PurgeTemporaryFilesAsyncSafe): New private
+	function to clean up temporary files prior to program exit.
+	Async-safe so it can be safely called from a signal handler.
+	Intentionally leaks memory.
+
+2015-02-18  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* magick/attribute.c (GenerateEXIFAttribute): Fix crash while
+	parsing corrupt EXIF which was reported by Stijn Sanders on
+	2015-02-17.
+
+	* Magick++/lib/{Blob.cpp, Image.cpp}: Incorrect lock scope
+	resulted in Magick++ locking not actually working to protect
+	critical sections in spite of no detected problems with locking
+	these past 16 years.  Problem was detected using the
+	misc-unused-raii check from clang-tidy and was reported by Hyrum
+	Wright.
+
+	* coders/palm.c (ReadPALMImage): Add header logging to writer.
+	Writer still seeks and overwrites its own header so logging is not
+	entirely accurate yet.
+
+2015-02-16  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* libtool: Update GNU libtool to 2.4.6.
+
+	* coders/palm.c (ReadPALMImage): Fix support for transparency in
+	PALM reader.
+
+2015-02-15  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* coders/palm.c (ReadPALMImage): Major re-work of PALM reader.
+	More log message improvements.  More header validation.
+
+2015-02-14  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* coders/palm.c (ReadPALMImage): Improve log messages.  Add more
+	header validation.  Check image pixel limits.  Support 'ping'
+	mode.
+
+2015-02-12  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* coders/palm.c (ReadPALMImage): PALM reader now supports 1, 2, 4,
+	8, and 16-bit test files we were able to generate using
+	'pnmtopalm'.  A progress monitor was added.  Memory leaks in error
+	paths were fixed.
+
+2015-02-12  Glenn Randers-Pehrson  <glennrp@simple.dallas.tx.us>
+
+	* coders/png.c: Insert "if (QuantumTick(...))" ahead of
+	each "if (!MagickMonitorFormatted(...)".
+
+2015-02-10  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* coders/rla.c (ReadRLAImage): Assure that header ASCII strings
+	are properly terminated.  Resolves Coverity CID 10322.
+
+2015-02-09  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* magick/nt_base.h (STDERR_FILENO): Provide definitions for
+	standard POSIX file numbers so that Visual Studio should compile.
+	Fixes SourceForge bug #291 "STDERR_FILENO (used in magick.c) is
+	not defined under Windows"
+
+2015-02-08  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* Magick++/lib/Image.cpp (Image::quiet()): Patch by Dirk Lemstra
+	to support silencing warnings in Magick++.  Adds a quiet() method
+	which blocks (ignores) warning exceptions when passed a true
+	argument.  Warning exceptions are still generated by default.
+
+	* coders/tiff.c: Support '-define tiff:report-warnings=true' to
+	enable that warnings reported by libtiff are thrown as warning
+	exceptions so that they may be caught or will be reported at the
+	gm command-line.
+
+2015-02-07  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* coders/tiff.c (WriteTIFFImage): Use YCbCr encoding when JPEG
+	compression is requested for an RGB image.
+
+2015-02-04  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* coders/tiff.c (QuantumTransferMode): Fix reading or writing
+	planar min-is-white or min-is-black images with an associated
+	alpha channel.
+
+2015-02-01  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* coders/xpm.c (ReadXPMImage): Reading empty XPM file should not
+	cause bad memory access.
+
+	* coders/gif.c (DecodeImage): Assure that GIF decoder does not use
+	unitialized data.
+
+	* coders/jpeg.c (ReadJPEGImage): Verify that we support the number
+	of output components before proceeding to decode the image.
+
+2015-01-25  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* coders/miff.c (ReadMIFFImage): MIFF needs to stop spinning if
+	zlib or bzlib report an error while decompressing.  Solves problem
+	with file provided by Jodie Cunningham on 2015-01-25.
+
+	* coders/vicar.c (ReadVICARImage): Fix Vicar reader's dogged
+	determination to continue reading when there is nothing left to
+	read.  Solves problem with file provided by Jodie Cunningham on
+	2015-01-25.
+
+	* magick/magick.c (PanicDestroyMagick): Replace memory allocation
+	functions with dummy functions rather than NULL pointers.
+	(InitializeMagickSignalHandlers): Register
+	MagickPanicSignalHandler() for SIGSEGV.
+	(MagickPanicSignalHandler): Produce an informative message for the
+	user.
+	(MagickSignalHandlerMessage): Include more detailed information
+	from the signal handler via a common routine used by default
+	signal handlers.
+
+2015-01-25  Glenn Randers-Pehrson  <glennrp@simple.dallas.tx.us>
+
+	* coders/bmp.c (ReadBMPImage): An attempt to address CID 10291.
+
+2015-01-25  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* magick/nt_base.c (Exit): Changed to return 'void'. Function can
+	not return a value if it does not return.
+
+	* magick/error.c (DefaultFatalErrorHandler): Invoke
+	PanicDestroyMagick() rather than DestroyMagick().  If we are
+	really that short on memory, DestroyMagick() might not work.
+
+	* magick/magick.c (MagickPanicSignalHandler): Only use async-safe
+	functions in signal handler.
+	(PanicDestroyMagick): New function for emergency release of
+	persistent resources just prior to program exit.  Async-safe and
+	does not acquire or release any heap memory.
+
+	* magick/export.c: Eliminate two 'clang' warnings.
+
+2015-01-24  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* coders/pdb.c (ReadPDBImage): Fix typo.
+
+	* coders/cineon.c (ReadCINEONImage): Enforce that Cineon image
+	info channels is valid.  Solves problem with file provided by
+	Jodie Cunningham on 2015-01-24
+
+	* coders/fits.c (ReadFITSImage): Enforce valid bits-per-pixel
+	values.  Add detailed header logging.  Solves problem with file
+	provided by Jodie Cunningham on 2015-01-24
+
+2015-01-22  Glenn Randers-Pehrson  <glennrp@simple.dallas.tx.us>
+
+	* coders/png.c (ReadPNGImage): Check length of various MNG
+	chunks before using the chunk data.
+
+	* coders/png.c (WriteOnePNGImage): Use png_error() instead of
+	throwing an exception so cleanup in the setjmp block can happen,
+	including unlocking the semaphore.  Addresses Coverity CID 10184.
+
+2015-01-22  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* coders/gif.c (WriteGIFImage): Don't use an unchecked value from
+	GetImageAttribute(), even if the access succeeded before.
+	Resolves Coverity CID 10219.
+
+	* coders/dpx.c (StringToAttribute): Make sure that string is not
+	accidentally shortened by one character if it occupies the full
+	field size.
+	(ReadDPXImage): Validate that the bits per sample claimed by the
+	file header is a supported depth before using it further in the
+	code.  This might resolve Coverity CID 10071 "Bad shift
+	operation".
+	(ReadDPXImage): Check for EOF while reading forward to element
+	data.  Might solve Coverity CID 10305.
+
+	* coders/dib.c (ReadDIBImage): Resolve Coverity CID 10228 "Integer
+	overflowed argument".
+	(ReadDIBImage): Hopefully resolve Coverity CID 10268 "Various",
+	which is primarily about placing too much trust in the claimed
+	number of colors.
+
+	* coders/pnm.c (WritePNMImage): Fix overwrite of status by
+	progress monitor.  Remaining issues may lurk within.  May resolve
+	Coverity CID 10288.
+
+	* coders/pdb.c: Resolve Coverity CID 11173 "Buffer not null
+	terminated".
+
+2015-01-21  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* magick/magick.c (GetMagickInfoArray): Resolve Coverity CID 10212
+	"Missing unlock".
+
+	* magick/colormap.c (ReplaceImageColormap): Allocate new image
+	colormap up front in order to avoid the possibility that we are
+	left with an image with no colormap due to memory allocation
+	failure. If there is a memory allocation failure, then the
+	original colormap is preserved.  Resolves Coverity CID 10194
+	"Dereference after null check".
+
+	* magick/utility.c (MagickStripSpacesFromString): New private
+	utility function to strip spaces from a string.
+
+	* magick/color_lookup.c (GetColorInfoArray): Resolves Coverity CID
+	10231 "Missing unlock"
+	(ReadColorConfigureFile): Resolves Coverity CID 10261 "Use of
+	untrusted scalar value"
+	(GetColorInfo): Resolves Coverity CID 10077 "Overlapping buffer in
+	memory copy".
+
+2015-01-21  Glenn Randers-Pehrson  <glennrp@simple.dallas.tx.us>
+
+	* coders/png.c (ReadOnePNGImage): Use png_error() instead of
+	throwing an exception so cleanup in the setjmp block can happen,
+	including unlocking the semaphore.  Resolves Coverity CID 10232.
+
+	* coders/png.c (ReadOnePNGImage): Moved a logging statement into a
+	block where "attribute" has been checked for NULL.  Resolves
+	Coverity CIDs 10185 and 10187.
+
+	* coders/png.c (ReadMNGImage): Fixed a cut-and-paste typo
+	(change_delay should be change_timeout) reported by Coverity
+	CID 10090.
+
+2015-01-20  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* magick/image.c (CloneImage): The definition is poor as to what a
+	non-orphan clone should do.  However, the definition surely does
+	not include crashing the software or supplanting the original
+	image in an image list.  Clone image blob and previous/next
+	pointers but do not supplant original image in list.  Resolves
+	Coverity CID 10155.
+
+2015-01-18  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* coders/dpx.c (WriteRowSamples): Ensure that callback function is
+	always defined. Resolves Coverity CID 10122.
+	(ReadRowSamples): Ensure that callback function is always
+	defined. Resolves Coverity CID 10125.
+
+	* magick/random.c (InitializeMagickRandomKernel): Avoid possible
+	double-close of file.  Resolves Coverity CID 10257.
+
+	* coders/histogram.c (WriteHISTOGRAMImage): Avoid possible divide
+	by zero exception.  Resolves Coverity CID 10107.
+
+	* magick/error.c (MagickFatalError): Document that
+	MagickFatalError() is not supposed to return (program must quit)
+	and add GCC/Clang hints to that effect.
+
+	* magick/bit_stream.c (BitAndMasks): Avoid possible access
+	one-beyond end of BitAndMasks array.  It is not clear if there is
+	a possible bug with 32-bit quantums.  If there is a bug, it has
+	not been noticed via testing.  Resolves Coverity CID 10213.
+
+	* magick/tempfile.c (AcquireTemporaryFileDescriptor): Avoid buffer
+	overrun in the case of an astonishingly long environment variable
+	string.  Resolves Coverity CID 10267.
+	(AddTemporaryFileToList): Use strlcpy() rather than strlcpy().  In
+	practice, should not make a difference.  Will quiet Coverity CID
+	10321.
+
+	* magick/command.c (GMCommandSingle): Don't use the address of a
+	stack allocation to update argv[0]. Removed updating argv[0] until
+	a better design can be found.  Resolves Coverity CID 10223.
+	(GMCommandSingle): Plan B: Use static allocation from
+	SetClientName() to both store the new command name and provide
+	storage for argv[0].
+
+	* magick/utility.c (SystemCommand): Fix possible overwrite of
+	memory location due to uninitialized 'end' pointer.  Resolves
+	Coverity CID 10251.
+
+	* magick/blob.c (WriteBlobFile): Was not closing file in certain
+	error conditions.  Resolves Coverity CID 10237.
+
+	* coders/cineon.c (ReadCINEONImage): Don't trust file header so
+	much.  Resolves Coverity CIDs 10079, 10310, 10325.
+
+	* coders/art.c (ReadARTImage): Fix signed vs unsigned comparison
+	caused by earlier changes.
+
+2014-01-17 Fojtik Jaroslav  <JaFojtik@seznam.cz>
+
+	* coders/wpg.c Do not execute wpg raster read in ping mode.
+
+2014-01-15 Fojtik Jaroslav  <JaFojtik@seznam.cz>
+
+	* coders/mat.c Properly deallocating zip structures.
+
+2015-01-14  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* coders/sfw.c (ReadSFWImage): Fix pixel cache access errors in
+	'ping' mode.
+
+2015-01-13  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* coders/wmf.c (ReadWMFImage): Fix memory leak in 'ping' mode and
+	some error paths.
+
+2015-01-12  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* coders/jbig.c (ReadJBIGImage): Fix memory leak in 'ping' mode.
+
+	* magick/delegate.c (InvokeDelegate): Fix memory leak of argument
+	list when invoking external program via MagickSpawnVP().
+
+2015-01-11  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* magick/resource.c (InitializeMagickResources): Base image width
+	and height default limits on the range of a 32-bit signed integer,
+	even for 64-bit builds.  These limits are still beyond what most
+	computers in the world can handle.  Limits can be increased by the
+	user.
+
+	* coders/xwd.c (ReadXWDImage): Check image size limits
+	immediately.
+
+	* coders/xc.c (ReadXCImage): Check image size limits immediately.
+
+	* coders/webp.c (ReadWEBPImage): Check image size limits
+	immediately.
+
+	* coders/viff.c (ReadVIFFImage): Check image size limits
+	immediately.
+
+	* coders/vicar.c (ReadVICARImage): Check image size limits
+	immediately.
+
+	* coders/txt.c (ReadTXTImage): Check image size limits
+	immediately.
+
+	* coders/ttf.c (ReadTTFImage): Check image size limits
+	immediately.
+
+	* coders/tim.c (ReadTIMImage): Check image size limits
+	immediately.
+
+	* coders/tiff.c (ReadTIFFImage): Check image size limits
+	immediately.
+
+	* coders/tga.c (ReadTGAImage): Check image size limits
+	immediately.
+
+	* coders/sgi.c (ReadSGIImage): Check image size limits
+	immediately.
+
+	* coders/sct.c (ReadSCTImage): Check image size limits
+	immediately.
+
+	* coders/rle.c (ReadRLEImage): Check image size limits
+	immediately.
+
+	* coders/rla.c (ReadRLAImage): Check image size limits
+	immediately.
+
+	* coders/psd.c (ReadPSDImage): Check image size limits
+	immediately.
+
+	* coders/pnm.c (ReadPNMImage): Check image size limits
+	immediately.
+
+	* coders/pix.c (ReadPIXImage): Check image size limits
+	immediately.
+
+	* coders/pict.c (ReadPICTImage): Check image size limits
+	immediately.
+
+	* coders/pdb.c (ReadPDBImage): Check image size limits
+	immediately.
+
+	* coders/pcx.c (ReadPCXImage): Check image size limits
+	immediately.
+
+	* coders/pcd.c (ReadPCDImage): Check image size limits
+	immediately.
+
+	* coders/otb.c (ReadOTBImage): Check image size limits
+	immediately.
+
+	* coders/null.c (ReadNULLImage): Check image size limits
+	immediately.
+
+	* coders/mvg.c (ReadMVGImage): Check image size limits
+	immediately.
+
+	* coders/mtv.c (ReadMTVImage): Check image size limits
+	immediately.
+
+	* coders/mpc.c (ReadMPCImage): Check image size limits
+	immediately.
+
+	* coders/miff.c (ReadMIFFImage): Check image size limits
+	immediately.
+
+	* coders/jpeg.c (ReadJPEGImage): Check image size limits
+	immediately.
+
+	* coders/jp2.c (ReadJP2Image): Check image size limits
+	immediately.
+
+	* coders/jbig.c (ReadJBIGImage): Check image size limits
+	immediately.
+
+	* coders/hdf.c (ReadHDFImage): Check image size limits
+	immediately.
+
+	* coders/gif.c (ReadGIFImage): Check image size limits
+	immediately.
+
+	* coders/fpx.c (ReadFPXImage): Check image size limits
+	immediately.
+
+	* coders/fax.c (ReadFAXImage): Check image size limits
+	immediately.
+
+	* coders/dpx.c (ReadDPXImage): Check image size limits
+	immediately.
+
+	* coders/dps.c (ReadDPSImage): Check image size limits
+	immediately.
+
+	* coders/dib.c (ReadDIBImage): Check image size limits
+	immediately.
+
+	* coders/dcm.c (ReadDCMImage): Check image size limits
+	immediately.
+
+	* coders/cut.c (ReadCUTImage): Check image size limits
+	immediately.
+
+	* coders/cineon.c (ReadCINEONImage): Check image size limits
+	immediately.
+
+	* coders/avs.c (ReadAVSImage): Check image size limits
+	immediately.
+
+	* coders/art.c (ReadARTImage): Check image size limits
+	immediately.
+
+	* coders/sun.c (ReadSUNImage): Check image size limits in advance
+	of allocating memory for pixels.
+
+	* coders/bmp.c (ReadBMPImage): Check image size limits in advance
+	of allocating memory for pixels.
+
+	* coders/sun.c (ReadSUNImage): There is no definition for Sun map
+	type RMT_RAW so it can not be supported.  Update DirectClass
+	pixels directly rather using SyncImage().  Problem was reported by
+	Jodie Cunningham.
+
+2015-01-10  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* coders/pict.c (ReadPICTImage): Fix PICT reader crash when
+	reading corrupted file.
+
+	* coders/sun.c (ReadSUNImage): Sun reader was still not as robust
+	as it should be.  Now it is.
+
+2014-01-10 Fojtik Jaroslav  <JaFojtik@seznam.cz>
+
+	* coders/wpg.c Fixed reading behind EOF issue.
+
+2015-01-09  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* coders/dpx.c (LSBPackedU32WordToOctets): Fix typo which adds
+	severe corruption to encoded little-endian 32-bit packed output.
+	The good news is that since the corruption is severe, it is easily
+	visually detected.  The problem has corrupted all such
+	(little-endian 10-bit) output since it was originally implemented
+	on 2007-06-17 (changeset 11686, first released in GraphicsMagick
+	1.1.8).  GraphicsMagick preserves the endianness of input DPX
+	files by default, defaults to big-endian, and DPX files are
+	commonly big-endian, so this problem may not have occured for many
+	usages.  Problem was reported by Steve Dabner on the
+	GraphicsMagick discussion mailing list.
+
+2015-01-05  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* magick/magick.c (MagickPanicSignalHandler): Print a message in
+	the case of signals SIGXCPU and SIGXFSZ.
+
+	* coders/bmp.c (ReadBMPImage): Don't hang in endless loop if EOF
+	is encountered while checking for "BA" header.
+
+	* coders/icon.c (ReadIconImage): Limit icon image allocation size.
+
+2015-01-04  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* coders/icon.c (ReadIconImage): Removed all of the
+	previously-existing DIB reading code from icon.c and use new
+	"ICODIB" reader to read DIB icons, or the PNG reader to read PNG
+	icons.
+
+	* coders/dib.c (ReadDIBImage): Added an "ICODIB" coder for
+	internal use which reads a Windows BMP 3 DIB followed by a Windows
+	ICO alpha mask.  This allows existing DIB code to be used to read
+	ICO directory entries.
+
+2015-01-03  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* coders/icon.c: The Windows ICO reader is now more robust.  Still
+	a work in progress since some files still can not be read or read
+	incorrectly.
+
+2015-01-01  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* magick/resource.c (ListMagickResourceInfo): "kilo" for binary
+	prefixes is supposed to be "Ki".
+
+	* magick/utility.c (FormatSize): "kilo" for binary prefixes is
+	supposed to be "Ki".
+
+2015-01-01  Glenn Randers-Pehrson  <glennrp@simple.dallas.tx.us>
+
+	* coders/png.c: Use WidthResource and HeightResource instead
+	of fixed 1-million limit for rows and columns.
+
+2015-01-01  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* magick/utility.c (FormatSize): Add 'i' to value range
+	identifiers since these are all in units of 2^10 rather than 1000.
+
+	* magick/pixel_cache.c (CheckImagePixelLimits): Fix typo and
+	produce an informative error message.
+
+	* magick/resource.c: Added support for Image width and height
+	pixels resource limits.
+
+	* magick/resource.h (ResourceType): New resource enumerations
+	WidthResource and HeightResource.
+
+	* magick/enum_strings.c (StringToResourceType): Added support for
+	parsing '-limit Width' and '-limit Height'.
+
+	* magick/pixel_cache.c (CheckImagePixelLimits): New function to
+	test image to see if it exceeds pixels limits.
+
+	* coders/viff.c (ReadVIFFImage): Make the VIFF reader robust with
+	detecting and reporting problems.
+
+2014-12-31  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* Rotate Changelog for new year.  Update documentation copyrights
+	for new year.
+
+
