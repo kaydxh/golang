@@ -1,11 +1,15 @@
 MAKEFILE_DIR := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 PROJECT_DIR := $(realpath ${MAKEFILE_DIR}/..)
 PKG_CONFIG_PATH := ${PROJECT_DIR}/pkgconfig
-SCRIPT_PATH := ${MAKEFILE_DIR }/../api/openapi-spec/script
+SCRIPT_PATH := ${MAKEFILE_DIR}/../script
 TARGET := $(shell basename ${MAKEFILE_DIR})
 
+define join
+join = $(subst $(_space),$(1),$(strip $(2)))
+endef
+
 .PHONY: all
-all: generate 
+all: deps generate  test
 	@echo "${MAKEFILE_DIR}"
 	@echo "${PROJECT_DIR}"
 	@echo "${TARGET}"
@@ -13,6 +17,16 @@ all: generate
 .PHONY: deps
 deps:
 	@echo "  >  downloading deps library"
+
+.PHONY: version
+version:
+	@bash -c "bash ${SCRIPT_PATH}/version.sh gitinfos"
+
+.PHONY: test
+test: version
+	@$(eval THIRD_LIB_PATHS := $(shell find -L ${PROJECT_DIR}/third_path/ -type d -iname "lib*" -print0 |xargs -0 -I {} bash -c 'echo {}'|grep -v "stubs"))
+	@$(eval JOINED_THIRD_LIB_PATHS := $(call join,:,$(THIRD_LIB_PATHS)))
+	 PKG_CONFIG_PATH="${PKG_CONFIG_PATH}" LD_LIBRARY_PATH="$(JOINED_THIRD_LIB_PATHS):${LD_LIBRARY_PATH}" LIBRARY_PATH="$(JOINED_THIRD_LIB_PATHS):${LIBRARY_PATH}" go test -a -v .
 
 .PHONY: generate 
 generate:
