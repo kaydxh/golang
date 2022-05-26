@@ -4,34 +4,32 @@ macro(GENERATE_PROTOBUF_LIB IMPORT_DIRS DEPEND_TARGETS)
    endif ()
 
   get_filename_component(CURRENT_FOLDER ${CMAKE_CURRENT_SOURCE_DIR} NAME)
-  file(GLOB_RECURSE protofiles RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "*.proto") 
-  set(Protobuf_USE_STATIC_LIBS ON)
   set(target ${CURRENT_FOLDER})
 
   if (EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/third_path/protobuf/bin/protoc)
-     set(Protobuf_PROTOC_EXECUTABLE ${CMAKE_CURRENT_SOURCE_DIR}/third_path/protobuf/bin/protoc)
-   elseif (EXISTS ${PROJECT_SOURCE_DIR}/third_path/protobuf/bin/protoc)
-     set(Protobuf_PROTOC_EXECUTABLE ${PROJECT_SOURCE_DIR}/third_path/protobuf/bin/protoc)
-   elseif (EXISTS ${PROJECT_SOURCE_DIR}/api/openapi-spec/third_path/protobuf/bin/protoc)
-     set(Protobuf_PROTOC_EXECUTABLE ${PROJECT_SOURCE_DIR}/api/openapi-spec/third_path/protobuf/bin/protoc)
-   else ()
-      message(SEND_ERROR "Error: protoc not found")
-      return()
-   endif ()
+    set(Protobuf_PROTOC_EXECUTABLE ${CMAKE_CURRENT_SOURCE_DIR}/third_path/protobuf/bin/protoc)
+  elseif (EXISTS ${PROJECT_SOURCE_DIR}/third_path/protobuf/bin/protoc)
+    set(Protobuf_PROTOC_EXECUTABLE ${PROJECT_SOURCE_DIR}/third_path/protobuf/bin/protoc)
+  elseif (EXISTS ${PROJECT_SOURCE_DIR}/api/openapi-spec/third_path/protobuf/bin/protoc)
+    set(Protobuf_PROTOC_EXECUTABLE ${PROJECT_SOURCE_DIR}/api/openapi-spec/third_path/protobuf/bin/protoc)
+  else ()
+    message(SEND_ERROR "Error: protoc not found")
+    return()
+  endif ()
 
-   message(STATUS Protobuf_PROTOC_EXECUTABLE=${Protobuf_PROTOC_EXECUTABLE})
-   if (NOT TARGET protobuf::protoc)
-       add_executable(protobuf::protoc IMPORTED)
-       if (EXISTS "${Protobuf_PROTOC_EXECUTABLE}")
-           set_target_properties(protobuf::protoc PROPERTIES
-           IMPORTED_LOCATION "${Protobuf_PROTOC_EXECUTABLE}")
-       endif ()
-   endif ()
-
+  message(STATUS Protobuf_PROTOC_EXECUTABLE=${Protobuf_PROTOC_EXECUTABLE})
+  if (NOT TARGET protobuf::protoc)
+     add_executable(protobuf::protoc IMPORTED)
+     if (EXISTS "${Protobuf_PROTOC_EXECUTABLE}")
+         set_target_properties(protobuf::protoc PROPERTIES
+         IMPORTED_LOCATION "${Protobuf_PROTOC_EXECUTABLE}")
+     endif ()
+  endif ()
 
   set(protobuf_generate_LANGUAGE cpp)
   set(protobuf_generate_PROTOC_OUT_DIR "${CMAKE_CURRENT_BINARY_DIR}")
   set(Protobuf_USE_STATIC_LIBS ON)
+  file(GLOB_RECURSE protofiles RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "*.proto") 
 
   # PROTO_SRCS 存储.pb.cc文件的变量名称
   # PROTO_HDRS 存储.pb.h文件的变量名称

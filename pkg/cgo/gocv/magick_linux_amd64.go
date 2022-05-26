@@ -14,6 +14,8 @@ import (
 	"sync"
 	"unsafe"
 
+	unsafe_ "github.com/kaydxh/golang/go/unsafe"
+	gocvpb "github.com/kaydxh/golang/pkg/cgo/api/openapi-spec/gocv"
 	"google.golang.org/protobuf/proto"
 )
 
@@ -42,8 +44,8 @@ func MagickInitializeMagick(req *gocvpb.MagickInitializeMagickRequest) error {
 			respData = nil
 		}()
 
-		C.sdk_go_youtu_gocv_magick_initialize_magick(
-			runtime_.BytesPointer(reqData),
+		C.sdk_gocv_magick_initialize_magick(
+			unsafe_.BytesPointer(reqData),
 			C.int(len(reqData)),
 			&respData,
 			&respDataLen,
@@ -56,7 +58,7 @@ func MagickInitializeMagick(req *gocvpb.MagickInitializeMagickRequest) error {
 			return
 		}
 		if resp.GetError() != nil {
-			errOnce = resp.GetError()
+			//	errOnce = resp.GetError()
 			return
 		}
 		errOnce = nil
