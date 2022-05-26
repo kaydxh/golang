@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.15.2: http://docutils.sourceforge.net/" />
+<title>Magick::TypeMetric</title>
+<link rel="stylesheet" href="../docutils-articles.css" type="text/css" />
+</head>
+<body>
+
+<div class="banner">
+<img src="../images/gm-107x76.png" alt="GraphicMagick logo" width="107" height="76" />
+<span class="title">GraphicsMagick</span>
+<form action="http://www.google.com/search">
+	<input type="hidden" name="domains" value="www.graphicsmagick.org" />
+	<input type="hidden" name="sitesearch" value="www.graphicsmagick.org" />
+    <span class="nowrap"><input type="text" name="q" size="25" maxlength="255" />&nbsp;<input type="submit" name="sa" value="Search" /></span>
+</form>
+</div>
+
+<div class="navmenu">
+<ul>
+<li><a href="../index.html">Home</a></li>
+<li><a href="../project.html">Project</a></li>
+<li><a href="../download.html">Download</a></li>
+<li><a href="../README.html">Install</a></li>
+<li><a href="../Hg.html">Source</a></li>
+<li><a href="../NEWS.html">News</a> </li>
+<li><a href="../utilities.html">Utilities</a></li>
+<li><a href="../programming.html">Programming</a></li>
+<li><a href="../reference.html">Reference</a></li>
+</ul>
+</div>
+<div class="document" id="magick-typemetric">
+<h1 class="title">Magick::TypeMetric</h1>
+
+<!-- -*- mode: rst -*- -->
+<!-- This text is in reStucturedText format, so it may look a bit odd. -->
+<!-- See http://docutils.sourceforge.net/rst.html for details. -->
+<p>The TypeMetric class provides the means to pass data from the Image
+class's TypeMetric method to the user. It provides information
+regarding font metrics such as ascent, descent, text width, text
+height, and maximum horizontal advance. The units of these font
+metrics are in pixels, and that the metrics are dependent on the
+current Image font (default Ghostscript's &quot;Helvetica&quot;), pointsize
+(default 12 points), and x/y resolution (default 72 DPI) settings.</p>
+<p>The pixel units may be converted to points (the standard
+resolution-independent measure used by the typesetting industry) via
+the following equation:</p>
+<pre class="literal-block">
+size_points = (size_pixels * 72)/resolution
+</pre>
+<p>where resolution is in dots-per-inch (DPI). This means that at the
+default image resolution, there is one pixel per point.</p>
+<p>Note that a font's pointsize is only a first-order approximation of
+the font height (ascender + descender) in points. The relationship
+between the specified pointsize and the rendered font height is
+determined by the font designer.</p>
+<p>See <a class="reference external" href="http://freetype.sourceforge.net/freetype2/docs/glyphs/index.html">FreeType Glyph Conventions</a>
+for a detailed description of font metrics related issues.</p>
+<p>The following is the definition of the Magick::TypeMetric class:</p>
+<pre class="literal-block">
+class MagickDLLDecl TypeMetric
+{
+  friend class Image;
+public:
+
+  TypeMetric ( void );
+  ~TypeMetric ( void );
+
+  // Ascent, the distance in pixels from the text baseline to the
+  // highest/upper grid coordinate used to place an outline point.
+  double         ascent ( void ) const;
+
+  // Descent, the distance in pixels from the baseline to the lowest
+  // grid coordinate used to place an outline point. Always a
+  // negative value.
+  double         descent ( void ) const;
+
+  // Text width in pixels.
+  double         textWidth ( void ) const;
+
+  // Text height in pixels.
+  double         textHeight ( void ) const;
+
+  // Maximum horizontal advance in pixels.
+  double         maxHorizontalAdvance ( void ) const;
+
+};
+</pre>
+<p>Copyright © Bob Friesenhahn 1999 - 2020</p>
+</div>
+</body>
+</html>

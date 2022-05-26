@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.15.2: http://docutils.sourceforge.net/" />
+<title>profile</title>
+<link rel="stylesheet" href="../docutils-api.css" type="text/css" />
+</head>
+<body>
+
+<div class="banner">
+<img src="../images/gm-107x76.png" alt="GraphicMagick logo" width="107" height="76" />
+<span class="title">GraphicsMagick</span>
+<form action="http://www.google.com/search">
+	<input type="hidden" name="domains" value="www.graphicsmagick.org" />
+	<input type="hidden" name="sitesearch" value="www.graphicsmagick.org" />
+    <span class="nowrap"><input type="text" name="q" size="25" maxlength="255" />&nbsp;<input type="submit" name="sa" value="Search" /></span>
+</form>
+</div>
+
+<div class="navmenu">
+<ul>
+<li><a href="../index.html">Home</a></li>
+<li><a href="../project.html">Project</a></li>
+<li><a href="../download.html">Download</a></li>
+<li><a href="../README.html">Install</a></li>
+<li><a href="../Hg.html">Source</a></li>
+<li><a href="../NEWS.html">News</a> </li>
+<li><a href="../utilities.html">Utilities</a></li>
+<li><a href="../programming.html">Programming</a></li>
+<li><a href="../reference.html">Reference</a></li>
+</ul>
+</div>
+<div class="document" id="profile">
+<h1 class="title">profile</h1>
+<h2 class="subtitle" id="manipulate-embedded-profiles">Manipulate embedded profiles</h2>
+
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#allocateimageprofileiterator" id="id15">AllocateImageProfileIterator</a></li>
+<li><a class="reference internal" href="#appendimageprofile" id="id16">AppendImageProfile</a></li>
+<li><a class="reference internal" href="#deallocateimageprofileiterator" id="id17">DeallocateImageProfileIterator</a></li>
+<li><a class="reference internal" href="#deleteimageprofile" id="id18">DeleteImageProfile</a></li>
+<li><a class="reference internal" href="#getimageprofile" id="id19">GetImageProfile</a></li>
+<li><a class="reference internal" href="#nextimageprofile" id="id20">NextImageProfile</a></li>
+<li><a class="reference internal" href="#profileimage" id="id21">ProfileImage</a></li>
+<li><a class="reference internal" href="#setimageprofile" id="id22">SetImageProfile</a></li>
+</ul>
+</div>
+<div class="section" id="allocateimageprofileiterator">
+<h1><a class="toc-backref" href="#id15">AllocateImageProfileIterator</a></h1>
+<div class="section" id="synopsis">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+ImageProfileIterator AllocateImageProfileIterator( const <a class="reference external" href="../api/types.html#image">Image</a> *image );
+</pre>
+</div>
+<div class="section" id="description">
+<h2>Description</h2>
+<p>AllocateImageProfileIterator allocates an iterator to traverse the
+image profile list.  It is an error (i.e. will surely crash) to invoke
+DeleteImageProfile() on the profile that the iterator is currently
+referencing.  However, it is safe to delete a profile that the iterator
+is not currently referencing. Inserting additional profiles does not
+invalidate the current iterator.</p>
+<p>The format of the AllocateImageProfileIterator method is:</p>
+<pre class="literal-block">
+ImageProfileIterator AllocateImageProfileIterator( const <a class="reference external" href="../api/types.html#image">Image</a> *image );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>image:</dt>
+<dd>The image.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="appendimageprofile">
+<h1><a class="toc-backref" href="#id16">AppendImageProfile</a></h1>
+<div class="section" id="id1">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+MaickPassFail AppendImageProfile( <a class="reference external" href="../api/types.html#image">Image</a> *image, const char *name,
+                                  const unsigned char *profile_chunk,
+                                  const size_t chunk_length );
+</pre>
+</div>
+<div class="section" id="id2">
+<h2>Description</h2>
+<p>AppendImageProfile adds a named profile to the image. If a profile with the
+same name already exists, then the new profile data is appended to the
+existing profile. If a null profile address is supplied, then an existing
+profile is removed. The profile is copied into the image. Note that this
+function does not execute CMS color profiles. Any existing CMS color
+profile is simply added/updated. Use the ProfileImage() function in order
+to execute a CMS color profile.</p>
+<p>The format of the AppendImageProfile method is:</p>
+<pre class="literal-block">
+MaickPassFail AppendImageProfile( <a class="reference external" href="../api/types.html#image">Image</a> *image, const char *name,
+                                  const unsigned char *profile_chunk,
+                                  const size_t chunk_length );
+</pre>
+<dl class="docutils">
+<dt>image:</dt>
+<dd>The image.</dd>
+<dt>name:</dt>
+<dd>Profile name. Valid names are &quot;8BIM&quot;, &quot;ICM&quot;, &quot;IPTC&quot;, XMP, or any
+unique text string.</dd>
+<dt>profile_chunk:</dt>
+<dd>Address of profile chunk to add or append. Pass zero
+to remove an existing profile.</dd>
+<dt>length:</dt>
+<dd>The length of the profile chunk to add or append.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="deallocateimageprofileiterator">
+<h1><a class="toc-backref" href="#id17">DeallocateImageProfileIterator</a></h1>
+<div class="section" id="id3">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+void DeallocateImageProfileIterator( ImageProfileIterator profile_iterator );
+</pre>
+</div>
+<div class="section" id="id4">
+<h2>Description</h2>
+<p>DeallocateImageProfileIterator deallocates an image profile iterator.</p>
+<p>The format of the DeallocateImageProfileIterator method is:</p>
+<pre class="literal-block">
+void DeallocateImageProfileIterator( ImageProfileIterator profile_iterator );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>profile_iterator:</dt>
+<dd>Profile iterator to deallocate.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="deleteimageprofile">
+<h1><a class="toc-backref" href="#id18">DeleteImageProfile</a></h1>
+<div class="section" id="id5">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+unsigned int DeleteImageProfile( <a class="reference external" href="../api/types.html#image">Image</a> *image, const char *name );
+</pre>
+</div>
+<div class="section" id="id6">
+<h2>Description</h2>
+<p>DeleteImageProfile removes a named profile from the image.</p>
+<p>The format of the DeleteImageProfile method is:</p>
+<pre class="literal-block">
+unsigned int DeleteImageProfile( <a class="reference external" href="../api/types.html#image">Image</a> *image, const char *name );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>image:</dt>
+<dd>The image.</dd>
+<dt>name:</dt>
+<dd>Profile name. Valid names are &quot;8BIM&quot;, &quot;ICM&quot;, &amp; &quot;IPTC&quot; or a
+generic profile name.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="getimageprofile">
+<h1><a class="toc-backref" href="#id19">GetImageProfile</a></h1>
+<div class="section" id="id7">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+const unsigned char *GetImageProfile( const <a class="reference external" href="../api/types.html#image">Image</a> *image, const char *name,
+                                      size_t *length );
+</pre>
+</div>
+<div class="section" id="id8">
+<h2>Description</h2>
+<p>GetImageProfile returns a pointer to the named image profile if it is
+present. A null pointer is returned if the named profile is not present.</p>
+<p>Older versions of this function stored profiles named &quot;8BIM&quot; and &quot;IPTC&quot;
+in the same storage location.  This is no longer the case.  However,
+GetImageProfile() will try the alternate name if the specifically
+requested profile name is not available.</p>
+<p>The format of the GetImageProfile method is:</p>
+<pre class="literal-block">
+const unsigned char *GetImageProfile( const <a class="reference external" href="../api/types.html#image">Image</a> *image, const char *name,
+                                      size_t *length );
+</pre>
+<dl class="docutils">
+<dt>image:</dt>
+<dd>The image.</dd>
+<dt>name:</dt>
+<dd>Profile name. Valid names are &quot;8BIM&quot;, &quot;ICM&quot;, &quot;IPTC&quot;, &quot;XMP&quot; or any
+unique text string.</dd>
+<dt>length:</dt>
+<dd>Updated with profile length if profile is present.  Set to NULL
+if length is not needed.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="nextimageprofile">
+<h1><a class="toc-backref" href="#id20">NextImageProfile</a></h1>
+<div class="section" id="id9">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+MagickPassFail NextImageProfile( ImageProfileIterator profile_iterator, const char ** name,
+                                 const unsigned char ** profile, size_t *length );
+</pre>
+</div>
+<div class="section" id="id10">
+<h2>Description</h2>
+<p>NextImageProfile iterates forward to the next image profile. The profile
+name is returned along with the profile data, and length.  If there are
+no more entries in the list, then MagickFail is returned.</p>
+<p>The format of the AllocateImageProfileIterator method is:</p>
+<pre class="literal-block">
+MagickPassFail NextImageProfile( ImageProfileIterator profile_iterator, const char ** name,
+                                 const unsigned char ** profile, size_t *length );
+</pre>
+<dl class="docutils">
+<dt>profile_iterator:</dt>
+<dd>Profile iterator.</dd>
+<dt>name:</dt>
+<dd>Address of pointer to update with address of name.</dd>
+<dt>profile:</dt>
+<dd>Address of pointer to update with location of profile data.</dd>
+<dt>length:</dt>
+<dd>Address of parameter to update with profile length.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="profileimage">
+<h1><a class="toc-backref" href="#id21">ProfileImage</a></h1>
+<div class="section" id="id11">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+unsigned int ProfileImage( <a class="reference external" href="../api/types.html#image">Image</a> *image, const char *name, unsigned char *profile,
+                           const size_t length, unsigned int clone );
+</pre>
+</div>
+<div class="section" id="id12">
+<h2>Description</h2>
+<p>ProfileImage() adds, applies, or removes a ICM, IPTC, or generic profile
+from an image.  If the profile is NULL, it is removed from the image
+otherwise added (or applied).  Use a name of '*' and a profile of NULL to
+remove all profiles from the image. Ownership of the profile is
+transferred to GraphicsMagick (it should not be altered or deallocated)
+unless the clone option is set to True.</p>
+<p>ICC ICM profiles are a special case and are handled as follows:</p>
+<p>If there is no ICM profile currently associated with the image, then
+the profile is simply associated with the image and the image pixels
+are not altered.</p>
+<p>If there is already a ICM profile associated with the image, then
+the colorspace transform described by the existing and new profiles
+is applied to the image pixels, and the new profile is associated
+with the image.</p>
+<p>The format of the ProfileImage method is:</p>
+<pre class="literal-block">
+unsigned int ProfileImage( <a class="reference external" href="../api/types.html#image">Image</a> *image, const char *name, unsigned char *profile,
+                           const size_t length, unsigned int clone );
+</pre>
+<dl class="docutils">
+<dt>image:</dt>
+<dd>The image.</dd>
+<dt>name:</dt>
+<dd>Name of profile to add or remove: ICM, IPTC, or generic profile.</dd>
+<dt>profile:</dt>
+<dd>The profile.  Can not be 'const' due to 'clone' option but
+is treated as 'const' if 'clone' is set to MagickTrue.</dd>
+<dt>length:</dt>
+<dd>The length of the profile.</dd>
+<dt>clone:</dt>
+<dd>If set True, then copy the profile rather than taking
+ownership of it.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="setimageprofile">
+<h1><a class="toc-backref" href="#id22">SetImageProfile</a></h1>
+<div class="section" id="id13">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+unsigned int SetImageProfile( <a class="reference external" href="../api/types.html#image">Image</a> *image, const char *name, const unsigned char *profile,
+                              const size_t length );
+</pre>
+</div>
+<div class="section" id="id14">
+<h2>Description</h2>
+<p>SetImageProfile adds a named profile to the image. If a profile with the
+same name already exists, then it is replaced. If a null profile address
+is supplied, then an existing profile is removed. The profile is copied
+into the image. Note that this function does not execute CMS color
+profiles. Any existing CMS color profile is simply replaced. Use the
+ProfileImage() function in order to execute a CMS color profile.</p>
+<p>Older versions of this function stored profiles named &quot;8BIM&quot; and &quot;IPTC&quot;
+in the same storage location.  This is no longer the case.  However,
+GetImageProfile() will try the alternate name if the specifically
+requested profile name is not available.  Note that when trying to remove
+a profile, it may be necessary to remove both names in order for an
+&quot;IPTC&quot; profile to no longer be included in output file formats.</p>
+<p>The format of the SetImageProfile method is:</p>
+<pre class="literal-block">
+unsigned int SetImageProfile( <a class="reference external" href="../api/types.html#image">Image</a> *image, const char *name, const unsigned char *profile,
+                              const size_t length );
+</pre>
+<dl class="docutils">
+<dt>image:</dt>
+<dd>The image.</dd>
+<dt>name:</dt>
+<dd>Profile name. Valid names are &quot;8BIM&quot;, &quot;ICM&quot;, &quot;IPTC&quot;, XMP, or any
+unique text string.</dd>
+<dt>profile:</dt>
+<dd>Address of profile to add. Pass zero to remove an existing
+profile.</dd>
+<dt>length:</dt>
+<dd>The length of the profile.</dd>
+</dl>
+</div>
+</div>
+</div>
+</body>
+</html>

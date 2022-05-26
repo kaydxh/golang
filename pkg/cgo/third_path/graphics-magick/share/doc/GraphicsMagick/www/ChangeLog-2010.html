@@ -1,0 +1,808 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.15.2: http://docutils.sourceforge.net/" />
+<title>ChangeLog-2010.rst</title>
+<link rel="stylesheet" href="docutils-articles.css" type="text/css" />
+</head>
+<body>
+
+<div class="banner">
+<img src="images/gm-107x76.png" alt="GraphicMagick logo" width="107" height="76" />
+<span class="title">GraphicsMagick</span>
+<form action="http://www.google.com/search">
+	<input type="hidden" name="domains" value="www.graphicsmagick.org" />
+	<input type="hidden" name="sitesearch" value="www.graphicsmagick.org" />
+    <span class="nowrap"><input type="text" name="q" size="25" maxlength="255" />&nbsp;<input type="submit" name="sa" value="Search" /></span>
+</form>
+</div>
+
+<div class="navmenu">
+<ul>
+<li><a href="index.html">Home</a></li>
+<li><a href="project.html">Project</a></li>
+<li><a href="download.html">Download</a></li>
+<li><a href="README.html">Install</a></li>
+<li><a href="Hg.html">Source</a></li>
+<li><a href="NEWS.html">News</a> </li>
+<li><a href="utilities.html">Utilities</a></li>
+<li><a href="programming.html">Programming</a></li>
+<li><a href="reference.html">Reference</a></li>
+</ul>
+</div>
+<div class="document">
+
+
+<p>2011-01-16  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>wand/magick_wand.c (MagickDescribeImage): Was sending
+descriptive output to stdout rather than returning it in an
+allocated string as intended.</li>
+</ul>
+</blockquote>
+<p>2011-01-09  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>magick/draw.c, wand/drawing_wand.c (MvgPrintf): Update to handle
+C99 vsnprintf() return values.</li>
+<li>magick/draw.c, wand/drawing_wand.c (DrawAnnotation): Linux
+glibc does not pass extended text characters if &quot;%.1024s&quot;
+formatting convention is used.  Apparently it assumes that such
+characters may be UTF8 and returns -1 rather than outputting the
+string, even if it is assured to fit.</li>
+</ul>
+</blockquote>
+<p>2010-12-30 Fojtik Jaroslav  &lt;<a class="reference external" href="mailto:JaFojtik&#37;&#52;&#48;seznam&#46;cz">JaFojtik<span>&#64;</span>seznam<span>&#46;</span>cz</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/mat.c Matlab file level clarification.</li>
+</ul>
+</blockquote>
+<p>2010-12-27 Fojtik Jaroslav  &lt;<a class="reference external" href="mailto:JaFojtik&#37;&#52;&#48;seznam&#46;cz">JaFojtik<span>&#64;</span>seznam<span>&#46;</span>cz</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/mac.c New MacPaint image format reader added.</li>
+</ul>
+</blockquote>
+<p>2010-12-26  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/tiff.c (WriteTIFFImage): Default to using a LZMAPRESET
+value of 1 based on testing which observed minimal benefit, and
+substantially more cost, from larger values.  Value may be
+specified by the user using command line syntax like <cite>-define
+tiff:lzmapreset=7</cite> for purposes of further experimentation.  Also
+adjusted default strip memory values for each preset level.</li>
+</ul>
+</blockquote>
+<p>2010-12-18  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>PerlMagick/Magick.xs: Add LZMA support to PerlMagick.</li>
+<li>coders/tiff.c (WriteTIFFImage): Add TIFF LZMA compressor support.</li>
+</ul>
+</blockquote>
+<p>2010-12-07  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>magick/command.c (MogrifyImages): Should send -verbose output to
+stderr rather than stdout since otherwise usage in pipelines may
+be broken.  Resolves SourceForge issue 3131790 &quot;AVS -verbose
+prints to stdout&quot;.</li>
+</ul>
+</blockquote>
+<p>2010-11-04  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>libtool: Upgrade to libtool 2.4.</li>
+<li>coders/pnm.c (ReadPNMImage): Start work on reading NetPBM PAM
+format.  Parses PAM header but pixels are not returned yet.</li>
+<li>magick/magic.c (StaticMagic): Be more specific when identifying
+PNM subformats.  Return the specific subformat name PBM, PGM, or
+PPM rather than PNM.  XV P7 format is now identified as &quot;P7 332&quot;.
+Add detection of NetPBM PAM format.</li>
+</ul>
+</blockquote>
+<p>2010-11-04  Glenn Randers-Pehrson  &lt;<a class="reference external" href="mailto:glennrp&#37;&#52;&#48;simple&#46;&#46;&#46;">glennrp<span>&#64;</span>simple<span>&#46;</span><span>&#46;</span><span>&#46;</span></a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>magick/effect.c: Added 5x5, 6x6, and 7x7 circular ordered dither
+patterns to create a halftone effect.</li>
+</ul>
+</blockquote>
+<p>2010-09-21  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>doc/options.imdoc: Document pcl:fit-to-page define.</li>
+<li>coders/pcl.c: Fix issue with printing a bi-level image on
+Konica-Minolta printers.  Define pcl:fit-to-page in order for the
+printer to scale the image to fit the page.  Patch by John
+Sergeant.</li>
+</ul>
+</blockquote>
+<p>2010-09-19  Glenn Randers-Pehrson  &lt;<a class="reference external" href="mailto:glennrp&#37;&#52;&#48;simple&#46;&#46;&#46;">glennrp<span>&#64;</span>simple<span>&#46;</span><span>&#46;</span><span>&#46;</span></a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/png.c: removed an apparently harmless extra invocation
+of ScaleShortToQuantum() due to cut-and-paste error in the
+update of 2010-06-02.  Also added a line to explicitly set
+the opacity of the background_color to OpaqueOpacity.</li>
+</ul>
+</blockquote>
+<p>2010-09-10  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/pdf.c (ReadPDFImage): Enable use of PDF crop box via
+-define pdf:use-cropbox=true. Patch contributed by Chris Gilling.
+SourceForge patch ID 3063794, &quot;Add support for using crop box for
+pdf import&quot;.</li>
+</ul>
+</blockquote>
+<p>2010-09-08  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>Magick++/lib/Image.cpp (backgroundColor, borderColor, matteColor):
+Opacity part of user-specified color needs to be preserved.
+Problem was reported by Alexander Zheltov.</li>
+</ul>
+</blockquote>
+<p>2010-09-07  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>Makefile.am: Applied Automake 1.11.1 patch by Ralf Wildenhues
+which is necessary for the test suite to pass under Windows/MinGW
+due to command line length limits.</li>
+</ul>
+</blockquote>
+<p>2010-09-03  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>magick/draw.c, wand/drawing_wand.c: Pass full user-provided
+double precision resolution to renderer.  Truncating the
+resolution causes problems in some cases.  Resolves SourceForge
+bug 3058387 &quot;Incorrect Copy Compositing through C interface&quot;.</li>
+</ul>
+</blockquote>
+<p>2010-09-02  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>magick/utility.c (StringToList): Fix performance problem caused
+by using strlcpy.</li>
+<li>coders/pnm.c (ReadPNMImage): Q8 build should be able to read
+16-bit PGM images.</li>
+</ul>
+</blockquote>
+<p>2010-09-01  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>magick/command.c (MontageImageCommand): Fix memory leak of
+MontageInfo structure allocation in error handling path.</li>
+<li>magick/montage.c (MontageImages): Fix crash observed with
+&quot;-geometry x+0+0&quot;.  Problem reported by Simon Rainer.</li>
+</ul>
+</blockquote>
+<p>2010-08-27  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>Makefile.am: Update to Automake 1.11.1.</li>
+</ul>
+</blockquote>
+<p>2010-08-24  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>configure.ac: Use AC_USE_SYSTEM_EXTENSIONS to enable system API
+extensions.</li>
+</ul>
+</blockquote>
+<p>2010-08-09  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>magick/pixel_cache.c (ModifyCache): Fix deadlock in
+ClonePixelCache() which was caused by using the same semaphore
+pointer in the source and destination images.  Problem was
+reported by Stefan Schramowski.</li>
+</ul>
+</blockquote>
+<p>2010-08-07  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/info.c (WriteINFOImage): Added an <cite>INFO</cite> coder which
+produces textual image description output similar to <cite>identify</cite>
+but may be used with convert like &quot;gm convert myfile info:-&quot;.
+Feature suggested by Stefan Schramowski.</li>
+</ul>
+</blockquote>
+<p>2010-08-05  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>tests/Makefile.am (TESTS_PS_XFAIL_TESTS): Expect EPT tests to
+fail if Ghostscript is missing.</li>
+<li>configure.ac: Updated to Autoconf 2.67.</li>
+<li>magick/render.c (DrawImage): Use StringToGravityType() to parse
+gravity values.</li>
+</ul>
+</blockquote>
+<p>2010-07-23  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>doc/options.imdoc: Document histogram-threshold setting.</li>
+<li>magick/enhance.c (NormalizeImage): Add support for
+histogram-threshold setting to specify the percentage of the
+histogram to discard when computing image normalization parameters
+(default is 0.1%).  For example <cite>-set histogram-threshold 0.01
+-normalize</cite>.</li>
+<li>www/api/types.rst: Update Image structure member documentation.</li>
+</ul>
+</blockquote>
+<p>2010-07-13  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>configure.ac: Add a test for posix_spawnp().  Results may be
+used in later development.</li>
+</ul>
+</blockquote>
+<p>2010-07-11  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>tests/Makefile.am (TESTS_PS_XFAIL_TESTS): PDF tests are expected
+to fail if Ghostscript is not available.</li>
+<li>magick/utility.c (MagickStrlCat, MagickStrlCpy): Add handling
+for the case where size is zero in order to be conformant with the
+strlcat() and strlcpy() formal descriptions.  GraphicsMagick does
+its best to never pass a size of zero so an assertion that size is
+not zero remains in order to help catch bugs in GraphicsMagick.
+Issue was reported by Albert Cahalan.</li>
+</ul>
+</blockquote>
+<p>2010-07-10  Glenn Randers-Pehrson  &lt;<a class="reference external" href="mailto:glennrp&#37;&#52;&#48;simple&#46;&#46;&#46;">glennrp<span>&#64;</span>simple<span>&#46;</span><span>&#46;</span><span>&#46;</span></a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/png.c: Always scale tRNS color to 16-bit short.  Otherwise,
+transparency was sometimes lost while reading PNG files whose depth
+is different from the Quantum depth.</li>
+</ul>
+</blockquote>
+<p>2010-07-02  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/tiff.c (LOG_TIFF_BLOB_IO): Define LOG_TIFF_BLOB_IO=1 when
+building GraphicsMagick in order to enable verbose logging from
+the TIFFClientOpen() registered callbacks when <cite>coder</cite> logging is
+enabled.</li>
+</ul>
+</blockquote>
+<p>2010-06-30  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>tests/rwfile.c: Deal with formats which don't have an extension
+by prepending the magic specifier to the file name specification.</li>
+<li>coders/mpr.c (RegisterMPRImage): MPR and MPRI are not useful
+file extensions.</li>
+<li>magick/command.c (CommandAccessMonitor): If the environment
+variable MAGICK_ACCESS_MONITOR is set to TRUE then also log
+invocations of the access monitor callback when -monitor is
+specified.  This feature is intended to assist with understanding
+when the access monitor is invoked, and the arguments which are
+passed.</li>
+<li>magick/blob.c (OpenBlob): Throw an exception on error rather
+than depending on the invoking code to do so.  Resolves
+SourceForge bug #3023437 &quot;Magick::Image::ping() does not throw
+exception in all cases&quot;.</li>
+</ul>
+</blockquote>
+<p>2010-06-29  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>magick/command.c (MogrifyImage): The -colors, -map, and
+-monochrome options now take effect immediately rather than at the
+end of all other processing.  This is is more intuitive and
+reasonable but may impact the output of scripts which place these
+options prior to additional image processing operations.</li>
+</ul>
+</blockquote>
+<p>2010-06-25  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>magick/blob.c (BlobToImage): If a temporary file must be used
+and the user has specified magic, then preserve the magic
+specifier when reading the temporary file.</li>
+<li>coders/mat.c (RegisterMATImage): More accurately describe MATLAB
+format support as &quot;MATLAB Level 5&quot;.</li>
+<li>magick/magic.c (StaticMagic): Automatically detect MATLAB Level
+5 format based on file header.</li>
+<li>PerlMagick/PerlMagickCheck.sh.in: Run PerlMagick tests in
+verbose mode so that all test output appears in &quot;test-suite.log&quot;
+if there is a failure.</li>
+<li>coders/Makefile.am (coders_mat_la_LIBADD): MAT coder is
+optionally dependent on zlib so zlib should be listed as a
+dependency.</li>
+<li>magick/blob.c (BlobToFile): MAGICK_IO_FSYNC=TRUE in the
+environment should cause file data to be explicitly synchronized
+prior to close.</li>
+</ul>
+</blockquote>
+<p>2010-06-19  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>VisualMagick/installer/inc/files-documentation.isx: There are
+not currently any JPEG files in the www/images directory to
+distribute.</li>
+</ul>
+</blockquote>
+<p>2010-06-17  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>ltdl/config/ltmain.sh: Update libtool to 2.2.10.</li>
+<li>magick/profile.c: Support lcms 2.0.</li>
+<li>configure.ac: Add support for configuring for lcms 2.0,
+controlled via a new --without-lcms2 option.  By default lcms v2
+is used if it is available, otherwise v1.1X is used if it is
+available.</li>
+</ul>
+</blockquote>
+<p>2010-06-05  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>ltdl/config/ltmain.sh: Update libtool to 2.2.8.</li>
+</ul>
+</blockquote>
+<p>2010-06-02  Glenn Randers-Pehrson  &lt;<a class="reference external" href="mailto:glennrp&#37;&#52;&#48;simple&#46;&#46;&#46;">glennrp<span>&#64;</span>simple<span>&#46;</span><span>&#46;</span><span>&#46;</span></a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/png.c correctly scale bKGD chunk data in Q16 build</li>
+</ul>
+</blockquote>
+<p>2010-05-23  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>www/Magick++/Image.rst: Fix documentation error which wrongly
+recommended multiplication by size of PixelPacket.  Correction by
+Roel Baardman.</li>
+</ul>
+</blockquote>
+<p>2010-05-23 Fojtik Jaroslav  &lt;<a class="reference external" href="mailto:JaFojtik&#37;&#52;&#48;seznam&#46;cz">JaFojtik<span>&#64;</span>seznam<span>&#46;</span>cz</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/txt.c (ReadTXTImage): Ability to read multiple images.</li>
+</ul>
+</blockquote>
+<p>2010-05-20  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>magick/constitute.c (DispatchImage): <cite>K</cite> channel was always
+output as black for &quot;CMYK&quot; specification unless image matte flag
+was True.  Bug report and proposed solution by Lance Brown.</li>
+</ul>
+</blockquote>
+<p>2010-05-11  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>magick/shear.c (ShearImage): When one of the shear angles was
+specified as zero, the shear request was ignored entirely.  An
+simple optimization was using || rather than &amp;&amp; to test the
+angles.  Resolves SourceForge issue #2991685 &quot;Shear command does
+not handle zero angles correctly&quot;.</li>
+</ul>
+</blockquote>
+<p>2010-05-09  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>magick/magick.c (InitializeMagick, DestroyMagick):
+InitializeMagick and DestroyMagick should be fully thread safe.</li>
+</ul>
+</blockquote>
+<p>2010-05-06  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/gif.c (ReadGIFImage): Set the opacity value of the opaque
+color to transparent.  Patch by Tim Baker.</li>
+<li>magick/image.c (SetImageColor): New function which is similar to
+SetImage() but which accepts the pixel color as a parameter rather
+than using the image background color.  Patch by Tim Baker.</li>
+<li>magick/transform.c (CoalesceImages): When applying background
+disposal, fill the image with the transparent color, if one
+exists.  Patch by Tim Baker.  Resolves SourceForge patch ID
+2989472.</li>
+</ul>
+</blockquote>
+<p>2010-05-05  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/txt.c (ReadTXTImage): Matte channel was not being enabled
+for non-opaque images.
+(ReadTXTImage): Opacity values need to be inverted prior to
+ingestion.</li>
+</ul>
+</blockquote>
+<p>2010-04-25  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>doc/options.imdoc: Documentation for -flatten and -mosaic has
+been improved.</li>
+<li>magick/transform.c (MosaicImages): The -mosaic command now
+respects the composition option specified by -compose as well as
+the image background color specified by -background.</li>
+</ul>
+</blockquote>
+<p>2010-04-17  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/*.c, magick/*.c: Eliminate many benign data race
+conditions.</li>
+</ul>
+</blockquote>
+<p>2010-04-16  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>GraphicsMagick.spec.in: Avoid duplicate copies of documentation
+files.  Put documentation into a versioned directory as used by
+Red Hat and CentOS.  Include archive libraries in developer
+package.</li>
+<li>PerlMagick/Makefile.PL.in: Include support for DESTDIR so that
+RPM builds find the installed GraphicsMagick library.</li>
+</ul>
+</blockquote>
+<p>2010-04-15  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>configure.ac: Under Solaris, make sure that OpenWindows Type1
+fonts do exist before deciding to use them.  OpenSolaris does not
+provide these fonts.</li>
+</ul>
+</blockquote>
+<p>2010-04-13  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>GraphicsMagick.spec.in: Fix RPM build.  PerlMagick was not being
+built due to Makefile changes.  Resolves SourceForge issue
+#2952696 &quot;RPM build broken: (Perl) file not found by glob&quot;.</li>
+<li>magick/quantize.c (ReduceImageColors): Progress message should
+include the image file name.</li>
+</ul>
+</blockquote>
+<p>2010-03-24  Glenn Randers-Pehrson  &lt;<a class="reference external" href="mailto:glennrp&#37;&#52;&#48;simple&#46;&#46;&#46;">glennrp<span>&#64;</span>simple<span>&#46;</span><span>&#46;</span><span>&#46;</span></a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>Revised coders/jpeg.c to preserve the Exif profile.</li>
+</ul>
+</blockquote>
+<p>2010-03-24  Glenn Randers-Pehrson  &lt;<a class="reference external" href="mailto:glennrp&#37;&#52;&#48;simple&#46;&#46;&#46;">glennrp<span>&#64;</span>simple<span>&#46;</span><span>&#46;</span><span>&#46;</span></a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>coders/png.c (ReadOnePNGImage): Eliminated some of the deprecated
+direct access to ping_info-&gt;members.
+Eliminated support of very old libpng versions (1.0.11 and earlier).</li>
+</ul>
+</blockquote>
+<p>2010-03-16  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>magick/delegate.c (GetPostscriptDelegateInfo): Add support for
+invoking &quot;gs-cmyk&quot; and &quot;gs-cmyka&quot; entries in delegates.mgk when
+ColorSeparationType or ColorSeparationMatteType is requested.
+Requisite entries in delegates.mgk are left for the user to add.</li>
+</ul>
+</blockquote>
+<p>2010-03-11  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>magick/magick.c (InitializeMagick): Don't initialize locale
+settings in InitializeMagick().  Resolves SourceForge bug #2967282
+&quot;setlocale called by GraphicsMagick&quot;.</li>
+</ul>
+</blockquote>
+<p>2010-03-10  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>magick/{command.c, display.c}: Make sure that <cite>animate</cite>,
+<cite>display</cite>, and <cite>identify</cite> report any error only once, and then
+proceed to the next file name rather than quitting.  Problem was
+reported by Patrick Welche.</li>
+</ul>
+</blockquote>
+<p>2010-03-08  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>version.sh: Released GraphicsMagick 1.3.12.</li>
+</ul>
+</blockquote>
+<p>2010-03-03  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>PerlMagick/Makefile.am: Update PerlMagick/Magick.pm in the
+source tree (as required) since it is distributed source and
+contains the current version number.</li>
+</ul>
+</blockquote>
+<p>2010-03-03  Glenn Randers-Pehrson  &lt;<a class="reference external" href="mailto:glennrp&#37;&#52;&#48;simple&#46;&#46;&#46;">glennrp<span>&#64;</span>simple<span>&#46;</span><span>&#46;</span><span>&#46;</span></a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li><dl class="first docutils">
+<dt>coders/png.c: restored missing &quot;US&quot; in PNG_USER_CHUNK_CACHE_MAX</dt>
+<dd>at line 102.  Added some (unsigned long) typecasts on print statements
+to stifle warnings.</dd>
+</dl>
+</li>
+</ul>
+</blockquote>
+<p>2010-03-03  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>png: Updated libpng to 1.2.43.  Resolves CVE-2010-0205 as
+pertains to GraphicsMagick Windows build.</li>
+</ul>
+</blockquote>
+<p>2010-03-02  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>tests/rwfile_DCX_*.sh: Add tests for reading and writing DCX.</li>
+<li>coders/pcx.c (WritePCXImage): DCX is not the same as PCX so only
+write DCX when requested to (and vice-versa).</li>
+<li>utilities/tests/convert-pipe-out.sh: New test to verify that
+<cite>convert</cite> can write to stdout.</li>
+<li>utilities/tests/convert-pipe-in.sh: New test to verify that
+<cite>convert</cite> can read from stdin.</li>
+<li>utilities/tests/convert-pipe-filter.sh: New test to verify that
+<cite>convert</cite> works properly as a filter.</li>
+<li>magick/image.c (SetImageInfo): The <cite>rectify</cite> parameter was found
+to not be sufficient to meet requirements since it was
+overloaded. The utilities would malfunction (hang or throw an
+exception) if requested to write to stdout.  As a result, this
+parameter has been changed to a binary flag type parameter.
+Existing True/False values are mapped to equivalents using the new
+binary flag.  This is intended to resolve Debian bug 571719
+&quot;graphicsmagick: &quot;convert&quot; command is broken&quot;, reported by
+Vladimir Stavrinov.</li>
+</ul>
+</blockquote>
+<p>2010-02-21  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>version.sh: Released GraphicsMagick 1.3.11.</li>
+</ul>
+</blockquote>
+<p>2010-02-19  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>magick/composite.c (GetCompositionPixelIteratorCallback):
+OverCompositeOp and AtopCompositeOp may be replaced with
+CopyCompositeOp in the case where neither image has a matte
+channel.</li>
+<li>magick/command.c (ConvertImageCommand, MogrifyImageCommand):
+Added -extent option to apply a background color canvas behind the
+image. Added -compose option to allow specifying the composition
+operator to use.</li>
+<li>magick/transform.c (ExtentImage): New function apply a
+background color canvas behind the image.</li>
+</ul>
+</blockquote>
+<p>2010-02-18  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>magick/command.c: Added a -thumbnail command to all of the GM
+sub-commands which currently support -resize.  This is a resize
+method optimized for speed when reducing the size of the image
+(such as when creating thumbnails).</li>
+</ul>
+</blockquote>
+<p>2010-02-17  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>magick/utility.c (LocaleCompare, LocaleNCompare): Fix array
+index underflow which occurs if the char type is signed and the
+character value is in the extended range.  Problem reported by
+Arseny Solokha.  Resolves SourceForge patch #2953314.</li>
+</ul>
+</blockquote>
+<p>2010-02-10  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>version.sh: Released GraphicsMagick 1.3.10.</li>
+</ul>
+</blockquote>
+<p>2010-02-09  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>Magick++/demo/demo.cpp (main): Split demo output frames into
+individual files to enable easier viewing.</li>
+</ul>
+</blockquote>
+<p>2010-02-08  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>doc/GraphicsMagick.imdoc: Improve usage synopsis for
+<cite>convert</cite>. SourceForge feature request 2845965 &quot;confusing
+documentation&quot;.</li>
+<li>magick/display.c (MagickXDisplayImage): Image number was
+incorrect in window title.</li>
+<li>magick/render.c (DrawImage): Path points data allocation was
+much larger than it needed to be.  Patch by Vladimir Lukianov.
+Resolves SourceForge issue 2947851 &quot;Memory allocation error on
+vector graphics (or mem bomb)&quot;.</li>
+<li>magick/constitute.c (WriteImages): +adjoin was not working
+correctly for the case when only one image frame is present.  With
++adjoin and writing one frame to &quot;foo%d.jpg&quot; it was outputting
+&quot;foo%d.jpg&quot; rather than &quot;foo0.jpg&quot;.  Problem reported by Frans
+Coetzee.</li>
+</ul>
+</blockquote>
+<p>2010-02-04  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>version.sh: Released GraphicsMagick 1.3.9.</li>
+</ul>
+</blockquote>
+<p>2010-02-03  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>doc/imdoc2man: Bare single quotes at the beginning of a line
+need to be escaped in order to make roff happy.  Problem reported
+by Daniel Kobras.</li>
+<li>magick/command.c (ImportImageCommand): Don't assign a pointer to
+static constant data into an array which uses heap allocated data.
+Avoids a &quot;double free&quot; error when using gm import -frame.  Patch
+by Daniel Kobras.</li>
+<li>magick/color_lookup.c (QueryColorname): XPM does not support
+RGBA color syntax, but it does support RGB.  Patch by Daniel
+Kobras.</li>
+<li>magick/blob.c (OpenBlob): Only form multi-part filename when
+required.</li>
+<li>magick/display.c (MagickXDisplayImage): The display <cite>-update</cite>
+option was only working in conjunction with the <cite>-delay</cite> option
+with a delay setting of 2 or greater.  Problem reported by Sami
+Liedes.  Patch by Vincent MAUGE.  Resolves Debian bug ID 414779.</li>
+</ul>
+</blockquote>
+<p>2010-02-02  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>magick/blob.c (OpenBlob): Only apply scene substitution to
+the filename if adjoin is false.</li>
+<li>magick/constitute.c (WriteImage): If adjoin is true, then
+restore original filename specification since opening the blob
+modifies it.  Resolves Debian bug ID 552998.</li>
+<li>magick/image.c (SetImageInfo): Don't check filename for scene
+substitution if adjoin is intentionally false.  This allows saving
+to file names which look like they contain a scene substitution
+pattern.</li>
+<li>magick/command.c (MogrifyImage): Convolution failure results in
+a crash rather than an error report.  Resolves Debian bug ID
+539251.</li>
+<li>magick/deprecate.c: The string constants LoadImageText,
+SaveImageText, LoadImagesText, and SaveImagesText should have been
+deprecated, rather than being entirely removed.</li>
+</ul>
+</blockquote>
+<p>2010-01-31  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>www/Makefile.am (install-data-html): Make sure that only the
+necessary documentation files are installed.</li>
+</ul>
+</blockquote>
+<p>2010-01-30  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>VisualMagick/installer/inc/body.isx: Strip out executable
+components which depend on proprietary MFC and ATL libraries.
+This means that &quot;gmdisplay.exe&quot; and &quot;ImageMagickObject&quot; are no
+longer distributed or installed via the Windows setup installer.
+When a new display application is developed based on open source
+libraries, then the display functionality and associations can be
+restored.</li>
+</ul>
+</blockquote>
+<p>2010-01-28  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>magick/transform.c (FlattenImages): Apply the image background
+color under the initial canvas image if it is non-opaque.</li>
+<li>magick/composite.c (MagickCompositeImageUnderColor): New private
+function to apply a color underneath a non-opaque image.</li>
+</ul>
+</blockquote>
+<p>2010-01-26  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>magick/prefetch.h: New header to provide wrapper macros for
+compiler-specific explicit prefetch APIs.</li>
+<li>magick/effect.c (BlurImageScanlines): Solid color images which
+only differed in the matte channel were not being blurred.</li>
+<li>magick/color.h (NotPixelMatch,PixelMatch): New macros to
+fully-compare a pixel, including matte.</li>
+<li>magick/resource.c (SetMagickResourceLimit): Invoke
+omp_set_num_threads() to set thread limit if ThreadsResource is
+requested.</li>
+<li>magick/pixel_cache.c (AllocateThreadViewSet): The number of
+cache views to allocate needs to be obtained from
+omp_get_max_threads().  Otherwise there is a crash if the number
+of threads is reduced from the original value.</li>
+</ul>
+</blockquote>
+<p>2010-01-21  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>version.sh: Released GraphicsMagick 1.3.8.</li>
+<li>NEWS.txt: Update for the 1.3.8 release.</li>
+</ul>
+</blockquote>
+<p>2010-01-20  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>www/benchmarks.rst: Update benchmark report to compare
+performance with ImageMagick 6.5.8-10.</li>
+</ul>
+</blockquote>
+<p>2010-01-17  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>magick/shear.c (RotateImage, ShearImage): Ensure that errors
+propagate up to the API user.  Don't overwrite a detailed
+exception message with a generic one.  Don't return a bogus image
+if there is an error.</li>
+</ul>
+</blockquote>
+<p>2010-01-12  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>VisualMagick/installer/inc/files-base.isx: Third party
+executables not included in the Visual Studio build are no longer
+bundled in the GraphicsMagick installer.  This means that
+hp2xx.exe, mpeg2dec.exe, and mpeg2enc.exe are no longer
+distributed.</li>
+<li>www/Magick++/Image.rst: Emphasize that InitializeMagick() MUST
+be invoked, and make sure that all of the examples show use of it.</li>
+</ul>
+</blockquote>
+<p>2010-01-10  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>magick/delegate.c (InvokeDelegate): Use MagickSpawnVP() under
+Windows as well.
+(InvokePostscriptDelegate): Use MagickSpawnVP() under Windows as
+well.</li>
+<li>magick/utility.c (MagickSpawnVP): Moved from unix_port.c.
+Updated implementation to use spawnvp() rather than fork()/exec()
+under Windows.</li>
+<li>configure.ac: Add check for Windows spawnvp function.
+Add check for process.h.</li>
+<li>magick/semaphore.c (DestroySemaphore): POSIX mutex statically
+initialized via PTHREAD_MUTEX_INITIALIZER should not be destroyed.</li>
+<li>configure.ac: DisableSlowOpenMP is now the default.  Use
+--enable-openmp-slow to enable OpenMP for algorithms which
+sometimes run slower rather than faster.</li>
+</ul>
+</blockquote>
+<p>2010-01-05  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>magick/version.h.in: Added MagickLibInterfaceNewest and
+MagickLibInterfaceOldest preprocessor defines so that applications
+may easily test for library versions while compiling.</li>
+</ul>
+</blockquote>
+<p>2010-01-03  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>magick/render.c (DrawPolygonPrimitive): Use restrict keyword.</li>
+<li>magick/pixel_iterator.c: Use restrict keyword.</li>
+<li>utilities/Makefile.am: Modules are supported in the shared
+library built so list-module.sh test should be expected to pass.</li>
+<li>configure.ac: Add WITH_SHARED_LIBS conditional.</li>
+</ul>
+</blockquote>
+<p>2010-01-02  Bob Friesenhahn  &lt;<a class="reference external" href="mailto:bfriesen&#37;&#52;&#48;simple&#46;dallas&#46;tx&#46;us">bfriesen<span>&#64;</span>simple<span>&#46;</span>dallas<span>&#46;</span>tx<span>&#46;</span>us</a>&gt;</p>
+<blockquote>
+<ul class="simple">
+<li>magick/version.h.in: Update copyright years.</li>
+<li>magick/semaphore.c: The return code from all pthread mutex APIs
+are now checked (not just initialize and destroy), and any error
+results in an immediate fatal exit.</li>
+</ul>
+</blockquote>
+</div>
+</body>
+</html>

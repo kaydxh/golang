@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.15.2: http://docutils.sourceforge.net/" />
+<title>GraphicsMagick Tools</title>
+<meta content="GraphicsMagick is a robust collection of tools and libraries to read, write, and manipulate an image in any of the more popular image formats including GIF, JPEG, PNG, PDF, and Photo CD. With GraphicsMagick you can create GIFs dynamically making it suitable for Web applications.  You can also resize, rotate, sharpen, color reduce, or add special effects to an image and save your completed work in the same or differing image format. " name="description" />
+<meta content="GraphicsMagick, Image Magick, Image Magic, PerlMagick, Perl Magick, Perl Magic, image processing, software development, image, software, Magick++" name="keywords" />
+<link rel="stylesheet" href="docutils-articles.css" type="text/css" />
+</head>
+<body>
+
+<div class="banner">
+<img src="images/gm-107x76.png" alt="GraphicMagick logo" width="107" height="76" />
+<span class="title">GraphicsMagick</span>
+<form action="http://www.google.com/search">
+	<input type="hidden" name="domains" value="www.graphicsmagick.org" />
+	<input type="hidden" name="sitesearch" value="www.graphicsmagick.org" />
+    <span class="nowrap"><input type="text" name="q" size="25" maxlength="255" />&nbsp;<input type="submit" name="sa" value="Search" /></span>
+</form>
+</div>
+
+<div class="navmenu">
+<ul>
+<li><a href="index.html">Home</a></li>
+<li><a href="project.html">Project</a></li>
+<li><a href="download.html">Download</a></li>
+<li><a href="README.html">Install</a></li>
+<li><a href="Hg.html">Source</a></li>
+<li><a href="NEWS.html">News</a> </li>
+<li><a href="utilities.html">Utilities</a></li>
+<li><a href="programming.html">Programming</a></li>
+<li><a href="reference.html">Reference</a></li>
+</ul>
+</div>
+<div class="document" id="graphicsmagick-tools">
+<h1 class="title">GraphicsMagick Tools</h1>
+
+<!-- -*- mode: rst -*- -->
+<!-- This text is in reStucturedText format, so it may look a bit odd. -->
+<!-- See http://docutils.sourceforge.net/rst.html for details. -->
+<div class="contents local topic" id="contents">
+<ul class="simple">
+<li><a class="reference internal" href="#animate-animate-a-sequence-of-images" id="id2">Animate: animate a sequence of images</a></li>
+<li><a class="reference internal" href="#compare-compare-two-images-using-statistics-and-or-visual-differencing" id="id3">Compare: compare two images using statistics and/or visual differencing</a></li>
+<li><a class="reference internal" href="#composite-composite-images-together" id="id4">Composite: composite images together</a></li>
+<li><a class="reference internal" href="#conjure-execute-a-magick-scripting-language-msl-xml-script" id="id5">Conjure: execute a Magick Scripting Language (MSL) XML script</a></li>
+<li><a class="reference internal" href="#convert-convert-an-image-or-sequence-of-images" id="id6">Convert: convert an image or sequence of images</a></li>
+<li><a class="reference internal" href="#display-display-an-image-on-a-workstation-running-x" id="id7">Display: display an image on a workstation running X</a></li>
+<li><a class="reference internal" href="#identify-describe-an-image-or-image-sequence" id="id8">Identify: describe an image or image sequence</a></li>
+<li><a class="reference internal" href="#import-capture-an-application-or-x-server-screen" id="id9">Import: capture an application or X server screen</a></li>
+<li><a class="reference internal" href="#mogrify-transform-an-image-or-sequence-of-images" id="id10">Mogrify: transform an image or sequence of images</a></li>
+<li><a class="reference internal" href="#montage-create-a-composite-image-in-a-grid-from-separate-images" id="id11">Montage: create a composite image (in a grid) from separate images</a></li>
+</ul>
+</div>
+<div class="section" id="animate-animate-a-sequence-of-images">
+<h1><a class="toc-backref" href="#id2">Animate: animate a sequence of images</a></h1>
+<p><a class="reference external" href="animate.html">Animate</a> displays a sequence of images or an animation on any display
+running an X server.</p>
+</div>
+<div class="section" id="compare-compare-two-images-using-statistics-and-or-visual-differencing">
+<h1><a class="toc-backref" href="#id3">Compare: compare two images using statistics and/or visual differencing</a></h1>
+<p><a class="reference external" href="compare.html">Compare</a> compares two images using either a specified standard
+statistical metric (MAE, MSE, PAE, PSNR, RMSE), or a specified visual
+differencing method (assign, threshold, tint, xor). The statistical
+comparison produces a textual display of metric values while the visual
+differencing method writes a difference image with the differences
+annotated using the specified algorithm.  For example:</p>
+<pre class="literal-block">
+% gm convert input.jpg -blur 0x1.5 output.jpg
+% gm compare -metric MSE input.jpg output.jpg
+Image Difference (MeanSquaredError):
+           Normalized    Absolute
+          ============  ==========
+     Red: 0.0014374614       94.2
+   Green: 0.0014396270       94.3
+    Blue: 0.0014464548       94.8
+   Total: 0.0014411811       94.4
+</pre>
+</div>
+<div class="section" id="composite-composite-images-together">
+<h1><a class="toc-backref" href="#id4">Composite: composite images together</a></h1>
+<p><a class="reference external" href="composite.html">Composite</a> blends and merges images to create new images.</p>
+</div>
+<div class="section" id="conjure-execute-a-magick-scripting-language-msl-xml-script">
+<h1><a class="toc-backref" href="#id5">Conjure: execute a Magick Scripting Language (MSL) XML script</a></h1>
+<p><a class="reference external" href="conjure.html">Conjure</a> interprets and executes scripts in the Magick Scripting Language
+(MSL). The interpreter is called conjure and here is an example script:</p>
+<pre class="literal-block">
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;image size=&quot;400x400&quot; &gt;
+  &lt;read filename=&quot;image.gif&quot; /&gt;
+  &lt;get width=&quot;base-width&quot; height=&quot;base-height&quot; /&gt;
+  &lt;resize geometry=&quot;%[dimensions]&quot; /&gt;
+  &lt;get width=&quot;width&quot; height=&quot;height&quot; /&gt;
+  &lt;print output=
+    &quot;Image sized from %[base-width]x%[base-height]
+     to %[width]x%[height].\n&quot; /&gt;
+  &lt;write filename=&quot;image.png&quot; /&gt;
+&lt;/image&gt;
+</pre>
+<p>which is invoked like</p>
+<pre class="literal-block">
+conjure -dimensions 400x400 incantation.msl
+</pre>
+<p>All operations closely follow the key/value pairs defined in the
+<a class="reference external" href="perl.html">PerlMagick</a> documentation, unless otherwise noted.</p>
+</div>
+<div class="section" id="convert-convert-an-image-or-sequence-of-images">
+<h1><a class="toc-backref" href="#id6">Convert: convert an image or sequence of images</a></h1>
+<p><a class="reference external" href="convert.html">Convert</a> converts an input file using one image format to an output file
+with using any of the supported writeable image formats. A large number
+of image processing operations may be performed on the image before it is
+written. By default, the input image format is determined by its magic
+number. To specify a particular image format, precede the filename with
+an image format name and a colon (i.e. ps:image) or specify the image
+type as the filename suffix (i.e. image.ps). Specify file as - for
+standard input or output. If file has the extension .Z, the file is
+decoded with uncompress.  For example:</p>
+<pre class="literal-block">
+% gm convert input.jpg -rotate 90 rotated.tiff
+</pre>
+</div>
+<div class="section" id="display-display-an-image-on-a-workstation-running-x">
+<h1><a class="toc-backref" href="#id7">Display: display an image on a workstation running X</a></h1>
+<p><a class="reference external" href="display.html">Display</a> is a machine architecture independent image processing and
+display program. It can display an image on any workstation display
+running an X server. The image can be displayed as background image of
+any window.</p>
+</div>
+<div class="section" id="identify-describe-an-image-or-image-sequence">
+<h1><a class="toc-backref" href="#id8">Identify: describe an image or image sequence</a></h1>
+<p><a class="reference external" href="identify.html">Identify</a> describes the format and characteristics of one or more image
+files. It will also report if an image is incomplete or corrupt. The
+information displayed includes the scene number, the file name, the width
+and height of the image, whether the image is colormapped or not, the
+number of colors in the image, the number of bytes in the image, the
+format of the image (JPEG, PNM, etc.), and finally the number of seconds
+it took to read and process the image.  For example:</p>
+<pre class="literal-block">
+% gm identify tiger-1200-rgb16.tiff
+tiger-1200-rgb16.tiff TIFF 9083x9450+0+0 DirectClass 16-bit 491.2M 0.000u 0:01
+</pre>
+</div>
+<div class="section" id="import-capture-an-application-or-x-server-screen">
+<h1><a class="toc-backref" href="#id9">Import: capture an application or X server screen</a></h1>
+<p><a class="reference external" href="import.html">Import</a> reads an image from any visible window on an X server and outputs
+it as an image file. You can capture a single window, the entire screen,
+or any rectangular portion of the screen.</p>
+<p>The target window can be specified by id, name, or may be selected by
+clicking the mouse in the desired window. If you press a button and then
+drag, a rectangle will form which expands and contracts as the mouse
+moves. To save the portion of the screen defined by the rectangle, just
+release the button. The keyboard bell is rung once at the beginning of
+the screen capture and twice when it completes.  For example:</p>
+<pre class="literal-block">
+% gm import capture.tiff
+</pre>
+</div>
+<div class="section" id="mogrify-transform-an-image-or-sequence-of-images">
+<h1><a class="toc-backref" href="#id10">Mogrify: transform an image or sequence of images</a></h1>
+<p><a class="reference external" href="mogrify.html">Mogrify</a> transforms an image or a sequence of images &quot;in place&quot;. These
+transforms include image scaling, image rotation, color reduction, and
+others. The transmogrified image overwrites the original image. <a class="reference external" href="mogrify.html">Mogrify</a>
+is very similar to <a class="reference external" href="convert.html">Convert</a> except that it can operate on many images at
+once, and overwrites the input files by default. However, <a class="reference external" href="mogrify.html">Mogrify</a> may
+also be used to convert file formats, and send modified files to another
+directory. For example, the following reads several JPEG files and writes
+a rotated version of them in TIFF format:</p>
+<pre class="literal-block">
+% gm mogrify -rotate 90 -format tiff image1.jpg image2.jpg image3.jpg
+</pre>
+</div>
+<div class="section" id="montage-create-a-composite-image-in-a-grid-from-separate-images">
+<h1><a class="toc-backref" href="#id11">Montage: create a composite image (in a grid) from separate images</a></h1>
+<p><a class="reference external" href="montage.html">Montage</a> creates a composite by combining several separate images. The
+images are tiled on a composite image with the name of the image and its
+properties optionally appearing just below the individual tile.</p>
+<p>Copyright © GraphicsMagick Group 2002 - 2020</p>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,334 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=iso-8859-1">
+	<title>GraphicsMagick Color Selections</title>
+	<meta name="description" content="GraphicsMagick is a robust collection of tools
+and libraries to read, write, and manipulate an image in any of the more
+popular image formats including GIF, JPEG, PNG, PDF, and Photo CD.  With
+GraphicsMagick you can create GIFs dynamically making it suitable for Web
+applications.  You can also resize, rotate, sharpen, color reduce, or add
+special effects to an image and save your completed work in the same or
+differing image format.">
+    <meta name="keywords" content="GraphicsMagick, Image Magick, Image
+Magic, PerlMagick, Perl Magick, Perl Magic, CineMagick, PixelMagick,
+Pixel Magic, WebMagick, Web Magic, visualization, image processing,
+software development, simulation, image, software, AniMagick, Animagic,
+Magick++">
+<link rel="stylesheet" href="docutils-articles.css" type="text/css" />
+	<style>
+	<!--
+        body {font-family: sans-serif;}
+        table.named-colors th, table.named-colors td { padding : .5ex; }
+        table.named-colors th { background-color : #E0E0E0; }
+        table.named-colors td.dark { text-align : center; color : white; }
+        table.named-colors td.light { text-align : center; color : black; }
+	-->
+	</style>
+</head>
+<body>
+
+<div class="banner">
+<img src="images/gm-107x76.png" alt="GraphicMagick logo" width="107" height="76" />
+<span class="title">GraphicsMagick</span>
+<form action="http://www.google.com/search">
+	<input type="hidden" name="domains" value="www.graphicsmagick.org" />
+	<input type="hidden" name="sitesearch" value="www.graphicsmagick.org" />
+    <span class="nowrap"><input type="text" name="q" size="25" maxlength="255" />&nbsp;<input type="submit" name="sa" value="Search" /></span>
+</form>
+</div>
+
+
+<div class="navmenu">
+<ul>
+<li><a href="index.html">Home</a></li>
+<li><a href="project.html">Project</a></li>
+<li><a href="download.html">Download</a></li>
+<li><a href="README.html">Install</a></li>
+<li><a href="Hg.html">Source</a></li>
+<li><a href="NEWS.html">News</a> </li>
+<li><a href="utilities.html">Utilities</a></li>
+<li><a href="programming.html">Programming</a></li>
+<li><a href="reference.html">Reference</a></li>
+</ul>
+</div>
+
+<div class="document" id="graphicsmagick-programming-interfaces">
+<hr>
+<p>Here are some example color selections to choose from or define
+your own. GraphicsMagick understands color names or hex values (.e.g.
+white or #ffffff). 
+</p>
+<table class="named-colors">
+<colgroup>
+<col width="20%" />
+<col width="40%" />
+<col width="20%" />
+<col width="20%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Name</th>
+<th class="head">Color</th>
+<th class="head">RGB</th>
+<th class="head">Hex</th>
+</tr>
+</thead>
+<tbody valign="top">
+
+<tr><td>aliceblue</td><td class="light" bgcolor="#f0f8ff">aliceblue</td><td>240, 248, 255</td><td>#f0f8ff</td></tr>
+<tr><td>antiquewhite</td><td class="light" bgcolor="#faebd7">antiquewhite</td><td>250, 235, 215</td><td>#faebd7</td></tr>
+<tr><td>aqua</td><td class="light" bgcolor="#00ffff">aqua</td><td>0, 255, 255</td><td>#00ffff</td></tr>
+<tr><td>aquamarine</td><td class="light" bgcolor="#7fffd4">aquamarine</td><td>127, 255, 212</td><td>#7fffd4</td></tr>
+<tr><td>azure</td><td class="light" bgcolor="#f0ffff">azure</td><td>240, 255, 255</td><td>#f0ffff</td></tr>
+<tr><td>beige</td><td class="light" bgcolor="#f5f5dc">beige</td><td>245, 245, 220</td><td>#f5f5dc</td></tr>
+<tr><td>bisque</td><td class="light" bgcolor="#ffe4c4">bisque</td><td>255, 228, 196</td><td>#ffe4c4</td></tr>
+<tr><td>black</td><td class="dark" bgcolor="#000000">black</td><td>0, 0, 0</td><td>#000000</td></tr>
+<tr><td>blanchedalmond</td><td class="light" bgcolor="#ffebcd">blanchedalmond</td><td>255, 235, 205</td><td>#ffebcd</td></tr>
+<tr><td>blue</td><td class="dark" bgcolor="#0000ff">blue</td><td>0, 0, 255</td><td>#0000ff</td></tr>
+<tr><td>blueviolet</td><td class="light" bgcolor="#8a2be2">blueviolet</td><td>138, 43, 226</td><td>#8a2be2</td></tr>
+<tr><td>brown</td><td class="dark" bgcolor="#a52a2a">brown</td><td>165, 42, 42</td><td>#a52a2a</td></tr>
+<tr><td>burlywood</td><td class="light" bgcolor="#deb887">burlywood</td><td>222, 184, 135</td><td>#deb887</td></tr>
+<tr><td>cadetblue</td><td class="light" bgcolor="#5f9ea0">cadetblue</td><td>95, 158, 160</td><td>#5f9ea0</td></tr>
+<tr><td>chartreuse</td><td class="light" bgcolor="#7fff00">chartreuse</td><td>127, 255, 0</td><td>#7fff00</td></tr>
+<tr><td>chocolate</td><td class="light" bgcolor="#d2691e">chocolate</td><td>210, 105, 30</td><td>#d2691e</td></tr>
+<tr><td>coral</td><td class="light" bgcolor="#ff7f50">coral</td><td>255, 127, 80</td><td>#ff7f50</td></tr>
+<tr><td>cornflowerblue</td><td class="light" bgcolor="#6495ed">cornflowerblue</td><td>100, 149, 237</td><td>#6495ed</td></tr>
+<tr><td>cornsilk</td><td class="light" bgcolor="#fff8dc">cornsilk</td><td>255, 248, 220</td><td>#fff8dc</td></tr>
+<tr><td>crimson</td><td class="dark" bgcolor="#dc143c">crimson</td><td>220, 20, 60</td><td>#dc143c</td></tr>
+<tr><td>cyan</td><td class="light" bgcolor="#00ffff">cyan</td><td>0, 255, 255</td><td>#00ffff</td></tr>
+<tr><td>darkblue</td><td class="dark" bgcolor="#00008b">darkblue</td><td>0, 0, 139</td><td>#00008b</td></tr>
+<tr><td>darkcyan</td><td class="dark" bgcolor="#008b8b">darkcyan</td><td>0, 139, 139</td><td>#008b8b</td></tr>
+<tr><td>darkgoldenrod</td><td class="light" bgcolor="#b8860b">darkgoldenrod</td><td>184, 134, 11</td><td>#b8860b</td></tr>
+<tr><td>darkgray</td><td class="light" bgcolor="#a9a9a9">darkgray</td><td>169, 169, 169</td><td>#a9a9a9</td></tr>
+<tr><td>darkgreen</td><td class="dark" bgcolor="#006400">darkgreen</td><td>0, 100, 0</td><td>#006400</td></tr>
+<tr><td>darkgrey</td><td class="light" bgcolor="#a9a9a9">darkgrey</td><td>169, 169, 169</td><td>#a9a9a9</td></tr>
+<tr><td>darkkhaki</td><td class="light" bgcolor="#bdb76b">darkkhaki</td><td>189, 183, 107</td><td>#bdb76b</td></tr>
+<tr><td>darkmagenta</td><td class="dark" bgcolor="#8b008b">darkmagenta</td><td>139, 0, 139</td><td>#8b008b</td></tr>
+<tr><td>darkolivegreen</td><td class="dark" bgcolor="#556b2f">darkolivegreen</td><td>85, 107, 47</td><td>#556b2f</td></tr>
+<tr><td>darkorange</td><td class="light" bgcolor="#ff8c00">darkorange</td><td>255, 140, 0</td><td>#ff8c00</td></tr>
+<tr><td>darkorchid</td><td class="light" bgcolor="#9932cc">darkorchid</td><td>153, 50, 204</td><td>#9932cc</td></tr>
+<tr><td>darkred</td><td class="dark" bgcolor="#8b0000">darkred</td><td>139, 0, 0</td><td>#8b0000</td></tr>
+<tr><td>darksalmon</td><td class="light" bgcolor="#e9967a">darksalmon</td><td>233, 150, 122</td><td>#e9967a</td></tr>
+<tr><td>darkseagreen</td><td class="light" bgcolor="#8fbc8f">darkseagreen</td><td>143, 188, 143</td><td>#8fbc8f</td></tr>
+<tr><td>darkslateblue</td><td class="dark" bgcolor="#483d8b">darkslateblue</td><td>72, 61, 139</td><td>#483d8b</td></tr>
+<tr><td>darkslategray</td><td class="dark" bgcolor="#2f4f4f">darkslategray</td><td>47, 79, 79</td><td>#2f4f4f</td></tr>
+<tr><td>darkslategrey</td><td class="dark" bgcolor="#2f4f4f">darkslategrey</td><td>47, 79, 79</td><td>#2f4f4f</td></tr>
+<tr><td>darkturquoise</td><td class="light" bgcolor="#00ced1">darkturquoise</td><td>0, 206, 209</td><td>#00ced1</td></tr>
+<tr><td>darkviolet</td><td class="light" bgcolor="#9400d3">darkviolet</td><td>148, 0, 211</td><td>#9400d3</td></tr>
+<tr><td>deeppink</td><td class="light" bgcolor="#ff1493">deeppink</td><td>255, 20, 147</td><td>#ff1493</td></tr>
+<tr><td>deepskyblue</td><td class="light" bgcolor="#00bfff">deepskyblue</td><td>0, 191, 255</td><td>#00bfff</td></tr>
+<tr><td>dimgray</td><td class="dark" bgcolor="#696969">dimgray</td><td>105, 105, 105</td><td>#696969</td></tr>
+<tr><td>dimgrey</td><td class="dark" bgcolor="#696969">dimgrey</td><td>105, 105, 105</td><td>#696969</td></tr>
+<tr><td>dodgerblue</td><td class="light" bgcolor="#1e90ff">dodgerblue</td><td>30, 144, 255</td><td>#1e90ff</td></tr>
+<tr><td>firebrick</td><td class="dark" bgcolor="#b22222">firebrick</td><td>178, 34, 34</td><td>#b22222</td></tr>
+<tr><td>floralwhite</td><td class="light" bgcolor="#fffaf0">floralwhite</td><td>255, 250, 240</td><td>#fffaf0</td></tr>
+<tr><td>forestgreen</td><td class="dark" bgcolor="#228b22">forestgreen</td><td>34, 139, 34</td><td>#228b22</td></tr>
+<tr><td>fractal</td><td class="light" bgcolor="#808080">fractal</td><td>128, 128, 128</td><td>#808080</td></tr>
+<tr><td>fuchsia</td><td class="light" bgcolor="#ff00ff">fuchsia</td><td>255, 0, 255</td><td>#ff00ff</td></tr>
+<tr><td>gainsboro</td><td class="light" bgcolor="#dcdcdc">gainsboro</td><td>220, 220, 220</td><td>#dcdcdc</td></tr>
+<tr><td>ghostwhite</td><td class="light" bgcolor="#f8f8ff">ghostwhite</td><td>248, 248, 255</td><td>#f8f8ff</td></tr>
+<tr><td>gold</td><td class="light" bgcolor="#ffd700">gold</td><td>255, 215, 0</td><td>#ffd700</td></tr>
+<tr><td>goldenrod</td><td class="light" bgcolor="#daa520">goldenrod</td><td>218, 165, 32</td><td>#daa520</td></tr>
+<tr><td>gray0</td><td class="dark" bgcolor="#000000">gray0</td><td>0, 0, 0</td><td>#000000</td></tr>
+<tr><td>gray1</td><td class="dark" bgcolor="#030303">gray1</td><td>3, 3, 3</td><td>#030303</td></tr>
+<tr><td>gray2</td><td class="dark" bgcolor="#050505">gray2</td><td>5, 5, 5</td><td>#050505</td></tr>
+<tr><td>gray3</td><td class="dark" bgcolor="#080808">gray3</td><td>8, 8, 8</td><td>#080808</td></tr>
+<tr><td>gray4</td><td class="dark" bgcolor="#0a0a0a">gray4</td><td>10, 10, 10</td><td>#0a0a0a</td></tr>
+<tr><td>gray5</td><td class="dark" bgcolor="#0d0d0d">gray5</td><td>13, 13, 13</td><td>#0d0d0d</td></tr>
+<tr><td>gray6</td><td class="dark" bgcolor="#0f0f0f">gray6</td><td>15, 15, 15</td><td>#0f0f0f</td></tr>
+<tr><td>gray7</td><td class="dark" bgcolor="#121212">gray7</td><td>18, 18, 18</td><td>#121212</td></tr>
+<tr><td>gray8</td><td class="dark" bgcolor="#141414">gray8</td><td>20, 20, 20</td><td>#141414</td></tr>
+<tr><td>gray9</td><td class="dark" bgcolor="#171717">gray9</td><td>23, 23, 23</td><td>#171717</td></tr>
+<tr><td>gray10</td><td class="dark" bgcolor="#1a1a1a">gray10</td><td>26, 26, 26</td><td>#1a1a1a</td></tr>
+<tr><td>gray11</td><td class="dark" bgcolor="#1c1c1c">gray11</td><td>28, 28, 28</td><td>#1c1c1c</td></tr>
+<tr><td>gray12</td><td class="dark" bgcolor="#1f1f1f">gray12</td><td>31, 31, 31</td><td>#1f1f1f</td></tr>
+<tr><td>gray13</td><td class="dark" bgcolor="#212121">gray13</td><td>33, 33, 33</td><td>#212121</td></tr>
+<tr><td>gray14</td><td class="dark" bgcolor="#242424">gray14</td><td>36, 36, 36</td><td>#242424</td></tr>
+<tr><td>gray15</td><td class="dark" bgcolor="#262626">gray15</td><td>38, 38, 38</td><td>#262626</td></tr>
+<tr><td>gray16</td><td class="dark" bgcolor="#292929">gray16</td><td>41, 41, 41</td><td>#292929</td></tr>
+<tr><td>gray17</td><td class="dark" bgcolor="#2b2b2b">gray17</td><td>43, 43, 43</td><td>#2b2b2b</td></tr>
+<tr><td>gray18</td><td class="dark" bgcolor="#2e2e2e">gray18</td><td>46, 46, 46</td><td>#2e2e2e</td></tr>
+<tr><td>gray19</td><td class="dark" bgcolor="#303030">gray19</td><td>48, 48, 48</td><td>#303030</td></tr>
+<tr><td>gray20</td><td class="dark" bgcolor="#333333">gray20</td><td>51, 51, 51</td><td>#333333</td></tr>
+<tr><td>gray21</td><td class="dark" bgcolor="#363636">gray21</td><td>54, 54, 54</td><td>#363636</td></tr>
+<tr><td>gray22</td><td class="dark" bgcolor="#383838">gray22</td><td>56, 56, 56</td><td>#383838</td></tr>
+<tr><td>gray23</td><td class="dark" bgcolor="#3b3b3b">gray23</td><td>59, 59, 59</td><td>#3b3b3b</td></tr>
+<tr><td>gray24</td><td class="dark" bgcolor="#3d3d3d">gray24</td><td>61, 61, 61</td><td>#3d3d3d</td></tr>
+<tr><td>gray25</td><td class="dark" bgcolor="#404040">gray25</td><td>64, 64, 64</td><td>#404040</td></tr>
+<tr><td>gray26</td><td class="dark" bgcolor="#424242">gray26</td><td>66, 66, 66</td><td>#424242</td></tr>
+<tr><td>gray27</td><td class="dark" bgcolor="#454545">gray27</td><td>69, 69, 69</td><td>#454545</td></tr>
+<tr><td>gray28</td><td class="dark" bgcolor="#474747">gray28</td><td>71, 71, 71</td><td>#474747</td></tr>
+<tr><td>gray29</td><td class="dark" bgcolor="#4a4a4a">gray29</td><td>74, 74, 74</td><td>#4a4a4a</td></tr>
+<tr><td>gray30</td><td class="dark" bgcolor="#4d4d4d">gray30</td><td>77, 77, 77</td><td>#4d4d4d</td></tr>
+<tr><td>gray31</td><td class="dark" bgcolor="#4f4f4f">gray31</td><td>79, 79, 79</td><td>#4f4f4f</td></tr>
+<tr><td>gray32</td><td class="dark" bgcolor="#525252">gray32</td><td>82, 82, 82</td><td>#525252</td></tr>
+<tr><td>gray33</td><td class="dark" bgcolor="#545454">gray33</td><td>84, 84, 84</td><td>#545454</td></tr>
+<tr><td>gray34</td><td class="dark" bgcolor="#575757">gray34</td><td>87, 87, 87</td><td>#575757</td></tr>
+<tr><td>gray35</td><td class="dark" bgcolor="#595959">gray35</td><td>89, 89, 89</td><td>#595959</td></tr>
+<tr><td>gray36</td><td class="dark" bgcolor="#5c5c5c">gray36</td><td>92, 92, 92</td><td>#5c5c5c</td></tr>
+<tr><td>gray37</td><td class="dark" bgcolor="#5e5e5e">gray37</td><td>94, 94, 94</td><td>#5e5e5e</td></tr>
+<tr><td>gray38</td><td class="dark" bgcolor="#616161">gray38</td><td>97, 97, 97</td><td>#616161</td></tr>
+<tr><td>gray39</td><td class="dark" bgcolor="#636363">gray39</td><td>99, 99, 99</td><td>#636363</td></tr>
+<tr><td>gray40</td><td class="dark" bgcolor="#666666">gray40</td><td>102, 102, 102</td><td>#666666</td></tr>
+<tr><td>gray41</td><td class="dark" bgcolor="#696969">gray41</td><td>105, 105, 105</td><td>#696969</td></tr>
+<tr><td>gray42</td><td class="light" bgcolor="#6b6b6b">gray42</td><td>107, 107, 107</td><td>#6b6b6b</td></tr>
+<tr><td>gray43</td><td class="light" bgcolor="#6e6e6e">gray43</td><td>110, 110, 110</td><td>#6e6e6e</td></tr>
+<tr><td>gray44</td><td class="light" bgcolor="#707070">gray44</td><td>112, 112, 112</td><td>#707070</td></tr>
+<tr><td>gray45</td><td class="light" bgcolor="#737373">gray45</td><td>115, 115, 115</td><td>#737373</td></tr>
+<tr><td>gray46</td><td class="light" bgcolor="#757575">gray46</td><td>117, 117, 117</td><td>#757575</td></tr>
+<tr><td>gray47</td><td class="light" bgcolor="#787878">gray47</td><td>120, 120, 120</td><td>#787878</td></tr>
+<tr><td>gray48</td><td class="light" bgcolor="#7a7a7a">gray48</td><td>122, 122, 122</td><td>#7a7a7a</td></tr>
+<tr><td>gray49</td><td class="light" bgcolor="#7d7d7d">gray49</td><td>125, 125, 125</td><td>#7d7d7d</td></tr>
+<tr><td>gray50</td><td class="light" bgcolor="#7f7f7f">gray50</td><td>127, 127, 127</td><td>#7f7f7f</td></tr>
+<tr><td>gray51</td><td class="light" bgcolor="#828282">gray51</td><td>130, 130, 130</td><td>#828282</td></tr>
+<tr><td>gray52</td><td class="light" bgcolor="#858585">gray52</td><td>133, 133, 133</td><td>#858585</td></tr>
+<tr><td>gray53</td><td class="light" bgcolor="#878787">gray53</td><td>135, 135, 135</td><td>#878787</td></tr>
+<tr><td>gray54</td><td class="light" bgcolor="#8a8a8a">gray54</td><td>138, 138, 138</td><td>#8a8a8a</td></tr>
+<tr><td>gray55</td><td class="light" bgcolor="#8c8c8c">gray55</td><td>140, 140, 140</td><td>#8c8c8c</td></tr>
+<tr><td>gray56</td><td class="light" bgcolor="#8f8f8f">gray56</td><td>143, 143, 143</td><td>#8f8f8f</td></tr>
+<tr><td>gray57</td><td class="light" bgcolor="#919191">gray57</td><td>145, 145, 145</td><td>#919191</td></tr>
+<tr><td>gray58</td><td class="light" bgcolor="#949494">gray58</td><td>148, 148, 148</td><td>#949494</td></tr>
+<tr><td>gray59</td><td class="light" bgcolor="#969696">gray59</td><td>150, 150, 150</td><td>#969696</td></tr>
+<tr><td>gray60</td><td class="light" bgcolor="#999999">gray60</td><td>153, 153, 153</td><td>#999999</td></tr>
+<tr><td>gray61</td><td class="light" bgcolor="#9c9c9c">gray61</td><td>156, 156, 156</td><td>#9c9c9c</td></tr>
+<tr><td>gray62</td><td class="light" bgcolor="#9e9e9e">gray62</td><td>158, 158, 158</td><td>#9e9e9e</td></tr>
+<tr><td>gray63</td><td class="light" bgcolor="#a1a1a1">gray63</td><td>161, 161, 161</td><td>#a1a1a1</td></tr>
+<tr><td>gray64</td><td class="light" bgcolor="#a3a3a3">gray64</td><td>163, 163, 163</td><td>#a3a3a3</td></tr>
+<tr><td>gray65</td><td class="light" bgcolor="#a6a6a6">gray65</td><td>166, 166, 166</td><td>#a6a6a6</td></tr>
+<tr><td>gray66</td><td class="light" bgcolor="#a8a8a8">gray66</td><td>168, 168, 168</td><td>#a8a8a8</td></tr>
+<tr><td>gray67</td><td class="light" bgcolor="#ababab">gray67</td><td>171, 171, 171</td><td>#ababab</td></tr>
+<tr><td>gray68</td><td class="light" bgcolor="#adadad">gray68</td><td>173, 173, 173</td><td>#adadad</td></tr>
+<tr><td>gray69</td><td class="light" bgcolor="#b0b0b0">gray69</td><td>176, 176, 176</td><td>#b0b0b0</td></tr>
+<tr><td>gray70</td><td class="light" bgcolor="#b3b3b3">gray70</td><td>179, 179, 179</td><td>#b3b3b3</td></tr>
+<tr><td>gray71</td><td class="light" bgcolor="#b5b5b5">gray71</td><td>181, 181, 181</td><td>#b5b5b5</td></tr>
+<tr><td>gray72</td><td class="light" bgcolor="#b8b8b8">gray72</td><td>184, 184, 184</td><td>#b8b8b8</td></tr>
+<tr><td>gray73</td><td class="light" bgcolor="#bababa">gray73</td><td>186, 186, 186</td><td>#bababa</td></tr>
+<tr><td>gray74</td><td class="light" bgcolor="#bdbdbd">gray74</td><td>189, 189, 189</td><td>#bdbdbd</td></tr>
+<tr><td>gray75</td><td class="light" bgcolor="#bfbfbf">gray75</td><td>191, 191, 191</td><td>#bfbfbf</td></tr>
+<tr><td>gray76</td><td class="light" bgcolor="#c2c2c2">gray76</td><td>194, 194, 194</td><td>#c2c2c2</td></tr>
+<tr><td>gray77</td><td class="light" bgcolor="#c4c4c4">gray77</td><td>196, 196, 196</td><td>#c4c4c4</td></tr>
+<tr><td>gray78</td><td class="light" bgcolor="#c7c7c7">gray78</td><td>199, 199, 199</td><td>#c7c7c7</td></tr>
+<tr><td>gray79</td><td class="light" bgcolor="#c9c9c9">gray79</td><td>201, 201, 201</td><td>#c9c9c9</td></tr>
+<tr><td>gray80</td><td class="light" bgcolor="#cccccc">gray80</td><td>204, 204, 204</td><td>#cccccc</td></tr>
+<tr><td>gray81</td><td class="light" bgcolor="#cfcfcf">gray81</td><td>207, 207, 207</td><td>#cfcfcf</td></tr>
+<tr><td>gray82</td><td class="light" bgcolor="#d1d1d1">gray82</td><td>209, 209, 209</td><td>#d1d1d1</td></tr>
+<tr><td>gray83</td><td class="light" bgcolor="#d4d4d4">gray83</td><td>212, 212, 212</td><td>#d4d4d4</td></tr>
+<tr><td>gray84</td><td class="light" bgcolor="#d6d6d6">gray84</td><td>214, 214, 214</td><td>#d6d6d6</td></tr>
+<tr><td>gray85</td><td class="light" bgcolor="#d9d9d9">gray85</td><td>217, 217, 217</td><td>#d9d9d9</td></tr>
+<tr><td>gray86</td><td class="light" bgcolor="#dbdbdb">gray86</td><td>219, 219, 219</td><td>#dbdbdb</td></tr>
+<tr><td>gray87</td><td class="light" bgcolor="#dedede">gray87</td><td>222, 222, 222</td><td>#dedede</td></tr>
+<tr><td>gray88</td><td class="light" bgcolor="#e0e0e0">gray88</td><td>224, 224, 224</td><td>#e0e0e0</td></tr>
+<tr><td>gray89</td><td class="light" bgcolor="#e3e3e3">gray89</td><td>227, 227, 227</td><td>#e3e3e3</td></tr>
+<tr><td>gray90</td><td class="light" bgcolor="#e5e5e5">gray90</td><td>229, 229, 229</td><td>#e5e5e5</td></tr>
+<tr><td>gray91</td><td class="light" bgcolor="#e8e8e8">gray91</td><td>232, 232, 232</td><td>#e8e8e8</td></tr>
+<tr><td>gray92</td><td class="light" bgcolor="#ebebeb">gray92</td><td>235, 235, 235</td><td>#ebebeb</td></tr>
+<tr><td>gray93</td><td class="light" bgcolor="#ededed">gray93</td><td>237, 237, 237</td><td>#ededed</td></tr>
+<tr><td>gray94</td><td class="light" bgcolor="#f0f0f0">gray94</td><td>240, 240, 240</td><td>#f0f0f0</td></tr>
+<tr><td>gray95</td><td class="light" bgcolor="#f2f2f2">gray95</td><td>242, 242, 242</td><td>#f2f2f2</td></tr>
+<tr><td>gray96</td><td class="light" bgcolor="#f5f5f5">gray96</td><td>245, 245, 245</td><td>#f5f5f5</td></tr>
+<tr><td>gray97</td><td class="light" bgcolor="#f7f7f7">gray97</td><td>247, 247, 247</td><td>#f7f7f7</td></tr>
+<tr><td>gray98</td><td class="light" bgcolor="#fafafa">gray98</td><td>250, 250, 250</td><td>#fafafa</td></tr>
+<tr><td>gray99</td><td class="light" bgcolor="#fcfcfc">gray99</td><td>252, 252, 252</td><td>#fcfcfc</td></tr>
+<tr><td>gray100</td><td class="light" bgcolor="#ffffff">gray100</td><td>255, 255, 255</td><td>#ffffff</td></tr>
+<tr><td>gray</td><td class="light" bgcolor="#7e7e7e">gray</td><td>126, 126, 126</td><td>#7e7e7e</td></tr>
+<tr><td>green</td><td class="dark" bgcolor="#008000">green</td><td>0, 128, 0</td><td>#008000</td></tr>
+<tr><td>greenyellow</td><td class="light" bgcolor="#adff2f">greenyellow</td><td>173, 255, 47</td><td>#adff2f</td></tr>
+<tr><td>grey</td><td class="light" bgcolor="#808080">grey</td><td>128, 128, 128</td><td>#808080</td></tr>
+<tr><td>honeydew</td><td class="light" bgcolor="#f0fff0">honeydew</td><td>240, 255, 240</td><td>#f0fff0</td></tr>
+<tr><td>hotpink</td><td class="light" bgcolor="#ff69b4">hotpink</td><td>255, 105, 180</td><td>#ff69b4</td></tr>
+<tr><td>indianred</td><td class="light" bgcolor="#cd5c5c">indianred</td><td>205, 92, 92</td><td>#cd5c5c</td></tr>
+<tr><td>indigo</td><td class="dark" bgcolor="#4b0082">indigo</td><td>75, 0, 130</td><td>#4b0082</td></tr>
+<tr><td>ivory</td><td class="light" bgcolor="#fffff0">ivory</td><td>255, 255, 240</td><td>#fffff0</td></tr>
+<tr><td>khaki</td><td class="light" bgcolor="#f0e68c">khaki</td><td>240, 230, 140</td><td>#f0e68c</td></tr>
+<tr><td>lavender</td><td class="light" bgcolor="#e6e6fa">lavender</td><td>230, 230, 250</td><td>#e6e6fa</td></tr>
+<tr><td>lavenderblush</td><td class="light" bgcolor="#fff0f5">lavenderblush</td><td>255, 240, 245</td><td>#fff0f5</td></tr>
+<tr><td>lawngreen</td><td class="light" bgcolor="#7cfc00">lawngreen</td><td>124, 252, 0</td><td>#7cfc00</td></tr>
+<tr><td>lemonchiffon</td><td class="light" bgcolor="#fffacd">lemonchiffon</td><td>255, 250, 205</td><td>#fffacd</td></tr>
+<tr><td>lightblue</td><td class="light" bgcolor="#add8e6">lightblue</td><td>173, 216, 230</td><td>#add8e6</td></tr>
+<tr><td>lightcoral</td><td class="light" bgcolor="#f08080">lightcoral</td><td>240, 128, 128</td><td>#f08080</td></tr>
+<tr><td>lightcyan</td><td class="light" bgcolor="#e0ffff">lightcyan</td><td>224, 255, 255</td><td>#e0ffff</td></tr>
+<tr><td>lightgoldenrodyellow</td><td class="light" bgcolor="#fafad2">lightgoldenrodyellow</td><td>250, 250, 210</td><td>#fafad2</td></tr>
+<tr><td>lightgray</td><td class="light" bgcolor="#d3d3d3">lightgray</td><td>211, 211, 211</td><td>#d3d3d3</td></tr>
+<tr><td>lightgreen</td><td class="light" bgcolor="#90ee90">lightgreen</td><td>144, 238, 144</td><td>#90ee90</td></tr>
+<tr><td>lightgrey</td><td class="light" bgcolor="#d3d3d3">lightgrey</td><td>211, 211, 211</td><td>#d3d3d3</td></tr>
+<tr><td>lightpink</td><td class="light" bgcolor="#ffb6c1">lightpink</td><td>255, 182, 193</td><td>#ffb6c1</td></tr>
+<tr><td>lightsalmon</td><td class="light" bgcolor="#ffa07a">lightsalmon</td><td>255, 160, 122</td><td>#ffa07a</td></tr>
+<tr><td>lightseagreen</td><td class="light" bgcolor="#20b2aa">lightseagreen</td><td>32, 178, 170</td><td>#20b2aa</td></tr>
+<tr><td>lightskyblue</td><td class="light" bgcolor="#87cefa">lightskyblue</td><td>135, 206, 250</td><td>#87cefa</td></tr>
+<tr><td>lightslategray</td><td class="light" bgcolor="#778899">lightslategray</td><td>119, 136, 153</td><td>#778899</td></tr>
+<tr><td>lightslategrey</td><td class="light" bgcolor="#778899">lightslategrey</td><td>119, 136, 153</td><td>#778899</td></tr>
+<tr><td>lightsteelblue</td><td class="light" bgcolor="#b0c4de">lightsteelblue</td><td>176, 196, 222</td><td>#b0c4de</td></tr>
+<tr><td>lightyellow</td><td class="light" bgcolor="#ffffe0">lightyellow</td><td>255, 255, 224</td><td>#ffffe0</td></tr>
+<tr><td>lime</td><td class="dark" bgcolor="#00ff00">lime</td><td>0, 255, 0</td><td>#00ff00</td></tr>
+<tr><td>limegreen</td><td class="dark" bgcolor="#32cd32">limegreen</td><td>50, 205, 50</td><td>#32cd32</td></tr>
+<tr><td>linen</td><td class="light" bgcolor="#faf0e6">linen</td><td>250, 240, 230</td><td>#faf0e6</td></tr>
+<tr><td>magenta</td><td class="light" bgcolor="#ff00ff">magenta</td><td>255, 0, 255</td><td>#ff00ff</td></tr>
+<tr><td>maroon</td><td class="dark" bgcolor="#800000">maroon</td><td>128, 0, 0</td><td>#800000</td></tr>
+<tr><td>mediumaquamarine</td><td class="light" bgcolor="#66cdaa">mediumaquamarine</td><td>102, 205, 170</td><td>#66cdaa</td></tr>
+<tr><td>mediumblue</td><td class="dark" bgcolor="#0000cd">mediumblue</td><td>0, 0, 205</td><td>#0000cd</td></tr>
+<tr><td>mediumorchid</td><td class="light" bgcolor="#ba55d3">mediumorchid</td><td>186, 85, 211</td><td>#ba55d3</td></tr>
+<tr><td>mediumpurple</td><td class="light" bgcolor="#9370db">mediumpurple</td><td>147, 112, 219</td><td>#9370db</td></tr>
+<tr><td>mediumseagreen</td><td class="light" bgcolor="#3cb371">mediumseagreen</td><td>60, 179, 113</td><td>#3cb371</td></tr>
+<tr><td>mediumslateblue</td><td class="light" bgcolor="#7b68ee">mediumslateblue</td><td>123, 104, 238</td><td>#7b68ee</td></tr>
+<tr><td>mediumspringgreen</td><td class="light" bgcolor="#00fa9a">mediumspringgreen</td><td>0, 250, 154</td><td>#00fa9a</td></tr>
+<tr><td>mediumturquoise</td><td class="light" bgcolor="#48d1cc">mediumturquoise</td><td>72, 209, 204</td><td>#48d1cc</td></tr>
+<tr><td>mediumvioletred</td><td class="light" bgcolor="#c71585">mediumvioletred</td><td>199, 21, 133</td><td>#c71585</td></tr>
+<tr><td>midnightblue</td><td class="dark" bgcolor="#191970">midnightblue</td><td>25, 25, 112</td><td>#191970</td></tr>
+<tr><td>mintcream</td><td class="light" bgcolor="#f5fffa">mintcream</td><td>245, 255, 250</td><td>#f5fffa</td></tr>
+<tr><td>mistyrose</td><td class="light" bgcolor="#ffe4e1">mistyrose</td><td>255, 228, 225</td><td>#ffe4e1</td></tr>
+<tr><td>moccasin</td><td class="light" bgcolor="#ffe4b5">moccasin</td><td>255, 228, 181</td><td>#ffe4b5</td></tr>
+<tr><td>navajowhite</td><td class="light" bgcolor="#ffdead">navajowhite</td><td>255, 222, 173</td><td>#ffdead</td></tr>
+<tr><td>navy</td><td class="dark" bgcolor="#000080">navy</td><td>0, 0, 128</td><td>#000080</td></tr>
+<tr><td>none</td><td class="dark" bgcolor="#000000">none</td><td>0, 0, 0</td><td>#000000</td></tr>
+<tr><td>oldlace</td><td class="light" bgcolor="#fdf5e6">oldlace</td><td>253, 245, 230</td><td>#fdf5e6</td></tr>
+<tr><td>olive</td><td class="dark" bgcolor="#808000">olive</td><td>128, 128, 0</td><td>#808000</td></tr>
+<tr><td>olivedrab</td><td class="dark" bgcolor="#6b8e23">olivedrab</td><td>107, 142, 35</td><td>#6b8e23</td></tr>
+<tr><td>orange</td><td class="light" bgcolor="#ffa500">orange</td><td>255, 165, 0</td><td>#ffa500</td></tr>
+<tr><td>orangered</td><td class="light" bgcolor="#ff4500">orangered</td><td>255, 69, 0</td><td>#ff4500</td></tr>
+<tr><td>orchid</td><td class="light" bgcolor="#da70d6">orchid</td><td>218, 112, 214</td><td>#da70d6</td></tr>
+<tr><td>palegoldenrod</td><td class="light" bgcolor="#eee8aa">palegoldenrod</td><td>238, 232, 170</td><td>#eee8aa</td></tr>
+<tr><td>palegreen</td><td class="light" bgcolor="#98fb98">palegreen</td><td>152, 251, 152</td><td>#98fb98</td></tr>
+<tr><td>paleturquoise</td><td class="light" bgcolor="#afeeee">paleturquoise</td><td>175, 238, 238</td><td>#afeeee</td></tr>
+<tr><td>palevioletred</td><td class="light" bgcolor="#db7093">palevioletred</td><td>219, 112, 147</td><td>#db7093</td></tr>
+<tr><td>papayawhip</td><td class="light" bgcolor="#ffefd5">papayawhip</td><td>255, 239, 213</td><td>#ffefd5</td></tr>
+<tr><td>peachpuff</td><td class="light" bgcolor="#ffdab9">peachpuff</td><td>255, 218, 185</td><td>#ffdab9</td></tr>
+<tr><td>peru</td><td class="light" bgcolor="#cd853f">peru</td><td>205, 133, 63</td><td>#cd853f</td></tr>
+<tr><td>pink</td><td class="light" bgcolor="#ffc0cb">pink</td><td>255, 192, 203</td><td>#ffc0cb</td></tr>
+<tr><td>plum</td><td class="light" bgcolor="#dda0dd">plum</td><td>221, 160, 221</td><td>#dda0dd</td></tr>
+<tr><td>powderblue</td><td class="light" bgcolor="#b0e0e6">powderblue</td><td>176, 224, 230</td><td>#b0e0e6</td></tr>
+<tr><td>purple</td><td class="dark" bgcolor="#800080">purple</td><td>128, 0, 128</td><td>#800080</td></tr>
+<tr><td>red</td><td class="dark" bgcolor="#ff0000">red</td><td>255, 0, 0</td><td>#ff0000</td></tr>
+<tr><td>rosybrown</td><td class="light" bgcolor="#bc8f8f">rosybrown</td><td>188, 143, 143</td><td>#bc8f8f</td></tr>
+<tr><td>royalblue</td><td class="light" bgcolor="#4169e1">royalblue</td><td>65, 105, 225</td><td>#4169e1</td></tr>
+<tr><td>saddlebrown</td><td class="dark" bgcolor="#8b4513">saddlebrown</td><td>139, 69, 19</td><td>#8b4513</td></tr>
+<tr><td>salmon</td><td class="light" bgcolor="#fa8072">salmon</td><td>250, 128, 114</td><td>#fa8072</td></tr>
+<tr><td>sandybrown</td><td class="light" bgcolor="#f4a460">sandybrown</td><td>244, 164, 96</td><td>#f4a460</td></tr>
+<tr><td>seagreen</td><td class="dark" bgcolor="#2e8b57">seagreen</td><td>46, 139, 87</td><td>#2e8b57</td></tr>
+<tr><td>seashell</td><td class="light" bgcolor="#fff5ee">seashell</td><td>255, 245, 238</td><td>#fff5ee</td></tr>
+<tr><td>sienna</td><td class="dark" bgcolor="#a0522d">sienna</td><td>160, 82, 45</td><td>#a0522d</td></tr>
+<tr><td>silver</td><td class="light" bgcolor="#c0c0c0">silver</td><td>192, 192, 192</td><td>#c0c0c0</td></tr>
+<tr><td>skyblue</td><td class="light" bgcolor="#87ceeb">skyblue</td><td>135, 206, 235</td><td>#87ceeb</td></tr>
+<tr><td>slateblue</td><td class="light" bgcolor="#6a5acd">slateblue</td><td>106, 90, 205</td><td>#6a5acd</td></tr>
+<tr><td>slategray</td><td class="light" bgcolor="#708090">slategray</td><td>112, 128, 144</td><td>#708090</td></tr>
+<tr><td>slategrey</td><td class="light" bgcolor="#708090">slategrey</td><td>112, 128, 144</td><td>#708090</td></tr>
+<tr><td>snow</td><td class="light" bgcolor="#fffafa">snow</td><td>255, 250, 250</td><td>#fffafa</td></tr>
+<tr><td>springgreen</td><td class="light" bgcolor="#00ff7f">springgreen</td><td>0, 255, 127</td><td>#00ff7f</td></tr>
+<tr><td>steelblue</td><td class="light" bgcolor="#4682b4">steelblue</td><td>70, 130, 180</td><td>#4682b4</td></tr>
+<tr><td>tan</td><td class="light" bgcolor="#d2b48c">tan</td><td>210, 180, 140</td><td>#d2b48c</td></tr>
+<tr><td>teal</td><td class="dark" bgcolor="#008080">teal</td><td>0, 128, 128</td><td>#008080</td></tr>
+<tr><td>thistle</td><td class="light" bgcolor="#d8bfd8">thistle</td><td>216, 191, 216</td><td>#d8bfd8</td></tr>
+<tr><td>tomato</td><td class="light" bgcolor="#ff6347">tomato</td><td>255, 99, 71</td><td>#ff6347</td></tr>
+<tr><td>turquoise</td><td class="light" bgcolor="#40e0d0">turquoise</td><td>64, 224, 208</td><td>#40e0d0</td></tr>
+<tr><td>violet</td><td class="light" bgcolor="#ee82ee">violet</td><td>238, 130, 238</td><td>#ee82ee</td></tr>
+<tr><td>wheat</td><td class="light" bgcolor="#f5deb3">wheat</td><td>245, 222, 179</td><td>#f5deb3</td></tr>
+<tr><td>white</td><td class="light" bgcolor="#ffffff">white</td><td>255, 255, 255</td><td>#ffffff</td></tr>
+<tr><td>whitesmoke</td><td class="light" bgcolor="#f5f5f5">whitesmoke</td><td>245, 245, 245</td><td>#f5f5f5</td></tr>
+<tr><td>yellow</td><td class="light" bgcolor="#ffff00">yellow</td><td>255, 255, 0</td><td>#ffff00</td></tr>
+<tr><td>yellowgreen</td><td class="light" bgcolor="#9acd32">yellowgreen</td><td>154, 205, 50</td><td>#9acd32</td></tr>
+
+</tbody>
+</table>
+</div>
+</body>
+</html>
+

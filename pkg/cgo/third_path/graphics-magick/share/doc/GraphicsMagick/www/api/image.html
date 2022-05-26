@@ -1,0 +1,1069 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.15.2: http://docutils.sourceforge.net/" />
+<title>image</title>
+<link rel="stylesheet" href="../docutils-api.css" type="text/css" />
+</head>
+<body>
+
+<div class="banner">
+<img src="../images/gm-107x76.png" alt="GraphicMagick logo" width="107" height="76" />
+<span class="title">GraphicsMagick</span>
+<form action="http://www.google.com/search">
+	<input type="hidden" name="domains" value="www.graphicsmagick.org" />
+	<input type="hidden" name="sitesearch" value="www.graphicsmagick.org" />
+    <span class="nowrap"><input type="text" name="q" size="25" maxlength="255" />&nbsp;<input type="submit" name="sa" value="Search" /></span>
+</form>
+</div>
+
+<div class="navmenu">
+<ul>
+<li><a href="../index.html">Home</a></li>
+<li><a href="../project.html">Project</a></li>
+<li><a href="../download.html">Download</a></li>
+<li><a href="../README.html">Install</a></li>
+<li><a href="../Hg.html">Source</a></li>
+<li><a href="../NEWS.html">News</a> </li>
+<li><a href="../utilities.html">Utilities</a></li>
+<li><a href="../programming.html">Programming</a></li>
+<li><a href="../reference.html">Reference</a></li>
+</ul>
+</div>
+<div class="document" id="image">
+<h1 class="title">image</h1>
+<h2 class="subtitle" id="miscellaneous-image-methods">Miscellaneous image methods</h2>
+
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#accessdefinition" id="id70">AccessDefinition</a></li>
+<li><a class="reference internal" href="#adddefinition" id="id71">AddDefinition</a></li>
+<li><a class="reference internal" href="#adddefinitions" id="id72">AddDefinitions</a></li>
+<li><a class="reference internal" href="#allocateimage" id="id73">AllocateImage</a></li>
+<li><a class="reference internal" href="#allocatenextimage" id="id74">AllocateNextImage</a></li>
+<li><a class="reference internal" href="#animateimages" id="id75">AnimateImages</a></li>
+<li><a class="reference internal" href="#appendimages" id="id76">AppendImages</a></li>
+<li><a class="reference internal" href="#catchimageexception" id="id77">CatchImageException</a></li>
+<li><a class="reference internal" href="#clippathimage" id="id78">ClipPathImage</a></li>
+<li><a class="reference internal" href="#compositepathimage" id="id79">CompositePathImage</a></li>
+<li><a class="reference internal" href="#cloneimage" id="id80">CloneImage</a></li>
+<li><a class="reference internal" href="#cloneimageinfo" id="id81">CloneImageInfo</a></li>
+<li><a class="reference internal" href="#destroyimage" id="id82">DestroyImage</a></li>
+<li><a class="reference internal" href="#destroyimageinfo" id="id83">DestroyImageInfo</a></li>
+<li><a class="reference internal" href="#displayimages" id="id84">DisplayImages</a></li>
+<li><a class="reference internal" href="#getimageclipmask" id="id85">GetImageClipMask</a></li>
+<li><a class="reference internal" href="#getimagecompositemask" id="id86">GetImageCompositeMask</a></li>
+<li><a class="reference internal" href="#getimageexception" id="id87">GetImageException</a></li>
+<li><a class="reference internal" href="#getimagegeometry" id="id88">GetImageGeometry</a></li>
+<li><a class="reference internal" href="#getimageinfo" id="id89">GetImageInfo</a></li>
+<li><a class="reference internal" href="#istaintimage" id="id90">IsTaintImage</a></li>
+<li><a class="reference internal" href="#modifyimage" id="id91">ModifyImage</a></li>
+<li><a class="reference internal" href="#referenceimage" id="id92">ReferenceImage</a></li>
+<li><a class="reference internal" href="#removedefinitions" id="id93">RemoveDefinitions</a></li>
+<li><a class="reference internal" href="#resetimagepage" id="id94">ResetImagePage</a></li>
+<li><a class="reference internal" href="#setimageex" id="id95">SetImageEx</a></li>
+<li><a class="reference internal" href="#setimage" id="id96">SetImage</a></li>
+<li><a class="reference internal" href="#setimagecolor" id="id97">SetImageColor</a></li>
+<li><a class="reference internal" href="#setimagecolorregion" id="id98">SetImageColorRegion</a></li>
+<li><a class="reference internal" href="#setimageclipmask" id="id99">SetImageClipMask</a></li>
+<li><a class="reference internal" href="#setimagecompositemask" id="id100">SetImageCompositeMask</a></li>
+<li><a class="reference internal" href="#setimagedepth" id="id101">SetImageDepth</a></li>
+<li><a class="reference internal" href="#setimageopacity" id="id102">SetImageOpacity</a></li>
+<li><a class="reference internal" href="#setimagetype" id="id103">SetImageType</a></li>
+<li><a class="reference internal" href="#stripimage" id="id104">StripImage</a></li>
+</ul>
+</div>
+<div class="section" id="accessdefinition">
+<h1><a class="toc-backref" href="#id70">AccessDefinition</a></h1>
+<div class="section" id="synopsis">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+const char *AccessDefinition( const <a class="reference external" href="../api/types.html#imageinfo">ImageInfo</a> *image_info, const char *magick,
+                              const char *key );
+</pre>
+</div>
+<div class="section" id="description">
+<h2>Description</h2>
+<p>AccessDefinition() searches the definitions for an entry matching the
+specified magick and key. NULL is returned if no matching entry is found.</p>
+<p>The format of the AccessDefinition method is:</p>
+<pre class="literal-block">
+const char *AccessDefinition( const <a class="reference external" href="../api/types.html#imageinfo">ImageInfo</a> *image_info, const char *magick,
+                              const char *key );
+</pre>
+<dl class="docutils">
+<dt>image_info:</dt>
+<dd>The image info.</dd>
+<dt>magick:</dt>
+<dd>Format ID. This is usually the same as the coder name.</dd>
+<dt>key:</dt>
+<dd>Key to search for.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="adddefinition">
+<h1><a class="toc-backref" href="#id71">AddDefinition</a></h1>
+<div class="section" id="id2">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+MagickPassFail AddDefinition( <a class="reference external" href="../api/types.html#imageinfo">ImageInfo</a> *image_info, const char *magick, const char *key,
+                              const char *value, <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+</div>
+<div class="section" id="id3">
+<h2>Description</h2>
+<p>AddDefinition() adds a key/value definition to the current map of
+definitions in ImageInfo. Definitions may be used by coders/decoders
+that read and write images.</p>
+<p>The format of the AddDefinition method is:</p>
+<pre class="literal-block">
+MagickPassFail AddDefinition( <a class="reference external" href="../api/types.html#imageinfo">ImageInfo</a> *image_info, const char *magick, const char *key,
+                              const char *value, <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+<dl class="docutils">
+<dt>image_info:</dt>
+<dd>The image info.</dd>
+<dt>magick:</dt>
+<dd>format/classification identifier</dd>
+<dt>key:</dt>
+<dd>subidentifier within format/classification</dd>
+<dt>value:</dt>
+<dd>definition value</dd>
+<dt>exception:</dt>
+<dd>Errors result in updates to this structure.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="adddefinitions">
+<h1><a class="toc-backref" href="#id72">AddDefinitions</a></h1>
+<div class="section" id="id4">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+MagickPassFail AddDefinitions( <a class="reference external" href="../api/types.html#imageinfo">ImageInfo</a> *image_info, const char *options );
+</pre>
+</div>
+<div class="section" id="id5">
+<h2>Description</h2>
+<p>AddDefinitions() adds definitions from a key/value based string to the current
+map of definitions in ImageInfo. Definitions may be used by coders/decoders
+that read and write images.</p>
+<p>The format of the AddDefinitions method is:</p>
+<pre class="literal-block">
+MagickPassFail AddDefinitions( <a class="reference external" href="../api/types.html#imageinfo">ImageInfo</a> *image_info, const char *options );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>image_info:</dt>
+<dd>The image info.</dd>
+<dt>options:</dt>
+<dd>List of key/value pairs to put in the definitions map. The
+format of the string is &quot;key1[=[value1]],key2[=[value2]],...&quot;. A missing
+value argument (with or without the equal sign) inserts an empty, zero
+length string as value for a key.</dd>
+<dt>exception:</dt>
+<dd>Errors result in updates to this structure.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="allocateimage">
+<h1><a class="toc-backref" href="#id73">AllocateImage</a></h1>
+<div class="section" id="id6">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#image">Image</a> *AllocateImage( const <a class="reference external" href="../api/types.html#imageinfo">ImageInfo</a> *image_info );
+</pre>
+</div>
+<div class="section" id="id7">
+<h2>Description</h2>
+<p>AllocateImage() returns a pointer to an image structure initialized to
+default values.</p>
+<p>The format of the AllocateImage method is:</p>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#image">Image</a> *AllocateImage( const <a class="reference external" href="../api/types.html#imageinfo">ImageInfo</a> *image_info );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>image_info:</dt>
+<dd>Many of the image default values are set from this
+structure.  For example, filename, compression, depth, background color,
+and others.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="allocatenextimage">
+<h1><a class="toc-backref" href="#id74">AllocateNextImage</a></h1>
+<div class="section" id="id8">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+void AllocateNextImage( const <a class="reference external" href="../api/types.html#imageinfo">ImageInfo</a> *image_info, <a class="reference external" href="../api/types.html#image">Image</a> *image );
+</pre>
+</div>
+<div class="section" id="id9">
+<h2>Description</h2>
+<p>Use AllocateNextImage() to initialize the next image in a sequence to
+default values.  The next member of image points to the newly allocated
+image.  If there is a memory shortage, next is assigned NULL.</p>
+<p>The format of the AllocateNextImage method is:</p>
+<pre class="literal-block">
+void AllocateNextImage( const <a class="reference external" href="../api/types.html#imageinfo">ImageInfo</a> *image_info, <a class="reference external" href="../api/types.html#image">Image</a> *image );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>image_info:</dt>
+<dd>Many of the image default values are set from this
+structure.  For example, filename, compression, depth, background color,
+and others.</dd>
+<dt>image:</dt>
+<dd>The image.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="animateimages">
+<h1><a class="toc-backref" href="#id75">AnimateImages</a></h1>
+<div class="section" id="id10">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+unsigned int AnimateImages( const <a class="reference external" href="../api/types.html#imageinfo">ImageInfo</a> *image_info, <a class="reference external" href="../api/types.html#image">Image</a> *image );
+</pre>
+</div>
+<div class="section" id="id11">
+<h2>Description</h2>
+<p>AnimateImages() repeatedly displays an image sequence to any X window
+screen.  It returns a value other than 0 if successful.  Check the
+exception member of image to determine the reason for any failure.</p>
+<p>The format of the AnimateImages method is:</p>
+<pre class="literal-block">
+unsigned int AnimateImages( const <a class="reference external" href="../api/types.html#imageinfo">ImageInfo</a> *image_info, <a class="reference external" href="../api/types.html#image">Image</a> *image );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>image_info:</dt>
+<dd>The image info.</dd>
+<dt>image:</dt>
+<dd>The image.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="appendimages">
+<h1><a class="toc-backref" href="#id76">AppendImages</a></h1>
+<div class="section" id="id12">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#image">Image</a> *AppendImages( const <a class="reference external" href="../api/types.html#image">Image</a> *image, const unsigned int stack,
+                     <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+</div>
+<div class="section" id="id13">
+<h2>Description</h2>
+<p>The AppendImages() method takes a set of images and appends them to each
+other top-to-bottom if the stack parameter is true, otherwise left-to-right.</p>
+<p>The format of the AppendImage method is:</p>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#image">Image</a> *AppendImages( const <a class="reference external" href="../api/types.html#image">Image</a> *image, const unsigned int stack,
+                     <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+<dl class="docutils">
+<dt>image:</dt>
+<dd>The image sequence.</dd>
+<dt>stack:</dt>
+<dd>A value other than 0 stacks the images top-to-bottom.</dd>
+<dt>exception:</dt>
+<dd>Return any errors or warnings in this structure.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="catchimageexception">
+<h1><a class="toc-backref" href="#id77">CatchImageException</a></h1>
+<div class="section" id="id14">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#exceptiontype">ExceptionType</a> CatchImageException( <a class="reference external" href="../api/types.html#image">Image</a> *image );
+</pre>
+</div>
+<div class="section" id="id15">
+<h2>Description</h2>
+<p>CatchImageException() returns if no exceptions are found in the image
+sequence, otherwise it determines the most severe exception and reports
+it as a warning or error depending on the severity.</p>
+<p>The format of the CatchImageException method is:</p>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#exceptiontype">ExceptionType</a> CatchImageException( <a class="reference external" href="../api/types.html#image">Image</a> *image );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>image:</dt>
+<dd>An image sequence.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="clippathimage">
+<h1><a class="toc-backref" href="#id78">ClipPathImage</a></h1>
+<div class="section" id="id16">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+unsigned int ClipPathImage( <a class="reference external" href="../api/types.html#image">Image</a> *image, const char *pathname,
+                            const unsigned int inside );
+</pre>
+</div>
+<div class="section" id="id17">
+<h2>Description</h2>
+<p>ClipPathImage() sets the image clip mask based any clipping path information
+if it exists.</p>
+<p>The format of the ClipPathImage method is:</p>
+<pre class="literal-block">
+unsigned int ClipPathImage( <a class="reference external" href="../api/types.html#image">Image</a> *image, const char *pathname,
+                            const unsigned int inside );
+</pre>
+<dl class="docutils">
+<dt>image:</dt>
+<dd>The image.</dd>
+<dt>pathname:</dt>
+<dd>name of clipping path resource. If name is preceded by #, use
+clipping path numbered by name.</dd>
+<dt>inside:</dt>
+<dd>if non-zero, later operations take effect inside clipping path.
+Otherwise later operations take effect outside clipping path.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="compositepathimage">
+<h1><a class="toc-backref" href="#id79">CompositePathImage</a></h1>
+<div class="section" id="id18">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+unsigned int CompositePathImage( <a class="reference external" href="../api/types.html#image">Image</a> *image, const char *pathname,
+                                 const unsigned int inside );
+</pre>
+</div>
+<div class="section" id="id19">
+<h2>Description</h2>
+<p>CompositePathImage() sets the image composite mask based any compositing path information
+if it exists.</p>
+<p>The format of the CompositePathImage method is:</p>
+<pre class="literal-block">
+unsigned int CompositePathImage( <a class="reference external" href="../api/types.html#image">Image</a> *image, const char *pathname,
+                                 const unsigned int inside );
+</pre>
+<dl class="docutils">
+<dt>image:</dt>
+<dd>The image.</dd>
+<dt>pathname:</dt>
+<dd>name of compositing path resource. If name is preceded by #, use
+compositing path numbered by name.</dd>
+<dt>inside:</dt>
+<dd>if non-zero, later operations take effect inside compositing path.
+Otherwise later operations take effect outside compositing path.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="cloneimage">
+<h1><a class="toc-backref" href="#id80">CloneImage</a></h1>
+<div class="section" id="id20">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#image">Image</a> *CloneImage( const <a class="reference external" href="../api/types.html#image">Image</a> *image, const unsigned long columns,
+                   const unsigned long rows, const unsigned int orphan,
+                   <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+</div>
+<div class="section" id="id21">
+<h2>Description</h2>
+<p>CloneImage() copies an image and returns the copy as a new image object.
+If the specified columns and rows is 0, an exact copy of the image is
+returned, otherwise the pixel data is undefined and must be initialized
+with the SetImagePixels() and SyncImagePixels() methods.  On failure,
+a NULL image is returned and exception describes the reason for the
+failure.</p>
+<p>The format of the CloneImage method is:</p>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#image">Image</a> *CloneImage( const <a class="reference external" href="../api/types.html#image">Image</a> *image, const unsigned long columns,
+                   const unsigned long rows, const unsigned int orphan,
+                   <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+<dl class="docutils">
+<dt>image:</dt>
+<dd>The image.</dd>
+<dt>columns:</dt>
+<dd>The number of columns in the cloned image.</dd>
+<dt>rows:</dt>
+<dd>The number of rows in the cloned image.</dd>
+<dt>orphan:</dt>
+<dd>With a value other than 0, the cloned image is an orphan.  An
+orphan is a stand-alone image that is not assocated with an image list.
+In effect, the next and previous members of the cloned image is set to
+NULL.</dd>
+<dt>exception:</dt>
+<dd>Return any errors or warnings in this structure.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="cloneimageinfo">
+<h1><a class="toc-backref" href="#id81">CloneImageInfo</a></h1>
+<div class="section" id="id22">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#imageinfo">ImageInfo</a> *CloneImageInfo( const <a class="reference external" href="../api/types.html#imageinfo">ImageInfo</a> *image_info );
+</pre>
+</div>
+<div class="section" id="id23">
+<h2>Description</h2>
+<p>CloneImageInfo() makes a copy of the given image info structure.  If
+NULL is specified, a new image info structure is created initialized to
+default values.</p>
+<p>The format of the CloneImageInfo method is:</p>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#imageinfo">ImageInfo</a> *CloneImageInfo( const <a class="reference external" href="../api/types.html#imageinfo">ImageInfo</a> *image_info );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>image_info:</dt>
+<dd>The image info.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="destroyimage">
+<h1><a class="toc-backref" href="#id82">DestroyImage</a></h1>
+<div class="section" id="id24">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+void DestroyImage( <a class="reference external" href="../api/types.html#image">Image</a> *image );
+</pre>
+</div>
+<div class="section" id="id25">
+<h2>Description</h2>
+<p>DestroyImage() dereferences an image, deallocating memory associated with
+the image if the reference count becomes zero.  There is no effect if the
+image pointer is null.</p>
+<p>The format of the DestroyImage method is:</p>
+<pre class="literal-block">
+void DestroyImage( <a class="reference external" href="../api/types.html#image">Image</a> *image );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>image:</dt>
+<dd>The image.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="destroyimageinfo">
+<h1><a class="toc-backref" href="#id83">DestroyImageInfo</a></h1>
+<div class="section" id="id26">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+void DestroyImageInfo( <a class="reference external" href="../api/types.html#imageinfo">ImageInfo</a> *image_info );
+</pre>
+</div>
+<div class="section" id="id27">
+<h2>Description</h2>
+<p>DestroyImageInfo() deallocates memory associated with a ImageInfo
+structure.</p>
+<p>The format of the DestroyImageInfo method is:</p>
+<pre class="literal-block">
+void DestroyImageInfo( <a class="reference external" href="../api/types.html#imageinfo">ImageInfo</a> *image_info );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>image_info:</dt>
+<dd>The image info.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="displayimages">
+<h1><a class="toc-backref" href="#id84">DisplayImages</a></h1>
+<div class="section" id="id28">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+MagickPassFail DisplayImages( const <a class="reference external" href="../api/types.html#imageinfo">ImageInfo</a> *image_info, <a class="reference external" href="../api/types.html#image">Image</a> *image );
+</pre>
+</div>
+<div class="section" id="id29">
+<h2>Description</h2>
+<p>DisplayImages() displays an image sequence to any X window screen.  It
+returns MagickPass if successful or MagickFail if not.  Check the
+exception member of image to determine the reason for any failure.</p>
+<p>The format of the DisplayImages method is:</p>
+<pre class="literal-block">
+MagickPassFail DisplayImages( const <a class="reference external" href="../api/types.html#imageinfo">ImageInfo</a> *image_info, <a class="reference external" href="../api/types.html#image">Image</a> *image );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>image_info:</dt>
+<dd>The image info.</dd>
+<dt>image:</dt>
+<dd>The image.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="getimageclipmask">
+<h1><a class="toc-backref" href="#id85">GetImageClipMask</a></h1>
+<div class="section" id="id30">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#image">Image</a> *GetImageClipMask( const <a class="reference external" href="../api/types.html#image">Image</a> *image, <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+</div>
+<div class="section" id="id31">
+<h2>Description</h2>
+<p>GetImageClipMask returns a reference-counted copy of the current image
+clip mask. This copy must be deallocated using DestroyImage() once it is
+no longer needed.  If the image does not have an associated clip mask,
+then NULL is returned.  Use SetImageClipMask() to add a clip mask to an
+image, or remove a clip mask.</p>
+<p>If a component of the clip mask is set to TransparentOpacity (maximum
+value) then the corresponding image pixel component will not be updated
+when SyncImagePixels() is applied. The clip mask may be used to constrain
+the results of an image processing operation to a region of the image.
+Regions outside those allowed by the clip mask may be processed, but only
+pixel quantums allowed by the clip mask will actually be updated.</p>
+<p>The clip mask protects the DirectClass pixels and PseudoClass pixel indexes
+from modification. The clip mask does <em>not</em> protect the image colormap since
+the image colormap is globally shared by all pixels in a PseudoClass image.</p>
+<p>The format of the GetImageClipMask method is</p>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#image">Image</a> *GetImageClipMask( const <a class="reference external" href="../api/types.html#image">Image</a> *image, <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+<p>A descripton of each parameter follows:</p>
+<dl class="docutils">
+<dt>image:</dt>
+<dd>The image.</dd>
+<dt>exception:</dt>
+<dd>Reason for failure.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="getimagecompositemask">
+<h1><a class="toc-backref" href="#id86">GetImageCompositeMask</a></h1>
+<div class="section" id="id32">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#image">Image</a> *GetImageCompositeMask( const <a class="reference external" href="../api/types.html#image">Image</a> *image, <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+</div>
+<div class="section" id="id33">
+<h2>Description</h2>
+<p>GetImageCompositeMask returns a reference-counted copy of the current image
+composite mask. This copy must be deallocated using DestroyImage() once it is
+no longer needed.  If the image does not have an associated composite mask,
+then NULL is returned.  Use SetImageCompositeMask() to add a composite mask to an
+image, or remove a composite mask.</p>
+<p>If a component of the composite mask is set to TransparentOpacity (maximum
+value) then the corresponding image pixel component will not be updated
+when SyncImagePixels() is applied. The composite mask may be used to constrain
+the results of an image processing operation to a region of the image.
+Regions outside those allowed by the composite mask may be processed, but only
+pixel quantums allowed by the composite mask will actually be updated.</p>
+<p>The composite mask protects the DirectClass pixels and PseudoClass pixel indexes
+from modification. The composite mask does <em>not</em> protect the image colormap since
+the image colormap is globally shared by all pixels in a PseudoClass image.</p>
+<p>The format of the GetImageCompositeMask method is</p>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#image">Image</a> *GetImageCompositeMask( const <a class="reference external" href="../api/types.html#image">Image</a> *image, <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+<p>A descripton of each parameter follows:</p>
+<dl class="docutils">
+<dt>image:</dt>
+<dd>The image.</dd>
+<dt>exception:</dt>
+<dd>Reason for failure.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="getimageexception">
+<h1><a class="toc-backref" href="#id87">GetImageException</a></h1>
+<div class="section" id="id34">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+void GetImageException( <a class="reference external" href="../api/types.html#image">Image</a> *image, <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+</div>
+<div class="section" id="id35">
+<h2>Description</h2>
+<p>GetImageException() traverses an image sequence and returns any
+error more severe than noted by the exception parameter.</p>
+<p>The format of the GetImageException method is:</p>
+<pre class="literal-block">
+void GetImageException( <a class="reference external" href="../api/types.html#image">Image</a> *image, <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>image:</dt>
+<dd>Specifies a pointer to a list of one or more images.</dd>
+<dt>exception:</dt>
+<dd>return the highest severity exception.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="getimagegeometry">
+<h1><a class="toc-backref" href="#id88">GetImageGeometry</a></h1>
+<div class="section" id="id36">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+int GetImageGeometry( const <a class="reference external" href="../api/types.html#image">Image</a> *image, const char *geometry,
+                      const unsigned int size_to_fit, <a class="reference external" href="../api/types.html#rectangleinfo">RectangleInfo</a> *region_info );
+</pre>
+</div>
+<div class="section" id="id37">
+<h2>Description</h2>
+<p>GetImageGeometry() returns a region as defined by the geometry string with
+respect to the image and its gravity.</p>
+<p>The format of the GetImageGeometry method is:</p>
+<pre class="literal-block">
+int GetImageGeometry( const <a class="reference external" href="../api/types.html#image">Image</a> *image, const char *geometry,
+                      const unsigned int size_to_fit, <a class="reference external" href="../api/types.html#rectangleinfo">RectangleInfo</a> *region_info );
+</pre>
+<dl class="docutils">
+<dt>flags:</dt>
+<dd>Method GetImageGeometry returns a bitmask that indicates
+which of the four values were located in the geometry string.</dd>
+<dt>geometry:</dt>
+<dd>The geometry (e.g. 100x100+10+10).</dd>
+<dt>size_to_fit:</dt>
+<dd>A value other than 0 means to scale the region so it
+fits within the specified width and height.</dd>
+<dt>region_info:</dt>
+<dd>The region as defined by the geometry string with
+respect to the image and its gravity.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="getimageinfo">
+<h1><a class="toc-backref" href="#id89">GetImageInfo</a></h1>
+<div class="section" id="id38">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+void GetImageInfo( <a class="reference external" href="../api/types.html#imageinfo">ImageInfo</a> *image_info );
+</pre>
+</div>
+<div class="section" id="id39">
+<h2>Description</h2>
+<p>GetImageInfo() initializes image_info to default values.</p>
+<p>The format of the GetImageInfo method is:</p>
+<pre class="literal-block">
+void GetImageInfo( <a class="reference external" href="../api/types.html#imageinfo">ImageInfo</a> *image_info );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>image_info:</dt>
+<dd>The image info.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="istaintimage">
+<h1><a class="toc-backref" href="#id90">IsTaintImage</a></h1>
+<div class="section" id="id40">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+unsigned int IsTaintImage( const <a class="reference external" href="../api/types.html#image">Image</a> *image );
+</pre>
+</div>
+<div class="section" id="id41">
+<h2>Description</h2>
+<p>IsTaintImage() returns a value other than 0 if any pixel in the image
+has been altered since it was first constituted.</p>
+<p>The format of the IsTaintImage method is:</p>
+<pre class="literal-block">
+unsigned int IsTaintImage( const <a class="reference external" href="../api/types.html#image">Image</a> *image );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>image:</dt>
+<dd>The image.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="modifyimage">
+<h1><a class="toc-backref" href="#id91">ModifyImage</a></h1>
+<div class="section" id="id42">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+ModifyImage( <a class="reference external" href="../api/types.html#image">Image</a> *image, <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+</div>
+<div class="section" id="id43">
+<h2>Description</h2>
+<p>ModifyImage() ensures that there is only a single reference to the image
+to be modified, updating the provided image pointer to point to a clone of
+the original image if necessary.</p>
+<p>The format of the ModifyImage method is:</p>
+<pre class="literal-block">
+ModifyImage( <a class="reference external" href="../api/types.html#image">Image</a> *image, <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>image:</dt>
+<dd>The image.</dd>
+<dt>exception:</dt>
+<dd>Return any errors or warnings in this structure.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="referenceimage">
+<h1><a class="toc-backref" href="#id92">ReferenceImage</a></h1>
+<div class="section" id="id44">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#image">Image</a> *ReferenceImage( <a class="reference external" href="../api/types.html#image">Image</a> *image );
+</pre>
+</div>
+<div class="section" id="id45">
+<h2>Description</h2>
+<p>ReferenceImage() increments the reference count associated with an image
+returning a pointer to the image.</p>
+<p>The format of the ReferenceImage method is:</p>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#image">Image</a> *ReferenceImage( <a class="reference external" href="../api/types.html#image">Image</a> *image );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>image:</dt>
+<dd>The image.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="removedefinitions">
+<h1><a class="toc-backref" href="#id93">RemoveDefinitions</a></h1>
+<div class="section" id="id46">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+void RemoveDefinitions( <a class="reference external" href="../api/types.html#imageinfo">ImageInfo</a> *image_info, const char *options );
+</pre>
+</div>
+<div class="section" id="id47">
+<h2>Description</h2>
+<p>RemoveDefinitions() removes definitions from the current map of definitions
+in ImageInfo. Definitions may be used by coders/decoders that read and
+write images. RemoveDefinitions() returns true only if the specified keys
+are present in the map and are actually removed.</p>
+<p>The format of the RemoveDefinitions method is:</p>
+<pre class="literal-block">
+void RemoveDefinitions( <a class="reference external" href="../api/types.html#imageinfo">ImageInfo</a> *image_info, const char *options );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>image_info:</dt>
+<dd>The image info.</dd>
+<dt>keys:</dt>
+<dd>List of keys to remove from the definitions map. The
+format of the string is &quot;key1,key2,...&quot;. A special key, '*', removes
+all the key/value pairs in the definitions map. This key always
+succeeds.</dd>
+<dt>exception:</dt>
+<dd>Errors result in updates to this structure.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="resetimagepage">
+<h1><a class="toc-backref" href="#id94">ResetImagePage</a></h1>
+<div class="section" id="id48">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+MagickPassFail ResetImagePage( <a class="reference external" href="../api/types.html#image">Image</a> *image, const char *page );
+</pre>
+</div>
+<div class="section" id="id49">
+<h2>Description</h2>
+<p>ResetImagePage adjusts the current page canvas and position based on a
+relative page specification.</p>
+<p>The format of the ResetImagePage method is:</p>
+<pre class="literal-block">
+MagickPassFail ResetImagePage( <a class="reference external" href="../api/types.html#image">Image</a> *image, const char *page );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>image:</dt>
+<dd>The image.</dd>
+<dt>page:</dt>
+<dd>Relative page offset adjustment</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="setimageex">
+<h1><a class="toc-backref" href="#id95">SetImageEx</a></h1>
+<div class="section" id="id50">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+void SetImageEx( <a class="reference external" href="../api/types.html#image">Image</a> *image, const <a class="reference external" href="../api/types.html#quantum">Quantum</a> opacity, <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+</div>
+<div class="section" id="id51">
+<h2>Description</h2>
+<p>SetImageEx() sets the red, green, and blue components of each pixel to
+the image background color and the opacity component to the specified
+level of transparency.  The background color is defined by the
+background_color member of the image.</p>
+<p>The format of the SetImageEx method is:</p>
+<pre class="literal-block">
+void SetImageEx( <a class="reference external" href="../api/types.html#image">Image</a> *image, const <a class="reference external" href="../api/types.html#quantum">Quantum</a> opacity, <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+<dl class="docutils">
+<dt>image:</dt>
+<dd>The image.</dd>
+<dt>opacity:</dt>
+<dd>Set each pixel to this level of transparency.</dd>
+<dt>exception:</dt>
+<dd>Report any exception here.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="setimage">
+<h1><a class="toc-backref" href="#id96">SetImage</a></h1>
+<div class="section" id="id52">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+void SetImage( <a class="reference external" href="../api/types.html#image">Image</a> *image, const <a class="reference external" href="../api/types.html#quantum">Quantum</a> opacity );
+</pre>
+</div>
+<div class="section" id="id53">
+<h2>Description</h2>
+<p>SetImage() sets the red, green, and blue components of each pixel to
+the image background color and the opacity component to the specified
+level of transparency.  The background color is defined by the
+background_color member of the image. Any exception is reported to
+the image.</p>
+<p>The format of the SetImage method is:</p>
+<pre class="literal-block">
+void SetImage( <a class="reference external" href="../api/types.html#image">Image</a> *image, const <a class="reference external" href="../api/types.html#quantum">Quantum</a> opacity );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>image:</dt>
+<dd>The image.</dd>
+<dt>opacity:</dt>
+<dd>Set each pixel to this level of transparency.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="setimagecolor">
+<h1><a class="toc-backref" href="#id97">SetImageColor</a></h1>
+<div class="section" id="id54">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+MagickPassFail SetImageColor( <a class="reference external" href="../api/types.html#image">Image</a> *image, const <a class="reference external" href="../api/types.html#pixelpacket">PixelPacket</a> *pixel );
+</pre>
+</div>
+<div class="section" id="id55">
+<h2>Description</h2>
+<p>SetImageColor() sets the red, green, blue and opacity components of each
+pixel to those from a specified pixel value.</p>
+<p>The format of the SetImageColor method is:</p>
+<pre class="literal-block">
+MagickPassFail SetImageColor( <a class="reference external" href="../api/types.html#image">Image</a> *image, const <a class="reference external" href="../api/types.html#pixelpacket">PixelPacket</a> *pixel );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>image:</dt>
+<dd>The image.</dd>
+<dt>pixel:</dt>
+<dd>Set each pixel in the image to this pixel's color and transparency.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="setimagecolorregion">
+<h1><a class="toc-backref" href="#id98">SetImageColorRegion</a></h1>
+<div class="section" id="id56">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+MagickPassFail SetImageColorRegion( <a class="reference external" href="../api/types.html#image">Image</a> *image, long x, long y, unsigned long width,
+                                    unsigned long height, const <a class="reference external" href="../api/types.html#pixelpacket">PixelPacket</a> *pixel );
+</pre>
+</div>
+<div class="section" id="id57">
+<h2>Description</h2>
+<p>SetImageColorRegion() sets the red, green, blue and opacity components
+of each pixel in the specified region to those from a specified pixel
+value.  Please note that it is assumed that the pixel value is in
+the same colorspace as the image.</p>
+<p>The format of the SetImageColorRegion method is:</p>
+<pre class="literal-block">
+MagickPassFail SetImageColorRegion( <a class="reference external" href="../api/types.html#image">Image</a> *image, long x, long y, unsigned long width,
+                                    unsigned long height, const <a class="reference external" href="../api/types.html#pixelpacket">PixelPacket</a> *pixel );
+</pre>
+<dl class="docutils">
+<dt>image:</dt>
+<dd>The image.</dd>
+<dt>pixel:</dt>
+<dd>Set each pixel in the image to this pixel's color and transparency.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="setimageclipmask">
+<h1><a class="toc-backref" href="#id99">SetImageClipMask</a></h1>
+<div class="section" id="id58">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+unsigned int SetImageClipMask( <a class="reference external" href="../api/types.html#image">Image</a> *image, const <a class="reference external" href="../api/types.html#image">Image</a> *clip_mask );
+</pre>
+</div>
+<div class="section" id="id59">
+<h2>Description</h2>
+<p>SetImageClipMask() associates a clip mask with the image.  The clip mask
+must be the same dimensions as the image.</p>
+<p>If a component of the clip mask is set to TransparentOpacity (maximum
+value) then the corresponding image pixel component will not be updated
+when SyncImagePixels() is applied. The clip mask may be used to constrain
+the results of an image processing operation to a region of the image.
+Regions outside those allowed by the clip mask may be processed, but only
+pixel quantums allowed by the clip mask will actually be updated.</p>
+<p>The clip mask protects the DirectClass pixels and PseudoClass pixel indexes
+from modification. The clip mask does <em>not</em> protect the image colormap since
+the image colormap is globally shared by all pixels in a PseudoClass image.</p>
+<p>The format of the SetImageClipMask method is:</p>
+<pre class="literal-block">
+unsigned int SetImageClipMask( <a class="reference external" href="../api/types.html#image">Image</a> *image, const <a class="reference external" href="../api/types.html#image">Image</a> *clip_mask );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>image:</dt>
+<dd>The image.</dd>
+<dt>clip_mask:</dt>
+<dd>The image clip mask.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="setimagecompositemask">
+<h1><a class="toc-backref" href="#id100">SetImageCompositeMask</a></h1>
+<div class="section" id="id60">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+unsigned int SetImageCompositeMask( <a class="reference external" href="../api/types.html#image">Image</a> *image, const <a class="reference external" href="../api/types.html#image">Image</a> *composite_mask );
+</pre>
+</div>
+<div class="section" id="id61">
+<h2>Description</h2>
+<p>SetImageCompositeMask() associates a composite mask with the image.  The mask
+must be the same dimensions as the image.</p>
+<p>If a component of the composite mask is set to TransparentOpacity (maximum
+value) then the corresponding image pixel component will not be updated
+when SyncImagePixels() is applied. The composite mask may be used to composite
+the results of an image processing operation to a region of the image.
+Regions outside those allowed by the composite mask may be processed, but only
+pixel quantums covered by the composite mask will actually be updated.</p>
+<p>The composite mask protects the DirectClass pixels and PseudoClass pixel indexes
+from modification. The composite mask does <em>not</em> protect the image colormap since
+the image colormap is globally shared by all pixels in a PseudoClass image.</p>
+<p>The format of the SetImageCompositeMask method is:</p>
+<pre class="literal-block">
+unsigned int SetImageCompositeMask( <a class="reference external" href="../api/types.html#image">Image</a> *image, const <a class="reference external" href="../api/types.html#image">Image</a> *composite_mask );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>image:</dt>
+<dd>The image.</dd>
+<dt>composite_mask:</dt>
+<dd>The image composite mask.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="setimagedepth">
+<h1><a class="toc-backref" href="#id101">SetImageDepth</a></h1>
+<div class="section" id="id62">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+unsigned int SetImageDepth( <a class="reference external" href="../api/types.html#image">Image</a> *image, const unsigned long depth );
+</pre>
+</div>
+<div class="section" id="id63">
+<h2>Description</h2>
+<p>SetImageDepth() translates the pixel quantums across all of the channels
+so that if they are later divided to fit within the specified bit
+depth, that no additional information is lost (i.e. no remainder will
+result from the division).  Note that any subsequent image processing is
+likely to increase the effective depth of the image channels. A non-zero
+value is returned if the operation is successful. Check the exception
+member of image to determine the cause for any failure.</p>
+<p>The format of the SetImageDepth method is:</p>
+<pre class="literal-block">
+unsigned int SetImageDepth( <a class="reference external" href="../api/types.html#image">Image</a> *image, const unsigned long depth );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>image:</dt>
+<dd>The image to update.</dd>
+<dt>depth:</dt>
+<dd>Desired image depth (range 1 to QuantumDepth)</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="setimageopacity">
+<h1><a class="toc-backref" href="#id102">SetImageOpacity</a></h1>
+<div class="section" id="id64">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+void SetImageOpacity( <a class="reference external" href="../api/types.html#image">Image</a> *image, const unsigned int opacity );
+</pre>
+</div>
+<div class="section" id="id65">
+<h2>Description</h2>
+<p>SetImageOpacity() attenuates the opacity channel of an image.  If the
+image pixels are opaque, they are set to the specified opacity level.
+Otherwise, the pixel opacity values are blended with the supplied
+transparency value.</p>
+<p>The format of the SetImageOpacity method is:</p>
+<pre class="literal-block">
+void SetImageOpacity( <a class="reference external" href="../api/types.html#image">Image</a> *image, const unsigned int opacity );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>image:</dt>
+<dd>The image.</dd>
+<dt>opacity:</dt>
+<dd>The level of transparency: 0 is fully opaque and MaxRGB is
+fully transparent.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="setimagetype">
+<h1><a class="toc-backref" href="#id103">SetImageType</a></h1>
+<div class="section" id="id66">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+( void )SetImageType( <a class="reference external" href="../api/types.html#image">Image</a> *image, const <a class="reference external" href="../api/types.html#imagetype">ImageType</a> image_type );
+</pre>
+</div>
+<div class="section" id="id67">
+<h2>Description</h2>
+<p>(void) SetImageType() sets the type of image.  Choose from these types:</p>
+<p>BilevelType, GrayscaleType, GrayscaleMatteType, PaletteType,
+PaletteMatteType, TrueColorType, TrueColorMatteType,
+ColorSeparationType, ColorSeparationMatteType, OptimizeType</p>
+<p>The format of the (void) SetImageType method is:</p>
+<pre class="literal-block">
+( void )SetImageType( <a class="reference external" href="../api/types.html#image">Image</a> *image, const <a class="reference external" href="../api/types.html#imagetype">ImageType</a> image_type );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>image:</dt>
+<dd>The image.</dd>
+<dt>image_type:</dt>
+<dd>Image type.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="stripimage">
+<h1><a class="toc-backref" href="#id104">StripImage</a></h1>
+<div class="section" id="id68">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+MagickPassFail StripImage( <a class="reference external" href="../api/types.html#image">Image</a> *image );
+</pre>
+</div>
+<div class="section" id="id69">
+<h2>Description</h2>
+<p>StripImage removes all profiles and text attributes from the image.</p>
+<p>The format of the StripImage method is:</p>
+<pre class="literal-block">
+MagickPassFail StripImage( <a class="reference external" href="../api/types.html#image">Image</a> *image );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>image:</dt>
+<dd>The image.</dd>
+</dl>
+</div>
+</div>
+</div>
+</body>
+</html>

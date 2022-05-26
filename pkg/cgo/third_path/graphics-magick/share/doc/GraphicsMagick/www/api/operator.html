@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.15.2: http://docutils.sourceforge.net/" />
+<title>operator</title>
+<link rel="stylesheet" href="../docutils-api.css" type="text/css" />
+</head>
+<body>
+
+<div class="banner">
+<img src="../images/gm-107x76.png" alt="GraphicMagick logo" width="107" height="76" />
+<span class="title">GraphicsMagick</span>
+<form action="http://www.google.com/search">
+	<input type="hidden" name="domains" value="www.graphicsmagick.org" />
+	<input type="hidden" name="sitesearch" value="www.graphicsmagick.org" />
+    <span class="nowrap"><input type="text" name="q" size="25" maxlength="255" />&nbsp;<input type="submit" name="sa" value="Search" /></span>
+</form>
+</div>
+
+<div class="navmenu">
+<ul>
+<li><a href="../index.html">Home</a></li>
+<li><a href="../project.html">Project</a></li>
+<li><a href="../download.html">Download</a></li>
+<li><a href="../README.html">Install</a></li>
+<li><a href="../Hg.html">Source</a></li>
+<li><a href="../NEWS.html">News</a> </li>
+<li><a href="../utilities.html">Utilities</a></li>
+<li><a href="../programming.html">Programming</a></li>
+<li><a href="../reference.html">Reference</a></li>
+</ul>
+</div>
+<div class="document" id="operator">
+<h1 class="title">operator</h1>
+<h2 class="subtitle" id="methods-to-apply-mathematic-or-boolean-operators-to-pixels">Methods to apply mathematic or boolean operators to pixels.</h2>
+
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#quantumoperatorimage" id="id3">QuantumOperatorImage</a></li>
+<li><a class="reference internal" href="#quantumoperatorregionimage" id="id4">QuantumOperatorRegionImage</a></li>
+</ul>
+</div>
+<div class="section" id="quantumoperatorimage">
+<h1><a class="toc-backref" href="#id3">QuantumOperatorImage</a></h1>
+<div class="section" id="synopsis">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+MagickPassFail QuantumOperatorImage( <a class="reference external" href="../api/types.html#image">Image</a> *image, <a class="reference external" href="../api/types.html#channeltype">ChannelType</a> channel,
+                                     QuantumOperator operator, double rvalue );
+</pre>
+</div>
+<div class="section" id="description">
+<h2>Description</h2>
+<p>QuantumOperatorImage() performs the requested arithmetic,
+bitwise-logical, or value operation on the selected channels of
+the entire image.  The AllChannels channel option operates on all
+color channels whereas the GrayChannel channel option treats the
+color channels as a grayscale intensity.</p>
+<p>These operations are on the DirectClass pixels of the image and do not
+update pixel indexes or colormap.</p>
+<p>The format of the QuantumOperatorImage method is:</p>
+<pre class="literal-block">
+MagickPassFail QuantumOperatorImage( <a class="reference external" href="../api/types.html#image">Image</a> *image, <a class="reference external" href="../api/types.html#channeltype">ChannelType</a> channel,
+                                     QuantumOperator operator, double rvalue );
+</pre>
+<dl class="docutils">
+<dt>image:</dt>
+<dd>The image.</dd>
+<dt>channel:</dt>
+<dd>Channel to operate on (RedChannel, CyanChannel,
+GreenChannel, MagentaChannel, BlueChannel, YellowChannel,
+OpacityChannel, BlackChannel, MatteChannel, AllChannels,
+GrayChannel).  The AllChannels type only updates color
+channels.  The GrayChannel type treats the color channels
+as if they represent an intensity.</dd>
+<dt>quantum_operator:</dt>
+<dd>Operator to use (AddQuantumOp, AndQuantumOp,
+AssignQuantumOp, DepthQuantumOp, DivideQuantumOp, GammaQuantumOp,
+LShiftQuantumOp, MultiplyQuantumOp,  NegateQuantumOp,
+NoiseGaussianQuantumOp, NoiseImpulseQuantumOp,
+NoiseLaplacianQuantumOp, NoiseMultiplicativeQuantumOp,
+NoisePoissonQuantumOp, NoiseRandomQuantumOp, NoiseUniformQuantumOp,
+OrQuantumOp, RShiftQuantumOp, SubtractQuantumOp,
+ThresholdBlackQuantumOp, ThresholdQuantumOp, ThresholdWhiteQuantumOp,
+ThresholdBlackNegateQuantumOp, ThresholdWhiteNegateQuantumOp,
+XorQuantumOp).</dd>
+<dt>rvalue:</dt>
+<dd>Operator argument.</dd>
+<dt>exception:</dt>
+<dd>Updated with error description.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="quantumoperatorregionimage">
+<h1><a class="toc-backref" href="#id4">QuantumOperatorRegionImage</a></h1>
+<div class="section" id="id1">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+MagickPassFail QuantumOperatorRegionImage( <a class="reference external" href="../api/types.html#image">Image</a> *image, long x, long y,
+                                           unsigned long columns, unsigned long rows,
+                                           <a class="reference external" href="../api/types.html#channeltype">ChannelType</a> channel,
+                                           QuantumOperator quantum_operator, double rvalue );
+</pre>
+</div>
+<div class="section" id="id2">
+<h2>Description</h2>
+<p>QuantumOperatorRegionImage() performs the requested arithmetic,
+bitwise-logical, or value operation on the selected channels of
+the image over the specified region. The AllChannels channel option
+operates on all color channels whereas the GrayChannel channel option
+treats the color channels as a grayscale intensity.</p>
+<p>These operations are on the DirectClass pixels of the image and do not
+update pixel indexes or colormap.</p>
+<p>The format of the QuantumOperatorRegionImage method is:</p>
+<pre class="literal-block">
+MagickPassFail QuantumOperatorRegionImage( <a class="reference external" href="../api/types.html#image">Image</a> *image, long x, long y,
+                                           unsigned long columns, unsigned long rows,
+                                           <a class="reference external" href="../api/types.html#channeltype">ChannelType</a> channel,
+                                           QuantumOperator quantum_operator, double rvalue );
+</pre>
+<dl class="docutils">
+<dt>image:</dt>
+<dd>The image.</dd>
+<dt>channel:</dt>
+<dd>Channel to operate on (RedChannel, CyanChannel,
+GreenChannel, MagentaChannel, BlueChannel, YellowChannel,
+OpacityChannel, BlackChannel, MatteChannel, AllChannels,
+GrayChannel).  The AllChannels type only updates color
+channels.  The GrayChannel type treats the color channels
+as if they represent an intensity.</dd>
+<dt>x:</dt>
+<dd>Ordinate of left row of region.</dd>
+<dt>y:</dt>
+<dd>Orginate of top column of region.</dd>
+<dt>columns:</dt>
+<dd>Width of region.</dd>
+<dt>rows:</dt>
+<dd>Height of region.</dd>
+<dt>quantum_operator:</dt>
+<dd>Operator to use (AddQuantumOp,AndQuantumOp,
+AssignQuantumOp, DepthQuantumOp, DivideQuantumOp, GammaQuantumOp,
+LShiftQuantumOp, MultiplyQuantumOp,  NegateQuantumOp,
+NoiseGaussianQuantumOp, NoiseImpulseQuantumOp,
+NoiseLaplacianQuantumOp, NoiseMultiplicativeQuantumOp,
+NoisePoissonQuantumOp, NoiseRandomQuantumOp, NoiseUniformQuantumOp,
+OrQuantumOp, RShiftQuantumOp, SubtractQuantumOp,
+ThresholdBlackQuantumOp, ThresholdQuantumOp, ThresholdWhiteQuantumOp,
+XorQuantumOp).</dd>
+<dt>rvalue:</dt>
+<dd>Operator argument.</dd>
+<dt>exception:</dt>
+<dd>Updated with error description.</dd>
+</dl>
+</div>
+</div>
+</div>
+</body>
+</html>
