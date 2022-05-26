@@ -33,8 +33,9 @@ generate:
 	@echo "  >  start to generate protocol buffers for target ${TARGET} in golang"
 	@bash -c "go generate  ../api/openapi-spec/proto.gen.go"
 	@echo "  >  start to generate protocol buffers by cpp"
-	@mkdir -p ${PROJECT_DIR}/build; cd ${PROJECT_DIR}/build; cmake .. --log-level "ERROR"
-	@cmake --build ${PROJECT_DIR}/build --log-level "ERROR" --target proto-${TARGET} -- -j `nproc`;
+	@mkdir -p ${PROJECT_DIR}/build; cd ${PROJECT_DIR}/build; cmake .. 
+# https://cmake.org/cmake/help/v3.5/manual/cmake.1.html
+# cmake -- Pass remaining options to the native tool.
+	@cmake --build ${PROJECT_DIR}/build --target proto-${TARGET} -- -j `nproc`;
 	@echo "  >  install generated protocol buffers by cpp"
 	@cd ${PROJECT_DIR}/build; cmake --install .
-	
