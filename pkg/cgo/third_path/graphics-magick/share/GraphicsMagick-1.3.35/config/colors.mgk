@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!--
+Color definition file.  Definitions in this file extend or replace the
+compiled in color definitions.  Use 'gm convert -list color' to list
+the currently available colors.  This file is optional and the
+software will still function if it is removed.
+
+For example:
+
+<colormap>
+  <color name="mycolor1" red="228" green="118" blue="33" compliance="None" />
+  <color name="mycolor2" red="228" green="123" blue="66" compliance="X11" />
+</colormap>
+-->
+<colormap>
+</colormap>

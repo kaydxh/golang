@@ -1,0 +1,1292 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.15.2: http://docutils.sourceforge.net/" />
+<title>GraphicsMagick Supported Formats</title>
+<link rel="stylesheet" href="docutils-articles.css" type="text/css" />
+</head>
+<body>
+
+<div class="banner">
+<img src="images/gm-107x76.png" alt="GraphicMagick logo" width="107" height="76" />
+<span class="title">GraphicsMagick</span>
+<form action="http://www.google.com/search">
+	<input type="hidden" name="domains" value="www.graphicsmagick.org" />
+	<input type="hidden" name="sitesearch" value="www.graphicsmagick.org" />
+    <span class="nowrap"><input type="text" name="q" size="25" maxlength="255" />&nbsp;<input type="submit" name="sa" value="Search" /></span>
+</form>
+</div>
+
+<div class="navmenu">
+<ul>
+<li><a href="index.html">Home</a></li>
+<li><a href="project.html">Project</a></li>
+<li><a href="download.html">Download</a></li>
+<li><a href="README.html">Install</a></li>
+<li><a href="Hg.html">Source</a></li>
+<li><a href="NEWS.html">News</a> </li>
+<li><a href="utilities.html">Utilities</a></li>
+<li><a href="programming.html">Programming</a></li>
+<li><a href="reference.html">Reference</a></li>
+</ul>
+</div>
+<div class="document" id="graphicsmagick-supported-formats">
+<h1 class="title">GraphicsMagick Supported Formats</h1>
+
+<!-- -*- mode: rst -*- -->
+<!-- This text is in reStucturedText format, so it may look a bit odd. -->
+<!-- See http://docutils.sourceforge.net/rst.html for details. -->
+<p>GraphicsMagick uses an ASCII string known as &quot;magick&quot; (e.g. &quot;GIF&quot;) to
+identify file formats, algorithms acting as formats, built-in images, and
+embedded profile types. After a file has been read or &quot;pinged&quot;, the
+associated magick string is stored in the &quot;magick&quot; member of the Image
+structure, and is reported in the default output of 'gm identify'.</p>
+<p>GraphicsMagick supports reading over 88 major file formats (not including
+sub-formats). The following table provides a summary of the supported
+image formats.</p>
+<table border="1" class="docutils">
+<caption>Supported Image Formats</caption>
+<colgroup>
+<col width="14%" />
+<col width="6%" />
+<col width="28%" />
+<col width="52%" />
+</colgroup>
+<tbody valign="top">
+<tr><td>Format</td>
+<td>Mode</td>
+<td>Description</td>
+<td>Notes</td>
+</tr>
+<tr><td>ART</td>
+<td>RW</td>
+<td>PFS: 1st Publisher</td>
+<td>Format originally used on the Macintosh
+(MacPaint?) and later used for PFS: 1st
+Publisher clip art.</td>
+</tr>
+<tr><td>AVS</td>
+<td>RW</td>
+<td>AVS X image</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td><a class="reference external" href="http://www.fileformat.info/format/bmp/egff.htm">BMP</a></td>
+<td>RW</td>
+<td>Microsoft Windows bitmap</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td><a class="reference external" href="http://www.fileformat.info/format/cals/egff.htm">CALS</a></td>
+<td>R</td>
+<td>Continuous Acquisition
+and Life-cycle Support
+Type 1 image</td>
+<td>Specified in MIL-R-28002 and MIL-PRF-28002.
+Standard blueprint archive format as used by the
+US military to replace microfiche.</td>
+</tr>
+<tr><td><a class="reference external" href="motion-picture.html">CIN</a></td>
+<td>R</td>
+<td>Kodak Cineon</td>
+<td>Kodak Cineon Log format (4.5 draft).
+Precursor to SMPTE <a class="reference external" href="motion-picture.html">DPX</a></td>
+</tr>
+<tr><td><a class="reference external" href="http://www.fileformat.info/format/cgm/egff.htm">CGM</a></td>
+<td>R</td>
+<td>Computer Graphics
+Metafile</td>
+<td>Requires <a class="reference external" href="http://www.agocg.ac.uk/train/cgm/ralcgm.htm">ralcgm</a> to render CGM files.</td>
+</tr>
+<tr><td>CMYK</td>
+<td>RW</td>
+<td>Raw cyan, magenta,
+yellow, and black samples</td>
+<td>Use -size, -depth, -endian, and -interlace to
+specify the image width, height, depth, byte
+order, and interlace.</td>
+</tr>
+<tr><td>CUR</td>
+<td>R</td>
+<td>Microsoft Cursor Icon</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>CUT</td>
+<td>R</td>
+<td>DR Halo</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>DCM</td>
+<td>R</td>
+<td>Digital Imaging and
+Communications in
+Medicine (<a class="reference external" href="http://dicom.nema.org/">DICOM</a>) image</td>
+<td>Used by the medical community for images like
+X-rays. See the NEMA <a class="reference external" href="http://dicom.nema.org/">DICOM</a> web site for more
+information. <a class="reference external" href="http://dicom.nema.org/">DICOM</a> is the basis for the
+<a class="reference external" href="http://www.geinspectiontechnologies.com/en/products/software/diconde.html">DICONDE</a> format.</td>
+</tr>
+<tr><td>DCX</td>
+<td>RW</td>
+<td>ZSoft IBM PC multi-page
+Paintbrush image</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>DIB</td>
+<td>RW</td>
+<td>Microsoft Windows Device
+Independent Bitmap</td>
+<td>DIB is a BMP file without the BMP header. Used
+to support embedded images in compound formats
+like WMF.</td>
+</tr>
+<tr><td><a class="reference external" href="motion-picture.html">DPX</a></td>
+<td>RW</td>
+<td>Digital Moving Picture
+Exchange</td>
+<td>RGB and grayscale are fully supported at 1, 8,
+10, 12, and 16 bits as per the <a class="reference external" href="http://www.smpte.org/">SMPTE</a> 268M-2003
+(V2.0) specification. This includes support for
+images stored in a planar (multi-element)
+configuration and Cineon Log RGB. Rec. 601 and
+709 YCbCr are fully supported with 4:4:4 and
+4:2:2 subsampling. <a class="reference external" href="motion-picture.html">DPX</a> is commonly used to
+store image frames in film and HDTV production.</td>
+</tr>
+<tr><td>EMF</td>
+<td>R</td>
+<td>Microsoft Enhanced
+Metafile (32-bit)</td>
+<td>Only available under Microsoft Windows.</td>
+</tr>
+<tr><td>EPDF</td>
+<td>RW</td>
+<td>Encapsulated Portable
+Document Format</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>EPI</td>
+<td>RW</td>
+<td>Adobe Encapsulated
+PostScript Interchange
+format</td>
+<td>Requires <a class="reference external" href="http://pages.cs.wisc.edu/~ghost/">Ghostscript</a> to read.</td>
+</tr>
+<tr><td>EPS</td>
+<td>RW</td>
+<td>Adobe Encapsulated
+PostScript</td>
+<td>Requires <a class="reference external" href="http://pages.cs.wisc.edu/~ghost/">Ghostscript</a> to read.</td>
+</tr>
+<tr><td>EPS2</td>
+<td>W</td>
+<td>Adobe Level II
+Encapsulated PostScript</td>
+<td>Requires <a class="reference external" href="http://pages.cs.wisc.edu/~ghost/">Ghostscript</a> to read.</td>
+</tr>
+<tr><td>EPS3</td>
+<td>W</td>
+<td>Adobe Level III
+Encapsulated PostScript</td>
+<td>Requires <a class="reference external" href="http://pages.cs.wisc.edu/~ghost/">Ghostscript</a> to read.</td>
+</tr>
+<tr><td>EPSF</td>
+<td>RW</td>
+<td>Adobe Encapsulated
+PostScript</td>
+<td>Requires <a class="reference external" href="http://pages.cs.wisc.edu/~ghost/">Ghostscript</a> to read.</td>
+</tr>
+<tr><td>EPSI</td>
+<td>RW</td>
+<td>Adobe Encapsulated
+PostScript Interchange
+format</td>
+<td>Requires <a class="reference external" href="http://pages.cs.wisc.edu/~ghost/">Ghostscript</a> to read.</td>
+</tr>
+<tr><td>EPT</td>
+<td>RW</td>
+<td>Adobe Encapsulated
+PostScript Interchange
+format with <a class="reference external" href="http://www.simplesystems.org/libtiff/">TIFF</a> preview</td>
+<td>Requires <a class="reference external" href="http://pages.cs.wisc.edu/~ghost/">Ghostscript</a> to read.</td>
+</tr>
+<tr><td>FAX</td>
+<td>RW</td>
+<td>Group 3 FAX</td>
+<td>Note that FAX machines use non-square pixels
+which are 1.5 times wider than they are tall but
+computer displays use square pixels, so FAX
+images may appear to be narrow unless they are
+explicitly resized using a resize specification
+of &quot;150x100%&quot;. Please note that this is <em>not</em> a
+<a class="reference external" href="http://www.simplesystems.org/libtiff/">TIFF</a> format.</td>
+</tr>
+<tr><td>FIG</td>
+<td>R</td>
+<td>FIG graphics format</td>
+<td>Requires TransFig.</td>
+</tr>
+<tr><td><a class="reference external" href="http://www.cv.nrao.edu/fits/">FITS</a></td>
+<td>RW</td>
+<td>Flexible Image Transport
+System</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>FPX</td>
+<td>RW</td>
+<td>FlashPix Format</td>
+<td>Requires FlashPix SDK.</td>
+</tr>
+<tr><td><a class="reference external" href="http://www.fileformat.info/format/gif/egff.htm">GIF</a></td>
+<td>RW</td>
+<td>CompuServe Graphics
+Interchange Format</td>
+<td><p class="first">8-bit RGB PseudoColor with up to 256 palette
+entires. Specify the format &quot;GIF87&quot; to write the
+older version 87a of the format.</p>
+<p class="last">The PNG format provides a superior set of
+features to GIF. Consider using PNG format
+rather than GIF if clients are able to read PNG.</p>
+</td>
+</tr>
+<tr><td>GRAY</td>
+<td>RW</td>
+<td>Raw gray samples</td>
+<td>Use -size, -depth, and -endian to specify the
+image width, height, depth, and byte order.</td>
+</tr>
+<tr><td>GRAYA</td>
+<td>RW</td>
+<td>Raw gray samples + alpha</td>
+<td>Use -size, -depth, and -endian to specify the
+image width, height, depth, and byte order.</td>
+</tr>
+<tr><td>HPGL</td>
+<td>R</td>
+<td>HP-GL plotter language</td>
+<td>Requires <a class="reference external" href="http://www.gnu.org/software/hp2xx/hp2xx.html">hp2xx</a> 3.2.0 or later</td>
+</tr>
+<tr><td>HTML</td>
+<td>RW</td>
+<td>Hypertext Markup Language
+with a client-side image
+map</td>
+<td>Also known as &quot;HTM&quot;. Requires html2ps to read.</td>
+</tr>
+<tr><td>ICO</td>
+<td>R</td>
+<td>Microsoft icon</td>
+<td>Also known as &quot;ICON&quot;.</td>
+</tr>
+<tr><td><a class="reference external" href="http://www.jpeg.org/">JBIG</a></td>
+<td>RW</td>
+<td>Joint Bi-level Image
+experts Group file
+interchange format</td>
+<td>Also known as &quot;BIE&quot; and &quot;JBG&quot;. Requires
+<a class="reference external" href="http://www.cl.cam.ac.uk/~mgk25/jbigkit/">jbigkit</a> 1.0 or later</td>
+</tr>
+<tr><td><a class="reference external" href="http://www.libmng.com/">JNG</a></td>
+<td>RW</td>
+<td><a class="reference external" href="http://www.jpeg.org/">JPEG</a> Network Graphics</td>
+<td><a class="reference external" href="http://www.jpeg.org/">JPEG</a> in a PNG-style wrapper with transparency.
+Requires libjpeg and libpng-1.0.2 or later,
+libpng-1.2.5 or later recommended.</td>
+</tr>
+<tr><td>JP2</td>
+<td>RW</td>
+<td>JPEG-2000 JP2 File Format
+Syntax</td>
+<td>Requires <a class="reference external" href="http://www.ece.uvic.ca/~mdadams/jasper/">jasper</a> 1.600.0 or later</td>
+</tr>
+<tr><td>JPC</td>
+<td>RW</td>
+<td>JPEG-2000 Code Stream
+Syntax</td>
+<td>Requires <a class="reference external" href="http://www.ece.uvic.ca/~mdadams/jasper/">jasper</a> 1.600.0 or later</td>
+</tr>
+<tr><td><a class="reference external" href="http://www.jpeg.org/">JPEG</a></td>
+<td>RW</td>
+<td>Joint Photographic
+Experts Group JFIF format</td>
+<td>Requires jpegsrc.v6b.tar.gz</td>
+</tr>
+<tr><td>MAN</td>
+<td>R</td>
+<td>Unix reference manual
+pages</td>
+<td>Requires that GNU groff and Ghostcript are
+installed.</td>
+</tr>
+<tr><td>MAT</td>
+<td>RW</td>
+<td>MATLAB image format</td>
+<td>Coming from <a class="reference external" href="http://www.mathworks.com/">MathWorks</a> for storing matrices.
+Currently supported types are 2D matrices: byte,
+word, double, complex and 3D matrices containing
+RGB [x*y*3] byte, word.</td>
+</tr>
+<tr><td><a class="reference external" href="miff.html">MIFF</a></td>
+<td>RW</td>
+<td>Magick image file format</td>
+<td>ImageMagick's lossless image format (with
+ASCII header) which ensures that no image
+attributes understood by ImageMagick or
+GraphicsMagick are lost.</td>
+</tr>
+<tr><td>MONO</td>
+<td>RW</td>
+<td>Bi-level bitmap in
+least-significant-byte
+first order</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td><a class="reference external" href="http://www.libmng.com/">MNG</a></td>
+<td>RW</td>
+<td>Multiple-image Network
+Graphics</td>
+<td>Requires libpng-1.0.2 or later, libpng-1.2.5 or
+later recommended.</td>
+</tr>
+<tr><td><a class="reference external" href="http://www.mpeg.org/">MPEG</a></td>
+<td>RW</td>
+<td>Motion Picture Experts
+Group file interchange
+format (version 1)</td>
+<td>Requires mpeg2vidcodec_v12.tar.gz.</td>
+</tr>
+<tr><td><a class="reference external" href="http://www.mpeg.org/">M2V</a></td>
+<td>RW</td>
+<td>Motion Picture Experts
+Group file interchange
+format (version 2)</td>
+<td>Requires mpeg2vidcodec_v12.tar.gz.</td>
+</tr>
+<tr><td>MPC</td>
+<td>RW</td>
+<td>Magick Persistent Cache
+image file format</td>
+<td><p class="first">The native &quot;in-memory&quot; GraphicsMagick
+uncompressed file format. This file format is
+identical to that used by Open ImageMagick to
+represent images in memory and is read in &quot;zero
+time&quot; via memory mapping. The MPC format is not
+portable and is not suitable as an archive
+format. It is suitable as an intermediate format
+for high-performance image processing.</p>
+<p class="last">The MPC format requires two files to support one
+image. When writing the MPC format, a file with
+extension &quot;.mpc&quot; is used to store information
+about the image, while a file with extension
+<tt class="docutils literal">.cache</tt> stores the image pixels. The storage
+space required by a MPC image (or an image in
+memory) may be calculated by the equation
+(QuantumDepth*Rows*Columns*5)/8.</p>
+</td>
+</tr>
+<tr><td>MSL</td>
+<td>RW</td>
+<td>Magick Scripting Language</td>
+<td>MSL is the XML-based scripting language
+supported by the conjure utility.</td>
+</tr>
+<tr><td><a class="reference external" href="http://www.fileformat.info/format/mtv/egff.htm">MTV</a></td>
+<td>RW</td>
+<td>MTV Raytracing image
+format</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>MVG</td>
+<td>RW</td>
+<td>Magick Vector Graphics.</td>
+<td>The native GraphicsMagick vector metafile
+format. A text file containing vector drawing
+commands accepted by <a class="reference external" href="convert.html">convert</a>'s -draw option.</td>
+</tr>
+<tr><td>OTB</td>
+<td>RW</td>
+<td>On-the-air Bitmap</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>P7</td>
+<td>RW</td>
+<td>Xv's Visual Schnauzer
+thumbnail format</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>PALM</td>
+<td>RW</td>
+<td>Palm pixmap</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td><a class="reference external" href="http://netpbm.sourceforge.net/doc/pam.html">PAM</a></td>
+<td>RW</td>
+<td>Portable Arbitrary Map
+format</td>
+<td>Superset of PNM (PPM, PGM, PPM) raw type formats.
+Supports bilevel, gray, RGB, CMYK, alpha channel.</td>
+</tr>
+<tr><td><a class="reference external" href="http://www.fileformat.info/format/pbm/egff.htm">PBM</a></td>
+<td>RW</td>
+<td>Portable bitmap format
+(black and white)</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>PCD</td>
+<td>RW</td>
+<td>Photo CD</td>
+<td>The maximum resolution written is 768x512 pixels
+since larger images require huffman compression
+(which is not supported).</td>
+</tr>
+<tr><td>PCDS</td>
+<td>RW</td>
+<td>Photo CD</td>
+<td>Decode with the sRGB color tables.</td>
+</tr>
+<tr><td>PCL</td>
+<td>W</td>
+<td>HP Page Control Language</td>
+<td>For output to HP laser printers.</td>
+</tr>
+<tr><td><a class="reference external" href="http://www.fileformat.info/format/pcx/egff.htm">PCX</a></td>
+<td>RW</td>
+<td>ZSoft IBM PC Paintbrush
+file</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>PDB</td>
+<td>RW</td>
+<td>Palm Database ImageViewer
+Format</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>PDF</td>
+<td>RW</td>
+<td>Portable Document Format</td>
+<td>Requires <a class="reference external" href="http://pages.cs.wisc.edu/~ghost/">Ghostscript</a> to read.</td>
+</tr>
+<tr><td>PFA</td>
+<td>R</td>
+<td>Postscript Type 1 font
+(ASCII)</td>
+<td>Opening as file returns a preview image.</td>
+</tr>
+<tr><td>PFB</td>
+<td>R</td>
+<td>Postscript Type 1 font
+(binary)</td>
+<td>Opening as file returns a preview image.</td>
+</tr>
+<tr><td>PGM</td>
+<td>RW</td>
+<td>Portable graymap format
+(gray scale)</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>PICON</td>
+<td>RW</td>
+<td>Personal Icon</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>PICT</td>
+<td>RW</td>
+<td>Apple Macintosh QuickDraw
+/PICT file</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>PIX</td>
+<td>R</td>
+<td>Alias/Wavefront RLE image
+format</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>PNG</td>
+<td>RW</td>
+<td>Portable Network Graphics</td>
+<td>Requires libpng-1.0.2 or later, libpng-1.2.5 or
+later recommended.</td>
+</tr>
+<tr><td>PNM</td>
+<td>RW</td>
+<td>Portable anymap</td>
+<td><p class="first">PNM is a family of formats supporting portable
+bitmaps (PBM) , graymaps (PGM), and pixmaps
+(PPM). There is no file format associated with
+pnm itself. If PNM is used as the output format
+specifier, then GraphicsMagick automatically
+selects the most appropriate format to represent
+the image.</p>
+<p class="last">The default is to write the binary version of
+the formats. Use '-quality 0' to write the
+ASCII version of the formats.</p>
+</td>
+</tr>
+<tr><td>PPM</td>
+<td>RW</td>
+<td>Portable pixmap format
+(color)</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>PS</td>
+<td>RW</td>
+<td>Adobe PostScript file</td>
+<td>Requires <a class="reference external" href="http://pages.cs.wisc.edu/~ghost/">Ghostscript</a> to read.</td>
+</tr>
+<tr><td>PS2</td>
+<td>RW</td>
+<td>Adobe Level II PostScript
+file</td>
+<td>Requires <a class="reference external" href="http://pages.cs.wisc.edu/~ghost/">Ghostscript</a> to read.</td>
+</tr>
+<tr><td>PS3</td>
+<td>RW</td>
+<td>Adobe Level III
+PostScript file</td>
+<td>Requires <a class="reference external" href="http://pages.cs.wisc.edu/~ghost/">Ghostscript</a> to read.</td>
+</tr>
+<tr><td>PSD</td>
+<td>RW</td>
+<td>Adobe Photoshop bitmap
+file</td>
+<td>PSD format is no longer supported since the
+1.3.24 release.</td>
+</tr>
+<tr><td>PTIF</td>
+<td>RW</td>
+<td>Pyramid encoded <a class="reference external" href="http://www.simplesystems.org/libtiff/">TIFF</a></td>
+<td>Multi-resolution <a class="reference external" href="http://www.simplesystems.org/libtiff/">TIFF</a> containing successively
+smaller versions of the image down to the size
+of an icon. The desired sub-image size may be
+specified when reading via the -size option.</td>
+</tr>
+<tr><td><a class="reference external" href="http://www.photoworks.com/">PWP</a></td>
+<td>R</td>
+<td>Seattle File Works
+multi-image file</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>RAS</td>
+<td>R</td>
+<td><a class="reference external" href="http://www.topol.cz/english/share/index.php3">TopoL</a> (GIS)</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>RAD</td>
+<td>R</td>
+<td><a class="reference external" href="http://radsite.lbl.gov/radiance/HOME.html">Radiance</a> image file</td>
+<td>Requires that ra_ppm from the <a class="reference external" href="http://radsite.lbl.gov/radiance/HOME.html">Radiance</a> software
+package be installed.</td>
+</tr>
+<tr><td>RGB</td>
+<td>RW</td>
+<td>Raw red, green, and blue
+samples</td>
+<td>Use -size, -depth, -endian, and -interlace to
+specify the image width, height, depth, byte
+order, and interlace.</td>
+</tr>
+<tr><td>RGBA</td>
+<td>RW</td>
+<td>Raw red, green, and blue
+and matte samples</td>
+<td>Use -size, -depth, -endian, and -interlace to
+specify the image width, height, depth, byte
+order, and interlace.</td>
+</tr>
+<tr><td>RLA</td>
+<td>R</td>
+<td>Alias/Wavefront image
+file</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>RLE</td>
+<td>R</td>
+<td>Utah Run length encoded
+image file</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td><a class="reference external" href="http://oreilly.com/www/centers/gff/formats/scitex/">SCT</a></td>
+<td>R</td>
+<td>Scitex Continuous Tone
+Picture</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td><a class="reference external" href="http://www.algonet.se/~cyren/sfw/">SFW</a></td>
+<td>R</td>
+<td>Seattle File Works image</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>SGI</td>
+<td>RW</td>
+<td>Irix RGB image</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>SHTML</td>
+<td>W</td>
+<td>Hypertext Markup Language
+client-side image map</td>
+<td>Used to write HTML clickable image maps based on
+a the output of montage or a format which
+supports tiled images such as <a class="reference external" href="miff.html">MIFF</a>.</td>
+</tr>
+<tr><td>SUN</td>
+<td>RW</td>
+<td>SUN Rasterfile</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td><a class="reference external" href="http://www.w3.org/Graphics/SVG/">SVG</a></td>
+<td>RW</td>
+<td>Scalable Vector Graphics</td>
+<td>Requires <a class="reference external" href="http://xmlsoft.org/">libxml2</a> and <a class="reference external" href="http://www.freetype.org/">freetype2</a>. Note that <a class="reference external" href="http://www.w3.org/Graphics/SVG/">SVG</a>
+is a very complex specification so support is
+still not complete.</td>
+</tr>
+<tr><td>TGA</td>
+<td>RW</td>
+<td>Truevision Targa image</td>
+<td>Also known as formats &quot;ICB&quot;, &quot;VDA&quot;, and &quot;VST&quot;.</td>
+</tr>
+<tr><td><a class="reference external" href="http://www.simplesystems.org/libtiff/">TIFF</a></td>
+<td>RW</td>
+<td>Tagged Image File Format</td>
+<td>Also known as &quot;TIF&quot;. Requires tiff-v3.5.4.tar.gz
+or later. Note that since the Unisys LZW patent
+recently expired, libtiff may still require a
+separate LZW patch in order to support LZW. LZW
+is included in libtiff by default since v3.7.0.</td>
+</tr>
+<tr><td>TIM</td>
+<td>R</td>
+<td>PSX TIM file</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>TTF</td>
+<td>R</td>
+<td>TrueType font file</td>
+<td>Requires <a class="reference external" href="http://www.freetype.org/">freetype2</a>. Opening as file returns a
+preview image.</td>
+</tr>
+<tr><td>TXT</td>
+<td>RW</td>
+<td>Raw text file</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>UIL</td>
+<td>W</td>
+<td>X-Motif UIL table</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>UYVY</td>
+<td>RW</td>
+<td>Interleaved YUV raw image</td>
+<td>Use -size command line option to specify width
+and height.</td>
+</tr>
+<tr><td>VICAR</td>
+<td>RW</td>
+<td>VICAR rasterfile format</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td><a class="reference external" href="http://www.fileformat.info/format/viff/egff.htm">VIFF</a></td>
+<td>RW</td>
+<td>Khoros Visualization
+Image File Format</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td><a class="reference external" href="http://www.openmobilealliance.org/Technical/wapindex.aspx">WBMP</a></td>
+<td>RW</td>
+<td>Wireless bitmap</td>
+<td>Support for uncompressed monochrome only.</td>
+</tr>
+<tr><td><a class="reference external" href="http://www.fileformat.info/format/wmf/egff.htm">WMF</a></td>
+<td>&nbsp;</td>
+<td>Windows Metafile</td>
+<td>Requires libwmf. By default, renders WMF files
+using the dimensions specified by the metafile
+header. Use the -density option to adjust the
+output resolution, and thereby adjust the ouput
+size. The default output resolution is 72DPI so
+&quot;-density 144&quot; results in an image twice as
+large as the default. Use -background <a class="reference external" href="color.html">color</a> to
+specify the WMF background color (default white)
+or -texture filename to specify a background
+texture image.</td>
+</tr>
+<tr><td><a class="reference external" href="http://www.fileformat.info/format/wpg/egff.htm">WPG</a></td>
+<td>R</td>
+<td>Word Perfect Graphics
+File</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td><a class="reference external" href="http://www.fileformat.info/format/xbm/egff.htm">XBM</a></td>
+<td>RW</td>
+<td>X Windows system bitmap,
+black and white only</td>
+<td>Used by the X Windows System to store monochrome
+icons.</td>
+</tr>
+<tr><td>XCF</td>
+<td>R</td>
+<td>GIMP image</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td><a class="reference external" href="http://www.fileformat.info/format/xpm/egff.htm">XPM</a></td>
+<td>RW</td>
+<td>X Windows system pixmap</td>
+<td>Also known as &quot;PM&quot;. Used by the X Windows System
+to store color icons.</td>
+</tr>
+<tr><td><a class="reference external" href="http://www.fileformat.info/format/xwd/egff.htm">XWD</a></td>
+<td>RW</td>
+<td>X Windows system window
+dump</td>
+<td>Used by the X Windows System to save/display
+screen dumps.</td>
+</tr>
+<tr><td>YUV</td>
+<td>RW</td>
+<td>CCIR 601 4:1:1</td>
+<td>Use -size command line option to specify width
+and height.</td>
+</tr>
+</tbody>
+</table>
+<p>GraphicsMagick supports a number of image format specifications which
+refer to images prepared via an algorithm, or input/output targets. The
+following table lists these pseudo image formats:</p>
+<table border="1" class="docutils">
+<caption>Pseudo Image Formats</caption>
+<colgroup>
+<col width="13%" />
+<col width="6%" />
+<col width="25%" />
+<col width="56%" />
+</colgroup>
+<tbody valign="top">
+<tr><td>Tag</td>
+<td>Mode</td>
+<td>Description</td>
+<td>Notes</td>
+</tr>
+<tr><td>CAPTION</td>
+<td>R</td>
+<td>Image caption</td>
+<td>Draws text on a canvas image with size specified by <cite>-size</cite>
+canvas color as specified by <cite>-background' (default white),
+and text stroke and fill colors as specified by `-stroke</cite>
+and <cite>-fill</cite>.  Capable of supporting multi-line text.</td>
+</tr>
+<tr><td>CLIPBOARD</td>
+<td>RW</td>
+<td>Windows Clipboard</td>
+<td>Only available under Microsoft Windows.</td>
+</tr>
+<tr><td>FRACTAL</td>
+<td>R</td>
+<td>Plasma fractal image</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>GRADIENT</td>
+<td>R</td>
+<td>Gradual passing from
+one shade to another</td>
+<td><p class="first">Returns a rendered gradient image using the
+specified image size. Specify the desired
+shading as part of the filename.  For example:</p>
+<blockquote class="last">
+<tt class="docutils literal"><span class="pre">gradient:red-blue</span></tt> or <tt class="docutils literal"><span class="pre">gradient:#F00-#00F</span></tt></blockquote>
+</td>
+</tr>
+<tr><td>HISTOGRAM</td>
+<td>W</td>
+<td>Histogram of the image</td>
+<td><p class="first">Generate an RGB histogram of the input image.
+The output format is always ImageMagick <a class="reference external" href="miff.html">MIFF</a>
+(regardless of file extension). For example:</p>
+<blockquote class="last">
+<tt class="docutils literal">gm convert file.tiff histogram:file.miff</tt></blockquote>
+</td>
+</tr>
+<tr><td>IDENTITY</td>
+<td>R</td>
+<td><a class="reference external" href="http://www.quelsolaar.com/technology/clut.html">Hald CLUT</a> identity
+image</td>
+<td>Generate a Hald CLUT identity image of a specified order.
+The order is specified as an argument like &quot;IDENTITY:8&quot;.
+The default order is eight, producing a 512x512 image.</td>
+</tr>
+<tr><td>INFO</td>
+<td>W</td>
+<td>Image descriptive
+information and
+statistics</td>
+<td>Writes descriptive information similar to 'identify'</td>
+</tr>
+<tr><td>LABEL</td>
+<td>R</td>
+<td>Text image format</td>
+<td>Specify the desired text as the filename (e.g.
+&quot;label:This is a label&quot;).</td>
+</tr>
+<tr><td>MAP</td>
+<td>RW</td>
+<td>Colormap intensities
+and indices</td>
+<td>Set -depth to set the sample size of the
+intensities; indices are 16-bit if colors &gt;
+256.</td>
+</tr>
+<tr><td>MATTE</td>
+<td>W</td>
+<td>MATTE format</td>
+<td>Write only.</td>
+</tr>
+<tr><td>NULL</td>
+<td>RW</td>
+<td>NULL image</td>
+<td>Useful for creating blank tiles with montage
+(use &quot;NULL:&quot;). Also useful as an output format
+when evaluating image read performance.</td>
+</tr>
+<tr><td>PLASMA</td>
+<td>R</td>
+<td>Plasma fractal image</td>
+<td><p class="first">Creates an image using the plasma fractal. For
+example:</p>
+<blockquote class="last">
+<tt class="docutils literal">gm convert <span class="pre">-size</span> 640x480 plasma: file.miff</tt></blockquote>
+</td>
+</tr>
+<tr><td>PREVIEW</td>
+<td>W</td>
+<td>Show a preview an image
+enhancement, effect, or
+f/x</td>
+<td><p class="first">Creates a preview montage of images prepared
+over a parameteric range in order to assist
+with parameter selection. Specify the desired
+preview type via the -preview option). The
+output file is always written in the
+ImageMagick <a class="reference external" href="miff.html">MIFF</a> format.</p>
+<p>For example:</p>
+<blockquote class="last">
+<tt class="docutils literal">gm convert file.tiff <span class="pre">-preview</span> gamma preview:file.miff</tt></blockquote>
+</td>
+</tr>
+<tr><td>PRINT</td>
+<td>W</td>
+<td>Send image to your
+computer printer</td>
+<td>Unix users may set the PRINTER (for 'lp') or
+LPDEST (for 'lpr') environment variables to
+select the desired printer.</td>
+</tr>
+<tr><td>SCAN</td>
+<td>R</td>
+<td>Import image from a
+scanner device</td>
+<td>Requires <a class="reference external" href="http://www.mostang.com/sane/">SANE</a> Specify the device name and path
+as the filename (e.g. &quot;scan:mustek:/dev/scanner&quot;).</td>
+</tr>
+<tr><td>STEGANO</td>
+<td>R</td>
+<td>Steganographic image</td>
+<td>Use -size command line option to specify width,
+height, and offset of the steganographic image</td>
+</tr>
+<tr><td>TILE</td>
+<td>R</td>
+<td>Tiled image</td>
+<td><p class="first">Create a tiled version of an image at by tiling
+a image. Use -size to specify the tiled image
+size. The image is specified similar to
+&quot;TILE:image.miff&quot;.
+For example:</p>
+<blockquote class="last">
+<tt class="docutils literal">gm convert <span class="pre">-size</span> 800x600 tile:image.jpg out.jpg</tt></blockquote>
+</td>
+</tr>
+<tr><td>VID</td>
+<td>RW</td>
+<td>Visual Image Directory</td>
+<td><p class="first">Used to create a thumbnailed directory (tiled
+thumbnails) of a set of images which may be
+used to select images to view via the display
+program, or saved to a <a class="reference external" href="miff.html">MIFF</a> or SHTML file.
+For example:</p>
+<blockquote class="last">
+<tt class="docutils literal">gm convert <span class="pre">vid:&quot;*.jpg&quot;</span> index.miff</tt></blockquote>
+</td>
+</tr>
+<tr><td>WIN</td>
+<td>RW</td>
+<td>Select image from or
+display image to your
+computer screen</td>
+<td><p class="first">Only supported under Microsoft Windows. For example:</p>
+<blockquote class="last">
+<tt class="docutils literal">gm convert file.jpg <span class="pre">-rotate</span> 90 win:</tt></blockquote>
+</td>
+</tr>
+<tr><td>X</td>
+<td>RW</td>
+<td>Select image from or
+display image to your X
+server screen</td>
+<td><p class="first">Also see the import and display programs. For example:</p>
+<blockquote class="last">
+<tt class="docutils literal">gm convert file.jpg <span class="pre">-rotate</span> 90 x:</tt></blockquote>
+</td>
+</tr>
+<tr><td>XC</td>
+<td>R</td>
+<td>Canvas image of
+specified color</td>
+<td><p class="first">Useful to create solid color &quot;canvas&quot; images.
+Use -size and -depth to specify the image
+width, height, and depth. Example XC color
+specifications include &quot;XC:red&quot; and &quot;XC:#
+FF0000&quot;.  See the <a class="reference external" href="color.html">color</a> reference for the
+numeric values used for named colors.  For example:</p>
+<blockquote class="last">
+<tt class="docutils literal">gm convert <span class="pre">-size</span> 640x480 xc:red red.jpg</tt></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<p>GraphicsMagick includes a number of built-in (embedded) images which may
+be referenced as if they were an image file. The <tt class="docutils literal">IMAGE:</tt> format tag may
+be used via the syntax &quot;IMAGE:name&quot; to request an embedded image (e.g.
+<tt class="docutils literal">IMAGE:LOGO</tt>). For backwards compatibility, the image specifications
+<tt class="docutils literal">GRANITE:</tt>, <tt class="docutils literal">LOGO:</tt>, <tt class="docutils literal">NETSCAPE:</tt>, and <tt class="docutils literal">ROSE:</tt> may also be used to request
+images with those names.</p>
+<p>A new canvas image of a specified size may be created using one of these pattern
+images using a command similar to:</p>
+<pre class="literal-block">
+gm convert -size 640x480 PATTERN:BRICKS bricks.miff
+</pre>
+<p>The TILE: virtual image type may also be used similar to:</p>
+<pre class="literal-block">
+gm convert -size 640x480 TILE:IMAGE:BRICKS bricks.miff
+</pre>
+<table border="1" class="docutils">
+<caption>Built-In Images And Patterns</caption>
+<colgroup>
+<col width="22%" />
+<col width="37%" />
+<col width="41%" />
+</colgroup>
+<tbody valign="top">
+<tr><td>Name</td>
+<td>Description</td>
+<td>Notes/Sample</td>
+</tr>
+<tr><td>BRICKS</td>
+<td>16x16 brick pattern</td>
+<td><img alt="bricks" src="images/patterns/bricks.png" /></td>
+</tr>
+<tr><td>CHECKERBOARD</td>
+<td>30x30 checkerboard pattern</td>
+<td><img alt="checkerboard" src="images/patterns/checkerboard.png" /></td>
+</tr>
+<tr><td>CIRCLES</td>
+<td>16x16 circles pattern</td>
+<td><img alt="circles" src="images/patterns/circles.png" /></td>
+</tr>
+<tr><td>CROSSHATCH</td>
+<td>8x4 crosshatch pattern</td>
+<td><img alt="crosshatch" src="images/patterns/crosshatch.png" /></td>
+</tr>
+<tr><td>CROSSHATCH30</td>
+<td>8x4 crosshatch pattern with lines
+at 30 degrees.</td>
+<td><img alt="crosshatch30" src="images/patterns/crosshatch30.png" /></td>
+</tr>
+<tr><td>CROSSHATCH45</td>
+<td>8x4 crosshatch pattern with lines
+at 45 degrees.</td>
+<td><img alt="crosshatch45" src="images/patterns/crosshatch45.png" /></td>
+</tr>
+<tr><td>FISHSCALES</td>
+<td>16x8 fish scales pattern</td>
+<td><img alt="fishscales" src="images/patterns/fishscales.png" /></td>
+</tr>
+<tr><td>GRANITE</td>
+<td>128x128 granite texture pattern</td>
+<td><img alt="granite" src="images/patterns/granite.png" /></td>
+</tr>
+<tr><td>GRAY0</td>
+<td>32x32 0% intensity gray</td>
+<td><img alt="gray0" src="images/patterns/gray0.png" /></td>
+</tr>
+<tr><td>GRAY5</td>
+<td>32x32 5% intensity gray</td>
+<td><img alt="gray5" src="images/patterns/gray5.png" /></td>
+</tr>
+<tr><td>GRAY10</td>
+<td>32x32 10% intensity gray</td>
+<td><img alt="gray10" src="images/patterns/gray10.png" /></td>
+</tr>
+<tr><td>GRAY15</td>
+<td>32x32 15% intensity gray</td>
+<td><img alt="gray15" src="images/patterns/gray15.png" /></td>
+</tr>
+<tr><td>GRAY20</td>
+<td>32x32 20% intensity gray</td>
+<td><img alt="gray20" src="images/patterns/gray20.png" /></td>
+</tr>
+<tr><td>GRAY25</td>
+<td>32x32 25% intensity gray</td>
+<td><img alt="gray25" src="images/patterns/gray25.png" /></td>
+</tr>
+<tr><td>GRAY30</td>
+<td>32x32 30% intensity gray</td>
+<td><img alt="gray30" src="images/patterns/gray30.png" /></td>
+</tr>
+<tr><td>GRAY35</td>
+<td>32x32 35% intensity gray</td>
+<td><img alt="gray35" src="images/patterns/gray35.png" /></td>
+</tr>
+<tr><td>GRAY40</td>
+<td>32x32 40% intensity gray</td>
+<td><img alt="gray40" src="images/patterns/gray40.png" /></td>
+</tr>
+<tr><td>GRAY45</td>
+<td>32x32 45% intensity gray</td>
+<td><img alt="gray45" src="images/patterns/gray45.png" /></td>
+</tr>
+<tr><td>GRAY50</td>
+<td>32x32 50% intensity gray</td>
+<td><img alt="gray50" src="images/patterns/gray50.png" /></td>
+</tr>
+<tr><td>GRAY55</td>
+<td>32x32 55% intensity gray</td>
+<td><img alt="gray55" src="images/patterns/gray55.png" /></td>
+</tr>
+<tr><td>GRAY60</td>
+<td>32x32 60% intensity gray</td>
+<td><img alt="gray60" src="images/patterns/gray60.png" /></td>
+</tr>
+<tr><td>GRAY65</td>
+<td>32x32 65% intensity gray</td>
+<td><img alt="gray65" src="images/patterns/gray65.png" /></td>
+</tr>
+<tr><td>GRAY70</td>
+<td>32x32 70% intensity gray</td>
+<td><img alt="gray70" src="images/patterns/gray70.png" /></td>
+</tr>
+<tr><td>GRAY75</td>
+<td>32x32 75% intensity gray</td>
+<td><img alt="gray75" src="images/patterns/gray75.png" /></td>
+</tr>
+<tr><td>GRAY80</td>
+<td>32x32 80% intensity gray</td>
+<td><img alt="gray80" src="images/patterns/gray80.png" /></td>
+</tr>
+<tr><td>GRAY85</td>
+<td>32x32 85% intensity gray</td>
+<td><img alt="gray85" src="images/patterns/gray85.png" /></td>
+</tr>
+<tr><td>GRAY90</td>
+<td>32x32 90% intensity gray</td>
+<td><img alt="gray90" src="images/patterns/gray90.png" /></td>
+</tr>
+<tr><td>GRAY95</td>
+<td>32x32 95% intensity gray</td>
+<td><img alt="gray95" src="images/patterns/gray95.png" /></td>
+</tr>
+<tr><td>GRAY100</td>
+<td>32x32 100% intensity gray</td>
+<td><img alt="gray100" src="images/patterns/gray100.png" /></td>
+</tr>
+<tr><td>HEXAGONS</td>
+<td>30x18 hexagon pattern</td>
+<td><img alt="hexagons" src="images/patterns/hexagons.png" /></td>
+</tr>
+<tr><td>HORIZONTAL</td>
+<td>8x4 horizontal line pattern</td>
+<td><img alt="horizontal" src="images/patterns/horizontal.png" /></td>
+</tr>
+<tr><td>HORIZONTALSAW</td>
+<td>16x8 horizontal saw-tooth pattern</td>
+<td><img alt="horizontalsaw" src="images/patterns/horizontalsaw.png" /></td>
+</tr>
+<tr><td>HS_BDIAGONAL</td>
+<td>8x8 backward diagonal line pattern
+(45 degrees slope)</td>
+<td><img alt="hs_bdiagonal" src="images/patterns/hs_bdiagonal.png" /></td>
+</tr>
+<tr><td>HS_CROSS</td>
+<td>8x8 cross line pattern</td>
+<td><img alt="hs_cross" src="images/patterns/hs_cross.png" /></td>
+</tr>
+<tr><td>HS_DIAGCROSS</td>
+<td>8x8 diagonal line cross pattern
+(45 degrees slope)</td>
+<td><img alt="hs_diagcross" src="images/patterns/hs_diagcross.png" /></td>
+</tr>
+<tr><td>HS_FDIAGONAL</td>
+<td>8x8 forward diagonal line pattern
+(45 degrees slope)</td>
+<td><img alt="hs_fdiagonal" src="images/patterns/hs_fdiagonal.png" /></td>
+</tr>
+<tr><td>HS_HORIZONTAL</td>
+<td>8x8 horizontal line pattern</td>
+<td><img alt="hs_horizontal" src="images/patterns/hs_horizontal.png" /></td>
+</tr>
+<tr><td>HS_VERTICAL</td>
+<td>8x8 vertical line pattern</td>
+<td><img alt="hs_vertical" src="images/patterns/hs_vertical.png" /></td>
+</tr>
+<tr><td>LEFT30</td>
+<td>8x4 forward diagonal pattern (30
+degrees slope)</td>
+<td><img alt="left30" src="images/patterns/left30.png" /></td>
+</tr>
+<tr><td>LEFT45</td>
+<td>8x8 forward diagonal line pattern
+(45 degrees slope)</td>
+<td><img alt="left45" src="images/patterns/left45.png" /></td>
+</tr>
+<tr><td>LEFTSHINGLE</td>
+<td>24x24 left shingle pattern</td>
+<td><img alt="leftshingle" src="images/patterns/leftshingle.png" /></td>
+</tr>
+<tr><td>LOGO</td>
+<td>640x480, GraphicsMagick Logo</td>
+<td><img alt="logo" src="images/gm-125x80t.png" /></td>
+</tr>
+<tr><td>NETSCAPE</td>
+<td>216x144 image using colors in
+Netscape 216 (6x6x6 ) color cube.</td>
+<td>Most commonly used with the
+<a class="reference external" href="convert.html">convert</a>/<a class="reference external" href="mogrify.html">mogrify</a> -map option to
+create <em>web safe</em> images.</td>
+</tr>
+<tr><td>OCTAGONS</td>
+<td>16x16 octagons pattern</td>
+<td><img alt="octagons" src="images/patterns/octagons.png" /></td>
+</tr>
+<tr><td>RIGHT30</td>
+<td>8x4 backward diagonal line pattern
+(30 degrees)</td>
+<td><img alt="right30" src="images/patterns/right30.png" /></td>
+</tr>
+<tr><td>RIGHT45</td>
+<td>8x8 backward diagonal line pattern
+(30 degrees)</td>
+<td><img alt="right45" src="images/patterns/right45.png" /></td>
+</tr>
+<tr><td>RIGHTSHINGLE</td>
+<td>24x24 right shingle pattern</td>
+<td><img alt="rightshingle" src="images/patterns/rightshingle.png" /></td>
+</tr>
+<tr><td>ROSE</td>
+<td>70x46, Picture of a rose.</td>
+<td><img alt="rose" src="images/patterns/rose.png" /></td>
+</tr>
+<tr><td>SMALLFISHSCALES</td>
+<td>8x8 small fish scales pattern</td>
+<td><img alt="smallfishscales" src="images/patterns/smallfishscales.png" /></td>
+</tr>
+<tr><td>VERTICAL</td>
+<td>8x8 vertical line pattern</td>
+<td><img alt="vertical" src="images/patterns/vertical.png" /></td>
+</tr>
+<tr><td>VERTICALBRICKS</td>
+<td>16x16 vertical brick pattern</td>
+<td><img alt="verticalbricks" src="images/patterns/verticalbricks.png" /></td>
+</tr>
+<tr><td>VERTICALLEFTSHINGLE</td>
+<td>24x24 vertical left shingle
+pattern</td>
+<td><img alt="verticalleftshingle" src="images/patterns/verticalleftshingle.png" /></td>
+</tr>
+<tr><td>VERTICALRIGHTSHINGLE</td>
+<td>24x24 vertical right shingle
+pattern</td>
+<td><img alt="verticalrightshingle" src="images/patterns/verticalrightshingle.png" /></td>
+</tr>
+<tr><td>VERTICALSAW</td>
+<td>8x16 vertical saw-tooth pattern</td>
+<td><img alt="verticalsaw" src="images/patterns/verticalsaw.png" /></td>
+</tr>
+</tbody>
+</table>
+<p>GraphicsMagick provides a number of format identifiers which are used
+to add, remove, and save embedded profiles for images which can
+support embedded profiles. Image types which may contain embedded
+profiles are <a class="reference external" href="http://www.simplesystems.org/libtiff/">TIFF</a>, <a class="reference external" href="http://www.jpeg.org/">JPEG</a>, PDF, and PNG.</p>
+<table border="1" class="docutils">
+<caption>Supported Embedded Profile Formats</caption>
+<colgroup>
+<col width="19%" />
+<col width="6%" />
+<col width="27%" />
+<col width="48%" />
+</colgroup>
+<tbody valign="top">
+<tr><td>Format</td>
+<td>Mode</td>
+<td>Description</td>
+<td>Notes</td>
+</tr>
+<tr><td>8BIM</td>
+<td>RW</td>
+<td>Photoshop resource format
+(binary)</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>8BIMTEXT</td>
+<td>RW</td>
+<td>Photoshop resource format
+(ASCII)</td>
+<td>An ASCII representation of the 8BIM format.</td>
+</tr>
+<tr><td>APP1</td>
+<td>RW</td>
+<td>Raw application
+information</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>APP1JPEG</td>
+<td>RW</td>
+<td>Raw <a class="reference external" href="http://www.jpeg.org/">JPEG</a> binary data</td>
+<td>Profile in <a class="reference external" href="http://www.jpeg.org/">JPEG</a> wrapper.</td>
+</tr>
+<tr><td>ICC</td>
+<td>RW</td>
+<td>International Color
+Consortium color profile</td>
+<td>Also known as &quot;ICM&quot;. To read, use -profile with
+convert.</td>
+</tr>
+<tr><td>IPTC</td>
+<td>RW</td>
+<td>IPTC Newsphoto (binary)</td>
+<td>To read, use -profile with convert</td>
+</tr>
+<tr><td>IPTCTEXT</td>
+<td>RW</td>
+<td>IPTC Newsphoto (ASCII)</td>
+<td>An ASCII representation of the IPTC format.</td>
+</tr>
+</tbody>
+</table>
+<p>Support for some of the formats are delegated to libraries or external
+programs. The README describes where to find these distributions and
+any special configuration options required.</p>
+<p>To get a complete listing of the image formats which are supported on
+your system, type</p>
+<pre class="literal-block">
+gm convert -list format
+</pre>
+<p>On some platforms, GraphicsMagick automatically processes these
+extensions: .gz for Zip compression, .Z for Unix compression, and .bz2
+for block compression. For example, a PNM image called image.pnm.gz is
+automatically uncompressed while the image is read.</p>
+<hr class="docutils" />
+<p>Copyright © GraphicsMagick Group 2002 - 2020</p>
+</div>
+</body>
+</html>

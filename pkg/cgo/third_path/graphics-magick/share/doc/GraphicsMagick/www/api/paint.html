@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.15.2: http://docutils.sourceforge.net/" />
+<title>paint</title>
+<link rel="stylesheet" href="../docutils-api.css" type="text/css" />
+</head>
+<body>
+
+<div class="banner">
+<img src="../images/gm-107x76.png" alt="GraphicMagick logo" width="107" height="76" />
+<span class="title">GraphicsMagick</span>
+<form action="http://www.google.com/search">
+	<input type="hidden" name="domains" value="www.graphicsmagick.org" />
+	<input type="hidden" name="sitesearch" value="www.graphicsmagick.org" />
+    <span class="nowrap"><input type="text" name="q" size="25" maxlength="255" />&nbsp;<input type="submit" name="sa" value="Search" /></span>
+</form>
+</div>
+
+<div class="navmenu">
+<ul>
+<li><a href="../index.html">Home</a></li>
+<li><a href="../project.html">Project</a></li>
+<li><a href="../download.html">Download</a></li>
+<li><a href="../README.html">Install</a></li>
+<li><a href="../Hg.html">Source</a></li>
+<li><a href="../NEWS.html">News</a> </li>
+<li><a href="../utilities.html">Utilities</a></li>
+<li><a href="../programming.html">Programming</a></li>
+<li><a href="../reference.html">Reference</a></li>
+</ul>
+</div>
+<div class="document" id="paint">
+<h1 class="title">paint</h1>
+<h2 class="subtitle" id="methods-to-fill-image-pixel-regions">Methods to fill image pixel regions</h2>
+
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#colorfloodfillimage" id="id7">ColorFloodfillImage</a></li>
+<li><a class="reference internal" href="#mattefloodfillimage" id="id8">MatteFloodfillImage</a></li>
+<li><a class="reference internal" href="#opaqueimage" id="id9">OpaqueImage</a></li>
+<li><a class="reference internal" href="#transparentimage" id="id10">TransparentImage</a></li>
+</ul>
+</div>
+<div class="section" id="colorfloodfillimage">
+<h1><a class="toc-backref" href="#id7">ColorFloodfillImage</a></h1>
+<div class="section" id="synopsis">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+unsigned int ColorFloodfillImage( <a class="reference external" href="../api/types.html#image">Image</a> *image, const <a class="reference external" href="../api/types.html#drawinfo">DrawInfo</a> *draw_info,
+                                  const <a class="reference external" href="../api/types.html#pixelpacket">PixelPacket</a> target, const long x_offset,
+                                  const long y_offset, const <a class="reference external" href="../api/types.html#paintmethod">PaintMethod</a> method );
+</pre>
+</div>
+<div class="section" id="description">
+<h2>Description</h2>
+<p>ColorFloodfill() changes the color value of any pixel that matches
+target and is an immediate neighbor.  If the method FillToBorderMethod is
+specified, the color value is changed for any neighbor pixel that does not
+match the bordercolor member of image.</p>
+<p>By default target must match a particular pixel color exactly.
+However, in many cases two colors may differ by a small amount.  The
+fuzz member of image defines how much tolerance is acceptable to
+consider two colors as the same.  For example, set fuzz to 10 and the
+color red at intensities of 100 and 102 respectively are now
+interpreted as the same color for the purposes of the floodfill.</p>
+<p>The format of the ColorFloodfillImage method is:</p>
+<pre class="literal-block">
+unsigned int ColorFloodfillImage( <a class="reference external" href="../api/types.html#image">Image</a> *image, const <a class="reference external" href="../api/types.html#drawinfo">DrawInfo</a> *draw_info,
+                                  const <a class="reference external" href="../api/types.html#pixelpacket">PixelPacket</a> target, const long x_offset,
+                                  const long y_offset, const <a class="reference external" href="../api/types.html#paintmethod">PaintMethod</a> method );
+</pre>
+<dl class="docutils">
+<dt>image:</dt>
+<dd>The image.</dd>
+<dt>draw_info:</dt>
+<dd>The draw info.</dd>
+<dt>target:</dt>
+<dd>The RGB value of the target color.</dd>
+<dt>x,y:</dt>
+<dd>The starting location of the operation.</dd>
+<dt>method:</dt>
+<dd>Choose either FloodfillMethod or FillToBorderMethod.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="mattefloodfillimage">
+<h1><a class="toc-backref" href="#id8">MatteFloodfillImage</a></h1>
+<div class="section" id="id1">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+unsigned int MatteFloodfillImage( <a class="reference external" href="../api/types.html#image">Image</a> *image, const <a class="reference external" href="../api/types.html#pixelpacket">PixelPacket</a> target,
+                                  const unsigned int opacity, const long x_offset,
+                                  const long y_offset, const <a class="reference external" href="../api/types.html#paintmethod">PaintMethod</a> method );
+</pre>
+</div>
+<div class="section" id="id2">
+<h2>Description</h2>
+<p>MatteFloodfill() changes the transparency value of any pixel that matches
+target and is an immediate neighbor.  If the method FillToBorderMethod
+is specified, the transparency value is changed for any neighbor pixel
+that does not match the bordercolor member of image.</p>
+<p>By default target must match a particular pixel transparency exactly.
+However, in many cases two transparency values may differ by a
+small amount.  The fuzz member of image defines how much tolerance is
+acceptable to consider two transparency values as the same.  For example,
+set fuzz to 10 and the opacity values of 100 and 102 respectively are
+now interpreted as the same value for the purposes of the floodfill.</p>
+<p>The format of the MatteFloodfillImage method is:</p>
+<pre class="literal-block">
+unsigned int MatteFloodfillImage( <a class="reference external" href="../api/types.html#image">Image</a> *image, const <a class="reference external" href="../api/types.html#pixelpacket">PixelPacket</a> target,
+                                  const unsigned int opacity, const long x_offset,
+                                  const long y_offset, const <a class="reference external" href="../api/types.html#paintmethod">PaintMethod</a> method );
+</pre>
+<dl class="docutils">
+<dt>image:</dt>
+<dd>The image.</dd>
+<dt>target:</dt>
+<dd>The RGB value of the target color.</dd>
+<dt>opacity:</dt>
+<dd>The level of transparency: 0 is fully opaque and MaxRGB is
+fully transparent.</dd>
+<dt>x,y:</dt>
+<dd>The starting location of the operation.</dd>
+<dt>method:</dt>
+<dd>Choose either FloodfillMethod or FillToBorderMethod.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="opaqueimage">
+<h1><a class="toc-backref" href="#id9">OpaqueImage</a></h1>
+<div class="section" id="id3">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+unsigned int OpaqueImage( <a class="reference external" href="../api/types.html#image">Image</a> *image, const <a class="reference external" href="../api/types.html#pixelpacket">PixelPacket</a> target,
+                          const <a class="reference external" href="../api/types.html#pixelpacket">PixelPacket</a> fill );
+</pre>
+</div>
+<div class="section" id="id4">
+<h2>Description</h2>
+<p>OpaqueImage() changes any pixel that matches color with the color
+defined by fill.</p>
+<p>By default color must match a particular pixel color exactly.  However,
+in many cases two colors may differ by a small amount.  Fuzz defines
+how much tolerance is acceptable to consider two colors as the same.
+For example, set fuzz to 10 and the color red at intensities of 100 and
+102 respectively are now interpreted as the same color.</p>
+<p>The format of the OpaqueImage method is:</p>
+<pre class="literal-block">
+unsigned int OpaqueImage( <a class="reference external" href="../api/types.html#image">Image</a> *image, const <a class="reference external" href="../api/types.html#pixelpacket">PixelPacket</a> target,
+                          const <a class="reference external" href="../api/types.html#pixelpacket">PixelPacket</a> fill );
+</pre>
+<dl class="docutils">
+<dt>image:</dt>
+<dd>The image.</dd>
+<dt>target:</dt>
+<dd>The RGB value of the target color.</dd>
+<dt>fill:</dt>
+<dd>The replacement color.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="transparentimage">
+<h1><a class="toc-backref" href="#id10">TransparentImage</a></h1>
+<div class="section" id="id5">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+unsigned int TransparentImage( <a class="reference external" href="../api/types.html#image">Image</a> *image, const <a class="reference external" href="../api/types.html#pixelpacket">PixelPacket</a> target,
+                               const unsigned int opacity );
+</pre>
+</div>
+<div class="section" id="id6">
+<h2>Description</h2>
+<p>TransparentImage() changes the opacity value associated with any pixel
+that matches color to the value defined by opacity.</p>
+<p>By default color must match a particular pixel color exactly.  However,
+in many cases two colors may differ by a small amount.  Fuzz defines
+how much tolerance is acceptable to consider two colors as the same.
+For example, set fuzz to 10 and the color red at intensities of 100 and
+102 respectively are now interpreted as the same color.</p>
+<p>The format of the TransparentImage method is:</p>
+<pre class="literal-block">
+unsigned int TransparentImage( <a class="reference external" href="../api/types.html#image">Image</a> *image, const <a class="reference external" href="../api/types.html#pixelpacket">PixelPacket</a> target,
+                               const unsigned int opacity );
+</pre>
+<dl class="docutils">
+<dt>image:</dt>
+<dd>The image.</dd>
+<dt>target:</dt>
+<dd>The RGB value of the target color.</dd>
+<dt>opacity:</dt>
+<dd>The replacement opacity value.</dd>
+</dl>
+</div>
+</div>
+</div>
+</body>
+</html>

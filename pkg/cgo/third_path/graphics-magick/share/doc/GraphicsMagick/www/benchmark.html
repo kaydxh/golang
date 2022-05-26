@@ -1,0 +1,259 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+  "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=us-ascii">
+	<title>GraphicsMagick GM Utility</title>
+	<style type=text/css>
+	<!--
+		@page { size: 8.5in 11in }
+		TD P { color: #000000; font-family: "Verdana", "Arial", "Helvetica", sans-serif; font-size: 12pt }
+		P { color: #000000; font-family: "Verdana", "Arial", "Helvetica", sans-serif; font-size: 12pt }
+		A:link { color: #00B04F }
+		A:visited { color: #007B37 }
+	-->
+	</style>
+
+</head>
+<body LANG="en-US" TEXT="#000000" LINK="#00B04F" VLINK="#007B37" BGCOLOR="#ffffff">
+<a name="top"></a>
+<table border=0 cellpadding=10 cellspacing=0 style="margin-top:-17px" width="100%"><tr><td>
+<br>&nbsp;<br>
+<table BORDER=0 WIDTH="100%"> 
+<tr> 
+<td ALIGN=LEFT bgcolor="#FFFFFF"><img 
+SRC="images/right_triangle.png"  ALT=">" BORDER=0 
+height=14 width=15><b><font face="Helvetica, Arial"><font 
+color="#00B04F"><font size="+1">
+<a NAME="benchmark"></a>gm benchmark
+</font></font></font></b></td></tr></table>
+<table width="94%" border="0" cellspacing="0" cellpadding="8">
+<tr><td width="3%"><br></td><td>
+<table BORDER=0 WIDTH="100%"> 
+<tr> 
+<td ALIGN=LEFT bgcolor="#FFFFFF"><img 
+SRC="images/right_triangle.png"  ALT=">" BORDER=0 
+height=14 width=15><b><font face="Helvetica, Arial"><font 
+color="#00B04F"><font size="+1">
+<a NAME="bench-top"></a>NAME
+</font></font></font></b></td></tr></table>
+<table width="94%" border="0" cellspacing="0" cellpadding="8">
+<tr><td width="3%"><br></td><td>
+benchmark - benchmark the execution of a gm command
+</td></tr></table>
+<table BORDER=0 WIDTH="100%"> 
+<tr> 
+<td ALIGN=LEFT bgcolor="#FFFFFF"><img 
+SRC="images/right_triangle.png"  ALT=">" BORDER=0 
+height=14 width=15><b><font face="Helvetica, Arial"><font 
+color="#00B04F"><font size="+1">
+<a NAME="bench-contents"></a>Contents
+</font></font></font></b></td></tr></table>
+<table width="94%" border="0" cellspacing="0" cellpadding="8">
+<tr><td width="3%"><br></td><td>
+<dl>
+<dt>
+<a href="#bench-syno">Synopsis</a>
+</dt>
+<dt>
+<a href="#bench-desc">Description</a>
+</dt>
+<dt>
+<a href="#bench-exam">Examples</a>
+</dt>
+<dt>
+<a href="#bench-opti">Options</a>
+</dt>
+</dl>
+</td></tr></table>
+<table BORDER=0 WIDTH="100%"> 
+<tr> 
+<td ALIGN=LEFT bgcolor="#FFFFFF"><img 
+SRC="images/right_triangle.png"  ALT=">" BORDER=0 
+height=14 width=15><b><font face="Helvetica, Arial"><font 
+color="#00B04F"><font size="+1">
+<a NAME="bench-syno"></a>Synopsis
+</font></font></font></b></td></tr></table>
+<table width="94%" border="0" cellspacing="0" cellpadding="8">
+<tr><td width="3%"><br></td><td>
+<p>
+<strong>gm benchmark</strong> <strong>[</strong> <em>options ...</em> <strong>]</strong> <em>command</em>
+</td></tr></table>
+<table BORDER=0 WIDTH="100%"> 
+<tr> 
+<td ALIGN=LEFT bgcolor="#FFFFFF"><img 
+SRC="images/right_triangle.png"  ALT=">" BORDER=0 
+height=14 width=15><b><font face="Helvetica, Arial"><font 
+color="#00B04F"><font size="+1">
+<a NAME="bench-desc"></a>Description
+</font></font></font></b></td></tr></table>
+<table width="94%" border="0" cellspacing="0" cellpadding="8">
+<tr><td width="3%"><br></td><td>
+<p>
+<strong>benchmark</strong> executes an arbitrary <strong>gm</strong> utility command
+(e.g. <strong>convert</strong>) for one or more loops, and/or a specified
+execution time, and reports many execution metrics.  For builds using
+OpenMP, a mode is provided to execute the benchmark with an increasing
+number of threads and provide a report of speedup and multi-thread
+execution efficiency.  If <strong>benchmark</strong> is used to execute a
+command without any additional benchmark options, then the command is
+run once.
+</td></tr></table>
+<table BORDER=0 WIDTH="100%"> 
+<tr> 
+<td ALIGN=LEFT bgcolor="#FFFFFF"><img 
+SRC="images/right_triangle.png"  ALT=">" BORDER=0 
+height=14 width=15><b><font face="Helvetica, Arial"><font 
+color="#00B04F"><font size="+1">
+<a NAME="bench-exam"></a>Examples
+</font></font></font></b></td></tr></table>
+<table width="94%" border="0" cellspacing="0" cellpadding="8">
+<tr><td width="3%"><br></td><td>
+<p>To obtain benchmark information for a single execution of a
+command:
+<pre>
+  % gm benchmark convert input.ppm -gaussian 0x1 output.ppm
+  Results: 32 threads 1 iter 6.20s user 0.41s total 2.439 iter/s 0.161 iter/cpu
+</pre>
+<p>To obtain benchmark information from 100 iterations of the
+command:
+<pre>
+  % gm benchmark -iterations 100 convert input.ppm -gaussian 0x1 output.ppm
+  Results: 32 threads 100 iter 625.40s user 31.74s total 3.151 iter/s 0.160 iter/cpu
+</pre>
+<p>To obtain benchmark information by iterating the command until a
+specified amount of time (in seconds) has been consumed:
+<pre>
+  % gm benchmark -duration 30 convert input.ppm -gaussian 0x1 output.ppm
+  Results: 32 threads 91 iter 587.33s user 30.30s total 3.003 iter/s 0.155 iter/cpu
+</pre>
+<p>To obtain a full performance report with an increasing number of
+threads (1-32 threads, stepping the number of threads by four each
+time):
+<pre>
+  % gm benchmark -duration 3 -stepthreads 4 convert input.ppm -gaussian 0x2 output.ppm
+  Results: 1 threads 1 iter 8.84s user 8.84s total 0.113 iter/s 0.113 iter/cpu 1.00 speedup 1.000 karp-flatt
+  Results: 4 threads 2 iter 18.37s user 4.89s total 0.409 iter/s 0.109 iter/cpu 3.62 speedup 0.035 karp-flatt
+  Results: 8 threads 3 iter 29.81s user 4.09s total 0.733 iter/s 0.101 iter/cpu 6.48 speedup 0.033 karp-flatt
+  Results: 12 threads 3 iter 30.81s user 3.14s total 0.955 iter/s 0.097 iter/cpu 8.45 speedup 0.038 karp-flatt
+  Results: 16 threads 3 iter 35.02s user 3.01s total 0.997 iter/s 0.086 iter/cpu 8.81 speedup 0.054 karp-flatt
+  Results: 20 threads 4 iter 52.92s user 3.53s total 1.133 iter/s 0.076 iter/cpu 10.02 speedup 0.052 karp-flatt
+  Results: 24 threads 4 iter 60.66s user 3.39s total 1.180 iter/s 0.066 iter/cpu 10.43 speedup 0.057 karp-flatt
+  Results: 28 threads 4 iter 73.10s user 3.35s total 1.194 iter/s 0.055 iter/cpu 10.56 speedup 0.061 karp-flatt
+  Results: 32 threads 4 iter 82.10s user 3.09s total 1.294 iter/s 0.049 iter/cpu 11.44 speedup 0.058 karp-flatt
+</pre>
+<p>Here is the interpretation of the output:
+<ul>
+<li><strong>threads</strong> - number of threads used.
+<li><strong>iter</strong> - number of command iterations executed.
+<li><strong>user</strong> - total user time consumed.
+<li><strong>total</strong> - total elapsed time consumed.
+<li><strong>iter/s</strong> - number of command iterations per second.
+<li><strong>iter/cpu</strong> - amount of CPU time consumed per iteration.
+<li><strong>speedup</strong> - speedup compared with one thread.
+<li><strong>karp-flatt</strong> - Karp-Flatt measure of speedup efficiency.
+</ul>
+<p><em>Please note that the reported "speedup" is based on the
+execution time of just one thread.  A preliminary warm-up pass is used
+before timing the first loop in order to ensure that the CPU is
+brought out of power-saving modes and that system caches are warmed
+up.  Most modern CPUs provide a "turbo" mode where the CPU clock speed
+is increased (e.g. by a factor of two) when only one or two cores are
+active.  If the CPU grows excessively hot (due to insufficient
+cooling), then it may dial back its clock rates as a form of thermal
+management.  These factors result in an under-reporting of speedup
+compared to if "turbo" mode was disabled and the CPU does not need to
+worry about thermal management.  The <strong>powertop</strong> utility available
+under Linux and Solaris provides a way to observe CPU core clock rates
+while a benchmark is running.</em>
+</td></tr></table>
+     <p>
+<i><a href="#top">Back to Contents</a></i> 
+&nbsp;</p>
+<table BORDER=0 WIDTH="100%"> 
+<tr> 
+<td ALIGN=LEFT bgcolor="#FFFFFF"><img 
+SRC="images/right_triangle.png"  ALT=">" BORDER=0 
+height=14 width=15><b><font face="Helvetica, Arial"><font 
+color="#00B04F"><font size="+1">
+<a NAME="bench-opti"></a>Options
+</font></font></font></b></td></tr></table>
+<table width="94%" border="0" cellspacing="0" cellpadding="8">
+<tr><td width="3%"><br></td><td>
+<p> Options are processed from left to right and must appear before
+any argument.
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    -duration <i>duration</i>
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>duration to run benchmark</td></tr></table>
+<table width="90%" border="0" cellspacing="0"             cellpadding="8">             <tr><td width="6%"><br></td><td><font size="-1">Specify the number of seconds to run the benchmark. The command is
+executed repeatedly until the specified amount of time has
+elapsed.</font></td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    -help
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"             cellpadding="8">             <tr><td width="6%"><br></td><td><font size="-1">
+Prints benchmark command help.</font></td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    -iterations <i>loops</i>
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>number of command iterations</td></tr></table>
+<table width="90%" border="0" cellspacing="0"             cellpadding="8">             <tr><td width="6%"><br></td><td><font size="-1">Specify the number of iterations to run the benchmark. The command
+is executed repeatedly until the specified number of iterations has
+been reached.</font></td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    -rawcsv
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>Print results in CSV format</td></tr></table>
+<table width="90%" border="0" cellspacing="0"             cellpadding="8">             <tr><td width="6%"><br></td><td><font size="-1">Print results in a comma-separated value (CSV) format which is easy
+to parse for plotting or importing into a spreadsheet or database.
+The values reported are <strong>threads</strong>, <strong>iterations</strong>,
+<strong>user_time</strong>, and <strong>elapsed_time</strong>.</font></td></tr></table>
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    -stepthreads <i>step</i>
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>execute a per-thread benchmark ramp</td></tr></table>
+<table width="90%" border="0" cellspacing="0"             cellpadding="8">             <tr><td width="6%"><br></td><td><font size="-1"> Execute a per-thread benchmark ramp, incrementing the number of
+threads at each step by the specified value.  The maximum number of
+threads is taken from the standard <tt>OMP_NUM_THREADS</tt>
+environment variable.</font></td></tr></table>
+</td></tr></table>
+     <p>
+<i><a href="#top">Back to Contents</a></i> 
+&nbsp;</p>
+</td></tr></table>

@@ -1,0 +1,410 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.15.2: http://docutils.sourceforge.net/" />
+<title>fx</title>
+<link rel="stylesheet" href="../docutils-api.css" type="text/css" />
+</head>
+<body>
+
+<div class="banner">
+<img src="../images/gm-107x76.png" alt="GraphicMagick logo" width="107" height="76" />
+<span class="title">GraphicsMagick</span>
+<form action="http://www.google.com/search">
+	<input type="hidden" name="domains" value="www.graphicsmagick.org" />
+	<input type="hidden" name="sitesearch" value="www.graphicsmagick.org" />
+    <span class="nowrap"><input type="text" name="q" size="25" maxlength="255" />&nbsp;<input type="submit" name="sa" value="Search" /></span>
+</form>
+</div>
+
+<div class="navmenu">
+<ul>
+<li><a href="../index.html">Home</a></li>
+<li><a href="../project.html">Project</a></li>
+<li><a href="../download.html">Download</a></li>
+<li><a href="../README.html">Install</a></li>
+<li><a href="../Hg.html">Source</a></li>
+<li><a href="../NEWS.html">News</a> </li>
+<li><a href="../utilities.html">Utilities</a></li>
+<li><a href="../programming.html">Programming</a></li>
+<li><a href="../reference.html">Reference</a></li>
+</ul>
+</div>
+<div class="document" id="fx">
+<h1 class="title">fx</h1>
+<h2 class="subtitle" id="image-special-effects-methods">Image special effects methods</h2>
+
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#charcoalimage" id="id21">CharcoalImage</a></li>
+<li><a class="reference internal" href="#colorizeimage" id="id22">ColorizeImage</a></li>
+<li><a class="reference internal" href="#colormatriximage" id="id23">ColorMatrixImage</a></li>
+<li><a class="reference internal" href="#implodeimage" id="id24">ImplodeImage</a></li>
+<li><a class="reference internal" href="#morphimages" id="id25">MorphImages</a></li>
+<li><a class="reference internal" href="#oilpaintimage" id="id26">OilPaintImage</a></li>
+<li><a class="reference internal" href="#solarizeimage" id="id27">SolarizeImage</a></li>
+<li><a class="reference internal" href="#steganoimage" id="id28">SteganoImage</a></li>
+<li><a class="reference internal" href="#stereoimage" id="id29">StereoImage</a></li>
+<li><a class="reference internal" href="#swirlimage" id="id30">SwirlImage</a></li>
+<li><a class="reference internal" href="#waveimage" id="id31">WaveImage</a></li>
+</ul>
+</div>
+<div class="section" id="charcoalimage">
+<h1><a class="toc-backref" href="#id21">CharcoalImage</a></h1>
+<div class="section" id="synopsis">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#image">Image</a> *CharcoalImage( const <a class="reference external" href="../api/types.html#image">Image</a> *image, const double radius, const double sigma,
+                      <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+</div>
+<div class="section" id="description">
+<h2>Description</h2>
+<p>Method CharcoalImage creates a new image that is a copy of an existing
+one with the edge highlighted.  It allocates the memory necessary for the
+new Image structure and returns a pointer to the new image.</p>
+<p>The format of the CharcoalImage method is:</p>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#image">Image</a> *CharcoalImage( const <a class="reference external" href="../api/types.html#image">Image</a> *image, const double radius, const double sigma,
+                      <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+<dl class="docutils">
+<dt>charcoal_image:</dt>
+<dd>Method CharcoalImage returns a pointer to the image
+after it is embossed.  A null image is returned if there is a memory
+shortage.</dd>
+<dt>image:</dt>
+<dd>The image.</dd>
+<dt>radius:</dt>
+<dd>the radius of the pixel neighborhood.</dd>
+<dt>sigma:</dt>
+<dd>The standard deviation of the Gaussian, in pixels.</dd>
+<dt>exception:</dt>
+<dd>Return any errors or warnings in this structure.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="colorizeimage">
+<h1><a class="toc-backref" href="#id22">ColorizeImage</a></h1>
+<div class="section" id="id1">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#image">Image</a> *ColorizeImage( const <a class="reference external" href="../api/types.html#image">Image</a> *image, const char *opacity,
+                      const <a class="reference external" href="../api/types.html#pixelpacket">PixelPacket</a> target, <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+</div>
+<div class="section" id="id2">
+<h2>Description</h2>
+<p>ColorizeImage() blends the fill color with each pixel in the image.
+A percentage blend is specified with opacity.  Control the application
+of different color components by specifying a different percentage for
+each component (e.g. 90/100/10 is 90% red, 100% green, and 10% blue).</p>
+<p>The format of the ColorizeImage method is:</p>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#image">Image</a> *ColorizeImage( const <a class="reference external" href="../api/types.html#image">Image</a> *image, const char *opacity,
+                      const <a class="reference external" href="../api/types.html#pixelpacket">PixelPacket</a> target, <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+<dl class="docutils">
+<dt>image:</dt>
+<dd>The image.</dd>
+<dt>opacity:</dt>
+<dd>A character string indicating the level of opacity as a
+percentage.</dd>
+<dt>target:</dt>
+<dd>A color value.</dd>
+<dt>exception:</dt>
+<dd>Return any errors or warnings in this structure.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="colormatriximage">
+<h1><a class="toc-backref" href="#id23">ColorMatrixImage</a></h1>
+<div class="section" id="id3">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+MagickPassFail ColorMatrixImage( <a class="reference external" href="../api/types.html#image">Image</a> *image, const unsigned int order,
+                                 const double *color_matrix );
+</pre>
+</div>
+<div class="section" id="id4">
+<h2>Description</h2>
+<p>ColorMatrixImage() applies a color matrix to the image channels.  The
+user supplied matrix may be of order 1 to 5 (1x1 through 5x5) and is
+used to update the default identity matrix:</p>
+<p>1 0 0 0 0
+0 1 0 0 0
+0 0 1 0 0
+0 0 0 1 0
+0 0 0 0 1</p>
+<p>where the first four columns represent the ratio of the color (red,
+green, blue) and opacity components incorporated in the output summation.
+The first four rows represent the summations for red, green, blue, and
+opacity.  The last row is a dummy row and is not used.  The last column
+represents a constant value (expressed as a ratio of MaxRGB) to be
+added to the row summation.  The following is a summary of how the
+matrix is applied:</p>
+<p>r' = r*m[0,0] + g*m[1,0] + b*m[2,0] + o*m[3,0] + MaxRGB*m[4,0]
+g' = r*m[0,1] + g*m[1,1] + b*m[2,1] + o*m[3,1] + MaxRGB*m[4,1]
+b' = r*m[0,2] + g*m[1,2] + b*m[2,2] + o*m[3,2] + MaxRGB*m[4,2]
+o' = r*m[0,3] + g*m[1,3] + b*m[2,3] + o*m[3,3] + MaxRGB*m[4,3]</p>
+<p>The format of the ColorMatrixImage method is:</p>
+<pre class="literal-block">
+MagickPassFail ColorMatrixImage( <a class="reference external" href="../api/types.html#image">Image</a> *image, const unsigned int order,
+                                 const double *color_matrix );
+</pre>
+<dl class="docutils">
+<dt>image:</dt>
+<dd>The image.</dd>
+<dt>order:</dt>
+<dd>The number of columns and rows in the filter kernel.</dd>
+<dt>matrix:</dt>
+<dd>An array of double representing the matrix</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="implodeimage">
+<h1><a class="toc-backref" href="#id24">ImplodeImage</a></h1>
+<div class="section" id="id5">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#image">Image</a> *ImplodeImage( const <a class="reference external" href="../api/types.html#image">Image</a> *image, const double amount,
+                     <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+</div>
+<div class="section" id="id6">
+<h2>Description</h2>
+<p>Method ImplodeImage creates a new image that is a copy of an existing
+one with the image pixels &quot;implode&quot; by the specified percentage.  It
+allocates the memory necessary for the new Image structure and returns a
+pointer to the new image.</p>
+<p>The format of the ImplodeImage method is:</p>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#image">Image</a> *ImplodeImage( const <a class="reference external" href="../api/types.html#image">Image</a> *image, const double amount,
+                     <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+<dl class="docutils">
+<dt>implode_image:</dt>
+<dd>Method ImplodeImage returns a pointer to the image
+after it is implode.  A null image is returned if there is a memory
+shortage.</dd>
+<dt>image:</dt>
+<dd>The image.</dd>
+<dt>amount:</dt>
+<dd>Define the extent of the implosion.</dd>
+<dt>exception:</dt>
+<dd>Return any errors or warnings in this structure.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="morphimages">
+<h1><a class="toc-backref" href="#id25">MorphImages</a></h1>
+<div class="section" id="id7">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#image">Image</a> *MorphImages( const <a class="reference external" href="../api/types.html#image">Image</a> *image, const unsigned long number_frames,
+                    <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+</div>
+<div class="section" id="id8">
+<h2>Description</h2>
+<p>The MorphImages() method requires a minimum of two images.  The first
+image is transformed into the second by a number of intervening images
+as specified by frames.</p>
+<p>The format of the MorphImage method is:</p>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#image">Image</a> *MorphImages( const <a class="reference external" href="../api/types.html#image">Image</a> *image, const unsigned long number_frames,
+                    <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+<dl class="docutils">
+<dt>image:</dt>
+<dd>The image.</dd>
+<dt>number_frames:</dt>
+<dd>Define the number of in-between image to generate.
+The more in-between frames, the smoother the morph.</dd>
+<dt>exception:</dt>
+<dd>Return any errors or warnings in this structure.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="oilpaintimage">
+<h1><a class="toc-backref" href="#id26">OilPaintImage</a></h1>
+<div class="section" id="id9">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#image">Image</a> *OilPaintImage( const <a class="reference external" href="../api/types.html#image">Image</a> *image, const double radius,
+                      <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+</div>
+<div class="section" id="id10">
+<h2>Description</h2>
+<p>OilPaintImage() applies a special effect filter that simulates an oil
+painting.  Each pixel is replaced by the most frequent color occurring
+in a circular region defined by radius.</p>
+<p>The format of the OilPaintImage method is:</p>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#image">Image</a> *OilPaintImage( const <a class="reference external" href="../api/types.html#image">Image</a> *image, const double radius,
+                      <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+<dl class="docutils">
+<dt>image:</dt>
+<dd>The image.</dd>
+<dt>radius:</dt>
+<dd>The radius of the circular neighborhood.</dd>
+<dt>exception:</dt>
+<dd>Return any errors or warnings in this structure.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="solarizeimage">
+<h1><a class="toc-backref" href="#id27">SolarizeImage</a></h1>
+<div class="section" id="id11">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+unsigned int SolarizeImage( <a class="reference external" href="../api/types.html#image">Image</a> *image, const double threshold );
+</pre>
+</div>
+<div class="section" id="id12">
+<h2>Description</h2>
+<p>SolarizeImage() applies a special effect to the image, similar to the effect
+achieved in a photo darkroom by selectively exposing areas of photo
+sensitive paper to light.  Threshold ranges from 0 to MaxRGB and is a
+measure of the extent of the solarization. False is returned if an error
+is encountered.</p>
+<p>The format of the SolarizeImage method is:</p>
+<pre class="literal-block">
+unsigned int SolarizeImage( <a class="reference external" href="../api/types.html#image">Image</a> *image, const double threshold );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>image:</dt>
+<dd>The image.</dd>
+<dt>threshold:</dt>
+<dd>Define the extent of the solarization.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="steganoimage">
+<h1><a class="toc-backref" href="#id28">SteganoImage</a></h1>
+<div class="section" id="id13">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#image">Image</a> *SteganoImage( const <a class="reference external" href="../api/types.html#image">Image</a> *image, <a class="reference external" href="../api/types.html#image">Image</a> *watermark,
+                     <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+</div>
+<div class="section" id="id14">
+<h2>Description</h2>
+<p>Use SteganoImage() to hide a digital watermark within the image.
+Recover the hidden watermark later to prove that the authenticity of
+an image.  Offset defines the start position within the image to hide
+the watermark.</p>
+<p>The format of the SteganoImage method is:</p>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#image">Image</a> *SteganoImage( const <a class="reference external" href="../api/types.html#image">Image</a> *image, <a class="reference external" href="../api/types.html#image">Image</a> *watermark,
+                     <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+<dl class="docutils">
+<dt>image:</dt>
+<dd>The image.</dd>
+<dt>watermark:</dt>
+<dd>The watermark image.</dd>
+<dt>exception:</dt>
+<dd>Return any errors or warnings in this structure.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="stereoimage">
+<h1><a class="toc-backref" href="#id29">StereoImage</a></h1>
+<div class="section" id="id15">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#image">Image</a> *StereoImage( const <a class="reference external" href="../api/types.html#image">Image</a> *image, const <a class="reference external" href="../api/types.html#image">Image</a> *offset_image,
+                    <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+</div>
+<div class="section" id="id16">
+<h2>Description</h2>
+<p>StereoImage() combines two images and produces a single image that is the
+composite of a left and right image of a stereo pair.  Special red-green
+stereo glasses are required to view this effect.</p>
+<p>The format of the StereoImage method is:</p>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#image">Image</a> *StereoImage( const <a class="reference external" href="../api/types.html#image">Image</a> *image, const <a class="reference external" href="../api/types.html#image">Image</a> *offset_image,
+                    <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+<dl class="docutils">
+<dt>stereo_image:</dt>
+<dd>Method StereoImage returns a pointer to the stereo
+image.  A null image is returned if there is a memory shortage.</dd>
+<dt>image:</dt>
+<dd>The image.</dd>
+<dt>offset_image:</dt>
+<dd>Another image.</dd>
+<dt>exception:</dt>
+<dd>Return any errors or warnings in this structure.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="swirlimage">
+<h1><a class="toc-backref" href="#id30">SwirlImage</a></h1>
+<div class="section" id="id17">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#image">Image</a> *SwirlImage( const <a class="reference external" href="../api/types.html#image">Image</a> *image, double degrees, <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+</div>
+<div class="section" id="id18">
+<h2>Description</h2>
+<p>SwirlImage() swirls the pixels about the center of the image, where
+degrees indicates the sweep of the arc through which each pixel is moved.
+You get a more dramatic effect as the degrees move from 1 to 360.</p>
+<p>The format of the SwirlImage method is:</p>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#image">Image</a> *SwirlImage( const <a class="reference external" href="../api/types.html#image">Image</a> *image, double degrees, <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+<dl class="docutils">
+<dt>image:</dt>
+<dd>The image.</dd>
+<dt>degrees:</dt>
+<dd>Define the tightness of the swirling effect.</dd>
+<dt>exception:</dt>
+<dd>Return any errors or warnings in this structure.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="waveimage">
+<h1><a class="toc-backref" href="#id31">WaveImage</a></h1>
+<div class="section" id="id19">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#image">Image</a> *WaveImage( const <a class="reference external" href="../api/types.html#image">Image</a> *image, const double amplitude, const double wave_length,
+                  <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+</div>
+<div class="section" id="id20">
+<h2>Description</h2>
+<p>The WaveImage() filter creates a &quot;ripple&quot; effect in the image by shifting
+the pixels vertically along a sine wave whose amplitude and wavelength
+is specified by the given parameters.</p>
+<p>The format of the WaveImage method is:</p>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#image">Image</a> *WaveImage( const <a class="reference external" href="../api/types.html#image">Image</a> *image, const double amplitude, const double wave_length,
+                  <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+<dl class="docutils">
+<dt>image:</dt>
+<dd>The image.</dd>
+<dt>amplitude, frequency:</dt>
+<dd>Define the amplitude and wave_length of the
+sine wave.</dd>
+<dt>exception:</dt>
+<dd>Return any errors or warnings in this structure.</dd>
+</dl>
+</div>
+</div>
+</div>
+</body>
+</html>

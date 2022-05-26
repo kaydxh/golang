@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.15.2: http://docutils.sourceforge.net/" />
+<title>attribute</title>
+<link rel="stylesheet" href="../docutils-api.css" type="text/css" />
+</head>
+<body>
+
+<div class="banner">
+<img src="../images/gm-107x76.png" alt="GraphicMagick logo" width="107" height="76" />
+<span class="title">GraphicsMagick</span>
+<form action="http://www.google.com/search">
+	<input type="hidden" name="domains" value="www.graphicsmagick.org" />
+	<input type="hidden" name="sitesearch" value="www.graphicsmagick.org" />
+    <span class="nowrap"><input type="text" name="q" size="25" maxlength="255" />&nbsp;<input type="submit" name="sa" value="Search" /></span>
+</form>
+</div>
+
+<div class="navmenu">
+<ul>
+<li><a href="../index.html">Home</a></li>
+<li><a href="../project.html">Project</a></li>
+<li><a href="../download.html">Download</a></li>
+<li><a href="../README.html">Install</a></li>
+<li><a href="../Hg.html">Source</a></li>
+<li><a href="../NEWS.html">News</a> </li>
+<li><a href="../utilities.html">Utilities</a></li>
+<li><a href="../programming.html">Programming</a></li>
+<li><a href="../reference.html">Reference</a></li>
+</ul>
+</div>
+<div class="document" id="attribute">
+<h1 class="title">attribute</h1>
+<h2 class="subtitle" id="access-key-value-image-attributes">Access key,value image attributes</h2>
+
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#cloneimageattributes" id="id9">CloneImageAttributes</a></li>
+<li><a class="reference internal" href="#destroyimageattributes" id="id10">DestroyImageAttributes</a></li>
+<li><a class="reference internal" href="#getimageattribute" id="id11">GetImageAttribute</a></li>
+<li><a class="reference internal" href="#getimageclippingpathattribute" id="id12">GetImageClippingPathAttribute</a></li>
+<li><a class="reference internal" href="#setimageattribute" id="id13">SetImageAttribute</a></li>
+</ul>
+</div>
+<div class="section" id="cloneimageattributes">
+<h1><a class="toc-backref" href="#id9">CloneImageAttributes</a></h1>
+<div class="section" id="synopsis">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+MagickPassFail CloneImageAttributes( <a class="reference external" href="../api/types.html#image">Image</a> *clone_image,
+                                     const <a class="reference external" href="../api/types.html#image">Image</a> *original_image );
+</pre>
+</div>
+<div class="section" id="description">
+<h2>Description</h2>
+<p>CloneImageAttributes() copies the text attributes from one image to another.
+Any text attributes in the destination image are preserved.
+CloneImageAttributes returns MagickPass if all of the attribututes are
+successfully cloned or MagickFail if there is a memory allocation error.</p>
+<p>The format of the CloneImageAttributes method is:</p>
+<pre class="literal-block">
+MagickPassFail CloneImageAttributes( <a class="reference external" href="../api/types.html#image">Image</a> *clone_image,
+                                     const <a class="reference external" href="../api/types.html#image">Image</a> *original_image );
+</pre>
+<dl class="docutils">
+<dt>clone_image:</dt>
+<dd>The destination image.</dd>
+<dt>original_image:</dt>
+<dd>The source image.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="destroyimageattributes">
+<h1><a class="toc-backref" href="#id10">DestroyImageAttributes</a></h1>
+<div class="section" id="id1">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+DestroyImageAttributes( <a class="reference external" href="../api/types.html#image">Image</a> *image );
+</pre>
+</div>
+<div class="section" id="id2">
+<h2>Description</h2>
+<p>DestroyImageAttributes() deallocates memory associated with the image
+attribute list.</p>
+<p>The format of the DestroyImageAttributes method is:</p>
+<pre class="literal-block">
+DestroyImageAttributes( <a class="reference external" href="../api/types.html#image">Image</a> *image );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>image:</dt>
+<dd>The image.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="getimageattribute">
+<h1><a class="toc-backref" href="#id11">GetImageAttribute</a></h1>
+<div class="section" id="id3">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+const ImageAttribute *GetImageAttribute( const <a class="reference external" href="../api/types.html#image">Image</a> *image, const char *key );
+</pre>
+</div>
+<div class="section" id="id4">
+<h2>Description</h2>
+<p>GetImageAttribute() searches the list of image attributes and returns
+a pointer to the attribute if it exists otherwise NULL.</p>
+<p>The format of the GetImageAttribute method is:</p>
+<pre class="literal-block">
+const ImageAttribute *GetImageAttribute( const <a class="reference external" href="../api/types.html#image">Image</a> *image, const char *key );
+</pre>
+<dl class="docutils">
+<dt>image:</dt>
+<dd>The image.</dd>
+<dt>key:</dt>
+<dd>These character strings are the name of an image attribute to
+return.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="getimageclippingpathattribute">
+<h1><a class="toc-backref" href="#id12">GetImageClippingPathAttribute</a></h1>
+<div class="section" id="id5">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+const ImageAttribute *GetImageClippingPathAttribute( const <a class="reference external" href="../api/types.html#image">Image</a> *image );
+</pre>
+</div>
+<div class="section" id="id6">
+<h2>Description</h2>
+<p>Method GetImageClippingPathAttribute searches the list of image attributes
+and returns a pointer to a clipping path if it exists otherwise NULL.</p>
+<p>The format of the GetImageClippingPathAttribute method is:</p>
+<pre class="literal-block">
+const ImageAttribute *GetImageClippingPathAttribute( const <a class="reference external" href="../api/types.html#image">Image</a> *image );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>attribute:</dt>
+<dd>Method GetImageClippingPathAttribute returns the clipping
+path if it exists otherwise NULL.</dd>
+<dt>image:</dt>
+<dd>The image.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="setimageattribute">
+<h1><a class="toc-backref" href="#id13">SetImageAttribute</a></h1>
+<div class="section" id="id7">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+unsigned int SetImageAttribute( <a class="reference external" href="../api/types.html#image">Image</a> *image, const char *key, const char *value );
+</pre>
+</div>
+<div class="section" id="id8">
+<h2>Description</h2>
+<p>SetImageAttribute() searches the list of image attributes and replaces the
+attribute value.  If it is not found in the list, the attribute name
+and value is added to the list.   If the attribute exists in the list,
+the value is concatenated to the attribute.  SetImageAttribute returns
+True if the attribute is successfully concatenated or added to the list,
+otherwise False.  If the value is NULL, the matching key is deleted
+from the list.</p>
+<p>There is special handling for the EXIF:Orientation attribute. Setting this
+attribute will also update the EXIF tag in the image's EXIF profile to the
+given value provided an EXIF profile exists and has an existing EXIF
+orientation tag and the attribute value is a valid orientation
+(see orientationType). The attribute value will be set regardless of
+whether the EXIF profile was successfully updated. The new
+EXIF:Orientation attribute replaces the existing value rather than
+being concatenated to it as when setting other attributes.</p>
+<p>The 'comment' and 'label' attributes are treated specially in that
+embedded format specifications are translated according to the formatting
+rules of TranslateText().</p>
+<p>The format of the SetImageAttribute method is:</p>
+<pre class="literal-block">
+unsigned int SetImageAttribute( <a class="reference external" href="../api/types.html#image">Image</a> *image, const char *key, const char *value );
+</pre>
+<dl class="docutils">
+<dt>image:</dt>
+<dd>The image.</dd>
+<dt>key,value:</dt>
+<dd>These character strings are the name and value of an image
+attribute to replace or add to the list.</dd>
+</dl>
+</div>
+</div>
+</div>
+</body>
+</html>

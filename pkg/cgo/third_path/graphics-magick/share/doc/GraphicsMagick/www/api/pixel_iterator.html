@@ -1,0 +1,600 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.15.2: http://docutils.sourceforge.net/" />
+<title>pixel_iterator</title>
+<link rel="stylesheet" href="../docutils-api.css" type="text/css" />
+</head>
+<body>
+
+<div class="banner">
+<img src="../images/gm-107x76.png" alt="GraphicMagick logo" width="107" height="76" />
+<span class="title">GraphicsMagick</span>
+<form action="http://www.google.com/search">
+	<input type="hidden" name="domains" value="www.graphicsmagick.org" />
+	<input type="hidden" name="sitesearch" value="www.graphicsmagick.org" />
+    <span class="nowrap"><input type="text" name="q" size="25" maxlength="255" />&nbsp;<input type="submit" name="sa" value="Search" /></span>
+</form>
+</div>
+
+<div class="navmenu">
+<ul>
+<li><a href="../index.html">Home</a></li>
+<li><a href="../project.html">Project</a></li>
+<li><a href="../download.html">Download</a></li>
+<li><a href="../README.html">Install</a></li>
+<li><a href="../Hg.html">Source</a></li>
+<li><a href="../NEWS.html">News</a> </li>
+<li><a href="../utilities.html">Utilities</a></li>
+<li><a href="../programming.html">Programming</a></li>
+<li><a href="../reference.html">Reference</a></li>
+</ul>
+</div>
+<div class="document" id="pixel-iterator">
+<h1 class="title">pixel_iterator</h1>
+<h2 class="subtitle" id="pixel-iterator-pattern-support-functions">Pixel iterator pattern support functions</h2>
+
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#initializepixeliteratoroptions" id="id17">InitializePixelIteratorOptions</a></li>
+<li><a class="reference internal" href="#pixeliteratemonoread" id="id18">PixelIterateMonoRead</a></li>
+<li><a class="reference internal" href="#pixeliteratemonoset" id="id19">PixelIterateMonoSet</a></li>
+<li><a class="reference internal" href="#pixeliteratemonomodify" id="id20">PixelIterateMonoModify</a></li>
+<li><a class="reference internal" href="#pixeliteratedualread" id="id21">PixelIterateDualRead</a></li>
+<li><a class="reference internal" href="#pixeliteratedualmodify" id="id22">PixelIterateDualModify</a></li>
+<li><a class="reference internal" href="#pixeliteratedualnew" id="id23">PixelIterateDualNew</a></li>
+<li><a class="reference internal" href="#pixeliteratetriplemodify" id="id24">PixelIterateTripleModify</a></li>
+<li><a class="reference internal" href="#pixeliteratetriplenew" id="id25">PixelIterateTripleNew</a></li>
+</ul>
+</div>
+<div class="section" id="initializepixeliteratoroptions">
+<h1><a class="toc-backref" href="#id17">InitializePixelIteratorOptions</a></h1>
+<div class="section" id="synopsis">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+void InitializePixelIteratorOptions( PixelIteratorOptions *options,
+                                     <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+</div>
+<div class="section" id="description">
+<h2>Description</h2>
+<p>InitializePixelIteratorOptions() assigns default options to a user-provided
+PixelIteratorOptions structure.  This function should always be used
+to initialize the PixelIteratorOptions structure prior to making any
+changes to it.</p>
+<p>The format of the InitializePixelIteratorOptions method is:</p>
+<pre class="literal-block">
+void InitializePixelIteratorOptions( PixelIteratorOptions *options,
+                                     <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+<dl class="docutils">
+<dt>options:</dt>
+<dd>pointer to PixelIteratorOptions structure to initialize.</dd>
+<dt>exception:</dt>
+<dd>Return any errors or warnings in this structure.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="pixeliteratemonoread">
+<h1><a class="toc-backref" href="#id18">PixelIterateMonoRead</a></h1>
+<div class="section" id="id1">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+MagickPassFail PixelIterateMonoRead( PixelIteratorMonoReadCallback call_back,
+                                     const PixelIteratorOptions *options,
+                                     const char *description, void *mutable_data,
+                                     const void *immutable_data, const long x, const long y,
+                                     const unsigned long columns, const unsigned long rows,
+                                     const <a class="reference external" href="../api/types.html#image">Image</a> *image, <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+</div>
+<div class="section" id="id2">
+<h2>Description</h2>
+<p>PixelIterateMonoRead() iterates through a region of an image and invokes a
+user-provided callback function (of type PixelRowIteratorMonoReadCallback)
+for a row of pixels. This is useful to support simple operations such as
+statistics computation.</p>
+<p>The format of the PixelIterateMonoRead method is:</p>
+<pre class="literal-block">
+MagickPassFail PixelIterateMonoRead( PixelIteratorMonoReadCallback call_back,
+                                     const PixelIteratorOptions *options,
+                                     const char *description, void *mutable_data,
+                                     const void *immutable_data, const long x, const long y,
+                                     const unsigned long columns, const unsigned long rows,
+                                     const <a class="reference external" href="../api/types.html#image">Image</a> *image, <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+<dl class="docutils">
+<dt>call_back:</dt>
+<dd>A user-provided C callback function which is passed the
+address of pixels from the image.</dd>
+<dt>options:</dt>
+<dd>Pixel iterator execution options (may be NULL).</dd>
+<dt>description:</dt>
+<dd>textual description of operation being performed.</dd>
+<dt>mutable_data:</dt>
+<dd>User-provided mutable context data.</dd>
+<dt>immutable_data:</dt>
+<dd>User-provided immutable context data.</dd>
+<dt>x:</dt>
+<dd>The horizontal ordinate of the top left corner of the region.</dd>
+<dt>y:</dt>
+<dd>The vertical ordinate of the top left corner of the region.</dd>
+<dt>columns:</dt>
+<dd>Width of pixel region</dd>
+<dt>rows:</dt>
+<dd>Height of pixel region</dd>
+<dt>image:</dt>
+<dd>The address of the Image.</dd>
+<dt>exception:</dt>
+<dd>If an error is reported, this argument is updated with the reason.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="pixeliteratemonoset">
+<h1><a class="toc-backref" href="#id19">PixelIterateMonoSet</a></h1>
+<div class="section" id="id3">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+MagickPassFail PixelIterateMonoSet( PixelIteratorMonoModifyback call_back,
+                                    const PixelIteratorOptions *options,
+                                    const char *description, void *mutable_data,
+                                    const void *immutable_data, const long x, const long y,
+                                    const unsigned long columns, const unsigned long rows,
+                                    <a class="reference external" href="../api/types.html#image">Image</a> *image, <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+</div>
+<div class="section" id="id4">
+<h2>Description</h2>
+<p>PixelIterateMonoSet() iterates through a region of an image and invokes
+a user-provided callback function (of type PixelIteratorMonoModifyCallback)
+to initialize a region of pixels from scratch.   The difference from
+PixelIterateMonoModify() is that the output pixels are not initialized
+from the underlying store so it is more efficient when outputting a new
+image or when the existing pixels are intentionally discarded.  This is
+useful for operations such as setting the pixel color.</p>
+<p>The format of the PixelIterateMonoSet method is:</p>
+<pre class="literal-block">
+MagickPassFail PixelIterateMonoSet( PixelIteratorMonoModifyback call_back,
+                                    const PixelIteratorOptions *options,
+                                    const char *description, void *mutable_data,
+                                    const void *immutable_data, const long x, const long y,
+                                    const unsigned long columns, const unsigned long rows,
+                                    <a class="reference external" href="../api/types.html#image">Image</a> *image, <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+<dl class="docutils">
+<dt>call_back:</dt>
+<dd>A user-provided C callback function which is passed the
+address of pixels to be initialized in the image.</dd>
+<dt>options:</dt>
+<dd>Pixel iterator execution options (may be NULL).</dd>
+<dt>description:</dt>
+<dd>textual description of operation being performed.</dd>
+<dt>mutable_data:</dt>
+<dd>User-provided mutable context data.</dd>
+<dt>immutable_data:</dt>
+<dd>User-provided immutable context data.</dd>
+<dt>x:</dt>
+<dd>The horizontal ordinate of the top left corner of the region.</dd>
+<dt>y:</dt>
+<dd>The vertical ordinate of the top left corner of the region.</dd>
+<dt>columns:</dt>
+<dd>Width of pixel region</dd>
+<dt>rows:</dt>
+<dd>Height of pixel region</dd>
+<dt>image:</dt>
+<dd>The address of the Image.</dd>
+<dt>exception:</dt>
+<dd>If an error is reported, this argument is updated with the reason.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="pixeliteratemonomodify">
+<h1><a class="toc-backref" href="#id20">PixelIterateMonoModify</a></h1>
+<div class="section" id="id5">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+MagickPassFail PixelIterateMonoModify( PixelIteratorMonoModifyCallback call_back,
+                                       const PixelIteratorOptions *options,
+                                       const char *description, void *mutable_data,
+                                       const void *immutable_data, const long x,
+                                       const long y, const unsigned long columns,
+                                       const unsigned long rows, <a class="reference external" href="../api/types.html#image">Image</a> *image,
+                                       <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+</div>
+<div class="section" id="id6">
+<h2>Description</h2>
+<p>PixelIterateMonoModify() iterates through a region of an image and invokes
+a user-provided callback function (of type PixelIteratorMonoModifyCallback)
+to modify a region of pixels. This is useful to support simple operations
+such as level shifting, colorspace translation, or thresholding.</p>
+<p>The format of the PixelIterateMonoModify method is:</p>
+<pre class="literal-block">
+MagickPassFail PixelIterateMonoModify( PixelIteratorMonoModifyCallback call_back,
+                                       const PixelIteratorOptions *options,
+                                       const char *description, void *mutable_data,
+                                       const void *immutable_data, const long x,
+                                       const long y, const unsigned long columns,
+                                       const unsigned long rows, <a class="reference external" href="../api/types.html#image">Image</a> *image,
+                                       <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+<dl class="docutils">
+<dt>call_back:</dt>
+<dd>A user-provided C callback function which is passed the
+address of pixels from the image.</dd>
+<dt>options:</dt>
+<dd>Pixel iterator execution options (may be NULL).</dd>
+<dt>description:</dt>
+<dd>textual description of operation being performed.</dd>
+<dt>mutable_data:</dt>
+<dd>User-provided mutable context data.</dd>
+<dt>immutable_data:</dt>
+<dd>User-provided immutable context data.</dd>
+<dt>x:</dt>
+<dd>The horizontal ordinate of the top left corner of the region.</dd>
+<dt>y:</dt>
+<dd>The vertical ordinate of the top left corner of the region.</dd>
+<dt>columns:</dt>
+<dd>Width of pixel region</dd>
+<dt>rows:</dt>
+<dd>Height of pixel region</dd>
+<dt>image:</dt>
+<dd>The address of the Image.</dd>
+<dt>exception:</dt>
+<dd>If an error is reported, this argument is updated with the reason.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="pixeliteratedualread">
+<h1><a class="toc-backref" href="#id21">PixelIterateDualRead</a></h1>
+<div class="section" id="id7">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+MagickPassFail PixelIterateDualRead( PixelIteratorDualReadCallback call_back,
+                                     const PixelIteratorOptions *options,
+                                     const char *description, void *mutable_data,
+                                     const void *immutable_data, const unsigned long columns,
+                                     const unsigned long rows, const <a class="reference external" href="../api/types.html#image">Image</a> *first_image,
+                                     const long first_x, const long first_y,
+                                     const <a class="reference external" href="../api/types.html#image">Image</a> *second_image, const long second_x,
+                                     const long second_y, <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception ); ;
+</pre>
+</div>
+<div class="section" id="id8">
+<h2>Description</h2>
+<p>PixelIterateDualRead() iterates through pixel regions of two images and
+invokes a user-provided callback function (of type
+PixelIteratorDualReadCallback) for each row of pixels. This is useful to
+support operations such as image comparison.</p>
+<p>The format of the PixelIterateDualRead method is:</p>
+<pre class="literal-block">
+MagickPassFail PixelIterateDualRead( PixelIteratorDualReadCallback call_back,
+                                     const PixelIteratorOptions *options,
+                                     const char *description, void *mutable_data,
+                                     const void *immutable_data, const unsigned long columns,
+                                     const unsigned long rows, const <a class="reference external" href="../api/types.html#image">Image</a> *first_image,
+                                     const long first_x, const long first_y,
+                                     const <a class="reference external" href="../api/types.html#image">Image</a> *second_image, const long second_x,
+                                     const long second_y, <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception ); ;
+</pre>
+<dl class="docutils">
+<dt>call_back:</dt>
+<dd>A user-provided C callback function which is passed the
+address of pixels from each image.</dd>
+<dt>options:</dt>
+<dd>Pixel iterator execution options (may be NULL).</dd>
+<dt>description:</dt>
+<dd>textual description of operation being performed.</dd>
+<dt>mutable_data:</dt>
+<dd>User-provided mutable context data.</dd>
+<dt>immutable_data:</dt>
+<dd>User-provided immutable context data.</dd>
+<dt>columns:</dt>
+<dd>Width of pixel region</dd>
+<dt>rows:</dt>
+<dd>Height of pixel region</dd>
+<dt>first_image:</dt>
+<dd>The address of the first Image.</dd>
+<dt>first_x:</dt>
+<dd>The horizontal ordinate of the top left corner of the first region.</dd>
+<dt>first_y:</dt>
+<dd>The vertical ordinate of the top left corner of the first region.</dd>
+<dt>second_image:</dt>
+<dd>The address of the second Image.</dd>
+<dt>second_x:</dt>
+<dd>The horizontal ordinate of the top left corner of the second region.</dd>
+<dt>second_y:</dt>
+<dd>The vertical ordinate of the top left corner of the second region.</dd>
+<dt>exception:</dt>
+<dd>If an error is reported, this argument is updated with the reason.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="pixeliteratedualmodify">
+<h1><a class="toc-backref" href="#id22">PixelIterateDualModify</a></h1>
+<div class="section" id="id9">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+MagickPassFail PixelIterateDualModify( PixelIteratorDualModifyCallback call_back,
+                                       const PixelIteratorOptions *options,
+                                       const char *description, void *mutable_data,
+                                       const void *immutable_data,
+                                       const unsigned long columns, const unsigned long rows,
+                                       const <a class="reference external" href="../api/types.html#image">Image</a> *source_image, const long source_x,
+                                       const long source_y, <a class="reference external" href="../api/types.html#image">Image</a> *update_image,
+                                       const long update_x, const long update_y,
+                                       <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+</div>
+<div class="section" id="id10">
+<h2>Description</h2>
+<p>PixelIterateDualModify() iterates through pixel regions of two images and
+invokes a user-provided callback function (of type
+PixelIteratorDualModifyCallback) for each row of pixels. This is useful to
+support operations such as composition.</p>
+<p>The format of the PixelIterateDualModify method is:</p>
+<pre class="literal-block">
+MagickPassFail PixelIterateDualModify( PixelIteratorDualModifyCallback call_back,
+                                       const PixelIteratorOptions *options,
+                                       const char *description, void *mutable_data,
+                                       const void *immutable_data,
+                                       const unsigned long columns, const unsigned long rows,
+                                       const <a class="reference external" href="../api/types.html#image">Image</a> *source_image, const long source_x,
+                                       const long source_y, <a class="reference external" href="../api/types.html#image">Image</a> *update_image,
+                                       const long update_x, const long update_y,
+                                       <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+<dl class="docutils">
+<dt>call_back:</dt>
+<dd>A user-provided C callback function which reads from
+a region of source pixels and updates a region of destination pixels.</dd>
+<dt>options:</dt>
+<dd>Pixel iterator execution options (may be NULL).</dd>
+<dt>description:</dt>
+<dd>textual description of operation being performed.</dd>
+<dt>mutable_data:</dt>
+<dd>User-provided mutable context data.</dd>
+<dt>immutable_data:</dt>
+<dd>User-provided immutable context data.</dd>
+<dt>columns:</dt>
+<dd>Width of pixel region</dd>
+<dt>rows:</dt>
+<dd>Height of pixel region</dd>
+<dt>source_image:</dt>
+<dd>The address of the constant source Image.</dd>
+<dt>source_x:</dt>
+<dd>The horizontal ordinate of the top left corner of the source region.</dd>
+<dt>source_y:</dt>
+<dd>The vertical ordinate of the top left corner of the source region.</dd>
+<dt>update_image:</dt>
+<dd>The address of the update Image.</dd>
+<dt>update_x:</dt>
+<dd>The horizontal ordinate of the top left corner of the update region.</dd>
+<dt>update_y:</dt>
+<dd>The vertical ordinate of the top left corner of the update region.</dd>
+<dt>exception:</dt>
+<dd>If an error is reported, this argument is updated with the reason.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="pixeliteratedualnew">
+<h1><a class="toc-backref" href="#id23">PixelIterateDualNew</a></h1>
+<div class="section" id="id11">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+MagickPassFail PixelIterateDualNew( PixelIteratorDualNewCallback call_back,
+                                    const PixelIteratorOptions *options,
+                                    const char *description, void *mutable_data,
+                                    const void *immutable_data, const unsigned long columns,
+                                    const unsigned long rows, const <a class="reference external" href="../api/types.html#image">Image</a> *source_image,
+                                    const long source_x, const long source_y,
+                                    <a class="reference external" href="../api/types.html#image">Image</a> *new_image, const long new_x,
+                                    const long new_y, <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+</div>
+<div class="section" id="id12">
+<h2>Description</h2>
+<p>PixelIterateDualNew() iterates through pixel regions of two images and
+invokes a user-provided callback function (of type
+PixelIteratorDualNewCallback) for each row of pixels. This is used if a
+new output image is created based on an input image.  The difference from
+PixelIterateDualModify() is that the output pixels are not initialized so
+it is more efficient when outputting a new image.</p>
+<p>The format of the PixelIterateDualNew method is:</p>
+<pre class="literal-block">
+MagickPassFail PixelIterateDualNew( PixelIteratorDualNewCallback call_back,
+                                    const PixelIteratorOptions *options,
+                                    const char *description, void *mutable_data,
+                                    const void *immutable_data, const unsigned long columns,
+                                    const unsigned long rows, const <a class="reference external" href="../api/types.html#image">Image</a> *source_image,
+                                    const long source_x, const long source_y,
+                                    <a class="reference external" href="../api/types.html#image">Image</a> *new_image, const long new_x,
+                                    const long new_y, <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+<dl class="docutils">
+<dt>call_back:</dt>
+<dd>A user-provided C callback function which reads from
+a region of source pixels and initializes a region of destination pixels.</dd>
+<dt>options:</dt>
+<dd>Pixel iterator execution options (may be NULL).</dd>
+<dt>description:</dt>
+<dd>textual description of operation being performed.</dd>
+<dt>mutable_data:</dt>
+<dd>User-provided mutable context data.</dd>
+<dt>immutable_data:</dt>
+<dd>User-provided immutable context data.</dd>
+<dt>columns:</dt>
+<dd>Width of pixel region</dd>
+<dt>rows:</dt>
+<dd>Height of pixel region</dd>
+<dt>source_image:</dt>
+<dd>The address of the constant source Image.</dd>
+<dt>source_x:</dt>
+<dd>The horizontal ordinate of the top left corner of the source region.</dd>
+<dt>source_y:</dt>
+<dd>The vertical ordinate of the top left corner of the source region.</dd>
+<dt>new_image:</dt>
+<dd>The address of the new Image.</dd>
+<dt>new_x:</dt>
+<dd>The horizontal ordinate of the top left corner of the new region.</dd>
+<dt>new_y:</dt>
+<dd>The vertical ordinate of the top left corner of the new region.</dd>
+<dt>exception:</dt>
+<dd>If an error is reported, this argument is updated with the reason.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="pixeliteratetriplemodify">
+<h1><a class="toc-backref" href="#id24">PixelIterateTripleModify</a></h1>
+<div class="section" id="id13">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+MagickPassFail PixelIterateTripleModify( PixelIteratorTripleModifyCallback call_back,
+                                         const PixelIteratorOptions *options,
+                                         const char *description, void *mutable_data,
+                                         const void *immutable_data,
+                                         const unsigned long columns, const unsigned long rows,
+                                         const <a class="reference external" href="../api/types.html#image">Image</a> *source1_image,
+                                         const <a class="reference external" href="../api/types.html#image">Image</a> *source2_image, const long source_x,
+                                         const long source_y, <a class="reference external" href="../api/types.html#image">Image</a> *update_image,
+                                         const long update_x, const long update_y,
+                                         <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+</div>
+<div class="section" id="id14">
+<h2>Description</h2>
+<p>PixelIterateTripleModify() iterates through pixel regions of three images
+and invokes a user-provided callback function (of type
+PixelIteratorTripleModifyCallback) for each row of pixels.  The first two
+images are read-only, while the third image is read-write for update.
+Access of the first two images is done lock-step using the same coordinates.
+This is useful to support operations such as image differencing.</p>
+<p>The format of the PixelIterateTripleModify method is:</p>
+<pre class="literal-block">
+MagickPassFail PixelIterateTripleModify( PixelIteratorTripleModifyCallback call_back,
+                                         const PixelIteratorOptions *options,
+                                         const char *description, void *mutable_data,
+                                         const void *immutable_data,
+                                         const unsigned long columns, const unsigned long rows,
+                                         const <a class="reference external" href="../api/types.html#image">Image</a> *source1_image,
+                                         const <a class="reference external" href="../api/types.html#image">Image</a> *source2_image, const long source_x,
+                                         const long source_y, <a class="reference external" href="../api/types.html#image">Image</a> *update_image,
+                                         const long update_x, const long update_y,
+                                         <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+<dl class="docutils">
+<dt>call_back:</dt>
+<dd>A user-provided C callback function which reads from
+a region of source pixels and updates a region of destination pixels.</dd>
+<dt>options:</dt>
+<dd>Pixel iterator execution options (may be NULL).</dd>
+<dt>description:</dt>
+<dd>textual description of operation being performed.</dd>
+<dt>mutable_data:</dt>
+<dd>User-provided mutable context data.</dd>
+<dt>immutable_data:</dt>
+<dd>User-provided immutable context data.</dd>
+<dt>columns:</dt>
+<dd>Width of pixel region</dd>
+<dt>rows:</dt>
+<dd>Height of pixel region</dd>
+<dt>source1_image:</dt>
+<dd>The address of the constant source 1 Image.</dd>
+<dt>source2_image:</dt>
+<dd>The address of the constant source 2 Image.</dd>
+<dt>source_x:</dt>
+<dd>The horizontal ordinate of the top left corner of the source regions.</dd>
+<dt>source_y:</dt>
+<dd>The vertical ordinate of the top left corner of the source regions.</dd>
+<dt>update_image:</dt>
+<dd>The address of the update Image.</dd>
+<dt>update_x:</dt>
+<dd>The horizontal ordinate of the top left corner of the update region.</dd>
+<dt>update_y:</dt>
+<dd>The vertical ordinate of the top left corner of the update region.</dd>
+<dt>exception:</dt>
+<dd>If an error is reported, this argument is updated with the reason.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="pixeliteratetriplenew">
+<h1><a class="toc-backref" href="#id25">PixelIterateTripleNew</a></h1>
+<div class="section" id="id15">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+MagickPassFail PixelIterateTripleNew( PixelIteratorTripleNewCallback call_back,
+                                      const PixelIteratorOptions *options,
+                                      const char *description, void *mutable_data,
+                                      const void *immutable_data,
+                                      const unsigned long columns, const unsigned long rows,
+                                      const <a class="reference external" href="../api/types.html#image">Image</a> *source1_image,
+                                      const <a class="reference external" href="../api/types.html#image">Image</a> *source2_image, const long source_x,
+                                      const long source_y, <a class="reference external" href="../api/types.html#image">Image</a> *new_image,
+                                      const long new_x, const long new_y,
+                                      <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+</div>
+<div class="section" id="id16">
+<h2>Description</h2>
+<p>PixelIterateTripleNew() iterates through pixel regions of three images
+and invokes a user-provided callback function (of type
+PixelIteratorTripleNewCallback) for each row of pixels. The first two
+images are read-only, while the third image is read-write for update.
+Access of the first two images is done lock-step using the same coordinates.
+This is used if a new output image is created based on two input images.
+The difference from PixelIterateTripleModify() is that the output pixels
+are not initialized so it is more efficient when outputting a new image.</p>
+<p>The format of the PixelIterateTripleNew method is:</p>
+<pre class="literal-block">
+MagickPassFail PixelIterateTripleNew( PixelIteratorTripleNewCallback call_back,
+                                      const PixelIteratorOptions *options,
+                                      const char *description, void *mutable_data,
+                                      const void *immutable_data,
+                                      const unsigned long columns, const unsigned long rows,
+                                      const <a class="reference external" href="../api/types.html#image">Image</a> *source1_image,
+                                      const <a class="reference external" href="../api/types.html#image">Image</a> *source2_image, const long source_x,
+                                      const long source_y, <a class="reference external" href="../api/types.html#image">Image</a> *new_image,
+                                      const long new_x, const long new_y,
+                                      <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+<dl class="docutils">
+<dt>call_back:</dt>
+<dd>A user-provided C callback function which reads from
+a region of source pixels and initializes a region of destination pixels.</dd>
+<dt>options:</dt>
+<dd>Pixel iterator execution options (may be NULL).</dd>
+<dt>description:</dt>
+<dd>textual description of operation being performed.</dd>
+<dt>mutable_data:</dt>
+<dd>User-provided mutable context data.</dd>
+<dt>immutable_data:</dt>
+<dd>User-provided immutable context data.</dd>
+<dt>columns:</dt>
+<dd>Width of pixel region</dd>
+<dt>rows:</dt>
+<dd>Height of pixel region</dd>
+<dt>source1_image:</dt>
+<dd>The address of the constant source 1 Image.</dd>
+<dt>source2_image:</dt>
+<dd>The address of the constant source 2 Image.</dd>
+<dt>source_x:</dt>
+<dd>The horizontal ordinate of the top left corner of the source regions.</dd>
+<dt>source_y:</dt>
+<dd>The vertical ordinate of the top left corner of the source regions.</dd>
+<dt>new_image:</dt>
+<dd>The address of the new Image.</dd>
+<dt>new_x:</dt>
+<dd>The horizontal ordinate of the top left corner of the new region.</dd>
+<dt>new_y:</dt>
+<dd>The vertical ordinate of the top left corner of the new region.</dd>
+<dt>exception:</dt>
+<dd>If an error is reported, this argument is updated with the reason.</dd>
+</dl>
+</div>
+</div>
+</div>
+</body>
+</html>

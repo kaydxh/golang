@@ -1,0 +1,276 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+  "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=us-ascii">
+	<title>GraphicsMagick GM Utility</title>
+	<style type=text/css>
+	<!--
+		@page { size: 8.5in 11in }
+		TD P { color: #000000; font-family: "Verdana", "Arial", "Helvetica", sans-serif; font-size: 12pt }
+		P { color: #000000; font-family: "Verdana", "Arial", "Helvetica", sans-serif; font-size: 12pt }
+		A:link { color: #00B04F }
+		A:visited { color: #007B37 }
+	-->
+	</style>
+
+</head>
+<body LANG="en-US" TEXT="#000000" LINK="#00B04F" VLINK="#007B37" BGCOLOR="#ffffff">
+<a name="top"></a>
+<table border=0 cellpadding=10 cellspacing=0 style="margin-top:-17px" width="100%"><tr><td>
+<br>&nbsp;<br>
+<table BORDER=0 WIDTH="100%"> 
+<tr> 
+<td ALIGN=LEFT bgcolor="#FFFFFF"><img 
+SRC="images/right_triangle.png"  ALT=">" BORDER=0 
+height=14 width=15><b><font face="Helvetica, Arial"><font 
+color="#00B04F"><font size="+1">
+<a NAME="batch"></a>gm batch
+</font></font></font></b></td></tr></table>
+<table width="94%" border="0" cellspacing="0" cellpadding="8">
+<tr><td width="3%"><br></td><td>
+<table BORDER=0 WIDTH="100%"> 
+<tr> 
+<td ALIGN=LEFT bgcolor="#FFFFFF"><img 
+SRC="images/right_triangle.png"  ALT=">" BORDER=0 
+height=14 width=15><b><font face="Helvetica, Arial"><font 
+color="#00B04F"><font size="+1">
+<a NAME="batch-top"></a>NAME
+</font></font></font></b></td></tr></table>
+<table width="94%" border="0" cellspacing="0" cellpadding="8">
+<tr><td width="3%"><br></td><td>
+batch - execute multiple gm commands as a script
+</td></tr></table>
+<table BORDER=0 WIDTH="100%"> 
+<tr> 
+<td ALIGN=LEFT bgcolor="#FFFFFF"><img 
+SRC="images/right_triangle.png"  ALT=">" BORDER=0 
+height=14 width=15><b><font face="Helvetica, Arial"><font 
+color="#00B04F"><font size="+1">
+<a NAME="batch-contents"></a>Contents
+</font></font></font></b></td></tr></table>
+<table width="94%" border="0" cellspacing="0" cellpadding="8">
+<tr><td width="3%"><br></td><td>
+<dl>
+<dt>
+<a href="#batch-syno">Synopsis</a>
+</dt>
+<dt>
+<a href="#batch-desc">Description</a>
+</dt>
+<dt>
+<a href="#batch-exam">Examples</a>
+</dt>
+<dt>
+<a href="#batch-opti">Options</a>
+</dt>
+</dl>
+</td></tr></table>
+<table BORDER=0 WIDTH="100%"> 
+<tr> 
+<td ALIGN=LEFT bgcolor="#FFFFFF"><img 
+SRC="images/right_triangle.png"  ALT=">" BORDER=0 
+height=14 width=15><b><font face="Helvetica, Arial"><font 
+color="#00B04F"><font size="+1">
+<a NAME="batch-syno"></a>Synopsis
+</font></font></font></b></td></tr></table>
+<table width="94%" border="0" cellspacing="0" cellpadding="8">
+<tr><td width="3%"><br></td><td>
+<p>
+<strong>gm batch</strong> <strong>[</strong> <em>options ...</em> <strong>]</strong> <strong>[</strong> <em>script</em> <strong>]</strong>
+</td></tr></table>
+<table BORDER=0 WIDTH="100%"> 
+<tr> 
+<td ALIGN=LEFT bgcolor="#FFFFFF"><img 
+SRC="images/right_triangle.png"  ALT=">" BORDER=0 
+height=14 width=15><b><font face="Helvetica, Arial"><font 
+color="#00B04F"><font size="+1">
+<a NAME="batch-desc"></a>Description
+</font></font></font></b></td></tr></table>
+<table width="94%" border="0" cellspacing="0" cellpadding="8">
+<tr><td width="3%"><br></td><td>
+<p>
+<strong>batch</strong> executes an arbitary number of the utility commands
+(e.g. <strong>convert</strong>) in the form of a simple linear batch script in
+order to improve execution efficiency, and/or to allow use as a
+subordinate co-process under the control of an arbitrary script or
+program.
+</td></tr></table>
+<table BORDER=0 WIDTH="100%"> 
+<tr> 
+<td ALIGN=LEFT bgcolor="#FFFFFF"><img 
+SRC="images/right_triangle.png"  ALT=">" BORDER=0 
+height=14 width=15><b><font face="Helvetica, Arial"><font 
+color="#00B04F"><font size="+1">
+<a NAME="batch-exam"></a>Examples
+</font></font></font></b></td></tr></table>
+<table width="94%" border="0" cellspacing="0" cellpadding="8">
+<tr><td width="3%"><br></td><td>
+<p> To drive <strong>'gm batch'</strong> using a shell script (or a program
+written in any language), have the script/program send commands to 'gm
+batch' via its standard input.  Specify that standard input should be
+used by using <strong>'-'</strong> as the file name.  The following example
+converts all files matching '*.jpg' to TIFF format while rotating each
+file by 90 degrees and stripping all embedded profiles.  The shell
+script syntax is standard Unix shell:
+<pre>
+  for file in *.jpg
+  do
+    outfile=`basename $file .jpg`.tiff
+    echo convert -verbose "'$file'" -rotate 90 \
+    +profile "'*'" "'$outfile'"
+  done | gm batch -echo on -feedback on -
+</pre>
+<p>
+We can accomplish the same as the previous example by putting all the
+commands in a text file and then specifying the name of the text file
+as the script to execute:
+<pre>
+  for file in *.jpg
+  do
+    outfile=`basename $file .jpg`.tiff
+    echo convert -verbose "'$file'" -rotate 90 \
+    +profile "'*'" "'$outfile'"
+  done &gt; script.txt
+  gm batch -echo on -feedback on script.txt
+</pre>
+</td></tr></table>
+     <p>
+<i><a href="#top">Back to Contents</a></i> 
+&nbsp;</p>
+<table BORDER=0 WIDTH="100%"> 
+<tr> 
+<td ALIGN=LEFT bgcolor="#FFFFFF"><img 
+SRC="images/right_triangle.png"  ALT=">" BORDER=0 
+height=14 width=15><b><font face="Helvetica, Arial"><font 
+color="#00B04F"><font size="+1">
+<a NAME="batch-opti"></a>Options
+</font></font></font></b></td></tr></table>
+<table width="94%" border="0" cellspacing="0" cellpadding="8">
+<tr><td width="3%"><br></td><td>
+<p>
+Options are processed from left to right and must appear before any filename argument.
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    -echo <i>on|off</i>
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>command echo on or off</td></tr></table>
+<p>
+Specify <strong>on</strong> to enable echoing commands to standard output as
+they are read or <strong>off</strong> to disable.  The default is
+<strong>off</strong>.
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    -escape <i>unix|windows</i>
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>Parse using unix or windows syntax</td></tr></table>
+<p>
+Commands must be parsed from the input stream and escaping needs to be
+used to protect spaces or quoting characters in the input. Specify
+<strong>unix</strong> to use unix-style command line parsing or <strong>windows</strong>
+for Microsoft Windows command shell style parsing. The default depends
+on if the software is compiled for Microsoft Windows or for a
+Unix-type system (including Cygwin on Microsoft Windows).  It is
+recommended to use unix syntax because it is more powerful and more
+portable.
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    -fail <i>text</i>
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>text to print if a command fails</td></tr></table>
+<p>
+When feedback is enabled, this specifies the text to print when the
+command fails.  The default text is <strong>FAIL</strong>.
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    -feedback <i>on|off</i>
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>enable error feedback</td></tr></table>
+<p>
+Print text (see -pass and -fail options) feedback after each
+command to indicate the result, the default is <strong>off</strong>.
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    -help
+</font></font></font></b></td></tr></table>
+<p>
+Prints batch command help.
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    -pass <i>text</i>
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>text to print if a command passes</td></tr></table>
+<p>
+When feedback is enabled, this specifies the text to print when the
+command passes.  The default text is <strong>PASS</strong>.
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    -prompt <i>text</i>
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>Prompt text to use for command line</td></tr></table>
+<p>
+If no filename argument was specified, a simple command prompt appears
+where you may enter GraphicsMagick commands.  The default prompt is
+<strong>GM&gt;</strong>.  Use this option to change the prompt to something else.
+<table BORDER=0 WIDTH="94%">
+<tr>
+<td width="3%"><br></td> 
+<td ALIGN=LEFT BGCOLOR="#FFFFFF">
+<img SRC="images/right_triangle_option.png"
+ALT=">" BORDER=0 height=14
+width=15><b><font face="Helvetica, Arial"
+><font color="#00B04F"><font size="+1">
+    -stop-on-error <i>on|off</i>
+</font></font></font></b></td></tr></table>
+<table width="90%" border="0" cellspacing="0"              cellpadding="8">              <tr><td width="6%"><br></td><td>Specify if command processing stops on error</td></tr></table>
+<p>
+Normally command processing continues if a command encounters an
+error.  Specify <strong>-stop-on-error on</strong> to cause processing to quit
+immediately on error.
+</td></tr></table>
+     <p>
+<i><a href="#top">Back to Contents</a></i> 
+&nbsp;</p>
+</td></tr></table>

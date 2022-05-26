@@ -1,0 +1,12 @@
+prefix=/root/pinwoodxu/GraphicsMagick-source/release
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include/GraphicsMagick
+
+
+Name: GraphicsMagick++
+Version: 1.3.35
+Description: C++ API for GraphicsMagick image processing library
+Requires: GraphicsMagick
+Libs: -lGraphicsMagick++
+Cflags: 

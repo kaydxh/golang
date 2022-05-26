@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.15.2: http://docutils.sourceforge.net/" />
+<title>GraphicsMagick Development Process</title>
+<link rel="stylesheet" href="docutils-articles.css" type="text/css" />
+</head>
+<body>
+
+<div class="banner">
+<img src="images/gm-107x76.png" alt="GraphicMagick logo" width="107" height="76" />
+<span class="title">GraphicsMagick</span>
+<form action="http://www.google.com/search">
+	<input type="hidden" name="domains" value="www.graphicsmagick.org" />
+	<input type="hidden" name="sitesearch" value="www.graphicsmagick.org" />
+    <span class="nowrap"><input type="text" name="q" size="25" maxlength="255" />&nbsp;<input type="submit" name="sa" value="Search" /></span>
+</form>
+</div>
+
+<div class="navmenu">
+<ul>
+<li><a href="index.html">Home</a></li>
+<li><a href="project.html">Project</a></li>
+<li><a href="download.html">Download</a></li>
+<li><a href="README.html">Install</a></li>
+<li><a href="Hg.html">Source</a></li>
+<li><a href="NEWS.html">News</a> </li>
+<li><a href="utilities.html">Utilities</a></li>
+<li><a href="programming.html">Programming</a></li>
+<li><a href="reference.html">Reference</a></li>
+</ul>
+</div>
+<div class="document" id="graphicsmagick-development-process">
+<h1 class="title">GraphicsMagick Development Process</h1>
+
+<!-- -*- mode: rst -*- -->
+<!-- This text is in reStucturedText format, so it may look a bit odd. -->
+<!-- See http://docutils.sourceforge.net/rst.html for details. -->
+<p>In order to ensure an orderly development process, and assure the highest
+quality releases, a development process has been established for
+GraphicsMagick.</p>
+<div class="section" id="phases-of-development">
+<h1>Phases of Development</h1>
+<p>Four major development phases have been identified. These are the
+feature development phase, snapshot phase, beta phase, and release
+phase.  The phases used depend on the nature of preceding development.
+The Beta phase is usually skipped. The descriptions of these phases
+are as follows:</p>
+<div class="section" id="feature-development-phase">
+<h2>Feature Development Phase</h2>
+<blockquote>
+<p>The feature development phase is a time of rapid development and
+innovation. Work is normally done on Mercurial 'tip'.  During the
+feature development phase, Mercurial is the only way to access the
+work in progress. Before updates are committed to Mercurial, they
+should be proven to compile on at least one architecture and pass
+the test suite ('make distcheck').</p>
+<p>Entry Criteria: There is a plan for feature development.</p>
+<p>Exit Criteria: Test suite passes on at least one machine.</p>
+</blockquote>
+</div>
+<div class="section" id="snapshot-phase">
+<h2>Snapshot Phase</h2>
+<blockquote>
+<p>The snapshot phase is entered when it is decided that the work is
+stable enough for non-developers to test. API and user interfaces
+should be stable before the snapshot phase begins in order to avoid
+confusion. Snapshot development is done on Mercurial 'tip'. Snapshot
+packages are identified by the date of the snapshot, and no Mercurial
+branching or tagging is performed to support the snapshot.</p>
+<p>Entry Criteria: Interfaces are stable, and code compiles and runs on
+multiple architectures.</p>
+<p>Exit Criteria: Code is release quality. The test suite must show
+100% completion for Q:8 and Q:16 quantum depths on at least three
+operating environments.</p>
+</blockquote>
+</div>
+<div class="section" id="beta-phase">
+<h2>Beta Phase</h2>
+<blockquote>
+<p>The Beta phase (usually only occuring at the beginning of a major
+release cycle) is entered when the work is feature complete, the
+package passes all tests, and it is considered time for versioned
+releases. As the first step of entering the beta phase, a release
+branch is created off of the trunk to support change sets for the
+release. The purpose of the beta phase is to wring out any remaining
+bugs prior to release. When a beta package is prepared, a release
+tag is applied to the associated release branch in Mercurial.</p>
+<p>Entry Criteria: Code is release quality.. The test suite must show
+100% completion for Q:8 and Q:16 quantum depths on at least three
+operating environments.</p>
+<p>Exit Criteria: The test suite must show 100% completion for Q:8, Q:16,
+and Q:32 quantum depths on at least three operating environments. The
+current beta package is determined to be sufficiently flawless for a
+final release.</p>
+</blockquote>
+</div>
+<div class="section" id="release-phase">
+<h2>Release Phase</h2>
+<blockquote>
+<p>The release phase is entered when the most recent Beta (or snapshot)
+is considered to be of acceptable quality for a release or bug-fixes
+have been prepared based on a previous release. At this time, a
+formal release tag is applied to the release branch, and release
+packages are created. Once a release tag has been applied to a
+release branch, that release branch is considered to be in release
+state and may only be used to prepare additional releases intended
+to correct bugs found in preceding releases. The initial release on
+a release branch has a two-digit (i.e.  X.X) release
+designation. Bug-fix releases have a three-digit (i.e.  X.X.X)
+release designation. A release designation may only be used once. If
+a problem is discovered with the release package, a new release
+number is assigned to support the corrected release package.</p>
+<p>Entry Criteria: The test suite must show 100% completion for Q:8, Q:16,
+and Q:32 quantum depths on at least three operating environments. The
+current beta package is determined to be sufficiently flawless for a
+final release.</p>
+<p>Exit Criteria: None</p>
+</blockquote>
+<hr class="docutils" />
+<p>Copyright © GraphicsMagick Group 2002 - 2020</p>
+</div>
+</div>
+</div>
+</body>
+</html>

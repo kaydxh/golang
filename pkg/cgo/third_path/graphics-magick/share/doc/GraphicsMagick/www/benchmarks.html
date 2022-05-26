@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.15.2: http://docutils.sourceforge.net/" />
+<title>GraphicsMagick vs ImageMagick Benchmarks</title>
+<link rel="stylesheet" href="docutils-articles.css" type="text/css" />
+</head>
+<body>
+
+<div class="banner">
+<img src="images/gm-107x76.png" alt="GraphicMagick logo" width="107" height="76" />
+<span class="title">GraphicsMagick</span>
+<form action="http://www.google.com/search">
+	<input type="hidden" name="domains" value="www.graphicsmagick.org" />
+	<input type="hidden" name="sitesearch" value="www.graphicsmagick.org" />
+    <span class="nowrap"><input type="text" name="q" size="25" maxlength="255" />&nbsp;<input type="submit" name="sa" value="Search" /></span>
+</form>
+</div>
+
+<div class="navmenu">
+<ul>
+<li><a href="index.html">Home</a></li>
+<li><a href="project.html">Project</a></li>
+<li><a href="download.html">Download</a></li>
+<li><a href="README.html">Install</a></li>
+<li><a href="Hg.html">Source</a></li>
+<li><a href="NEWS.html">News</a> </li>
+<li><a href="utilities.html">Utilities</a></li>
+<li><a href="programming.html">Programming</a></li>
+<li><a href="reference.html">Reference</a></li>
+</ul>
+</div>
+<div class="document" id="graphicsmagick-vs-imagemagick-benchmarks">
+<h1 class="title">GraphicsMagick vs ImageMagick Benchmarks</h1>
+
+<!-- -*- mode: rst -*- -->
+<!-- This text is in reStucturedText format, so it may look a bit odd. -->
+<!-- See http://docutils.sourceforge.net/rst.html for details. -->
+<div class="contents local topic" id="contents">
+<ul class="simple">
+<li><a class="reference internal" href="#foreword" id="id1">Foreword</a></li>
+<li><a class="reference internal" href="#strategy" id="id2">Strategy</a></li>
+<li><a class="reference internal" href="#the-benchmark" id="id3">The Benchmark</a></li>
+</ul>
+</div>
+<div class="section" id="foreword">
+<h1><a class="toc-backref" href="#id1">Foreword</a></h1>
+<p>This page used to document benchmark results which compared
+GraphicsMagick 1.3.8 performance to ImageMagick 6.5.8-10 performance.
+We found that GraphicsMagick was usually considerably faster at
+executing image processing operations from the command line than
+ImageMagick 6.5.8-10 was. One ImageMagick algorithm ran as much as 770
+times slower.  GraphicsMagick clearly ran much more efficiently under
+Microsoft Windows.</p>
+<p>We now find that a simple head to head performance comparison between
+GraphicsMagick and recent ImageMagick is no longer possible because
+ImageMagick has changed the meanings of the existing arguments.  In
+particular, we discovered that ImageMagick filter arguments producing
+convolution matrices are now producing lower-order convolution
+matrices representing perhaps an order of magnitude less work given
+the same arguments.  The resulting images are visually substantially
+less filtered.  Using the same command-line filter arguments causes
+GraphicsMagick to appear slower when it is actually doing far more
+work than ImageMagick.</p>
+<p>Due to it not being feasable to do a head to head performance
+measurement between GraphicsMagick and ImageMagick, we have decided to
+not post results at the moment.  However, the strategy and a simple
+benchmark driver script are still provided for those who want to do
+their own performance comparisons between GraphicsMagick and
+ImageMagick.</p>
+</div>
+<div class="section" id="strategy">
+<h1><a class="toc-backref" href="#id2">Strategy</a></h1>
+<p>The benchmark focuses on the ability to process many medium sized
+HD-resolution (1920x1080 pixels) images. In order to prevent disk I/O
+from being a factor, we use a small input image and tile it to create
+a larger input image via the &quot;tile:&quot; coder. The processed image is
+sent to the &quot;null:&quot; coder so that file writes to a slow disk are also
+not a factor.  Static executables are used and executed via full paths
+in order to minimize variability from the execution environment. In
+order to obtain accurate and useful timing, we use the bash shell to
+execute the command 40 times and see how long it takes. This is a very
+simple benchmark approach which is quite representative of the
+performance that the typical user observes.</p>
+<p>This new benchmark reveals the following performance criteria:</p>
+<blockquote>
+<ul class="simple">
+<li>Basic execution overhead of the software.</li>
+<li>Image processing algorithmic efficiency.</li>
+<li>Efficacy of OpenMP enhancements.</li>
+</ul>
+</blockquote>
+</div>
+<div class="section" id="the-benchmark">
+<h1><a class="toc-backref" href="#id3">The Benchmark</a></h1>
+<p>The benchmark is quite simple. It reads a list of commands to execute
+from a file named &quot;commands.txt&quot; and times how long it takes to
+execute each command 40 times using GraphicsMagick and ImageMagick.</p>
+<p>Here is the simple benchmark script:</p>
+<pre class="literal-block">
+#!/usr/bin/env bash
+#
+# Measure the performance between two 'convert' commands by
+# executing a subcommand through many iterations and seeing
+# the total time that it takes.
+#
+# Written by Bob Friesenhahn, October 2008
+#
+
+# GraphicsMagick
+convert1='/usr/local/bin/gm convert'
+#convert1='/c/Program\ Files/GraphicsMagick-1.3.8-Q16/gm.exe convert'
+
+# ImageMagick
+convert2='/usr/local/bin/convert'
+#convert2='/c/Program\ Files/ImageMagick-6.5.9-Q16/convert.exe'
+
+# Input file specification
+input_image='-size 1920x1080 tile:model.pnm'
+
+# Ouput file specification
+output_image=&quot;null:&quot;
+
+# Should not need to change any of the rest
+typeset -i iterations=40
+echo &quot;Convert-1:   ${convert1}&quot;
+echo &quot;Version:     `eval &quot;${convert1}&quot; -version | head -1`&quot;
+echo &quot;Convert-2:   ${convert2}&quot;
+echo &quot;Version:     `eval &quot;${convert2}&quot; -version | head -1`&quot;
+echo &quot;Date:        `date`&quot;
+echo &quot;Host:        `uname -n`&quot;
+echo &quot;OS:          `uname -s`&quot;
+echo &quot;Release:     `uname -r`&quot;
+echo &quot;Arch:        `uname -p`&quot;
+echo &quot;Input File:  ${input_image}&quot;
+echo &quot;Output File: ${output_image}&quot;
+echo &quot;Threads:     ${OMP_NUM_THREADS:-1}&quot;
+echo &quot;Iterations:  ${iterations}&quot;
+echo &quot;========================================================================================&quot;
+echo
+typeset -i count=0 i=0
+cat commands.txt | while read subcommand
+do
+  echo ${subcommand}
+
+  command1=&quot;${convert1} ${input_image} ${subcommand} ${output_image}&quot;
+  i=0
+  count=$iterations
+  time while ((i &lt; count))
+  do
+    eval &quot;${command1}&quot;
+    let i=i+1
+  done
+  sleep 1
+
+  command2=&quot;${convert2} ${input_image} ${subcommand} ${output_image}&quot;
+  i=0
+  count=$iterations
+  time while ((i &lt; count))
+  do
+    eval &quot;${command2}&quot;
+    let i=i+1
+  done
+
+  echo
+  sleep 1
+done 2&gt;&amp;1
+</pre>
+<hr class="docutils" />
+<div class="line-block">
+<div class="line">Copyright (C) 2008 - 2020 GraphicsMagick Group</div>
+</div>
+<p>This program is covered by multiple licenses, which are described in
+Copyright.txt. You should have received a copy of Copyright.txt with this
+package; otherwise see <a class="reference external" href="http://www.graphicsmagick.org/Copyright.html">http://www.graphicsmagick.org/Copyright.html</a>.</p>
+</div>
+</div>
+</body>
+</html>

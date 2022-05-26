@@ -1,0 +1,423 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.15.2: http://docutils.sourceforge.net/" />
+<title>error</title>
+<link rel="stylesheet" href="../docutils-api.css" type="text/css" />
+</head>
+<body>
+
+<div class="banner">
+<img src="../images/gm-107x76.png" alt="GraphicMagick logo" width="107" height="76" />
+<span class="title">GraphicsMagick</span>
+<form action="http://www.google.com/search">
+	<input type="hidden" name="domains" value="www.graphicsmagick.org" />
+	<input type="hidden" name="sitesearch" value="www.graphicsmagick.org" />
+    <span class="nowrap"><input type="text" name="q" size="25" maxlength="255" />&nbsp;<input type="submit" name="sa" value="Search" /></span>
+</form>
+</div>
+
+<div class="navmenu">
+<ul>
+<li><a href="../index.html">Home</a></li>
+<li><a href="../project.html">Project</a></li>
+<li><a href="../download.html">Download</a></li>
+<li><a href="../README.html">Install</a></li>
+<li><a href="../Hg.html">Source</a></li>
+<li><a href="../NEWS.html">News</a> </li>
+<li><a href="../utilities.html">Utilities</a></li>
+<li><a href="../programming.html">Programming</a></li>
+<li><a href="../reference.html">Reference</a></li>
+</ul>
+</div>
+<div class="document" id="error">
+<h1 class="title">error</h1>
+<h2 class="subtitle" id="error-reporting-methods">Error reporting methods</h2>
+
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#catchexception" id="id27">CatchException</a></li>
+<li><a class="reference internal" href="#copyexception" id="id28">CopyException</a></li>
+<li><a class="reference internal" href="#destroyexceptioninfo" id="id29">DestroyExceptionInfo</a></li>
+<li><a class="reference internal" href="#getexceptioninfo" id="id30">GetExceptionInfo</a></li>
+<li><a class="reference internal" href="#getlocaleexceptionmessage" id="id31">GetLocaleExceptionMessage</a></li>
+<li><a class="reference internal" href="#magickerror" id="id32">MagickError</a></li>
+<li><a class="reference internal" href="#magickfatalerror" id="id33">MagickFatalError</a></li>
+<li><a class="reference internal" href="#magickwarning" id="id34">MagickWarning</a></li>
+<li><a class="reference internal" href="#seterrorhandler" id="id35">SetErrorHandler</a></li>
+<li><a class="reference internal" href="#setexceptioninfo" id="id36">SetExceptionInfo</a></li>
+<li><a class="reference internal" href="#setfatalerrorhandler" id="id37">SetFatalErrorHandler</a></li>
+<li><a class="reference internal" href="#setwarninghandler" id="id38">SetWarningHandler</a></li>
+<li><a class="reference internal" href="#throwexception" id="id39">ThrowException</a></li>
+<li><a class="reference internal" href="#throwloggedexception" id="id40">ThrowLoggedException</a></li>
+</ul>
+</div>
+<div class="section" id="catchexception">
+<h1><a class="toc-backref" href="#id27">CatchException</a></h1>
+<div class="section" id="synopsis">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+CatchException( const <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+</div>
+<div class="section" id="description">
+<h2>Description</h2>
+<p>CatchException() returns if no exceptions is found otherwise it reports
+the exception as a warning, error, or fatal depending on the severity.</p>
+<p>The format of the CatchException method is:</p>
+<pre class="literal-block">
+CatchException( const <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>exception:</dt>
+<dd>The exception info.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="copyexception">
+<h1><a class="toc-backref" href="#id28">CopyException</a></h1>
+<div class="section" id="id1">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+void CopyException( <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *copy, const <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *original );
+</pre>
+</div>
+<div class="section" id="id2">
+<h2>Description</h2>
+<p>CopyException() copies exception data from one ExceptionInfo structure
+to another.</p>
+<p>The format of the CopyException method is:</p>
+<pre class="literal-block">
+void CopyException( <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *copy, const <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *original );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>copy:</dt>
+<dd>The exception to copy to.</dd>
+<dt>original:</dt>
+<dd>The exception to copy from.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="destroyexceptioninfo">
+<h1><a class="toc-backref" href="#id29">DestroyExceptionInfo</a></h1>
+<div class="section" id="id3">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+void DestroyExceptionInfo( <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+</div>
+<div class="section" id="id4">
+<h2>Description</h2>
+<p>DestroyExceptionInfo() deallocates memory associated with exception.</p>
+<p>The format of the DestroyExceptionInfo method is:</p>
+<pre class="literal-block">
+void DestroyExceptionInfo( <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>exception:</dt>
+<dd>The exception info.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="getexceptioninfo">
+<h1><a class="toc-backref" href="#id30">GetExceptionInfo</a></h1>
+<div class="section" id="id5">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+GetExceptionInfo( <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+</div>
+<div class="section" id="id6">
+<h2>Description</h2>
+<p>GetExceptionInfo() initializes an exception to default values.</p>
+<p>The format of the GetExceptionInfo method is:</p>
+<pre class="literal-block">
+GetExceptionInfo( <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>exception:</dt>
+<dd>The exception info.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="getlocaleexceptionmessage">
+<h1><a class="toc-backref" href="#id31">GetLocaleExceptionMessage</a></h1>
+<div class="section" id="id7">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+const char *GetLocaleExceptionMessage( const <a class="reference external" href="../api/types.html#exceptiontype">ExceptionType</a> severity, const char *tag );
+</pre>
+</div>
+<div class="section" id="id8">
+<h2>Description</h2>
+<p>GetLocaleExceptionMessage() converts a enumerated exception severity and tag
+to a message in the current locale.</p>
+<p>The format of the GetLocaleExceptionMessage method is:</p>
+<pre class="literal-block">
+const char *GetLocaleExceptionMessage( const <a class="reference external" href="../api/types.html#exceptiontype">ExceptionType</a> severity, const char *tag );
+</pre>
+<dl class="docutils">
+<dt>severity:</dt>
+<dd>the severity of the exception.</dd>
+<dt>tag:</dt>
+<dd>the message tag.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="magickerror">
+<h1><a class="toc-backref" href="#id32">MagickError</a></h1>
+<div class="section" id="id9">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+void MagickError( const <a class="reference external" href="../api/types.html#exceptiontype">ExceptionType</a> error, const char *reason, const char *description );
+</pre>
+</div>
+<div class="section" id="id10">
+<h2>Description</h2>
+<p>Method MagickError calls the error handler methods with an error reason.</p>
+<p>The format of the MagickError method is:</p>
+<pre class="literal-block">
+void MagickError( const <a class="reference external" href="../api/types.html#exceptiontype">ExceptionType</a> error, const char *reason, const char *description );
+</pre>
+<dl class="docutils">
+<dt>exception:</dt>
+<dd>Specifies the numeric error category.</dd>
+<dt>reason:</dt>
+<dd>Specifies the reason to display before terminating the
+program.</dd>
+<dt>description:</dt>
+<dd>Specifies any description to the reason.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="magickfatalerror">
+<h1><a class="toc-backref" href="#id33">MagickFatalError</a></h1>
+<div class="section" id="id11">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+void MagickFatalError( const <a class="reference external" href="../api/types.html#exceptiontype">ExceptionType</a> error, const char *reason,
+                       const char *description );
+</pre>
+</div>
+<div class="section" id="id12">
+<h2>Description</h2>
+<p>MagickFatalError() calls the fatal error handler methods with an error
+reason.  The fatal error handler is not expected to return!</p>
+<p>The format of the MagickError method is:</p>
+<pre class="literal-block">
+void MagickFatalError( const <a class="reference external" href="../api/types.html#exceptiontype">ExceptionType</a> error, const char *reason,
+                       const char *description );
+</pre>
+<dl class="docutils">
+<dt>exception:</dt>
+<dd>Specifies the numeric error category.</dd>
+<dt>reason:</dt>
+<dd>Specifies the reason to display before terminating the
+program.</dd>
+<dt>description:</dt>
+<dd>Specifies any description to the reason.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="magickwarning">
+<h1><a class="toc-backref" href="#id34">MagickWarning</a></h1>
+<div class="section" id="id13">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+void MagickWarning( const <a class="reference external" href="../api/types.html#exceptiontype">ExceptionType</a> warning, const char *reason,
+                    const char *description );
+</pre>
+</div>
+<div class="section" id="id14">
+<h2>Description</h2>
+<p>Method MagickWarning calls the warning handler methods with a warning
+reason.</p>
+<p>The format of the MagickWarning method is:</p>
+<pre class="literal-block">
+void MagickWarning( const <a class="reference external" href="../api/types.html#exceptiontype">ExceptionType</a> warning, const char *reason,
+                    const char *description );
+</pre>
+<dl class="docutils">
+<dt>warning:</dt>
+<dd>The warning severity.</dd>
+<dt>reason:</dt>
+<dd>Define the reason for the warning.</dd>
+<dt>description:</dt>
+<dd>Describe the warning.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="seterrorhandler">
+<h1><a class="toc-backref" href="#id35">SetErrorHandler</a></h1>
+<div class="section" id="id15">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#errorhandler">ErrorHandler</a> SetErrorHandler( <a class="reference external" href="../api/types.html#errorhandler">ErrorHandler</a> handler );
+</pre>
+</div>
+<div class="section" id="id16">
+<h2>Description</h2>
+<p>SetErrorHandler() sets the error handler to the specified method
+and returns the previous error handler.</p>
+<p>The format of the SetErrorHandler method is:</p>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#errorhandler">ErrorHandler</a> SetErrorHandler( <a class="reference external" href="../api/types.html#errorhandler">ErrorHandler</a> handler );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>handler:</dt>
+<dd>The method to handle errors.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="setexceptioninfo">
+<h1><a class="toc-backref" href="#id36">SetExceptionInfo</a></h1>
+<div class="section" id="id17">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+SetExceptionInfo( <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception, <a class="reference external" href="../api/types.html#exceptiontype">ExceptionType</a> severity );
+</pre>
+</div>
+<div class="section" id="id18">
+<h2>Description</h2>
+<p>SetExceptionInfo() set the exception severity.</p>
+<p>The format of the SetExceptionInfo method is:</p>
+<pre class="literal-block">
+SetExceptionInfo( <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception, <a class="reference external" href="../api/types.html#exceptiontype">ExceptionType</a> severity );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>exception:</dt>
+<dd>The exception info.</dd>
+<dt>severity:</dt>
+<dd>The exception severity.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="setfatalerrorhandler">
+<h1><a class="toc-backref" href="#id37">SetFatalErrorHandler</a></h1>
+<div class="section" id="id19">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+FatalErrorHandler SetFatalErrorHandler( FatalErrorHandler handler );
+</pre>
+</div>
+<div class="section" id="id20">
+<h2>Description</h2>
+<p>SetFatalErrorHandler() sets the fatal error handler to the specified method
+and returns the previous fatal error handler.</p>
+<p>The format of the SetFatalErrorHandler method is:</p>
+<pre class="literal-block">
+FatalErrorHandler SetFatalErrorHandler( FatalErrorHandler handler );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>handler:</dt>
+<dd>The method to handle errors.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="setwarninghandler">
+<h1><a class="toc-backref" href="#id38">SetWarningHandler</a></h1>
+<div class="section" id="id21">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#errorhandler">ErrorHandler</a> SetWarningHandler( <a class="reference external" href="../api/types.html#errorhandler">ErrorHandler</a> handler );
+</pre>
+</div>
+<div class="section" id="id22">
+<h2>Description</h2>
+<p>SetWarningHandler() sets the warning handler to the specified method
+and returns the previous warning handler.</p>
+<p>The format of the SetWarningHandler method is:</p>
+<pre class="literal-block">
+<a class="reference external" href="../api/types.html#errorhandler">ErrorHandler</a> SetWarningHandler( <a class="reference external" href="../api/types.html#errorhandler">ErrorHandler</a> handler );
+</pre>
+<p>A description of each parameter follows:</p>
+<dl class="docutils">
+<dt>handler:</dt>
+<dd>The method to handle warnings.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="throwexception">
+<h1><a class="toc-backref" href="#id39">ThrowException</a></h1>
+<div class="section" id="id23">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+void ThrowException( <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception, const <a class="reference external" href="../api/types.html#exceptiontype">ExceptionType</a> severity,
+                     const char *reason, const char *description );
+</pre>
+</div>
+<div class="section" id="id24">
+<h2>Description</h2>
+<p>ThrowException() throws an exception with the specified severity code,
+reason, and optional description.</p>
+<p>The format of the ThrowException method is:</p>
+<pre class="literal-block">
+void ThrowException( <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception, const <a class="reference external" href="../api/types.html#exceptiontype">ExceptionType</a> severity,
+                     const char *reason, const char *description );
+</pre>
+<dl class="docutils">
+<dt>exception:</dt>
+<dd>The exception.</dd>
+<dt>severity:</dt>
+<dd>The severity of the exception.</dd>
+<dt>reason:</dt>
+<dd>The reason of the exception.</dd>
+<dt>description:</dt>
+<dd>The exception description.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="throwloggedexception">
+<h1><a class="toc-backref" href="#id40">ThrowLoggedException</a></h1>
+<div class="section" id="id25">
+<h2>Synopsis</h2>
+<pre class="literal-block">
+void ThrowLoggedException( <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception, const <a class="reference external" href="../api/types.html#exceptiontype">ExceptionType</a> severity,
+                           const char *reason, const char *description, const char *module,
+                           const char *function, const unsigned long line ;
+</pre>
+</div>
+<div class="section" id="id26">
+<h2>Description</h2>
+<p>ThrowLoggedException() throws an exception with the specified severity code,
+reason, optional description, source filename, function name, and line
+number. If logging is enabled, the exception is also logged.</p>
+<p>If the exception already contains an ErrorException (or greater) or the
+existing exception is more severe, then it is ignored.</p>
+<p>The format of the ThrowLoggedException method is:</p>
+<pre class="literal-block">
+void ThrowLoggedException( <a class="reference external" href="../api/types.html#exceptioninfo">ExceptionInfo</a> *exception, const <a class="reference external" href="../api/types.html#exceptiontype">ExceptionType</a> severity,
+                           const char *reason, const char *description, const char *module,
+                           const char *function, const unsigned long line ;
+</pre>
+<dl class="docutils">
+<dt>exception:</dt>
+<dd>The exception.</dd>
+<dt>severity:</dt>
+<dd>The severity of the exception.</dd>
+<dt>reason:</dt>
+<dd>The reason of the exception.</dd>
+<dt>description:</dt>
+<dd>The exception description.</dd>
+<dt>filename:</dt>
+<dd>The source module filename.</dd>
+<dt>function:</dt>
+<dd>The function name.</dd>
+<dt>line:</dt>
+<dd>The line number of the source module.</dd>
+</dl>
+</div>
+</div>
+</div>
+</body>
+</html>

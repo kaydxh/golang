@@ -1,0 +1,12 @@
+prefix=/protobuf/protobuf-3.6.1/..
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+
+Name: Protocol Buffers
+Description: Google's Data Interchange Format
+Version: 3.6.1
+Libs: -L${libdir} -lprotobuf -pthread 
+Libs.private: -lz 
+Cflags: -I${includedir} -pthread
+Conflicts: protobuf-lite
