@@ -58,7 +58,7 @@ func MagickInitializeMagick(req *gocvpb.MagickInitializeMagickRequest) error {
 			return
 		}
 		if resp.GetError() != nil {
-			//	errOnce = resp.GetError()
+			errOnce = resp.GetError()
 			return
 		}
 		errOnce = nil
