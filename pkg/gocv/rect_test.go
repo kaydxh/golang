@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"testing"
 
-	gocv_ "github.com/kaydxh/golang/pkg/cgo/gocv"
+	gocv_ "github.com/kaydxh/golang/pkg/gocv"
 )
 
 func TestScale(t *testing.T) {

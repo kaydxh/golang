@@ -1,0 +1,2 @@
+/usr/bin/ar qc libproto-types.a CMakeFiles/proto-types.dir/api/openapi-spec/types/code/sdk-go.code.pb.cc.o CMakeFiles/proto-types.dir/api/openapi-spec/types/sdk-go.types.pb.cc.o
+/usr/bin/ranlib libproto-types.a
