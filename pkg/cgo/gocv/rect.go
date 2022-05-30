@@ -13,7 +13,7 @@ func (r Rect) Scale(factor float32) Rect {
 	ox := r.X + r.Width/2
 	oy := r.Y + r.Height/2
 	r.X = ox + int32(float32((r.X-ox))*factor)
-	r.Y = ox + int32(float32((r.Y-oy))*factor)
+	r.Y = oy + int32(float32((r.Y-oy))*factor)
 	r.Width = int32(float32(r.Width) * factor)
 	r.Height = int32(float32(r.Height) * factor)
 
