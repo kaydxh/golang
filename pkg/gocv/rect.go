@@ -32,12 +32,21 @@ func (r Rect) Intersect(s Rect) Rect {
 	if r.Y < s.Y {
 		r.Y = s.Y
 	}
-	if r.Height > s.Height {
-		r.Height = s.Height
+
+	rMaxX := r.X + r.Width
+	sMaxX := s.X + s.Width
+	if rMaxX > sMaxX {
+		rMaxX = sMaxX
 	}
-	if r.Width > s.Width {
-		r.Width = s.Width
+	r.Width = rMaxX - r.X
+
+	rMaxY := r.Y + r.Height
+	sMaxY := s.Y + s.Height
+	if rMaxY > sMaxY {
+		rMaxY = sMaxY
 	}
+	r.Height = rMaxY - r.Y
+
 	// Letting r0 and s0 be the values of r and s at the time that the method
 	// is called, this next line is equivalent to:
 	//
@@ -62,12 +71,20 @@ func (r Rect) Union(s Rect) Rect {
 	if r.Y > s.Y {
 		r.Y = s.Y
 	}
-	if r.Width < s.Width {
-		r.Width = s.Width
+
+	rMaxX := r.X + r.Width
+	sMaxX := s.X + s.Width
+	if rMaxX < sMaxX {
+		rMaxX = sMaxX
 	}
-	if r.Height < s.Height {
-		r.Height = s.Height
+	r.Width = rMaxX - r.X
+
+	rMaxY := r.Y + r.Height
+	sMaxY := s.Y + s.Height
+	if rMaxY < sMaxY {
+		rMaxY = sMaxY
 	}
+	r.Height = rMaxY - r.Y
 	return r
 }
 
