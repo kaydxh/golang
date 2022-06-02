@@ -15,7 +15,7 @@ import (
 	"unsafe"
 
 	unsafe_ "github.com/kaydxh/golang/go/unsafe"
-	gocvpb "github.com/kaydxh/golang/pkg/cgo/api/openapi-spec/gocv"
+	gocvpb "github.com/kaydxh/golang/pkg/gocv/cgo/api/openapi-spec/gocv"
 	"google.golang.org/protobuf/proto"
 )
 
