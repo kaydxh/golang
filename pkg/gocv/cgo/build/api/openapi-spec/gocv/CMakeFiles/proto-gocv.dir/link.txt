@@ -1,2 +1,0 @@
-/usr/bin/ar qc libproto-gocv.a CMakeFiles/proto-gocv.dir/api/openapi-spec/gocv/gocv.magick.pb.cc.o
-/usr/bin/ranlib libproto-gocv.a
