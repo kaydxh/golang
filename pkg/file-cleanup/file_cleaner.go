@@ -36,7 +36,12 @@ func FileCleanup(pattern string, options ...FileCleanerOption) error {
 			continue
 		}
 
-		if cleaner.maxAge > 0 && now.Sub(fi.ModTime()) < cleaner.maxAge {
+		// maxAge 0 is unlimited
+		if cleaner.maxAge <= 0 {
+			continue
+		}
+
+		if now.Sub(fi.ModTime()) < cleaner.maxAge {
 			continue
 		}
 
@@ -45,11 +50,15 @@ func FileCleanup(pattern string, options ...FileCleanerOption) error {
 
 	if cleaner.maxCount > 0 {
 		if cleaner.maxCount < int64(len(matches)) {
-			sort.Sort(RotatedFiles(matches))
-			removeMatches = append(
-				removeMatches,
-				matches[len(removeMatches):len(matches)-int(cleaner.maxCount)-len(removeMatches)]...,
-			)
+
+			removeCount := len(matches) - int(cleaner.maxCount) - len(removeMatches)
+			if removeCount > 0 {
+				sort.Sort(RotatedFiles(matches))
+				removeMatches = append(
+					removeMatches,
+					matches[len(removeMatches):len(removeMatches)+removeCount]...,
+				)
+			}
 		}
 
 	}
