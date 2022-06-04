@@ -1,7 +1,8 @@
 syntax = "proto3";
 package sdk.types.code;
 
-option go_package = "github.com/kaydxh/golang/pkg/cgo/api/openapi-spec/types/code;code";
+option go_package =
+    "github.com/kaydxh/golang/pkg/gocv/cgo/api/openapi-spec/types/code;code";
 
 message CgoError {
   Code error_code = 1;
