@@ -9,13 +9,22 @@ import (
 	"time"
 
 	rotate_ "github.com/kaydxh/golang/pkg/file-rotate"
+	"github.com/sirupsen/logrus"
 )
+
+func getWdOrDie() string {
+	path, err := os.Getwd()
+	if err != nil {
+		logrus.Fatalf("failed to get wd, err: %v", err)
+	}
+
+	return path
+}
 
 func TestRotateFileWithInterval(t *testing.T) {
 
-	filename := "/Users/kayxhding/workspace/studyspace/git-kayxhding/github.com/kaydxh/golang/pkg/file-rotate/log/"
 	rotateFiler, _ := rotate_.NewRotateFiler(
-		filename,
+		filepath.Join(getWdOrDie(), "log"),
 		rotate_.WithRotateInterval(time.Second),
 		rotate_.WithSuffixName(".log"),
 		rotate_.WithPrefixName(filepath.Base(os.Args[0])),
@@ -26,25 +35,23 @@ func TestRotateFileWithInterval(t *testing.T) {
 		if err != nil {
 			t.Errorf("faild to write, err: %v", err)
 		}
-		time.Sleep(time.Second)
+		time.Sleep(1 * time.Second)
 		t.Logf("successed to write %v bytes", n)
 	}
 
-	//t.Logf("successed to write %v bytes", n)
 }
 
 func TestRotateFileWithIntervalAndSize(t *testing.T) {
 
-	filename := "/Users/kayxhding/workspace/studyspace/git-kayxhding/github.com/kaydxh/golang/pkg/file-rotate/log/"
 	rotateFiler, _ := rotate_.NewRotateFiler(
-		filename,
+		filepath.Join(getWdOrDie(), "log"),
 		rotate_.WithRotateInterval(time.Hour),
 		rotate_.WithRotateSize(15),
 		rotate_.WithSuffixName(".log"),
 		rotate_.WithPrefixName(filepath.Base(os.Args[0])),
 	)
 
-	for i := 0; i < 10; i++ {
+	for i := 0; i < 0; i++ {
 		n, err := rotateFiler.Write([]byte("hello word"))
 		if err != nil {
 			t.Errorf("faild to write, err: %v", err)
@@ -53,14 +60,12 @@ func TestRotateFileWithIntervalAndSize(t *testing.T) {
 		t.Logf("successed to write %v bytes", n)
 	}
 
-	//t.Logf("successed to write %v bytes", n)
 }
 
 func TestRotateFileWithSize(t *testing.T) {
 
-	filename := "/Users/kayxhding/workspace/studyspace/git-kayxhding/github.com/kaydxh/golang/pkg/file-rotate/log/"
 	rotateFiler, _ := rotate_.NewRotateFiler(
-		filename,
+		filepath.Join(getWdOrDie(), "log"),
 		rotate_.WithRotateSize(15),
 		rotate_.WithSuffixName(".log"),
 		rotate_.WithPrefixName(filepath.Base(os.Args[0])),
@@ -75,16 +80,14 @@ func TestRotateFileWithSize(t *testing.T) {
 		t.Logf("successed to write %v bytes", n)
 	}
 
-	//t.Logf("successed to write %v bytes", n)
 }
 
 func TestRotateMaxCount(t *testing.T) {
 
-	filename := "/Users/kayxhding/workspace/studyspace/git-kayxhding/github.com/kaydxh/golang/pkg/file-rotate/log/"
 	rotateFiler, _ := rotate_.NewRotateFiler(
-		filename,
+		filepath.Join(getWdOrDie(), "log"),
 		rotate_.WithRotateSize(15),
-		rotate_.WithMaxCount(2),
+		rotate_.WithMaxCount(5),
 		rotate_.WithSuffixName(".log"),
 		rotate_.WithPrefixName(filepath.Base(os.Args[0])),
 	)
@@ -98,7 +101,6 @@ func TestRotateMaxCount(t *testing.T) {
 		t.Logf("successed to write %v bytes", n)
 	}
 
-	//t.Logf("successed to write %v bytes", n)
 }
 
 func TestRegex(t *testing.T) {
