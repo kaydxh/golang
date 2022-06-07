@@ -1,7 +1,7 @@
 package gocv
 
 /*
-#cgo pkg-config: protobuf opencv2 graphics-magick
+#cgo pkg-config: protobuf opencv4 graphics-magick
 #cgo CXXFLAGS: -std=c++11 -I${SRCDIR}/..
 #cgo LDFLAGS: -L${SRCDIR}/../api/openapi-spec/gocv/ -lproto-gocv
 #cgo LDFLAGS: -L${SRCDIR}/../api/openapi-spec/types/ -lproto-types
