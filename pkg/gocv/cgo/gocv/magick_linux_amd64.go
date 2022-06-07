@@ -1,7 +1,7 @@
 package gocv
 
 /*
-#cgo pkg-config: protobuf graphics-magick
+#cgo pkg-config: protobuf opencv2 graphics-magick
 #cgo CXXFLAGS: -std=c++11 -I${SRCDIR}/..
 #cgo LDFLAGS: -L${SRCDIR}/../api/openapi-spec/gocv/ -lproto-gocv
 #cgo LDFLAGS: -L${SRCDIR}/../api/openapi-spec/types/ -lproto-types
@@ -66,4 +66,31 @@ func MagickInitializeMagick(req *gocvpb.MagickInitializeMagickRequest) error {
 	})
 
 	return errOnce
+}
+
+func MagickImageDecode(req *gocvpb.MagickImageDecodeRequest) (*gocvpb.MagickImageDecodeResponse, error) {
+
+	reqData, err := proto.Marshal(req)
+	if err != nil {
+		return nil, err
+	}
+
+	var respData *C.char
+	var respDataLen C.int
+	defer func() {
+		C.free(unsafe.Pointer(respData))
+		respData = nil
+	}()
+
+	C.sdk_gocv_magick_image_decode(unsafe_.BytesPointer(reqData), C.int(len(reqData)), &respData, &respDataLen)
+
+	var resp gocvpb.MagickImageDecodeResponse
+	err = proto.Unmarshal(C.GoBytes(unsafe.Pointer(respData), C.int(respDataLen)), &resp)
+	if err != nil {
+		return nil, err
+	}
+	if resp.GetError() != nil {
+		return nil, resp.GetError()
+	}
+	return &resp, nil
 }

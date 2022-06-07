@@ -5,9 +5,11 @@
 extern "C" {
 #endif
 
-void sdk_gocv_magick_initialize_magick(void *req_data, int req_data_len,
-                                       char **resp_data, int *resp_data_len);
+void sdk_gocv_magick_initialize_magick(void* req_data, int req_data_len,
+                                       char** resp_data, int* resp_data_len);
 
+void sdk_gocv_magick_image_decode(void* req_data, int req_data_len,
+                                  char** resp_data, int* resp_data_len);
 #ifdef __cplusplus
 }
 #endif
