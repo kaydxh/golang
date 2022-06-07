@@ -1,0 +1,8 @@
+prefix=${pcfiledir}/../third_path/opencv2/
+exec_prefix=${prefix}
+
+Name: OpenCV
+Description: Open Source Computer Vision Library
+Version: 2.4.12
+Libs: -L${exec_prefix}/lib -L${exec_prefix}/lib64 -lopencv_calib3d -lopencv_contrib -lopencv_core -lopencv_features2d -lopencv_flann -lopencv_gpu -lopencv_highgui -lopencv_imgproc -lopencv_legacy -lopencv_ml -lopencv_nonfree -lopencv_objdetect -lopencv_ocl -lopencv_photo -lopencv_stitching -lopencv_superres -lopencv_ts -lopencv_video -lopencv_videostab -lrt -lpthread -lm -ldl
+Cflags: -I${prefix}/include/opencv -I${prefix}/include 

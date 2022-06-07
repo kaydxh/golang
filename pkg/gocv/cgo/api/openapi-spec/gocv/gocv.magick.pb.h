@@ -29,6 +29,7 @@
 #include <google/protobuf/message.h>
 #include <google/protobuf/repeated_field.h>  // IWYU pragma: export
 #include <google/protobuf/extension_set.h>  // IWYU pragma: export
+#include <google/protobuf/generated_enum_reflection.h>
 #include <google/protobuf/unknown_field_set.h>
 #include "api/openapi-spec/types/code/sdk-go.code.pb.h"
 // @@protoc_insertion_point(includes)
@@ -39,7 +40,7 @@ namespace protobuf_api_2fopenapi_2dspec_2fgocv_2fgocv_2emagick_2eproto {
 struct TableStruct {
   static const ::google::protobuf::internal::ParseTableField entries[];
   static const ::google::protobuf::internal::AuxillaryParseTableField aux[];
-  static const ::google::protobuf::internal::ParseTable schema[2];
+  static const ::google::protobuf::internal::ParseTable schema[4];
   static const ::google::protobuf::internal::FieldMetadata field_metadata[];
   static const ::google::protobuf::internal::SerializationTable serialization_table[];
   static const ::google::protobuf::uint32 offsets[];
@@ -49,6 +50,12 @@ void AddDescriptors();
 namespace sdk {
 namespace api {
 namespace gocv {
+class MagickImageDecodeRequest;
+class MagickImageDecodeRequestDefaultTypeInternal;
+extern MagickImageDecodeRequestDefaultTypeInternal _MagickImageDecodeRequest_default_instance_;
+class MagickImageDecodeResponse;
+class MagickImageDecodeResponseDefaultTypeInternal;
+extern MagickImageDecodeResponseDefaultTypeInternal _MagickImageDecodeResponse_default_instance_;
 class MagickInitializeMagickRequest;
 class MagickInitializeMagickRequestDefaultTypeInternal;
 extern MagickInitializeMagickRequestDefaultTypeInternal _MagickInitializeMagickRequest_default_instance_;
@@ -60,6 +67,8 @@ extern MagickInitializeMagickResponseDefaultTypeInternal _MagickInitializeMagick
 }  // namespace sdk
 namespace google {
 namespace protobuf {
+template<> ::sdk::api::gocv::MagickImageDecodeRequest* Arena::CreateMaybeMessage<::sdk::api::gocv::MagickImageDecodeRequest>(Arena*);
+template<> ::sdk::api::gocv::MagickImageDecodeResponse* Arena::CreateMaybeMessage<::sdk::api::gocv::MagickImageDecodeResponse>(Arena*);
 template<> ::sdk::api::gocv::MagickInitializeMagickRequest* Arena::CreateMaybeMessage<::sdk::api::gocv::MagickInitializeMagickRequest>(Arena*);
 template<> ::sdk::api::gocv::MagickInitializeMagickResponse* Arena::CreateMaybeMessage<::sdk::api::gocv::MagickInitializeMagickResponse>(Arena*);
 }  // namespace protobuf
@@ -68,6 +77,73 @@ namespace sdk {
 namespace api {
 namespace gocv {
 
+enum OrientationType {
+  UndefinedOrientation = 0,
+  TopLeftOrientation = 1,
+  TopRightOrientation = 2,
+  BottomRightOrientation = 3,
+  BottomLeftOrientation = 4,
+  LeftTopOrientation = 5,
+  RightTopOrientation = 6,
+  RightBottomOrientation = 7,
+  LeftBottomOrientation = 8,
+  OrientationType_INT_MIN_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32min,
+  OrientationType_INT_MAX_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32max
+};
+bool OrientationType_IsValid(int value);
+const OrientationType OrientationType_MIN = UndefinedOrientation;
+const OrientationType OrientationType_MAX = LeftBottomOrientation;
+const int OrientationType_ARRAYSIZE = OrientationType_MAX + 1;
+
+const ::google::protobuf::EnumDescriptor* OrientationType_descriptor();
+inline const ::std::string& OrientationType_Name(OrientationType value) {
+  return ::google::protobuf::internal::NameOfEnum(
+    OrientationType_descriptor(), value);
+}
+inline bool OrientationType_Parse(
+    const ::std::string& name, OrientationType* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<OrientationType>(
+    OrientationType_descriptor(), name, value);
+}
+enum ColorspaceType {
+  UndefinedColorspace = 0,
+  RGBColorspace = 1,
+  GRAYColorspace = 2,
+  TransparentColorspace = 3,
+  OHTAColorspace = 4,
+  XYZColorspace = 5,
+  YCCColorspace = 6,
+  YIQColorspace = 7,
+  YPbPrColorspace = 8,
+  YUVColorspace = 9,
+  CMYKColorspace = 10,
+  sRGBColorspace = 11,
+  HSLColorspace = 12,
+  HWBColorspace = 13,
+  LABColorspace = 14,
+  CineonLogRGBColorspace = 15,
+  Rec601LumaColorspace = 16,
+  Rec601YCbCrColorspace = 17,
+  Rec709LumaColorspace = 18,
+  Rec709YCbCrColorspace = 19,
+  ColorspaceType_INT_MIN_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32min,
+  ColorspaceType_INT_MAX_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32max
+};
+bool ColorspaceType_IsValid(int value);
+const ColorspaceType ColorspaceType_MIN = UndefinedColorspace;
+const ColorspaceType ColorspaceType_MAX = Rec709YCbCrColorspace;
+const int ColorspaceType_ARRAYSIZE = ColorspaceType_MAX + 1;
+
+const ::google::protobuf::EnumDescriptor* ColorspaceType_descriptor();
+inline const ::std::string& ColorspaceType_Name(ColorspaceType value) {
+  return ::google::protobuf::internal::NameOfEnum(
+    ColorspaceType_descriptor(), value);
+}
+inline bool ColorspaceType_Parse(
+    const ::std::string& name, ColorspaceType* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<ColorspaceType>(
+    ColorspaceType_descriptor(), name, value);
+}
 // ===================================================================
 
 class MagickInitializeMagickRequest : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:sdk.api.gocv.MagickInitializeMagickRequest) */ {
@@ -288,6 +364,276 @@ class MagickInitializeMagickResponse : public ::google::protobuf::Message /* @@p
   mutable ::google::protobuf::internal::CachedSize _cached_size_;
   friend struct ::protobuf_api_2fopenapi_2dspec_2fgocv_2fgocv_2emagick_2eproto::TableStruct;
 };
+// -------------------------------------------------------------------
+
+class MagickImageDecodeRequest : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:sdk.api.gocv.MagickImageDecodeRequest) */ {
+ public:
+  MagickImageDecodeRequest();
+  virtual ~MagickImageDecodeRequest();
+
+  MagickImageDecodeRequest(const MagickImageDecodeRequest& from);
+
+  inline MagickImageDecodeRequest& operator=(const MagickImageDecodeRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  #if LANG_CXX11
+  MagickImageDecodeRequest(MagickImageDecodeRequest&& from) noexcept
+    : MagickImageDecodeRequest() {
+    *this = ::std::move(from);
+  }
+
+  inline MagickImageDecodeRequest& operator=(MagickImageDecodeRequest&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+  #endif
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const MagickImageDecodeRequest& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const MagickImageDecodeRequest* internal_default_instance() {
+    return reinterpret_cast<const MagickImageDecodeRequest*>(
+               &_MagickImageDecodeRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    2;
+
+  void Swap(MagickImageDecodeRequest* other);
+  friend void swap(MagickImageDecodeRequest& a, MagickImageDecodeRequest& b) {
+    a.Swap(&b);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline MagickImageDecodeRequest* New() const final {
+    return CreateMaybeMessage<MagickImageDecodeRequest>(NULL);
+  }
+
+  MagickImageDecodeRequest* New(::google::protobuf::Arena* arena) const final {
+    return CreateMaybeMessage<MagickImageDecodeRequest>(arena);
+  }
+  void CopyFrom(const ::google::protobuf::Message& from) final;
+  void MergeFrom(const ::google::protobuf::Message& from) final;
+  void CopyFrom(const MagickImageDecodeRequest& from);
+  void MergeFrom(const MagickImageDecodeRequest& from);
+  void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) final;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const final;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(MagickImageDecodeRequest* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // bytes image = 1;
+  void clear_image();
+  static const int kImageFieldNumber = 1;
+  const ::std::string& image() const;
+  void set_image(const ::std::string& value);
+  #if LANG_CXX11
+  void set_image(::std::string&& value);
+  #endif
+  void set_image(const char* value);
+  void set_image(const void* value, size_t size);
+  ::std::string* mutable_image();
+  ::std::string* release_image();
+  void set_allocated_image(::std::string* image);
+
+  // @@protoc_insertion_point(class_scope:sdk.api.gocv.MagickImageDecodeRequest)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr image_;
+  mutable ::google::protobuf::internal::CachedSize _cached_size_;
+  friend struct ::protobuf_api_2fopenapi_2dspec_2fgocv_2fgocv_2emagick_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class MagickImageDecodeResponse : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:sdk.api.gocv.MagickImageDecodeResponse) */ {
+ public:
+  MagickImageDecodeResponse();
+  virtual ~MagickImageDecodeResponse();
+
+  MagickImageDecodeResponse(const MagickImageDecodeResponse& from);
+
+  inline MagickImageDecodeResponse& operator=(const MagickImageDecodeResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  #if LANG_CXX11
+  MagickImageDecodeResponse(MagickImageDecodeResponse&& from) noexcept
+    : MagickImageDecodeResponse() {
+    *this = ::std::move(from);
+  }
+
+  inline MagickImageDecodeResponse& operator=(MagickImageDecodeResponse&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+  #endif
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const MagickImageDecodeResponse& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const MagickImageDecodeResponse* internal_default_instance() {
+    return reinterpret_cast<const MagickImageDecodeResponse*>(
+               &_MagickImageDecodeResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    3;
+
+  void Swap(MagickImageDecodeResponse* other);
+  friend void swap(MagickImageDecodeResponse& a, MagickImageDecodeResponse& b) {
+    a.Swap(&b);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline MagickImageDecodeResponse* New() const final {
+    return CreateMaybeMessage<MagickImageDecodeResponse>(NULL);
+  }
+
+  MagickImageDecodeResponse* New(::google::protobuf::Arena* arena) const final {
+    return CreateMaybeMessage<MagickImageDecodeResponse>(arena);
+  }
+  void CopyFrom(const ::google::protobuf::Message& from) final;
+  void MergeFrom(const ::google::protobuf::Message& from) final;
+  void CopyFrom(const MagickImageDecodeResponse& from);
+  void MergeFrom(const MagickImageDecodeResponse& from);
+  void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) final;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const final;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(MagickImageDecodeResponse* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string magick = 5;
+  void clear_magick();
+  static const int kMagickFieldNumber = 5;
+  const ::std::string& magick() const;
+  void set_magick(const ::std::string& value);
+  #if LANG_CXX11
+  void set_magick(::std::string&& value);
+  #endif
+  void set_magick(const char* value);
+  void set_magick(const char* value, size_t size);
+  ::std::string* mutable_magick();
+  ::std::string* release_magick();
+  void set_allocated_magick(::std::string* magick);
+
+  // .sdk.types.code.CgoError error = 1;
+  bool has_error() const;
+  void clear_error();
+  static const int kErrorFieldNumber = 1;
+  private:
+  const ::sdk::types::code::CgoError& _internal_error() const;
+  public:
+  const ::sdk::types::code::CgoError& error() const;
+  ::sdk::types::code::CgoError* release_error();
+  ::sdk::types::code::CgoError* mutable_error();
+  void set_allocated_error(::sdk::types::code::CgoError* error);
+
+  // int64 cv_mat_pointer = 2;
+  void clear_cv_mat_pointer();
+  static const int kCvMatPointerFieldNumber = 2;
+  ::google::protobuf::int64 cv_mat_pointer() const;
+  void set_cv_mat_pointer(::google::protobuf::int64 value);
+
+  // int64 rows = 3;
+  void clear_rows();
+  static const int kRowsFieldNumber = 3;
+  ::google::protobuf::int64 rows() const;
+  void set_rows(::google::protobuf::int64 value);
+
+  // int64 columns = 4;
+  void clear_columns();
+  static const int kColumnsFieldNumber = 4;
+  ::google::protobuf::int64 columns() const;
+  void set_columns(::google::protobuf::int64 value);
+
+  // .sdk.api.gocv.OrientationType orientation_type = 6;
+  void clear_orientation_type();
+  static const int kOrientationTypeFieldNumber = 6;
+  ::sdk::api::gocv::OrientationType orientation_type() const;
+  void set_orientation_type(::sdk::api::gocv::OrientationType value);
+
+  // .sdk.api.gocv.ColorspaceType colorspace_type = 7;
+  void clear_colorspace_type();
+  static const int kColorspaceTypeFieldNumber = 7;
+  ::sdk::api::gocv::ColorspaceType colorspace_type() const;
+  void set_colorspace_type(::sdk::api::gocv::ColorspaceType value);
+
+  // @@protoc_insertion_point(class_scope:sdk.api.gocv.MagickImageDecodeResponse)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr magick_;
+  ::sdk::types::code::CgoError* error_;
+  ::google::protobuf::int64 cv_mat_pointer_;
+  ::google::protobuf::int64 rows_;
+  ::google::protobuf::int64 columns_;
+  int orientation_type_;
+  int colorspace_type_;
+  mutable ::google::protobuf::internal::CachedSize _cached_size_;
+  friend struct ::protobuf_api_2fopenapi_2dspec_2fgocv_2fgocv_2emagick_2eproto::TableStruct;
+};
 // ===================================================================
 
 
@@ -404,9 +750,245 @@ inline void MagickInitializeMagickResponse::set_allocated_error(::sdk::types::co
   // @@protoc_insertion_point(field_set_allocated:sdk.api.gocv.MagickInitializeMagickResponse.error)
 }
 
+// -------------------------------------------------------------------
+
+// MagickImageDecodeRequest
+
+// bytes image = 1;
+inline void MagickImageDecodeRequest::clear_image() {
+  image_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& MagickImageDecodeRequest::image() const {
+  // @@protoc_insertion_point(field_get:sdk.api.gocv.MagickImageDecodeRequest.image)
+  return image_.GetNoArena();
+}
+inline void MagickImageDecodeRequest::set_image(const ::std::string& value) {
+  
+  image_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:sdk.api.gocv.MagickImageDecodeRequest.image)
+}
+#if LANG_CXX11
+inline void MagickImageDecodeRequest::set_image(::std::string&& value) {
+  
+  image_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:sdk.api.gocv.MagickImageDecodeRequest.image)
+}
+#endif
+inline void MagickImageDecodeRequest::set_image(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
+  
+  image_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:sdk.api.gocv.MagickImageDecodeRequest.image)
+}
+inline void MagickImageDecodeRequest::set_image(const void* value, size_t size) {
+  
+  image_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:sdk.api.gocv.MagickImageDecodeRequest.image)
+}
+inline ::std::string* MagickImageDecodeRequest::mutable_image() {
+  
+  // @@protoc_insertion_point(field_mutable:sdk.api.gocv.MagickImageDecodeRequest.image)
+  return image_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* MagickImageDecodeRequest::release_image() {
+  // @@protoc_insertion_point(field_release:sdk.api.gocv.MagickImageDecodeRequest.image)
+  
+  return image_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void MagickImageDecodeRequest::set_allocated_image(::std::string* image) {
+  if (image != NULL) {
+    
+  } else {
+    
+  }
+  image_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), image);
+  // @@protoc_insertion_point(field_set_allocated:sdk.api.gocv.MagickImageDecodeRequest.image)
+}
+
+// -------------------------------------------------------------------
+
+// MagickImageDecodeResponse
+
+// .sdk.types.code.CgoError error = 1;
+inline bool MagickImageDecodeResponse::has_error() const {
+  return this != internal_default_instance() && error_ != NULL;
+}
+inline const ::sdk::types::code::CgoError& MagickImageDecodeResponse::_internal_error() const {
+  return *error_;
+}
+inline const ::sdk::types::code::CgoError& MagickImageDecodeResponse::error() const {
+  const ::sdk::types::code::CgoError* p = error_;
+  // @@protoc_insertion_point(field_get:sdk.api.gocv.MagickImageDecodeResponse.error)
+  return p != NULL ? *p : *reinterpret_cast<const ::sdk::types::code::CgoError*>(
+      &::sdk::types::code::_CgoError_default_instance_);
+}
+inline ::sdk::types::code::CgoError* MagickImageDecodeResponse::release_error() {
+  // @@protoc_insertion_point(field_release:sdk.api.gocv.MagickImageDecodeResponse.error)
+  
+  ::sdk::types::code::CgoError* temp = error_;
+  error_ = NULL;
+  return temp;
+}
+inline ::sdk::types::code::CgoError* MagickImageDecodeResponse::mutable_error() {
+  
+  if (error_ == NULL) {
+    auto* p = CreateMaybeMessage<::sdk::types::code::CgoError>(GetArenaNoVirtual());
+    error_ = p;
+  }
+  // @@protoc_insertion_point(field_mutable:sdk.api.gocv.MagickImageDecodeResponse.error)
+  return error_;
+}
+inline void MagickImageDecodeResponse::set_allocated_error(::sdk::types::code::CgoError* error) {
+  ::google::protobuf::Arena* message_arena = GetArenaNoVirtual();
+  if (message_arena == NULL) {
+    delete reinterpret_cast< ::google::protobuf::MessageLite*>(error_);
+  }
+  if (error) {
+    ::google::protobuf::Arena* submessage_arena = NULL;
+    if (message_arena != submessage_arena) {
+      error = ::google::protobuf::internal::GetOwnedMessage(
+          message_arena, error, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  error_ = error;
+  // @@protoc_insertion_point(field_set_allocated:sdk.api.gocv.MagickImageDecodeResponse.error)
+}
+
+// int64 cv_mat_pointer = 2;
+inline void MagickImageDecodeResponse::clear_cv_mat_pointer() {
+  cv_mat_pointer_ = GOOGLE_LONGLONG(0);
+}
+inline ::google::protobuf::int64 MagickImageDecodeResponse::cv_mat_pointer() const {
+  // @@protoc_insertion_point(field_get:sdk.api.gocv.MagickImageDecodeResponse.cv_mat_pointer)
+  return cv_mat_pointer_;
+}
+inline void MagickImageDecodeResponse::set_cv_mat_pointer(::google::protobuf::int64 value) {
+  
+  cv_mat_pointer_ = value;
+  // @@protoc_insertion_point(field_set:sdk.api.gocv.MagickImageDecodeResponse.cv_mat_pointer)
+}
+
+// int64 rows = 3;
+inline void MagickImageDecodeResponse::clear_rows() {
+  rows_ = GOOGLE_LONGLONG(0);
+}
+inline ::google::protobuf::int64 MagickImageDecodeResponse::rows() const {
+  // @@protoc_insertion_point(field_get:sdk.api.gocv.MagickImageDecodeResponse.rows)
+  return rows_;
+}
+inline void MagickImageDecodeResponse::set_rows(::google::protobuf::int64 value) {
+  
+  rows_ = value;
+  // @@protoc_insertion_point(field_set:sdk.api.gocv.MagickImageDecodeResponse.rows)
+}
+
+// int64 columns = 4;
+inline void MagickImageDecodeResponse::clear_columns() {
+  columns_ = GOOGLE_LONGLONG(0);
+}
+inline ::google::protobuf::int64 MagickImageDecodeResponse::columns() const {
+  // @@protoc_insertion_point(field_get:sdk.api.gocv.MagickImageDecodeResponse.columns)
+  return columns_;
+}
+inline void MagickImageDecodeResponse::set_columns(::google::protobuf::int64 value) {
+  
+  columns_ = value;
+  // @@protoc_insertion_point(field_set:sdk.api.gocv.MagickImageDecodeResponse.columns)
+}
+
+// string magick = 5;
+inline void MagickImageDecodeResponse::clear_magick() {
+  magick_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& MagickImageDecodeResponse::magick() const {
+  // @@protoc_insertion_point(field_get:sdk.api.gocv.MagickImageDecodeResponse.magick)
+  return magick_.GetNoArena();
+}
+inline void MagickImageDecodeResponse::set_magick(const ::std::string& value) {
+  
+  magick_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:sdk.api.gocv.MagickImageDecodeResponse.magick)
+}
+#if LANG_CXX11
+inline void MagickImageDecodeResponse::set_magick(::std::string&& value) {
+  
+  magick_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:sdk.api.gocv.MagickImageDecodeResponse.magick)
+}
+#endif
+inline void MagickImageDecodeResponse::set_magick(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
+  
+  magick_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:sdk.api.gocv.MagickImageDecodeResponse.magick)
+}
+inline void MagickImageDecodeResponse::set_magick(const char* value, size_t size) {
+  
+  magick_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:sdk.api.gocv.MagickImageDecodeResponse.magick)
+}
+inline ::std::string* MagickImageDecodeResponse::mutable_magick() {
+  
+  // @@protoc_insertion_point(field_mutable:sdk.api.gocv.MagickImageDecodeResponse.magick)
+  return magick_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* MagickImageDecodeResponse::release_magick() {
+  // @@protoc_insertion_point(field_release:sdk.api.gocv.MagickImageDecodeResponse.magick)
+  
+  return magick_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void MagickImageDecodeResponse::set_allocated_magick(::std::string* magick) {
+  if (magick != NULL) {
+    
+  } else {
+    
+  }
+  magick_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), magick);
+  // @@protoc_insertion_point(field_set_allocated:sdk.api.gocv.MagickImageDecodeResponse.magick)
+}
+
+// .sdk.api.gocv.OrientationType orientation_type = 6;
+inline void MagickImageDecodeResponse::clear_orientation_type() {
+  orientation_type_ = 0;
+}
+inline ::sdk::api::gocv::OrientationType MagickImageDecodeResponse::orientation_type() const {
+  // @@protoc_insertion_point(field_get:sdk.api.gocv.MagickImageDecodeResponse.orientation_type)
+  return static_cast< ::sdk::api::gocv::OrientationType >(orientation_type_);
+}
+inline void MagickImageDecodeResponse::set_orientation_type(::sdk::api::gocv::OrientationType value) {
+  
+  orientation_type_ = value;
+  // @@protoc_insertion_point(field_set:sdk.api.gocv.MagickImageDecodeResponse.orientation_type)
+}
+
+// .sdk.api.gocv.ColorspaceType colorspace_type = 7;
+inline void MagickImageDecodeResponse::clear_colorspace_type() {
+  colorspace_type_ = 0;
+}
+inline ::sdk::api::gocv::ColorspaceType MagickImageDecodeResponse::colorspace_type() const {
+  // @@protoc_insertion_point(field_get:sdk.api.gocv.MagickImageDecodeResponse.colorspace_type)
+  return static_cast< ::sdk::api::gocv::ColorspaceType >(colorspace_type_);
+}
+inline void MagickImageDecodeResponse::set_colorspace_type(::sdk::api::gocv::ColorspaceType value) {
+  
+  colorspace_type_ = value;
+  // @@protoc_insertion_point(field_set:sdk.api.gocv.MagickImageDecodeResponse.colorspace_type)
+}
+
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 
@@ -415,6 +997,23 @@ inline void MagickInitializeMagickResponse::set_allocated_error(::sdk::types::co
 }  // namespace gocv
 }  // namespace api
 }  // namespace sdk
+
+namespace google {
+namespace protobuf {
+
+template <> struct is_proto_enum< ::sdk::api::gocv::OrientationType> : ::std::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< ::sdk::api::gocv::OrientationType>() {
+  return ::sdk::api::gocv::OrientationType_descriptor();
+}
+template <> struct is_proto_enum< ::sdk::api::gocv::ColorspaceType> : ::std::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< ::sdk::api::gocv::ColorspaceType>() {
+  return ::sdk::api::gocv::ColorspaceType_descriptor();
+}
+
+}  // namespace protobuf
+}  // namespace google
 
 // @@protoc_insertion_point(global_scope)
 
