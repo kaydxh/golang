@@ -1,0 +1,10 @@
+prefix=/data/workspace/src/git.code.oa.com/youtu_sdk/yt-sdk-deps-opencv/turbo
+exec_prefix=/data/workspace/src/git.code.oa.com/youtu_sdk/yt-sdk-deps-opencv/turbo
+libdir=/data/workspace/src/git.code.oa.com/youtu_sdk/yt-sdk-deps-opencv/turbo/lib64
+includedir=/data/workspace/src/git.code.oa.com/youtu_sdk/yt-sdk-deps-opencv/turbo/include
+
+Name: libjpeg
+Description: A SIMD-accelerated JPEG codec that provides the libjpeg API
+Version: 2.1.1
+Libs: -L${libdir} -ljpeg
+Cflags: -I${includedir}
