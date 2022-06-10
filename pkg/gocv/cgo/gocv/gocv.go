@@ -11,3 +11,7 @@ func NewMagickInitializeMagickRequest() *gocv.MagickInitializeMagickRequest {
 		Path: os.Args[0],
 	}
 }
+
+func NewMagickImageDecodeRequest() *gocv.MagickImageDecodeRequest {
+	return &gocv.MagickImageDecodeRequest{}
+}
