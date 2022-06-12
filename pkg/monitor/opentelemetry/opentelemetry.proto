@@ -1,0 +1,58 @@
+syntax = "proto3";
+
+package go.pkg.monitor.opentelemetry;
+
+import "google/protobuf/duration.proto";
+
+option go_package = "github.com/kaydxh/golang/pkg/monitor/opentelemetry;opentelemetry";
+
+message Monitor {
+  OpenTelemetry open_telemetry = 3;
+
+  message OpenTelemetry {
+    bool enabled = 1;
+    /// string metric_endpoint_by_exporter = 1;
+    /// string trace_endpoint_by_exporter = 2;
+
+    OtelTraceExporterType otel_trace_exporter_type = 3;
+    OtelMetricExporterType otel_metric_exporter_type = 4;
+    OtelLogExporterType otel_log_exporter_type = 5;
+
+    OtelMetricsExporter otel_metrics_exporter = 6;
+    OtelTracesExporter otel_traces_exporter = 7;
+
+    Resource resource = 10;
+    message Resource {
+      string service_name = 1;  // default use process name
+      map<string, string> attrs = 2;
+    }
+
+    message OtelMetricsExporter {
+      Prometheus prometheus = 1;
+      message Prometheus {
+        string endpoint = 1;
+        string namespace = 2;
+      }
+    }
+
+    message OtelTracesExporter {}
+
+    enum OtelTraceExporterType {
+      trace_none = 0;
+      trace_otlp = 1;
+      trace_jaeger = 2;
+      trace_zipkin = 3;
+    }
+
+    enum OtelMetricExporterType {
+      metric_none = 0;
+      metric_otlp = 1;
+      metric_prometheus = 2;
+    }
+
+    enum OtelLogExporterType {
+      log_none = 0;
+      log_otlp = 1;
+    }
+  }
+}
