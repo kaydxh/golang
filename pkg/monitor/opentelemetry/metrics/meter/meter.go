@@ -13,14 +13,13 @@ import (
 )
 
 type MeterOptinos struct {
-	exporterBuilder     ExporterBuilder
-	pullExporterBuilder PullExporterBuilder
+	ExporterBuilder     ExporterBuilder
+	PullExporterBuilder PullExporterBuilder
 }
 
 type Meter struct {
-	Controller      controller.Controller
-	ExporterBuilder ExporterBuilder
-	opts            MeterOptinos
+	Controller controller.Controller
+	opts       MeterOptinos
 }
 
 func NewMeter(opts ...MeterOption) *Meter {
@@ -35,7 +34,7 @@ func NewMeter(opts ...MeterOption) *Meter {
 func (m *Meter) Install(ctx context.Context) (err error) {
 	var metricControllerOptions []controller.Option
 
-	if m.opts.exporterBuilder != nil {
+	if m.opts.ExporterBuilder != nil {
 		exporter, err := m.createExporter(ctx)
 		if err != nil {
 			return err
@@ -52,7 +51,7 @@ func (m *Meter) Install(ctx context.Context) (err error) {
 		metricControllerOptions...,
 	)
 
-	if m.opts.pullExporterBuilder != nil {
+	if m.opts.PullExporterBuilder != nil {
 		_, err = m.createPullExporter(ctx, c)
 		if err != nil {
 			return err
@@ -69,11 +68,11 @@ func (m *Meter) Install(ctx context.Context) (err error) {
 }
 
 func (m *Meter) createExporter(ctx context.Context) (export.Exporter, error) {
-	if m.opts.exporterBuilder == nil {
+	if m.opts.ExporterBuilder == nil {
 		return nil, fmt.Errorf("exporter builder is nil")
 	}
 
-	return m.opts.exporterBuilder.Build(ctx)
+	return m.opts.ExporterBuilder.Build(ctx)
 }
 
 // Pull Exporter supports Prometheus pulls.  It does not implement the
@@ -81,9 +80,9 @@ func (m *Meter) createExporter(ctx context.Context) (export.Exporter, error) {
 // controller and reads the latest checkpointed data on-scrape.
 func (m *Meter) createPullExporter(ctx context.Context, c *controller.Controller,
 ) (aggregation.TemporalitySelector, error) {
-	if m.opts.pullExporterBuilder == nil {
+	if m.opts.PullExporterBuilder == nil {
 		return nil, fmt.Errorf("pull exporter builder is nil")
 	}
 
-	return m.opts.pullExporterBuilder.Build(ctx, c)
+	return m.opts.PullExporterBuilder.Build(ctx, c)
 }

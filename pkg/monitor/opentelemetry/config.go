@@ -3,7 +3,7 @@ package opentelemetry
 import (
 	"context"
 
-	meter_ "github.com/kaydxh/golang/pkg/monitor/opentelemetry/metrics/meter"
+	"github.com/kaydxh/golang/pkg/monitor/opentelemetry/metrics/prometheus"
 	viper_ "github.com/kaydxh/golang/pkg/viper"
 	"github.com/ory/viper"
 	"github.com/sirupsen/logrus"
@@ -29,35 +29,39 @@ type CompletedConfig struct {
 
 func (c *completedConfig) New(ctx context.Context) error {
 
-	logrus.Infof("Installing Monitor")
+	logrus.Infof("Installing OpenTelemetry")
 
 	if c.completeError != nil {
 		return c.completeError
 	}
 
-	/*
-		if !c.Proto.GetEnabled() {
-			return nil
-		}
-	*/
+	if !c.Proto.GetEnabled() {
+		return nil
+	}
 
 	err := c.install(ctx)
 	if err != nil {
 		return err
 	}
-	logrus.Infof("Installed Monitor")
+	logrus.Infof("Installed OpenTelemetry")
 
 	return nil
 }
 
 func (c *completedConfig) install(ctx context.Context) error {
-	meter := meter_.NewMeter()
-	err := meter.Install(ctx)
-	if err != nil {
-		return err
+
+	var opts []OpenTelemetryOption
+	metricType := c.Proto.OtelMetricExporterType
+	switch metricType {
+	case Monitor_OpenTelemetry_metric_prometheus:
+		opts = append(opts, WithMeterPullExporter(&prometheus.PrometheusExporterBuiler{}))
+
+	default:
+
 	}
 
-	return nil
+	ot := NewOpenTelemetry(opts...)
+	return ot.Install(ctx)
 }
 
 // Complete set default ServerRunOptions.
