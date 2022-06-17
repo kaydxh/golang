@@ -2,6 +2,7 @@ package opentelemetry
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/kaydxh/golang/pkg/monitor/opentelemetry/metrics/prometheus"
 	viper_ "github.com/kaydxh/golang/pkg/viper"
@@ -57,6 +58,7 @@ func (c *completedConfig) install(ctx context.Context) error {
 		opts = append(opts, WithMeterPullExporter(&prometheus.PrometheusExporterBuiler{}))
 
 	default:
+		return fmt.Errorf("not support the metricType[%v]", metricType.String())
 
 	}
 
