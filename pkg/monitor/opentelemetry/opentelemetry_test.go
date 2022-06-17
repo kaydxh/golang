@@ -2,10 +2,12 @@ package opentelemetry_test
 
 import (
 	"fmt"
+	"net/http"
 	"testing"
 
 	opentelemetry_ "github.com/kaydxh/golang/pkg/monitor/opentelemetry"
 	viper_ "github.com/kaydxh/golang/pkg/viper"
+	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/metric"
 	"go.opentelemetry.io/otel/metric/global"
 	"golang.org/x/net/context"
@@ -23,6 +25,7 @@ var (
 	)
 
 	funcLoopCounter, _ = meter.SyncInt64().Counter("function_loops")
+	funcNameKey        = attribute.Key("function_name")
 )
 
 func TestNew(t *testing.T) {
@@ -36,12 +39,18 @@ func TestNew(t *testing.T) {
 	}
 	fmt.Printf("config: %+v", config.Proto.String())
 
+	go func() {
+		_ = http.ListenAndServe(":2222", nil)
+	}()
+
 	metrics(ctx, 100)
 
+	select {}
 }
 
 func metrics(ctx context.Context, n int) {
+	funcNameKV := funcNameKey.String("metrics")
 	for i := 0; i < n; i++ {
-		funcLoopCounter.Add(ctx, 1)
+		funcLoopCounter.Add(ctx, 1, funcNameKV)
 	}
 }
