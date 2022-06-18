@@ -11,12 +11,38 @@ import (
 	"go.opentelemetry.io/otel/sdk/metric/export/aggregation"
 )
 
-type PrometheusExporterBuiler struct{}
+const (
+	defaultMetricsUrlPath = "/metrics"
+)
+
+type PrometheusExporterBuilerOptions struct {
+	UrlPath string
+}
+
+type PrometheusExporterBuiler struct {
+	opts PrometheusExporterBuilerOptions
+}
+
+func defaultBuilderOption() PrometheusExporterBuilerOptions {
+	return PrometheusExporterBuilerOptions{
+		UrlPath: defaultMetricsUrlPath,
+	}
+}
+
+func NewPrometheusExporterBuiler(opts ...PrometheusExporterBuilerOption) *PrometheusExporterBuiler {
+
+	builder := &PrometheusExporterBuiler{
+		opts: defaultBuilderOption(),
+	}
+	builder.ApplyOptions(opts...)
+	return builder
+}
 
 func (p *PrometheusExporterBuiler) Build(
 	ctx context.Context,
 	c *controller.Controller,
 ) (aggregation.TemporalitySelector, error) {
+
 	exporter, err := prometheusmetric.New(prometheusmetric.Config{
 		Registerer: prometheus.DefaultRegisterer,
 		Gatherer:   prometheus.DefaultGatherer,
@@ -25,6 +51,6 @@ func (p *PrometheusExporterBuiler) Build(
 		return nil, fmt.Errorf("new prometheusmetric err: %v", err)
 	}
 
-	http.HandleFunc("/", exporter.ServeHTTP)
+	http.HandleFunc(p.opts.UrlPath, exporter.ServeHTTP)
 	return exporter, nil
 }
