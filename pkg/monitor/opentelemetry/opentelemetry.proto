@@ -30,8 +30,7 @@ message Monitor {
     message OtelMetricsExporter {
       Prometheus prometheus = 1;
       message Prometheus {
-        string endpoint = 1;
-        string namespace = 2;
+        string url_path = 1;
       }
     }
 

@@ -55,7 +55,10 @@ func (c *completedConfig) install(ctx context.Context) error {
 	metricType := c.Proto.OtelMetricExporterType
 	switch metricType {
 	case Monitor_OpenTelemetry_metric_prometheus:
-		opts = append(opts, WithMeterPullExporter(&prometheus.PrometheusExporterBuiler{}))
+		builder := prometheus.NewPrometheusExporterBuiler(
+			prometheus.WithMetricUrlPath(c.Proto.GetOtelMetricsExporter().GetPrometheus().GetUrlPath()),
+		)
+		opts = append(opts, WithMeterPullExporter(builder))
 
 	default:
 		return fmt.Errorf("not support the metricType[%v]", metricType.String())

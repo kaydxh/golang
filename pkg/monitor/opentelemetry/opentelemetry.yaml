@@ -6,9 +6,6 @@ monitor:
     otel_log_exporter_type : log_none
     otel_metrics_exporter :
       prometheus:
-        endpoint: 127.0.0.1:8991 
+        url_path: /metrics
     resource:
-
-
-      
 

@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 	"testing"
+	"time"
 
 	opentelemetry_ "github.com/kaydxh/golang/pkg/monitor/opentelemetry"
 	viper_ "github.com/kaydxh/golang/pkg/viper"
@@ -43,9 +44,11 @@ func TestNew(t *testing.T) {
 		_ = http.ListenAndServe(":2222", nil)
 	}()
 
-	metrics(ctx, 100)
+	for {
+		metrics(ctx, 100)
+		time.Sleep(time.Second)
+	}
 
-	select {}
 }
 
 func metrics(ctx context.Context, n int) {
