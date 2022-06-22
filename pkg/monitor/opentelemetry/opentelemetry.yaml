@@ -6,6 +6,9 @@ monitor:
     otel_log_exporter_type : log_none
     otel_metrics_exporter :
       prometheus:
-        url_path: /metrics
+        url: noop://localhost/metrics
+    otel_trace_exporter:
+      jaeger:
+        url: http://localhost:14268/api/trace
     resource:
 

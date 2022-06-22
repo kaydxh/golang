@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"github.com/kaydxh/golang/pkg/monitor/opentelemetry/metrics/prometheus"
+	jaeger_ "github.com/kaydxh/golang/pkg/monitor/opentelemetry/tracer/jaeger"
 	viper_ "github.com/kaydxh/golang/pkg/viper"
 	"github.com/ory/viper"
 	"github.com/sirupsen/logrus"
@@ -51,22 +52,78 @@ func (c *completedConfig) New(ctx context.Context) error {
 
 func (c *completedConfig) install(ctx context.Context) error {
 
+	/*
+		var opts []OpenTelemetryOption
+		metricType := c.Proto.OtelMetricExporterType
+		switch metricType {
+		case Monitor_OpenTelemetry_metric_prometheus:
+			builder := prometheus.NewPrometheusExporterBuilder(
+				prometheus.WithMetricUrlPath(c.Proto.GetOtelMetricsExporter().GetPrometheus().GetUrl()),
+			)
+			opts = append(opts, WithMeterPullExporter(builder))
+
+		default:
+			return fmt.Errorf("not support the metricType[%v]", metricType.String())
+
+		}
+	*/
+	var openTelemetryOpts []OpenTelemetryOption
+
+	opts, err := c.installMeter(ctx)
+	if err != nil {
+		return err
+	}
+	openTelemetryOpts = append(openTelemetryOpts, opts...)
+
+	opts, err = c.installTracer(ctx)
+	if err != nil {
+		return err
+	}
+	openTelemetryOpts = append(openTelemetryOpts, opts...)
+
+	ot := NewOpenTelemetry(openTelemetryOpts...)
+	return ot.Install(ctx)
+}
+
+func (c *completedConfig) installMeter(ctx context.Context) ([]OpenTelemetryOption, error) {
+
 	var opts []OpenTelemetryOption
 	metricType := c.Proto.OtelMetricExporterType
 	switch metricType {
 	case Monitor_OpenTelemetry_metric_prometheus:
-		builder := prometheus.NewPrometheusExporterBuiler(
-			prometheus.WithMetricUrlPath(c.Proto.GetOtelMetricsExporter().GetPrometheus().GetUrlPath()),
+		builder := prometheus.NewPrometheusExporterBuilder(
+			prometheus.WithMetricUrlPath(c.Proto.GetOtelMetricsExporter().GetPrometheus().GetUrl()),
 		)
 		opts = append(opts, WithMeterPullExporter(builder))
 
 	default:
-		return fmt.Errorf("not support the metricType[%v]", metricType.String())
+		return nil, fmt.Errorf("not support the metricType[%v]", metricType.String())
 
 	}
 
-	ot := NewOpenTelemetry(opts...)
-	return ot.Install(ctx)
+	return opts, nil
+}
+
+func (c *completedConfig) installTracer(ctx context.Context) ([]OpenTelemetryOption, error) {
+
+	var opts []OpenTelemetryOption
+	tracerType := c.Proto.OtelTraceExporterType
+	switch tracerType {
+	case Monitor_OpenTelemetry_trace_jaeger:
+		builder, err := jaeger_.NewJaegerExporertBuilder(c.Proto.GetOtelTracesExporter().GetJaeger().GetUrl())
+		if err != nil {
+			return nil, fmt.Errorf("new jaeger exporter builder err: %v", err)
+		}
+		opts = append(opts, WithTracerExporter(builder))
+
+	case Monitor_OpenTelemetry_trace_none:
+		return nil, nil
+
+	default:
+		return nil, fmt.Errorf("not support the tracerType[%v]", tracerType.String())
+	}
+
+	return opts, nil
 }
 
 // Complete set default ServerRunOptions.

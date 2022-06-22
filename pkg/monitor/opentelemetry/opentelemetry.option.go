@@ -1,6 +1,9 @@
 package opentelemetry
 
-import "github.com/kaydxh/golang/pkg/monitor/opentelemetry/metrics/meter"
+import (
+	"github.com/kaydxh/golang/pkg/monitor/opentelemetry/metrics/meter"
+	"github.com/kaydxh/golang/pkg/monitor/opentelemetry/tracer"
+)
 
 func WithMeterExporter(exporterBuilder meter.ExporterBuilder) OpenTelemetryOption {
 	return OpenTelemetryOptionFunc(func(o *OpenTelemetry) {
@@ -12,5 +15,11 @@ func WithMeterExporter(exporterBuilder meter.ExporterBuilder) OpenTelemetryOptio
 func WithMeterPullExporter(pullExporterBuilder meter.PullExporterBuilder) OpenTelemetryOption {
 	return OpenTelemetryOptionFunc(func(o *OpenTelemetry) {
 		o.opts.meterOptions = append(o.opts.meterOptions, meter.WithPullExporter(pullExporterBuilder))
+	})
+}
+
+func WithTracerExporter(exporterBuilder tracer.TracerExporterBuilder) OpenTelemetryOption {
+	return OpenTelemetryOptionFunc(func(o *OpenTelemetry) {
+		o.opts.tracerOptions = append(o.opts.tracerOptions, tracer.WithExporterBuilder(exporterBuilder))
 	})
 }

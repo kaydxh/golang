@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	url_ "net/url"
 
 	"github.com/prometheus/client_golang/prometheus"
 	prometheusmetric "go.opentelemetry.io/otel/exporters/prometheus"
@@ -12,33 +13,34 @@ import (
 )
 
 const (
-	defaultMetricsUrlPath = "/metrics"
+	defaultMetricsUrl = "noop://localhost/metrics"
 )
 
-type PrometheusExporterBuilerOptions struct {
-	UrlPath string
+type PrometheusExporterBuilderOptions struct {
+	Url string
 }
 
-type PrometheusExporterBuiler struct {
-	opts PrometheusExporterBuilerOptions
+type PrometheusExporterBuilder struct {
+	opts PrometheusExporterBuilderOptions
 }
 
-func defaultBuilderOption() PrometheusExporterBuilerOptions {
-	return PrometheusExporterBuilerOptions{
-		UrlPath: defaultMetricsUrlPath,
+func defaultBuilderOption() PrometheusExporterBuilderOptions {
+	return PrometheusExporterBuilderOptions{
+		Url: defaultMetricsUrl,
 	}
 }
 
-func NewPrometheusExporterBuiler(opts ...PrometheusExporterBuilerOption) *PrometheusExporterBuiler {
+func NewPrometheusExporterBuilder(opts ...PrometheusExporterBuilderOption) *PrometheusExporterBuilder {
 
-	builder := &PrometheusExporterBuiler{
+	builder := &PrometheusExporterBuilder{
 		opts: defaultBuilderOption(),
 	}
 	builder.ApplyOptions(opts...)
+
 	return builder
 }
 
-func (p *PrometheusExporterBuiler) Build(
+func (p *PrometheusExporterBuilder) Build(
 	ctx context.Context,
 	c *controller.Controller,
 ) (aggregation.TemporalitySelector, error) {
@@ -51,6 +53,11 @@ func (p *PrometheusExporterBuiler) Build(
 		return nil, fmt.Errorf("new prometheusmetric err: %v", err)
 	}
 
-	http.HandleFunc(p.opts.UrlPath, exporter.ServeHTTP)
+	u, err := url_.Parse(p.opts.Url)
+	if err != nil {
+		return nil, fmt.Errorf("parse url: %v, err: %v", p.opts.Url, err)
+	}
+
+	http.HandleFunc(u.Path, exporter.ServeHTTP)
 	return exporter, nil
 }

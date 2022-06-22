@@ -1,33 +1,36 @@
 package prometheus
 
-// A PrometheusExporterBuilerOption sets options.
-type PrometheusExporterBuilerOption interface {
-	apply(*PrometheusExporterBuiler)
+// A PrometheusExporterBuilderOption sets options.
+type PrometheusExporterBuilderOption interface {
+	apply(*PrometheusExporterBuilder)
 }
 
-// EmptyPrometheusExporterBuilerOption does not alter the configuration. It can be embedded
+// EmptyPrometheusExporterBuilderOption does not alter the configuration. It can be embedded
 // in another structure to build custom options.
 //
 // This API is EXPERIMENTAL.
-type EmptyPrometheusExporterBuilerOption struct{}
+type EmptyPrometheusExporterBuilderOption struct{}
 
-func (EmptyPrometheusExporterBuilerOption) apply(*PrometheusExporterBuiler) {}
+func (EmptyPrometheusExporterBuilderOption) apply(*PrometheusExporterBuilder) {}
 
-// PrometheusExporterBuilerOptionFunc wraps a function that modifies Client into an
-// implementation of the PrometheusExporterBuilerOption interface.
-type PrometheusExporterBuilerOptionFunc func(*PrometheusExporterBuiler)
+// PrometheusExporterBuilderOptionFunc wraps a function that modifies Client into an
+// implementation of the PrometheusExporterBuilderOption interface.
+type PrometheusExporterBuilderOptionFunc func(*PrometheusExporterBuilder)
 
-func (f PrometheusExporterBuilerOptionFunc) apply(do *PrometheusExporterBuiler) {
+func (f PrometheusExporterBuilderOptionFunc) apply(do *PrometheusExporterBuilder) {
 	f(do)
 }
 
 // sample code for option, default for nothing to change
-func _PrometheusExporterBuilerOptionWithDefault() PrometheusExporterBuilerOption {
-	return PrometheusExporterBuilerOptionFunc(func(*PrometheusExporterBuiler) {
+func _PrometheusExporterBuilderOptionWithDefault() PrometheusExporterBuilderOption {
+	return PrometheusExporterBuilderOptionFunc(func(*PrometheusExporterBuilder) {
 		// nothing to change
 	})
 }
-func (o *PrometheusExporterBuiler) ApplyOptions(options ...PrometheusExporterBuilerOption) *PrometheusExporterBuiler {
+
+func (o *PrometheusExporterBuilder) ApplyOptions(
+	options ...PrometheusExporterBuilderOption,
+) *PrometheusExporterBuilder {
 	for _, opt := range options {
 		if opt == nil {
 			continue

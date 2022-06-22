@@ -1,7 +1,7 @@
 package prometheus
 
-func WithMetricUrlPath(urlPath string) PrometheusExporterBuilerOption {
-	return PrometheusExporterBuilerOptionFunc(func(m *PrometheusExporterBuiler) {
-		m.opts.UrlPath = urlPath
+func WithMetricUrlPath(url string) PrometheusExporterBuilderOption {
+	return PrometheusExporterBuilderOptionFunc(func(m *PrometheusExporterBuilder) {
+		m.opts.Url = url
 	})
 }
