@@ -5,7 +5,8 @@ import (
 	url_ "net/url"
 	"strings"
 
-	"github.com/searKing/golang/go/net"
+	"net"
+
 	"go.opentelemetry.io/otel/exporters/jaeger"
 	sdktrace "go.opentelemetry.io/otel/sdk/trace"
 	"golang.org/x/net/context"

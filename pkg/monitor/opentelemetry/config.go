@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/kaydxh/golang/pkg/monitor/opentelemetry/metrics/prometheus"
+	prometheus_ "github.com/kaydxh/golang/pkg/monitor/opentelemetry/metrics/prometheus"
 	jaeger_ "github.com/kaydxh/golang/pkg/monitor/opentelemetry/tracer/jaeger"
 	viper_ "github.com/kaydxh/golang/pkg/viper"
 	"github.com/ory/viper"
@@ -52,23 +52,7 @@ func (c *completedConfig) New(ctx context.Context) error {
 
 func (c *completedConfig) install(ctx context.Context) error {
 
-	/*
-		var opts []OpenTelemetryOption
-		metricType := c.Proto.OtelMetricExporterType
-		switch metricType {
-		case Monitor_OpenTelemetry_metric_prometheus:
-			builder := prometheus.NewPrometheusExporterBuilder(
-				prometheus.WithMetricUrlPath(c.Proto.GetOtelMetricsExporter().GetPrometheus().GetUrl()),
-			)
-			opts = append(opts, WithMeterPullExporter(builder))
-
-		default:
-			return fmt.Errorf("not support the metricType[%v]", metricType.String())
-
-		}
-	*/
 	var openTelemetryOpts []OpenTelemetryOption
-
 	opts, err := c.installMeter(ctx)
 	if err != nil {
 		return err
@@ -91,10 +75,14 @@ func (c *completedConfig) installMeter(ctx context.Context) ([]OpenTelemetryOpti
 	metricType := c.Proto.OtelMetricExporterType
 	switch metricType {
 	case Monitor_OpenTelemetry_metric_prometheus:
-		builder := prometheus.NewPrometheusExporterBuilder(
-			prometheus.WithMetricUrlPath(c.Proto.GetOtelMetricsExporter().GetPrometheus().GetUrl()),
+		builder := prometheus_.NewPrometheusExporterBuilder(
+			prometheus_.WithMetricUrlPath(c.Proto.GetOtelMetricsExporter().GetPrometheus().GetUrl()),
 		)
 		opts = append(opts, WithMeterPullExporter(builder))
+
+	case Monitor_OpenTelemetry_metric_none:
+		// not enable metric
+		return nil, nil
 
 	default:
 		return nil, fmt.Errorf("not support the metricType[%v]", metricType.String())
@@ -117,6 +105,7 @@ func (c *completedConfig) installTracer(ctx context.Context) ([]OpenTelemetryOpt
 		opts = append(opts, WithTracerExporter(builder))
 
 	case Monitor_OpenTelemetry_trace_none:
+		// not enable tracer
 		return nil, nil
 
 	default:
