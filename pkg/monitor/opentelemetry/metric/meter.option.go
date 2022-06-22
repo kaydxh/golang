@@ -1,4 +1,4 @@
-package meter
+package metric
 
 import "time"
 

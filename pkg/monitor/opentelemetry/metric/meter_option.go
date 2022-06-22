@@ -1,4 +1,4 @@
-package meter
+package metric
 
 // A MeterOption sets options.
 type MeterOption interface {

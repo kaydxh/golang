@@ -3,26 +3,26 @@ package opentelemetry
 import (
 	"time"
 
-	"github.com/kaydxh/golang/pkg/monitor/opentelemetry/metrics/meter"
+	"github.com/kaydxh/golang/pkg/monitor/opentelemetry/metric"
 	"github.com/kaydxh/golang/pkg/monitor/opentelemetry/tracer"
 )
 
-func WithMeterExporter(exporterBuilder meter.ExporterBuilder) OpenTelemetryOption {
+func WithMeterExporter(exporterBuilder metric.ExporterBuilder) OpenTelemetryOption {
 	return OpenTelemetryOptionFunc(func(o *OpenTelemetry) {
-		o.opts.meterOptions = append(o.opts.meterOptions, meter.WithExporter(exporterBuilder))
+		o.opts.meterOptions = append(o.opts.meterOptions, metric.WithExporter(exporterBuilder))
 
 	})
 }
 
-func WithMeterPullExporter(pullExporterBuilder meter.PullExporterBuilder) OpenTelemetryOption {
+func WithMeterPullExporter(pullExporterBuilder metric.PullExporterBuilder) OpenTelemetryOption {
 	return OpenTelemetryOptionFunc(func(o *OpenTelemetry) {
-		o.opts.meterOptions = append(o.opts.meterOptions, meter.WithPullExporter(pullExporterBuilder))
+		o.opts.meterOptions = append(o.opts.meterOptions, metric.WithPullExporter(pullExporterBuilder))
 	})
 }
 
 func WithMetricCollectDuration(period time.Duration) OpenTelemetryOption {
 	return OpenTelemetryOptionFunc(func(o *OpenTelemetry) {
-		o.opts.meterOptions = append(o.opts.meterOptions, meter.WithCollectPeriod(period))
+		o.opts.meterOptions = append(o.opts.meterOptions, metric.WithCollectPeriod(period))
 	})
 }
 

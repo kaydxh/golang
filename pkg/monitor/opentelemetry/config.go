@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	prometheus_ "github.com/kaydxh/golang/pkg/monitor/opentelemetry/metrics/prometheus"
+	prometheus_ "github.com/kaydxh/golang/pkg/monitor/opentelemetry/metric/prometheus"
 	jaeger_ "github.com/kaydxh/golang/pkg/monitor/opentelemetry/tracer/jaeger"
 	viper_ "github.com/kaydxh/golang/pkg/viper"
 	"github.com/ory/viper"
