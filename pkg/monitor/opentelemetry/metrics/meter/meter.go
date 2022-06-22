@@ -3,6 +3,7 @@ package meter
 import (
 	"context"
 	"fmt"
+	"time"
 
 	"go.opentelemetry.io/otel/metric/global"
 	controller "go.opentelemetry.io/otel/sdk/metric/controller/basic"
@@ -15,6 +16,7 @@ import (
 type MeterOptinos struct {
 	ExporterBuilder     ExporterBuilder
 	PullExporterBuilder PullExporterBuilder
+	collectPeriod       time.Duration
 }
 
 type Meter struct {
@@ -22,10 +24,17 @@ type Meter struct {
 	opts       MeterOptinos
 }
 
-func NewMeter(opts ...MeterOption) *Meter {
-	m := &Meter{}
-	m.ApplyOptions(opts...)
+func defaultMeterOptions() MeterOptinos {
+	return MeterOptinos{
+		collectPeriod: time.Minute,
+	}
+}
 
+func NewMeter(opts ...MeterOption) *Meter {
+	m := &Meter{
+		opts: defaultMeterOptions(),
+	}
+	m.ApplyOptions(opts...)
 	return m
 }
 
@@ -40,6 +49,13 @@ func (m *Meter) Install(ctx context.Context) (err error) {
 			return err
 		}
 		metricControllerOptions = append(metricControllerOptions, controller.WithExporter(exporter))
+
+		if m.opts.collectPeriod > 0 {
+			metricControllerOptions = append(
+				metricControllerOptions,
+				controller.WithCollectPeriod(m.opts.collectPeriod),
+			)
+		}
 	}
 
 	c := controller.New(

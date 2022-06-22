@@ -11,9 +11,8 @@ message Monitor {
 
   message OpenTelemetry {
     bool enabled = 1;
-    /// string metric_endpoint_by_exporter = 1;
-    /// string trace_endpoint_by_exporter = 2;
 
+    google.protobuf.Duration metric_collect_duration = 2;
     OtelTraceExporterType otel_trace_exporter_type = 3;
     OtelMetricExporterType otel_metric_exporter_type = 4;
     OtelLogExporterType otel_log_exporter_type = 5;
