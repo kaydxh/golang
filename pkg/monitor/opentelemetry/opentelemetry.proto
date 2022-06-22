@@ -30,11 +30,16 @@ message Monitor {
     message OtelMetricsExporter {
       Prometheus prometheus = 1;
       message Prometheus {
-        string url_path = 1;
+        string url = 1;
       }
     }
 
-    message OtelTracesExporter {}
+    message OtelTracesExporter {
+      Jaeger jaeger = 1;
+      message Jaeger {
+        string url = 1;
+      }
+    }
 
     enum OtelTraceExporterType {
       trace_none = 0;
