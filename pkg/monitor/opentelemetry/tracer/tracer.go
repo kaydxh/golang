@@ -50,7 +50,7 @@ func (t *Tracer) Install(ctx context.Context) (err error) {
 
 func (t *Tracer) createExporter(ctx context.Context) (sdktrace.SpanExporter, error) {
 	if t.opts.builer == nil {
-		return nil, fmt.Errorf("exporter builder is nil")
+		return nil, fmt.Errorf("trace exporter builder is nil")
 	}
 
 	return t.opts.builer.Build(ctx)

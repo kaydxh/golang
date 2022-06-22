@@ -81,7 +81,7 @@ func (c *completedConfig) installMeter(ctx context.Context) ([]OpenTelemetryOpti
 	switch metricType {
 	case Monitor_OpenTelemetry_metric_prometheus:
 		builder := prometheus_.NewPrometheusExporterBuilder(
-			prometheus_.WithMetricUrlPath(c.Proto.GetOtelMetricsExporter().GetPrometheus().GetUrl()),
+			prometheus_.WithMetricUrlPath(c.Proto.GetOtelMetricExporter().GetPrometheus().GetUrl()),
 		)
 		opts = append(opts, WithMeterPullExporter(builder))
 
@@ -103,7 +103,7 @@ func (c *completedConfig) installTracer(ctx context.Context) ([]OpenTelemetryOpt
 	tracerType := c.Proto.OtelTraceExporterType
 	switch tracerType {
 	case Monitor_OpenTelemetry_trace_jaeger:
-		builder, err := jaeger_.NewJaegerExporertBuilder(c.Proto.GetOtelTracesExporter().GetJaeger().GetUrl())
+		builder, err := jaeger_.NewJaegerExporertBuilder(c.Proto.GetOtelTraceExporter().GetJaeger().GetUrl())
 		if err != nil {
 			return nil, fmt.Errorf("new jaeger exporter builder err: %v", err)
 		}
