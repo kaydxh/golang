@@ -15,17 +15,9 @@ import (
 type JaegerExporterBuilderOptions struct {
 }
 
-type JaegerTraceExporterType int32
-
-const (
-	JaegerTraceExporterType_Http  JaegerTraceExporterType = 0
-	JaegerTraceExporterType_Agent JaegerTraceExporterType = 1
-)
-
 type JaegerExporterBuilder struct {
-	exporter     *jaeger.Exporter
-	ExporterType JaegerTraceExporterType
-	opts         JaegerExporterBuilderOptions
+	exporter *jaeger.Exporter
+	opts     JaegerExporterBuilderOptions
 }
 
 func NewJaegerExporertBuilder(url string) (*JaegerExporterBuilder, error) {

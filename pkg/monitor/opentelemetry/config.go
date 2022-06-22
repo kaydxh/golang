@@ -72,6 +72,11 @@ func (c *completedConfig) install(ctx context.Context) error {
 func (c *completedConfig) installMeter(ctx context.Context) ([]OpenTelemetryOption, error) {
 
 	var opts []OpenTelemetryOption
+	collectDuration := c.Proto.GetMetricCollectDuration().AsDuration()
+	if collectDuration > 0 {
+		opts = append(opts, WithMetricCollectDuration(collectDuration))
+	}
+
 	metricType := c.Proto.OtelMetricExporterType
 	switch metricType {
 	case Monitor_OpenTelemetry_metric_prometheus:

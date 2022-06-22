@@ -24,7 +24,7 @@ type PrometheusExporterBuilder struct {
 	opts PrometheusExporterBuilderOptions
 }
 
-func defaultBuilderOption() PrometheusExporterBuilderOptions {
+func defaultBuilderOptions() PrometheusExporterBuilderOptions {
 	return PrometheusExporterBuilderOptions{
 		Url: defaultMetricsUrl,
 	}
@@ -33,7 +33,7 @@ func defaultBuilderOption() PrometheusExporterBuilderOptions {
 func NewPrometheusExporterBuilder(opts ...PrometheusExporterBuilderOption) *PrometheusExporterBuilder {
 
 	builder := &PrometheusExporterBuilder{
-		opts: defaultBuilderOption(),
+		opts: defaultBuilderOptions(),
 	}
 	builder.ApplyOptions(opts...)
 

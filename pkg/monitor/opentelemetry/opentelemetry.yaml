@@ -1,8 +1,9 @@
 monitor:
   open_telemetry:
     enabled: true
+    metric_collect_duration: 60s
     otel_trace_exporter_type : trace_none
-    otel_metric_exporter_type : metric_none
+    otel_metric_exporter_type : metric_prometheus
     otel_log_exporter_type : log_none
     otel_metrics_exporter :
       prometheus:
