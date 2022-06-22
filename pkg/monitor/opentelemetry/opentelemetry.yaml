@@ -2,7 +2,7 @@ monitor:
   open_telemetry:
     enabled: true
     otel_trace_exporter_type : trace_none
-    otel_metric_exporter_type : metric_prometheus
+    otel_metric_exporter_type : metric_none
     otel_log_exporter_type : log_none
     otel_metrics_exporter :
       prometheus:
