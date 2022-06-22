@@ -17,8 +17,8 @@ message Monitor {
     OtelMetricExporterType otel_metric_exporter_type = 4;
     OtelLogExporterType otel_log_exporter_type = 5;
 
-    OtelMetricsExporter otel_metrics_exporter = 6;
-    OtelTracesExporter otel_traces_exporter = 7;
+    OtelMetricExporter otel_metric_exporter = 6;
+    OtelTraceExporter otel_trace_exporter = 7;
 
     Resource resource = 10;
     message Resource {
@@ -26,14 +26,14 @@ message Monitor {
       map<string, string> attrs = 2;
     }
 
-    message OtelMetricsExporter {
+    message OtelMetricExporter {
       Prometheus prometheus = 1;
       message Prometheus {
         string url = 1;
       }
     }
 
-    message OtelTracesExporter {
+    message OtelTraceExporter {
       Jaeger jaeger = 1;
       message Jaeger {
         string url = 1;

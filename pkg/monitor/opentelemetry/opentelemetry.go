@@ -34,7 +34,7 @@ func (t *OpenTelemetry) Install(ctx context.Context) error {
 	}
 
 	if len(t.opts.tracerOptions) > 0 {
-		tracer := tracer_.NewTracer()
+		tracer := tracer_.NewTracer(t.opts.tracerOptions...)
 		err := tracer.Install(ctx)
 		if err != nil {
 			return err
