@@ -1,4 +1,4 @@
-package pool
+package task
 
 // A PoolOptions sets options.
 type PoolOptions interface {
