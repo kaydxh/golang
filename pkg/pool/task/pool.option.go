@@ -1,4 +1,4 @@
-package pool
+package task
 
 func WithBurst(burst int) PoolOptions {
 	return PoolOptionsFunc(func(p *Pool) {

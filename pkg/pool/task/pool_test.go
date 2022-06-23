@@ -1,11 +1,11 @@
-package pool_test
+package task_test
 
 import (
 	"fmt"
 	"testing"
 	"time"
 
-	pool_ "github.com/kaydxh/golang/pkg/pool"
+	pool_ "github.com/kaydxh/golang/pkg/pool/task"
 )
 
 func TestProcessOk(t *testing.T) {

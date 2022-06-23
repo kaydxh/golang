@@ -1,4 +1,4 @@
-package pool_test
+package task_test
 
 import (
 	"context"
@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	pool_ "github.com/kaydxh/golang/pkg/pool"
+	pool_ "github.com/kaydxh/golang/pkg/pool/task"
 )
 
 func TestWork(t *testing.T) {
