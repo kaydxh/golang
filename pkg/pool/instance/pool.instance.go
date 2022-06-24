@@ -2,6 +2,7 @@ package instance
 
 import (
 	"context"
+	"fmt"
 	"sync"
 	"time"
 
@@ -10,17 +11,30 @@ import (
 
 type GlobalInitFunc func() error
 type GlobalReleaseFunc func() error
-type LocalInitFunc func(holder interface{}) error
+type LocalInitFunc func(instance interface{}) error
 type LocalReleaseFunc func(instance interface{}) error
 type DeleteFunc func(instance interface{})
 
+type LoadBalanceMode int
+
+const (
+	RoundRobinBalanceMode LoadBalanceMode = 0
+	RandomLoadBalanceMode LoadBalanceMode = 1
+	LeastLoadBalanceMode  LoadBalanceMode = 2
+)
+
 type PoolOptions struct {
+	name                   string
 	resevePoolSizePerGpu   int64
 	capacityPoolSizePerGpu int64
 	idleTimeout            time.Duration
 	waitTimeout            time.Duration
+	loadBalanceMode        LoadBalanceMode
 
 	GpuIDs []int64
+
+	modelPaths []string
+	batchSize  int64
 
 	globalInitFunc    GlobalInitFunc
 	globalReleaseFunc GlobalReleaseFunc
@@ -33,6 +47,8 @@ type Pool struct {
 	holders map[int64]chan *CoreInstanceHolder
 	opts    PoolOptions
 	mu      sync.RWMutex
+
+	New func() interface{}
 }
 
 func defaultPoolOptions() PoolOptions {
@@ -45,13 +61,69 @@ func defaultPoolOptions() PoolOptions {
 }
 
 func NewPool(opts ...PoolOption) *Pool {
-	p := &Pool{}
+	p := &Pool{
+		holders: make(map[int64]chan *CoreInstanceHolder),
+	}
 	p.ApplyOptions(opts...)
+
+	if p.opts.resevePoolSizePerGpu < 0 {
+		p.opts.resevePoolSizePerGpu = 0
+	}
+
+	if p.opts.capacityPoolSizePerGpu < p.opts.resevePoolSizePerGpu {
+		p.opts.capacityPoolSizePerGpu = p.opts.resevePoolSizePerGpu
+	}
 
 	return p
 }
 
+func (p *Pool) init(ctx context.Context) error {
+
+	for _, id := range p.opts.GpuIDs {
+		p.holders[id] = make(chan *CoreInstanceHolder, p.opts.capacityPoolSizePerGpu)
+		for i := int64(0); i < p.opts.resevePoolSizePerGpu; i++ {
+			holder := &CoreInstanceHolder{
+				Name:       p.opts.name,
+				GpuID:      id,
+				ModelPaths: p.opts.modelPaths,
+				BatchSize:  p.opts.batchSize,
+			}
+			err := holder.Do(ctx, func() {
+				holder.Instance = p.New()
+			})
+			if err != nil {
+				return err
+			}
+
+			var processErr error
+			err = holder.Do(ctx, func() {
+				processErr = p.opts.localInitFunc(holder.Instance)
+			})
+
+			if processErr != nil {
+				return processErr
+			}
+			if err != nil {
+				return err
+			}
+
+			p.holders[id] <- holder
+		}
+	}
+
+	return nil
+}
+
 func (p *Pool) GlobalInit(ctx context.Context) error {
+	err := p.globalInit(ctx)
+	if err != nil {
+		return err
+	}
+
+	return p.init(ctx)
+}
+
+func (p *Pool) globalInit(ctx context.Context) error {
 	if p.opts.globalInitFunc == nil {
 		return nil
 	}
@@ -60,6 +132,30 @@ func (p *Pool) GlobalInit(ctx context.Context) error {
 }
 
 func (p *Pool) GlobalRelease(ctx context.Context) error {
+	for _, ch := range p.holders {
+		select {
+		case holder := <-ch:
+			holder.Do(ctx, func() {
+				if p.opts.localReleaseFunc != nil {
+					p.opts.localReleaseFunc(holder.Instance)
+				}
+
+				if p.opts.deleteFunc != nil {
+					p.opts.deleteFunc(holder.Instance)
+				}
+			})
+
+		case <-ctx.Done():
+			return ctx.Err()
+
+		default:
+		}
+	}
+
+	return p.opts.globalReleaseFunc()
+}
+
+func (p *Pool) globalRelease(ctx context.Context) error {
 	if p.opts.globalReleaseFunc == nil {
 		return nil
 	}
@@ -67,7 +163,7 @@ func (p *Pool) GlobalRelease(ctx context.Context) error {
 	return p.opts.globalReleaseFunc()
 }
 
-func (p *Pool) LocalInit(ctx context.Context, holder CoreInstanceHolder) (err error) {
+func (p *Pool) LocalInit(ctx context.Context, holder *CoreInstanceHolder) (err error) {
 	if p.opts.localInitFunc == nil {
 		return nil
 	}
@@ -75,6 +171,8 @@ func (p *Pool) LocalInit(ctx context.Context, holder CoreInstanceHolder) (err er
 	var errs []error
 
 	for _, id := range p.opts.GpuIDs {
+
+		// gpu id must >= 0
 		if id >= 0 {
 
 			var processErr error
@@ -92,4 +190,71 @@ func (p *Pool) LocalInit(ctx context.Context, holder CoreInstanceHolder) (err er
 	}
 
 	return errors_.NewAggregate(errs)
+}
+
+func (p *Pool) GetByGpuId(ctx context.Context, gpuID int64) (*CoreInstanceHolder, error) {
+	if p.opts.capacityPoolSizePerGpu <= 0 {
+		return nil, fmt.Errorf("no instance, capacity pool size per gpu is <= 0")
+	}
+
+	select {
+	case holder := <-p.holders[gpuID]:
+		return holder, nil
+
+	case <-ctx.Done():
+		return nil, ctx.Err()
+
+	default:
+	}
+
+	return nil, fmt.Errorf("no avaliable instance in gpu id: %v", gpuID)
+}
+
+func (p *Pool) Get(ctx context.Context) (*CoreInstanceHolder, error) {
+
+	switch p.opts.loadBalanceMode {
+	case RoundRobinBalanceMode:
+		return p.GetWithRoundRobinMode(ctx)
+	default:
+		return nil, fmt.Errorf("not support the loadBalance mode: %v", p.opts.loadBalanceMode)
+	}
+}
+
+func (p *Pool) GetWithRoundRobinMode(ctx context.Context) (*CoreInstanceHolder, error) {
+
+	for _, id := range p.opts.GpuIDs {
+		holder, err := p.GetByGpuId(ctx, id)
+		if err == nil {
+			return holder, nil
+		}
+	}
+
+	return nil, fmt.Errorf("no avaliable instance")
+}
+
+func (p *Pool) Put(ctx context.Context, holder *CoreInstanceHolder) error {
+	select {
+	case p.holders[holder.GpuID] <- holder:
+		return nil
+
+	case <-ctx.Done():
+		return ctx.Err()
+
+	default:
+	}
+
+	// if get this line, it means put instance error, then we delete this instance
+	if p.opts.localReleaseFunc != nil {
+		holder.Do(ctx, func() {
+			p.opts.localReleaseFunc(holder.Instance)
+		})
+
+	}
+	if p.opts.deleteFunc != nil {
+		holder.Do(ctx, func() {
+			p.opts.deleteFunc(holder.Instance)
+		})
+	}
+
+	return nil
 }
