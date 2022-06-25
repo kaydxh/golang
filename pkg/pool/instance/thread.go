@@ -4,6 +4,8 @@ import (
 	"context"
 	"runtime"
 	"sync"
+
+	runtime_ "github.com/kaydxh/golang/go/runtime"
 )
 
 type Thread struct {
@@ -38,14 +40,27 @@ func (t *Thread) initOnce() {
 func (t *Thread) Do(ctx context.Context, f func()) error {
 	t.initOnce()
 
+	// wait group make Do func and f func return in sync
+	var wg sync.WaitGroup
+	defer wg.Wait()
+	wg.Add(1)
+
+	handler := func() {
+		defer wg.Done()
+		defer runtime_.Recover()
+		f()
+	}
+
 	select {
-	case t.handlerCh <- f:
+	case t.handlerCh <- handler:
 		return nil
 
 	case <-ctx.Done():
+		wg.Done()
 		return ctx.Err()
 
 	case <-t.ctx.Done():
+		wg.Done()
 		return t.ctx.Err()
 	}
 }
