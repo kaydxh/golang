@@ -79,3 +79,9 @@ func WithDeleteFunc(f DeleteFunc) PoolOption {
 		p.opts.deleteFunc = f
 	})
 }
+
+func WithEnabledPrintCostTime(enabled bool) PoolOption {
+	return PoolOptionFunc(func(p *Pool) {
+		p.opts.enabledPrintCostTime = enabled
+	})
+}
