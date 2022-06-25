@@ -268,10 +268,10 @@ func (p *Pool) Invoke(
 	if err != nil {
 		return nil, err
 	}
+	defer p.Put(ctx, holder)
 
 	var processErr error
 	err = holder.Do(ctx, func() {
-		defer p.Put(ctx, holder)
 		response, processErr = f(ctx, holder.Instance)
 	})
 
