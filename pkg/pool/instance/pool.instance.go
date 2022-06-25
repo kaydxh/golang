@@ -71,6 +71,7 @@ func NewPool(newFunc NewFunc, opts ...PoolOption) (*Pool, error) {
 	p := &Pool{
 		newFunc: newFunc,
 		holders: make(map[int64]chan *CoreInstanceHolder),
+		opts:    defaultPoolOptions(),
 	}
 	p.ApplyOptions(opts...)
 
