@@ -4,7 +4,6 @@ import (
 	"context"
 	"runtime"
 	"sync"
-	"time"
 )
 
 type Thread struct {
@@ -39,7 +38,6 @@ func (t *Thread) initOnce() {
 func (t *Thread) Do(ctx context.Context, f func()) error {
 	t.initOnce()
 
-	time.Sleep(time.Second)
 	select {
 	case t.handlerCh <- f:
 		return nil

@@ -22,10 +22,13 @@ func (s *Sdk) DoSdk() error {
 }
 
 func (s *InstancePool) InvokeProcess(ctx context.Context) error {
-	logrus.Infof("do InvokeProcess")
+	//logrus.Infof("do InvokeProcess")
 	resp, err := s.pool.Invoke(ctx, func(ctx context.Context, instance interface{}) (interface{}, error) {
 		return nil, instance.(*Sdk).DoSdk()
 	})
+	if err != nil {
+		logrus.Infof("do DoSdk err: %v", err)
+	}
 	_ = resp
 
 	return err
@@ -93,6 +96,7 @@ func TestNewPool(t *testing.T) {
 	if err != nil {
 		t.Errorf("global init err: %v", err)
 	}
+
 	defer pool.GlobalRelease(ctx)
 
 	//do somthing
@@ -110,4 +114,7 @@ func TestNewPool(t *testing.T) {
 	}
 
 	wg.Wait()
+
+	return
+
 }

@@ -203,6 +203,7 @@ func (p *Pool) GetByGpuId(ctx context.Context, gpuID int64) (*CoreInstanceHolder
 
 	select {
 	case holder := <-p.holders[gpuID]:
+		fmt.Println("get")
 		return holder, nil
 
 	case <-ctx.Done():
@@ -239,6 +240,7 @@ func (p *Pool) GetWithRoundRobinMode(ctx context.Context) (*CoreInstanceHolder, 
 func (p *Pool) Put(ctx context.Context, holder *CoreInstanceHolder) error {
 	select {
 	case p.holders[holder.GpuID] <- holder:
+		fmt.Println("put")
 		return nil
 
 	case <-ctx.Done():
@@ -276,10 +278,10 @@ func (p *Pool) Invoke(
 	if err != nil {
 		return nil, err
 	}
-	defer p.Put(ctx, holder)
 
 	var processErr error
 	err = holder.Do(ctx, func() {
+		defer p.Put(ctx, holder)
 		response, processErr = f(ctx, holder.Instance)
 	})
 
