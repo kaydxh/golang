@@ -4,6 +4,7 @@ import (
 	"context"
 	"sync"
 	"testing"
+	"time"
 
 	instance_ "github.com/kaydxh/golang/pkg/pool/instance"
 	"github.com/sirupsen/logrus"
@@ -18,6 +19,7 @@ type Sdk struct {
 
 func (s *Sdk) DoSdk() error {
 	logrus.Infof("do DoSdk")
+	time.Sleep(time.Second)
 	return nil
 }
 
@@ -65,9 +67,14 @@ func Delete() {
 
 func TestNewPool(t *testing.T) {
 	ctx := context.Background()
-	pool := instance_.NewPool(
+	pool, err := instance_.NewPool(func() interface{} {
+		New()
+		return &Sdk{}
+	},
 		instance_.WithGpuIDs([]int64{0}),
 		instance_.WithBatchSize(8),
+		instance_.WithWaitTimeout(2*time.Second),
+		//instance_.WithWaitTimeout(time.Millisecond),
 		instance_.WithName("test-instance"),
 		instance_.WithResevePoolSizePerGpu(1),
 		instance_.WithCapacityPoolSizePerGpu(1),
@@ -83,18 +90,15 @@ func TestNewPool(t *testing.T) {
 		instance_.WithLocalReleaseFunc(func(instace interface{}) error {
 			return LocalRelease()
 		}),
-		instance_.WithNewFunc(func() interface{} {
-			New()
-			return &Sdk{}
-		}),
 		instance_.WithDeleteFunc(func(instace interface{}) {
 			Delete()
 		}),
 	)
 
-	err := pool.GlobalInit(ctx)
+	err = pool.GlobalInit(ctx)
 	if err != nil {
 		t.Errorf("global init err: %v", err)
+		return
 	}
 
 	defer pool.GlobalRelease(ctx)

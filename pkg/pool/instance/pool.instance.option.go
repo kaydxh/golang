@@ -74,12 +74,6 @@ func WithLocalReleaseFunc(f LocalReleaseFunc) PoolOption {
 	})
 }
 
-func WithNewFunc(f NewFunc) PoolOption {
-	return PoolOptionFunc(func(p *Pool) {
-		p.opts.newFunc = f
-	})
-}
-
 func WithDeleteFunc(f DeleteFunc) PoolOption {
 	return PoolOptionFunc(func(p *Pool) {
 		p.opts.deleteFunc = f

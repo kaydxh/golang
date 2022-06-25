@@ -43,11 +43,12 @@ type PoolOptions struct {
 	globalReleaseFunc GlobalReleaseFunc
 	localInitFunc     LocalInitFunc
 	localReleaseFunc  LocalReleaseFunc
-	newFunc           NewFunc
 	deleteFunc        DeleteFunc
 }
 
 type Pool struct {
+	newFunc NewFunc
+
 	holders map[int64]chan *CoreInstanceHolder
 	opts    PoolOptions
 	mu      sync.RWMutex
@@ -62,8 +63,13 @@ func defaultPoolOptions() PoolOptions {
 	}
 }
 
-func NewPool(opts ...PoolOption) *Pool {
+func NewPool(newFunc NewFunc, opts ...PoolOption) (*Pool, error) {
+	if newFunc == nil {
+		return nil, fmt.Errorf("new func is nil")
+
+	}
 	p := &Pool{
+		newFunc: newFunc,
 		holders: make(map[int64]chan *CoreInstanceHolder),
 	}
 	p.ApplyOptions(opts...)
@@ -76,7 +82,7 @@ func NewPool(opts ...PoolOption) *Pool {
 		p.opts.capacityPoolSizePerGpu = p.opts.resevePoolSizePerGpu
 	}
 
-	return p
+	return p, nil
 }
 
 func (p *Pool) init(ctx context.Context) error {
@@ -95,10 +101,13 @@ func (p *Pool) init(ctx context.Context) error {
 				BatchSize:  p.opts.batchSize,
 			}
 			err := holder.Do(ctx, func() {
-				holder.Instance = p.opts.newFunc()
+				holder.Instance = p.newFunc()
 			})
 			if err != nil {
 				return err
+			}
+			if holder.Instance == nil {
+				return fmt.Errorf("instance the result of new func is nil")
 			}
 
 			var processErr error
