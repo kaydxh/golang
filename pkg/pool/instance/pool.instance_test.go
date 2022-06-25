@@ -76,6 +76,8 @@ func TestNewPool(t *testing.T) {
 		instance_.WithWaitTimeout(2*time.Second),
 		//instance_.WithWaitTimeout(time.Millisecond),
 		instance_.WithName("test-instance"),
+		instance_.WithEnabledPrintCostTime(true),
+		//instance_.WithWaitTimeout(time.Millisecond),
 		instance_.WithResevePoolSizePerGpu(1),
 		instance_.WithCapacityPoolSizePerGpu(1),
 		instance_.WithGlobalInitFunc(func() error {

@@ -6,7 +6,11 @@ import (
 	"sync"
 	"time"
 
+	"path/filepath"
+
 	errors_ "github.com/kaydxh/golang/go/errors"
+	runtime_ "github.com/kaydxh/golang/go/runtime"
+	time_ "github.com/kaydxh/golang/go/time"
 	"github.com/sirupsen/logrus"
 )
 
@@ -44,6 +48,8 @@ type PoolOptions struct {
 	localInitFunc     LocalInitFunc
 	localReleaseFunc  LocalReleaseFunc
 	deleteFunc        DeleteFunc
+
+	enabledPrintCostTime bool
 }
 
 type Pool struct {
@@ -274,6 +280,12 @@ func (p *Pool) Invoke(
 	ctx context.Context,
 	f func(ctx context.Context, instance interface{}) (interface{}, error),
 ) (response interface{}, err error) {
+	tc := time_.New(p.opts.enabledPrintCostTime)
+	summary := func() {
+		tc.Tick(fmt.Sprintf("Invoke %v", filepath.Base(runtime_.NameOfFunction(f))))
+		logrus.Infof(tc.String())
+	}
+	defer summary()
 
 	if f == nil {
 		return nil, nil
