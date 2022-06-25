@@ -7,6 +7,7 @@ import (
 	"time"
 
 	errors_ "github.com/kaydxh/golang/go/errors"
+	"github.com/sirupsen/logrus"
 )
 
 type GlobalInitFunc func() error
@@ -29,8 +30,9 @@ type PoolOptions struct {
 	resevePoolSizePerGpu   int64
 	capacityPoolSizePerGpu int64
 	idleTimeout            time.Duration
-	waitTimeout            time.Duration
-	loadBalanceMode        LoadBalanceMode
+	// the wait time to try get instance again, 0 means no wait
+	waitTimeout     time.Duration
+	loadBalanceMode LoadBalanceMode
 
 	gpuIDs []int64
 
@@ -53,7 +55,7 @@ type Pool struct {
 
 func defaultPoolOptions() PoolOptions {
 	return PoolOptions{
-		resevePoolSizePerGpu:   1,
+		resevePoolSizePerGpu:   0,
 		capacityPoolSizePerGpu: 1,
 		idleTimeout:            10 * time.Second,
 		waitTimeout:            10 * time.Millisecond,
@@ -172,32 +174,35 @@ func (p *Pool) GetByGpuId(ctx context.Context, gpuID int64) (*CoreInstanceHolder
 		return nil, fmt.Errorf("no instance, capacity pool size per gpu is <= 0")
 	}
 
-	select {
-	case holder := <-p.holders[gpuID]:
-		fmt.Println("get")
-		return holder, nil
+	// until get instance, unless context canceled
+	for {
+		select {
+		case holder := <-p.holders[gpuID]:
+			logrus.Infof("get a instance in gpu id: %v", gpuID)
+			return holder, nil
+		case <-ctx.Done():
+			return nil, ctx.Err()
+		default:
+		}
 
-	case <-ctx.Done():
-		return nil, ctx.Err()
+		if p.opts.waitTimeout == 0 {
+			logrus.Warnf("no avaliable instance in gpu id: %v right now, try again.", gpuID)
+			continue
+		}
 
-	default:
-	}
+		timer := time.NewTimer(p.opts.waitTimeout)
+		defer timer.Stop()
 
-	if p.opts.waitTimeout == 0 {
-		return nil, fmt.Errorf("no avaliable instance in gpu id: %v right now", gpuID)
-	}
-
-	timer := time.NewTimer(p.opts.waitTimeout)
-	defer timer.Stop()
-
-	select {
-	case holder := <-p.holders[gpuID]:
-		fmt.Println("get")
-		return holder, nil
-	case <-ctx.Done():
-		return nil, ctx.Err()
-	case <-timer.C:
-		return nil, fmt.Errorf("get instance timeout: %v", p.opts.waitTimeout)
+		select {
+		case holder := <-p.holders[gpuID]:
+			logrus.Infof("get a instance in gpu id: %v", gpuID)
+			return holder, nil
+		case <-ctx.Done():
+			logrus.WithError(ctx.Err()).Errorf("get a instance in gpu id: %v context canceled", gpuID)
+			return nil, ctx.Err()
+		case <-timer.C:
+			logrus.Warnf("get instance timeout: %v, try again.", p.opts.waitTimeout)
+		}
 	}
 
 }
