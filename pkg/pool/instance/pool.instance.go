@@ -13,6 +13,7 @@ type GlobalInitFunc func() error
 type GlobalReleaseFunc func() error
 type LocalInitFunc func(instance interface{}) error
 type LocalReleaseFunc func(instance interface{}) error
+type NewFunc func() interface{}
 type DeleteFunc func(instance interface{})
 
 type LoadBalanceMode int
@@ -31,7 +32,7 @@ type PoolOptions struct {
 	waitTimeout            time.Duration
 	loadBalanceMode        LoadBalanceMode
 
-	GpuIDs []int64
+	gpuIDs []int64
 
 	modelPaths []string
 	batchSize  int64
@@ -40,6 +41,7 @@ type PoolOptions struct {
 	globalReleaseFunc GlobalReleaseFunc
 	localInitFunc     LocalInitFunc
 	localReleaseFunc  LocalReleaseFunc
+	newFunc           NewFunc
 	deleteFunc        DeleteFunc
 }
 
@@ -47,8 +49,6 @@ type Pool struct {
 	holders map[int64]chan *CoreInstanceHolder
 	opts    PoolOptions
 	mu      sync.RWMutex
-
-	New func() interface{}
 }
 
 func defaultPoolOptions() PoolOptions {
@@ -79,7 +79,11 @@ func NewPool(opts ...PoolOption) *Pool {
 
 func (p *Pool) init(ctx context.Context) error {
 
-	for _, id := range p.opts.GpuIDs {
+	for _, id := range p.opts.gpuIDs {
+		if id < 0 {
+			continue
+		}
+
 		p.holders[id] = make(chan *CoreInstanceHolder, p.opts.capacityPoolSizePerGpu)
 		for i := int64(0); i < p.opts.resevePoolSizePerGpu; i++ {
 			holder := &CoreInstanceHolder{
@@ -89,7 +93,7 @@ func (p *Pool) init(ctx context.Context) error {
 				BatchSize:  p.opts.batchSize,
 			}
 			err := holder.Do(ctx, func() {
-				holder.Instance = p.New()
+				holder.Instance = p.opts.newFunc()
 			})
 			if err != nil {
 				return err
@@ -170,7 +174,7 @@ func (p *Pool) LocalInit(ctx context.Context, holder *CoreInstanceHolder) (err e
 
 	var errs []error
 
-	for _, id := range p.opts.GpuIDs {
+	for _, id := range p.opts.gpuIDs {
 
 		// gpu id must >= 0
 		if id >= 0 {
@@ -222,7 +226,7 @@ func (p *Pool) Get(ctx context.Context) (*CoreInstanceHolder, error) {
 
 func (p *Pool) GetWithRoundRobinMode(ctx context.Context) (*CoreInstanceHolder, error) {
 
-	for _, id := range p.opts.GpuIDs {
+	for _, id := range p.opts.gpuIDs {
 		holder, err := p.GetByGpuId(ctx, id)
 		if err == nil {
 			return holder, nil
@@ -257,4 +261,31 @@ func (p *Pool) Put(ctx context.Context, holder *CoreInstanceHolder) error {
 	}
 
 	return nil
+}
+
+func (p *Pool) Invoke(
+	ctx context.Context,
+	f func(ctx context.Context, instance interface{}) (interface{}, error),
+) (response interface{}, err error) {
+
+	if f == nil {
+		return nil, nil
+	}
+
+	holder, err := p.Get(ctx)
+	if err != nil {
+		return nil, err
+	}
+	defer p.Put(ctx, holder)
+
+	var processErr error
+	err = holder.Do(ctx, func() {
+		response, processErr = f(ctx, holder.Instance)
+	})
+
+	if processErr != nil {
+		err = processErr
+	}
+
+	return response, err
 }

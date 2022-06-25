@@ -4,6 +4,7 @@ import (
 	"context"
 	"runtime"
 	"sync"
+	"time"
 )
 
 type Thread struct {
@@ -30,21 +31,15 @@ func (t *Thread) initOnce() {
 		defer t.mu.Unlock()
 		t.ctx, t.cancel = context.WithCancel(context.Background())
 
+		t.handlerCh = make(chan func())
+		go t.DoInOSThread()
 	})
 }
 
 func (t *Thread) Do(ctx context.Context, f func()) error {
 	t.initOnce()
 
-	/*
-		var wg sync.WaitGroup
-		defer func() {
-			wg.Done()
-			wg.Wait()
-		}()
-		wg.Add(1)
-	*/
-
+	time.Sleep(time.Second)
 	select {
 	case t.handlerCh <- f:
 		return nil
