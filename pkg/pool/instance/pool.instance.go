@@ -167,35 +167,6 @@ func (p *Pool) globalRelease(ctx context.Context) error {
 	return p.opts.globalReleaseFunc()
 }
 
-func (p *Pool) LocalInit(ctx context.Context, holder *CoreInstanceHolder) (err error) {
-	if p.opts.localInitFunc == nil {
-		return nil
-	}
-
-	var errs []error
-
-	for _, id := range p.opts.gpuIDs {
-
-		// gpu id must >= 0
-		if id >= 0 {
-
-			var processErr error
-			err = holder.Do(ctx, func() {
-				processErr = p.opts.localInitFunc(holder.Instance)
-			})
-			if processErr != nil {
-				errs = append(errs, processErr)
-			}
-
-			if err != nil {
-				errs = append(errs, err)
-			}
-		}
-	}
-
-	return errors_.NewAggregate(errs)
-}
-
 func (p *Pool) GetByGpuId(ctx context.Context, gpuID int64) (*CoreInstanceHolder, error) {
 	if p.opts.capacityPoolSizePerGpu <= 0 {
 		return nil, fmt.Errorf("no instance, capacity pool size per gpu is <= 0")
@@ -212,7 +183,23 @@ func (p *Pool) GetByGpuId(ctx context.Context, gpuID int64) (*CoreInstanceHolder
 	default:
 	}
 
-	return nil, fmt.Errorf("no avaliable instance in gpu id: %v", gpuID)
+	if p.opts.waitTimeout == 0 {
+		return nil, fmt.Errorf("no avaliable instance in gpu id: %v right now", gpuID)
+	}
+
+	timer := time.NewTimer(p.opts.waitTimeout)
+	defer timer.Stop()
+
+	select {
+	case holder := <-p.holders[gpuID]:
+		fmt.Println("get")
+		return holder, nil
+	case <-ctx.Done():
+		return nil, ctx.Err()
+	case <-timer.C:
+		return nil, fmt.Errorf("get instance timeout: %v", p.opts.waitTimeout)
+	}
+
 }
 
 func (p *Pool) Get(ctx context.Context) (*CoreInstanceHolder, error) {
@@ -227,14 +214,17 @@ func (p *Pool) Get(ctx context.Context) (*CoreInstanceHolder, error) {
 
 func (p *Pool) GetWithRoundRobinMode(ctx context.Context) (*CoreInstanceHolder, error) {
 
+	var errs []error
+
 	for _, id := range p.opts.gpuIDs {
 		holder, err := p.GetByGpuId(ctx, id)
 		if err == nil {
 			return holder, nil
 		}
+		errs = append(errs, err)
 	}
 
-	return nil, fmt.Errorf("no avaliable instance")
+	return nil, errors_.NewAggregate(errs)
 }
 
 func (p *Pool) Put(ctx context.Context, holder *CoreInstanceHolder) error {
