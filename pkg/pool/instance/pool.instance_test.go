@@ -71,15 +71,15 @@ func TestNewPool(t *testing.T) {
 		New()
 		return &Sdk{}
 	},
-		instance_.WithGpuIDs([]int64{0, 1, 2}),
+		instance_.WithCoreIDs([]int64{0, 1, 2}),
 		instance_.WithBatchSize(8),
 		instance_.WithWaitTimeoutOnce(50*time.Millisecond),
 		instance_.WithWaitTimeoutTotal(time.Second),
 		instance_.WithName("test-instance"),
 		instance_.WithEnabledPrintCostTime(true),
 		//instance_.WithWaitTimeout(time.Millisecond),
-		instance_.WithResevePoolSizePerGpu(1),
-		instance_.WithCapacityPoolSizePerGpu(1),
+		instance_.WithResevePoolSizePerCore(1),
+		instance_.WithCapacityPoolSizePerCore(1),
 		instance_.WithGlobalInitFunc(func() error {
 			return GlobalInit()
 		}),

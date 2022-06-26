@@ -1,10 +1,10 @@
 package instance
 
-// CoreInstanceHolder is a instance which is used by gpu or cpu.
+// CoreInstanceHolder is a instance which is used by core (gpu or cpu or npu).
 type CoreInstanceHolder struct {
 	Instance   interface{}
 	Name       string
-	GpuID      int64
+	CoreID     int64
 	ModelPaths []string
 	BatchSize  int64
 	Thread

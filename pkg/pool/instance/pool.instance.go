@@ -28,10 +28,10 @@ const (
 )
 
 type PoolOptions struct {
-	name                   string
-	resevePoolSizePerGpu   int64
-	capacityPoolSizePerGpu int64
-	idleTimeout            time.Duration
+	name                    string
+	resevePoolSizePerCore   int64
+	capacityPoolSizePerCore int64
+	idleTimeout             time.Duration
 	// the wait time to try get instance again, 0 means wait forever,
 	// execute the block without any timeout
 	waitTimeoutOnce time.Duration
@@ -41,7 +41,7 @@ type PoolOptions struct {
 	waitTimeoutTotal time.Duration
 	loadBalanceMode  LoadBalanceMode
 
-	gpuIDs []int64
+	coreIDs []int64
 
 	modelPaths []string
 	batchSize  int64
@@ -65,10 +65,10 @@ type Pool struct {
 
 func defaultPoolOptions() PoolOptions {
 	return PoolOptions{
-		resevePoolSizePerGpu:   0,
-		capacityPoolSizePerGpu: 1,
-		idleTimeout:            10 * time.Second,
-		waitTimeoutOnce:        10 * time.Millisecond,
+		resevePoolSizePerCore:   0,
+		capacityPoolSizePerCore: 1,
+		idleTimeout:             10 * time.Second,
+		waitTimeoutOnce:         10 * time.Millisecond,
 	}
 }
 
@@ -84,12 +84,12 @@ func NewPool(newFunc NewFunc, opts ...PoolOption) (*Pool, error) {
 	}
 	p.ApplyOptions(opts...)
 
-	if p.opts.resevePoolSizePerGpu < 0 {
-		p.opts.resevePoolSizePerGpu = 0
+	if p.opts.resevePoolSizePerCore < 0 {
+		p.opts.resevePoolSizePerCore = 0
 	}
 
-	if p.opts.capacityPoolSizePerGpu < p.opts.resevePoolSizePerGpu {
-		p.opts.capacityPoolSizePerGpu = p.opts.resevePoolSizePerGpu
+	if p.opts.capacityPoolSizePerCore < p.opts.resevePoolSizePerCore {
+		p.opts.capacityPoolSizePerCore = p.opts.resevePoolSizePerCore
 	}
 
 	return p, nil
@@ -97,16 +97,16 @@ func NewPool(newFunc NewFunc, opts ...PoolOption) (*Pool, error) {
 
 func (p *Pool) init(ctx context.Context) error {
 
-	for _, id := range p.opts.gpuIDs {
+	for _, id := range p.opts.coreIDs {
 		if id < 0 {
 			continue
 		}
 
-		p.holders[id] = make(chan *CoreInstanceHolder, p.opts.capacityPoolSizePerGpu)
-		for i := int64(0); i < p.opts.resevePoolSizePerGpu; i++ {
+		p.holders[id] = make(chan *CoreInstanceHolder, p.opts.capacityPoolSizePerCore)
+		for i := int64(0); i < p.opts.resevePoolSizePerCore; i++ {
 			holder := &CoreInstanceHolder{
 				Name:       p.opts.name,
-				GpuID:      id,
+				CoreID:     id,
 				ModelPaths: p.opts.modelPaths,
 				BatchSize:  p.opts.batchSize,
 			}
@@ -188,15 +188,15 @@ func (p *Pool) globalRelease(ctx context.Context) error {
 	return p.opts.globalReleaseFunc()
 }
 
-func (p *Pool) GetByGpuId(ctx context.Context, gpuID int64) (*CoreInstanceHolder, error) {
-	if p.opts.capacityPoolSizePerGpu <= 0 {
-		return nil, fmt.Errorf("no instance, capacity pool size per gpu is <= 0")
+func (p *Pool) GetByCoreId(ctx context.Context, coreID int64) (*CoreInstanceHolder, error) {
+	if p.opts.capacityPoolSizePerCore <= 0 {
+		return nil, fmt.Errorf("no instance, capacity pool size per core is <= 0")
 	}
 
 	if p.opts.waitTimeoutOnce == 0 {
 		select {
-		case holder := <-p.holders[gpuID]:
-			logrus.Infof("get a instance in gpu id: %v", gpuID)
+		case holder := <-p.holders[coreID]:
+			logrus.Infof("get a instance in core id: %v", coreID)
 			return holder, nil
 		case <-ctx.Done():
 			return nil, ContextCanceledError{Message: ctx.Err().Error()}
@@ -207,11 +207,11 @@ func (p *Pool) GetByGpuId(ctx context.Context, gpuID int64) (*CoreInstanceHolder
 	defer timer.Stop()
 
 	select {
-	case holder := <-p.holders[gpuID]:
-		logrus.Infof("get a instance in gpu id: %v", gpuID)
+	case holder := <-p.holders[coreID]:
+		logrus.Infof("get a instance in core id: %v", coreID)
 		return holder, nil
 	case <-ctx.Done():
-		logrus.WithError(ctx.Err()).Errorf("get a instance in gpu id: %v context canceled", gpuID)
+		logrus.WithError(ctx.Err()).Errorf("get a instance in core id: %v context canceled", coreID)
 		return nil, ContextCanceledError{Message: ctx.Err().Error()}
 	case <-timer.C:
 		msg := fmt.Sprintf("get instance timeout: %v, try again.", p.opts.waitTimeoutOnce)
@@ -237,10 +237,10 @@ func (p *Pool) GetWithRoundRobinMode(ctx context.Context) (*CoreInstanceHolder, 
 	remain := p.opts.waitTimeoutTotal
 
 	for {
-		for _, id := range p.opts.gpuIDs {
+		for _, id := range p.opts.coreIDs {
 			tc := time_.New(true)
 
-			holder, err := p.GetByGpuId(ctx, id)
+			holder, err := p.GetByCoreId(ctx, id)
 			if err == nil {
 				return holder, nil
 			}
@@ -265,7 +265,7 @@ func (p *Pool) GetWithRoundRobinMode(ctx context.Context) (*CoreInstanceHolder, 
 
 func (p *Pool) Put(ctx context.Context, holder *CoreInstanceHolder) error {
 	select {
-	case p.holders[holder.GpuID] <- holder:
+	case p.holders[holder.CoreID] <- holder:
 		fmt.Println("put")
 		return nil
 
@@ -299,11 +299,11 @@ func (p *Pool) Invoke(
 	holder := &CoreInstanceHolder{}
 	tc := time_.New(p.opts.enabledPrintCostTime)
 	summary := func() {
-		var gpuID int64 = -1
+		var coreID int64 = -1
 		if holder != nil {
-			gpuID = holder.GpuID
+			coreID = holder.CoreID
 		}
-		tc.Tick(fmt.Sprintf("Invoke %v no gpuID: %v", filepath.Base(runtime_.NameOfFunction(f)), gpuID))
+		tc.Tick(fmt.Sprintf("Invoke %v no coreID: %v", filepath.Base(runtime_.NameOfFunction(f)), coreID))
 		logrus.Infof(tc.String())
 	}
 	defer summary()
