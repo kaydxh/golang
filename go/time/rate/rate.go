@@ -81,11 +81,11 @@ func (lim *Limiter) AllowN(now time.Time, n int, timeout time.Duration) bool {
 	return true
 }
 
-func (lim *Limiter) Put() bool {
-	return lim.PutN(1)
+func (lim *Limiter) Put() {
+	lim.PutN(1)
 }
 
-func (lim *Limiter) PutN(n int) bool {
+func (lim *Limiter) PutN(n int) {
 	lim.mu.Lock()
 	defer lim.mu.Unlock()
 
@@ -95,8 +95,6 @@ func (lim *Limiter) PutN(n int) bool {
 	}
 
 	lim.cond.Signal()
-
-	return true
 }
 
 // reserveN is a helper method for AllowN, ReserveN, and WaitN.
