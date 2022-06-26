@@ -193,8 +193,6 @@ func (p *Pool) GetByGpuId(ctx context.Context, gpuID int64) (*CoreInstanceHolder
 		return nil, fmt.Errorf("no instance, capacity pool size per gpu is <= 0")
 	}
 
-	// until get instance, unless context canceled
-	//for {
 	if p.opts.waitTimeoutOnce == 0 {
 		select {
 		case holder := <-p.holders[gpuID]:
@@ -204,16 +202,6 @@ func (p *Pool) GetByGpuId(ctx context.Context, gpuID int64) (*CoreInstanceHolder
 			return nil, ContextCanceledError{Message: ctx.Err().Error()}
 		}
 	}
-
-	/*
-		if p.opts.waitTimeoutOnce == 0 {
-			msg := fmt.Sprintf("no avaliable instance in gpu id: %v right now, try again.", gpuID)
-			logrus.Warnf(msg)
-			//logrus.Warnf("no avaliable instance in gpu id: %v right now, try again.", gpuID)
-			//	continue
-			return nil, TimeoutError{Message: msg}
-		}
-	*/
 
 	timer := time.NewTimer(p.opts.waitTimeoutOnce)
 	defer timer.Stop()
@@ -229,9 +217,7 @@ func (p *Pool) GetByGpuId(ctx context.Context, gpuID int64) (*CoreInstanceHolder
 		msg := fmt.Sprintf("get instance timeout: %v, try again.", p.opts.waitTimeoutOnce)
 		logrus.Warnf(msg)
 		return nil, TimeoutError{Message: msg}
-		//logrus.Warnf("get instance timeout: %v, try again.", p.opts.waitTimeout)
 	}
-	//	}
 
 }
 
