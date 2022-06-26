@@ -3,12 +3,10 @@ package instance
 import (
 	"context"
 	"fmt"
+	"path/filepath"
 	"sync"
 	"time"
 
-	"path/filepath"
-
-	errors_ "github.com/kaydxh/golang/go/errors"
 	runtime_ "github.com/kaydxh/golang/go/runtime"
 	time_ "github.com/kaydxh/golang/go/time"
 	"github.com/sirupsen/logrus"
@@ -34,9 +32,14 @@ type PoolOptions struct {
 	resevePoolSizePerGpu   int64
 	capacityPoolSizePerGpu int64
 	idleTimeout            time.Duration
-	// the wait time to try get instance again, 0 means no wait
-	waitTimeout     time.Duration
-	loadBalanceMode LoadBalanceMode
+	// the wait time to try get instance again, 0 means wait forever,
+	// execute the block without any timeout
+	waitTimeoutOnce time.Duration
+
+	// the total wait time to try get instance, 0 means wait forever,
+	// execute the block without any timeout
+	waitTimeoutTotal time.Duration
+	loadBalanceMode  LoadBalanceMode
 
 	gpuIDs []int64
 
@@ -65,7 +68,7 @@ func defaultPoolOptions() PoolOptions {
 		resevePoolSizePerGpu:   0,
 		capacityPoolSizePerGpu: 1,
 		idleTimeout:            10 * time.Second,
-		waitTimeout:            10 * time.Millisecond,
+		waitTimeoutOnce:        10 * time.Millisecond,
 	}
 }
 
@@ -191,35 +194,44 @@ func (p *Pool) GetByGpuId(ctx context.Context, gpuID int64) (*CoreInstanceHolder
 	}
 
 	// until get instance, unless context canceled
-	for {
+	//for {
+	if p.opts.waitTimeoutOnce == 0 {
 		select {
 		case holder := <-p.holders[gpuID]:
 			logrus.Infof("get a instance in gpu id: %v", gpuID)
 			return holder, nil
 		case <-ctx.Done():
-			return nil, ctx.Err()
-		default:
-		}
-
-		if p.opts.waitTimeout == 0 {
-			logrus.Warnf("no avaliable instance in gpu id: %v right now, try again.", gpuID)
-			continue
-		}
-
-		timer := time.NewTimer(p.opts.waitTimeout)
-		defer timer.Stop()
-
-		select {
-		case holder := <-p.holders[gpuID]:
-			logrus.Infof("get a instance in gpu id: %v", gpuID)
-			return holder, nil
-		case <-ctx.Done():
-			logrus.WithError(ctx.Err()).Errorf("get a instance in gpu id: %v context canceled", gpuID)
-			return nil, ctx.Err()
-		case <-timer.C:
-			logrus.Warnf("get instance timeout: %v, try again.", p.opts.waitTimeout)
+			return nil, ContextCanceledError{Message: ctx.Err().Error()}
 		}
 	}
+
+	/*
+		if p.opts.waitTimeoutOnce == 0 {
+			msg := fmt.Sprintf("no avaliable instance in gpu id: %v right now, try again.", gpuID)
+			logrus.Warnf(msg)
+			//logrus.Warnf("no avaliable instance in gpu id: %v right now, try again.", gpuID)
+			//	continue
+			return nil, TimeoutError{Message: msg}
+		}
+	*/
+
+	timer := time.NewTimer(p.opts.waitTimeoutOnce)
+	defer timer.Stop()
+
+	select {
+	case holder := <-p.holders[gpuID]:
+		logrus.Infof("get a instance in gpu id: %v", gpuID)
+		return holder, nil
+	case <-ctx.Done():
+		logrus.WithError(ctx.Err()).Errorf("get a instance in gpu id: %v context canceled", gpuID)
+		return nil, ContextCanceledError{Message: ctx.Err().Error()}
+	case <-timer.C:
+		msg := fmt.Sprintf("get instance timeout: %v, try again.", p.opts.waitTimeoutOnce)
+		logrus.Warnf(msg)
+		return nil, TimeoutError{Message: msg}
+		//logrus.Warnf("get instance timeout: %v, try again.", p.opts.waitTimeout)
+	}
+	//	}
 
 }
 
@@ -233,19 +245,36 @@ func (p *Pool) Get(ctx context.Context) (*CoreInstanceHolder, error) {
 	}
 }
 
+// until get instance, unless context canceled
 func (p *Pool) GetWithRoundRobinMode(ctx context.Context) (*CoreInstanceHolder, error) {
 
-	var errs []error
+	remain := p.opts.waitTimeoutTotal
 
-	for _, id := range p.opts.gpuIDs {
-		holder, err := p.GetByGpuId(ctx, id)
-		if err == nil {
-			return holder, nil
+	for {
+		for _, id := range p.opts.gpuIDs {
+			tc := time_.New(true)
+
+			holder, err := p.GetByGpuId(ctx, id)
+			if err == nil {
+				return holder, nil
+			}
+
+			if p.opts.waitTimeoutTotal > 0 {
+				remain -= tc.Elapse()
+				if remain <= 0 {
+					msg := fmt.Sprintf("get instance total timeout: %v, remain: %v", p.opts.waitTimeoutTotal, remain)
+					logrus.Errorf(msg)
+					return nil, TimeoutError{Message: msg}
+				}
+			}
+
+			switch err.(type) {
+			case ContextCanceledError:
+				return nil, err
+			default:
+			}
 		}
-		errs = append(errs, err)
 	}
-
-	return nil, errors_.NewAggregate(errs)
 }
 
 func (p *Pool) Put(ctx context.Context, holder *CoreInstanceHolder) error {
@@ -280,9 +309,15 @@ func (p *Pool) Invoke(
 	ctx context.Context,
 	f func(ctx context.Context, instance interface{}) (interface{}, error),
 ) (response interface{}, err error) {
+
+	holder := &CoreInstanceHolder{}
 	tc := time_.New(p.opts.enabledPrintCostTime)
 	summary := func() {
-		tc.Tick(fmt.Sprintf("Invoke %v", filepath.Base(runtime_.NameOfFunction(f))))
+		var gpuID int64 = -1
+		if holder != nil {
+			gpuID = holder.GpuID
+		}
+		tc.Tick(fmt.Sprintf("Invoke %v no gpuID: %v", filepath.Base(runtime_.NameOfFunction(f)), gpuID))
 		logrus.Infof(tc.String())
 	}
 	defer summary()
@@ -291,7 +326,7 @@ func (p *Pool) Invoke(
 		return nil, nil
 	}
 
-	holder, err := p.Get(ctx)
+	holder, err = p.Get(ctx)
 	if err != nil {
 		return nil, err
 	}
