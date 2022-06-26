@@ -19,7 +19,7 @@ type Sdk struct {
 
 func (s *Sdk) DoSdk() error {
 	logrus.Infof("do DoSdk")
-	time.Sleep(time.Second)
+	time.Sleep(2 * time.Second)
 	return nil
 }
 
@@ -29,7 +29,7 @@ func (s *InstancePool) InvokeProcess(ctx context.Context) error {
 		return nil, instance.(*Sdk).DoSdk()
 	})
 	if err != nil {
-		logrus.Infof("do DoSdk err: %v", err)
+		logrus.Errorf("do DoSdk err: %v", err)
 	}
 	_ = resp
 
@@ -71,10 +71,10 @@ func TestNewPool(t *testing.T) {
 		New()
 		return &Sdk{}
 	},
-		instance_.WithGpuIDs([]int64{0}),
+		instance_.WithGpuIDs([]int64{0, 1, 2}),
 		instance_.WithBatchSize(8),
-		instance_.WithWaitTimeout(2*time.Second),
-		//instance_.WithWaitTimeout(time.Millisecond),
+		instance_.WithWaitTimeoutOnce(50*time.Millisecond),
+		instance_.WithWaitTimeoutTotal(time.Second),
 		instance_.WithName("test-instance"),
 		instance_.WithEnabledPrintCostTime(true),
 		//instance_.WithWaitTimeout(time.Millisecond),

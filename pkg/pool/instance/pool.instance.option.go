@@ -20,9 +20,15 @@ func WithCapacityPoolSizePerGpu(capacityPoolSizePerGpu int64) PoolOption {
 	})
 }
 
-func WithWaitTimeout(waitTimeout time.Duration) PoolOption {
+func WithWaitTimeoutOnce(waitTimeout time.Duration) PoolOption {
 	return PoolOptionFunc(func(p *Pool) {
-		p.opts.waitTimeout = waitTimeout
+		p.opts.waitTimeoutOnce = waitTimeout
+	})
+}
+
+func WithWaitTimeoutTotal(waitTimeout time.Duration) PoolOption {
+	return PoolOptionFunc(func(p *Pool) {
+		p.opts.waitTimeoutTotal = waitTimeout
 	})
 }
 
