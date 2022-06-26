@@ -8,15 +8,15 @@ func WithName(name string) PoolOption {
 	})
 }
 
-func WithResevePoolSizePerGpu(resevePoolSizePerGpu int64) PoolOption {
+func WithResevePoolSizePerCore(resevePoolSizePerCore int64) PoolOption {
 	return PoolOptionFunc(func(p *Pool) {
-		p.opts.resevePoolSizePerGpu = resevePoolSizePerGpu
+		p.opts.resevePoolSizePerCore = resevePoolSizePerCore
 	})
 }
 
-func WithCapacityPoolSizePerGpu(capacityPoolSizePerGpu int64) PoolOption {
+func WithCapacityPoolSizePerCore(capacityPoolSizePerCore int64) PoolOption {
 	return PoolOptionFunc(func(p *Pool) {
-		p.opts.capacityPoolSizePerGpu = capacityPoolSizePerGpu
+		p.opts.capacityPoolSizePerCore = capacityPoolSizePerCore
 	})
 }
 
@@ -38,9 +38,9 @@ func WithLoadBalanceMode(loadBalanceMode LoadBalanceMode) PoolOption {
 	})
 }
 
-func WithGpuIDs(gpuIDs []int64) PoolOption {
+func WithCoreIDs(coreIDs []int64) PoolOption {
 	return PoolOptionFunc(func(p *Pool) {
-		p.opts.gpuIDs = gpuIDs
+		p.opts.coreIDs = coreIDs
 	})
 }
 
