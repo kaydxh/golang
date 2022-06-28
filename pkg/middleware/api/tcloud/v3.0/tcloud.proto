@@ -5,7 +5,7 @@ package api.tcloud.v3;
 import "google/protobuf/duration.proto";
 import "google/protobuf/struct.proto";
 
-option go_package = "github.com/kaydxh/golang/pkg/grpc-middleware/api/tcloud/v3.0;tcloud";
+option go_package = "github.com/kaydxh/golang/pkg/middleware/grpc-middleware/api/tcloud/v3.0;tcloud";
 
 // github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common/http/request.go
 message TCloudBaseRequest {

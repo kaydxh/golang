@@ -6,7 +6,7 @@ import (
 	"github.com/gin-gonic/gin/binding"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	http_ "github.com/kaydxh/golang/go/net/http"
-	interceptortcloud_ "github.com/kaydxh/golang/pkg/grpc-middleware/api/tcloud/v3.0"
+	interceptortcloud_ "github.com/kaydxh/golang/pkg/middleware/api/tcloud/v3.0"
 	httpinterceptormonitor_ "github.com/kaydxh/golang/pkg/middleware/http-middleware/monitor"
 	httpinterceptorprometheus_ "github.com/kaydxh/golang/pkg/middleware/http-middleware/monitor/prometheus"
 	httpinterceptortrace_ "github.com/kaydxh/golang/pkg/middleware/http-middleware/trace"
