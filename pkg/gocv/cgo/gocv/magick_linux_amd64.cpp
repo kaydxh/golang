@@ -117,7 +117,7 @@ void sdk_gocv_magick_image_decode(void* req_data, int req_data_len,
 
             // https://www.imagemagick.org/Magick++/Image++.html
             cv::Mat mat;
-            mat = cv::Mat(rows, columns, CV_8UC3);
+            std::string map = req.target_color_space();
             do {
                 image.colorSpace(Magick::RGBColorspace);
                 if (map == "BGR") {
