@@ -1,4 +1,5 @@
 #include <Magick++.h>
+
 #include <opencv2/opencv.hpp>
 
 #include "api/openapi-spec/gocv/gocv.magick.pb.h"
@@ -37,8 +38,7 @@ void sdk_gocv_magick_initialize_magick(void* req_data, int req_data_len,
                 Magick::InitializeMagick(req.path().c_str());
             }
         } while (0);
-    }
-    catch (const std::exception& e) {
+    } catch (const std::exception& e) {
         resp.mutable_error()->set_error_code(sdk::types::code::Code::Internal);
         resp.mutable_error()->set_error_message(
             "Magick::InitializeMagick exception:" + std::string(e.what()));
@@ -78,9 +78,30 @@ void sdk_gocv_magick_image_decode(void* req_data, int req_data_len,
             }
 
             Magick::Image image;
-            Magick::Blob blob((void*)(req.image().data()),
-                              req.image().length());
-            image.read(blob);
+            try {
+                Magick::Blob blob((void*)(req.image().data()),
+                                  req.image().length());
+                image.read(blob);
+            } catch (Magick::Warning& w) {
+                std::cout << "warn: " << w.what() << std::endl;
+                // ignore warn
+            } catch (Magick::Error& e) {
+                std::cout << "a Magick++ error occurred: " << e.what()
+                          << std::endl;
+                resp.mutable_error()->set_error_code(
+                    sdk::types::code::Code::Internal);
+                resp.mutable_error()->set_error_message(
+                    "Magick::Blob read exception:" + std::string(e.what()));
+                break;
+            } catch (...) {
+                std::cout << "an unhandled error has occurred" << std::endl;
+                resp.mutable_error()->set_error_code(
+                    sdk::types::code::Code::Internal);
+                resp.mutable_error()->set_error_message(
+                    "Magick::Blob read exception: an unhandled error has "
+                    "occurred");
+                break;
+            }
 
             int rows = image.rows();
             int columns = image.columns();
@@ -97,8 +118,39 @@ void sdk_gocv_magick_image_decode(void* req_data, int req_data_len,
             // https://www.imagemagick.org/Magick++/Image++.html
             cv::Mat mat;
             mat = cv::Mat(rows, columns, CV_8UC3);
-            image.write(0, 0, columns, rows, "RGB", Magick::CharPixel,
-                        mat.data);
+            do {
+                image.colorSpace(Magick::RGBColorspace);
+                if (map == "BGR") {
+                    mat = ::cv::Mat(rows, columns, CV_8UC3);
+                    image.write(0, 0, columns, rows, "BGR", Magick::CharPixel,
+                                mat.data);
+                    break;
+                }
+                if (map == "BGRA") {
+                    mat = ::cv::Mat(rows, columns, CV_8UC4);
+                    image.write(0, 0, columns, rows, "BGRA", Magick::CharPixel,
+                                mat.data);
+                    break;
+                }
+                if (map == "GRAY") {
+                    image.type(Magick::GrayscaleType);
+                    mat = ::cv::Mat(rows, columns, CV_8UC3);
+                    image.write(0, 0, columns, rows, "BGR", Magick::CharPixel,
+                                mat.data);
+                    break;
+                }
+                if (map == "GRAYA") {
+                    image.type(Magick::GrayscaleMatteType);
+                    mat = ::cv::Mat(rows, columns, CV_8UC4);
+                    image.write(0, 0, columns, rows, "BGRA", Magick::CharPixel,
+                                mat.data);
+                    break;
+                }
+                mat = ::cv::Mat(rows, columns, CV_8UC4);
+                image.write(0, 0, columns, rows, map, Magick::CharPixel,
+                            mat.data);
+
+            } while (false);
 
             // set response
             resp.set_cv_mat_pointer(reinterpret_cast<int64>(new cv::Mat(mat)));
@@ -113,8 +165,7 @@ void sdk_gocv_magick_image_decode(void* req_data, int req_data_len,
                     image.colorSpace()));
 
         } while (0);
-    }
-    catch (const std::exception& e) {
+    } catch (const std::exception& e) {
         resp.mutable_error()->set_error_code(sdk::types::code::Code::Internal);
         resp.mutable_error()->set_error_message("Magick::Blob read exception:" +
                                                 std::string(e.what()));
