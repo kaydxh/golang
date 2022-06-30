@@ -3,14 +3,20 @@ package sdk.api.gocv;
 
 import "api/openapi-spec/types/code/sdk-go.code.proto";
 
-option go_package =
-    "github.com/kaydxh/golang/pkg/gocv/cgo/api/openapi-spec/gocv;gocv";
+option go_package = "github.com/kaydxh/golang/pkg/gocv/cgo/api/openapi-spec/gocv;gocv";
 
-message MagickInitializeMagickRequest { string path = 1; }
+message MagickInitializeMagickRequest {
+  string path = 1;
+}
 
-message MagickInitializeMagickResponse { sdk.types.code.CgoError error = 1; }
+message MagickInitializeMagickResponse {
+  sdk.types.code.CgoError error = 1;
+}
 
-message MagickImageDecodeRequest { bytes image = 1; }
+message MagickImageDecodeRequest {
+  bytes image = 1;
+  string target_color_space = 2;  // support BGR BGRA GRA GRAYA, default BGRA
+}
 
 message MagickImageDecodeResponse {
   sdk.types.code.CgoError error = 1;
