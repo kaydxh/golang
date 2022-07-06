@@ -24,6 +24,7 @@ PROTO_HEADERS=
 THIRD_PARTY_DIR="${SCRIPT_PATH}/../../third_party}"
 WITH_DOC=
 WITH_CPP=
+WITH_GO=
 
 function die() {
   echo 1>&2 "$*"
@@ -54,6 +55,9 @@ function getopts() {
             ;;
        --with-cpp)
            WITH_CPP=1
+           ;;
+       --with-go)
+           WITH_GO=1
            ;;
      esac
      shift
@@ -98,8 +102,8 @@ proto_headers="${PROTO_HEADERS} -I ."
 proto_headers="${proto_headers} -I ${THIRD_PARTY_DIR}/github.com/grpc-ecosystem/grpc-gateway"
 # proto_headers="${proto_headers} -I ${SCRIPT_PATH}/../../third_party/github.com/grpc-ecosystem/grpc-gateway"
 source_relative_option="paths=source_relative:."
-go_tag_option="--go-tag_out=${source_relative_option}"
-go_grpc_option="--go-grpc_out=${source_relative_option}"
+go_tag_option=""
+go_grpc_option=""
 doc_option=""
 doc_out_option=""
 cpp_option=""
@@ -126,6 +130,11 @@ for proto in $(find ${PROTOC_FILE_DIR} -type f -name '*.proto' -print0 | xargs -
 
   if [[ "${WITH_CPP}" -eq 1 ]]; then
     cpp_option="--cpp_out=."
+  fi
+
+  if [[ "${WITH_GO}" -eq 1 ]]; then
+    go_tag_option="--go-tag_out=${source_relative_option}"
+    go_grpc_option="--go-grpc_out=${source_relative_option}"
   fi
 
   protoc ${proto_headers} ${go_tag_option} ${go_grpc_option} ${grpc_gateway_option} ${cpp_option} ${doc_option} ${doc_out_option} "${proto}"
