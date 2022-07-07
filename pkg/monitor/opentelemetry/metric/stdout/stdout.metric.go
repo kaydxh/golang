@@ -9,7 +9,7 @@ import (
 )
 
 type StdoutExporterBuilderOptions struct {
-	prettyPrint bool
+	stdoutmetricOpts []stdoutmetric.Option
 }
 
 type StdoutExporterBuilder struct {
@@ -17,9 +17,7 @@ type StdoutExporterBuilder struct {
 }
 
 func defaultBuilderOptions() StdoutExporterBuilderOptions {
-	return StdoutExporterBuilderOptions{
-		prettyPrint: true,
-	}
+	return StdoutExporterBuilderOptions{}
 }
 
 func NewStdoutExporterBuilder(opts ...StdoutExporterBuilderOption) *StdoutExporterBuilder {
@@ -35,12 +33,7 @@ func (p *StdoutExporterBuilder) Build(
 	ctx context.Context,
 ) (export.Exporter, error) {
 
-	var opts []stdoutmetric.Option
-	if p.opts.prettyPrint {
-		opts = append(opts, stdoutmetric.WithPrettyPrint())
-	}
-
-	exporter, err := stdoutmetric.New(opts...)
+	exporter, err := stdoutmetric.New(p.opts.stdoutmetricOpts...)
 	if err != nil {
 		return nil, fmt.Errorf("creating stdoutmetric exporter: %w", err)
 	}

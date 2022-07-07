@@ -3,9 +3,11 @@ monitor:
     enabled: true
     metric_collect_duration: 60s
     otel_trace_exporter_type : trace_jaeger
-    otel_metric_exporter_type : metric_prometheus
+    otel_metric_exporter_type : metric_stdout
     otel_log_exporter_type : log_none
     otel_metric_exporter :
+      stdout:
+        pretty_print: true
       prometheus:
         url: noop://localhost/metrics
     otel_trace_exporter:
