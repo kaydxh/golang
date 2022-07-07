@@ -77,7 +77,7 @@ func TestTrace(t *testing.T) {
 	ctx, span := tr.Start(ctx, "traceFunc")
 	defer span.End()
 
-	for i := 0; i < 2; i++ {
+	for {
 		doTrace(ctx)
 		time.Sleep(time.Second)
 	}
