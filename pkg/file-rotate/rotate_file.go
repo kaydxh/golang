@@ -75,16 +75,17 @@ func globFromFileTimeLayout(filePath string) string {
 	return filePath + "*"
 }
 
-func (f *RotateFiler) Write(p []byte) (n int, err error) {
+func (f *RotateFiler) Write(p []byte) (file *os.File, n int, err error) {
 	f.mu.Lock()
 	defer f.mu.Unlock()
 
 	out, err := f.getWriterNolock(int64(len(p)))
 	if err != nil {
-		return 0, err
+		return nil, 0, err
 	}
 
-	return out.Write(p)
+	n, err = out.Write(p)
+	return f.file, n, err
 }
 
 func (f *RotateFiler) generateRotateFilename() string {

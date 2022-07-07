@@ -16,6 +16,7 @@ message Log {
   int64 rotate_size = 7;
   bool report_caller = 8;
   bool enable_goroutine_id = 9;
+  Redirct redirct = 10;
 
   enum Level {
     panic = 0;
@@ -31,5 +32,10 @@ message Log {
     text = 0;
     json = 1;
     glog = 2;
+  }
+
+  enum Redirct {
+    stdout = 0;
+    file = 1;
   }
 }
