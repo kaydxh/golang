@@ -14,7 +14,7 @@ import (
 )
 
 type MeterOptinos struct {
-	ExporterBuilder     ExporterBuilder
+	PushExporterBuilder PushExporterBuilder
 	PullExporterBuilder PullExporterBuilder
 	collectPeriod       time.Duration
 }
@@ -43,8 +43,8 @@ func NewMeter(opts ...MeterOption) *Meter {
 func (m *Meter) Install(ctx context.Context) (err error) {
 	var metricControllerOptions []controller.Option
 
-	if m.opts.ExporterBuilder != nil {
-		exporter, err := m.createExporter(ctx)
+	if m.opts.PushExporterBuilder != nil {
+		exporter, err := m.createPushExporter(ctx)
 		if err != nil {
 			return err
 		}
@@ -83,12 +83,12 @@ func (m *Meter) Install(ctx context.Context) (err error) {
 	return nil
 }
 
-func (m *Meter) createExporter(ctx context.Context) (export.Exporter, error) {
-	if m.opts.ExporterBuilder == nil {
-		return nil, fmt.Errorf("exporter builder is nil")
+func (m *Meter) createPushExporter(ctx context.Context) (export.Exporter, error) {
+	if m.opts.PushExporterBuilder == nil {
+		return nil, fmt.Errorf("push metric exporter builder is nil")
 	}
 
-	return m.opts.ExporterBuilder.Build(ctx)
+	return m.opts.PushExporterBuilder.Build(ctx)
 }
 
 // Pull Exporter supports Prometheus pulls.  It does not implement the
@@ -97,7 +97,7 @@ func (m *Meter) createExporter(ctx context.Context) (export.Exporter, error) {
 func (m *Meter) createPullExporter(ctx context.Context, c *controller.Controller,
 ) (aggregation.TemporalitySelector, error) {
 	if m.opts.PullExporterBuilder == nil {
-		return nil, fmt.Errorf("pull exporter builder is nil")
+		return nil, fmt.Errorf("pull metric exporter builder is nil")
 	}
 
 	return m.opts.PullExporterBuilder.Build(ctx, c)

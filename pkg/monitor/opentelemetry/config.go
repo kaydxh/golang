@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	prometheus_ "github.com/kaydxh/golang/pkg/monitor/opentelemetry/metric/prometheus"
+	stdoutmetric_ "github.com/kaydxh/golang/pkg/monitor/opentelemetry/metric/stdout"
 	jaeger_ "github.com/kaydxh/golang/pkg/monitor/opentelemetry/tracer/jaeger"
 	viper_ "github.com/kaydxh/golang/pkg/viper"
 	"github.com/ory/viper"
@@ -82,6 +83,12 @@ func (c *completedConfig) installMeter(ctx context.Context) ([]OpenTelemetryOpti
 	case Monitor_OpenTelemetry_metric_prometheus:
 		builder := prometheus_.NewPrometheusExporterBuilder(
 			prometheus_.WithMetricUrlPath(c.Proto.GetOtelMetricExporter().GetPrometheus().GetUrl()),
+		)
+		opts = append(opts, WithMeterPullExporter(builder))
+
+	case Monitor_OpenTelemetry_metric_stdout:
+		builder := stdoutmetric_.NewStdoutExporterBuilder(
+		//prometheus_.WithMetricUrlPath(c.Proto.GetOtelMetricExporter().GetPrometheus().GetUrl()),
 		)
 		opts = append(opts, WithMeterPullExporter(builder))
 

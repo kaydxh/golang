@@ -28,8 +28,12 @@ message Monitor {
 
     message OtelMetricExporter {
       Prometheus prometheus = 1;
+      Stdout stdout = 2;
       message Prometheus {
         string url = 1;
+      }
+      message Stdout {
+        bool pretty_print = 1;
       }
     }
 
@@ -51,6 +55,7 @@ message Monitor {
       metric_none = 0;
       metric_otlp = 1;
       metric_prometheus = 2;
+      metric_stdout = 3;
     }
 
     enum OtelLogExporterType {
