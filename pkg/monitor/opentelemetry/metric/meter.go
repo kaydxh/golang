@@ -41,7 +41,14 @@ func NewMeter(opts ...MeterOption) *Meter {
 //https://github.com/open-telemetry/opentelemetry-go/blob/example/prometheus/v0.30.0/example/prometheus/main.go
 //https://github.com/kaydxh/newrelic-opentelemetry-examples/blob/main/go/metrics.go
 func (m *Meter) Install(ctx context.Context) (err error) {
+
 	var metricControllerOptions []controller.Option
+	if m.opts.collectPeriod > 0 {
+		metricControllerOptions = append(
+			metricControllerOptions,
+			controller.WithCollectPeriod(m.opts.collectPeriod),
+		)
+	}
 
 	if m.opts.PushExporterBuilder != nil {
 		exporter, err := m.createPushExporter(ctx)
@@ -50,12 +57,6 @@ func (m *Meter) Install(ctx context.Context) (err error) {
 		}
 		metricControllerOptions = append(metricControllerOptions, controller.WithExporter(exporter))
 
-		if m.opts.collectPeriod > 0 {
-			metricControllerOptions = append(
-				metricControllerOptions,
-				controller.WithCollectPeriod(m.opts.collectPeriod),
-			)
-		}
 	}
 
 	c := controller.New(
@@ -66,13 +67,13 @@ func (m *Meter) Install(ctx context.Context) (err error) {
 		),
 		metricControllerOptions...,
 	)
-
 	if m.opts.PullExporterBuilder != nil {
 		_, err = m.createPullExporter(ctx, c)
 		if err != nil {
 			return err
 		}
 	}
+
 	err = c.Start(ctx)
 	if err != nil {
 		return err

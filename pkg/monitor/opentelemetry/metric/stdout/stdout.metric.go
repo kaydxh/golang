@@ -5,26 +5,42 @@ import (
 	"fmt"
 
 	"go.opentelemetry.io/otel/exporters/stdout/stdoutmetric"
-	controller "go.opentelemetry.io/otel/sdk/metric/controller/basic"
-	"go.opentelemetry.io/otel/sdk/metric/export/aggregation"
+	"go.opentelemetry.io/otel/sdk/metric/export"
 )
 
+type StdoutExporterBuilderOptions struct {
+	prettyPrint bool
+}
+
 type StdoutExporterBuilder struct {
+	opts StdoutExporterBuilderOptions
+}
+
+func defaultBuilderOptions() StdoutExporterBuilderOptions {
+	return StdoutExporterBuilderOptions{
+		prettyPrint: true,
+	}
 }
 
 func NewStdoutExporterBuilder(opts ...StdoutExporterBuilderOption) *StdoutExporterBuilder {
 
-	builder := &StdoutExporterBuilder{}
+	builder := &StdoutExporterBuilder{
+		opts: defaultBuilderOptions(),
+	}
 	builder.ApplyOptions(opts...)
 	return builder
 }
 
 func (p *StdoutExporterBuilder) Build(
 	ctx context.Context,
-	c *controller.Controller,
-) (aggregation.TemporalitySelector, error) {
+) (export.Exporter, error) {
 
-	exporter, err := stdoutmetric.New(stdoutmetric.WithPrettyPrint())
+	var opts []stdoutmetric.Option
+	if p.opts.prettyPrint {
+		opts = append(opts, stdoutmetric.WithPrettyPrint())
+	}
+
+	exporter, err := stdoutmetric.New(opts...)
 	if err != nil {
 		return nil, fmt.Errorf("creating stdoutmetric exporter: %w", err)
 	}

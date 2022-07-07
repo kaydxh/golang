@@ -88,9 +88,9 @@ func (c *completedConfig) installMeter(ctx context.Context) ([]OpenTelemetryOpti
 
 	case Monitor_OpenTelemetry_metric_stdout:
 		builder := stdoutmetric_.NewStdoutExporterBuilder(
-		//prometheus_.WithMetricUrlPath(c.Proto.GetOtelMetricExporter().GetPrometheus().GetUrl()),
+			stdoutmetric_.WithMetricPrettyPrint(c.Proto.GetOtelMetricExporter().GetStdout().GetPrettyPrint()),
 		)
-		opts = append(opts, WithMeterPullExporter(builder))
+		opts = append(opts, WithMeterPushExporter(builder))
 
 	case Monitor_OpenTelemetry_metric_none:
 		// not enable metric
