@@ -60,6 +60,7 @@ func WithRotate(log *logrus.Logger, filedir string, redirect Log_Redirct, option
 			}
 		*/
 		//https://eli.thegreenplace.net/2020/faking-stdin-and-stdout-in-go/
+		//https://github.com/eliben/code-for-blog/blob/master/2020/go-fake-stdio/snippets/redirect-cgo-stdout.go
 		file, _, err := rotateFiler.Write([]byte(msg))
 		if err == nil {
 			if redirect == Log_file {
