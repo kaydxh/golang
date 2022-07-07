@@ -2,7 +2,7 @@ monitor:
   open_telemetry:
     enabled: true
     metric_collect_duration: 60s
-    otel_trace_exporter_type : trace_jaeger
+    otel_trace_exporter_type : trace_stdout
     otel_metric_exporter_type : metric_stdout
     otel_log_exporter_type : log_none
     otel_metric_exporter :
@@ -11,6 +11,8 @@ monitor:
       prometheus:
         url: noop://localhost/metrics
     otel_trace_exporter:
+      stdout:
+        pretty_print: true
       jaeger:
         url: http://localhost:14268/api/trace
     resource:

@@ -39,23 +39,28 @@ message Monitor {
 
     message OtelTraceExporter {
       Jaeger jaeger = 1;
+      Stdout stdout = 2;
       message Jaeger {
         string url = 1;
+      }
+      message Stdout {
+        bool pretty_print = 1;
       }
     }
 
     enum OtelTraceExporterType {
       trace_none = 0;
-      trace_otlp = 1;
-      trace_jaeger = 2;
-      trace_zipkin = 3;
+      trace_stdout = 1;
+      trace_otlp = 2;
+      trace_jaeger = 3;
+      trace_zipkin = 4;
     }
 
     enum OtelMetricExporterType {
       metric_none = 0;
-      metric_otlp = 1;
-      metric_prometheus = 2;
-      metric_stdout = 3;
+      metric_stdout = 1;
+      metric_otlp = 2;
+      metric_prometheus = 3;
     }
 
     enum OtelLogExporterType {

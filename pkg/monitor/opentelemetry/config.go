@@ -7,6 +7,7 @@ import (
 	prometheus_ "github.com/kaydxh/golang/pkg/monitor/opentelemetry/metric/prometheus"
 	stdoutmetric_ "github.com/kaydxh/golang/pkg/monitor/opentelemetry/metric/stdout"
 	jaeger_ "github.com/kaydxh/golang/pkg/monitor/opentelemetry/tracer/jaeger"
+	stdouttrace_ "github.com/kaydxh/golang/pkg/monitor/opentelemetry/tracer/stdout"
 	viper_ "github.com/kaydxh/golang/pkg/viper"
 	"github.com/ory/viper"
 	"github.com/sirupsen/logrus"
@@ -88,7 +89,7 @@ func (c *completedConfig) installMeter(ctx context.Context) ([]OpenTelemetryOpti
 
 	case Monitor_OpenTelemetry_metric_stdout:
 		builder := stdoutmetric_.NewStdoutExporterBuilder(
-			stdoutmetric_.WithMetricPrettyPrint(c.Proto.GetOtelMetricExporter().GetStdout().GetPrettyPrint()),
+			stdoutmetric_.WithPrettyPrint(c.Proto.GetOtelMetricExporter().GetStdout().GetPrettyPrint()),
 		)
 		opts = append(opts, WithMeterPushExporter(builder))
 
@@ -114,6 +115,12 @@ func (c *completedConfig) installTracer(ctx context.Context) ([]OpenTelemetryOpt
 		if err != nil {
 			return nil, fmt.Errorf("new jaeger exporter builder err: %v", err)
 		}
+		opts = append(opts, WithTracerExporter(builder))
+
+	case Monitor_OpenTelemetry_trace_stdout:
+		builder := stdouttrace_.NewStdoutExporterBuilder(
+			stdouttrace_.WithPrettyPrint(c.Proto.GetOtelTraceExporter().GetStdout().GetPrettyPrint()),
+		)
 		opts = append(opts, WithTracerExporter(builder))
 
 	case Monitor_OpenTelemetry_trace_none:
