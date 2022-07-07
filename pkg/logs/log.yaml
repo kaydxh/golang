@@ -8,3 +8,4 @@ log:
   rotate_size: 104857600
   report_caller: true
   enable_goroutine_id: false
+  redirct: stdout

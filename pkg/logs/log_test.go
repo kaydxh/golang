@@ -1,6 +1,7 @@
 package logs_test
 
 import (
+	"fmt"
 	"os"
 	"testing"
 	"time"
@@ -30,6 +31,7 @@ func TestInit(t *testing.T) {
 
 	for i := 1; i <= 10; i++ {
 		logrus.Infof("test time: %v", i)
+		fmt.Println("---------write to stdout----------")
 		time.Sleep(time.Second)
 	}
 

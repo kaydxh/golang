@@ -3,6 +3,7 @@ package logs
 import (
 	"context"
 	"fmt"
+	"os"
 	"time"
 
 	rotate_ "github.com/kaydxh/golang/pkg/file-rotate"
@@ -19,7 +20,7 @@ type Rotate struct {
 	suffixName     string
 }
 
-func WithRotate(log *logrus.Logger, filedir string, options ...RotateOption) error {
+func WithRotate(log *logrus.Logger, filedir string, redirect Log_Redirct, options ...RotateOption) error {
 	if log == nil {
 		return fmt.Errorf("log is nil")
 	}
@@ -50,7 +51,6 @@ func WithRotate(log *logrus.Logger, filedir string, options ...RotateOption) err
 		if err != nil {
 			return err
 		}
-
 		//if opt.MuteDirectlyOutput && entry.Level <= logrus.WarnLevel {
 		/*
 			if entry.Level <= logrus.WarnLevel {
@@ -59,7 +59,15 @@ func WithRotate(log *logrus.Logger, filedir string, options ...RotateOption) err
 				}
 			}
 		*/
-		_, err = rotateFiler.Write([]byte(msg))
+		//https://eli.thegreenplace.net/2020/faking-stdin-and-stdout-in-go/
+		file, _, err := rotateFiler.Write([]byte(msg))
+		if err == nil {
+			if redirect == Log_file {
+				os.Stdout = file
+				os.Stderr = file
+			}
+		}
+
 		return err
 	}))
 
