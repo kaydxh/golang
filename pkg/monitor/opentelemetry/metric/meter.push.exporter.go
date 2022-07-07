@@ -6,6 +6,6 @@ import (
 	"go.opentelemetry.io/otel/sdk/metric/export"
 )
 
-type ExporterBuilder interface {
+type PushExporterBuilder interface {
 	Build(ctx context.Context) (export.Exporter, error)
 }

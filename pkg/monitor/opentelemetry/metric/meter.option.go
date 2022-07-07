@@ -2,9 +2,9 @@ package metric
 
 import "time"
 
-func WithExporter(exporterBuilder ExporterBuilder) MeterOption {
+func WithPushExporter(pushExporterBuilder PushExporterBuilder) MeterOption {
 	return MeterOptionFunc(func(m *Meter) {
-		m.opts.ExporterBuilder = exporterBuilder
+		m.opts.PushExporterBuilder = pushExporterBuilder
 	})
 }
 

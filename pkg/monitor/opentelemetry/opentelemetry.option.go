@@ -7,9 +7,9 @@ import (
 	"github.com/kaydxh/golang/pkg/monitor/opentelemetry/tracer"
 )
 
-func WithMeterExporter(exporterBuilder metric.ExporterBuilder) OpenTelemetryOption {
+func WithMeterPushExporter(pushExporterBuilder metric.PushExporterBuilder) OpenTelemetryOption {
 	return OpenTelemetryOptionFunc(func(o *OpenTelemetry) {
-		o.opts.meterOptions = append(o.opts.meterOptions, metric.WithExporter(exporterBuilder))
+		o.opts.meterOptions = append(o.opts.meterOptions, metric.WithPushExporter(pushExporterBuilder))
 
 	})
 }
