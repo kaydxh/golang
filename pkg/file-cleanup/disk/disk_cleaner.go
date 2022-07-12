@@ -1,4 +1,4 @@
-package filecleanup
+package disk
 
 import (
 	"context"
@@ -35,9 +35,11 @@ const (
 )
 
 type DiskCleanerConfig struct {
-	checkInterval time.Duration
-	baseExpired   time.Duration
-	minExpired    time.Duration
+	checkInterval     time.Duration
+	baseExpired       time.Duration
+	minExpired        time.Duration
+	diskUsageCallBack func(diskUsage float32)
+	cleanPostCallBack func(file string)
 }
 
 // DiskCleanerSerivce ...
@@ -200,6 +202,10 @@ func (s *DiskCleanerSerivce) clean(ctx context.Context) error {
 				return
 			}
 
+			if s.opts.diskUsageCallBack != nil {
+				s.opts.diskUsageCallBack(du.Usage())
+			}
+
 			if du.Usage() >= s.diskUsage {
 				//clean
 				logger.Infof(
@@ -223,6 +229,9 @@ func (s *DiskCleanerSerivce) clean(ctx context.Context) error {
 									now,
 								)
 								os.Remove(filePath)
+								if s.opts.cleanPostCallBack != nil {
+									s.opts.cleanPostCallBack(filePath)
+								}
 							}
 						}
 					}
