@@ -1,9 +1,9 @@
 syntax = "proto3";
 
-package go.pkg.filecleanup;
+package go.pkg.filecleanup.disk;
 import "google/protobuf/duration.proto";
 
-option go_package = "github.com/kaydxh/go.pkg.filecleanup;filecleanup";
+option go_package = "github.com/kaydxh/go.pkg.filecleanup.disk;disk";
 
 message DiskCleaner {
   bool enabled = 1;

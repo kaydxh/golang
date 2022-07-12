@@ -1,4 +1,4 @@
-package filecleanup
+package disk
 
 import (
 	"time"
@@ -19,5 +19,17 @@ func WithDiskBaseExpired(expired time.Duration) DiskCleanerConfigOption {
 func WithDiskMinExpired(expired time.Duration) DiskCleanerConfigOption {
 	return DiskCleanerConfigOptionFunc(func(c *DiskCleanerConfig) {
 		c.minExpired = expired
+	})
+}
+
+func WithDiskUsageCallBack(f func(diskUsage float32)) DiskCleanerConfigOption {
+	return DiskCleanerConfigOptionFunc(func(c *DiskCleanerConfig) {
+		c.diskUsageCallBack = f
+	})
+}
+
+func WithCleanPostCallBack(f func(file string)) DiskCleanerConfigOption {
+	return DiskCleanerConfigOptionFunc(func(c *DiskCleanerConfig) {
+		c.cleanPostCallBack = f
 	})
 }

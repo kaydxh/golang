@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/go-playground/validator/v10"
+	disk_ "github.com/kaydxh/golang/pkg/file-cleanup/disk"
 	viper_ "github.com/kaydxh/golang/pkg/viper"
 	"github.com/ory/viper"
 	"github.com/sirupsen/logrus"
@@ -11,12 +12,13 @@ import (
 
 // Config ...
 type Config struct {
-	Proto DiskCleaner
+	Proto disk_.DiskCleaner
 
 	Validator *validator.Validate
 	opts      struct {
 		// If set, overrides params below
-		viper *viper.Viper
+		viper       *viper.Viper
+		diskOptions []disk_.DiskCleanerConfigOption
 	}
 }
 
@@ -31,7 +33,7 @@ type CompletedConfig struct {
 	*completedConfig
 }
 
-func (c *completedConfig) New(ctx context.Context) (*DiskCleanerSerivce, error) {
+func (c *completedConfig) New(ctx context.Context) (*disk_.DiskCleanerSerivce, error) {
 
 	logrus.Infof("Installing DiskCleanerSerivce")
 
@@ -52,14 +54,14 @@ func (c *completedConfig) New(ctx context.Context) (*DiskCleanerSerivce, error) 
 	return rs, nil
 }
 
-func (c *completedConfig) install(ctx context.Context) (*DiskCleanerSerivce, error) {
-	return NewDiskCleanerSerivce(
+func (c *completedConfig) install(ctx context.Context) (*disk_.DiskCleanerSerivce, error) {
+	return disk_.NewDiskCleanerSerivce(
 		c.Proto.GetDiskUsage(),
 		c.Proto.GetPaths(),
 		c.Proto.GetExts(),
-		WithDiskCheckInterval(c.Proto.GetCheckInterval().AsDuration()),
-		WithDiskBaseExpired(c.Proto.GetBaseExpired().AsDuration()),
-		WithDiskMinExpired(c.Proto.GetMinExpired().AsDuration()),
+		disk_.WithDiskCheckInterval(c.Proto.GetCheckInterval().AsDuration()),
+		disk_.WithDiskBaseExpired(c.Proto.GetBaseExpired().AsDuration()),
+		disk_.WithDiskMinExpired(c.Proto.GetMinExpired().AsDuration()),
 	)
 }
 

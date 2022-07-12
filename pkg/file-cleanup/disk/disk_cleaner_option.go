@@ -1,4 +1,4 @@
-package filecleanup
+package disk
 
 // A DiskCleanerConfigOption sets options.
 type DiskCleanerConfigOption interface {
