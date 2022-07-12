@@ -55,13 +55,19 @@ func (c *completedConfig) New(ctx context.Context) (*disk_.DiskCleanerSerivce, e
 }
 
 func (c *completedConfig) install(ctx context.Context) (*disk_.DiskCleanerSerivce, error) {
+
+	opts := []disk_.DiskCleanerConfigOption{
+		disk_.WithDiskCheckInterval(c.Proto.GetCheckInterval().AsDuration()),
+		disk_.WithDiskBaseExpired(c.Proto.GetBaseExpired().AsDuration()),
+		disk_.WithDiskMinExpired(c.Proto.GetMinExpired().AsDuration()),
+	}
+	opts = append(opts, c.opts.diskOptions...)
+
 	return disk_.NewDiskCleanerSerivce(
 		c.Proto.GetDiskUsage(),
 		c.Proto.GetPaths(),
 		c.Proto.GetExts(),
-		disk_.WithDiskCheckInterval(c.Proto.GetCheckInterval().AsDuration()),
-		disk_.WithDiskBaseExpired(c.Proto.GetBaseExpired().AsDuration()),
-		disk_.WithDiskMinExpired(c.Proto.GetMinExpired().AsDuration()),
+		opts...,
 	)
 }
 

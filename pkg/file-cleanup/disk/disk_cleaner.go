@@ -38,8 +38,8 @@ type DiskCleanerConfig struct {
 	checkInterval     time.Duration
 	baseExpired       time.Duration
 	minExpired        time.Duration
-	diskUsageCallBack func(diskUsage float32)
-	cleanPostCallBack func(file string)
+	diskUsageCallBack func(diskPath string, diskUsage float32)
+	cleanPostCallBack func(file string, err error)
 }
 
 // DiskCleanerSerivce ...
@@ -203,7 +203,7 @@ func (s *DiskCleanerSerivce) clean(ctx context.Context) error {
 			}
 
 			if s.opts.diskUsageCallBack != nil {
-				s.opts.diskUsageCallBack(du.Usage())
+				s.opts.diskUsageCallBack(diskPath, du.Usage())
 			}
 
 			if du.Usage() >= s.diskUsage {
@@ -228,9 +228,9 @@ func (s *DiskCleanerSerivce) clean(ctx context.Context) error {
 									info.ModTime(),
 									now,
 								)
-								os.Remove(filePath)
+								err = os.Remove(filePath)
 								if s.opts.cleanPostCallBack != nil {
-									s.opts.cleanPostCallBack(filePath)
+									s.opts.cleanPostCallBack(filePath, err)
 								}
 							}
 						}
