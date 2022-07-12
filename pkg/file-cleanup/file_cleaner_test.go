@@ -10,7 +10,7 @@ import (
 func TestFileCleanupWithMaxAge(t *testing.T) {
 
 	err := filecleanup_.FileCleanup(
-		"/Users/kayxhding/workspace/studyspace/git-kayxhding/github.com/kaydxh/golang/pkg/file-cleanup/*",
+		"/Users/kayxhding/workspace/studyspace/git-kayxhding/github.com/kaydxh/golang/pkg/file-cleanup/log/*",
 		filecleanup_.WithMaxAge(time.Second),
 	)
 	if err != nil {
