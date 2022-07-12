@@ -22,13 +22,13 @@ func WithDiskMinExpired(expired time.Duration) DiskCleanerConfigOption {
 	})
 }
 
-func WithDiskUsageCallBack(f func(diskUsage float32)) DiskCleanerConfigOption {
+func WithDiskUsageCallBack(f func(diskPath string, diskUsage float32)) DiskCleanerConfigOption {
 	return DiskCleanerConfigOptionFunc(func(c *DiskCleanerConfig) {
 		c.diskUsageCallBack = f
 	})
 }
 
-func WithCleanPostCallBack(f func(file string)) DiskCleanerConfigOption {
+func WithCleanPostCallBack(f func(file string, err error)) DiskCleanerConfigOption {
 	return DiskCleanerConfigOptionFunc(func(c *DiskCleanerConfig) {
 		c.cleanPostCallBack = f
 	})

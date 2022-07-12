@@ -11,13 +11,13 @@ func WithViper(v *viper.Viper) ConfigOption {
 	})
 }
 
-func WithDiskUsageCallBack(f func(diskUsage float32)) ConfigOption {
+func WithDiskUsageCallBack(f func(diskPath string, diskUsage float32)) ConfigOption {
 	return ConfigOptionFunc(func(c *Config) {
 		c.opts.diskOptions = append(c.opts.diskOptions, disk_.WithDiskUsageCallBack(f))
 	})
 }
 
-func WithCleanPostCallBack(f func(file string)) ConfigOption {
+func WithCleanPostCallBack(f func(file string, err error)) ConfigOption {
 	return ConfigOptionFunc(func(c *Config) {
 		c.opts.diskOptions = append(c.opts.diskOptions, disk_.WithCleanPostCallBack(f))
 	})
