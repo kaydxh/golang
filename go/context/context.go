@@ -15,6 +15,14 @@ func WithTimeout(ctx context.Context, timeout time.Duration) (context.Context, c
 	return ctx, func() {}
 }
 
+func ExtractStringFromContext(ctx context.Context, key string) string {
+	if v, ok := ctx.Value(key).(string); ok {
+		return v
+	}
+
+	return ""
+}
+
 func ExtractIntegerFromContext(ctx context.Context, key string) (int64, error) {
 	v, ok := ctx.Value(key).(string)
 	if !ok {

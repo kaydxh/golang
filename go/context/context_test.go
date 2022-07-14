@@ -53,3 +53,33 @@ func TestExtractIntegerFromContext(t *testing.T) {
 	}
 
 }
+
+func TestExtractStringFromContext(t *testing.T) {
+	ctx := context.Background()
+
+	testCases := []struct {
+		key      string
+		value    string
+		expected string
+	}{
+		{
+			key:   "test-1",
+			value: "123",
+		},
+		{
+			key:   "test-2",
+			value: "test-123",
+		},
+	}
+
+	for _, testCase := range testCases {
+		t.Run(testCase.key, func(t *testing.T) {
+			ctx = context_.SetPairContext(ctx, testCase.key, testCase.value)
+
+			value := context_.ExtractStringFromContext(ctx, testCase.key)
+			t.Logf("extract value %v by key %v ", value, testCase.key)
+
+		})
+	}
+
+}
