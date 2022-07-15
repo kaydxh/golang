@@ -41,7 +41,7 @@ func TestGetHostIP(t *testing.T) {
 		t.Fatalf("failed to get host ip, err: %v", err)
 		return
 	}
-	t.Logf("ip: %v", ip)
+	t.Logf("ip: %v", ip.String())
 }
 
 func TestIsIPv4String(t *testing.T) {
