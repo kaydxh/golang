@@ -78,7 +78,7 @@ func (c *completedConfig) Validate() error {
 
 // Complete fills in any fields not set that are required to have valid data and can be derived
 // from other fields. If you're going to `ApplyOptions`, do that first. It's mutating the receiver.
-func (c *Config) Complete() CompletedConfig {
+func (c *Config) Complete(options ...ConfigOption) CompletedConfig {
 	err := c.loadViper()
 	if err != nil {
 		return CompletedConfig{&completedConfig{
@@ -86,6 +86,8 @@ func (c *Config) Complete() CompletedConfig {
 			completeError: err,
 		}}
 	}
+
+	c.ApplyOptions(options...)
 
 	return CompletedConfig{&completedConfig{Config: c}}
 }
