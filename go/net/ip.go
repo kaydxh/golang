@@ -37,7 +37,6 @@ func scoreAddr(iface net.Interface, addr net.Addr) (int, net.IP) {
 		}
 	}
 
-	fmt.Printf("ip: %v, score: %v\n", ip, score)
 	return score, ip
 }
 
