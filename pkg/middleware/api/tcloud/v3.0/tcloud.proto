@@ -8,6 +8,7 @@ import "google/protobuf/struct.proto";
 option go_package = "github.com/kaydxh/golang/pkg/middleware/grpc-middleware/api/tcloud/v3.0;tcloud";
 
 // github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common/http/request.go
+// BaseRequest
 message TCloudBaseRequest {
   string http_method = 1 [json_name = "httpMethod"];
   string scheme = 2 [json_name = "scheme"];
@@ -18,8 +19,8 @@ message TCloudBaseRequest {
   map<string, string> form_params = 7 [json_name = "formParams"];
 
   string service = 8 [json_name = "service"];
-  string version = 9 [json_name = "Version"];
-  string action = 10 [json_name = "Action"];
+  string version = 9 [json_name = "version"];
+  string action = 10 [json_name = "action"];
 }
 
 // https://github.com/TencentCloud/tencentcloud-sdk-go/blob/master/tencentcloud/common/http/response.go
