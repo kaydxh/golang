@@ -35,7 +35,7 @@ func InOutPacket(handler http.Handler) http.Handler {
 func HeaderPacket(handler http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		logger := logs_.GetLogger(r.Context())
-		logger.WithField("request headers", r.Header).Info("send")
+		logger.WithField("request headers", r.Header).Info("recv")
 
 		handler.ServeHTTP(w, r)
 	})
