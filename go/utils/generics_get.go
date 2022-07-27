@@ -8,3 +8,7 @@ func GetValueOrFallback[T comparable] (v, defaultValue T) T {
 
   return v
 }
+
+func Pointer[T any](v T) *T {  
+  return &v
+}
