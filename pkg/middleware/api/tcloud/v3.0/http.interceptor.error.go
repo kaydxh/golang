@@ -7,6 +7,7 @@ import (
 	"net/http"
 
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
+	context_ "github.com/kaydxh/golang/go/context"
 	errors_ "github.com/kaydxh/golang/go/errors"
 	runtime_ "github.com/kaydxh/golang/go/runtime"
 	strings_ "github.com/kaydxh/golang/go/strings"
@@ -18,12 +19,16 @@ import (
 func HTTPError(ctx context.Context, mux *runtime.ServeMux,
 	marshaler runtime.Marshaler, w http.ResponseWriter, r *http.Request, err error) {
 
+	requestId := context_.ExtractStringFromContext(ctx, RequestIdKey)
+	if requestId == "" {
+		requestId = strings_.GetStringOrFallback(append(runtime_.GetMetadata(ctx, RequestIdKey), "")...)
+	}
 	errResponse := &ErrorResponse{
 		Error: &TCloudError{
 			Code:    errors_.ErrorToCode(err).String(),
 			Message: errors_.ErrorToString(err),
 		},
-		RequestId: strings_.GetStringOrFallback(append(runtime_.GetMetadata(ctx, RequestIdKey), "")...),
+		RequestId: requestId,
 	}
 
 	// ForwardResponseMessage forwards the message "resp" from gRPC server to REST client
