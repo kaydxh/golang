@@ -1,4 +1,4 @@
-package tcloud
+package v1
 
 import (
 	"context"
@@ -18,12 +18,10 @@ import (
 func HTTPError(ctx context.Context, mux *runtime.ServeMux,
 	marshaler runtime.Marshaler, w http.ResponseWriter, r *http.Request, err error) {
 
-	errResponse := &ErrorResponse{
-		Error: &TCloudError{
-			Code:    errors_.ErrorToCode(err).String(),
-			Message: errors_.ErrorToString(err),
-		},
-		RequestId: strings_.GetStringOrFallback(append(runtime_.GetMetadata(ctx, RequestIdKey), "")...),
+	errResponse := &TrivialErrorResponse{
+		ErrorCode: int32(errors_.ErrorToCode(err)),
+		ErrorMsg:  errors_.ErrorToString(err),
+		SessionId: strings_.GetStringOrFallback(append(runtime_.GetMetadata(ctx, RequestIdKey), "")...),
 	}
 
 	// ForwardResponseMessage forwards the message "resp" from gRPC server to REST client
@@ -36,11 +34,8 @@ func HTTPForwardResponse(ctx context.Context, r http.ResponseWriter, message pro
 	if err != nil {
 		return err
 	}
-	errResponse := &TCloudResponse{
-		Response: respStruct,
-	}
 
-	jb, err := json.Marshal(errResponse)
+	jb, err := json.Marshal(respStruct)
 	if err != nil {
 		return fmt.Errorf("jsonpb.Marshal: %v", err)
 	}

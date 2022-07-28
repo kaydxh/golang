@@ -1,4 +1,4 @@
-package tcloud
+package v1
 
 import (
 	"context"
@@ -18,12 +18,10 @@ func UnaryServerInterceptorOfError() grpc.UnaryServerInterceptor {
 			return resp, err
 		}
 
-		errResponse := &ErrorResponse{
-			Error: &TCloudError{
-				Code:    errors_.ErrorToCode(err).String(),
-				Message: errors_.ErrorToString(err),
-			},
-			RequestId: reflect_.RetrieveId(req, reflect_.FieldNameRequestId),
+		errResponse := &TrivialErrorResponse{
+			ErrorCode: int32(errors_.ErrorToCode(err)),
+			ErrorMsg:  errors_.ErrorToString(err),
+			SessionId: reflect_.RetrieveId(req, reflect_.FieldNameSessionId),
 		}
 
 		return errResponse, nil

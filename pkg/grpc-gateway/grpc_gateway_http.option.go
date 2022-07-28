@@ -6,7 +6,8 @@ import (
 	"github.com/gin-gonic/gin/binding"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	http_ "github.com/kaydxh/golang/go/net/http"
-	interceptortcloud_ "github.com/kaydxh/golang/pkg/middleware/api/tcloud/v3.0"
+	interceptortcloud3_ "github.com/kaydxh/golang/pkg/middleware/api/tcloud/v3.0"
+	interceptortrivialv1_ "github.com/kaydxh/golang/pkg/middleware/api/trivial/v1"
 	httpinterceptormonitor_ "github.com/kaydxh/golang/pkg/middleware/http-middleware/monitor"
 	httpinterceptorprometheus_ "github.com/kaydxh/golang/pkg/middleware/http-middleware/monitor/prometheus"
 	httpinterceptortrace_ "github.com/kaydxh/golang/pkg/middleware/http-middleware/trace"
@@ -21,7 +22,7 @@ func WithGatewayMuxOptions(opts ...runtime.ServeMuxOption) GRPCGatewayOption {
 //now unused, only called by successed response
 func WithServerInterceptorsHTTPForwardResponseOptions() GRPCGatewayOption {
 	return GRPCGatewayOptionFunc(func(c *GRPCGateway) {
-		WithGatewayMuxOptions(runtime.WithForwardResponseOption(interceptortcloud_.HTTPForwardResponse)).apply(c)
+		WithGatewayMuxOptions(runtime.WithForwardResponseOption(interceptortcloud3_.HTTPForwardResponse)).apply(c)
 	})
 }
 
@@ -29,13 +30,13 @@ func WithServerInterceptorsHTTPForwardResponseOptions() GRPCGatewayOption {
 func WithServerInterceptorsTCloud30HTTPResponseOptions() GRPCGatewayOption {
 	return GRPCGatewayOptionFunc(func(c *GRPCGateway) {
 		WithGatewayMuxOptions(
-			runtime.WithMarshalerOption(runtime.MIMEWildcard, interceptortcloud_.NewDefaultJSONPb()),
+			runtime.WithMarshalerOption(runtime.MIMEWildcard, interceptortcloud3_.NewDefaultJSONPb()),
 		).apply(
 			c,
 		)
 
 		WithGatewayMuxOptions(
-			runtime.WithMarshalerOption(binding.MIMEJSON, interceptortcloud_.NewDefaultJSONPb()),
+			runtime.WithMarshalerOption(binding.MIMEJSON, interceptortcloud3_.NewDefaultJSONPb()),
 		).apply(
 			c,
 		)
@@ -43,9 +44,16 @@ func WithServerInterceptorsTCloud30HTTPResponseOptions() GRPCGatewayOption {
 }
 
 //HTTP, only called by failed response
-func WithServerInterceptorsHttpErrorOptions() GRPCGatewayOption {
+func WithServerInterceptorsTCloud30HttpErrorOptions() GRPCGatewayOption {
 	return GRPCGatewayOptionFunc(func(c *GRPCGateway) {
-		WithGatewayMuxOptions(runtime.WithErrorHandler(interceptortcloud_.HTTPError)).apply(c)
+		WithGatewayMuxOptions(runtime.WithErrorHandler(interceptortcloud3_.HTTPError)).apply(c)
+	})
+}
+
+//HTTP, only called by failed response
+func WithServerInterceptorsTrivialV1HttpErrorOptions() GRPCGatewayOption {
+	return GRPCGatewayOptionFunc(func(c *GRPCGateway) {
+		WithGatewayMuxOptions(runtime.WithErrorHandler(interceptortrivialv1_.HTTPError)).apply(c)
 	})
 }
 
