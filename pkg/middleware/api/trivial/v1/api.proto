@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package api.trivial.v1;
+
+option go_package = "github.com/kaydxh/golang/pkg/middleware/api/trivial/v1;v1";
+
+message TrivialResponse {
+  string session_id = 1 [json_name = "session_id"];
+  int32 error_code = 2 [json_name = "errorcode"];
+  string error_msg = 3 [json_name = "errormsg"];
+}
+
+message TrivialErrorResponse {
+  string session_id = 1 [json_name = "session_id"];
+  int32 error_code = 2 [json_name = "errorcode"];
+  string error_msg = 3 [json_name = "errormsg"];
+}

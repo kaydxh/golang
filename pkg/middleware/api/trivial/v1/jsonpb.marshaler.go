@@ -1,4 +1,4 @@
-package tcloud
+package v1
 
 import (
 	apijsonpb_ "github.com/kaydxh/golang/pkg/middleware/api/jsonpb"
@@ -27,9 +27,6 @@ func (j *JSONPb) Marshal(v interface{}) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
-	body := &TCloudResponse{
-		Response: respStruct,
-	}
 
-	return j.JSONPb.Marshal(body)
+	return j.JSONPb.Marshal(respStruct)
 }
