@@ -19,10 +19,17 @@ func WithGatewayMuxOptions(opts ...runtime.ServeMuxOption) GRPCGatewayOption {
 	})
 }
 
-//now unused, only called by successed response
+//now unused, only called by successed response, only append message to response
 func WithServerInterceptorsHTTPForwardResponseOptions() GRPCGatewayOption {
 	return GRPCGatewayOptionFunc(func(c *GRPCGateway) {
 		WithGatewayMuxOptions(runtime.WithForwardResponseOption(interceptortcloud3_.HTTPForwardResponse)).apply(c)
+	})
+}
+
+//now unused, only called by successed response
+func WithServerInterceptorsTrivialV1HTTPForwardResponseOptions() GRPCGatewayOption {
+	return GRPCGatewayOptionFunc(func(c *GRPCGateway) {
+		WithGatewayMuxOptions(runtime.WithForwardResponseOption(interceptortrivialv1_.HTTPForwardResponse)).apply(c)
 	})
 }
 
@@ -37,6 +44,23 @@ func WithServerInterceptorsTCloud30HTTPResponseOptions() GRPCGatewayOption {
 
 		WithGatewayMuxOptions(
 			runtime.WithMarshalerOption(binding.MIMEJSON, interceptortcloud3_.NewDefaultJSONPb()),
+		).apply(
+			c,
+		)
+	})
+}
+
+//trivial api1.0 http response formatter
+func WithServerInterceptorsTrivialV1HTTPResponseOptions() GRPCGatewayOption {
+	return GRPCGatewayOptionFunc(func(c *GRPCGateway) {
+		WithGatewayMuxOptions(
+			runtime.WithMarshalerOption(runtime.MIMEWildcard, interceptortrivialv1_.NewDefaultJSONPb()),
+		).apply(
+			c,
+		)
+
+		WithGatewayMuxOptions(
+			runtime.WithMarshalerOption(binding.MIMEJSON, interceptortrivialv1_.NewDefaultJSONPb()),
 		).apply(
 			c,
 		)
