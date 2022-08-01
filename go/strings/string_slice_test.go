@@ -40,6 +40,32 @@ func TestStringIntersection(t *testing.T) {
 	}
 }
 
+func TestSliceDifference(t *testing.T) {
+	testCases := []struct {
+		name     string
+		s1       []string
+		s2       []string
+		expected []string
+	}{
+		{
+			name:     "test string",
+			s1:       []string{"1", "2", "3", "4"},
+			s2:       []string{"3", "4", "5", "6"},
+			expected: []string{"1", "2"},
+		},
+	}
+
+	for _, testCase := range testCases {
+		t.Run(testCase.name, func(t *testing.T) {
+			difference := strings_.SliceDifference(testCase.s1, testCase.s2)
+			if len(difference) != len(testCase.expected) {
+				t.Fatalf("Expected Difference len: %v, got : %v", len(testCase.expected), len(difference))
+			}
+			t.Logf("difference :%v", difference)
+		})
+	}
+}
+
 func TestRemoveEmpty(t *testing.T) {
 	testCases := []struct {
 		s []string
