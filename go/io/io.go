@@ -19,21 +19,6 @@ func ReadFileLines(filepath string) ([]string, error) {
 	defer file.Close()
 
 	var lines []string
-	/*
-		var lines []string
-		buf := bufio.NewReader(file)
-		for {
-			line, err := buf.ReadBytes('\n')
-			if err != nil {
-				if errors.Is(err, io.EOF) { //文件已经结束
-					break
-				}
-
-				return nil, err
-			}
-			lines = append(lines, string(line))
-		}
-	*/
 	scanner := bufio.NewScanner(file)
 	scanner.Split(bufio.ScanLines)
 	for scanner.Scan() {
