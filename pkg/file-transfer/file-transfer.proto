@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package go.pkg.filetransfer;
+import "google/protobuf/duration.proto";
+
+option go_package = "github.com/kaydxh/go.pkg.filetransfer;filetransfer";
+
+message FileTransfer {
+  bool enabled = 1;
+  google.protobuf.Duration download_timeout = 2;
+  google.protobuf.Duration upload_timeout = 3;
+
+  repeated Proxy proxies = 10;
+  message Proxy {
+    // proxy address
+    string addr = 1;
+  }
+}
