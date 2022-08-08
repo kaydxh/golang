@@ -139,7 +139,7 @@ func (c *Client) PostReader(
 	auth func(r *http.Request) error,
 	body io.Reader,
 ) ([]byte, error) {
-	req, err := http.NewRequest("POST", url, body)
+	req, err := http.NewRequest(http.MethodPost, url, body)
 	if err != nil {
 		return nil, err
 	}
