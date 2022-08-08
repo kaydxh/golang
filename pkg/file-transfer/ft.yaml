@@ -1,0 +1,4 @@
+filetransfer:
+    enabled: true
+    download_timeout : 10s
+    upload_timeout : 0s
