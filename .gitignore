@@ -41,6 +41,7 @@
 .gdb_history
 .gdbinit
 
+# xxx.core file
 *.core
 cscope.*
 tags
