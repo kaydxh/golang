@@ -21,7 +21,7 @@ COMMENT
 PROTOC_FILE_DIR=
 PROTO_HEADERS=
 # THIRD_PARTY_DIR=$(realpath "${2:-${SCRIPT_PATH}/../../third_party}")
-THIRD_PARTY_DIR="${SCRIPT_PATH}/../../third_party}"
+THIRD_PARTY_DIR="${SCRIPT_PATH}/../../third_party"
 WITH_DOC=
 WITH_CPP=
 WITH_GO=
@@ -36,20 +36,20 @@ function getopts() {
   while test $# -ne 0
   do
     case "$1" in
-       -I|--proto_path=PATH)
+       -I|--proto_path)
              protodirs+=(
              "-I $(realpath "$2")"
             )
             shift
             ;;
-       -T|--third_party_path=PATH)
+       --third_party_path)
            THIRD_PARTY_DIR=$(realpath "$2")
             shift
             ;;
-       -D|--with-doc)
+       --with-doc)
             WITH_DOC=1
             ;;
-       -P|--find_proto_file_path=PATH)
+       --proto_file_path)
             PROTOC_FILE_DIR=$(realpath "$2")
             shift
             ;;
