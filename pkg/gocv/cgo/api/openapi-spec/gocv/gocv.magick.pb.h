@@ -467,11 +467,26 @@ class MagickImageDecodeRequest : public ::google::protobuf::Message /* @@protoc_
   ::std::string* release_image();
   void set_allocated_image(::std::string* image);
 
+  // string target_color_space = 2;
+  void clear_target_color_space();
+  static const int kTargetColorSpaceFieldNumber = 2;
+  const ::std::string& target_color_space() const;
+  void set_target_color_space(const ::std::string& value);
+  #if LANG_CXX11
+  void set_target_color_space(::std::string&& value);
+  #endif
+  void set_target_color_space(const char* value);
+  void set_target_color_space(const char* value, size_t size);
+  ::std::string* mutable_target_color_space();
+  ::std::string* release_target_color_space();
+  void set_allocated_target_color_space(::std::string* target_color_space);
+
   // @@protoc_insertion_point(class_scope:sdk.api.gocv.MagickImageDecodeRequest)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::internal::ArenaStringPtr image_;
+  ::google::protobuf::internal::ArenaStringPtr target_color_space_;
   mutable ::google::protobuf::internal::CachedSize _cached_size_;
   friend struct ::protobuf_api_2fopenapi_2dspec_2fgocv_2fgocv_2emagick_2eproto::TableStruct;
 };
@@ -805,6 +820,59 @@ inline void MagickImageDecodeRequest::set_allocated_image(::std::string* image) 
   }
   image_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), image);
   // @@protoc_insertion_point(field_set_allocated:sdk.api.gocv.MagickImageDecodeRequest.image)
+}
+
+// string target_color_space = 2;
+inline void MagickImageDecodeRequest::clear_target_color_space() {
+  target_color_space_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& MagickImageDecodeRequest::target_color_space() const {
+  // @@protoc_insertion_point(field_get:sdk.api.gocv.MagickImageDecodeRequest.target_color_space)
+  return target_color_space_.GetNoArena();
+}
+inline void MagickImageDecodeRequest::set_target_color_space(const ::std::string& value) {
+  
+  target_color_space_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:sdk.api.gocv.MagickImageDecodeRequest.target_color_space)
+}
+#if LANG_CXX11
+inline void MagickImageDecodeRequest::set_target_color_space(::std::string&& value) {
+  
+  target_color_space_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:sdk.api.gocv.MagickImageDecodeRequest.target_color_space)
+}
+#endif
+inline void MagickImageDecodeRequest::set_target_color_space(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
+  
+  target_color_space_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:sdk.api.gocv.MagickImageDecodeRequest.target_color_space)
+}
+inline void MagickImageDecodeRequest::set_target_color_space(const char* value, size_t size) {
+  
+  target_color_space_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:sdk.api.gocv.MagickImageDecodeRequest.target_color_space)
+}
+inline ::std::string* MagickImageDecodeRequest::mutable_target_color_space() {
+  
+  // @@protoc_insertion_point(field_mutable:sdk.api.gocv.MagickImageDecodeRequest.target_color_space)
+  return target_color_space_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* MagickImageDecodeRequest::release_target_color_space() {
+  // @@protoc_insertion_point(field_release:sdk.api.gocv.MagickImageDecodeRequest.target_color_space)
+  
+  return target_color_space_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void MagickImageDecodeRequest::set_allocated_target_color_space(::std::string* target_color_space) {
+  if (target_color_space != NULL) {
+    
+  } else {
+    
+  }
+  target_color_space_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), target_color_space);
+  // @@protoc_insertion_point(field_set_allocated:sdk.api.gocv.MagickImageDecodeRequest.target_color_space)
 }
 
 // -------------------------------------------------------------------
