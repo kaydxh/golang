@@ -41,7 +41,8 @@
 .gdb_history
 .gdbinit
 
-core
+# xxx.core file
+*.core
 cscope.*
 tags
 tags_sorted_by_file
