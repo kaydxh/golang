@@ -157,26 +157,7 @@ func (c *Client) PostReader(
 	auth func(r *http.Request) error,
 	body io.Reader,
 ) ([]byte, error) {
-	req, err := http.NewRequest(http.MethodPost, url, body)
-	if err != nil {
-		return nil, err
-	}
-
-	if contentType != "" {
-		req.Header.Set("Content-Type", contentType)
-	}
-	for key, value := range headers {
-		req.Header.Set(key, value)
-	}
-
-	if auth != nil {
-		err = auth(req)
-		if err != nil {
-			return nil, err
-		}
-	}
-
-	r, err := c.Do(req)
+	r, err := c.post(url, contentType, headers, auth)
 	if err != nil {
 		return nil, err
 	}
