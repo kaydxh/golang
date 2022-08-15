@@ -8,6 +8,7 @@ import (
 	"log"
 	"net"
 	"net/http"
+	"net/url"
 	"time"
 
 	"github.com/gin-gonic/gin/binding"
@@ -37,6 +38,20 @@ type Client struct {
 		idleConnTimeout       time.Duration
 		maxIdleConns          int
 		disableKeepAlives     bool
+
+		// Proxy specifies a function to return a proxy for a given
+		// Request. If the function returns a non-nil error, the
+		// request is aborted with the provided error.
+		//
+		// The proxy type is determined by the URL scheme. "http",
+		// "https", and "socks5" are supported. If the scheme is empty,
+		// "http" is assumed.
+		//
+		// If Proxy is nil or returns a nil *URL, no proxy is used.
+		proxy func(*http.Request) (*url.URL, error)
+
+		// proxyTarget is host:port, redirct to it
+		proxyTarget string
 
 		ErrorLog *log.Logger
 	}
@@ -76,13 +91,16 @@ func NewClient(options ...ClientOption) (*Client, error) {
 	if c.opts.disableKeepAlives {
 		transport.DisableKeepAlives = c.opts.disableKeepAlives
 	}
+	if c.opts.proxy != nil {
+		transport.Proxy = c.opts.proxy
+	}
 	c.Transport = transport
 
 	return c, nil
 }
 
 func (c *Client) Get(url string) ([]byte, error) {
-	r, err := c.Client.Get(url)
+	r, err := c.get(url)
 	if err != nil {
 		return nil, err
 	}

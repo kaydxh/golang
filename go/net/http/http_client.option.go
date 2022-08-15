@@ -2,6 +2,8 @@ package http
 
 import (
 	"log"
+	"net/http"
+	"net/url"
 	"time"
 )
 
@@ -33,6 +35,33 @@ func WithIdleConnTimeout(idleConnTimeout time.Duration) ClientOption {
 func WithDisableKeepAlives(disableKeepAlives bool) ClientOption {
 	return ClientOptionFunc(func(c *Client) {
 		c.opts.disableKeepAlives = disableKeepAlives
+	})
+}
+
+func WithProxyTargetAddr(addr string) ClientOption {
+	proxyFunc := func(req *http.Request) (*url.URL, error) {
+		proxyURL, err := url.Parse("http://" + addr)
+		if err != nil {
+			return proxyURL, nil
+		}
+
+		if addr != "" {
+			proxyURL.Host = addr
+		}
+
+		//	http.ProxyURL(proxyURL)
+
+		return proxyURL, nil
+	}
+
+	return ClientOptionFunc(func(c *Client) {
+		c.opts.proxy = proxyFunc
+	})
+}
+
+func WithProxyTarget(addr string) ClientOption {
+	return ClientOptionFunc(func(c *Client) {
+		c.opts.proxyTarget = addr
 	})
 }
 
