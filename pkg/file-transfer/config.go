@@ -28,7 +28,7 @@ type CompletedConfig struct {
 
 func (c *completedConfig) New(ctx context.Context) (*FileTransfer, error) {
 
-	logrus.Infof("Installing Resolver")
+	logrus.Infof("Installing FileTransfer")
 
 	if c.completeError != nil {
 		return nil, c.completeError
@@ -42,7 +42,7 @@ func (c *completedConfig) New(ctx context.Context) (*FileTransfer, error) {
 	if err != nil {
 		return nil, err
 	}
-	logrus.Infof("Installed Resolver")
+	logrus.Infof("Installed FileTransfer")
 
 	return rs, nil
 }
