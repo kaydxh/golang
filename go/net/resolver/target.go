@@ -49,6 +49,7 @@ func ParseTarget(target string) (Target, error) {
 	if endpoint == "" {
 		endpoint = u.Opaque
 	}
+
 	endpoint = strings.TrimPrefix(endpoint, "/")
 	return Target{
 		Scheme:    u.Scheme,

@@ -32,7 +32,7 @@ const (
 )
 
 type ResolveOneOptions struct {
-	pickMode Resolver_PickMode
+	PickMode Resolver_PickMode
 }
 
 func GetResolver(ctx context.Context, target string, opts ...ResolverBuildOption) (Resolver, error) {

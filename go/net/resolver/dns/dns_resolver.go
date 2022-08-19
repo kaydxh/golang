@@ -4,12 +4,12 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"math/rand"
 	"net"
 	"strconv"
 	"sync"
 	"time"
 
+	rand_ "github.com/kaydxh/golang/go/math/rand"
 	"github.com/kaydxh/golang/go/net/resolver"
 	time_ "github.com/kaydxh/golang/go/time"
 )
@@ -25,7 +25,6 @@ var (
 )
 
 func init() {
-	fmt.Println("========init=========")
 	resolver.Register(NewBuilder())
 }
 
@@ -167,6 +166,8 @@ type dnsResolver struct {
 }
 
 func (d *dnsResolver) ResolveOne(opts ...resolver.ResolveOneOption) (resolver.Address, error) {
+	var opt resolver.ResolveOneOptions
+	opt.ApplyOptions(opts...)
 	d.ResolveNow()
 	addrs, err := d.lookupHost()
 	if err != nil {
@@ -175,7 +176,16 @@ func (d *dnsResolver) ResolveOne(opts ...resolver.ResolveOneOption) (resolver.Ad
 	if len(addrs) == 0 {
 		return resolver.Address{}, fmt.Errorf("resolve target's addresses are empty")
 	}
-	return addrs[rand.Intn(len(addrs))], nil
+
+	switch opt.PickMode {
+	case resolver.Resolver_pick_mode_random:
+		return addrs[rand_.Intn(len(addrs))], nil
+	case resolver.Resolver_pick_mode_first:
+		return addrs[0], nil
+	default:
+		return addrs[rand_.Intn(len(addrs))], nil
+
+	}
 }
 
 // ResolveNow invoke an immediate resolution of the target that this dnsResolver watches.
