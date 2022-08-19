@@ -142,6 +142,10 @@ func (d deadResolver) ResolveOne(opts ...resolver.ResolveOneOption) (resolver.Ad
 	return resolver.Address{}, nil
 }
 
+func (d deadResolver) ResolveAll(opts ...resolver.ResolveAllOption) ([]resolver.Address, error) {
+	return nil, nil
+}
+
 func (deadResolver) ResolveNow(opts ...resolver.ResolveNowOption) {}
 
 func (deadResolver) Close() {}
@@ -186,6 +190,17 @@ func (d *dnsResolver) ResolveOne(opts ...resolver.ResolveOneOption) (resolver.Ad
 		return addrs[rand_.Intn(len(addrs))], nil
 
 	}
+}
+
+func (d *dnsResolver) ResolveAll(opts ...resolver.ResolveAllOption) ([]resolver.Address, error) {
+	var opt resolver.ResolveAllOptions
+	opt.ApplyOptions(opts...)
+	d.ResolveNow()
+	addrs, err := d.lookupHost()
+	if err != nil {
+		return nil, err
+	}
+	return addrs, nil
 }
 
 // ResolveNow invoke an immediate resolution of the target that this dnsResolver watches.

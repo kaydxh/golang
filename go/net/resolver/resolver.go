@@ -15,6 +15,8 @@ type Resolver interface {
 	// It could be called multiple times concurrently.
 	ResolveOne(opts ...ResolveOneOption) (Address, error)
 
+	ResolveAll(opts ...ResolveAllOption) ([]Address, error)
+
 	// ResolveNow will be called by gRPC to try to resolve the target name
 	// again. It's just a hint, resolver can ignore this if it's not necessary.
 	//
@@ -33,6 +35,9 @@ const (
 
 type ResolveOneOptions struct {
 	PickMode Resolver_PickMode
+}
+
+type ResolveAllOptions struct {
 }
 
 func GetResolver(ctx context.Context, target string, opts ...ResolverBuildOption) (Resolver, error) {
@@ -56,4 +61,12 @@ func ResolveOne(ctx context.Context, target string, opts ...ResolveOneOption) (A
 		return Address{}, err
 	}
 	return r.ResolveOne(opts...)
+}
+
+func ResolveAll(ctx context.Context, target string, opts ...ResolveAllOption) ([]Address, error) {
+	r, err := GetResolver(ctx, target)
+	if err != nil {
+		return nil, err
+	}
+	return r.ResolveAll(opts...)
 }
