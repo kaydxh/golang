@@ -23,7 +23,7 @@ func TestResolveOne(t *testing.T) {
 
 	for i, testCase := range testCases {
 		t.Run(fmt.Sprintf("%d-test", i), func(t *testing.T) {
-			addr, err := resolver_.ResolveOne(context.Background(), testCase.target)
+			addr, err := resolver_.ResolveOne(context.Background(), testCase.target, resolver_.WithPickMode(resolver_.Resolver_pick_mode_first))
 			if err != nil {
 				t.Fatalf("failed to resolve target: %v, err: %v", testCase.target, err)
 			}
