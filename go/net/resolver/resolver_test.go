@@ -31,3 +31,25 @@ func TestResolveOne(t *testing.T) {
 		})
 	}
 }
+
+func TestResolveAll(t *testing.T) {
+	testCases := []struct {
+		target   string
+		expected string
+	}{
+		{
+			target:   "dns:///www.baidu.com",
+			expected: "",
+		},
+	}
+
+	for i, testCase := range testCases {
+		t.Run(fmt.Sprintf("%d-test", i), func(t *testing.T) {
+			addrs, err := resolver_.ResolveAll(context.Background(), testCase.target)
+			if err != nil {
+				t.Fatalf("failed to resolve target: %v, err: %v", testCase.target, err)
+			}
+			t.Logf("resolve all addrs %v for target %v", addrs, testCase.target)
+		})
+	}
+}
