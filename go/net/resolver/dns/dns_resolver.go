@@ -178,38 +178,6 @@ func (d *dnsResolver) ResolveOne(opts ...resolver.ResolveOneOption) (resolver.Ad
 	if err != nil {
 		return resolver.Address{}, err
 	}
-	/*
-		d.ResolveNow()
-		addrs, err := d.lookupHost()
-		if err != nil {
-			return resolver.Address{}, err
-		}
-		if len(addrs) == 0 {
-			return resolver.Address{}, fmt.Errorf("resolve target's addresses are empty")
-		}
-
-		var pickAddrs []resolver.Address
-		if opt.IPType == resolver.Resolver_ip_type_all {
-			pickAddrs = addrs
-		} else {
-			for _, addr := range addrs {
-				v4 := (opt.IPType == resolver.Resolver_ip_type_v4)
-				if net_.IsIPv4String(addr.Addr) {
-					if v4 {
-						pickAddrs = append(pickAddrs, addr)
-					}
-				} else {
-					//v6
-					if !v4 {
-						pickAddrs = append(pickAddrs, addr)
-					}
-				}
-			}
-		}
-		if len(pickAddrs) == 0 {
-			return resolver.Address{}, fmt.Errorf("resolve target's addresses type[%v] are empty", opt.IPType)
-		}
-	*/
 
 	switch opt.PickMode {
 	case resolver.Resolver_pick_mode_random:
