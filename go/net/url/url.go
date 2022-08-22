@@ -50,7 +50,7 @@ func (c *Client) Encode(data interface{}) (string, error) {
 func (c *Client) encode(rv reflect.Value) (string, error) {
 	encoder := getEncoder(rv.Kind())
 	if encoder == nil {
-		return "", fmt.Errorf("unsupport type: ", rv.Type().String())
+		return "", fmt.Errorf("unsupport type: %v", rv.Type().String())
 	}
 
 	return encoder.Encode(rv), nil
