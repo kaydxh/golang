@@ -10,6 +10,7 @@ import (
 	"time"
 
 	rand_ "github.com/kaydxh/golang/go/math/rand"
+	net_ "github.com/kaydxh/golang/go/net"
 	"github.com/kaydxh/golang/go/net/resolver"
 	time_ "github.com/kaydxh/golang/go/time"
 )
@@ -172,14 +173,43 @@ type dnsResolver struct {
 func (d *dnsResolver) ResolveOne(opts ...resolver.ResolveOneOption) (resolver.Address, error) {
 	var opt resolver.ResolveOneOptions
 	opt.ApplyOptions(opts...)
-	d.ResolveNow()
-	addrs, err := d.lookupHost()
+
+	addrs, err := d.ResolveAll(resolver.WithIPTypeForResolveAll(opt.IPType))
 	if err != nil {
 		return resolver.Address{}, err
 	}
-	if len(addrs) == 0 {
-		return resolver.Address{}, fmt.Errorf("resolve target's addresses are empty")
-	}
+	/*
+		d.ResolveNow()
+		addrs, err := d.lookupHost()
+		if err != nil {
+			return resolver.Address{}, err
+		}
+		if len(addrs) == 0 {
+			return resolver.Address{}, fmt.Errorf("resolve target's addresses are empty")
+		}
+
+		var pickAddrs []resolver.Address
+		if opt.IPType == resolver.Resolver_ip_type_all {
+			pickAddrs = addrs
+		} else {
+			for _, addr := range addrs {
+				v4 := (opt.IPType == resolver.Resolver_ip_type_v4)
+				if net_.IsIPv4String(addr.Addr) {
+					if v4 {
+						pickAddrs = append(pickAddrs, addr)
+					}
+				} else {
+					//v6
+					if !v4 {
+						pickAddrs = append(pickAddrs, addr)
+					}
+				}
+			}
+		}
+		if len(pickAddrs) == 0 {
+			return resolver.Address{}, fmt.Errorf("resolve target's addresses type[%v] are empty", opt.IPType)
+		}
+	*/
 
 	switch opt.PickMode {
 	case resolver.Resolver_pick_mode_random:
@@ -200,7 +230,33 @@ func (d *dnsResolver) ResolveAll(opts ...resolver.ResolveAllOption) ([]resolver.
 	if err != nil {
 		return nil, err
 	}
-	return addrs, nil
+	if len(addrs) == 0 {
+		return nil, fmt.Errorf("resolve target's addresses are empty")
+	}
+
+	var pickAddrs []resolver.Address
+	if opt.IPType == resolver.Resolver_ip_type_all {
+		pickAddrs = addrs
+	} else {
+		for _, addr := range addrs {
+			v4 := (opt.IPType == resolver.Resolver_ip_type_v4)
+			ip, _, _ := net_.SplitHostIntPort(addr.Addr)
+			if net_.IsIPv4String(ip) {
+				if v4 {
+					pickAddrs = append(pickAddrs, addr)
+				}
+			} else {
+				//v6
+				if !v4 {
+					pickAddrs = append(pickAddrs, addr)
+				}
+			}
+		}
+	}
+	if len(pickAddrs) == 0 {
+		return nil, fmt.Errorf("resolve target's addresses type[%v] are empty", opt.IPType)
+	}
+	return pickAddrs, nil
 }
 
 // ResolveNow invoke an immediate resolution of the target that this dnsResolver watches.

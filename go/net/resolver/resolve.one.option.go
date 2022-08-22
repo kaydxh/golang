@@ -5,3 +5,9 @@ func WithPickMode(mode Resolver_PickMode) ResolveOneOptionFunc {
 		r.PickMode = mode
 	})
 }
+
+func WithIPTypeForResolverOne(ipType Resolver_IPType) ResolveOneOptionFunc {
+	return ResolveOneOptionFunc(func(r *ResolveOneOptions) {
+		r.IPType = ipType
+	})
+}

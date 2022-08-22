@@ -60,8 +60,6 @@ type ResolverBuildOptions struct {
 	// field. In most cases though, it is not appropriate, and this field may
 	// be ignored.
 	Dialer func(context.Context, string) (net.Conn, error)
-
-	SkipUnixColonParsing bool
 }
 
 /*
