@@ -11,7 +11,7 @@ func RequestWithProxyTarget(req *http.Request, target string) error {
 		return nil
 	}
 
-	newUrl, err := url_.ReplaceWithTarget(req.Context(), req.URL, target)
+	newUrl, err := url_.ResolveWithTarget(req.Context(), req.URL, target)
 	if err != nil {
 		return err
 	}
