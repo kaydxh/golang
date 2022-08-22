@@ -5,6 +5,7 @@ import (
 
 	"github.com/kaydxh/golang/go/net/resolver"
 	_ "github.com/kaydxh/golang/go/net/resolver/dns"
+	_ "github.com/kaydxh/golang/go/net/resolver/passthrough"
 	_ "github.com/kaydxh/golang/go/net/resolver/unix"
 )
 
