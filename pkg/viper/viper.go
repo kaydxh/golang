@@ -3,7 +3,7 @@ package viper
 import (
 	"strings"
 
-	"github.com/ory/viper"
+	"github.com/spf13/viper"
 )
 
 //keys delim with dot(.), eg: "database.mysql"

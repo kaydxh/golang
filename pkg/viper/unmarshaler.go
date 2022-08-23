@@ -9,7 +9,8 @@ import (
 	"github.com/gogo/protobuf/proto"
 	jsonpb_ "github.com/kaydxh/golang/pkg/protobuf/jsonpb"
 	"github.com/mitchellh/mapstructure"
-	"github.com/ory/viper"
+
+	"github.com/spf13/viper"
 )
 
 func UnmarshalProtoMessageWithJsonPb(v *viper.Viper, msg proto.Message, options ...viper.DecoderConfigOption) error {
