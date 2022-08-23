@@ -2,7 +2,7 @@ package filecleanup
 
 import (
 	disk_ "github.com/kaydxh/golang/pkg/file-cleanup/disk"
-	"github.com/ory/viper"
+	"github.com/spf13/viper"
 )
 
 func WithViper(v *viper.Viper) ConfigOption {
