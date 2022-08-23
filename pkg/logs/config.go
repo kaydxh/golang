@@ -12,7 +12,7 @@ import (
 	"github.com/sirupsen/logrus"
 	"google.golang.org/protobuf/types/known/durationpb"
 
-	"github.com/ory/viper"
+	"github.com/spf13/viper"
 )
 
 const (
