@@ -9,8 +9,8 @@ import (
 	jaeger_ "github.com/kaydxh/golang/pkg/monitor/opentelemetry/tracer/jaeger"
 	stdouttrace_ "github.com/kaydxh/golang/pkg/monitor/opentelemetry/tracer/stdout"
 	viper_ "github.com/kaydxh/golang/pkg/viper"
-	"github.com/ory/viper"
 	"github.com/sirupsen/logrus"
+	"github.com/spf13/viper"
 )
 
 type Config struct {

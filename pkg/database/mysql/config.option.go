@@ -1,7 +1,7 @@
 package mysql
 
 import (
-	"github.com/ory/viper"
+	"github.com/spf13/viper"
 )
 
 func WithViper(v *viper.Viper) ConfigOption {

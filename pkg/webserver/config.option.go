@@ -4,7 +4,7 @@ import (
 	"time"
 
 	gw_ "github.com/kaydxh/golang/pkg/grpc-gateway"
-	"github.com/ory/viper"
+	"github.com/spf13/viper"
 )
 
 func WithViper(v *viper.Viper) ConfigOption {
