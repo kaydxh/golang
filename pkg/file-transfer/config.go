@@ -4,8 +4,8 @@ import (
 	"context"
 
 	viper_ "github.com/kaydxh/golang/pkg/viper"
-	"github.com/ory/viper"
 	"github.com/sirupsen/logrus"
+	"github.com/spf13/viper"
 )
 
 type Config struct {

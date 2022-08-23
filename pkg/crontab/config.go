@@ -5,8 +5,8 @@ import (
 
 	"github.com/go-playground/validator/v10"
 	viper_ "github.com/kaydxh/golang/pkg/viper"
-	"github.com/ory/viper"
 	"github.com/sirupsen/logrus"
+	"github.com/spf13/viper"
 )
 
 // Config ...
