@@ -64,7 +64,9 @@ func NewClient(options ...ClientOption) (*Client, error) {
 	c := &Client{}
 	c.ApplyOptions(options...)
 	//	var transport *http.Transport = http.DefaultTransport
-	transport := &http.Transport{}
+	transport := &http.Transport{
+		Proxy: http.ProxyFromEnvironment,
+	}
 	if c.opts.timeout != 0 {
 		c.Client.Timeout = c.opts.timeout
 	}
