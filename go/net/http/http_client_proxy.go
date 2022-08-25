@@ -21,7 +21,8 @@ func RequestWithProxyTarget(req *http.Request, target string) error {
 	return nil
 }
 
-func NewClientWithTarget(target string) *Client {
-	c, _ := NewClient()
+func NewClientWithProxyTarget(target string, opts ...ClientOption) *Client {
+	opts = append(opts, WithProxyTarget(target))
+	c, _ := NewClient(opts...)
 	return c
 }

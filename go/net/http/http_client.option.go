@@ -2,8 +2,6 @@ package http
 
 import (
 	"log"
-	"net/http"
-	"net/url"
 	"time"
 )
 
@@ -38,6 +36,7 @@ func WithDisableKeepAlives(disableKeepAlives bool) ClientOption {
 	})
 }
 
+/*
 func WithProxyTargetAddr(addr string) ClientOption {
 	proxyFunc := func(req *http.Request) (*url.URL, error) {
 		proxyURL, err := url.Parse("http://" + addr)
@@ -58,10 +57,19 @@ func WithProxyTargetAddr(addr string) ClientOption {
 		c.opts.proxy = proxyFunc
 	})
 }
+*/
 
-func WithProxyTarget(addr string) ClientOption {
+// http://xxx:yyy@goproxy.com
+func WithProxy(proxyURL string) ClientOption {
 	return ClientOptionFunc(func(c *Client) {
-		c.opts.proxyTarget = addr
+		c.opts.proxy = proxyURL
+	})
+}
+
+//dns:///ai-media-1256936300.cos.ap-guangzhou.myqcloud.com
+func WithProxyTarget(target string) ClientOption {
+	return ClientOptionFunc(func(c *Client) {
+		c.opts.proxyTarget = target
 	})
 }
 
