@@ -12,6 +12,7 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin/binding"
+	"github.com/sirupsen/logrus"
 )
 
 type Client struct {
@@ -48,9 +49,11 @@ type Client struct {
 		// "http" is assumed.
 		//
 		// If Proxy is nil or returns a nil *URL, no proxy is used.
-		proxy func(*http.Request) (*url.URL, error)
+		//proxy func(*http.Request) (*url.URL, error)
+		// like forward proxy
+		proxy string
 
-		// proxyTarget is host:port, redirct to it
+		// proxyTarget is host:port, redirct to it, like reverse proxy
 		proxyTarget string
 
 		ErrorLog *log.Logger
@@ -91,8 +94,14 @@ func NewClient(options ...ClientOption) (*Client, error) {
 	if c.opts.disableKeepAlives {
 		transport.DisableKeepAlives = c.opts.disableKeepAlives
 	}
-	if c.opts.proxy != nil {
-		transport.Proxy = c.opts.proxy
+	if len(c.opts.proxy) > 0 {
+		proxyURL, err := url.Parse(c.opts.proxy)
+		if err != nil {
+			logrus.WithError(err).Errorf("proxy URL %s is not valid", c.opts.proxy)
+			return nil, err
+		}
+
+		transport.Proxy = http.ProxyURL(proxyURL)
 	}
 	c.Transport = transport
 
