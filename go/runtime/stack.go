@@ -9,23 +9,22 @@ import (
 	"strings"
 )
 
-func FormatStack(rvr interface{}) ([]byte, error) {
+func FormatStack() ([]byte, error) {
 	debugStack := debug.Stack()
-	return prettyStack{}.parse(debugStack, rvr)
+	return prettyStack{}.parse(debugStack)
 }
 
 type prettyStack struct {
 }
 
-func (s prettyStack) parse(debugStack []byte, rvr interface{}) ([]byte, error) {
+func (s prettyStack) parse(debugStack []byte) ([]byte, error) {
 	var err error
 	useColor := true
 	buf := &bytes.Buffer{}
 
 	fmt.Fprintf(buf, "\n")
 	fmt.Fprintf(buf, " panic: ")
-	fmt.Fprintf(buf, " %v:", rvr)
-	fmt.Fprintf(buf, "\n \n")
+	fmt.Fprintf(buf, "\n")
 
 	// process debug stack info
 	stack := strings.Split(string(debugStack), "\n")

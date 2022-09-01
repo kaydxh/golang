@@ -135,9 +135,9 @@ func WithHttpHandlerInterceptorInOutPacketOptions() GRPCGatewayOption {
 	})
 }
 
-// recover
-func WithHttpHandlerInterceptorRecovererOptions() GRPCGatewayOption {
+// recovery
+func WithHttpHandlerInterceptorRecoveryOptions() GRPCGatewayOption {
 	return WithHttpHandlerInterceptorOptions(http_.HandlerInterceptor{
-		Interceptor: httpinterceptordebug_.Recoverer,
+		Interceptor: httpinterceptordebug_.Recovery,
 	})
 }
