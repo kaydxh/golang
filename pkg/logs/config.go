@@ -72,10 +72,12 @@ func (c *completedConfig) install() error {
 		//time="2021-08-07 20:21:46.468" level=info msg="Installing WebHandler" func="options.(*CompletedServerRunOptions).Run()" file="options.go:59"
 		//DisableColors set false, out format:
 		//INFO[2021-08-07T19:53:42+08:00]options.go:59 options.(*CompletedServerRunOptions).Run() Installing WebHandler
+
+		//DisableQuote: ture, this config can format newline characters(\n) in the log message
 		logrus.SetFormatter(&logrus.TextFormatter{
 			//ForceQuote:       true,
-			DisableColors: true,
-			//DisableQuote:     true,
+			DisableColors:    true,
+			DisableQuote:     true,
 			FullTimestamp:    true,
 			TimestampFormat:  time_.DefaultTimeMillFormat,
 			CallerPrettyfier: GenShortCallPrettyfier(),
@@ -84,8 +86,8 @@ func (c *completedConfig) install() error {
 	default:
 		logrus.SetFormatter(&logrus_.GlogFormatter{
 			//ForceQuote:       true,
-			DisableColors: true,
-			//DisableQuote:     true,
+			DisableColors:     true,
+			DisableQuote:      true,
 			FullTimestamp:     true,
 			TimestampFormat:   time_.DefaultTimeMillFormat,
 			CallerPrettyfier:  GenShortCallPrettyfier(),

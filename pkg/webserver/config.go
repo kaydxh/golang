@@ -153,7 +153,7 @@ func (c *Config) installHttpMiddlewareChain() []gw_.GRPCGatewayOption {
 	// recoverer
 	opts = append(
 		opts,
-		gw_.WithHttpHandlerInterceptorRecovererOptions(),
+		gw_.WithHttpHandlerInterceptorRecoveryOptions(),
 	)
 
 	// trace id

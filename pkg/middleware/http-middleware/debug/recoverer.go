@@ -11,12 +11,12 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func Recoverer(handler http.Handler) http.Handler {
+func Recovery(handler http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		defer func() {
 			if r := recover(); r != nil && r != http.ErrAbortHandler {
 
-				out, err := runtime_.FormatStack(r)
+				out, err := runtime_.FormatStack()
 				if err != nil {
 					logrus.WithError(status.Errorf(codes.Internal, "%s", r)).Errorf("%s", debug.Stack())
 				} else {

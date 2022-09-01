@@ -5,6 +5,7 @@ import (
 
 	interceptorlogrus_ "github.com/grpc-ecosystem/go-grpc-middleware/logging/logrus"
 	interceptorrecovery_ "github.com/grpc-ecosystem/go-grpc-middleware/recovery"
+	runtime_ "github.com/kaydxh/golang/go/runtime"
 	rate_ "github.com/kaydxh/golang/go/time/rate"
 	interceptortcloud_ "github.com/kaydxh/golang/pkg/middleware/api/tcloud/v3.0"
 	interceptormonitor_ "github.com/kaydxh/golang/pkg/middleware/grpc-middleware/monitor"
@@ -58,13 +59,15 @@ func WithServerInterceptorsLogrusOptions(
 // recover
 func WithServerInterceptorsRecoveryOptions() GRPCGatewayOption {
 	opts := []interceptorrecovery_.Option{
-		interceptorrecovery_.WithRecoveryHandler(func(p interface{}) (err error) {
-			logrus.WithError(
-				status.Errorf(codes.Internal, "panic triggered: %v at %v", p, string(debug.Stack())),
-			).Errorf(
-				"recovered in grpc",
-			)
-			return status.Errorf(codes.Internal, "panic triggered: %v", p)
+		interceptorrecovery_.WithRecoveryHandler(func(r interface{}) (err error) {
+			out, err := runtime_.FormatStack()
+			if err != nil {
+				logrus.WithError(status.Errorf(codes.Internal, "%s", r)).Errorf("%s", debug.Stack())
+			} else {
+				logrus.WithError(status.Errorf(codes.Internal, "%s", r)).Errorf("%s", out)
+			}
+
+			return status.Errorf(codes.Internal, "panic: %v", r)
 		}),
 	}
 
