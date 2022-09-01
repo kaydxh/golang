@@ -19,7 +19,6 @@ type prettyStack struct {
 
 func (s prettyStack) parse(debugStack []byte) ([]byte, error) {
 	var err error
-	useColor := true
 	buf := &bytes.Buffer{}
 
 	fmt.Fprintf(buf, "\n")
@@ -47,7 +46,7 @@ func (s prettyStack) parse(debugStack []byte) ([]byte, error) {
 
 	// decorate
 	for i, line := range lines {
-		lines[i], err = s.decorateLine(line, useColor, i)
+		lines[i], err = s.decorateLine(line, i)
 		if err != nil {
 			return nil, err
 		}
@@ -59,12 +58,12 @@ func (s prettyStack) parse(debugStack []byte) ([]byte, error) {
 	return buf.Bytes(), nil
 }
 
-func (s prettyStack) decorateLine(line string, useColor bool, num int) (string, error) {
+func (s prettyStack) decorateLine(line string, num int) (string, error) {
 	line = strings.TrimSpace(line)
 	if strings.HasPrefix(line, "\t") || strings.Contains(line, ".go:") {
-		return s.decorateSourceLine(line, useColor, num)
+		return s.decorateSourceLine(line, num)
 	} else if strings.HasSuffix(line, ")") {
-		return s.decorateFuncCallLine(line, useColor, num)
+		return s.decorateFuncCallLine(line, num)
 	} else {
 		if strings.HasPrefix(line, "\t") {
 			return strings.Replace(line, "\t", "      ", 1), nil
@@ -74,7 +73,7 @@ func (s prettyStack) decorateLine(line string, useColor bool, num int) (string, 
 	}
 }
 
-func (s prettyStack) decorateFuncCallLine(line string, useColor bool, num int) (string, error) {
+func (s prettyStack) decorateFuncCallLine(line string, num int) (string, error) {
 	idx := strings.LastIndex(line, "(")
 	if idx < 0 {
 		return "", errors.New("not a func call line")
@@ -109,7 +108,7 @@ func (s prettyStack) decorateFuncCallLine(line string, useColor bool, num int) (
 	return buf.String(), nil
 }
 
-func (s prettyStack) decorateSourceLine(line string, useColor bool, num int) (string, error) {
+func (s prettyStack) decorateSourceLine(line string, num int) (string, error) {
 	idx := strings.LastIndex(line, ".go:")
 	if idx < 0 {
 		return "", errors.New("not a source line")
