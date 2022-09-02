@@ -230,6 +230,10 @@ func (c *Config) WithWebConfigOptions(opts ...ConfigOption) {
 	c.ApplyOptions(opts...)
 }
 
+func (c *Config) AppendGRPCGatewayOptions(opts ...gw_.GRPCGatewayOption) {
+	c.opts.gatewayOptions = append(c.opts.gatewayOptions, opts...)
+}
+
 func (c *Config) parseViper() {
 	c.opts.bindAddress = c.Proto.GetBindHostPort()
 }
