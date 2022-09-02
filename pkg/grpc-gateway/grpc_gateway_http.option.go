@@ -9,7 +9,6 @@ import (
 	interceptortcloud3_ "github.com/kaydxh/golang/pkg/middleware/api/tcloud/v3.0"
 	interceptortrivialv1_ "github.com/kaydxh/golang/pkg/middleware/api/trivial/v1"
 	httpinterceptordebug_ "github.com/kaydxh/golang/pkg/middleware/http-middleware/debug"
-	httpinterceptormonitor_ "github.com/kaydxh/golang/pkg/middleware/http-middleware/monitor"
 	httpinterceptorprometheus_ "github.com/kaydxh/golang/pkg/middleware/http-middleware/monitor/prometheus"
 )
 
@@ -128,9 +127,9 @@ func WithHttpHandlerInterceptorsTimerOptions(enabledMetric bool) GRPCGatewayOpti
 	})
 }
 
-func WithHttpHandlerInterceptorInOutPacketOptions() GRPCGatewayOption {
+func WithHttpHandlerInterceptorInOutputPrinterOptions() GRPCGatewayOption {
 	return WithHttpHandlerInterceptorOptions(http_.HandlerInterceptor{
-		Interceptor: httpinterceptormonitor_.InOutPacket,
+		Interceptor: httpinterceptordebug_.InOutputPrinter,
 	})
 }
 

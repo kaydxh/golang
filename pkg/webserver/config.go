@@ -171,7 +171,7 @@ func (c *Config) installHttpMiddlewareChain() []gw_.GRPCGatewayOption {
 	//inout
 	opts = append(
 		opts,
-		gw_.WithHttpHandlerInterceptorInOutPacketOptions(),
+		gw_.WithHttpHandlerInterceptorInOutputPrinterOptions(),
 	)
 
 	return opts
