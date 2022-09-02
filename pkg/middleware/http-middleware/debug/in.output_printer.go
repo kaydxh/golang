@@ -1,4 +1,4 @@
-package interceptormonitor
+package interceptordebug
 
 import (
 	"bytes"
@@ -9,7 +9,7 @@ import (
 	logs_ "github.com/kaydxh/golang/pkg/logs"
 )
 
-func InOutPacket(handler http.Handler) http.Handler {
+func InOutputPrinter(handler http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		logger := logs_.GetLogger(r.Context())
 		ww := http_.NewResponseWriterWrapper(w)
