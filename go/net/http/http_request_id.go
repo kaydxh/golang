@@ -1,4 +1,4 @@
-package interceptortrace
+package http
 
 import (
 	"context"

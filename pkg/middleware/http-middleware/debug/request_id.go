@@ -1,19 +1,20 @@
-package interceptortrace
+package interceptordebug
 
 import (
 	"net/http"
 
 	"github.com/google/uuid"
+	http_ "github.com/kaydxh/golang/go/net/http"
 )
 
-func TraceID(handler http.Handler) http.Handler {
+func RequestID(handler http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		requestID := ExtractRequestIdHTTPAndContext(r)
+		requestID := http_.ExtractRequestIdHTTPAndContext(r)
 		if requestID == "" {
 			requestID = uuid.New().String()
 		}
 
-		r = SetRequestIdContext(r, requestID)
+		r = http_.SetRequestIdContext(r, requestID)
 		handler.ServeHTTP(w, r)
 	})
 }
@@ -22,9 +23,9 @@ func SetPairsContext(keys []string) func(handler http.Handler) http.Handler {
 	return func(handler http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			for _, key := range keys {
-				value := ExtractHTTPAndContext(r, key)
+				value := http_.ExtractHTTPAndContext(r, key)
 				if value != "" {
-					r = SetPairContext(r, key, value)
+					r = http_.SetPairContext(r, key, value)
 				}
 			}
 

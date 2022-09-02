@@ -6,8 +6,8 @@ import (
 	"os"
 	"time"
 
+	http_ "github.com/kaydxh/golang/go/net/http"
 	rotate_ "github.com/kaydxh/golang/pkg/file-rotate"
-	trace_ "github.com/kaydxh/golang/pkg/middleware/http-middleware/trace"
 	"github.com/sirupsen/logrus"
 )
 
@@ -76,12 +76,12 @@ func WithRotate(log *logrus.Logger, filedir string, redirect Log_Redirct, option
 }
 
 func GetLogger(ctx context.Context) *logrus.Entry {
-	logger := logrus.WithField("request_id", trace_.ExtractRequestIDFromContext(ctx))
+	logger := logrus.WithField("request_id", http_.ExtractRequestIDFromContext(ctx))
 	return logger
 }
 
 func GetLoggerOrFallback(ctx context.Context, defaultValue string) *logrus.Entry {
-	requestId := trace_.ExtractRequestIDFromContext(ctx)
+	requestId := http_.ExtractRequestIDFromContext(ctx)
 	if requestId == "" {
 		requestId = defaultValue
 	}
