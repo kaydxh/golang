@@ -11,7 +11,6 @@ import (
 	httpinterceptordebug_ "github.com/kaydxh/golang/pkg/middleware/http-middleware/debug"
 	httpinterceptormonitor_ "github.com/kaydxh/golang/pkg/middleware/http-middleware/monitor"
 	httpinterceptorprometheus_ "github.com/kaydxh/golang/pkg/middleware/http-middleware/monitor/prometheus"
-	httpinterceptortrace_ "github.com/kaydxh/golang/pkg/middleware/http-middleware/trace"
 )
 
 func WithGatewayMuxOptions(opts ...runtime.ServeMuxOption) GRPCGatewayOption {
@@ -116,10 +115,10 @@ func WithHttpPostHandlerInterceptorOptions(
 	})
 }
 
-// WithHttpHandlerInterceptorTraceIDOptions
-func WithHttpHandlerInterceptorTraceIDOptions() GRPCGatewayOption {
+// WithHttpHandlerInterceptorRequestIDOptions
+func WithHttpHandlerInterceptorRequestIDOptions() GRPCGatewayOption {
 	return WithHttpHandlerInterceptorOptions(http_.HandlerInterceptor{
-		Interceptor: httpinterceptortrace_.TraceID,
+		Interceptor: httpinterceptordebug_.RequestID,
 	})
 }
 
