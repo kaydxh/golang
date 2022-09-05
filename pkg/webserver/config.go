@@ -175,6 +175,14 @@ func (c *Config) installHttpMiddlewareChain() []gw_.GRPCGatewayOption {
 			gw_.WithHttpHandlerInterceptorInOutputPrinterOptions(),
 		)
 	*/
+
+	// limit rate
+	opts = append(
+		opts,
+		gw_.WithHttpHandlerInterceptorsLimitAllOptions(
+			int(c.Proto.GetGrpc().GetMaxConcurrencyUnary()),
+		),
+	)
 	return opts
 }
 
