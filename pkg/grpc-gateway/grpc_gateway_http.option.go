@@ -10,6 +10,7 @@ import (
 	interceptortrivialv1_ "github.com/kaydxh/golang/pkg/middleware/api/trivial/v1"
 	httpinterceptordebug_ "github.com/kaydxh/golang/pkg/middleware/http-middleware/debug"
 	httpinterceptorprometheus_ "github.com/kaydxh/golang/pkg/middleware/http-middleware/monitor/prometheus"
+	httpinterceptorlimiter_ "github.com/kaydxh/golang/pkg/middleware/http-middleware/ratelimiter"
 )
 
 func WithGatewayMuxOptions(opts ...runtime.ServeMuxOption) GRPCGatewayOption {
@@ -96,9 +97,11 @@ func WithHttpPreHandlerInterceptorOptions(
 func WithHttpHandlerInterceptorOptions(handlers ...http_.HandlerInterceptor) GRPCGatewayOption {
 
 	return GRPCGatewayOptionFunc(func(c *GRPCGateway) {
-		c.opts.interceptionOptions.httpServerOpts.handlerChain.Handlers = append(
-			c.opts.interceptionOptions.httpServerOpts.handlerChain.Handlers,
-			handlers...)
+		if handlers != nil {
+			c.opts.interceptionOptions.httpServerOpts.handlerChain.Handlers = append(
+				c.opts.interceptionOptions.httpServerOpts.handlerChain.Handlers,
+				handlers...)
+		}
 	})
 }
 
@@ -131,6 +134,15 @@ func WithHttpHandlerInterceptorInOutputPrinterOptions() GRPCGatewayOption {
 	return WithHttpHandlerInterceptorOptions(http_.HandlerInterceptor{
 		Interceptor: httpinterceptordebug_.InOutputPrinter,
 	})
+}
+
+func WithHttpHandlerInterceptorsLimitAllOptions(burst int) GRPCGatewayOption {
+	handler := http_.HandlerInterceptor{}
+	if burst > 0 {
+		handler.Interceptor = httpinterceptorlimiter_.LimitAll(burst).Handler
+	}
+
+	return WithHttpHandlerInterceptorOptions(handler)
 }
 
 // recovery
