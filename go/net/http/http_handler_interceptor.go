@@ -47,6 +47,7 @@ func (c *HandlerChain) WrapH(next http.Handler) http.Handler {
 
 		// reverse iterate handlers, so called handler as registed order
 		for i := len(c.Handlers) - 1; i >= 0; i-- {
+			// filter interceptor is nil
 			if c.Handlers[i].Interceptor != nil {
 				next = c.Handlers[i].Interceptor(next)
 			}
