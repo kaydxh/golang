@@ -1,4 +1,4 @@
-package controller
+package profiler
 
 import (
 	"net/http"
