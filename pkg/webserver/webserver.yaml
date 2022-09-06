@@ -1,14 +1,14 @@
 web:
   bind_address:
+    host: 0.0.0.0
     port: 10000
-    timeout: 10s
   grpc:
     max_concurrency_unary: 10 # max concurrency for grpc unary api
     max_concurrency_stream: 10 # max concurrency for grpc stream api
     max_receive_message_size: 0 # 0 means max message size 
     max_send_message_size : 0
-      
-  mode: release
+  http:
+    max_concurrency: 0
   monitor:
     prometheus: 
       enabled_metric_timer_cost: true
