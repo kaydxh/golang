@@ -11,8 +11,10 @@ import (
 	viper_ "github.com/kaydxh/golang/pkg/viper"
 	"google.golang.org/grpc"
 
+	errors_ "github.com/kaydxh/golang/go/errors"
 	gw_ "github.com/kaydxh/golang/pkg/grpc-gateway"
-	controller_ "github.com/kaydxh/golang/pkg/webserver/controller"
+	healthz_ "github.com/kaydxh/golang/pkg/webserver/controller/healthz"
+	profiler_ "github.com/kaydxh/golang/pkg/webserver/controller/profiler"
 	"github.com/spf13/viper"
 )
 
@@ -91,15 +93,30 @@ func (c *completedConfig) install() (*GenericWebServer, error) {
 		readinessStopCh:  make(chan struct{}),
 	}
 
+	var errs []error
 	if c.Proto.GetDebug().GetEnableProfiling() {
 		fmt.Printf("- install debug handler")
-		ws.AddPostStartHook("debug_hanlder", func(ctx context.Context) error {
-			ws.InstallWebHandlers(controller_.NewController())
+		err := ws.AddPostStartHook("debug_hanlder", func(ctx context.Context) error {
+			ws.InstallWebHandlers(profiler_.NewController())
 			return nil
 		})
+		if err != nil {
+			errs = append(errs, err)
+		}
+	}
+	err := c.installDefaultHander(ws)
+	if err != nil {
+		errs = append(errs, err)
 	}
 
-	return ws, nil
+	return ws, errors_.NewAggregate(errs)
+}
+
+func (c *completedConfig) installDefaultHander(ws *GenericWebServer) error {
+	return ws.AddPostStartHook("default_hanlder", func(ctx context.Context) error {
+		ws.InstallWebHandlers(healthz_.NewController())
+		return nil
+	})
 }
 
 // Complete set default ServerRunOptions.
