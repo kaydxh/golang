@@ -1,6 +1,7 @@
 package webserver
 
 import (
+	"context"
 	"fmt"
 	"math"
 	"time"
@@ -11,6 +12,7 @@ import (
 	"google.golang.org/grpc"
 
 	gw_ "github.com/kaydxh/golang/pkg/grpc-gateway"
+	controller_ "github.com/kaydxh/golang/pkg/webserver/controller"
 	"github.com/spf13/viper"
 )
 
@@ -77,17 +79,27 @@ func (c *completedConfig) install() (*GenericWebServer, error) {
 	c.Config.opts.gatewayOptions = append(c.Config.opts.gatewayOptions, c.installGrpcMiddlewareChain()...)
 	grpcBackend := gw_.NewGRPCGateWay(c.opts.bindAddress, c.Config.opts.gatewayOptions...)
 	//grpcBackend.ApplyOptions()
-	gin.SetMode(c.Proto.Mode.String())
+	gin.SetMode(gin.ReleaseMode)
 	ginBackend := gin.New()
 	fmt.Printf(" - listen address[%s]\n", c.opts.bindAddress)
 
-	return &GenericWebServer{
+	ws := &GenericWebServer{
 		ginBackend:       ginBackend,
 		grpcBackend:      grpcBackend,
 		postStartHooks:   map[string]postStartHookEntry{},
 		preShutdownHooks: map[string]preShutdownHookEntry{},
 		readinessStopCh:  make(chan struct{}),
-	}, nil
+	}
+
+	if c.Proto.GetDebug().GetEnableProfiling() {
+		fmt.Printf("- install debug handler")
+		ws.AddPostStartHook("debug_hanlder", func(ctx context.Context) error {
+			ws.InstallWebHandlers(controller_.NewController())
+			return nil
+		})
+	}
+
+	return ws, nil
 }
 
 // Complete set default ServerRunOptions.
@@ -180,7 +192,7 @@ func (c *Config) installHttpMiddlewareChain() []gw_.GRPCGatewayOption {
 	opts = append(
 		opts,
 		gw_.WithHttpHandlerInterceptorsLimitAllOptions(
-			int(c.Proto.GetGrpc().GetMaxConcurrencyUnary()),
+			int(c.Proto.GetHttp().GetMaxConcurrency()),
 		),
 	)
 	return opts

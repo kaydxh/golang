@@ -12,8 +12,8 @@ message Web {
     string host = 1;
     int32 port = 2;
   }
-  Grpc grpc = 3;
 
+  Grpc grpc = 3;
   message Grpc {
     int32 max_concurrency_unary = 1;
     int32 max_concurrency_stream = 2;
@@ -21,11 +21,14 @@ message Web {
     int32 max_send_message_size = 4;
   }
 
-  Mode mode = 6;
-  enum Mode {
-    release = 0;
-    debug = 1;
-    test = 2;
+  Http http = 4;
+  message Http {
+    int32 max_concurrency = 1;
+  }
+
+  Debug debug = 5;
+  message Debug {
+    bool enable_profiling = 1;
   }
 
   Monitor monitor = 7;
