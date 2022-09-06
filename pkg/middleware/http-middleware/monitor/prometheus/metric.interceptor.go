@@ -1,6 +1,7 @@
 package interceptorprometheus
 
 import (
+	"fmt"
 	"net/http"
 
 	time_ "github.com/kaydxh/golang/go/time"
@@ -23,7 +24,7 @@ func InterceptorOfTimer(enabledMetric bool) func(handler http.Handler) http.Hand
 					)
 				}
 
-				logger.WithField("method", r.Method).Infof(tc.String())
+				logger.WithField("method", fmt.Sprintf("%s %s", r.Method, r.URL.Path)).Infof(tc.String())
 			}
 			defer summary()
 
