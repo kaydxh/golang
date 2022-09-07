@@ -186,7 +186,7 @@ func (c *Client) PostReader(
 	auth func(r *http.Request) error,
 	body io.Reader,
 ) ([]byte, error) {
-	r, err := c.post(url, contentType, headers, auth)
+	r, err := c.post(url, contentType, headers, auth, body)
 	if err != nil {
 		return nil, err
 	}
