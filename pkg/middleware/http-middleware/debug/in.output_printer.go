@@ -32,10 +32,14 @@ func InOutputPrinter(handler http.Handler) http.Handler {
 	})
 }
 
-func HeaderPacket(handler http.Handler) http.Handler {
+func InOutputHeaderPrinter(handler http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		logger := logs_.GetLogger(r.Context())
 		logger.WithField("request headers", r.Header).Info("recv")
+
+		defer func() {
+			logger.WithField("response headers", w.Header()).Info("send")
+		}()
 
 		handler.ServeHTTP(w, r)
 	})

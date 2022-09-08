@@ -204,6 +204,11 @@ func (c *Config) installHttpMiddlewareChain() []gw_.GRPCGatewayOption {
 			gw_.WithHttpHandlerInterceptorInOutputPrinterOptions(),
 		)
 	*/
+	//inout header printer
+	opts = append(
+		opts,
+		gw_.WithHttpHandlerInterceptorInOutputHeaderPrinterOptions(),
+	)
 
 	// limit rate
 	opts = append(
