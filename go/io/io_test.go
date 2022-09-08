@@ -260,9 +260,9 @@ func TestWriteAtMutilThreads(t *testing.T) {
 	wg := sync.WaitGroup{}
 	for i, testCase := range testCases {
 		wg.Add(1)
-		go func(index int) {
+		go func(name string, index int) {
 			defer wg.Done()
-			t.Run(testCase.name, func(t *testing.T) {
+			t.Run(name, func(t *testing.T) {
 				var offset int64
 				for j := 0; j < index; j++ {
 					offset += int64(len(testCases[j].words))
@@ -271,7 +271,7 @@ func TestWriteAtMutilThreads(t *testing.T) {
 				err := io_.WriteBytesAt(testFileOffset, testCases[index].words, offset)
 				assert.Nil(t, err)
 			})
-		}(i)
+		}(testCase.name, i)
 	}
 	wg.Wait()
 }
