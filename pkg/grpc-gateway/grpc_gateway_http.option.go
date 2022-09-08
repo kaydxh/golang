@@ -136,6 +136,12 @@ func WithHttpHandlerInterceptorInOutputPrinterOptions() GRPCGatewayOption {
 	})
 }
 
+func WithHttpHandlerInterceptorInOutputHeaderPrinterOptions() GRPCGatewayOption {
+	return WithHttpHandlerInterceptorOptions(http_.HandlerInterceptor{
+		Interceptor: httpinterceptordebug_.InOutputHeaderPrinter,
+	})
+}
+
 func WithHttpHandlerInterceptorsLimitAllOptions(burst int) GRPCGatewayOption {
 	handler := http_.HandlerInterceptor{}
 	if burst > 0 {
