@@ -6,6 +6,7 @@ import (
 	"github.com/gin-gonic/gin/binding"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	http_ "github.com/kaydxh/golang/go/net/http"
+	apijsonpb_ "github.com/kaydxh/golang/pkg/middleware/api/jsonpb"
 	interceptortcloud3_ "github.com/kaydxh/golang/pkg/middleware/api/tcloud/v3.0"
 	interceptortrivialv1_ "github.com/kaydxh/golang/pkg/middleware/api/trivial/v1"
 	httpinterceptordebug_ "github.com/kaydxh/golang/pkg/middleware/http-middleware/debug"
@@ -61,6 +62,20 @@ func WithServerInterceptorsTrivialV1HTTPResponseOptions() GRPCGatewayOption {
 
 		WithGatewayMuxOptions(
 			runtime.WithMarshalerOption(binding.MIMEJSON, interceptortrivialv1_.NewDefaultJSONPb()),
+		).apply(
+			c,
+		)
+	})
+}
+
+// http body proto Marshal
+func WithServerInterceptorsHttpBodyProtoOptions() GRPCGatewayOption {
+	return GRPCGatewayOptionFunc(func(c *GRPCGateway) {
+		WithGatewayMuxOptions(
+			runtime.WithMarshalerOption(
+				binding.MIMEPROTOBUF,
+				&apijsonpb_.ProtoMarshaller{},
+			),
 		).apply(
 			c,
 		)
