@@ -1,4 +1,4 @@
-package apijsonpb
+package marshaler
 
 import (
 	"github.com/gin-gonic/gin/binding"

@@ -1,22 +1,22 @@
 package v1
 
 import (
-	apijsonpb_ "github.com/kaydxh/golang/pkg/middleware/api/jsonpb"
+	marshaler_ "github.com/kaydxh/golang/go/runtime/marshaler"
 	jsonpb_ "github.com/kaydxh/golang/pkg/protobuf/jsonpb"
 )
 
 type JSONPb struct {
-	*apijsonpb_.JSONPb
+	*marshaler_.JSONPb
 }
 
 func NewDefaultJSONPb() *JSONPb {
 	return &JSONPb{
-		apijsonpb_.NewJSONPb(
-			apijsonpb_.WithUseProtoNames(false),
-			apijsonpb_.WithUseEnumNumbers(false),
-			apijsonpb_.WithEmitUnpopulated(true),
-			apijsonpb_.WithDiscardUnknown(true),
-			apijsonpb_.WithIndent("\t"),
+		marshaler_.NewJSONPb(
+			marshaler_.WithUseProtoNames(false),
+			marshaler_.WithUseEnumNumbers(false),
+			marshaler_.WithEmitUnpopulated(true),
+			marshaler_.WithDiscardUnknown(true),
+			marshaler_.WithIndent("\t"),
 		),
 	}
 }

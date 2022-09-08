@@ -1,4 +1,4 @@
-package apijsonpb
+package marshaler
 
 // A JSONPbOption sets options.
 type JSONPbOption interface {
