@@ -191,6 +191,11 @@ func (c *Config) installHttpMiddlewareChain() []gw_.GRPCGatewayOption {
 		gw_.WithHttpHandlerInterceptorRequestIDOptions(),
 	)
 
+	opts = append(
+		opts,
+		gw_.WithServerInterceptorsHttpBodyProtoOptions(),
+	)
+
 	// time cost
 	opts = append(
 		opts,
@@ -204,6 +209,7 @@ func (c *Config) installHttpMiddlewareChain() []gw_.GRPCGatewayOption {
 			gw_.WithHttpHandlerInterceptorInOutputPrinterOptions(),
 		)
 	*/
+
 	//inout header printer
 	opts = append(
 		opts,
