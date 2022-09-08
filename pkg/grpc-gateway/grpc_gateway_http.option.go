@@ -6,7 +6,7 @@ import (
 	"github.com/gin-gonic/gin/binding"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	http_ "github.com/kaydxh/golang/go/net/http"
-	apijsonpb_ "github.com/kaydxh/golang/pkg/middleware/api/jsonpb"
+	marshaler_ "github.com/kaydxh/golang/go/runtime/marshaler"
 	interceptortcloud3_ "github.com/kaydxh/golang/pkg/middleware/api/tcloud/v3.0"
 	interceptortrivialv1_ "github.com/kaydxh/golang/pkg/middleware/api/trivial/v1"
 	httpinterceptordebug_ "github.com/kaydxh/golang/pkg/middleware/http-middleware/debug"
@@ -74,7 +74,7 @@ func WithServerInterceptorsHttpBodyProtoOptions() GRPCGatewayOption {
 		WithGatewayMuxOptions(
 			runtime.WithMarshalerOption(
 				binding.MIMEPROTOBUF,
-				&apijsonpb_.ProtoMarshaller{},
+				&marshaler_.ProtoMarshaller{},
 			),
 		).apply(
 			c,
