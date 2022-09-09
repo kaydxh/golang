@@ -24,6 +24,7 @@ message Web {
   Http http = 4;
   message Http {
     int32 max_concurrency = 1;
+    bool enable_inoutput_printer = 2;
   }
 
   Debug debug = 5;
