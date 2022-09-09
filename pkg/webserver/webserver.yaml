@@ -3,13 +3,16 @@ web:
     host: 0.0.0.0
     port: 10000
   grpc:
-    max_concurrency_unary: 10 # max concurrency for grpc unary api
-    max_concurrency_stream: 10 # max concurrency for grpc stream api
+    max_concurrency_unary: 0 # max concurrency for grpc unary api, 0 means unlimited
+    max_concurrency_stream: 0 # max concurrency for grpc stream api
     max_receive_message_size: 0 # 0 means max message size 
     max_send_message_size : 0
   http:
     max_concurrency: 0
+    enable_inoutput_printer: false
+  debug:
+    enable_profiling: true
   monitor:
     prometheus: 
       enabled_metric_timer_cost: true
-      enabled_metric_code_message: true
+      enabled_metric_code_message: false
