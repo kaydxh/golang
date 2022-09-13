@@ -2,9 +2,11 @@ package grpcgateway
 
 import (
 	"runtime/debug"
+	"time"
 
 	interceptorlogrus_ "github.com/grpc-ecosystem/go-grpc-middleware/logging/logrus"
 	interceptorrecovery_ "github.com/grpc-ecosystem/go-grpc-middleware/recovery"
+	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	runtime_ "github.com/kaydxh/golang/go/runtime"
 	rate_ "github.com/kaydxh/golang/go/time/rate"
 	interceptortcloud_ "github.com/kaydxh/golang/pkg/middleware/api/tcloud/v3.0"
@@ -124,6 +126,15 @@ func WithServerInterceptorsLimitRateOptions(burstUnary, burstStream int) GRPCGat
 func WithServerUnaryInterceptorsInOutPacketOptions() GRPCGatewayOption {
 	return GRPCGatewayOptionFunc(func(c *GRPCGateway) {
 		WithServerUnaryInterceptorsOptions(interceptordebug_.UnaryServerInterceptorOfInOutputPrinter()).apply(c)
+	})
+}
+
+// timeout
+func WithServerInterceptorTimeoutOptions(timeout time.Duration) GRPCGatewayOption {
+	return GRPCGatewayOptionFunc(func(c *GRPCGateway) {
+		if timeout > 0 {
+			runtime.DefaultContextTimeout = timeout
+		}
 	})
 }
 

@@ -7,8 +7,10 @@ web:
     max_concurrency_stream: 0 # max concurrency for grpc stream api
     max_receive_message_size: 0 # 0 means max message size 
     max_send_message_size : 0
+    timeout: 0s
   http:
     max_concurrency: 0
+    timeout: 0s
     enable_inoutput_printer: false
   debug:
     enable_profiling: true

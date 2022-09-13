@@ -19,12 +19,15 @@ message Web {
     int32 max_concurrency_stream = 2;
     int32 max_receive_message_size = 3;
     int32 max_send_message_size = 4;
+    google.protobuf.Duration timeout = 5;
   }
 
   Http http = 4;
   message Http {
     int32 max_concurrency = 1;
-    bool enable_inoutput_printer = 2;
+    // timeout 0 is not unlimited
+    google.protobuf.Duration timeout = 2;
+    bool enable_inoutput_printer = 5;
   }
 
   Debug debug = 5;
@@ -33,7 +36,6 @@ message Web {
   }
 
   Monitor monitor = 7;
-
   message Monitor {
     Prometheus prometheus = 1;
 
