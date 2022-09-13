@@ -177,8 +177,8 @@ func (c *Config) installGrpcMessageSizeOptions() []gw_.GRPCGatewayOption {
 
 func (c *Config) installHttpMiddlewareChain() []gw_.GRPCGatewayOption {
 
+	httpConfig := c.Proto.GetHttp()
 	var opts []gw_.GRPCGatewayOption
-
 	opts = append(
 		opts,
 		// http recoverer
@@ -200,12 +200,18 @@ func (c *Config) installHttpMiddlewareChain() []gw_.GRPCGatewayOption {
 
 		// limit rate
 		gw_.WithHttpHandlerInterceptorsLimitAllOptions(
-			int(c.Proto.GetHttp().GetMaxConcurrency()),
+			int(httpConfig.GetMaxConcurrency()),
 		),
+
+		/*
+			gw_.WithHttpHandlerInterceptorTimeoutOptions(
+				httpConfig.GetTimeout().AsDuration(),
+			),
+		*/
 	)
 
 	//options
-	if c.Proto.GetHttp().GetEnableInoutputPrinter() {
+	if httpConfig.GetEnableInoutputPrinter() {
 		// print inoutput body
 		opts = append(opts,
 			gw_.WithHttpHandlerInterceptorInOutputPrinterOptions(),
@@ -216,8 +222,9 @@ func (c *Config) installHttpMiddlewareChain() []gw_.GRPCGatewayOption {
 }
 
 func (c *Config) installGrpcMiddlewareChain() []gw_.GRPCGatewayOption {
-	var opts []gw_.GRPCGatewayOption
 
+	grpcConfig := c.Proto.GetGrpc()
+	var opts []gw_.GRPCGatewayOption
 	opts = append(
 		opts,
 
@@ -229,8 +236,8 @@ func (c *Config) installGrpcMiddlewareChain() []gw_.GRPCGatewayOption {
 
 		// limit rate
 		gw_.WithServerInterceptorsLimitRateOptions(
-			int(c.Proto.GetGrpc().GetMaxConcurrencyUnary()),
-			int(c.Proto.GetGrpc().GetMaxConcurrencyStream()),
+			int(grpcConfig.GetMaxConcurrencyUnary()),
+			int(grpcConfig.GetMaxConcurrencyStream()),
 		),
 
 		// metric for code,message and client ip
@@ -240,6 +247,8 @@ func (c *Config) installGrpcMiddlewareChain() []gw_.GRPCGatewayOption {
 
 		// print input and output body
 		gw_.WithServerUnaryInterceptorsInOutPacketOptions(),
+
+		gw_.WithServerInterceptorTimeoutOptions(grpcConfig.GetTimeout().AsDuration()),
 	)
 
 	/*
