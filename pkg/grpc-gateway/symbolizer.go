@@ -2,4 +2,4 @@
 
 package grpcgateway
 
-import _ "github.com/ianlancetaylor/cgosymbolizer"
+//import _ "github.com/ianlancetaylor/cgosymbolizer"
