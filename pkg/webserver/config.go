@@ -195,9 +195,6 @@ func (c *Config) installHttpMiddlewareChain() []gw_.GRPCGatewayOption {
 			c.Proto.GetMonitor().GetPrometheus().GetEnabledMetricTimerCost(),
 		),
 
-		//inout header printer
-		gw_.WithHttpHandlerInterceptorInOutputHeaderPrinterOptions(),
-
 		// limit rate
 		gw_.WithHttpHandlerInterceptorsLimitAllOptions(
 			int(httpConfig.GetMaxConcurrency()),
@@ -212,8 +209,10 @@ func (c *Config) installHttpMiddlewareChain() []gw_.GRPCGatewayOption {
 
 	//options
 	if httpConfig.GetEnableInoutputPrinter() {
-		// print inoutput body
 		opts = append(opts,
+			//inout header printer
+			gw_.WithHttpHandlerInterceptorInOutputHeaderPrinterOptions(),
+			// print inoutput body
 			gw_.WithHttpHandlerInterceptorInOutputPrinterOptions(),
 		)
 	}
