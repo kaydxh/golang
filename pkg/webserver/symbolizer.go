@@ -1,5 +1,5 @@
 // +build linux
 
-package grpcgateway
+package webserver
 
 //import _ "github.com/ianlancetaylor/cgosymbolizer"
