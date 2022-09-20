@@ -197,7 +197,7 @@ func (c *Client) PostReader(
 		return nil, err
 	}
 	if r.StatusCode >= http.StatusBadRequest {
-		return nil, fmt.Errorf("http status code: %v", r.StatusCode)
+		return data, fmt.Errorf("http status code: %v", r.StatusCode)
 	}
 
 	return data, nil
