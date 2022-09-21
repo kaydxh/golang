@@ -51,7 +51,7 @@ func OpenAll(path string, flag int, perm os.FileMode) (*os.File, error) {
 
 	// mkdir -p dir
 	if dir != "" {
-		if err := os.MkdirAll(dir, perm); err != nil {
+		if err := MakeDirAll(dir); err != nil {
 			return nil, err
 		}
 	}
