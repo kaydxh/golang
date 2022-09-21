@@ -28,7 +28,10 @@ import (
 	"fmt"
 	"testing"
 
+	"flag"
+
 	aes_ "github.com/kaydxh/golang/go/crypto/aes"
+	io_ "github.com/kaydxh/golang/go/io"
 )
 
 func TestAesCbcEncryptDecrypt(t *testing.T) {
@@ -52,4 +55,27 @@ func TestAesCbcEncryptDecrypt(t *testing.T) {
 	if string(newplainText) != string(plainText) {
 		t.Errorf("newplainText not equal plainText")
 	}
+}
+
+// build: go test -c  aes_cbc_test.go -o decrypt_tool
+// run: ./decrypt_tool -test.v  --test.run TestAesCbcDecrypt -srcePath=1.jpg -destPath=2.jpg
+var (
+	srcePath = flag.String("srcePath", "", "source encrypt image path")
+	destPath = flag.String("destPath", "./decryptImage.jpg", "dest decrypt image path")
+)
+
+func TestAesCbcDecrypt(t *testing.T) {
+	cryptText, err := io_.ReadFile(*srcePath)
+	if err != nil {
+		t.Errorf("expect nil, got %v", err)
+		return
+	}
+
+	key := []byte("daW3eDgPEa9TjknE")
+	newplainText, err := aes_.AesCbcDecrypt(cryptText, key)
+	if err != nil {
+		t.Errorf("expect nil, got %v", err)
+	}
+
+	io_.WriteFile(*destPath, newplainText, false)
 }
