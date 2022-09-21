@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"testing"
+	"time"
 
 	context_ "github.com/kaydxh/golang/go/context"
 )
@@ -18,6 +19,52 @@ func TestContext(t *testing.T) {
 	t.Logf("context: %v", ctx)
 	withField(ctx)
 	t.Logf("context: %v", ctx)
+}
+
+func doA(ctx context.Context) {
+
+	{
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, time.Second)
+		defer cancel()
+	}
+
+	timer := time.NewTimer(3 * time.Second)
+	defer timer.Stop()
+
+	select {
+	case <-ctx.Done():
+		fmt.Println("doA timeout")
+
+	case <-timer.C:
+		fmt.Println("doA finish")
+	}
+}
+
+func doB(ctx context.Context) {
+
+	{
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, 10*time.Second)
+		defer cancel()
+	}
+
+	timer := time.NewTimer(3 * time.Second)
+	defer timer.Stop()
+
+	select {
+	case <-ctx.Done():
+		fmt.Println("doB timeout")
+
+	case <-timer.C:
+		fmt.Println("doB finish")
+	}
+}
+
+func TestContextTimeout(t *testing.T) {
+	ctx := context.Background()
+	doA(ctx)
+	doB(ctx)
 }
 
 func TestExtractIntegerFromContext(t *testing.T) {
