@@ -58,6 +58,25 @@ func SliceDifference(s1 []string, s2 []string) []string {
 	return ss
 }
 
+func SliceWithCondition(s1 []string, cond func(s2 string) bool) []string {
+	ss1 := set_.NewObject()
+	for _, s := range s1 {
+		if cond(s) {
+			ss1.Insert(s)
+		}
+	}
+
+	ss := []string{}
+	for _, v := range ss1.List() {
+		s, ok := v.(string)
+		if ok {
+			ss = append(ss, s)
+		}
+	}
+
+	return ss
+}
+
 func RemoveEmpty(s []string) []string {
 	var ss []string
 	for _, v := range s {
