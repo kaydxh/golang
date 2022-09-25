@@ -17,6 +17,7 @@ type JSONPb struct {
 
 func NewDefaultJSONPb() *JSONPb {
 	return NewJSONPb(
+		// use json name
 		WithUseProtoNames(false),
 		WithUseEnumNumbers(false),
 		WithEmitUnpopulated(true),
