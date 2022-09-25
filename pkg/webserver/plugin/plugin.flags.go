@@ -21,30 +21,30 @@ func defaultUseConfigPath() string {
 	)
 }
 
-type SealetFlags struct {
+type AppFlags struct {
 	ConfigFile    string
 	UseConfigFile string
 	cmd           *cobra.Command
 	flags         flag_.NamedFlagSets
 }
 
-//  NewSealetFlags if cmd is nil, then use default cobra.Command
-func NewSealetFlags(cmd *cobra.Command) *SealetFlags {
-	sealetFlags := &SealetFlags{
+//  NewAppFlags if cmd is nil, then use default cobra.Command
+func NewAppFlags(cmd *cobra.Command) *AppFlags {
+	appFlags := &AppFlags{
 		ConfigFile:    defaultConfigPath(),
 		UseConfigFile: defaultUseConfigPath(),
 		cmd:           cmd,
 	}
 
-	if sealetFlags.cmd == nil {
-		sealetFlags.cmd = &cobra.Command{}
+	if appFlags.cmd == nil {
+		appFlags.cmd = &cobra.Command{}
 	}
 
-	sealetFlags.initFlags()
-	return sealetFlags
+	appFlags.initFlags()
+	return appFlags
 }
 
-func (f *SealetFlags) Apply() {
+func (f *AppFlags) Apply() {
 	fs := f.cmd.Flags()
 	for _, flag := range f.flags.FlagSets {
 		fs.AddFlagSet(flag)
@@ -52,13 +52,13 @@ func (f *SealetFlags) Apply() {
 }
 
 /*
-func (f *SealetFlags) AddFlags(mainfs *pflag.FlagSet) {
+func (f *AppFlags) AddFlags(mainfs *pflag.FlagSet) {
 	fs := pflag.NewFlagSet("", pflag.ExitOnError)
 	fs.StringVar(&f.SeaConfigFile, "config", f.SeaConfigFile, "sea config file")
 }
 */
 
-func (f *SealetFlags) initFlags() {
+func (f *AppFlags) initFlags() {
 
 	fs := f.flags.FlagSet("misc")
 	fs.StringVarP(&f.ConfigFile, "config", "c", f.ConfigFile, "The path to the configuration file.")
@@ -71,12 +71,12 @@ func (f *SealetFlags) initFlags() {
 
 }
 
-func (f *SealetFlags) SetUsageAndHelpFunc() {
+func (f *AppFlags) SetUsageAndHelpFunc() {
 	cols, _, _ := term_.TerminalSize(f.cmd.OutOrStdout())
 	flag_.SetUsageAndHelpFunc(f.cmd, f.flags, cols)
 }
 
-func (f *SealetFlags) Install() {
+func (f *AppFlags) Install() {
 	f.SetUsageAndHelpFunc()
 	f.Apply()
 }
