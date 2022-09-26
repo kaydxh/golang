@@ -13,7 +13,6 @@ require (
 	github.com/grpc-ecosystem/go-grpc-middleware v1.3.0
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.11.3
 	github.com/hashicorp/consul/api v1.12.0
-	github.com/ianlancetaylor/cgosymbolizer v0.0.0-20220405231054-a1ae3e4bba26
 	github.com/jmoiron/sqlx v1.3.4
 	github.com/mitchellh/mapstructure v1.5.0
 	github.com/moby/term v0.0.0-20210619224110-3f7ff695adc6
