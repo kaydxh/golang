@@ -175,6 +175,13 @@ func WithHttpHandlerInterceptorsLimitAllOptions(burst int) GRPCGatewayOption {
 	return WithHttpHandlerInterceptorOptions(handler)
 }
 
+// CleanPath
+func WithHttpHandlerInterceptorCleanPathOptions() GRPCGatewayOption {
+	return WithHttpHandlerInterceptorOptions(http_.HandlerInterceptor{
+		Interceptor: httpinterceptorhttp_.CleanPath,
+	})
+}
+
 // recovery
 func WithHttpHandlerInterceptorRecoveryOptions() GRPCGatewayOption {
 	return WithHttpHandlerInterceptorOptions(http_.HandlerInterceptor{
