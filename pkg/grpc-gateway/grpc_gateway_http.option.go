@@ -2,6 +2,7 @@ package grpcgateway
 
 import (
 	"net/http"
+	"time"
 
 	"github.com/gin-gonic/gin/binding"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
@@ -10,6 +11,7 @@ import (
 	interceptortcloud3_ "github.com/kaydxh/golang/pkg/middleware/api/tcloud/v3.0"
 	interceptortrivialv1_ "github.com/kaydxh/golang/pkg/middleware/api/trivial/v1"
 	httpinterceptordebug_ "github.com/kaydxh/golang/pkg/middleware/http-middleware/debug"
+	httpinterceptorhttp_ "github.com/kaydxh/golang/pkg/middleware/http-middleware/http"
 	httpinterceptorprometheus_ "github.com/kaydxh/golang/pkg/middleware/http-middleware/monitor/prometheus"
 	httpinterceptorlimiter_ "github.com/kaydxh/golang/pkg/middleware/http-middleware/ratelimiter"
 )
@@ -154,6 +156,13 @@ func WithHttpHandlerInterceptorInOutputPrinterOptions() GRPCGatewayOption {
 func WithHttpHandlerInterceptorInOutputHeaderPrinterOptions() GRPCGatewayOption {
 	return WithHttpHandlerInterceptorOptions(http_.HandlerInterceptor{
 		Interceptor: httpinterceptordebug_.InOutputHeaderPrinter,
+	})
+}
+
+// timeout
+func WithHttpHandlerInterceptorTimeoutOptions(timeout time.Duration) GRPCGatewayOption {
+	return WithHttpHandlerInterceptorOptions(http_.HandlerInterceptor{
+		Interceptor: httpinterceptorhttp_.Timeout(timeout),
 	})
 }
 
