@@ -28,6 +28,8 @@ import (
 	"os/exec"
 	"syscall"
 	"time"
+
+	context_ "github.com/kaydxh/golang/go/context"
 )
 
 type CommandBuilder struct {
@@ -47,20 +49,27 @@ func NewCommandBuilder(
 	return c, nil
 }
 
+// Exec return output result, err messgae, error
+func (c *CommandBuilder) Exec(cmdName string,
+	args ...string,
+) (string, string, error) {
+	return Exec(c.opts.Timeout, cmdName, args...)
+}
+
 //timout ms
 func Exec(
 	timeout time.Duration,
-	name string,
+	cmdName string,
 	args ...string,
 ) (string, string, error) {
-	ctx, cancel := context.WithTimeout(
+	ctx, cancel := context_.WithTimeout(
 		context.Background(),
-		time.Duration(timeout)*time.Millisecond,
+		timeout,
 	)
 	defer cancel()
 
 	var stdout, stderr bytes.Buffer
-	args = append([]string{"-c", name}, args...)
+	args = append([]string{"-c", cmdName}, args...)
 	cmd := exec.CommandContext(ctx, "/bin/sh", args...)
 	cmd.Stdout, cmd.Stderr = &stdout, &stderr
 	cmd.SysProcAttr = &syscall.SysProcAttr{Setpgid: true}
