@@ -31,7 +31,7 @@ import (
 
 func TestExec(t *testing.T) {
 	cmd := fmt.Sprintf(`ps -elf`)
-	timeout := 5000 //ms
+	timeout := 5 * time.Second //ms
 	result, msg, err := exec_.Exec(time.Duration(timeout), cmd)
 	if err != nil {
 		t.Errorf("expect nil, got %v, msg: %v", err, msg)
@@ -40,8 +40,9 @@ func TestExec(t *testing.T) {
 }
 
 func TestExecTimeout(t *testing.T) {
+	// sleep 2s
 	cmd := fmt.Sprintf(`sleep 2`)
-	timeout := 1000 //ms
+	timeout := time.Second
 	result, msg, err := exec_.Exec(time.Duration(timeout), cmd)
 	if err != nil {
 		t.Errorf("expect nil, got %v, msg: %v", err, msg)
