@@ -77,3 +77,27 @@ func TestParseNum(t *testing.T) {
 	}
 
 }
+
+func TestParseNums(t *testing.T) {
+
+	testCases := []struct {
+		strs     []string
+		expected string
+	}{
+		{
+			strs:     []string{"12345"},
+			expected: "",
+		},
+	}
+
+	for i, testCase := range testCases {
+		t.Run(fmt.Sprintf("%d", i), func(t *testing.T) {
+			nums, err := strconv_.ParseNums(testCase.strs, strconv_.ToInt)
+			if err != nil {
+				t.Errorf("expecet nil, got %v", err)
+			}
+			t.Logf("get nums: %v", nums)
+		})
+	}
+
+}
