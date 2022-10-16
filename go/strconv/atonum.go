@@ -29,8 +29,17 @@ import (
 func ToFloat(str string) (float64, error) {
 	return strconv.ParseFloat(str, 64)
 }
+
 func ToInt(str string) (int, error) {
 	return strconv.Atoi(str)
+}
+
+func ToInt64(str string) (int64, error) {
+  return  strconv.ParseInt(str, 10, 64)
+}
+
+func ToUInt64(str string) (uint64, error) {
+  return  strconv.ParseUint(str, 10, 64)
 }
 
 func ParseNumOrDefault[T any](str string, _default T, convert func(string) (T, error)) T {
@@ -51,4 +60,20 @@ func ParseNum[T any](str string, convert func(string) (T, error)) (T, error) {
 		return t,  fmt.Errorf("string is empty")
 	}
 	return convert(str)
+}
+
+func ParseNums[T any](strs []string, convert func(string) (T, error)) ([]T, error) {
+    var ts []T
+	if len(strs) == 0{
+		return ts,  fmt.Errorf("string is empty")
+	}
+
+	for _, str := range strs {
+	  t, err := convert(str)
+	  if err != nil {
+		return nil, err
+	  }
+	  ts = append(ts, t)
+	}
+	return  ts, nil
 }
