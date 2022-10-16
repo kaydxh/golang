@@ -24,6 +24,7 @@ package strings_test
 import (
 	"testing"
 
+	strconv_ "github.com/kaydxh/golang/go/strconv"
 	strings_ "github.com/kaydxh/golang/go/strings"
 	"github.com/stretchr/testify/assert"
 )
@@ -118,6 +119,40 @@ func TestSplit(t *testing.T) {
 		t.Run(testCase.s, func(t *testing.T) {
 			ss := strings_.SplitOmitEmpty(testCase.s, testCase.sep)
 			t.Logf("ss: %v. len(ss): %v", ss, len(ss))
+
+		})
+
+	}
+
+}
+
+func TestSplitToNums(t *testing.T) {
+	testCases := []struct {
+		s   string
+		sep string
+	}{
+		{
+			s:   "1,2,3,4",
+			sep: ",",
+		},
+		{
+			s:   "1,2,3,4,",
+			sep: ",",
+		},
+		{
+			s:   "1,2,3,4,a",
+			sep: ",",
+		},
+	}
+
+	for _, testCase := range testCases {
+		t.Run(testCase.s, func(t *testing.T) {
+			nums, err := strings_.SplitToNums(testCase.s, testCase.sep, strconv_.ToInt64)
+			if err != nil {
+				t.Errorf("failed to split to nums, err: %v", err)
+				return
+			}
+			t.Logf("got nums %v", nums)
 
 		})
 
