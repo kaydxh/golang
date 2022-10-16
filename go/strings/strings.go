@@ -25,6 +25,8 @@ import (
 	"fmt"
 	"strings"
 	"unicode/utf8"
+
+	strconv_ "github.com/kaydxh/golang/go/strconv"
 )
 
 func GetStringOrFallback(values ...string) string {
@@ -152,4 +154,19 @@ func SplitOmitEmpty(s, sep string) []string {
 	}
 
 	return res
+}
+
+// Split2 returns the values from strings.SplitN(s, sep, 2).
+// If sep is not found, it returns ("", "", false) instead.
+func Split2(s, sep string) (string, string, bool) {
+	spl := strings.SplitN(s, sep, 2)
+	if len(spl) < 2 {
+		return "", "", false
+	}
+	return spl[0], spl[1], true
+}
+
+func SplitToNums[T any](s, sep string, convert func(string) (T, error)) ([]T, error) {
+	ss := SplitOmitEmpty(s, sep)
+	return strconv_.ParseNums(ss, convert)
 }
