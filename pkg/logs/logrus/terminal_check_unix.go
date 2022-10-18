@@ -1,3 +1,7 @@
+//go:build (linux || aix || zos) && !js
+// +build linux aix zos
+// +build !js
+
 /*
  *Copyright (c) 2022, kaydxh
  *
@@ -19,8 +23,6 @@
  *OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  *SOFTWARE.
  */
-// +build linux aix zos
-// +build !js
 
 package logrus
 
