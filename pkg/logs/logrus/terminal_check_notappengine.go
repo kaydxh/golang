@@ -1,3 +1,6 @@
+//go:build !appengine && !js && !windows && !nacl && !plan9
+// +build !appengine,!js,!windows,!nacl,!plan9
+
 /*
  *Copyright (c) 2022, kaydxh
  *
@@ -19,7 +22,6 @@
  *OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  *SOFTWARE.
  */
-// +build !appengine,!js,!windows,!nacl,!plan9
 
 package logrus
 

@@ -1,3 +1,7 @@
+//go:build (darwin || dragonfly || freebsd || netbsd || openbsd) && !js
+// +build darwin dragonfly freebsd netbsd openbsd
+// +build !js
+
 /*
  *Copyright (c) 2022, kaydxh
  *
@@ -19,8 +23,6 @@
  *OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  *SOFTWARE.
  */
-// +build darwin dragonfly freebsd netbsd openbsd
-// +build !js
 
 package logrus
 
