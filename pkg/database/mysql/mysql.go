@@ -207,15 +207,15 @@ func (d *DB) GetDatabaseUntil(
 			if err == nil {
 				return db, nil
 
-			} else {
-				actualInterval, ok := exp.NextBackOff()
-				if !ok {
-					return nil, fmt.Errorf("get database fail after: %v", failAfter)
-				}
-
-				logrus.Infof("delay %v, try again", actualInterval)
-				time.Sleep(actualInterval)
 			}
+			actualInterval, ok := exp.NextBackOff()
+			if !ok {
+				return nil, fmt.Errorf("get database fail after: %v", failAfter)
+			}
+
+			logrus.Infof("delay %v, try again", actualInterval)
+			time.Sleep(actualInterval)
+
 		}
 	}
 }
