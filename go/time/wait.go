@@ -23,6 +23,7 @@ package time
 
 import (
 	"context"
+	"fmt"
 	"time"
 
 	runtime_ "github.com/kaydxh/golang/go/runtime"
@@ -34,15 +35,14 @@ import (
 // completes).
 func UntilWithContxt(
 	ctx context.Context,
-	f func(ctx context.Context), period time.Duration) {
-	JitterUntilWithContext(ctx, f, period, nil)
+	f func(ctx context.Context) error, period time.Duration) {
+	JitterUntilWithContext(ctx, f, period)
 }
 
 func JitterUntilWithContext(
 	ctx context.Context,
-	f func(ctx context.Context),
+	f func(ctx context.Context) error,
 	period time.Duration,
-	stopCh <-chan struct{},
 ) {
 	BackOffUntilWithContext(ctx, f,
 		NewExponentialBackOff(
@@ -52,17 +52,37 @@ func JitterUntilWithContext(
 			// ensure equal interval
 			WithExponentialBackOffOptionMultiplier(1),
 			WithExponentialBackOffOptionRandomizationFactor(0),
-		), true, stopCh)
+		), true, true)
 
 }
 
+func RetryWithContext(
+	ctx context.Context,
+	f func(ctx context.Context) error,
+	period time.Duration,
+	retryTimes int,
+) error {
+	return BackOffUntilWithContext(ctx, f,
+		NewExponentialBackOff(
+			// forever run
+			WithExponentialBackOffOptionMaxElapsedTime(0),
+			WithExponentialBackOffOptionInitialInterval(period),
+			// ensure equal interval
+			WithExponentialBackOffOptionMultiplier(1),
+			WithExponentialBackOffOptionRandomizationFactor(0),
+			WithExponentialBackOffOptionMaxElapsedCount(retryTimes),
+		), true, false)
+}
+
+// loop true  -> BackOffUntilWithContext return  until time expired
+// loop false ->  BackOffUntilWithContext return if f return nil,  or time expired
 func BackOffUntilWithContext(
 	ctx context.Context,
-	f func(ctx context.Context),
+	f func(ctx context.Context) error,
 	backoff Backoff,
 	sliding bool,
-	stopCh <-chan struct{},
-) {
+	loop bool,
+) (err error) {
 	var (
 		t       time.Duration
 		remain  time.Duration
@@ -72,9 +92,7 @@ func BackOffUntilWithContext(
 	for {
 		select {
 		case <-ctx.Done():
-			return
-		case <-stopCh:
-			return
+			return fmt.Errorf("context cancelled: %v", ctx.Err())
 		default:
 		}
 
@@ -86,8 +104,14 @@ func BackOffUntilWithContext(
 
 		func() {
 			defer runtime_.Recover()
-			f(ctx)
+			err = f(ctx)
 		}()
+
+		if !loop {
+			if err == nil {
+				return nil
+			}
+		}
 
 		if sliding {
 			// If sliding is true, the period is computed after f runs
@@ -95,7 +119,7 @@ func BackOffUntilWithContext(
 			t, expired = backoff.NextBackOff()
 		}
 		if !expired {
-			return
+			return fmt.Errorf("got max wait time or max count")
 		}
 
 		remain = t - tc.Elapse()
@@ -116,8 +140,6 @@ func BackOffUntilWithContext(
 
 			select {
 			case <-ctx.Done():
-				return
-			case <-stopCh:
 				return
 			case <-timer.C:
 			}
