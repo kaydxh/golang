@@ -127,7 +127,7 @@ func TestRetryWithContext(t *testing.T) {
 			retryTime: 0,
 			f: func(context.Context) error {
 				time.Sleep(time.Second)
-				fmt.Println("test-sliding")
+				fmt.Println("test-retry-error-sliding")
 				return fmt.Errorf("error")
 			},
 		},
