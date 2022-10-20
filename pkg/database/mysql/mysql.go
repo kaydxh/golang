@@ -28,7 +28,6 @@ import (
 	"time"
 
 	_ "github.com/go-sql-driver/mysql"
-	"github.com/sirupsen/logrus"
 
 	"github.com/jmoiron/sqlx"
 	time_ "github.com/kaydxh/golang/go/time"
@@ -192,32 +191,24 @@ func (d *DB) GetDatabaseUntil(
 	maxWaitInterval time.Duration,
 	failAfter time.Duration,
 ) (*sqlx.DB, error) {
-
+	var db *sqlx.DB
 	exp := time_.NewExponentialBackOff(
 		time_.WithExponentialBackOffOptionMaxInterval(maxWaitInterval),
 		time_.WithExponentialBackOffOptionMaxElapsedTime(failAfter),
 	)
-	for {
-		select {
-		case <-ctx.Done():
-			return nil, fmt.Errorf("cancel get database: %v", ctx.Err())
-
-		default:
-			db, err := d.GetDatabase()
-			if err == nil {
-				return db, nil
-
-			}
-			actualInterval, ok := exp.NextBackOff()
-			if !ok {
-				return nil, fmt.Errorf("get database fail after: %v", failAfter)
-			}
-
-			logrus.Infof("delay %v, try again", actualInterval)
-			time.Sleep(actualInterval)
-
+	err := time_.BackOffUntilWithContext(ctx, func(ctx context.Context) (err_ error) {
+		db, err_ = d.GetDatabase()
+		if err_ != nil {
+			return err_
 		}
+		return nil
+	}, exp, true, false)
+	if err != nil {
+		return nil, fmt.Errorf("get database fail after: %v", failAfter)
 	}
+
+	return db, nil
+
 }
 
 func (d *DB) Close() error {
