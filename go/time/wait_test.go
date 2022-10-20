@@ -35,32 +35,49 @@ func TestBackOffUntilWithContext(t *testing.T) {
 		name    string
 		period  time.Duration
 		sliding bool
-		f       func(context.Context)
+		f       func(context.Context) error
+		loop    bool
 	}{
 		{
 			name:    "test-sliding",
 			period:  5 * time.Second,
 			sliding: true,
-			f: func(context.Context) {
+			f: func(context.Context) error {
 				time.Sleep(time.Second)
 				fmt.Println("test-sliding")
+				return nil
 			},
+			loop: true,
 		},
 		{
 			name:    "test-nonsliding",
 			sliding: false,
 			period:  5 * time.Second,
-			f: func(context.Context) {
+			f: func(context.Context) error {
+				time.Sleep(time.Second)
 				fmt.Println("test-nonsliding")
+				return nil
 			},
+			loop: true,
+		},
+		{
+			name:    "test-nonsliding",
+			sliding: false,
+			period:  5 * time.Second,
+			f: func(context.Context) error {
+				time.Sleep(time.Second)
+				fmt.Println("test-nonsliding")
+				return nil
+			},
+			loop: false,
 		},
 	}
 
 	for _, testCase := range testCases {
 		t.Run(testCase.name, func(t *testing.T) {
-			var stopCh chan struct{}
-			ctx, cancel := context.WithTimeout(context.Background(), 20*time.Second)
-			defer cancel()
+			//ctx, cancel := context.WithTimeout(context.Background(), 20*time.Second)
+			//defer cancel()
+			ctx := context.Background()
 
 			time_.BackOffUntilWithContext(
 				ctx,
@@ -68,13 +85,13 @@ func TestBackOffUntilWithContext(t *testing.T) {
 				time_.NewExponentialBackOff(
 					// forever run
 					//time_.WithExponentialBackOffOptionMaxElapsedTime(0),
-					time_.WithExponentialBackOffOptionMaxElapsedTime(time.Minute),
+					time_.WithExponentialBackOffOptionMaxElapsedTime(20*time.Second),
 					time_.WithExponentialBackOffOptionInitialInterval(testCase.period),
 					time_.WithExponentialBackOffOptionMultiplier(1),
 					time_.WithExponentialBackOffOptionRandomizationFactor(0),
 				),
 				testCase.sliding,
-				stopCh,
+				true,
 			)
 			/*
 				if err != nil {
@@ -82,6 +99,55 @@ func TestBackOffUntilWithContext(t *testing.T) {
 
 				}
 			*/
+
+		})
+	}
+}
+
+func TestRetryWithContext(t *testing.T) {
+	testCases := []struct {
+		name      string
+		period    time.Duration
+		retryTime int
+		f         func(context.Context) error
+	}{
+		{
+			name:      "test-retry-nil",
+			period:    5 * time.Second,
+			retryTime: 3,
+			f: func(context.Context) error {
+				time.Sleep(time.Second)
+				fmt.Println("test-sliding")
+				return nil
+			},
+		},
+		{
+			name:      "test-retry-error",
+			period:    5 * time.Second,
+			retryTime: 0,
+			f: func(context.Context) error {
+				time.Sleep(time.Second)
+				fmt.Println("test-sliding")
+				return fmt.Errorf("error")
+			},
+		},
+	}
+
+	for _, testCase := range testCases {
+		t.Run(testCase.name, func(t *testing.T) {
+			//ctx, cancel := context.WithTimeout(context.Background(), 20*time.Second)
+			//defer cancel()
+			ctx := context.Background()
+
+			err := time_.RetryWithContext(
+				ctx,
+				testCase.f,
+				testCase.period,
+				testCase.retryTime,
+			)
+			if err != nil {
+				t.Fatalf("failed to call RetryWithContext: %v, got : %s", testCase.name, err)
+			}
 
 		})
 	}

@@ -35,7 +35,7 @@ const (
 	DefaultMaxInterval     = 60 * time.Second
 	DefaultMinInterval     = DefaultInitialInterval
 	DefaultMaxElapsedTime  = 15 * time.Minute
-	DefaultMaxElapsedCount = 0
+	DefaultMaxElapsedCount = -1
 )
 
 type ExponentialBackOff struct {
@@ -52,7 +52,7 @@ type ExponentialBackOff struct {
 		// After MaxElapsedTime the ExponentialBackOff returns Stop.
 		// It never stops if MaxElapsedTime == 0.
 		MaxElapsedTime time.Duration
-		// It never stops if MaxElapsedCount   == 0.
+		// It never stops if MaxElapsedCount == -1.
 		MaxElapsedCount int
 		//notes: when to stop deps on which condition come first, MaxElapsedTime or MaxElapsedCount
 	}
@@ -66,6 +66,7 @@ func NewExponentialBackOff(opts ...ExponentialBackOffOption) *ExponentialBackOff
 	bo.opts.MaxInterval = DefaultMaxInterval
 	bo.opts.MinInterval = DefaultMinInterval
 	bo.opts.MaxElapsedTime = DefaultMaxElapsedTime
+	bo.opts.MaxElapsedCount = DefaultMaxElapsedCount
 
 	bo.ApplyOptions(opts...)
 	bo.Reset()
@@ -104,12 +105,11 @@ func (b *ExponentialBackOff) PreBackOff() (time.Duration, bool) {
 
 //  NextBackOff is get next time duration
 func (b *ExponentialBackOff) NextBackOff() (time.Duration, bool) {
+	b.elapsedCount++
 	nextRandomizedInterval, ok := b.validateAndGetNextInterval()
 	if !ok {
 		return nextRandomizedInterval, false
 	}
-
-	b.elapsedCount++
 
 	//update currentInterval
 	b.incrementCurrentInterval()
@@ -133,7 +133,7 @@ func (b *ExponentialBackOff) validateAndGetNextInterval() (time.Duration, bool) 
 		return nextRandomizedInterval, false
 	}
 
-	if b.opts.MaxElapsedCount > 0 && b.elapsedCount >= b.opts.MaxElapsedCount {
+	if b.opts.MaxElapsedCount > -1 && b.elapsedCount > b.opts.MaxElapsedCount {
 		return nextRandomizedInterval, false
 	}
 
