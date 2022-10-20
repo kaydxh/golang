@@ -27,6 +27,7 @@ import (
 	"time"
 
 	runtime_ "github.com/kaydxh/golang/go/runtime"
+	"github.com/sirupsen/logrus"
 )
 
 // Until loops until context timout, running f every period.
@@ -106,6 +107,7 @@ func BackOffUntilWithContext(
 		func() {
 			defer runtime_.Recover()
 			err = f(ctx)
+			logrus.Infof("finish call function, err[%v]", err)
 		}()
 
 		if !loop {
