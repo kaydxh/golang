@@ -58,3 +58,9 @@ func WithExponentialBackOffOptionMaxElapsedTime(maxElapsedTime time.Duration) Ex
 		opt.opts.MaxElapsedTime = maxElapsedTime
 	})
 }
+
+func WithExponentialBackOffOptionMaxElapsedCount(maxElapsedCount int) ExponentialBackOffOption {
+	return ExponentialBackOffOptionFunc(func(opt *ExponentialBackOff) {
+		opt.opts.MaxElapsedCount = maxElapsedCount
+	})
+}
