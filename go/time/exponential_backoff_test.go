@@ -36,6 +36,7 @@ func TestExponentialBackOff(t *testing.T) {
 		testMultiplier          = 2.0
 		testMaxInterval         = 5 * time.Second
 		testMaxElapsedTime      = 15 * time.Minute
+		testMaxElasedCount      = 1
 	)
 
 	exp := time_.NewExponentialBackOff(
@@ -44,6 +45,7 @@ func TestExponentialBackOff(t *testing.T) {
 		time_.WithExponentialBackOffOptionMultiplier(testMultiplier),
 		time_.WithExponentialBackOffOptionMaxInterval(testMaxInterval),
 		time_.WithExponentialBackOffOptionMaxElapsedTime(testMaxElapsedTime),
+		time_.WithExponentialBackOffOptionMaxElapsedCount(testMaxElasedCount),
 	)
 
 	expectedResults := []time.Duration{500, 1000, 2000, 4000, 5000, 5000, 5000, 5000, 5000, 5000}

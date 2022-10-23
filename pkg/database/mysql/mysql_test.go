@@ -70,16 +70,18 @@ func TestGetDataBase(t *testing.T) {
 
 func TestGetDatabaseUntil(t *testing.T) {
 	testCases := []struct {
-		Address  string
-		DataName string
-		UserName string
-		Password string
+		Address     string
+		DataName    string
+		UserName    string
+		Password    string
+		DailTimeout time.Duration
 	}{
 		{
-			Address:  "127.0.0.1:3306",
-			DataName: "test",
-			UserName: "root",
-			Password: "123456",
+			Address:     "127.0.0.1:3306",
+			DataName:    "test",
+			UserName:    "root",
+			Password:    "123456",
+			DailTimeout: 3 * time.Second,
 		},
 	}
 
@@ -90,7 +92,7 @@ func TestGetDatabaseUntil(t *testing.T) {
 				DataName: testCase.DataName,
 				UserName: testCase.UserName,
 				Password: testCase.Password,
-			})
+			}, mysql_.WithDialTimeout(testCase.DailTimeout))
 			sqlDB, err := db.GetDatabaseUntil(context.Background(), 5*time.Second, 20*time.Second)
 			if err != nil {
 				t.Fatalf("failed to get database: %v, got : %s", testCase.DataName, err)
