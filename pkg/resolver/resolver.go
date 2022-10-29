@@ -172,14 +172,15 @@ func (srv *ResolverService) Serve(ctx context.Context) error {
 	srv.cancel = cancel
 	srv.mu.Unlock()
 
-	time_.UntilWithContxt(ctx, func(ctx context.Context) {
+	time_.UntilWithContxt(ctx, func(ctx context.Context) error {
 		logger.Debugf("querying services")
 		err := srv.QueryServices()
 		if err != nil {
 			logger.WithError(err).Errorf("query services failed")
-			return
+			return err
 		}
 		logger.Debugf("query services")
+		return nil
 	}, srv.resolverInterval)
 	logger.Info("stopped query services")
 	return nil
