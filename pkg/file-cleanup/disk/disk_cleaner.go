@@ -188,12 +188,13 @@ func (s *DiskCleanerSerivce) Serve(ctx context.Context) error {
 	s.cancel = cancel
 	s.mu.Unlock()
 
-	time_.UntilWithContxt(ctx, func(ctx context.Context) {
+	time_.UntilWithContxt(ctx, func(ctx context.Context) error {
 		err := s.clean(ctx)
 		if err != nil {
 			logger.WithError(err).Errorf("failed to clean")
-			return
+			return err
 		}
+		return nil
 	}, s.opts.checkInterval)
 	if err := ctx.Err(); err != nil {
 		logger.WithError(err).Errorf("stopped checking")
