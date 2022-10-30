@@ -32,6 +32,7 @@ import (
 	rate_ "github.com/kaydxh/golang/go/time/rate"
 	interceptortcloud_ "github.com/kaydxh/golang/pkg/middleware/api/tcloud/v3.0"
 	interceptordebug_ "github.com/kaydxh/golang/pkg/middleware/grpc-middleware/debug"
+	interceptoropentelemetry_ "github.com/kaydxh/golang/pkg/middleware/grpc-middleware/monitor/opentelemetry"
 	interceptorprometheus_ "github.com/kaydxh/golang/pkg/middleware/grpc-middleware/monitor/prometheus"
 	interceptorratelimit_ "github.com/kaydxh/golang/pkg/middleware/grpc-middleware/ratelimit"
 
@@ -110,6 +111,16 @@ func WithServerUnaryInterceptorsCodeMessageOptions(enabledMetric bool) GRPCGatew
 	return GRPCGatewayOptionFunc(func(c *GRPCGateway) {
 		WithServerUnaryInterceptorsOptions(
 			interceptorprometheus_.UnaryServerInterceptorOfCodeMessage(enabledMetric),
+		).apply(
+			c,
+		)
+	})
+}
+
+func WithServerUnaryMetricInterceptorOptions() GRPCGatewayOption {
+	return GRPCGatewayOptionFunc(func(c *GRPCGateway) {
+		WithServerUnaryInterceptorsOptions(
+			interceptoropentelemetry_.UnaryServerMetricInterceptor(),
 		).apply(
 			c,
 		)
