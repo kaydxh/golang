@@ -267,6 +267,7 @@ func (c *Config) installGrpcMiddlewareChain() []gw_.GRPCGatewayOption {
 		gw_.WithServerUnaryInterceptorsCodeMessageOptions(
 			c.Proto.GetMonitor().GetPrometheus().GetEnabledMetricCodeMessage(),
 		),
+		gw_.WithServerUnaryMetricInterceptorOptions(),
 
 		// print input and output body
 		gw_.WithServerUnaryInterceptorsInOutPacketOptions(),

@@ -1,3 +1,6 @@
+//go:build linux
+// +build linux
+
 /*
  *Copyright (c) 2022, kaydxh
  *
@@ -19,7 +22,6 @@
  *OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  *SOFTWARE.
  */
-// +build linux
 
 package webserver
 
