@@ -30,6 +30,7 @@ import (
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	context_ "github.com/kaydxh/golang/go/context"
 	errors_ "github.com/kaydxh/golang/go/errors"
+	http_ "github.com/kaydxh/golang/go/net/http"
 	runtime_ "github.com/kaydxh/golang/go/runtime"
 	strings_ "github.com/kaydxh/golang/go/strings"
 	resource_ "github.com/kaydxh/golang/pkg/middleware/resource"
@@ -42,9 +43,9 @@ import (
 func HTTPError(ctx context.Context, mux *runtime.ServeMux,
 	marshaler runtime.Marshaler, w http.ResponseWriter, r *http.Request, err error) {
 
-	requestId := context_.ExtractStringFromContext(ctx, RequestIdKey)
+	requestId := context_.ExtractStringFromContext(ctx, http_.DefaultHTTPRequestIDKey)
 	if requestId == "" {
-		requestId = strings_.GetStringOrFallback(append(runtime_.GetMetadata(ctx, RequestIdKey), "")...)
+		requestId = strings_.GetStringOrFallback(append(runtime_.GetMetadata(ctx, http_.DefaultHTTPRequestIDKey), "")...)
 	}
 
 	func() {

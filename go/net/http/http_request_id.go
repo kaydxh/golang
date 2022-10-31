@@ -26,6 +26,7 @@ import (
 	"net/http"
 )
 
+// RequestIdKey is metadata key name for request ID
 const (
 	DefaultHTTPRequestIDKey = "X-Request-ID"
 )
