@@ -13,7 +13,6 @@ func UnaryServerMetricInterceptor() grpc.UnaryServerInterceptor {
 
 	return func(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (interface{}, error) {
 
-		peerAddr, _ := grpc_.GetIPFromContext(ctx)
 		var (
 			resp interface{}
 			err  error
@@ -28,11 +27,12 @@ func UnaryServerMetricInterceptor() grpc.UnaryServerInterceptor {
 			},
 		)
 		resource_.DefaultMetricMonitor.TotalReqCounter.Add(ctx, 1, attrs...)
-		if err == nil {
-			resource_.DefaultMetricMonitor.SuccCntCounter.Add(ctx, 1, attrs...)
+		if err != nil {
+			resource_.DefaultMetricMonitor.FailCntCounter.Add(ctx, 1, attrs...)
 		}
 
 		logger := logs_.GetLogger(ctx)
+		peerAddr, _ := grpc_.GetIPFromContext(ctx)
 		summary := func() {
 			logger.WithField(
 				"attrs",

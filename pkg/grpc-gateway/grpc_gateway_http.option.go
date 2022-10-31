@@ -30,9 +30,11 @@ import (
 	http_ "github.com/kaydxh/golang/go/net/http"
 	marshaler_ "github.com/kaydxh/golang/go/runtime/marshaler"
 	interceptortcloud3_ "github.com/kaydxh/golang/pkg/middleware/api/tcloud/v3.0"
+	noop_ "github.com/kaydxh/golang/pkg/middleware/api/trivial/noop"
 	interceptortrivialv1_ "github.com/kaydxh/golang/pkg/middleware/api/trivial/v1"
 	httpinterceptordebug_ "github.com/kaydxh/golang/pkg/middleware/http-middleware/debug"
 	httpinterceptorhttp_ "github.com/kaydxh/golang/pkg/middleware/http-middleware/http"
+	httpinterceptoropentelemetr_ "github.com/kaydxh/golang/pkg/middleware/http-middleware/monitor/opentelemetry"
 	httpinterceptorprometheus_ "github.com/kaydxh/golang/pkg/middleware/http-middleware/monitor/prometheus"
 	httpinterceptorlimiter_ "github.com/kaydxh/golang/pkg/middleware/http-middleware/ratelimiter"
 )
@@ -119,6 +121,13 @@ func WithServerInterceptorsTrivialV1HttpErrorOptions() GRPCGatewayOption {
 	})
 }
 
+//HTTP, only called by failed response
+func WithServerInterceptorsNoneHttpErrorOptions() GRPCGatewayOption {
+	return GRPCGatewayOptionFunc(func(c *GRPCGateway) {
+		WithGatewayMuxOptions(runtime.WithErrorHandler(noop_.HTTPError)).apply(c)
+	})
+}
+
 // WithHttpPreHandlerInterceptorOptions
 func WithHttpPreHandlerInterceptorOptions(
 	handlers ...func(w http.ResponseWriter, r *http.Request) error,
@@ -165,6 +174,12 @@ func WithHttpHandlerInterceptorRequestIDOptions() GRPCGatewayOption {
 func WithHttpHandlerInterceptorsTimerOptions(enabledMetric bool) GRPCGatewayOption {
 	return WithHttpHandlerInterceptorOptions(http_.HandlerInterceptor{
 		Interceptor: httpinterceptorprometheus_.InterceptorOfTimer(enabledMetric),
+	})
+}
+
+func WithHttpHandlerInterceptorsMetricOptions() GRPCGatewayOption {
+	return WithHttpHandlerInterceptorOptions(http_.HandlerInterceptor{
+		Interceptor: httpinterceptoropentelemetr_.Metric,
 	})
 }
 
