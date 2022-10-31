@@ -7,7 +7,7 @@ set -o errexit
 set -o nounset
 # Fail on any error.
 set -o pipefail
-set -o xtrace
+# set -o xtrace
 
 # example, generate golang proto files
 # bash go_proto_gen.sh -I . --proto_file_path pkg/webserver/webserver.proto --with-go
@@ -101,9 +101,8 @@ echo "==> Generating proto..."
 #proto_headers="-I ${SCRIPT_PATH}/../../third_party"
 #proto_headers="-I .. -I ${THIRD_PARTY_DIR}"
 # "-I ." need behind PROTO_HEADERS, or remove it
-proto_headers="${PROTO_HEADERS} -I ."
+proto_headers="${PROTO_HEADERS} -I `pwd`"
 proto_headers="${proto_headers} -I ${THIRD_PARTY_DIR}/github.com/grpc-ecosystem/grpc-gateway"
-# proto_headers="${proto_headers} -I ${SCRIPT_PATH}/../../third_party/github.com/grpc-ecosystem/grpc-gateway"
 source_relative_option="paths=source_relative:."
 go_opt_option=""
 go_out_option=""
