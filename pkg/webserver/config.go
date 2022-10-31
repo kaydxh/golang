@@ -253,7 +253,7 @@ func (c *Config) installHttpMiddlewareChain() []gw_.GRPCGatewayOption {
 
 	if httpConfig.GetEnableInoutputPrinter() {
 		opts = append(opts,
-			//inout header printer
+			// inout header printer
 			gw_.WithHttpHandlerInterceptorInOutputHeaderPrinterOptions(),
 			// print inoutput body
 			gw_.WithHttpHandlerInterceptorInOutputPrinterOptions(),
@@ -273,7 +273,7 @@ func (c *Config) installGrpcMiddlewareChain() []gw_.GRPCGatewayOption {
 		// recovery
 		gw_.WithServerInterceptorsRecoveryOptions(),
 
-		//requestId
+		// requestId
 		gw_.WithServerUnaryInterceptorsRequestIdOptions(),
 
 		// limit rate

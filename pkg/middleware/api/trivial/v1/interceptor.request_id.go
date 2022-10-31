@@ -25,14 +25,12 @@ import (
 	"context"
 
 	"github.com/google/uuid"
+	http_ "github.com/kaydxh/golang/go/net/http"
 	reflect_ "github.com/kaydxh/golang/go/reflect"
 	"github.com/sirupsen/logrus"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/metadata"
 )
-
-// RequestIdKey is metadata key name for request ID
-var RequestIdKey = "X-Request-ID"
 
 // UnaryServerInterceptorOfRequestId returns a new unary server interceptors with tags in context with request_id.
 func UnaryServerInterceptorOfRequestId() grpc.UnaryServerInterceptor {
@@ -47,12 +45,12 @@ func UnaryServerInterceptorOfRequestId() grpc.UnaryServerInterceptor {
 		}
 
 		//set "X-Request-ID" to context
-		ctx = context.WithValue(ctx, RequestIdKey, id)
+		ctx = context.WithValue(ctx, http_.DefaultHTTPRequestIDKey, id)
 		resp, err := handler(ctx, req)
 		// try set requestId to response
 		reflect_.TrySetId(req, reflect_.FieldNameSessionId, id)
 		// write RequestId to HTTP Header
-		if err_ := grpc.SetHeader(ctx, metadata.Pairs(RequestIdKey, id)); err_ != nil {
+		if err_ := grpc.SetHeader(ctx, metadata.Pairs(http_.DefaultHTTPRequestIDKey, id)); err_ != nil {
 			logrus.WithError(err_).WithField("request_id", id).Warningf("grpc.SendHeader, ignore")
 		}
 		return resp, err
