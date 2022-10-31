@@ -35,7 +35,7 @@ require (
 	go.opentelemetry.io/otel/sdk/metric v0.30.0
 	go.uber.org/atomic v1.7.0
 	golang.org/x/net v0.0.0-20220708220712-1185a9018129
-	golang.org/x/sys v0.0.0-20220715151400-c0bba94af5f8
+	golang.org/x/sys v0.0.0-20220722155257-8c9f86f7a55f
 	golang.org/x/text v0.3.7
 	golang.org/x/time v0.0.0-20220609170525-579cf78fd858
 	google.golang.org/api v0.84.0

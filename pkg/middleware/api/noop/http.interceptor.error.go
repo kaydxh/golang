@@ -19,24 +19,22 @@
  *OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  *SOFTWARE.
  */
-package v1
+package noop
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 	"net/http"
 
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	context_ "github.com/kaydxh/golang/go/context"
-	errors_ "github.com/kaydxh/golang/go/errors"
 	runtime_ "github.com/kaydxh/golang/go/runtime"
 	strings_ "github.com/kaydxh/golang/go/strings"
 	resource_ "github.com/kaydxh/golang/pkg/middleware/resource"
-
-	jsonpb_ "github.com/kaydxh/golang/pkg/protobuf/jsonpb"
-	"google.golang.org/protobuf/proto"
 )
+
+// RequestIdKey is metadata key name for request ID
+var RequestIdKey = "X-Request-ID"
 
 // HTTPError uses the mux-configured error handler.
 func HTTPError(ctx context.Context, mux *runtime.ServeMux,
@@ -57,29 +55,6 @@ func HTTPError(ctx context.Context, mux *runtime.ServeMux,
 		resource_.DefaultMetricMonitor.FailCntCounter.Add(ctx, 1, attrs...)
 	}()
 
-	errResponse := &TrivialErrorResponse{
-		ErrorCode: int32(errors_.ErrorToCode(err)),
-		ErrorMsg:  errors_.ErrorToString(err),
-		SessionId: requestId,
-	}
-
 	// ForwardResponseMessage forwards the message "resp" from gRPC server to REST client
-	runtime.ForwardResponseMessage(ctx, mux, marshaler, w, r, errResponse)
-}
-
-//cant not rewrite message, only append message to response
-func HTTPForwardResponse(ctx context.Context, r http.ResponseWriter, message proto.Message) error {
-	respStruct, err := jsonpb_.MarshaToStructpb(message)
-	if err != nil {
-		return err
-	}
-
-	jb, err := json.Marshal(respStruct)
-	if err != nil {
-		return fmt.Errorf("jsonpb.Marshal: %v", err)
-	}
-
-	r.Write(jb)
-
-	return nil
+	runtime.ForwardResponseMessage(ctx, mux, marshaler, w, r, nil)
 }

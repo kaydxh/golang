@@ -3,10 +3,9 @@ package resource
 import (
 	"fmt"
 
+	errors_ "github.com/kaydxh/golang/go/errors"
 	net_ "github.com/kaydxh/golang/go/net"
 	"go.opentelemetry.io/otel/attribute"
-	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/status"
 )
 
 //dims
@@ -34,13 +33,9 @@ func Attrs(dim Dimension) []attribute.KeyValue {
 	}
 
 	if dim.Error != nil {
-		var errCode codes.Code
-		s, _ := status.FromError(dim.Error)
-		if s != nil {
-			attrs = append(attrs, ErrorCodeKey.String(fmt.Sprintf("%d:%s", int64(errCode), s.Message())))
-		}
-	} else {
-		attrs = append(attrs, ErrorCodeKey.String(fmt.Sprintf("%d:%s", 0, "OK")))
+		errorCode := int64(errors_.ErrorToCode(dim.Error))
+		message := errors_.ErrorToString(dim.Error)
+		attrs = append(attrs, ErrorCodeKey.String(fmt.Sprintf("%d:%s", errorCode, message)))
 	}
 
 	return attrs

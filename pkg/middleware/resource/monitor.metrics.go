@@ -21,7 +21,7 @@ var (
 
 type MetricMonitor struct {
 	TotalReqCounter syncint64.Counter
-	SuccCntCounter  syncint64.Counter
+	FailCntCounter  syncint64.Counter
 }
 
 var (
@@ -43,7 +43,7 @@ func NewMetricMonitor() *MetricMonitor {
 		m.TotalReqCounter, err = meter.SyncInt64().Counter("total_req")
 	})
 	call(func() {
-		m.SuccCntCounter, err = meter.SyncInt64().Counter("succ_cnt")
+		m.FailCntCounter, err = meter.SyncInt64().Counter("fail_cnt")
 	})
 	if err != nil {
 		otel.Handle(err)
