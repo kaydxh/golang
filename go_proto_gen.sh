@@ -1,0 +1,1 @@
+script/go_proto_gen.sh
