@@ -219,6 +219,8 @@ func (c *Config) installHttpMiddlewareChain() []gw_.GRPCGatewayOption {
 			c.Proto.GetMonitor().GetPrometheus().GetEnabledMetricTimerCost(),
 		),
 
+		gw_.WithHttpHandlerInterceptorsMetricOptions(),
+
 		// limit rate
 		gw_.WithHttpHandlerInterceptorsLimitAllOptions(
 			int(httpConfig.GetMaxConcurrency()),
@@ -232,6 +234,23 @@ func (c *Config) installHttpMiddlewareChain() []gw_.GRPCGatewayOption {
 	)
 
 	//options
+	switch httpConfig.GetApiFormatter() {
+	case Web_Http_tcloud_api_v30:
+		opts = append(opts,
+			gw_.WithServerInterceptorsTCloud30HTTPResponseOptions(),
+			gw_.WithServerInterceptorsTCloud30HttpErrorOptions(),
+		)
+	case Web_Http_trivial_api_v10:
+		opts = append(opts,
+			gw_.WithServerInterceptorsTrivialV1HTTPResponseOptions(),
+			gw_.WithServerInterceptorsTrivialV1HttpErrorOptions(),
+		)
+	default:
+		opts = append(opts,
+			gw_.WithServerInterceptorsNoneHttpErrorOptions(),
+		)
+	}
+
 	if httpConfig.GetEnableInoutputPrinter() {
 		opts = append(opts,
 			//inout header printer
