@@ -4,6 +4,7 @@ import (
 	"context"
 
 	grpc_ "github.com/kaydxh/golang/go/net/grpc"
+	time_ "github.com/kaydxh/golang/go/time"
 	logs_ "github.com/kaydxh/golang/pkg/logs"
 	resource_ "github.com/kaydxh/golang/pkg/middleware/resource"
 	"google.golang.org/grpc"
@@ -18,32 +19,28 @@ func UnaryServerMetricInterceptor() grpc.UnaryServerInterceptor {
 			err  error
 		)
 
+		tc := time_.New(true)
 		resp, err = handler(ctx, req)
 
-		func() {
-			attrs := resource_.Attrs(
-				resource_.Dimension{
-					CalleeMethod: info.FullMethod,
-					Error:        err,
-				},
-			)
-			resource_.DefaultMetricMonitor.TotalReqCounter.Add(ctx, 1, attrs...)
-			if err != nil {
-				resource_.DefaultMetricMonitor.FailCntCounter.Add(ctx, 1, attrs...)
-			}
-		}()
+		resource_.ReportMetric(ctx,
+			resource_.Dimension{
+				CalleeMethod: info.FullMethod,
+				Error:        err,
+			},
+			tc.Elapse(),
+		)
+		tc.Tick(info.FullMethod)
 
 		logger := logs_.GetLogger(ctx)
 		peerAddr, _ := grpc_.GetIPFromContext(ctx)
 		summary := func() {
-			logger.Infof(
+			logger.WithField("cost", tc.String()).Infof(
 				"called by peer addr: %v",
 				peerAddr.String(),
 			)
 		}
 		defer summary()
 
-		resp, err = handler(ctx, req)
 		return resp, err
 	}
 }
