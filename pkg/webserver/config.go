@@ -214,23 +214,12 @@ func (c *Config) installHttpMiddlewareChain() []gw_.GRPCGatewayOption {
 		// http body proto
 		gw_.WithServerInterceptorsHttpBodyProtoOptions(),
 
-		// time cost
-		gw_.WithHttpHandlerInterceptorsTimerOptions(
-			c.Proto.GetMonitor().GetPrometheus().GetEnabledMetricTimerCost(),
-		),
-
 		gw_.WithHttpHandlerInterceptorsMetricOptions(),
 
 		// limit rate
 		gw_.WithHttpHandlerInterceptorsLimitAllOptions(
 			int(httpConfig.GetMaxConcurrency()),
 		),
-
-		/*
-			gw_.WithHttpHandlerInterceptorTimeoutOptions(
-				httpConfig.GetTimeout().AsDuration(),
-			),
-		*/
 	)
 
 	//options
@@ -282,10 +271,7 @@ func (c *Config) installGrpcMiddlewareChain() []gw_.GRPCGatewayOption {
 			int(grpcConfig.GetMaxConcurrencyStream()),
 		),
 
-		// metric for code,message and client ip
-		gw_.WithServerUnaryInterceptorsCodeMessageOptions(
-			c.Proto.GetMonitor().GetPrometheus().GetEnabledMetricCodeMessage(),
-		),
+		// total req, fail req, cost time metrics, errorcode ip dims
 		gw_.WithServerUnaryMetricInterceptorOptions(),
 
 		// print input and output body
@@ -293,14 +279,6 @@ func (c *Config) installGrpcMiddlewareChain() []gw_.GRPCGatewayOption {
 
 		gw_.WithServerInterceptorTimeoutOptions(grpcConfig.GetTimeout().AsDuration()),
 	)
-
-	/*
-		// time cost
-		opts = append(
-			opts,
-			gw_.WithServerUnaryInterceptorsTimerOptions(c.Proto.GetMonitor().GetPrometheus().GetEnabledMetricTimerCost()),
-		)
-	*/
 
 	return opts
 }
