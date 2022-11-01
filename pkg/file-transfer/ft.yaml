@@ -2,3 +2,7 @@ filetransfer:
     enabled: true
     download_timeout : 10s
     upload_timeout : 0s
+    load_balance_mode: load_balance_mode_first 
+    proxies:
+      - target_addr: "dns://127.0.0.1:80"
+        target_url: "dns://127.0.0.1:80"

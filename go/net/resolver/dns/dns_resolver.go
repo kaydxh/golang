@@ -104,7 +104,7 @@ type dnsBuilder struct{}
 func (b *dnsBuilder) Build(target resolver.Target, opts ...resolver.ResolverBuildOption) (resolver.Resolver, error) {
 	var opt resolver.ResolverBuildOptions
 	opt.ApplyOptions(opts...)
-	host, port, err := parseTarget(target.Endpoint, defaultPort)
+	host, port, err := parseTarget(target.URL.Host, defaultPort)
 	if err != nil {
 		return nil, err
 	}
@@ -116,7 +116,9 @@ func (b *dnsBuilder) Build(target resolver.Target, opts ...resolver.ResolverBuil
 		if cc != nil {
 			cc.UpdateState(resolver.State{Addresses: addr})
 		}
-		return deadResolver{}, nil
+		return deadResolver{
+			addrs: addr,
+		}, nil
 	}
 
 	// DNS address (non-IP).
@@ -161,11 +163,55 @@ type deadResolver struct {
 }
 
 func (d deadResolver) ResolveOne(opts ...resolver.ResolveOneOption) (resolver.Address, error) {
-	return resolver.Address{}, nil
+	var opt resolver.ResolveOneOptions
+	opt.ApplyOptions(opts...)
+
+	addrs, err := d.ResolveAll(resolver.WithIPTypeForResolveAll(opt.IPType))
+	if err != nil {
+		return resolver.Address{}, err
+	}
+
+	switch opt.PickMode {
+	case resolver.Resolver_pick_mode_random:
+		return addrs[rand_.Intn(len(addrs))], nil
+	case resolver.Resolver_pick_mode_first:
+		return addrs[0], nil
+	default:
+		return addrs[rand_.Intn(len(addrs))], nil
+
+	}
 }
 
 func (d deadResolver) ResolveAll(opts ...resolver.ResolveAllOption) ([]resolver.Address, error) {
-	return nil, nil
+	var opt resolver.ResolveAllOptions
+	opt.ApplyOptions(opts...)
+	if len(d.addrs) == 0 {
+		return nil, fmt.Errorf("resolve target's addresses are empty")
+	}
+
+	var pickAddrs []resolver.Address
+	if opt.IPType == resolver.Resolver_ip_type_all {
+		pickAddrs = d.addrs
+	} else {
+		for _, addr := range d.addrs {
+			v4 := (opt.IPType == resolver.Resolver_ip_type_v4)
+			ip, _, _ := net_.SplitHostIntPort(addr.Addr)
+			if net_.IsIPv4String(ip) {
+				if v4 {
+					pickAddrs = append(pickAddrs, addr)
+				}
+			} else {
+				//v6
+				if !v4 {
+					pickAddrs = append(pickAddrs, addr)
+				}
+			}
+		}
+	}
+	if len(pickAddrs) == 0 {
+		return nil, fmt.Errorf("resolve target's addresses type[%v] are empty", opt.IPType)
+	}
+	return pickAddrs, nil
 }
 
 func (deadResolver) ResolveNow(opts ...resolver.ResolveNowOption) {}

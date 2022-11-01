@@ -10,9 +10,21 @@ message Ft {
   google.protobuf.Duration download_timeout = 2;
   google.protobuf.Duration upload_timeout = 3;
 
+  // 当有多个代理地址时，代理模式, use proxy mode
+  LoadBalanceMode load_balance_mode = 4;
+  enum LoadBalanceMode {
+    load_balance_mode_first = 0;
+    load_balance_mode_random = 1;
+  }
+
   repeated Proxy proxies = 10;
   message Proxy {
-    // proxy address
-    string addr = 1;
+    // target_addr即将url中的域名地址改为target_addr进行转发，
+    // target_url 第三方代理代理进行下载, 如socks5://127.0.0.1:8080
+    // reset dns to target_addr in url
+    string target_addr = 1;
+
+    // reset url to target url
+    string target_url = 2;
   }
 }

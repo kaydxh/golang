@@ -69,7 +69,11 @@ func (c *completedConfig) New(ctx context.Context) (*FileTransfer, error) {
 }
 
 func (c *completedConfig) install(ctx context.Context) (*FileTransfer, error) {
-	ft := NewFileTransfer(WithDownloadTimeout(c.Proto.GetDownloadTimeout().AsDuration()))
+	ft := NewFileTransfer(
+		WithDownloadTimeout(c.Proto.GetDownloadTimeout().AsDuration()),
+		WithLoadBalanceMode(c.Proto.LoadBalanceMode),
+		WithProxies(c.Proto.Proxies),
+	)
 	return ft, nil
 }
 
