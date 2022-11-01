@@ -28,3 +28,15 @@ func WithDownloadTimeout(downloadTimeout time.Duration) FileTransferOption {
 		r.opts.downloadTimeout = downloadTimeout
 	})
 }
+
+func WithLoadBalanceMode(mode Ft_LoadBalanceMode) FileTransferOption {
+	return FileTransferOptionFunc(func(r *FileTransfer) {
+		r.opts.loadBalanceMode = mode
+	})
+}
+
+func WithProxies(proxies []*Ft_Proxy) FileTransferOption {
+	return FileTransferOptionFunc(func(r *FileTransfer) {
+		r.opts.proxies = proxies
+	})
+}

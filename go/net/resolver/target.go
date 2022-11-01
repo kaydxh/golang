@@ -53,6 +53,7 @@ type Target struct {
 // parseTarget uses RFC 3986 semantics to parse the given target into a
 // resolver.Target struct containing scheme, authority and endpoint. Query
 // params are stripped from the endpoint.
+// use URL first
 func ParseTarget(target string) (Target, error) {
 	u, err := url.Parse(target)
 	if err != nil {

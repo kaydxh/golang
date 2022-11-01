@@ -23,6 +23,7 @@ package filetransfer
 
 import (
 	"context"
+	"math/rand"
 	"time"
 
 	context_ "github.com/kaydxh/golang/go/context"
@@ -35,8 +36,9 @@ type FileTransferOptions struct {
 	// 0 means no timeout
 	downloadTimeout time.Duration
 	uploadTimeout   time.Duration
+	loadBalanceMode Ft_LoadBalanceMode
 
-	Proxies []*Ft_Proxy
+	proxies []*Ft_Proxy
 }
 
 func defaultFileTransferOptions() FileTransferOptions {
@@ -54,6 +56,20 @@ func NewFileTransfer(opts ...FileTransferOption) *FileTransfer {
 	return ft
 }
 
+func (f *FileTransfer) getProxy() *Ft_Proxy {
+	proxies := f.opts.proxies
+	if len(proxies) == 0 {
+		return &Ft_Proxy{}
+	}
+
+	switch f.opts.loadBalanceMode {
+	case Ft_load_balance_mode_random:
+		return proxies[rand.Intn(len(proxies))]
+	default:
+		return proxies[0]
+	}
+}
+
 func (f *FileTransfer) Download(ctx context.Context, downloadUrl string) (data []byte, err error) {
 	spanName := "Download"
 	ctx, span := otel.Tracer("").Start(ctx, spanName)
@@ -64,7 +80,16 @@ func (f *FileTransfer) Download(ctx context.Context, downloadUrl string) (data [
 	ctx, cancel := context_.WithTimeout(ctx, f.opts.downloadTimeout)
 	defer cancel()
 
-	client, err := http_.NewClient(http_.WithTimeout(f.opts.downloadTimeout))
+	proxy := f.getProxy()
+
+	var opts []http_.ClientOption
+	if proxy.TargetAddr != "" {
+		opts = append(opts, http_.WithProxyTarget(proxy.TargetAddr))
+	} else if proxy.TargetUrl != "" {
+		opts = append(opts, http_.WithProxy(proxy.TargetUrl))
+	}
+	opts = append(opts, http_.WithTimeout(f.opts.downloadTimeout))
+	client, err := http_.NewClient(opts...)
 	if err != nil {
 		logger.WithError(err).Errorf("new http client err: %v", err)
 		return nil, err
