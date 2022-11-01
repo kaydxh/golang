@@ -31,14 +31,12 @@ var (
 func NewMetricMonitor() *MetricMonitor {
 	var err error
 	m := &MetricMonitor{}
-
 	call := func(f func()) {
 		if err != nil {
 			return
 		}
 		f()
 	}
-
 	call(func() {
 		m.TotalReqCounter, err = meter.SyncInt64().Counter("total_req")
 	})

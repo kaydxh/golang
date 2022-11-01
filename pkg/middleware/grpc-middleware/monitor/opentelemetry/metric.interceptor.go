@@ -20,24 +20,23 @@ func UnaryServerMetricInterceptor() grpc.UnaryServerInterceptor {
 
 		resp, err = handler(ctx, req)
 
-		attrs := resource_.Attrs(
-			resource_.Dimension{
-				CalleeMethod: info.FullMethod,
-				Error:        err,
-			},
-		)
-		resource_.DefaultMetricMonitor.TotalReqCounter.Add(ctx, 1, attrs...)
-		if err != nil {
-			resource_.DefaultMetricMonitor.FailCntCounter.Add(ctx, 1, attrs...)
-		}
+		func() {
+			attrs := resource_.Attrs(
+				resource_.Dimension{
+					CalleeMethod: info.FullMethod,
+					Error:        err,
+				},
+			)
+			resource_.DefaultMetricMonitor.TotalReqCounter.Add(ctx, 1, attrs...)
+			if err != nil {
+				resource_.DefaultMetricMonitor.FailCntCounter.Add(ctx, 1, attrs...)
+			}
+		}()
 
 		logger := logs_.GetLogger(ctx)
 		peerAddr, _ := grpc_.GetIPFromContext(ctx)
 		summary := func() {
-			logger.WithField(
-				"attrs",
-				attrs,
-			).Infof(
+			logger.Infof(
 				"called by peer addr: %v",
 				peerAddr.String(),
 			)

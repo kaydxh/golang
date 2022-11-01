@@ -5,6 +5,7 @@ import (
 
 	errors_ "github.com/kaydxh/golang/go/errors"
 	net_ "github.com/kaydxh/golang/go/net"
+	app_ "github.com/kaydxh/golang/pkg/webserver/app"
 	"go.opentelemetry.io/otel/attribute"
 )
 
@@ -36,6 +37,11 @@ func Attrs(dim Dimension) []attribute.KeyValue {
 		errorCode := int64(errors_.ErrorToCode(dim.Error))
 		message := errors_.ErrorToString(dim.Error)
 		attrs = append(attrs, ErrorCodeKey.String(fmt.Sprintf("%d:%s", errorCode, message)))
+	}
+
+	appName := app_.GetVersion().AppName
+	if appName != "" {
+		attrs = append(attrs, ServerNameKey.String(appName))
 	}
 
 	return attrs
