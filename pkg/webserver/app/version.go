@@ -34,6 +34,7 @@ type Version struct {
 	GoVersion    string `json:"goVersion"`
 	Compiler     string `json:"compiler"`
 	Platform     string `json:"platform"`
+	AppName      string `json:"appName"`
 }
 
 // String returns info as a human-friendly version string.
@@ -60,6 +61,7 @@ var (
 	gitTreeState string = ""            // state of git tree, either "clean" or "dirty"
 
 	buildDate string = "1970-01-01T00:00:00Z" // build date in ISO8601 format, output of $(date -u +'%Y-%m-%dT%H:%M:%SZ')
+	appName   string = ""                     // app name
 )
 
 func GetVersion() Version {
@@ -73,5 +75,6 @@ func GetVersion() Version {
 		GoVersion:    runtime.Version(),
 		Compiler:     runtime.Compiler,
 		Platform:     fmt.Sprintf("%s/%s", runtime.GOOS, runtime.GOARCH),
+		AppName:      appName,
 	}
 }
