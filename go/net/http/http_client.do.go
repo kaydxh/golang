@@ -27,18 +27,28 @@ import (
 )
 
 func (c *Client) get(url string) (*http.Response, error) {
-	req, err := http.NewRequest(http.MethodGet, url, nil)
-	if err != nil {
-		return nil, err
-	}
-	return c.Do(req)
+	return c.HttpDo(http.MethodGet, url, "", nil, nil, nil)
 }
 
 func (c *Client) post(url string, contentType string, headers map[string]string,
 	auth func(r *http.Request) error,
 	body io.Reader,
 ) (*http.Response, error) {
-	req, err := http.NewRequest(http.MethodPost, url, body)
+	return c.HttpDo(http.MethodPost, url, contentType, headers, auth, body)
+}
+
+func (c *Client) put(url string, contentType string, headers map[string]string,
+	auth func(r *http.Request) error,
+	body io.Reader,
+) (*http.Response, error) {
+	return c.HttpDo(http.MethodPut, url, contentType, headers, auth, body)
+}
+
+func (c *Client) HttpDo(method string, url string, contentType string, headers map[string]string,
+	auth func(r *http.Request) error,
+	body io.Reader,
+) (*http.Response, error) {
+	req, err := http.NewRequest(method, url, body)
 	if err != nil {
 		return nil, err
 	}
