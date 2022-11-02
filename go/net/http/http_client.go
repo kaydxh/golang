@@ -173,6 +173,15 @@ func (c *Client) Post(
 	return c.PostReader(url, contentType, headers, nil, bodyReader)
 }
 
+func (c *Client) Put(
+	url, contentType string,
+	headers map[string]string,
+	body []byte,
+) ([]byte, error) {
+	bodyReader := bytes.NewReader(body)
+	return c.PutReader(url, contentType, headers, nil, bodyReader)
+}
+
 func (c *Client) PostJson(
 	url string,
 	headers map[string]string,
@@ -207,7 +216,25 @@ func (c *Client) PostReader(
 	auth func(r *http.Request) error,
 	body io.Reader,
 ) ([]byte, error) {
-	r, err := c.post(url, contentType, headers, auth, body)
+	return c.HttpReader(http.MethodPost, url, contentType, headers, auth, body)
+}
+
+func (c *Client) PutReader(
+	url, contentType string,
+	headers map[string]string,
+	auth func(r *http.Request) error,
+	body io.Reader,
+) ([]byte, error) {
+	return c.HttpReader(http.MethodPut, url, contentType, headers, auth, body)
+}
+
+func (c *Client) HttpReader(
+	method, url, contentType string,
+	headers map[string]string,
+	auth func(r *http.Request) error,
+	body io.Reader,
+) ([]byte, error) {
+	r, err := c.HttpDo(method, url, contentType, headers, auth, body)
 	if err != nil {
 		return nil, err
 	}
