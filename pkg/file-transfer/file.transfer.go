@@ -26,8 +26,8 @@ import (
 	"math/rand"
 	"time"
 
-	context_ "github.com/kaydxh/golang/go/context"
 	http_ "github.com/kaydxh/golang/go/net/http"
+	time_ "github.com/kaydxh/golang/go/time"
 	"github.com/sirupsen/logrus"
 	"go.opentelemetry.io/otel"
 )
@@ -37,6 +37,9 @@ type FileTransferOptions struct {
 	downloadTimeout time.Duration
 	uploadTimeout   time.Duration
 	loadBalanceMode Ft_LoadBalanceMode
+	retryTimes      int
+	// retry interval, 0 means retry immediately
+	retryInterval time.Duration
 
 	proxies []*Ft_Proxy
 }
@@ -77,9 +80,6 @@ func (f *FileTransfer) Download(ctx context.Context, downloadUrl string) (data [
 
 	logger := logrus.WithField("trace_id", span.SpanContext().TraceID()).WithField("span_id", span.SpanContext().SpanID()).WithField("download_url", downloadUrl)
 
-	ctx, cancel := context_.WithTimeout(ctx, f.opts.downloadTimeout)
-	defer cancel()
-
 	proxy := f.getProxy()
 
 	var opts []http_.ClientOption
@@ -89,16 +89,21 @@ func (f *FileTransfer) Download(ctx context.Context, downloadUrl string) (data [
 		opts = append(opts, http_.WithProxy(proxy.TargetUrl))
 	}
 	opts = append(opts, http_.WithTimeout(f.opts.downloadTimeout))
-	client, err := http_.NewClient(opts...)
-	if err != nil {
-		logger.WithError(err).Errorf("new http client err: %v", err)
-		return nil, err
-	}
-	data, err = client.Get(downloadUrl)
-	if err != nil {
-		logger.WithError(err).Errorf("http client get err: %v", err)
-		return nil, err
-	}
+
+	time_.RetryWithContext(ctx, func(ctx context.Context) error {
+		client, err := http_.NewClient(opts...)
+		if err != nil {
+			logger.WithError(err).Errorf("new http client err: %v", err)
+			return err
+		}
+		data, err = client.Get(downloadUrl)
+		if err != nil {
+			logger.WithError(err).Errorf("http client get err: %v", err)
+			return err
+		}
+		return nil
+
+	}, f.opts.retryInterval, f.opts.retryTimes)
 
 	return data, nil
 }

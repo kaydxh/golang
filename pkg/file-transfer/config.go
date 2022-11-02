@@ -73,6 +73,8 @@ func (c *completedConfig) install(ctx context.Context) (*FileTransfer, error) {
 		WithDownloadTimeout(c.Proto.GetDownloadTimeout().AsDuration()),
 		WithLoadBalanceMode(c.Proto.LoadBalanceMode),
 		WithProxies(c.Proto.Proxies),
+		WithRetryTimes(int(c.Proto.RetryTimes)),
+		WithRetryInterval(c.Proto.RetryInterval.AsDuration()),
 	)
 	return ft, nil
 }

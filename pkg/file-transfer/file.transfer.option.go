@@ -40,3 +40,15 @@ func WithProxies(proxies []*Ft_Proxy) FileTransferOption {
 		r.opts.proxies = proxies
 	})
 }
+
+func WithRetryTimes(retryTimes int) FileTransferOption {
+	return FileTransferOptionFunc(func(r *FileTransfer) {
+		r.opts.retryTimes = retryTimes
+	})
+}
+
+func WithRetryInterval(retryInterval time.Duration) FileTransferOption {
+	return FileTransferOptionFunc(func(r *FileTransfer) {
+		r.opts.retryInterval = retryInterval
+	})
+}
