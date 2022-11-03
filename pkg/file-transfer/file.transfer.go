@@ -107,3 +107,38 @@ func (f *FileTransfer) Download(ctx context.Context, downloadUrl string) (data [
 
 	return data, nil
 }
+
+func (f *FileTransfer) Upload(ctx context.Context, uploadUrl string, body []byte) (data []byte, err error) {
+	spanName := "Upload"
+	ctx, span := otel.Tracer("").Start(ctx, spanName)
+	defer span.End()
+
+	logger := logrus.WithField("trace_id", span.SpanContext().TraceID()).WithField("span_id", span.SpanContext().SpanID()).WithField("upload_url", uploadUrl)
+
+	proxy := f.getProxy()
+
+	var opts []http_.ClientOption
+	if proxy.TargetAddr != "" {
+		opts = append(opts, http_.WithProxyTarget(proxy.TargetAddr))
+	} else if proxy.TargetUrl != "" {
+		opts = append(opts, http_.WithProxy(proxy.TargetUrl))
+	}
+	opts = append(opts, http_.WithTimeout(f.opts.uploadTimeout))
+
+	time_.RetryWithContext(ctx, func(ctx context.Context) error {
+		client, err := http_.NewClient(opts...)
+		if err != nil {
+			logger.WithError(err).Errorf("new http client err: %v", err)
+			return err
+		}
+		data, err = client.Put(uploadUrl, "", nil, body)
+		if err != nil {
+			logger.WithError(err).Errorf("http client put err: %v", err)
+			return err
+		}
+		return nil
+
+	}, f.opts.retryInterval, f.opts.retryTimes)
+
+	return data, nil
+}
