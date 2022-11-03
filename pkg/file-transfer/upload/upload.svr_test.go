@@ -27,7 +27,7 @@ import (
 	"testing"
 
 	os_ "github.com/kaydxh/golang/go/os"
-	upload_ "github.com/kaydxh/golang/pkg/upload"
+	upload_ "github.com/kaydxh/golang/pkg/file-transfer/upload"
 )
 
 func TestUploadMultipart(t *testing.T) {
