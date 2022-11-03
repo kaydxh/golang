@@ -1,10 +1,10 @@
 filetransfer:
     enabled: true
-    download_timeout : 10s
+    download_timeout : 0s
     upload_timeout : 0s
     retry_times: 0 # must >= 0
     retry_interval: 1s
     load_balance_mode: load_balance_mode_first 
     proxies:
-      - target_addr: "dns://127.0.0.1:80"
-        target_url: "dns://127.0.0.1:80"
+      - target_addr: "" # "dns://127.0.0.1:8080"
+        target_url: ""
