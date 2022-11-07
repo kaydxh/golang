@@ -51,3 +51,50 @@ func SliceIntersection[S ~[]E, E comparable](s1, s2 S) S {
 	}
 	return ss
 }
+
+func SliceDifference[S ~[]E, E comparable](s1, s2 S) S {
+	ss1 := set_.New[E]()
+	for _, s := range s1 {
+		ss1.Insert(s)
+	}
+
+	ss2 := set_.New[E]()
+	for _, s := range s2 {
+		ss2.Insert(s)
+	}
+
+	var ss S
+	for _, v := range ss1.Difference(ss2).List() {
+		ss = append(ss, v)
+	}
+
+	return ss
+}
+
+func SliceWithCondition[S ~[]E, E comparable](s1 S, cond func(e E) bool) S {
+	ss1 := set_.New[E]()
+	for _, s := range s1 {
+		if cond(s) {
+			ss1.Insert(s)
+		}
+	}
+
+	var ss S
+	for _, v := range ss1.List() {
+		ss = append(ss, v)
+	}
+
+	return ss
+}
+
+func RemoveEmpty[S ~[]E, E comparable](s S) S {
+	var ss S
+	var zero E
+	for _, v := range s {
+		if v != zero {
+			ss = append(ss, v)
+		}
+	}
+
+	return ss
+}
