@@ -71,7 +71,7 @@ func (t *TimeCounter) String() string {
 
 	var buf strings.Builder
 	t.Summary(func(idx int, msg string, cost time.Duration, at time.Time) {
-		buf.WriteString(fmt.Sprintf("#%d, msg: %s, cost: %s, at %s\n", idx, msg, cost, at.Format(time.RFC3339)))
+		buf.WriteString(fmt.Sprintf("#%d, msg: %s, cost: %s, at %s ", idx, msg, cost, at.Format(time.RFC3339)))
 	})
 
 	return buf.String()
