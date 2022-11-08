@@ -61,9 +61,12 @@ func TestS3Down(t *testing.T) {
 		},
 	}
 
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
 	for i, testCase := range testCases {
 		t.Run(fmt.Sprintf("%d", i), func(t *testing.T) {
-			data, err := s3Bucket.ReadAll(context.Background(), testCase.key)
+			data, err := s3Bucket.ReadAll(ctx, testCase.key)
 			if err != nil {
 				t.Fatalf("failed to WriteAll, got : %s", err)
 			}
