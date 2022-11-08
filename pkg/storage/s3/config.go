@@ -69,7 +69,7 @@ func (c *completedConfig) install(ctx context.Context) (*blob.Bucket, error) {
 
 	s, err := NewStorage(
 		ctx,
-		storageConfig,
+		*storageConfig,
 	)
 
 	return s.bucket, err
