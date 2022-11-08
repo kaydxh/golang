@@ -29,21 +29,25 @@ type StorageConfig struct {
 	SecretKey    string
 	SessionToken string
 
-	// 前缀路径,一般以"/"结尾, 操作子目录
-	// the PrefixPath should end with "/", so that the resulting operates in a subfoleder
-	PrefixPath string
 	DisableSSL bool
 }
 
 type Storage struct {
 	Conf   StorageConfig
 	bucket *blob.Bucket
+	opts   struct {
+
+		// 前缀路径,一般以"/"结尾, 操作子目录
+		// the PrefixPath should end with "/", so that the resulting operates in a subfoleder
+		PrefixPath string
+	}
 }
 
-func NewStorage(ctx context.Context, conf StorageConfig) (*Storage, error) {
+func NewStorage(ctx context.Context, conf StorageConfig, opts ...StorageOption) (*Storage, error) {
 	s := &Storage{
 		Conf: conf,
 	}
+	s.ApplyOptions(opts...)
 
 	client, _ := http_.NewClient()
 	s3Config := aws.NewConfig().
@@ -64,6 +68,11 @@ func NewStorage(ctx context.Context, conf StorageConfig) (*Storage, error) {
 	if err != nil {
 		return nil, err
 	}
+
+	if s.opts.PrefixPath != "" {
+		bucket = blob.PrefixedBucket(bucket, s.opts.PrefixPath)
+	}
+
 	s.bucket = bucket
 	return s, nil
 }
@@ -81,7 +90,7 @@ func ParseUrl(rawUrl string) (*StorageConfig, error) {
 	}
 	ss := strings.Split(s3Url.Host, ".")
 	if len(ss) < 3 {
-		return nil, fmt.Errorf("splite url with dot, len: %v too less", len(ss))
+		return nil, fmt.Errorf("the number of dot in %v too less", s3Url.Host)
 	}
 	bucketName := ss[0]
 	conf.Region = ss[2]
@@ -94,7 +103,6 @@ func ParseUrl(rawUrl string) (*StorageConfig, error) {
 	if idx < 0 {
 		return nil, fmt.Errorf("missed - in url")
 	}
-	//conf.BucketName = bucketName[:idx]
 	conf.BucketName = bucketName
 	conf.AppId = bucketName[idx+1:]
 
