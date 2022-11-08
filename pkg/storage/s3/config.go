@@ -2,11 +2,17 @@ package s3
 
 import (
 	"context"
+	"errors"
+	"fmt"
 
 	viper_ "github.com/kaydxh/golang/pkg/viper"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
 	"gocloud.dev/blob"
+)
+
+var (
+	ErrNotEnabled = errors.New("not enabled")
 )
 
 type Config struct {
@@ -35,11 +41,9 @@ func (c *completedConfig) New(ctx context.Context) (*blob.Bucket, error) {
 		return nil, c.completeError
 	}
 
-	/*
-		if !c.Proto.GetEnabled() {
-			return nil, nil
-		}
-	*/
+	if !c.Proto.GetEnabled() {
+		return nil, ErrNotEnabled
+	}
 
 	bucket, err := c.install(ctx)
 	if err != nil {
@@ -56,8 +60,13 @@ func (c *completedConfig) install(ctx context.Context) (*blob.Bucket, error) {
 	if err != nil {
 		return nil, err
 	}
+
+	if s3Config.GetSecretId() == "" || s3Config.GetSecretKey() == "" {
+		return nil, fmt.Errorf("secret is empty")
+	}
 	storageConfig.SecretId = s3Config.GetSecretId()
 	storageConfig.SecretKey = s3Config.GetSecretKey()
+
 	s, err := NewStorage(
 		ctx,
 		storageConfig,

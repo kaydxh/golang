@@ -14,7 +14,7 @@ func TestS3Upload(t *testing.T) {
 	config := s3_.NewConfig(s3_.WithViper(viper_.GetViper(cfgFile, "storage.s3")))
 
 	s3Bucket, err := config.Complete().New(context.Background())
-	if err != nil {
+	if err != nil || s3Bucket == nil {
 		t.Fatalf("failed to new config err: %v", err)
 	}
 
