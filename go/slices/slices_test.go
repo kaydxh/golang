@@ -84,3 +84,23 @@ func TestRemoveEmpty(t *testing.T) {
 		})
 	}
 }
+
+func TestFirstOrDefaultZero(t *testing.T) {
+	testCases := []struct {
+		s []string
+	}{
+		{
+			s: []string{"1", "", "3", "4"},
+		},
+		{
+			s: []string{"", "", "", "2"},
+		},
+	}
+
+	for i, testCase := range testCases {
+		t.Run(fmt.Sprintf("case-%d", i), func(t *testing.T) {
+			intersection := slices_.FirstOrDefaultZero(testCase.s)
+			t.Logf("FirstOrDefaultZero :%v", intersection)
+		})
+	}
+}

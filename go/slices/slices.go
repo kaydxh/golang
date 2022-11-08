@@ -23,6 +23,7 @@ package slices
 
 import (
 	set_ "github.com/kaydxh/golang/go/container/set"
+	"golang.org/x/exp/slices"
 )
 
 func Unique[S ~[]E, E comparable](s S) S {
@@ -85,6 +86,18 @@ func SliceWithCondition[S ~[]E, E comparable](s1 S, cond func(e E) bool) S {
 	}
 
 	return ss
+}
+
+func FirstOrDefaultZero[S ~[]E, E comparable](s S) E {
+	var zeroE E
+	cond := func(e E) bool {
+		return e != zeroE
+	}
+	i := slices.IndexFunc(s, cond)
+	if i == -1 {
+		return zeroE
+	}
+	return s[i]
 }
 
 func RemoveEmpty[S ~[]E, E comparable](s S) S {
