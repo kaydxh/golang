@@ -60,7 +60,7 @@ func (c *completedConfig) install(ctx context.Context) (*blob.Bucket, error) {
 	storageConfig.SecretKey = s3Config.GetSecretKey()
 	s, err := NewStorage(
 		ctx,
-		storageConfig,
+		*storageConfig,
 	)
 
 	return s.bucket, err
