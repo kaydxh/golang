@@ -1,0 +1,5 @@
+storage:
+  s3:
+    url: ""
+    secret_id: ""
+    secret_key: ""
