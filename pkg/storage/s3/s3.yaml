@@ -1,5 +1,6 @@
 storage:
   s3:
+    enabled: false
     url: ""
     secret_id: ""
     secret_key: ""
