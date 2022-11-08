@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package go.pkg.storage.s3;
+import "google/protobuf/duration.proto";
+
+option go_package = "github.com/kaydxh/go.pkg.storage.s3;s3";
+
+message S3 {
+  string url = 2;
+  string secret_id = 3;
+  string secret_key = 4;
+}
