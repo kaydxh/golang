@@ -35,8 +35,8 @@ message TCloudErrorResponse {
 
 // ErrorResponse
 message ErrorResponse {
-  TCloudError error = 1 [json_name = "Error"];
-  string request_id = 2 [json_name = "RequestId"];
+  string request_id = 1 [json_name = "RequestId"];
+  TCloudError error = 1000 [json_name = "Error"];
 }
 
 message TCloudError {
