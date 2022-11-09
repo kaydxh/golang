@@ -40,7 +40,8 @@ func HTTPError(ctx context.Context, mux *runtime.ServeMux,
 
 	requestId := context_.ExtractStringFromContext(ctx, http_.DefaultHTTPRequestIDKey)
 	if requestId == "" {
-		requestId = strings_.GetStringOrFallback(append(runtime_.GetMetadata(ctx, http_.DefaultHTTPRequestIDKey), "")...)
+		requestId = strings_.GetStringOrFallback(
+			append(runtime_.GetMetadata(ctx, http_.DefaultHTTPRequestIDKey), "")...)
 	}
 
 	func() {
@@ -52,7 +53,4 @@ func HTTPError(ctx context.Context, mux *runtime.ServeMux,
 		)
 		resource_.DefaultMetricMonitor.FailCntCounter.Add(ctx, 1, attrs...)
 	}()
-
-	// ForwardResponseMessage forwards the message "resp" from gRPC server to REST client
-	runtime.ForwardResponseMessage(ctx, mux, marshaler, w, r, nil)
 }
