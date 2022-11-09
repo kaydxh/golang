@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package api.trivial.v2;
+
+option go_package = "github.com/kaydxh/golang/pkg/middleware/api/trivial/v2;v2";
+
+// ErrorResponse
+message ErrorResponse {
+  string request_id = 1 [json_name = "RequestId"];
+  TCloudError error = 1000 [json_name = "Error"];
+}
+
+message TCloudError {
+  string code = 1 [json_name = "Code"];
+  string message = 2 [json_name = "Message"];
+}

@@ -129,7 +129,7 @@ func WithServerUnaryMetricInterceptorOptions() GRPCGatewayOption {
 
 func WithServerUnaryInterceptorsRequestIdOptions() GRPCGatewayOption {
 	return GRPCGatewayOptionFunc(func(c *GRPCGateway) {
-		WithServerUnaryInterceptorsOptions(interceptortcloud_.UnaryServerInterceptorOfRequestId()).apply(c)
+		WithServerUnaryInterceptorsOptions(interceptordebug_.UnaryServerInterceptorOfRequestId()).apply(c)
 	})
 }
 

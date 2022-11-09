@@ -234,9 +234,14 @@ func (c *Config) installHttpMiddlewareChain() []gw_.GRPCGatewayOption {
 			gw_.WithServerInterceptorsTrivialV1HTTPResponseOptions(),
 			gw_.WithServerInterceptorsTrivialV1HttpErrorOptions(),
 		)
+	case Web_Http_trivial_api_v20:
+		opts = append(opts,
+			gw_.WithServerInterceptorsTrivialV2HTTPResponseOptions(),
+			gw_.WithServerInterceptorsTrivialV2HttpErrorOptions(),
+		)
 	default:
 		opts = append(opts,
-			gw_.WithServerInterceptorsNoneHttpErrorOptions(),
+			gw_.WithServerInterceptorsNoopHttpErrorOptions(),
 		)
 	}
 

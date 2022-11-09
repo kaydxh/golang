@@ -32,6 +32,7 @@ import (
 	noop_ "github.com/kaydxh/golang/pkg/middleware/api/noop"
 	interceptortcloud3_ "github.com/kaydxh/golang/pkg/middleware/api/tcloud/v3.0"
 	interceptortrivialv1_ "github.com/kaydxh/golang/pkg/middleware/api/trivial/v1"
+	interceptortrivialv2_ "github.com/kaydxh/golang/pkg/middleware/api/trivial/v2"
 	httpinterceptordebug_ "github.com/kaydxh/golang/pkg/middleware/http-middleware/debug"
 	httpinterceptorhttp_ "github.com/kaydxh/golang/pkg/middleware/http-middleware/http"
 	httpinterceptoropentelemetr_ "github.com/kaydxh/golang/pkg/middleware/http-middleware/monitor/opentelemetry"
@@ -93,6 +94,23 @@ func WithServerInterceptorsTrivialV1HTTPResponseOptions() GRPCGatewayOption {
 	})
 }
 
+//trivial api2.0 http response formatter
+func WithServerInterceptorsTrivialV2HTTPResponseOptions() GRPCGatewayOption {
+	return GRPCGatewayOptionFunc(func(c *GRPCGateway) {
+		WithGatewayMuxOptions(
+			runtime.WithMarshalerOption(runtime.MIMEWildcard, interceptortrivialv2_.NewDefaultJSONPb()),
+		).apply(
+			c,
+		)
+
+		WithGatewayMuxOptions(
+			runtime.WithMarshalerOption(binding.MIMEJSON, interceptortrivialv2_.NewDefaultJSONPb()),
+		).apply(
+			c,
+		)
+	})
+}
+
 // http body proto Marshal
 func WithServerInterceptorsHttpBodyProtoOptions() GRPCGatewayOption {
 	return GRPCGatewayOptionFunc(func(c *GRPCGateway) {
@@ -122,7 +140,14 @@ func WithServerInterceptorsTrivialV1HttpErrorOptions() GRPCGatewayOption {
 }
 
 //HTTP, only called by failed response
-func WithServerInterceptorsNoneHttpErrorOptions() GRPCGatewayOption {
+func WithServerInterceptorsTrivialV2HttpErrorOptions() GRPCGatewayOption {
+	return GRPCGatewayOptionFunc(func(c *GRPCGateway) {
+		WithGatewayMuxOptions(runtime.WithErrorHandler(interceptortrivialv2_.HTTPError)).apply(c)
+	})
+}
+
+//HTTP, only called by failed response
+func WithServerInterceptorsNoopHttpErrorOptions() GRPCGatewayOption {
 	return GRPCGatewayOptionFunc(func(c *GRPCGateway) {
 		WithGatewayMuxOptions(runtime.WithErrorHandler(noop_.HTTPError)).apply(c)
 	})

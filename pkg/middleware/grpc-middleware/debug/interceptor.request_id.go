@@ -19,7 +19,7 @@
  *OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  *SOFTWARE.
  */
-package v1
+package interceptordebug
 
 import (
 	"context"
@@ -37,18 +37,18 @@ func UnaryServerInterceptorOfRequestId() grpc.UnaryServerInterceptor {
 	return func(ctx context.Context, req interface{},
 		info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (interface{}, error) {
 		// retrieve requestId from request
-		id := reflect_.RetrieveId(req, reflect_.FieldNameSessionId)
+		id := reflect_.RetrieveId(req, reflect_.FieldNameRequestId)
 		if id == "" {
 			//if id is empty, set new uuid to request
 			id = uuid.NewString()
-			reflect_.TrySetId(req, reflect_.FieldNameSessionId, id)
+			reflect_.TrySetId(req, reflect_.FieldNameRequestId, id)
 		}
 
 		//set "X-Request-ID" to context
 		ctx = context.WithValue(ctx, http_.DefaultHTTPRequestIDKey, id)
 		resp, err := handler(ctx, req)
 		// try set requestId to response
-		reflect_.TrySetId(req, reflect_.FieldNameSessionId, id)
+		reflect_.TrySetId(req, reflect_.FieldNameRequestId, id)
 		// write RequestId to HTTP Header
 		if err_ := grpc.SetHeader(ctx, metadata.Pairs(http_.DefaultHTTPRequestIDKey, id)); err_ != nil {
 			logrus.WithError(err_).WithField("request_id", id).Warningf("grpc.SendHeader, ignore")
