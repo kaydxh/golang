@@ -19,40 +19,34 @@
  *OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  *SOFTWARE.
  */
-package tcloud
+package v2
 
 import (
 	"context"
 
-	"github.com/google/uuid"
-	http_ "github.com/kaydxh/golang/go/net/http"
+	errors_ "github.com/kaydxh/golang/go/errors"
 	reflect_ "github.com/kaydxh/golang/go/reflect"
-	"github.com/sirupsen/logrus"
 	"google.golang.org/grpc"
-	"google.golang.org/grpc/metadata"
 )
 
-// UnaryServerInterceptorOfRequestId returns a new unary server interceptors with tags in context with request_id.
-func UnaryServerInterceptorOfRequestId() grpc.UnaryServerInterceptor {
+// UnaryServerInterceptorOfError returns a new unary server interceptors
+func UnaryServerInterceptorOfError() grpc.UnaryServerInterceptor {
 	return func(ctx context.Context, req interface{},
 		info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (interface{}, error) {
-		// retrieve requestId from request
-		id := reflect_.RetrieveId(req, reflect_.FieldNameRequestId)
-		if id == "" {
-			//if id is empty, set new uuid to request
-			id = uuid.NewString()
-			reflect_.TrySetId(req, reflect_.FieldNameRequestId, id)
+
+		resp, err := handler(ctx, req)
+		if err == nil {
+			return resp, err
 		}
 
-		//set "X-Request-ID" to context
-		ctx = context.WithValue(ctx, http_.DefaultHTTPRequestIDKey, id)
-		resp, err := handler(ctx, req)
-		// try set requestId to response
-		reflect_.TrySetId(req, reflect_.FieldNameRequestId, id)
-		// write RequestId to HTTP Header
-		if err_ := grpc.SetHeader(ctx, metadata.Pairs(http_.DefaultHTTPRequestIDKey, id)); err_ != nil {
-			logrus.WithError(err_).WithField("request_id", id).Warningf("grpc.SendHeader, ignore")
+		errResponse := &ErrorResponse{
+			Error: &TCloudError{
+				Code:    errors_.ErrorToCode(err).String(),
+				Message: errors_.ErrorToString(err),
+			},
+			RequestId: reflect_.RetrieveId(req, reflect_.FieldNameRequestId),
 		}
-		return resp, err
+
+		return errResponse, nil
 	}
 }
