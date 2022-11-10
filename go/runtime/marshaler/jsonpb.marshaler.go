@@ -52,3 +52,22 @@ func NewJSONPb(options ...JSONPbOption) *JSONPb {
 	j.ApplyOptions(options...)
 	return j
 }
+
+/*
+// if implemet the function, can parse some field from req data
+func (j *JSONPb) NewDecoder(r io.Reader) runtime.Decoder {
+	return runtime.DecoderFunc(func(v interface{}) error {
+		rawData, err := ioutil.ReadAll(r)
+		if err != nil {
+			return err
+		}
+		err = j.JSONPb.Unmarshal(rawData, v)
+		if err != nil {
+			return err
+		}
+		id := reflect_.RetrieveId(v, reflect_.FieldNameRequestId)
+		_ = id
+		return nil
+	})
+}
+*/
