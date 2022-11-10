@@ -202,14 +202,14 @@ func (c *Config) installHttpMiddlewareChain() []gw_.GRPCGatewayOption {
 	var opts []gw_.GRPCGatewayOption
 	opts = append(
 		opts,
+		// request id
+		gw_.WithHttpHandlerInterceptorRequestIDOptions(),
+
 		// http recoverer
 		gw_.WithHttpHandlerInterceptorRecoveryOptions(),
 
 		// clean path
 		gw_.WithHttpHandlerInterceptorCleanPathOptions(),
-
-		// request id
-		gw_.WithHttpHandlerInterceptorRequestIDOptions(),
 
 		// http body proto
 		gw_.WithServerInterceptorsHttpBodyProtoOptions(),
@@ -264,11 +264,11 @@ func (c *Config) installGrpcMiddlewareChain() []gw_.GRPCGatewayOption {
 	opts = append(
 		opts,
 
-		// recovery
-		gw_.WithServerInterceptorsRecoveryOptions(),
-
 		// requestId
 		gw_.WithServerUnaryInterceptorsRequestIdOptions(),
+
+		// recovery
+		gw_.WithServerInterceptorsRecoveryOptions(),
 
 		// limit rate
 		gw_.WithServerInterceptorsLimitRateOptions(
