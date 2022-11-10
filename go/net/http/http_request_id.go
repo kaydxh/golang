@@ -61,6 +61,7 @@ func ExtractFromHTTP(r *http.Request, key string) string {
 }
 
 func ExtractRequestIDFromContext(ctx context.Context) string {
+
 	if v, ok := ctx.Value(DefaultHTTPRequestIDKey).(string); ok {
 		return v
 	}
@@ -78,10 +79,11 @@ func ExtractFromContext(ctx context.Context, key string) string {
 		if len(requestIDs) > 0 {
 			return requestIDs[0]
 		}
+	default:
+		return ""
 	}
 
 	return ""
-
 }
 
 func SetPairContext(r *http.Request, key, value string) *http.Request {
