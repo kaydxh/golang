@@ -33,7 +33,8 @@ import (
 	http_ "github.com/kaydxh/golang/go/net/http"
 	runtime_ "github.com/kaydxh/golang/go/runtime"
 	strings_ "github.com/kaydxh/golang/go/strings"
-	resource_ "github.com/kaydxh/golang/pkg/middleware/resource"
+
+	//resource_ "github.com/kaydxh/golang/pkg/middleware/resource"
 	jsonpb_ "github.com/kaydxh/golang/pkg/protobuf/jsonpb"
 	"google.golang.org/protobuf/proto"
 )
@@ -44,18 +45,21 @@ func HTTPError(ctx context.Context, mux *runtime.ServeMux,
 
 	requestId := context_.ExtractStringFromContext(ctx, http_.DefaultHTTPRequestIDKey)
 	if requestId == "" {
-		requestId = strings_.GetStringOrFallback(append(runtime_.GetMetadata(ctx, http_.DefaultHTTPRequestIDKey), "")...)
+		requestId = strings_.GetStringOrFallback(
+			append(runtime_.GetMetadata(ctx, http_.DefaultHTTPRequestIDKey), "")...)
 	}
 
-	func() {
-		attrs := resource_.Attrs(
-			resource_.Dimension{
-				CalleeMethod: fmt.Sprintf("%v %v", r.Method, r.URL.Path),
-				Error:        err,
-			},
-		)
-		resource_.DefaultMetricMonitor.FailCntCounter.Add(ctx, 1, attrs...)
-	}()
+	/*
+		func() {
+			attrs := resource_.Attrs(
+				resource_.Dimension{
+					CalleeMethod: fmt.Sprintf("%v %v", r.Method, r.URL.Path),
+					Error:        err,
+				},
+			)
+			resource_.DefaultMetricMonitor.FailCntCounter.Add(ctx, 1, attrs...)
+		}()
+	*/
 
 	errResponse := &ErrorResponse{
 		Error: &TCloudError{
