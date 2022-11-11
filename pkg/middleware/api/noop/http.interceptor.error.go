@@ -23,7 +23,6 @@ package noop
 
 import (
 	"context"
-	"fmt"
 	"net/http"
 
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
@@ -31,7 +30,7 @@ import (
 	http_ "github.com/kaydxh/golang/go/net/http"
 	runtime_ "github.com/kaydxh/golang/go/runtime"
 	strings_ "github.com/kaydxh/golang/go/strings"
-	resource_ "github.com/kaydxh/golang/pkg/middleware/resource"
+	//resource_ "github.com/kaydxh/golang/pkg/middleware/resource"
 )
 
 // HTTPError uses the mux-configured error handler.
@@ -44,13 +43,15 @@ func HTTPError(ctx context.Context, mux *runtime.ServeMux,
 			append(runtime_.GetMetadata(ctx, http_.DefaultHTTPRequestIDKey), "")...)
 	}
 
-	func() {
-		attrs := resource_.Attrs(
-			resource_.Dimension{
-				CalleeMethod: fmt.Sprintf("%v %v", r.Method, r.URL.Path),
-				Error:        err,
-			},
-		)
-		resource_.DefaultMetricMonitor.FailCntCounter.Add(ctx, 1, attrs...)
-	}()
+	/*
+		func() {
+			attrs := resource_.Attrs(
+				resource_.Dimension{
+					CalleeMethod: fmt.Sprintf("%v %v", r.Method, r.URL.Path),
+					Error:        err,
+				},
+			)
+			resource_.DefaultMetricMonitor.FailCntCounter.Add(ctx, 1, attrs...)
+		}()
+	*/
 }

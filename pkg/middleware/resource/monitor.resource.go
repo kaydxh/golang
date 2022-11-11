@@ -37,6 +37,8 @@ func Attrs(dim Dimension) []attribute.KeyValue {
 		errorCode := int64(errors_.ErrorToCode(dim.Error))
 		message := errors_.ErrorToString(dim.Error)
 		attrs = append(attrs, ErrorCodeKey.String(fmt.Sprintf("%d:%s", errorCode, message)))
+	} else {
+		attrs = append(attrs, ErrorCodeKey.String("0:OK"))
 	}
 
 	appName := app_.GetVersion().AppName
