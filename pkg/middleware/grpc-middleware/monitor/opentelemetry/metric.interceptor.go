@@ -25,13 +25,9 @@ func HandleMetric[REQ any, RESP any](handler resource_.HandlerWithContext[REQ, R
 
 func handleMetric[REQ any, RESP any](info *grpc.UnaryServerInfo, handler resource_.HandlerWithContext[REQ, RESP]) resource_.HandlerWithContext[REQ, RESP] {
 	return func(ctx context.Context, req REQ) (RESP, error) {
-		var (
-			resp interface{}
-			err  error
-		)
 
 		tc := time_.New(true)
-		resp, err = handler(ctx, req)
+		resp, err := handler(ctx, req)
 
 		var method string
 		if info != nil {
@@ -59,6 +55,6 @@ func handleMetric[REQ any, RESP any](info *grpc.UnaryServerInfo, handler resourc
 		}
 		defer summary()
 
-		return resp.(RESP), err
+		return resp, err
 	}
 }
