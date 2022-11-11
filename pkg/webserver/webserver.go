@@ -157,12 +157,10 @@ func (s *GenericWebServer) PrepareRun() (preparedGenericWebServer, error) {
 }
 
 func (s *GenericWebServer) InstallWebHandlers(handlers ...WebHandler) {
-	logrus.Infof("Installing  WebHandler")
 	for _, h := range handlers {
 		if h == nil {
 			continue
 		}
 		h.SetRoutes(s.ginBackend, s.grpcBackend)
 	}
-	logrus.Infof("Installed  WebHandler")
 }
