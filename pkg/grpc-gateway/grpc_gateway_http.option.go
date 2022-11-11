@@ -81,13 +81,13 @@ func WithServerInterceptorsTCloud30HTTPResponseOptions() GRPCGatewayOption {
 func WithServerInterceptorsTrivialV1HTTPResponseOptions() GRPCGatewayOption {
 	return GRPCGatewayOptionFunc(func(c *GRPCGateway) {
 		WithGatewayMuxOptions(
-			runtime.WithMarshalerOption(runtime.MIMEWildcard, interceptortrivialv1_.NewDefaultJSONPb()),
+			runtime.WithMarshalerOption(runtime.MIMEWildcard, marshaler_.NewDefaultJSONPb()),
 		).apply(
 			c,
 		)
 
 		WithGatewayMuxOptions(
-			runtime.WithMarshalerOption(binding.MIMEJSON, interceptortrivialv1_.NewDefaultJSONPb()),
+			runtime.WithMarshalerOption(binding.MIMEJSON, marshaler_.NewDefaultJSONPb()),
 		).apply(
 			c,
 		)
@@ -98,13 +98,13 @@ func WithServerInterceptorsTrivialV1HTTPResponseOptions() GRPCGatewayOption {
 func WithServerInterceptorsTrivialV2HTTPResponseOptions() GRPCGatewayOption {
 	return GRPCGatewayOptionFunc(func(c *GRPCGateway) {
 		WithGatewayMuxOptions(
-			runtime.WithMarshalerOption(runtime.MIMEWildcard, interceptortrivialv2_.NewDefaultJSONPb()),
+			runtime.WithMarshalerOption(runtime.MIMEWildcard, marshaler_.NewDefaultJSONPb()),
 		).apply(
 			c,
 		)
 
 		WithGatewayMuxOptions(
-			runtime.WithMarshalerOption(binding.MIMEJSON, interceptortrivialv2_.NewDefaultJSONPb()),
+			runtime.WithMarshalerOption(binding.MIMEJSON, marshaler_.NewDefaultJSONPb()),
 		).apply(
 			c,
 		)
