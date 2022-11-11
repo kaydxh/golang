@@ -196,6 +196,7 @@ func (c *Config) installGrpcMessageSizeOptions() []gw_.GRPCGatewayOption {
 	return opts
 }
 
+// use LocalMiddlewareWrap instead of request id, metric, cost time, print request and response middleware
 func (c *Config) installHttpMiddlewareChain() []gw_.GRPCGatewayOption {
 
 	httpConfig := c.Proto.GetHttp()
@@ -266,7 +267,7 @@ func (c *Config) installGrpcMiddlewareChain() []gw_.GRPCGatewayOption {
 		opts,
 
 		// requestId
-		gw_.WithServerUnaryInterceptorsRequestIdOptions(),
+		//gw_.WithServerUnaryInterceptorsRequestIdOptions(),
 
 		// recovery
 		gw_.WithServerInterceptorsRecoveryOptions(),
@@ -281,9 +282,8 @@ func (c *Config) installGrpcMiddlewareChain() []gw_.GRPCGatewayOption {
 		gw_.WithServerUnaryMetricInterceptorOptions(),
 
 		// print input and output body
-		gw_.WithServerUnaryInterceptorsInOutPacketOptions(),
-
-		gw_.WithServerInterceptorTimeoutOptions(grpcConfig.GetTimeout().AsDuration()),
+		//gw_.WithServerUnaryInterceptorsInOutPacketOptions(),
+		//gw_.WithServerInterceptorTimeoutOptions(grpcConfig.GetTimeout().AsDuration()),
 	)
 
 	return opts
