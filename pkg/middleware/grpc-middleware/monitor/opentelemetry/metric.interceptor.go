@@ -3,6 +3,7 @@ package interceptoropentelemetry
 import (
 	"context"
 
+	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	grpc_ "github.com/kaydxh/golang/go/net/grpc"
 	time_ "github.com/kaydxh/golang/go/time"
 	logs_ "github.com/kaydxh/golang/pkg/logs"
@@ -14,6 +15,16 @@ func UnaryServerMetricInterceptor() grpc.UnaryServerInterceptor {
 
 	return func(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (interface{}, error) {
 
+		return handleMetric(info, resource_.HandlerWithContext[any, any](handler))(ctx, req)
+	}
+}
+
+func HandleMetric[REQ any, RESP any](handler resource_.HandlerWithContext[REQ, RESP]) resource_.HandlerWithContext[REQ, RESP] {
+	return handleMetric(nil, handler)
+}
+
+func handleMetric[REQ any, RESP any](info *grpc.UnaryServerInfo, handler resource_.HandlerWithContext[REQ, RESP]) resource_.HandlerWithContext[REQ, RESP] {
+	return func(ctx context.Context, req REQ) (RESP, error) {
 		var (
 			resp interface{}
 			err  error
@@ -22,14 +33,21 @@ func UnaryServerMetricInterceptor() grpc.UnaryServerInterceptor {
 		tc := time_.New(true)
 		resp, err = handler(ctx, req)
 
+		var method string
+		if info != nil {
+			method = info.FullMethod
+		} else {
+			method, _ = runtime.RPCMethod(ctx)
+		}
+
 		resource_.ReportMetric(ctx,
 			resource_.Dimension{
-				CalleeMethod: info.FullMethod,
+				CalleeMethod: method,
 				Error:        err,
 			},
 			tc.Elapse(),
 		)
-		tc.Tick(info.FullMethod)
+		tc.Tick(method)
 
 		logger := logs_.GetLogger(ctx)
 		peerAddr, _ := grpc_.GetIPFromContext(ctx)
@@ -41,6 +59,6 @@ func UnaryServerMetricInterceptor() grpc.UnaryServerInterceptor {
 		}
 		defer summary()
 
-		return resp, err
+		return resp.(RESP), err
 	}
 }

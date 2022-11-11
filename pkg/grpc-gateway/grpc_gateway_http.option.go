@@ -208,16 +208,23 @@ func WithHttpHandlerInterceptorsMetricOptions() GRPCGatewayOption {
 	})
 }
 
-func WithHttpHandlerInterceptorInOutputPrinterOptions() GRPCGatewayOption {
-	return WithHttpHandlerInterceptorOptions(http_.HandlerInterceptor{
-		Interceptor: httpinterceptordebug_.InOutputPrinter,
-	})
+func WithHttpHandlerInterceptorInOutputPrinterOptions(enabled bool) GRPCGatewayOption {
+	if enabled {
+		return WithHttpHandlerInterceptorOptions(http_.HandlerInterceptor{
+			Interceptor: httpinterceptordebug_.InOutputPrinter,
+		})
+	}
+
+	return WithHttpHandlerInterceptorOptions()
 }
 
-func WithHttpHandlerInterceptorInOutputHeaderPrinterOptions() GRPCGatewayOption {
-	return WithHttpHandlerInterceptorOptions(http_.HandlerInterceptor{
-		Interceptor: httpinterceptordebug_.InOutputHeaderPrinter,
-	})
+func WithHttpHandlerInterceptorInOutputHeaderPrinterOptions(enabled bool) GRPCGatewayOption {
+	if enabled {
+		return WithHttpHandlerInterceptorOptions(http_.HandlerInterceptor{
+			Interceptor: httpinterceptordebug_.InOutputHeaderPrinter,
+		})
+	}
+	return WithHttpHandlerInterceptorOptions()
 }
 
 // timeout

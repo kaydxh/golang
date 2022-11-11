@@ -27,6 +27,8 @@ import (
 	"github.com/google/uuid"
 	http_ "github.com/kaydxh/golang/go/net/http"
 	reflect_ "github.com/kaydxh/golang/go/reflect"
+
+	resource_ "github.com/kaydxh/golang/pkg/middleware/resource"
 	"github.com/sirupsen/logrus"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/metadata"
@@ -36,6 +38,13 @@ import (
 func UnaryServerInterceptorOfRequestId() grpc.UnaryServerInterceptor {
 	return func(ctx context.Context, req interface{},
 		info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (interface{}, error) {
+		return HandleReuestId(resource_.HandlerWithContext[any, any](handler))(ctx, req)
+	}
+}
+
+func HandleReuestId[REQ any, RESP any](handler resource_.HandlerWithContext[REQ, RESP]) resource_.HandlerWithContext[REQ, RESP] {
+	//func HandleReuestId[REQ any, RESP any](handler func(ctx context.Context, req REQ) (RESP, error)) func(ctx context.Context, req REQ) (RESP, error) {
+	return func(ctx context.Context, req REQ) (RESP, error) {
 		// retrieve requestId from request
 		id := reflect_.RetrieveId(req, reflect_.FieldNameRequestId)
 		if id == "" {
