@@ -50,3 +50,9 @@ func WithIndent(indent string) JSONPbOption {
 		c.opts.indent = indent
 	})
 }
+
+func WithAllowPartial(allowPartial bool) JSONPbOption {
+	return JSONPbOptionFunc(func(c *JSONPb) {
+		c.opts.allowPartial = allowPartial
+	})
+}

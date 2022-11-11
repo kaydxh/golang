@@ -32,6 +32,7 @@ type JSONPb struct {
 		useEnumNumbers  bool
 		emitUnpopulated bool
 		discardUnknown  bool
+		allowPartial    bool
 		indent          string
 	}
 }
@@ -39,17 +40,42 @@ type JSONPb struct {
 func NewDefaultJSONPb() *JSONPb {
 	return NewJSONPb(
 		// use json name
+		// only for mashaler
 		WithUseProtoNames(false),
 		WithUseEnumNumbers(false),
 		WithEmitUnpopulated(true),
-		WithDiscardUnknown(true),
 		WithIndent("\t"),
+		// only for unmarshal
+		WithDiscardUnknown(true),
+		// for marshal , unmarshal
+		WithAllowPartial(true),
 	)
 }
 
 func NewJSONPb(options ...JSONPbOption) *JSONPb {
 	j := &JSONPb{}
 	j.ApplyOptions(options...)
+
+	if j.opts.useProtoNames {
+		j.MarshalOptions.UseProtoNames = true
+	}
+	if j.opts.useEnumNumbers {
+		j.MarshalOptions.UseEnumNumbers = true
+	}
+	if j.opts.emitUnpopulated {
+		j.MarshalOptions.EmitUnpopulated = true
+	}
+	if j.opts.indent != "" {
+		j.MarshalOptions.Indent = j.opts.indent
+	}
+	if j.opts.allowPartial {
+		j.MarshalOptions.AllowPartial = true
+		j.UnmarshalOptions.AllowPartial = true
+	}
+	if j.opts.discardUnknown {
+		j.UnmarshalOptions.DiscardUnknown = true
+	}
+
 	return j
 }
 

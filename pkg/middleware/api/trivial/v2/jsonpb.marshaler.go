@@ -32,13 +32,7 @@ type JSONPb struct {
 
 func NewDefaultJSONPb() *JSONPb {
 	return &JSONPb{
-		marshaler_.NewJSONPb(
-			marshaler_.WithUseProtoNames(false),
-			marshaler_.WithUseEnumNumbers(false),
-			marshaler_.WithEmitUnpopulated(true),
-			marshaler_.WithDiscardUnknown(true),
-			marshaler_.WithIndent("\t"),
-		),
+		marshaler_.NewDefaultJSONPb(),
 	}
 }
 
