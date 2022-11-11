@@ -203,7 +203,7 @@ func (c *Config) installHttpMiddlewareChain() []gw_.GRPCGatewayOption {
 	opts = append(
 		opts,
 		// request id
-		gw_.WithHttpHandlerInterceptorRequestIDOptions(),
+		//	gw_.WithHttpHandlerInterceptorRequestIDOptions(),
 
 		// http recoverer
 		gw_.WithHttpHandlerInterceptorRecoveryOptions(),
@@ -214,7 +214,7 @@ func (c *Config) installHttpMiddlewareChain() []gw_.GRPCGatewayOption {
 		// http body proto
 		gw_.WithServerInterceptorsHttpBodyProtoOptions(),
 
-		gw_.WithHttpHandlerInterceptorsMetricOptions(),
+		//gw_.WithHttpHandlerInterceptorsMetricOptions(),
 
 		// limit rate
 		gw_.WithHttpHandlerInterceptorsLimitAllOptions(
@@ -245,14 +245,15 @@ func (c *Config) installHttpMiddlewareChain() []gw_.GRPCGatewayOption {
 		)
 	}
 
-	if httpConfig.GetEnableInoutputPrinter() {
+	/*
+		enableInoutPrinter := httpConfig.GetEnableInoutputPrinter()
 		opts = append(opts,
 			// inout header printer
-			gw_.WithHttpHandlerInterceptorInOutputHeaderPrinterOptions(),
+			gw_.WithHttpHandlerInterceptorInOutputHeaderPrinterOptions(enableInoutPrinter),
 			// print inoutput body
-			gw_.WithHttpHandlerInterceptorInOutputPrinterOptions(),
+			gw_.WithHttpHandlerInterceptorInOutputPrinterOptions(enableInoutPrinter),
 		)
-	}
+	*/
 
 	return opts
 }

@@ -49,17 +49,23 @@ func (j *JsonpbMarshaller) MarshalJson() ([]byte, error) {
 func UnaryServerInterceptorOfInOutputPrinter() grpc.UnaryServerInterceptor {
 
 	return func(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (interface{}, error) {
+		return HandleInOutputPrinter(handler)(ctx, req)
+	}
+}
 
+func HandleInOutputPrinter[REQ any, RESP any](handler func(ctx context.Context, req REQ) (RESP, error)) func(ctx context.Context, req REQ) (RESP, error) {
+	return func(ctx context.Context, req REQ) (RESP, error) {
 		logger := logs_.GetLogger(ctx)
-		if req != nil {
-			//logrus.WithField("request", &JsonpbMarshaller{req.(proto.Message)}).Info("recv")
-			logger.WithField("request", reflect_.TruncateBytes(proto.Clone(req.(proto.Message)))).Info("recv")
+
+		reqProto, ok := any(req).(proto.Message)
+		if ok {
+			logger.WithField("request", reflect_.TruncateBytes(proto.Clone(reqProto))).Info("recv")
 		}
 
 		resp, err := handler(ctx, req)
-		if resp != nil {
-			//logrus.WithField("response", &JsonpbMarshaller{resp.(proto.Message)}).Info("send")
-			logger.WithField("response", reflect_.TruncateBytes(proto.Clone(resp.(proto.Message)))).Info("send")
+		respProto, ok := any(resp).(proto.Message)
+		if ok {
+			logger.WithField("response", reflect_.TruncateBytes(proto.Clone(respProto))).Info("send")
 		}
 
 		return resp, err
