@@ -24,14 +24,16 @@ package grpc
 import (
 	"context"
 	"fmt"
+	"math"
 	"time"
 
+	context_ "github.com/kaydxh/golang/go/context"
 	"google.golang.org/grpc"
 )
 
 //16MB
 const (
-	defaultMaxMsgSize                      = 16 * 1024 * 1024
+	defaultMaxMsgSize                      = math.MaxInt32 //16 * 1024 * 1024
 	defaultConnectionTimeout time.Duration = 5 * time.Second
 )
 
@@ -54,7 +56,7 @@ func NewGrpcClient(addr string, options ...GrpcClientOption) (*GrpcClient, error
 		c.opts.connectionTimeout = defaultConnectionTimeout
 	}
 
-	ctx, cancel := context.WithTimeout(context.Background(), c.opts.connectionTimeout)
+	ctx, cancel := context_.WithTimeout(context.Background(), c.opts.connectionTimeout)
 	defer cancel()
 	conn, err := grpc.DialContext(ctx, addr, ClientDialOptions()...)
 	if err != nil {
@@ -79,12 +81,20 @@ func (g *GrpcClient) Close() error {
 
 func ClientDialOptions() []grpc.DialOption {
 	var opts []grpc.DialOption
-	opts = append(opts, grpc.WithInsecure(), grpc.WithDefaultCallOptions(grpc.MaxCallRecvMsgSize(defaultMaxMsgSize)))
+	opts = append(opts,
+		grpc.WithInsecure(),
+		grpc.WithDefaultCallOptions(
+			grpc.MaxCallRecvMsgSize(defaultMaxMsgSize),
+			grpc.MaxCallSendMsgSize(defaultMaxMsgSize),
+		),
+		grpc.WithInitialWindowSize(defaultMaxMsgSize),
+		grpc.WithInitialConnWindowSize(defaultMaxMsgSize),
+	)
 	return opts
 }
 
 func GetGrpcClientConn(addr string, connectionTimeout time.Duration) (*grpc.ClientConn, error) {
-	ctx, cancel := context.WithTimeout(context.Background(), connectionTimeout)
+	ctx, cancel := context_.WithTimeout(context.Background(), connectionTimeout)
 	defer cancel()
 
 	conn, err := grpc.DialContext(ctx, addr, ClientDialOptions()...)
