@@ -34,7 +34,7 @@ func TestNow(t *testing.T) {
 	},
 	)
 	if err != nil {
-		t.Errorf("failed to new respository, err: %v", err)
+		t.Errorf("failed to new factory, err: %v", err)
 	}
 	repository, err := factory.NewClient(ctx)
 	if err != nil {
