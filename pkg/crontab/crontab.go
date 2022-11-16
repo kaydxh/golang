@@ -91,11 +91,12 @@ func (c *CrontabSerivce) Serve(ctx context.Context) error {
 	c.cancel = cancel
 	c.mu.Unlock()
 
-	time_.UntilWithContxt(ctx, func(ctx context.Context) {
+	time_.UntilWithContxt(ctx, func(ctx context.Context) error {
 		err := c.check(ctx)
 		if err != nil {
-			return
+			return err
 		}
+		return nil
 	}, c.checkInterval)
 	if err := ctx.Err(); err != nil {
 		logger.WithError(err).Errorf("stopped checking")
