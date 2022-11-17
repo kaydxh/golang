@@ -37,6 +37,7 @@ import (
 	//resource_ "github.com/kaydxh/golang/pkg/middleware/resource"
 
 	jsonpb_ "github.com/kaydxh/golang/pkg/protobuf/jsonpb"
+	"google.golang.org/genproto/googleapis/rpc/errdetails"
 	"google.golang.org/protobuf/proto"
 )
 
@@ -50,21 +51,25 @@ func HTTPError(ctx context.Context, mux *runtime.ServeMux,
 			append(runtime_.GetMetadata(ctx, http_.DefaultHTTPRequestIDKey), "")...)
 	}
 
-	/*
-		func() {
-			attrs := resource_.Attrs(
-				resource_.Dimension{
-					CalleeMethod: fmt.Sprintf("%v %v", r.Method, r.URL.Path),
-					Error:        err,
-				},
-			)
-			resource_.DefaultMetricMonitor.FailCntCounter.Add(ctx, 1, attrs...)
-		}()
-	*/
+	var code string
+	s, ok := errors_.FromError(err)
+	if ok {
+		code = s.Code().String()
+	}
+
+	for _, detail := range s.Details() {
+		switch detail := detail.(type) {
+		case *errdetails.ErrorInfo:
+			if detail.GetReason() != "" {
+				code = detail.GetReason()
+			}
+		}
+	}
 
 	errResponse := &ErrorResponse{
 		Error: &TCloudError{
-			Code:    errors_.ErrorToCode(err).String(),
+			//Code:    errors_.ErrorToCode(err).String(),
+			Code:    code,
 			Message: errors_.ErrorToString(err),
 		},
 		RequestId: requestId,

@@ -38,7 +38,8 @@ func FromError(err error) (s *status.Status, ok bool) {
 	}
 	if errors.As(err, &gRPCStatus) {
 		s = gRPCStatus.GRPCStatus()
-		ok = true
+		//ok = true
+		ok = s != nil
 	}
 	return s, ok
 }
