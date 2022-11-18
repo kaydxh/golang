@@ -63,7 +63,7 @@ func HTTPError(ctx context.Context, mux *runtime.ServeMux,
 
 	errResponse := &ErrorResponse{
 		Error: &TCloudError{
-			Code:    errors_.ErrorToCode(err).String(),
+			Code:    errors_.ErrorToCodeString(err),
 			Message: errors_.ErrorToString(err),
 		},
 		RequestId: requestId,
