@@ -50,18 +50,6 @@ func HTTPError(ctx context.Context, mux *runtime.ServeMux,
 			append(runtime_.GetMetadata(ctx, http_.DefaultHTTPRequestIDKey), "")...)
 	}
 
-	/*
-		func() {
-			attrs := resource_.Attrs(
-				resource_.Dimension{
-					CalleeMethod: fmt.Sprintf("%v %v", r.Method, r.URL.Path),
-					Error:        err,
-				},
-			)
-			resource_.DefaultMetricMonitor.FailCntCounter.Add(ctx, 1, attrs...)
-		}()
-	*/
-
 	errResponse := &TrivialErrorResponse{
 		ErrorCode: int32(errors_.ErrorToCode(err)),
 		ErrorMsg:  errors_.ErrorToString(err),
