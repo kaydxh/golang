@@ -37,7 +37,6 @@ import (
 	//resource_ "github.com/kaydxh/golang/pkg/middleware/resource"
 
 	jsonpb_ "github.com/kaydxh/golang/pkg/protobuf/jsonpb"
-	"google.golang.org/genproto/googleapis/rpc/errdetails"
 	"google.golang.org/protobuf/proto"
 )
 
@@ -51,25 +50,9 @@ func HTTPError(ctx context.Context, mux *runtime.ServeMux,
 			append(runtime_.GetMetadata(ctx, http_.DefaultHTTPRequestIDKey), "")...)
 	}
 
-	var code string
-	s, ok := errors_.FromError(err)
-	if ok {
-		code = s.Code().String()
-	}
-
-	for _, detail := range s.Details() {
-		switch detail := detail.(type) {
-		case *errdetails.ErrorInfo:
-			if detail.GetReason() != "" {
-				code = detail.GetReason()
-			}
-		}
-	}
-
 	errResponse := &ErrorResponse{
 		Error: &TCloudError{
-			//Code:    errors_.ErrorToCode(err).String(),
-			Code:    code,
+			Code:    errors_.ErrorToCodeString(err),
 			Message: errors_.ErrorToString(err),
 		},
 		RequestId: requestId,
@@ -79,7 +62,7 @@ func HTTPError(ctx context.Context, mux *runtime.ServeMux,
 	runtime.ForwardResponseMessage(ctx, mux, marshaler, w, r, errResponse)
 }
 
-//cant not rewrite message, only append message to response
+// cant not rewrite message, only append message to response
 func HTTPForwardResponse(ctx context.Context, r http.ResponseWriter, message proto.Message) error {
 	respStruct, err := jsonpb_.MarshaToStructpb(message)
 	if err != nil {
