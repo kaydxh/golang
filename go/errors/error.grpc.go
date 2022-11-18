@@ -24,6 +24,7 @@ package errors
 import (
 	"errors"
 
+	"google.golang.org/genproto/googleapis/rpc/errdetails"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
@@ -44,18 +45,39 @@ func FromError(err error) (s *status.Status, ok bool) {
 	return s, ok
 }
 
+func ErrorToCodeString(err error) string {
+	if err == nil {
+		return codes.OK.String()
+	}
+
+	s, ok := FromError(err)
+	if !ok {
+		return err.Error()
+	}
+	codeString := s.Code().String()
+	for _, detail := range s.Details() {
+		switch detail := detail.(type) {
+		case *errdetails.ErrorInfo:
+			if detail.GetReason() != "" {
+				codeString = detail.GetReason()
+			}
+		}
+	}
+
+	return codeString
+}
+
+// Error Message
 func ErrorToString(err error) string {
 	if err == nil {
 		return codes.OK.String()
 	}
 
-	//st, ok := status.FromError(err)
-	st, ok := FromError(err)
+	s, ok := FromError(err)
 	if !ok {
 		return err.Error()
 	}
-
-	return st.Message()
+	return s.Message()
 }
 
 func ErrorToCode(err error) codes.Code {
@@ -63,11 +85,10 @@ func ErrorToCode(err error) codes.Code {
 		return codes.OK
 	}
 
-	//st, ok := status.FromError(err)
-	st, ok := FromError(err)
+	s, ok := FromError(err)
 	if !ok {
 		return codes.Unknown
 	}
 
-	return st.Code()
+	return s.Code()
 }
