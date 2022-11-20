@@ -245,6 +245,15 @@ func (c *Config) installHttpMiddlewareChain() []gw_.GRPCGatewayOption {
 				"session_id": "efd82a7e-cb2f-4bd6-8bf2-d357fb4e1032"
 			}
 
+			Web_Http_trivial_api_v20:
+			{
+				"Error": {
+					"Code": "InvalidArgument",
+					"Message": "InvalidArgument"
+				},
+				"RequestId": "96755708-9561-45b8-9bb7-da0bf777f155"
+			}
+
 			Web_Http_api_noop : {"code":3,"message":"InvalidArgument","details":[]}
 	*/
 	switch httpConfig.GetApiFormatter() {
