@@ -31,7 +31,7 @@ message Web {
     bool enable_inoutput_printer = 10;
 
     enum ApiFormatter {
-      default_api_noop = 0;
+      api_noop = 0;
       tcloud_api_v30 = 1;
       trivial_api_v10 = 2;
       trivial_api_v20 = 3;

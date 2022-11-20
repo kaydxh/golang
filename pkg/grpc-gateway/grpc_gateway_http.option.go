@@ -29,7 +29,6 @@ import (
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	http_ "github.com/kaydxh/golang/go/net/http"
 	marshaler_ "github.com/kaydxh/golang/go/runtime/marshaler"
-	noop_ "github.com/kaydxh/golang/pkg/middleware/api/noop"
 	interceptortcloud3_ "github.com/kaydxh/golang/pkg/middleware/api/tcloud/v3.0"
 	interceptortrivialv1_ "github.com/kaydxh/golang/pkg/middleware/api/trivial/v1"
 	interceptortrivialv2_ "github.com/kaydxh/golang/pkg/middleware/api/trivial/v2"
@@ -143,13 +142,6 @@ func WithServerInterceptorsTrivialV1HttpErrorOptions() GRPCGatewayOption {
 func WithServerInterceptorsTrivialV2HttpErrorOptions() GRPCGatewayOption {
 	return GRPCGatewayOptionFunc(func(c *GRPCGateway) {
 		WithGatewayMuxOptions(runtime.WithErrorHandler(interceptortrivialv2_.HTTPError)).apply(c)
-	})
-}
-
-//HTTP, only called by failed response
-func WithServerInterceptorsNoopHttpErrorOptions() GRPCGatewayOption {
-	return GRPCGatewayOptionFunc(func(c *GRPCGateway) {
-		WithGatewayMuxOptions(runtime.WithErrorHandler(noop_.HTTPError)).apply(c)
 	})
 }
 
