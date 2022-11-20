@@ -240,21 +240,9 @@ func (c *Config) installHttpMiddlewareChain() []gw_.GRPCGatewayOption {
 			gw_.WithServerInterceptorsTrivialV2HTTPResponseOptions(),
 			gw_.WithServerInterceptorsTrivialV2HttpErrorOptions(),
 		)
-	default:
-		opts = append(opts,
-			gw_.WithServerInterceptorsNoopHttpErrorOptions(),
-		)
-	}
 
-	/*
-		enableInoutPrinter := httpConfig.GetEnableInoutputPrinter()
-		opts = append(opts,
-			// inout header printer
-			gw_.WithHttpHandlerInterceptorInOutputHeaderPrinterOptions(enableInoutPrinter),
-			// print inoutput body
-			gw_.WithHttpHandlerInterceptorInOutputPrinterOptions(enableInoutPrinter),
-		)
-	*/
+	default:
+	}
 
 	return opts
 }
