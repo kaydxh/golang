@@ -224,6 +224,29 @@ func (c *Config) installHttpMiddlewareChain() []gw_.GRPCGatewayOption {
 	)
 
 	//options
+	/*
+		different api formatter return http error response:
+			examples:
+			 Web_Http_tcloud_api_v30:
+			  {
+				"Response": {
+					"Error": {
+						"Code": "InvalidArgument",
+						"Message": "InvalidArgument"
+					},
+					"RequestId": "22679249-b2e5-4970-8f55-3b5a31e70eb4"
+				}
+			}
+
+			Web_Http_trivial_api_v10:
+			{
+				"errorcode": 3,
+				"errormsg": "InvalidArgument",
+				"session_id": "efd82a7e-cb2f-4bd6-8bf2-d357fb4e1032"
+			}
+
+			Web_Http_api_noop : {"code":3,"message":"InvalidArgument","details":[]}
+	*/
 	switch httpConfig.GetApiFormatter() {
 	case Web_Http_tcloud_api_v30:
 		opts = append(opts,
