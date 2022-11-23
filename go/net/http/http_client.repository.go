@@ -33,12 +33,12 @@ import (
 	"google.golang.org/protobuf/proto"
 )
 
-func (r *Repository[REQ, RESP]) PostPb(ctx context.Context, req *REQ) (resp *RESP, err error) {
+func (r *Repository[REQ, RESP]) PostPbJson(ctx context.Context, req *REQ) (resp *RESP, err error) {
 
 	logger := logs_.GetLogger(ctx)
 	tc := time_.New(true)
 	summary := func() {
-		tc.Tick("PostPb")
+		tc.Tick("PostPbJson")
 		respProto, ok := any(resp).(proto.Message)
 		if ok {
 			logger.WithField("response", reflect_.TruncateBytes(proto.Clone(respProto))).
@@ -63,15 +63,62 @@ func (r *Repository[REQ, RESP]) PostPb(ctx context.Context, req *REQ) (resp *RES
 	ctx, cancel := context_.WithTimeout(ctx, r.Timeout)
 	defer cancel()
 
-	respData, err := r.Client.PostPb(r.Url, nil, reqData)
+	respData, err := r.Client.PostJson(r.Url, nil, reqData)
 	if err != nil {
-		logger.WithError(err).Errorf("failed to post pb")
+		logger.WithError(err).Errorf("failed to post json")
 		return nil, err
 	}
 
 	var zeroResp RESP
 	resp = &zeroResp
 	err = protojson.Unmarshal(respData, any(resp).(proto.Message))
+	if err != nil {
+		logger.WithError(err).Errorf("failed to unmarshal post response data")
+		return nil, err
+	}
+
+	return resp, nil
+}
+
+func (r *Repository[REQ, RESP]) PostPb(ctx context.Context, req *REQ) (resp *RESP, err error) {
+
+	logger := logs_.GetLogger(ctx)
+	tc := time_.New(true)
+	summary := func() {
+		tc.Tick("PostPbJson")
+		respProto, ok := any(resp).(proto.Message)
+		if ok {
+			logger.WithField("response", reflect_.TruncateBytes(proto.Clone(respProto))).
+				WithField("cost", tc.String()).
+				Info("recv")
+		}
+	}
+	defer summary()
+
+	reqProto, ok := any(req).(proto.Message)
+	if !ok {
+		return nil, fmt.Errorf("req is not proto message type")
+	}
+	logger.WithField("request", reflect_.TruncateBytes(proto.Clone(reqProto))).Info("recv")
+
+	reqData, err := proto.Marshal(reqProto)
+	if err != nil {
+		logger.WithError(err).WithField("req", req).Errorf("failed to marshal request")
+		return resp, err
+	}
+
+	ctx, cancel := context_.WithTimeout(ctx, r.Timeout)
+	defer cancel()
+
+	respData, err := r.Client.PostPb(r.Url, nil, reqData)
+	if err != nil {
+		logger.WithError(err).Errorf("failed to post json")
+		return nil, err
+	}
+
+	var zeroResp RESP
+	resp = &zeroResp
+	err = proto.Unmarshal(respData, any(resp).(proto.Message))
 	if err != nil {
 		logger.WithError(err).Errorf("failed to unmarshal post response data")
 		return nil, err
