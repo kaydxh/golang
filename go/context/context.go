@@ -28,6 +28,11 @@ import (
 	"time"
 )
 
+// RequestIdKey is metadata key name for request ID
+const (
+	DefaultHTTPRequestIDKey = "X-Request-ID"
+)
+
 func WithTimeout(ctx context.Context, timeout time.Duration) (context.Context, context.CancelFunc) {
 
 	if timeout > 0 {
@@ -58,6 +63,32 @@ func ExtractIntegerFromContext(ctx context.Context, key string) (int64, error) {
 	return number, nil
 }
 
+func ExtractFromContext(ctx context.Context, key string) string {
+	switch requestIDs := ctx.Value(key).(type) {
+	case string:
+		if requestIDs != "" {
+			return requestIDs
+		}
+	case []string:
+		if len(requestIDs) > 0 {
+			return requestIDs[0]
+		}
+	default:
+		return ""
+	}
+
+	return ""
+}
+
 func SetPairContext(ctx context.Context, key, value string) context.Context {
 	return context.WithValue(ctx, key, value)
+}
+
+func ExtractRequestIDFromContext(ctx context.Context) string {
+
+	if v, ok := ctx.Value(DefaultHTTPRequestIDKey).(string); ok {
+		return v
+	}
+
+	return ""
 }

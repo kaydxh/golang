@@ -24,6 +24,8 @@ package http
 import (
 	"context"
 	"net/http"
+
+	context_ "github.com/kaydxh/golang/go/context"
 )
 
 // RequestIdKey is metadata key name for request ID
@@ -40,7 +42,7 @@ func ExtractHTTPAndContext(r *http.Request, key string) string {
 		return value
 	}
 
-	return ExtractFromContext(r.Context(), key)
+	return context_.ExtractFromContext(r.Context(), key)
 }
 
 func ExtractFromHTTP(r *http.Request, key string) string {
@@ -60,6 +62,7 @@ func ExtractFromHTTP(r *http.Request, key string) string {
 	return ""
 }
 
+/*
 func ExtractRequestIDFromContext(ctx context.Context) string {
 
 	if v, ok := ctx.Value(DefaultHTTPRequestIDKey).(string); ok {
@@ -85,6 +88,7 @@ func ExtractFromContext(ctx context.Context, key string) string {
 
 	return ""
 }
+*/
 
 func SetPairContext(r *http.Request, key, value string) *http.Request {
 	ctx := context.WithValue(r.Context(), key, value)
