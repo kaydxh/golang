@@ -18,9 +18,10 @@ func TestNowPbJson(t *testing.T) {
 		t.Errorf("failed to new http client, err: %v", err)
 	}
 	factory, err := http_.NewFactory[date_.NowRequest, date_.NowResponse](http_.FactoryConfig{
-		Addr:    "http://localhost:10001/Now",
-		Timeout: 5 * time.Second,
-		Client:  client,
+		Addr:       "http://localhost:10001/Now",
+		Timeout:    5 * time.Second,
+		Client:     client,
+		RetryTimes: 3,
 	},
 	)
 	if err != nil {
@@ -48,9 +49,10 @@ func TestNowPb(t *testing.T) {
 		t.Errorf("failed to new http client, err: %v", err)
 	}
 	factory, err := http_.NewFactory[date_.NowRequest, date_.NowResponse](http_.FactoryConfig{
-		Addr:    "http://localhost:10001/Now",
-		Timeout: 5 * time.Second,
-		Client:  client,
+		Addr:       "http://localhost:10001/Now",
+		Timeout:    5 * time.Second,
+		Client:     client,
+		RetryTimes: 3,
 	},
 	)
 	if err != nil {
