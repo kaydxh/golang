@@ -25,6 +25,8 @@ import (
 	"context"
 	"fmt"
 	"time"
+
+	"google.golang.org/protobuf/proto"
 )
 
 type FactoryConfigFunc func(c *FactoryConfig) error
@@ -33,6 +35,8 @@ type FactoryConfig struct {
 	Addr    string
 	Timeout time.Duration //接口处理超时时间
 	*Client
+	RetryTimes    int
+	RetryInterval time.Duration
 }
 
 func (fc *FactoryConfig) ApplyOptions(configFuncs ...FactoryConfigFunc) error {
@@ -51,18 +55,28 @@ func (fc FactoryConfig) Validate() error {
 	return nil
 }
 
+type ProtoMessage interface {
+	proto.Message
+}
+
 type Repository[REQ any, RESP any] struct {
 	Url     string
 	Timeout time.Duration
 
 	*Client
+
+	// not include the first call
+	RetryTimes    int
+	RetryInterval time.Duration
 }
 
-func newRepository[REQ any, RESP any](ctx context.Context, fc FactoryConfig) (Repository[REQ, RESP], error) {
-	repo := Repository[REQ, RESP]{
-		Url:     fc.Addr,
-		Timeout: fc.Timeout,
-		Client:  fc.Client,
+func newRepository[REQ any, RESP any](ctx context.Context, fc FactoryConfig) (*Repository[REQ, RESP], error) {
+	repo := &Repository[REQ, RESP]{
+		Url:           fc.Addr,
+		Timeout:       fc.Timeout,
+		Client:        fc.Client,
+		RetryTimes:    fc.RetryTimes,
+		RetryInterval: fc.RetryInterval,
 	}
 
 	return repo, nil
@@ -87,6 +101,6 @@ func NewFactory[REQ any, RESP any](fc FactoryConfig, configFuncs ...FactoryConfi
 	return Factory[REQ, RESP]{fc: fc}, nil
 }
 
-func (f Factory[REQ, RESP]) NewClient(ctx context.Context) (Repository[REQ, RESP], error) {
+func (f Factory[REQ, RESP]) NewClient(ctx context.Context) (*Repository[REQ, RESP], error) {
 	return newRepository[REQ, RESP](ctx, f.fc)
 }

@@ -60,13 +60,20 @@ func (r *Repository[REQ, RESP]) PostPbJson(ctx context.Context, req *REQ) (resp 
 		return resp, err
 	}
 
-	ctx, cancel := context_.WithTimeout(ctx, r.Timeout)
-	defer cancel()
+	var respData []byte
+	err = time_.RetryWithContext(ctx, func(ctx context.Context) error {
+		ctx, cancel := context_.WithTimeout(ctx, r.Timeout)
+		defer cancel()
 
-	respData, err := r.Client.PostJson(r.Url, nil, reqData)
+		respData, err = r.Client.PostJson(r.Url, nil, reqData)
+		if err != nil {
+			logger.WithError(err).Errorf("failed to post json")
+			return err
+		}
+		return nil
+	}, r.RetryInterval, r.RetryTimes)
 	if err != nil {
-		logger.WithError(err).Errorf("failed to post json")
-		return nil, err
+		return resp, err
 	}
 
 	var zeroResp RESP
@@ -107,13 +114,20 @@ func (r *Repository[REQ, RESP]) PostPb(ctx context.Context, req *REQ) (resp *RES
 		return resp, err
 	}
 
-	ctx, cancel := context_.WithTimeout(ctx, r.Timeout)
-	defer cancel()
+	var respData []byte
+	err = time_.RetryWithContext(ctx, func(ctx context.Context) error {
+		ctx, cancel := context_.WithTimeout(ctx, r.Timeout)
+		defer cancel()
 
-	respData, err := r.Client.PostPb(r.Url, nil, reqData)
+		respData, err = r.Client.PostPb(r.Url, nil, reqData)
+		if err != nil {
+			logger.WithError(err).Errorf("failed to post json")
+			return err
+		}
+		return nil
+	}, r.RetryInterval, r.RetryTimes)
 	if err != nil {
-		logger.WithError(err).Errorf("failed to post json")
-		return nil, err
+		return resp, err
 	}
 
 	var zeroResp RESP
@@ -126,3 +140,70 @@ func (r *Repository[REQ, RESP]) PostPb(ctx context.Context, req *REQ) (resp *RES
 
 	return resp, nil
 }
+
+/*
+func (r *Repository[REQ, RESP]) Do(ctx context.Context, method string, contentType string, req *REQ) (resp *RESP, err error) {
+
+	logger := logs_.GetLogger(ctx)
+	tc := time_.New(true)
+	summary := func() {
+		tc.Tick("PostPbJson")
+		respProto, ok := any(resp).(proto.Message)
+		if ok {
+			logger.WithField("response", reflect_.TruncateBytes(proto.Clone(respProto))).
+				WithField("cost", tc.String()).
+				Info("recv")
+		}
+	}
+	defer summary()
+
+	reqProto, ok := any(req).(proto.Message)
+	if !ok {
+		return nil, fmt.Errorf("req is not proto message type")
+	}
+	logger.WithField("request", reflect_.TruncateBytes(proto.Clone(reqProto))).Info("recv")
+
+	var (
+		reqData  []byte
+		respData []byte
+	)
+	switch contentType {
+	case binding.MIMEJSON:
+		reqData, err = protojson.Marshal(reqProto)
+	case binding.MIMEPROTOBUF:
+		reqData, err = proto.Marshal(reqProto)
+
+	default:
+		reqData, err = protojson.Marshal(reqProto)
+	}
+	if err != nil {
+		logger.WithError(err).WithField("req", req).Errorf("failed to marshal request")
+		return resp, err
+	}
+
+	err = time_.RetryWithContext(ctx, func(ctx context.Context) error {
+		ctx, cancel := context_.WithTimeout(ctx, r.Timeout)
+		defer cancel()
+
+		respData, err = r.Client.PostPb(r.Url, nil, reqData)
+		if err != nil {
+			logger.WithError(err).Errorf("failed to post json")
+			return err
+		}
+		return nil
+	}, r.RetryInterval, r.RetryTimes)
+	if err != nil {
+		return resp, err
+	}
+
+	var zeroResp RESP
+	resp = &zeroResp
+	err = proto.Unmarshal(respData, any(resp).(proto.Message))
+	if err != nil {
+		logger.WithError(err).Errorf("failed to unmarshal post response data")
+		return nil, err
+	}
+
+	return resp, nil
+}
+*/
