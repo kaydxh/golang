@@ -32,7 +32,7 @@ import (
 type FactoryConfigFunc func(c *FactoryConfig) error
 
 type FactoryConfig struct {
-	Addr    string
+	Url     string
 	Timeout time.Duration //接口处理超时时间
 	*Client
 	RetryTimes    int
@@ -72,7 +72,7 @@ type Repository[REQ any, RESP any] struct {
 
 func newRepository[REQ any, RESP any](ctx context.Context, fc FactoryConfig) (*Repository[REQ, RESP], error) {
 	repo := &Repository[REQ, RESP]{
-		Url:           fc.Addr,
+		Url:           fc.Url,
 		Timeout:       fc.Timeout,
 		Client:        fc.Client,
 		RetryTimes:    fc.RetryTimes,
