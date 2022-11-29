@@ -73,6 +73,7 @@ func (f *FileTransfer) getProxy() *Ft_Proxy {
 	}
 }
 
+// short connection
 func (f *FileTransfer) Download(ctx context.Context, downloadUrl string) (data []byte, err error) {
 	spanName := "Download"
 	ctx, span := otel.Tracer("").Start(ctx, spanName)
@@ -82,7 +83,7 @@ func (f *FileTransfer) Download(ctx context.Context, downloadUrl string) (data [
 
 	proxy := f.getProxy()
 
-	var opts []http_.ClientOption
+	opts := []http_.ClientOption{http_.WithDisableKeepAlives(true)}
 	if proxy.TargetAddr != "" {
 		opts = append(opts, http_.WithProxyTarget(proxy.TargetAddr))
 	} else if proxy.TargetUrl != "" {
@@ -108,6 +109,7 @@ func (f *FileTransfer) Download(ctx context.Context, downloadUrl string) (data [
 	return data, nil
 }
 
+// short connection
 func (f *FileTransfer) Upload(ctx context.Context, uploadUrl string, body []byte) (data []byte, err error) {
 	spanName := "Upload"
 	ctx, span := otel.Tracer("").Start(ctx, spanName)
@@ -117,7 +119,7 @@ func (f *FileTransfer) Upload(ctx context.Context, uploadUrl string, body []byte
 
 	proxy := f.getProxy()
 
-	var opts []http_.ClientOption
+	opts := []http_.ClientOption{http_.WithDisableKeepAlives(true)}
 	if proxy.TargetAddr != "" {
 		opts = append(opts, http_.WithProxyTarget(proxy.TargetAddr))
 	} else if proxy.TargetUrl != "" {
