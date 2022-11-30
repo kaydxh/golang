@@ -26,12 +26,14 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/go-playground/validator/v10"
 	"google.golang.org/grpc"
 )
 
 type FactoryConfigFunc[T any] func(c *FactoryConfig[T]) error
 
 type FactoryConfig[T any] struct {
+	Validator        *validator.Validate
 	Addr             string
 	Timeout          time.Duration //接口处理超时时间
 	NewServiceClient func(*grpc.ClientConn) T
@@ -50,7 +52,11 @@ func (fc *FactoryConfig[T]) ApplyOptions(configFuncs ...FactoryConfigFunc[T]) er
 }
 
 func (fc FactoryConfig[T]) Validate() error {
-	return nil
+	valid := fc.Validator
+	if valid == nil {
+		valid = validator.New()
+	}
+	return valid.Struct(fc)
 }
 
 type Repository[T any] struct {

@@ -26,14 +26,16 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/go-playground/validator/v10"
 	"google.golang.org/protobuf/proto"
 )
 
 type FactoryConfigFunc func(c *FactoryConfig) error
 
 type FactoryConfig struct {
-	Url     string
-	Timeout time.Duration //接口处理超时时间
+	Validator *validator.Validate
+	Url       string
+	Timeout   time.Duration //接口处理超时时间
 	*Client
 	RetryTimes    int
 	RetryInterval time.Duration
@@ -52,7 +54,11 @@ func (fc *FactoryConfig) ApplyOptions(configFuncs ...FactoryConfigFunc) error {
 }
 
 func (fc FactoryConfig) Validate() error {
-	return nil
+	valid := fc.Validator
+	if valid == nil {
+		valid = validator.New()
+	}
+	return valid.Struct(fc)
 }
 
 type ProtoMessage interface {
