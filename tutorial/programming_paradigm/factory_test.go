@@ -5,13 +5,16 @@ import (
 	"fmt"
 	"testing"
 	"time"
+
+	"github.com/go-playground/validator/v10"
 )
 
 type FactoryConfigFunc func(c *FactoryConfig) error
 
 type FactoryConfig struct {
-	Addr    string
-	Timeout time.Duration //接口处理超时时间
+	Validator *validator.Validate
+	Addr      string
+	Timeout   time.Duration //接口处理超时时间
 }
 
 func (fc *FactoryConfig) ApplyOptions(configFuncs ...FactoryConfigFunc) error {
@@ -27,7 +30,11 @@ func (fc *FactoryConfig) ApplyOptions(configFuncs ...FactoryConfigFunc) error {
 }
 
 func (fc FactoryConfig) Validate() error {
-	return nil
+	valid := fc.Validator
+	if valid == nil {
+		valid = validator.New()
+	}
+	return valid.Struct(fc)
 }
 
 func (fc FactoryConfig) Do(ctx context.Context) error {
