@@ -34,6 +34,10 @@ import (
 )
 
 func (r *Repository[REQ, RESP]) PostPbJson(ctx context.Context, req *REQ) (resp *RESP, err error) {
+	return r.PostPbJsonWithUrl(ctx, r.Url, req)
+}
+
+func (r *Repository[REQ, RESP]) PostPbJsonWithUrl(ctx context.Context, url string, req *REQ) (resp *RESP, err error) {
 
 	logger := logs_.GetLogger(ctx)
 	tc := time_.New(true)
@@ -65,7 +69,7 @@ func (r *Repository[REQ, RESP]) PostPbJson(ctx context.Context, req *REQ) (resp 
 		ctx, cancel := context_.WithTimeout(ctx, r.Timeout)
 		defer cancel()
 
-		respData, err = r.Client.PostJson(r.Url, nil, reqData)
+		respData, err = r.Client.PostJson(url, nil, reqData)
 		if err != nil {
 			logger.WithError(err).Errorf("failed to post json")
 			return err
