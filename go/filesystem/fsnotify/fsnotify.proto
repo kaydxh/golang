@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package go.pkg.filesystem.fsnotify;
+import "google/protobuf/duration.proto";
+
+option go_package = "github.com/kaydxh/go.pkg.filesystem.fsnotify;fsnotify";
+
+message Fsnotify {
+  bool enabled = 1;
+  repeated string file_paths = 2;
+}
