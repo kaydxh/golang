@@ -15,7 +15,7 @@ func TestFsnotify(t *testing.T) {
 
 	fn, err := config.Complete().New(context.Background())
 	if err != nil {
-		t.Errorf("failed to new config err: %v", err)
+		t.Fatalf("failed to new config err: %v", err)
 	}
 
 	_ = fn

@@ -10,6 +10,7 @@ import (
 
 	"github.com/fsnotify/fsnotify"
 	"github.com/kaydxh/golang/go/errors"
+	os_ "github.com/kaydxh/golang/go/os"
 	"github.com/sirupsen/logrus"
 )
 
@@ -41,6 +42,16 @@ func NewFsnotifyService(config FsnotifyConfig) (*FsnotifyService, error) {
 
 	if len(config.Dirs) == 0 {
 		return nil, fmt.Errorf("dirs is empty")
+	}
+
+	for _, dir := range config.Dirs {
+		ok, err := os_.IsDir(dir)
+		if err != nil {
+			return nil, err
+		}
+		if !ok {
+			return nil, fmt.Errorf("%s is not dir", dir)
+		}
 	}
 
 	fs := &FsnotifyService{
@@ -91,7 +102,7 @@ func (srv *FsnotifyService) Serve(ctx context.Context) error {
 		}
 	}()
 
-	err := srv.AddWatchDirs(srv.conf.Dirs...)
+	err := srv.AddWatchDirs(false, srv.conf.Dirs...)
 	if err != nil {
 		logger.WithError(err).Errorf("failed to add watcher for dirs: %v", srv.conf.Dirs)
 		return err
@@ -106,12 +117,14 @@ func (srv *FsnotifyService) Serve(ctx context.Context) error {
 
 			if ev.Op&fsnotify.Create != 0 {
 				logger.Infof("%s happen create event", ev.Name)
+				srv.AddWatchDir(false, ev.Name)
 			}
 			if ev.Op&fsnotify.Write != 0 {
 				logger.Infof("%s happen write event", ev.Name)
 			}
 			if ev.Op&fsnotify.Remove != 0 {
 				logger.Infof("%s happen remove event", ev.Name)
+				srv.AddWatchDir(true, ev.Name)
 			}
 			if ev.Op&fsnotify.Rename != 0 {
 				logger.Infof("%s happen rename event", ev.Name)
@@ -128,7 +141,7 @@ func (srv *FsnotifyService) Serve(ctx context.Context) error {
 }
 
 // Add starts watching the named directory (support recursively).
-func (srv *FsnotifyService) AddWatchDir(path string) error {
+func (srv *FsnotifyService) AddWatchDir(unWatch bool, path string) error {
 	logger := srv.logger()
 	return filepath.Walk(path, func(walkPath string, fi os.FileInfo, err error) error {
 		if err != nil {
@@ -137,8 +150,14 @@ func (srv *FsnotifyService) AddWatchDir(path string) error {
 		}
 
 		if fi.IsDir() {
-			if err = srv.watcher.Add(walkPath); err != nil {
-				logger.WithError(err).Errorf("failed to add watcher for dir: %v", walkPath)
+
+			if unWatch {
+				err = srv.watcher.Remove(walkPath)
+			} else {
+				err = srv.watcher.Add(walkPath)
+			}
+			if err != nil {
+				logger.WithError(err).Errorf("failed to add watcher for dir: %v, ", walkPath)
 				return err
 			}
 			logger.Infof("add watcher for dir: %v", walkPath)
@@ -148,9 +167,9 @@ func (srv *FsnotifyService) AddWatchDir(path string) error {
 	})
 }
 
-func (srv *FsnotifyService) AddWatchDirs(paths ...string) error {
+func (srv *FsnotifyService) AddWatchDirs(unWatch bool, paths ...string) error {
 	for _, path := range paths {
-		err := srv.AddWatchDir(path)
+		err := srv.AddWatchDir(unWatch, path)
 		if err != nil {
 			return err
 		}
