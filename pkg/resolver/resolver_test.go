@@ -129,7 +129,7 @@ func TestNewResolverService2(t *testing.T) {
 			if err != nil {
 				t.Fatalf("new resolver query err: %v", err)
 			}
-			err = s.AddServices(rq)
+			s.AddServices(rq)
 			time.Sleep(5 * time.Second)
 			for i := 0; i < 100; i++ {
 				consistkey := fmt.Sprintf("consist-key-%d", i)
