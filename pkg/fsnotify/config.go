@@ -69,7 +69,7 @@ func (c *completedConfig) New(ctx context.Context) (*FsnotifyService, error) {
 }
 
 func (c *completedConfig) install(ctx context.Context) (*FsnotifyService, error) {
-	fn, err := NewFsnotifyService(c.Proto.GetFilePaths()...)
+	fn, err := NewFsnotifyService(c.Proto.GetFilePaths())
 	if err != nil {
 		return nil, err
 	}

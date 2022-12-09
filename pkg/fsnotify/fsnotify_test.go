@@ -17,7 +17,9 @@ func TestFsnotify(t *testing.T) {
 	if err != nil {
 		t.Fatalf("failed to new config err: %v", err)
 	}
+	fn.ApplyOptions(fsnotify_.WithWriteCallbackFunc(func(ctx context.Context, path string) {
+		t.Logf("%s write call back", path)
+	}))
 
-	_ = fn
 	select {}
 }
