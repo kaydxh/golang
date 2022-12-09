@@ -14,10 +14,6 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-type FsnotifyConfig struct {
-	Dirs []string
-}
-
 type EventCallbackFunc func()
 
 type FsnotifyOptions struct {
@@ -26,7 +22,7 @@ type FsnotifyOptions struct {
 
 type FsnotifyService struct {
 	watcher *fsnotify.Watcher
-	conf    FsnotifyConfig
+	paths   []string
 
 	opts       FsnotifyOptions
 	inShutdown atomic.Bool
@@ -34,29 +30,30 @@ type FsnotifyService struct {
 	cancel     func()
 }
 
-func NewFsnotifyService(config FsnotifyConfig) (*FsnotifyService, error) {
+// paths can also be dir or file or both of them
+func NewFsnotifyService(paths ...string) (*FsnotifyService, error) {
 	watcher, err := fsnotify.NewWatcher()
 	if err != nil {
 		return nil, err
 	}
 
-	if len(config.Dirs) == 0 {
+	if len(paths) == 0 {
 		return nil, fmt.Errorf("dirs is empty")
 	}
 
-	for _, dir := range config.Dirs {
-		ok, err := os_.IsDir(dir)
+	for _, path := range paths {
+		ok, err := os_.PathExist(path)
 		if err != nil {
 			return nil, err
 		}
 		if !ok {
-			return nil, fmt.Errorf("%s is not dir", dir)
+			return nil, fmt.Errorf("%s is not exist", path)
 		}
 	}
 
 	fs := &FsnotifyService{
 		watcher: watcher,
-		conf:    config,
+		paths:   paths,
 	}
 
 	return fs, nil
@@ -102,9 +99,9 @@ func (srv *FsnotifyService) Serve(ctx context.Context) error {
 		}
 	}()
 
-	err := srv.AddWatchDirs(false, srv.conf.Dirs...)
+	err := srv.AddWatchPaths(false, srv.paths...)
 	if err != nil {
-		logger.WithError(err).Errorf("failed to add watcher for dirs: %v", srv.conf.Dirs)
+		logger.WithError(err).Errorf("failed to add watcher for path: %v", srv.paths)
 		return err
 	}
 
@@ -117,14 +114,14 @@ func (srv *FsnotifyService) Serve(ctx context.Context) error {
 
 			if ev.Op&fsnotify.Create != 0 {
 				logger.Infof("%s happen create event", ev.Name)
-				srv.AddWatchDir(false, ev.Name)
+				srv.AddWatchPaths(false, ev.Name)
 			}
 			if ev.Op&fsnotify.Write != 0 {
 				logger.Infof("%s happen write event", ev.Name)
 			}
 			if ev.Op&fsnotify.Remove != 0 {
 				logger.Infof("%s happen remove event", ev.Name)
-				srv.AddWatchDir(true, ev.Name)
+				srv.AddWatchPaths(true, ev.Name)
 			}
 			if ev.Op&fsnotify.Rename != 0 {
 				logger.Infof("%s happen rename event", ev.Name)
@@ -141,35 +138,51 @@ func (srv *FsnotifyService) Serve(ctx context.Context) error {
 }
 
 // Add starts watching the named directory (support recursively).
-func (srv *FsnotifyService) AddWatchDir(unWatch bool, path string) error {
+func (srv *FsnotifyService) AddWatchPath(unWatch bool, path string) error {
 	logger := srv.logger()
-	return filepath.Walk(path, func(walkPath string, fi os.FileInfo, err error) error {
-		if err != nil {
-			logger.WithError(err).Errorf("failed to walk dir: %v", walkPath)
-			return err
-		}
 
-		if fi.IsDir() {
+	ok, err := os_.IsDir(path)
+	if err != nil {
+		return err
+	}
 
-			if unWatch {
-				err = srv.watcher.Remove(walkPath)
-			} else {
-				err = srv.watcher.Add(walkPath)
-			}
+	if ok {
+		return filepath.Walk(path, func(walkPath string, fi os.FileInfo, err error) error {
 			if err != nil {
-				logger.WithError(err).Errorf("failed to add watcher for dir: %v, ", walkPath)
+				logger.WithError(err).Errorf("failed to walk dir: %v", walkPath)
 				return err
 			}
-			logger.Infof("add watcher for dir: %v", walkPath)
-		}
 
-		return nil
-	})
+			if fi.IsDir() {
+				return srv.Add(unWatch, walkPath)
+			}
+			return nil
+		})
+	} else {
+		return srv.Add(unWatch, path)
+	}
 }
 
-func (srv *FsnotifyService) AddWatchDirs(unWatch bool, paths ...string) error {
+// Add starts watching the named directory (non-recursively).
+func (srv *FsnotifyService) Add(unWatch bool, path string) (err error) {
+	logger := srv.logger()
+	if unWatch {
+		err = srv.watcher.Remove(path)
+	} else {
+		err = srv.watcher.Add(path)
+	}
+	if err != nil {
+		logger.WithError(err).Errorf("failed to add watcher for dir: %v, ", path)
+		return err
+	}
+	logger.Infof("add watcher for dir: %v", path)
+
+	return nil
+}
+
+func (srv *FsnotifyService) AddWatchPaths(unWatch bool, paths ...string) error {
 	for _, path := range paths {
-		err := srv.AddWatchDir(unWatch, path)
+		err := srv.AddWatchPath(unWatch, path)
 		if err != nil {
 			return err
 		}
