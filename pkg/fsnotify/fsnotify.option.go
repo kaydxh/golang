@@ -21,8 +21,20 @@
  */
 package fsnotify
 
+func WithCreateCallbackFunc(fn EventCallbackFunc) FsnotifyOption {
+	return FsnotifyOptionFunc(func(r *FsnotifyService) {
+		r.opts.CreateCallbackFunc = fn
+	})
+}
+
 func WithWriteCallbackFunc(fn EventCallbackFunc) FsnotifyOption {
 	return FsnotifyOptionFunc(func(r *FsnotifyService) {
 		r.opts.WriteCallbackFunc = fn
+	})
+}
+
+func WithRemoveCallbackFunc(fn EventCallbackFunc) FsnotifyOption {
+	return FsnotifyOptionFunc(func(r *FsnotifyService) {
+		r.opts.RemoveCallbackFunc = fn
 	})
 }

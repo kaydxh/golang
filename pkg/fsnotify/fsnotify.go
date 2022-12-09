@@ -14,10 +14,12 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-type EventCallbackFunc func()
+type EventCallbackFunc func(ctx context.Context, path string)
 
 type FsnotifyOptions struct {
-	WriteCallbackFunc EventCallbackFunc
+	CreateCallbackFunc EventCallbackFunc
+	WriteCallbackFunc  EventCallbackFunc
+	RemoveCallbackFunc EventCallbackFunc
 }
 
 type FsnotifyService struct {
@@ -31,14 +33,14 @@ type FsnotifyService struct {
 }
 
 // paths can also be dir or file or both of them
-func NewFsnotifyService(paths ...string) (*FsnotifyService, error) {
+func NewFsnotifyService(paths []string, opts ...FsnotifyOption) (*FsnotifyService, error) {
 	watcher, err := fsnotify.NewWatcher()
 	if err != nil {
 		return nil, err
 	}
 
 	if len(paths) == 0 {
-		return nil, fmt.Errorf("dirs is empty")
+		return nil, fmt.Errorf("paths is empty")
 	}
 
 	for _, path := range paths {
@@ -55,6 +57,7 @@ func NewFsnotifyService(paths ...string) (*FsnotifyService, error) {
 		watcher: watcher,
 		paths:   paths,
 	}
+	fs.ApplyOptions(opts...)
 
 	return fs, nil
 }
@@ -115,13 +118,22 @@ func (srv *FsnotifyService) Serve(ctx context.Context) error {
 			if ev.Op&fsnotify.Create != 0 {
 				logger.Infof("%s happen create event", ev.Name)
 				srv.AddWatchPaths(false, ev.Name)
+				if srv.opts.CreateCallbackFunc != nil {
+					srv.opts.CreateCallbackFunc(ctx, ev.Name)
+				}
 			}
 			if ev.Op&fsnotify.Write != 0 {
 				logger.Infof("%s happen write event", ev.Name)
+				if srv.opts.WriteCallbackFunc != nil {
+					srv.opts.WriteCallbackFunc(ctx, ev.Name)
+				}
 			}
 			if ev.Op&fsnotify.Remove != 0 {
 				logger.Infof("%s happen remove event", ev.Name)
 				srv.AddWatchPaths(true, ev.Name)
+				if srv.opts.RemoveCallbackFunc != nil {
+					srv.opts.RemoveCallbackFunc(ctx, ev.Name)
+				}
 			}
 			if ev.Op&fsnotify.Rename != 0 {
 				logger.Infof("%s happen rename event", ev.Name)
@@ -172,10 +184,10 @@ func (srv *FsnotifyService) Add(unWatch bool, path string) (err error) {
 		err = srv.watcher.Add(path)
 	}
 	if err != nil {
-		logger.WithError(err).Errorf("failed to add watcher for dir: %v, ", path)
+		logger.WithError(err).Errorf("failed to add watcher for path: %v, ", path)
 		return err
 	}
-	logger.Infof("add watcher for dir: %v", path)
+	logger.Infof("add watcher for path: %v", path)
 
 	return nil
 }
