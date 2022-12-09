@@ -1,3 +1,0 @@
-fsnotify:
-    enabled: true
-    file_paths: [ "./tmp", "./tmp2", "tmp_file" ]

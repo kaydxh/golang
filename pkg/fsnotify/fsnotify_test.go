@@ -4,7 +4,7 @@ import (
 	"context"
 	"testing"
 
-	fsnotify_ "github.com/kaydxh/golang/go/filesystem/fsnotify"
+	fsnotify_ "github.com/kaydxh/golang/pkg/fsnotify"
 	viper_ "github.com/kaydxh/golang/pkg/viper"
 )
 

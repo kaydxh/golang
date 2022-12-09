@@ -1,9 +1,9 @@
 syntax = "proto3";
 
-package go.pkg.filesystem.fsnotify;
+package go.pkg.fsnotify;
 import "google/protobuf/duration.proto";
 
-option go_package = "github.com/kaydxh/go.pkg.filesystem.fsnotify;fsnotify";
+option go_package = "github.com/kaydxh/go.pkg.fsnotify;fsnotify";
 
 message Fsnotify {
   bool enabled = 1;
