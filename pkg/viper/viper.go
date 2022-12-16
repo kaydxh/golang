@@ -60,3 +60,32 @@ func GetViper(configFile string, subKeys string) *viper.Viper {
 
 	return v
 }
+
+func GetNewViper(configFile string, subKeys string) *viper.Viper {
+	if configFile == "" {
+		return nil
+	}
+
+	viperNew := viper.New()
+	viperNew.SetConfigFile(configFile)
+	err := viperNew.ReadInConfig()
+	if err != nil {
+		return nil
+	}
+
+	if subKeys == "" {
+		return viperNew
+	}
+
+	v := viperNew
+	keys := strings.Split(subKeys, ".")
+
+	for _, k := range keys {
+		v = v.Sub(k)
+		if v == nil {
+			return nil
+		}
+	}
+
+	return v
+}
