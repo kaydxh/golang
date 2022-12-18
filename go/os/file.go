@@ -49,6 +49,19 @@ func IsDir(path string) (bool, error) {
 	return fi.IsDir(), nil
 }
 
+func IsHidden(path string) (bool, error) {
+	_, err := os.Stat(path)
+	if err != nil {
+		return false, err
+	}
+
+	if path[0] == '.' {
+		return true, nil
+	}
+
+	return false, nil
+}
+
 // MkdirAll creates a directory named path,
 // along with any necessary parents, and returns nil,
 // or else returns an error.
