@@ -124,6 +124,7 @@ func (srv *FsnotifyService) Serve(ctx context.Context) error {
 			}
 			if ev.Op&fsnotify.Write != 0 {
 				logger.Infof("%s happen write event", ev.Name)
+				srv.AddWatchPaths(false, ev.Name)
 				if srv.opts.WriteCallbackFunc != nil {
 					srv.opts.WriteCallbackFunc(ctx, ev.Name)
 				}
