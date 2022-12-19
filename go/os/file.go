@@ -55,7 +55,11 @@ func IsHidden(path string) (bool, error) {
 		return false, err
 	}
 
-	if path[0] == '.' {
+	base := filepath.Base(path)
+	if base == "." || base == ".." {
+		return false, nil
+	}
+	if len(base) > 0 && base[0] == '.' {
 		return true, nil
 	}
 
