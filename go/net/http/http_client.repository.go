@@ -56,7 +56,7 @@ func (r *Repository[REQ, RESP]) PostPbJsonWithUrl(ctx context.Context, url strin
 	if !ok {
 		return nil, fmt.Errorf("req is not proto message type")
 	}
-	logger.WithField("request", reflect_.TruncateBytes(proto.Clone(reqProto))).Info("recv")
+	logger.WithField("request", reflect_.TruncateBytes(proto.Clone(reqProto))).Info("send")
 
 	reqData, err := protojson.Marshal(reqProto)
 	if err != nil {
