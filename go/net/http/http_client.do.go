@@ -25,6 +25,8 @@ import (
 	"context"
 	"io"
 	"net/http"
+
+	logs_ "github.com/kaydxh/golang/pkg/logs"
 )
 
 func (c *Client) get(ctx context.Context, url string) (*http.Response, error) {
@@ -76,6 +78,9 @@ func (c *Client) Do(ctx context.Context, req *http.Request) (*http.Response, err
 	if err != nil {
 		return nil, err
 	}
+
+	logger := logs_.GetLogger(ctx)
+	logger.WithField("target_addr", req.Host).Infof("http do %v", req.URL.Path)
 
 	return c.Client.Do(req)
 }
