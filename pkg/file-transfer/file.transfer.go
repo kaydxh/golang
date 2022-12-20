@@ -97,7 +97,7 @@ func (f *FileTransfer) Download(ctx context.Context, downloadUrl string) (data [
 			logger.WithError(err).Errorf("new http client err: %v", err)
 			return err
 		}
-		data, err = client.Get(downloadUrl)
+		data, err = client.Get(ctx, downloadUrl)
 		if err != nil {
 			logger.WithError(err).Errorf("http client get err: %v", err)
 			return err
@@ -133,7 +133,7 @@ func (f *FileTransfer) Upload(ctx context.Context, uploadUrl string, body []byte
 			logger.WithError(err).Errorf("new http client err: %v", err)
 			return err
 		}
-		data, err = client.Put(uploadUrl, "", nil, body)
+		data, err = client.Put(ctx, uploadUrl, "", nil, body)
 		if err != nil {
 			logger.WithError(err).Errorf("http client put err: %v", err)
 			return err

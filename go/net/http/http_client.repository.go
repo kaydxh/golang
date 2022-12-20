@@ -69,7 +69,7 @@ func (r *Repository[REQ, RESP]) PostPbJsonWithUrl(ctx context.Context, url strin
 		ctx, cancel := context_.WithTimeout(ctx, r.Timeout)
 		defer cancel()
 
-		respData, err = r.Client.PostJson(url, nil, reqData)
+		respData, err = r.Client.PostJson(ctx, url, nil, reqData)
 		if err != nil {
 			logger.WithError(err).Errorf("failed to post json")
 			return err
@@ -123,7 +123,7 @@ func (r *Repository[REQ, RESP]) PostPb(ctx context.Context, req *REQ) (resp *RES
 		ctx, cancel := context_.WithTimeout(ctx, r.Timeout)
 		defer cancel()
 
-		respData, err = r.Client.PostPb(r.Url, nil, reqData)
+		respData, err = r.Client.PostPb(ctx, r.Url, nil, reqData)
 		if err != nil {
 			logger.WithError(err).Errorf("failed to post json")
 			return err

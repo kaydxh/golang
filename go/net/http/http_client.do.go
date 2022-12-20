@@ -22,29 +22,30 @@
 package http
 
 import (
+	"context"
 	"io"
 	"net/http"
 )
 
-func (c *Client) get(url string) (*http.Response, error) {
-	return c.HttpDo(http.MethodGet, url, "", nil, nil, nil)
+func (c *Client) get(ctx context.Context, url string) (*http.Response, error) {
+	return c.HttpDo(ctx, http.MethodGet, url, "", nil, nil, nil)
 }
 
-func (c *Client) post(url string, contentType string, headers map[string]string,
+func (c *Client) post(ctx context.Context, url string, contentType string, headers map[string]string,
 	auth func(r *http.Request) error,
 	body io.Reader,
 ) (*http.Response, error) {
-	return c.HttpDo(http.MethodPost, url, contentType, headers, auth, body)
+	return c.HttpDo(ctx, http.MethodPost, url, contentType, headers, auth, body)
 }
 
-func (c *Client) put(url string, contentType string, headers map[string]string,
+func (c *Client) put(ctx context.Context, url string, contentType string, headers map[string]string,
 	auth func(r *http.Request) error,
 	body io.Reader,
 ) (*http.Response, error) {
-	return c.HttpDo(http.MethodPut, url, contentType, headers, auth, body)
+	return c.HttpDo(ctx, http.MethodPut, url, contentType, headers, auth, body)
 }
 
-func (c *Client) HttpDo(method string, url string, contentType string, headers map[string]string,
+func (c *Client) HttpDo(ctx context.Context, method string, url string, contentType string, headers map[string]string,
 	auth func(r *http.Request) error,
 	body io.Reader,
 ) (*http.Response, error) {
@@ -67,10 +68,10 @@ func (c *Client) HttpDo(method string, url string, contentType string, headers m
 		}
 	}
 
-	return c.Do(req)
+	return c.Do(ctx, req)
 }
 
-func (c *Client) Do(req *http.Request) (*http.Response, error) {
+func (c *Client) Do(ctx context.Context, req *http.Request) (*http.Response, error) {
 	err := RequestWithProxyTarget(req, c.opts.proxyTarget)
 	if err != nil {
 		return nil, err
