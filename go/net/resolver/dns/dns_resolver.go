@@ -69,7 +69,7 @@ var (
 	defaultResolver netResolver = net.DefaultResolver
 	// To prevent excessive re-resolution, we enforce a rate limit on DNS
 	// resolution requests.
-	minDNSResRate = 30 * time.Second
+	defaultSyncInterval = 30 * time.Second
 )
 
 var customAuthorityDialler = func(authority string) func(ctx context.Context, network, address string) (net.Conn, error) {
@@ -94,17 +94,27 @@ var customAuthorityResolver = func(authority string) (netResolver, error) {
 }
 
 // NewBuilder creates a dnsBuilder which is used to factory DNS resolvers.
-func NewBuilder() resolver.Builder {
-	return &dnsBuilder{}
+func NewBuilder(opts ...dnsBuilderOption) resolver.Builder {
+	b := &dnsBuilder{}
+	b.ApplyOptions(opts...)
+	if b.opts.syncInterval == 0 {
+		b.opts.syncInterval = defaultSyncInterval
+	}
+
+	return b
 }
 
-type dnsBuilder struct{}
+type dnsBuilder struct {
+	opts struct {
+		syncInterval time.Duration
+	}
+}
 
 // Build creates and starts a DNS resolver that watches the name resolution of the target.
 func (b *dnsBuilder) Build(target resolver.Target, opts ...resolver.ResolverBuildOption) (resolver.Resolver, error) {
 	var opt resolver.ResolverBuildOptions
 	opt.ApplyOptions(opts...)
-	host, port, err := parseTarget(target.URL.Host, defaultPort)
+	host, port, err := parseTarget(target.Endpoint, defaultPort)
 	if err != nil {
 		return nil, err
 	}
@@ -124,12 +134,13 @@ func (b *dnsBuilder) Build(target resolver.Target, opts ...resolver.ResolverBuil
 	// DNS address (non-IP).
 	ctx, cancel := context.WithCancel(context.Background())
 	d := &dnsResolver{
-		host:   host,
-		port:   port,
-		ctx:    ctx,
-		cancel: cancel,
-		cc:     cc,
-		rn:     make(chan struct{}, 1),
+		host:         host,
+		port:         port,
+		syncInterval: b.opts.syncInterval,
+		ctx:          ctx,
+		cancel:       cancel,
+		cc:           cc,
+		rn:           make(chan struct{}, 1),
 	}
 
 	if target.Authority == "" {
@@ -220,12 +231,14 @@ func (deadResolver) Close() {}
 
 // dnsResolver watches for the name resolution update for a non-IP target.
 type dnsResolver struct {
-	host     string
-	port     string
-	resolver netResolver
-	ctx      context.Context
-	cancel   context.CancelFunc
-	cc       resolver.ClientConn
+	host         string
+	port         string
+	resolver     netResolver
+	syncInterval time.Duration
+
+	ctx    context.Context
+	cancel context.CancelFunc
+	cc     resolver.ClientConn
 	// rn channel is used by ResolveNow() to force an immediate resolution of the target.
 	rn chan struct{}
 	// wg is used to enforce Close() to return after the watcher() goroutine has finished.
@@ -328,7 +341,7 @@ func (d *dnsResolver) watcher() {
 			// Success resolving, wait for the next ResolveNow. However, also wait 30 seconds at the very least
 			// to prevent constantly re-resolving.
 			backoff.Reset()
-			timer = newTimer(minDNSResRate)
+			timer = newTimer(d.syncInterval)
 			select {
 			case <-d.ctx.Done():
 				timer.Stop()
