@@ -23,6 +23,7 @@ package http
 
 import (
 	"bytes"
+	"context"
 	"fmt"
 	"io"
 	"io/ioutil"
@@ -149,8 +150,8 @@ func NewClient(options ...ClientOption) (*Client, error) {
 	return c, nil
 }
 
-func (c *Client) Get(url string) ([]byte, error) {
-	r, err := c.get(url)
+func (c *Client) Get(ctx context.Context, url string) ([]byte, error) {
+	r, err := c.get(ctx, url)
 	if err != nil {
 		return nil, err
 	}
@@ -165,76 +166,84 @@ func (c *Client) Get(url string) ([]byte, error) {
 }
 
 func (c *Client) Post(
+	ctx context.Context,
 	url, contentType string,
 	headers map[string]string,
 	body []byte,
 ) ([]byte, error) {
 	bodyReader := bytes.NewReader(body)
-	return c.PostReader(url, contentType, headers, nil, bodyReader)
+	return c.PostReader(ctx, url, contentType, headers, nil, bodyReader)
 }
 
 func (c *Client) Put(
+	ctx context.Context,
 	url, contentType string,
 	headers map[string]string,
 	body []byte,
 ) ([]byte, error) {
 	bodyReader := bytes.NewReader(body)
-	return c.PutReader(url, contentType, headers, nil, bodyReader)
+	return c.PutReader(ctx, url, contentType, headers, nil, bodyReader)
 }
 
 func (c *Client) PostJson(
+	ctx context.Context,
 	url string,
 	headers map[string]string,
 	body []byte,
 ) ([]byte, error) {
 	bodyReader := bytes.NewReader(body)
-	return c.PostReader(url, binding.MIMEJSON, headers, nil, bodyReader)
+	return c.PostReader(ctx, url, binding.MIMEJSON, headers, nil, bodyReader)
 }
 
 func (c *Client) PostPb(
+	ctx context.Context,
 	url string,
 	headers map[string]string,
 	body []byte,
 ) ([]byte, error) {
 	bodyReader := bytes.NewReader(body)
-	return c.PostReader(url, binding.MIMEPROTOBUF, headers, nil, bodyReader)
+	return c.PostReader(ctx, url, binding.MIMEPROTOBUF, headers, nil, bodyReader)
 }
 
 func (c *Client) PostJsonWithAuthorize(
+	ctx context.Context,
 	url string,
 	headers map[string]string,
 	auth func(r *http.Request) error,
 	body []byte,
 ) ([]byte, error) {
 	bodyReader := bytes.NewReader(body)
-	return c.PostReader(url, binding.MIMEJSON, headers, auth, bodyReader)
+	return c.PostReader(ctx, url, binding.MIMEJSON, headers, auth, bodyReader)
 }
 
 func (c *Client) PostReader(
+	ctx context.Context,
 	url, contentType string,
 	headers map[string]string,
 	auth func(r *http.Request) error,
 	body io.Reader,
 ) ([]byte, error) {
-	return c.HttpReader(http.MethodPost, url, contentType, headers, auth, body)
+	return c.HttpReader(ctx, http.MethodPost, url, contentType, headers, auth, body)
 }
 
 func (c *Client) PutReader(
+	ctx context.Context,
 	url, contentType string,
 	headers map[string]string,
 	auth func(r *http.Request) error,
 	body io.Reader,
 ) ([]byte, error) {
-	return c.HttpReader(http.MethodPut, url, contentType, headers, auth, body)
+	return c.HttpReader(ctx, http.MethodPut, url, contentType, headers, auth, body)
 }
 
 func (c *Client) HttpReader(
+	ctx context.Context,
 	method, url, contentType string,
 	headers map[string]string,
 	auth func(r *http.Request) error,
 	body io.Reader,
 ) ([]byte, error) {
-	r, err := c.HttpDo(method, url, contentType, headers, auth, body)
+	r, err := c.HttpDo(ctx, method, url, contentType, headers, auth, body)
 	if err != nil {
 		return nil, err
 	}
