@@ -125,7 +125,7 @@ func (r *Repository[REQ, RESP]) PostPb(ctx context.Context, req *REQ) (resp *RES
 
 		respData, err = r.Client.PostPb(ctx, r.Url, nil, reqData)
 		if err != nil {
-			logger.WithError(err).Errorf("failed to post json")
+			logger.WithError(err).Errorf("failed to post json, url: %v", r.Url)
 			return err
 		}
 		return nil
