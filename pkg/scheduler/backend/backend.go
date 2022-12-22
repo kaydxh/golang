@@ -21,7 +21,10 @@
  */
 package backend
 
-import "github.com/kaydxh/golang/pkg/scheduler/task"
+import (
+	"github.com/kaydxh/golang/pkg/scheduler/task"
+	"github.com/kaydxh/golang/pkg/scheduler/types"
+)
 
 type Backend interface {
 	SetState(state types.TaskState, task *task.Task) error
