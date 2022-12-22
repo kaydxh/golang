@@ -23,6 +23,8 @@ package os
 
 import (
 	"fmt"
+	"math/rand"
+	"os"
 	"strconv"
 	"strings"
 	"time"
@@ -54,4 +56,10 @@ func GetPidsByName(
 	}
 
 	return nPids, msg, nil
+}
+
+// 获取进程唯一标识符
+func GetProcId() string {
+	s, _ := os.Hostname()
+	return fmt.Sprintf("%s:pid:%v:%v", s, os.Getpid(), rand.Int())
 }
