@@ -21,8 +21,22 @@
  */
 package taskqueue
 
-func WithBurst(burst int32) DBOption {
-	return DBOptionFunc(func(c *DB) {
-		c.opts.maxConns = maxConns
+import "time"
+
+func WithWorkerBurst(burst uint32) PoolOption {
+	return PoolOptionFunc(func(c *Pool) {
+		c.opts.workerBurst = burst
+	})
+}
+
+func WithFetcherBurst(burst uint32) PoolOption {
+	return PoolOptionFunc(func(c *Pool) {
+		c.opts.fetcherBurst = burst
+	})
+}
+
+func WithFetchTimeout(timeout time.Duration) PoolOption {
+	return PoolOptionFunc(func(c *Pool) {
+		c.opts.fetchTimeout = timeout
 	})
 }
