@@ -19,16 +19,10 @@
  *OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  *SOFTWARE.
  */
+package taskqueue
 
-package queue
-
-type Message struct {
-	Id   string
-	Name string
-
-	// the same Scheme for the same task handler
-	Scheme string
-
-	// Args is json format, for run task
-	Args string
+func WithBurst(burst int32) DBOption {
+	return DBOptionFunc(func(c *DB) {
+		c.opts.maxConns = maxConns
+	})
 }
