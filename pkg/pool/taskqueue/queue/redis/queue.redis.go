@@ -63,7 +63,7 @@ func (q *Queue) Add(ctx context.Context, msg *queue_.Message) error {
 	return nil
 }
 
-func (q *Queue) fetchN(ctx context.Context, n int64, waitTimeout time.Duration) ([]queue_.Message, error) {
+func (q *Queue) fetchN(ctx context.Context, n int64, waitTimeout time.Duration) ([]*queue_.Message, error) {
 	streams, err := q.db.XReadGroup(ctx, &redis.XReadGroupArgs{
 		Streams:  []string{q.stream, ">"},
 		Group:    q.streamGroup,
@@ -79,10 +79,10 @@ func (q *Queue) fetchN(ctx context.Context, n int64, waitTimeout time.Duration) 
 	}
 
 	stream := &streams[0]
-	msgs := make([]queue_.Message, len(stream.Messages))
+	msgs := make([]*queue_.Message, len(stream.Messages))
 	for i := range stream.Messages {
 		xmsg := &stream.Messages[i]
-		msg := &msgs[i]
+		msg := msgs[i]
 		//	msg.Ctx = ctx
 		data := xmsg.Values["data"].(string)
 		err = json.Unmarshal([]byte(data), msg)
@@ -94,7 +94,7 @@ func (q *Queue) fetchN(ctx context.Context, n int64, waitTimeout time.Duration) 
 	return msgs, nil
 }
 
-func (q *Queue) FetchN(ctx context.Context, n int64, waitTimeout time.Duration) ([]queue_.Message, error) {
+func (q *Queue) FetchN(ctx context.Context, n int64, waitTimeout time.Duration) ([]*queue_.Message, error) {
 	msgs, err := q.fetchN(ctx, n, waitTimeout)
 	if err != nil {
 		if strings.HasPrefix(err.Error(), "NOGROUP") {
@@ -105,14 +105,14 @@ func (q *Queue) FetchN(ctx context.Context, n int64, waitTimeout time.Duration) 
 	return msgs, err
 }
 
-func (q *Queue) FetchOne(ctx context.Context, waitTimeout time.Duration) (queue_.Message, error) {
+func (q *Queue) FetchOne(ctx context.Context, waitTimeout time.Duration) (*queue_.Message, error) {
 	msgs, err := q.FetchN(ctx, 1, waitTimeout)
 	if err != nil {
-		return queue_.Message{}, err
+		return nil, err
 	}
 
 	if len(msgs) != 1 {
-		return queue_.Message{}, fmt.Errorf("fetch %v number messages", len(msgs))
+		return nil, fmt.Errorf("fetch %v number messages", len(msgs))
 	}
 	return msgs[0], nil
 }

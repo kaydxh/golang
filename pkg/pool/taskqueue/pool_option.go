@@ -19,16 +19,41 @@
  *OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  *SOFTWARE.
  */
+package taskqueue
 
-package queue
+// A PoolOption sets options.
+type PoolOption interface {
+	apply(*Pool)
+}
 
-type Message struct {
-	Id   string
-	Name string
+// EmptyPoolUrlOption does not alter the Pooluration. It can be embedded
+// in another structure to build custom options.
+//
+// This API is EXPERIMENTAL.
+type EmptyPoolOption struct{}
 
-	// the same Scheme for the same task handler
-	Scheme string
+func (EmptyPoolOption) apply(*Pool) {}
 
-	// Args is json format, for run task
-	Args string
+// PoolOptionFunc wraps a function that modifies Pool into an
+// implementation of the PoolOption interface.
+type PoolOptionFunc func(*Pool)
+
+func (f PoolOptionFunc) apply(do *Pool) {
+	f(do)
+}
+
+// sample code for option, default for nothing to change
+func _PoolOptionWithDefault() PoolOption {
+	return PoolOptionFunc(func(*Pool) {
+		// nothing to change
+	})
+}
+func (o *Pool) ApplyOptions(options ...PoolOption) *Pool {
+	for _, opt := range options {
+		if opt == nil {
+			continue
+		}
+		opt.apply(o)
+	}
+	return o
 }
