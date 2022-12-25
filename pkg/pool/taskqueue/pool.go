@@ -121,17 +121,21 @@ func (p *Pool) Process(ctx context.Context, msg *queue_.Message) error {
 		return fmt.Errorf("not regiter task scheme %v", msg.Scheme)
 	}
 
+	clean := func() {
+		err := p.taskq.Delete(ctx, msg)
+		if err != nil {
+			// only log error
+			logrus.WithError(err).Errorf("failed to delete msg: %v", msg)
+			return
+		}
+		logrus.Infof("delete msg: %v", msg)
+	}
+	defer clean()
+
 	err := tasker.TaskHandler(msg)
 	if err != nil {
 		return fmt.Errorf("failed to handle task %v, err: %v", msg, err)
 	}
 
-	err = p.taskq.Delete(ctx, msg)
-	if err != nil {
-		// only log error
-		logrus.WithError(err).Errorf("failed to delete msg: %v", msg)
-		return err
-	}
-	logrus.Infof("delete msg: %v", msg)
 	return nil
 }
