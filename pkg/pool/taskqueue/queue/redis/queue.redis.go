@@ -34,6 +34,9 @@ func NewQueue(db *redis.Client, opts queue_.QueueOptions) *Queue {
 	return q
 }
 
+// https://redis.io/commands/xadd/
+// * 为自动生成Id
+// XADD taskq-redis-stream  *  taskq "123"
 func (q *Queue) Add(ctx context.Context, msg *queue_.Message) error {
 	if msg.Name == "" {
 		return fmt.Errorf("messgae name is empty")
@@ -62,6 +65,9 @@ func (q *Queue) Add(ctx context.Context, msg *queue_.Message) error {
 
 	return nil
 }
+
+// get all
+// XRANGE taskq-redis-stream  - +
 
 func (q *Queue) fetchN(ctx context.Context, n int64, waitTimeout time.Duration) ([]*queue_.Message, error) {
 	streams, err := q.db.XReadGroup(ctx, &redis.XReadGroupArgs{
@@ -127,10 +133,13 @@ func (q *Queue) createMkStreamGroup(ctx context.Context) {
 	_ = q.db.XGroupCreateMkStream(ctx, q.stream, q.streamGroup, "0").Err()
 }
 
+// XLEN taskq-redis-stream
 func (q *Queue) Len() (int64, error) {
 	return q.db.XLen(context.Background(), q.stream).Result()
 }
 
+// XACK taskq-redis-stream taskq 1671960330664-0
+// XDEL taskq-redis-stream 1671960330664-0
 func (q *Queue) Delete(ctx context.Context, msg *queue_.Message) error {
 	err := q.db.XAck(ctx, q.stream, q.streamGroup, msg.InnerId).Err()
 	if err != nil {
