@@ -72,8 +72,13 @@ func TestTaskQueue(t *testing.T) {
 		Name: "redis",
 	})
 
-	pool := taskq_.NewPool(redisq)
+	pool := taskq_.NewPool(redisq, taskq_.WithFetcherBurst(1))
 	ctx := context.Background()
+	err = pool.Consume(ctx)
+	if err != nil {
+		t.Errorf("failed to consume task, err: %v", err)
+		return
+	}
 
 	args := TaskAArgs{
 		Param1: "param1",
@@ -85,7 +90,7 @@ func TestTaskQueue(t *testing.T) {
 		t.Errorf("failed to marshal args, err: %v", err)
 		return
 	}
-	for i := 0; i < 10; i++ {
+	for i := 0; i < 1; i++ {
 		msg := &queue_.Message{
 			Scheme: "taskA",
 			Args:   string(data),
@@ -98,12 +103,6 @@ func TestTaskQueue(t *testing.T) {
 				return
 			}
 		}(i, msg)
-	}
-
-	err = pool.Consume(ctx)
-	if err != nil {
-		t.Errorf("failed to consume task, err: %v", err)
-		return
 	}
 
 	select {}

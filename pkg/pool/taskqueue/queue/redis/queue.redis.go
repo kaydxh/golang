@@ -129,10 +129,11 @@ func (q *Queue) Len() (int64, error) {
 	return q.db.XLen(context.Background(), q.stream).Result()
 }
 
-func (q *Queue) Delete(msg *queue_.Message) error {
-	err := q.db.XAck(context.Background(), q.stream, q.streamGroup, msg.Id).Err()
+func (q *Queue) Delete(ctx context.Context, msg *queue_.Message) error {
+	err := q.db.XAck(ctx, q.stream, q.streamGroup, msg.Id).Err()
 	if err != nil {
+		logrus.WithError(err).Errorf("failed to XAck msg %v, stream[%v], stremaGroup[%v]", msg, q.stream, q.streamGroup)
 		return err
 	}
-	return q.db.XDel(context.Background(), q.stream, msg.Id).Err()
+	return q.db.XDel(ctx, q.stream, msg.Id).Err()
 }
