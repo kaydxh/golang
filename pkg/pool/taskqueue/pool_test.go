@@ -35,8 +35,7 @@ func (t TaskA) TaskHandler(message *queue_.Message) error {
 	}
 
 	fmt.Printf("get args: %v\n", args)
-	fmt.Printf("process task: %v\n", message.Id)
-
+	fmt.Printf("process task id: %v, name: %v\n", message.Id, message.Name)
 	return nil
 }
 
@@ -86,15 +85,19 @@ func TestTaskQueue(t *testing.T) {
 		t.Errorf("failed to marshal args, err: %v", err)
 		return
 	}
-	msg := &queue_.Message{
-		Name:   "taskA-1",
-		Scheme: "taskA",
-		Args:   string(data),
-	}
-	err = pool.Publish(ctx, msg)
-	if err != nil {
-		t.Errorf("failed to pulibsh task, err: %v", err)
-		return
+	for i := 0; i < 10; i++ {
+		msg := &queue_.Message{
+			Scheme: "taskA",
+			Args:   string(data),
+		}
+		go func(i int, m *queue_.Message) {
+			m.Name = fmt.Sprintf("taskA-%v", i)
+			err = pool.Publish(ctx, m)
+			if err != nil {
+				t.Errorf("failed to pulibsh task, err: %v", err)
+				return
+			}
+		}(i, msg)
 	}
 
 	err = pool.Consume(ctx)
