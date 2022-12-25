@@ -56,7 +56,7 @@ func (q *Queue) Add(ctx context.Context, msg *queue_.Message) error {
 		},
 	}).Err()
 	if err != nil {
-		logrus.WithError(err).Errorf("failed to  xadd msg [name: %v, id: %v]", msg.Name, msg.Id)
+		logrus.WithError(err).Errorf("failed to xadd msg [name: %v, id: %v]", msg.Name, msg.Id)
 		return err
 	}
 
