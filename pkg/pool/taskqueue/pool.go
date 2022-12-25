@@ -84,6 +84,12 @@ func (p *Pool) Consume(ctx context.Context) error {
 			for {
 				msg, err := p.taskq.FetchOne(ctx, p.opts.fetchTimeout)
 				if err != nil {
+					logrus.Errorf("faild to fetch msg, err: %v", err)
+					continue
+				}
+				if msg == nil {
+					logrus.Infof("no msg to fetch")
+					continue
 				}
 
 				select {

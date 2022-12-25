@@ -56,7 +56,7 @@ func (q *Queue) Add(ctx context.Context, msg *queue_.Message) error {
 		},
 	}).Err()
 	if err != nil {
-		logrus.Errorf("failed to  xadd msg [name: %v, id: %v]", msg.Name, msg.Id)
+		logrus.WithError(err).Errorf("failed to  xadd msg [name: %v, id: %v]", msg.Name, msg.Id)
 		return err
 	}
 
@@ -82,12 +82,15 @@ func (q *Queue) fetchN(ctx context.Context, n int64, waitTimeout time.Duration) 
 	msgs := make([]*queue_.Message, len(stream.Messages))
 	for i := range stream.Messages {
 		xmsg := &stream.Messages[i]
+		msgs[i] = &queue_.Message{}
 		msg := msgs[i]
 		//	msg.Ctx = ctx
-		data := xmsg.Values["data"].(string)
+		data := xmsg.Values["message"].(string)
 		err = json.Unmarshal([]byte(data), msg)
 		if err != nil {
 			//msg.Err = err
+			logrus.WithError(err).Errorf("failed to unmarshal msg %v", string(data))
+			return nil, err
 		}
 	}
 
@@ -111,8 +114,9 @@ func (q *Queue) FetchOne(ctx context.Context, waitTimeout time.Duration) (*queue
 		return nil, err
 	}
 
-	if len(msgs) != 1 {
-		return nil, fmt.Errorf("fetch %v number messages", len(msgs))
+	if len(msgs) == 0 {
+		//return nil, fmt.Errorf("fetch %v number messages", len(msgs))
+		return nil, nil
 	}
 	return msgs[0], nil
 }
