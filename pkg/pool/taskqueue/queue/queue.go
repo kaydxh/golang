@@ -9,6 +9,12 @@ const (
 	TaskQueuePrefix = "taskq"
 )
 
+/*
+var (
+  NoExistMessage
+)
+*/
+
 type QueueOptions struct {
 	Name string
 }

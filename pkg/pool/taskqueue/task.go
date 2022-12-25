@@ -1,6 +1,10 @@
 package taskqueue
 
-import "sync"
+import (
+	"sync"
+
+	queue_ "github.com/kaydxh/golang/pkg/pool/taskqueue/queue"
+)
 
 type TaskOptions struct {
 	Name string
@@ -13,6 +17,6 @@ type Task struct {
 type TaskerMap sync.Map
 
 type Tasker interface {
-	TaskHandler(task interface{}) error
+	TaskHandler(message *queue_.Message) error
 	Scheme() string
 }
