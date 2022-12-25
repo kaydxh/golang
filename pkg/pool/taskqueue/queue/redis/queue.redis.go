@@ -91,7 +91,11 @@ func (q *Queue) fetchN(ctx context.Context, n int64, waitTimeout time.Duration) 
 		msgs[i] = &queue_.Message{}
 		msg := msgs[i]
 		//	msg.Ctx = ctx
-		data := xmsg.Values["message"].(string)
+		data, ok := xmsg.Values["message"].(string)
+		if !ok {
+			logrus.Errorf("message type is not string")
+			continue
+		}
 		err = json.Unmarshal([]byte(data), msg)
 		if err != nil {
 			//msg.Err = err
