@@ -23,8 +23,12 @@
 package queue
 
 type Message struct {
-	Id   string
-	Name string
+	// 业务标识
+	Id string
+
+	//内部标识,内部自动生成
+	InnerId string
+	Name    string
 
 	// the same Scheme for the same task handler
 	Scheme string

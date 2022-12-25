@@ -90,7 +90,7 @@ func TestTaskQueue(t *testing.T) {
 		t.Errorf("failed to marshal args, err: %v", err)
 		return
 	}
-	for i := 0; i < 1; i++ {
+	for i := 0; i < 10; i++ {
 		msg := &queue_.Message{
 			Scheme: "taskA",
 			Args:   string(data),
