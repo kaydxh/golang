@@ -92,6 +92,7 @@ func (q *Queue) fetchN(ctx context.Context, n int64, waitTimeout time.Duration) 
 			logrus.WithError(err).Errorf("failed to unmarshal msg %v", string(data))
 			return nil, err
 		}
+		msg.InnerId = xmsg.ID
 	}
 
 	return msgs, nil
@@ -122,6 +123,7 @@ func (q *Queue) FetchOne(ctx context.Context, waitTimeout time.Duration) (*queue
 }
 
 func (q *Queue) createMkStreamGroup(ctx context.Context) {
+	logrus.Infof("createMkStreamGroup stream: %v, streamGroup: %v", q.stream, q.streamGroup)
 	_ = q.db.XGroupCreateMkStream(ctx, q.stream, q.streamGroup, "0").Err()
 }
 
@@ -130,10 +132,10 @@ func (q *Queue) Len() (int64, error) {
 }
 
 func (q *Queue) Delete(ctx context.Context, msg *queue_.Message) error {
-	err := q.db.XAck(ctx, q.stream, q.streamGroup, msg.Id).Err()
+	err := q.db.XAck(ctx, q.stream, q.streamGroup, msg.InnerId).Err()
 	if err != nil {
-		logrus.WithError(err).Errorf("failed to XAck msg %v, stream[%v], stremaGroup[%v]", msg, q.stream, q.streamGroup)
+		logrus.WithError(err).Errorf("failed to XAck msg %v, stream[%v], stremaGroup[%v], id[%v], innerId[%v]", msg, q.stream, q.streamGroup, msg.Id, msg.InnerId)
 		return err
 	}
-	return q.db.XDel(ctx, q.stream, msg.Id).Err()
+	return q.db.XDel(ctx, q.stream, msg.InnerId).Err()
 }

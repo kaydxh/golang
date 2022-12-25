@@ -130,7 +130,8 @@ func (p *Pool) Process(ctx context.Context, msg *queue_.Message) error {
 	if err != nil {
 		// only log error
 		logrus.WithError(err).Errorf("failed to delete msg: %v", msg)
+		return err
 	}
-
+	logrus.Infof("delete msg: %v", msg)
 	return nil
 }
