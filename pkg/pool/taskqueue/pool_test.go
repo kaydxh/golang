@@ -97,11 +97,12 @@ func TestTaskQueue(t *testing.T) {
 		}
 		go func(i int, m *queue_.Message) {
 			m.Name = fmt.Sprintf("taskA-%v", i)
-			err = pool.Publish(ctx, m)
+			id, err := pool.Publish(ctx, m)
 			if err != nil {
 				t.Errorf("failed to pulibsh task, err: %v", err)
 				return
 			}
+			t.Logf("pulibsh task, innerId: %v, msg: %v", id, m)
 		}(i, msg)
 	}
 
