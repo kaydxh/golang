@@ -17,6 +17,6 @@ type Task struct {
 type TaskerMap sync.Map
 
 type Tasker interface {
-	TaskHandler(message *queue_.Message) error
+	TaskHandler(message *queue_.Message) (*queue_.MessageResult, error)
 	Scheme() string
 }

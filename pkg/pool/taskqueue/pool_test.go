@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"sync"
 	"testing"
+	"time"
 
 	"github.com/go-redis/redis/v8"
 	redis_ "github.com/kaydxh/golang/pkg/database/redis"
@@ -23,20 +24,43 @@ type TaskAArgs struct {
 	Param2 int
 }
 
+type TaskAResult struct {
+	Result1 string
+	Result2 int
+}
+
 func (t TaskA) Scheme() string {
 	return "taskA"
 }
 
-func (t TaskA) TaskHandler(message *queue_.Message) error {
+func (t TaskA) TaskHandler(msg *queue_.Message) (*queue_.MessageResult, error) {
 	var args TaskAArgs
-	err := json.Unmarshal([]byte(message.Args), &args)
+	err := json.Unmarshal([]byte(msg.Args), &args)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
-	fmt.Printf("get args: %v\n", args)
-	fmt.Printf("process task id: %v, name: %v\n", message.Id, message.Name)
-	return nil
+	//fmt.Printf("get args: %v\n", args)
+	fmt.Printf("process task id: %v, name: %v\n", msg.Id, msg.Name)
+
+	result := &queue_.MessageResult{
+		Id:      msg.Id,
+		InnerId: msg.InnerId,
+		Name:    msg.Name,
+		Scheme:  msg.Scheme,
+	}
+
+	taskResult := &TaskAResult{
+		Result1: "Result1",
+		Result2: 2,
+	}
+
+	data, err := json.Marshal(taskResult)
+	if err != nil {
+		return nil, err
+	}
+	result.Result = string(data)
+	return result, nil
 }
 
 var (
@@ -90,12 +114,19 @@ func TestTaskQueue(t *testing.T) {
 		t.Errorf("failed to marshal args, err: %v", err)
 		return
 	}
+
+	var (
+		ids []string
+		wg  sync.WaitGroup
+	)
 	for i := 0; i < 10; i++ {
 		msg := &queue_.Message{
 			Scheme: "taskA",
 			Args:   string(data),
 		}
+		wg.Add(1)
 		go func(i int, m *queue_.Message) {
+			defer wg.Done()
 			m.Name = fmt.Sprintf("taskA-%v", i)
 			id, err := pool.Publish(ctx, m)
 			if err != nil {
@@ -103,9 +134,22 @@ func TestTaskQueue(t *testing.T) {
 				return
 			}
 			t.Logf("pulibsh task, innerId: %v, msg: %v", id, m)
+			ids = append(ids, id)
 		}(i, msg)
 	}
 
+	wg.Wait()
+
+	time.Sleep(5 * time.Second)
+
+	for _, id := range ids {
+		result, err := pool.FetchResult(ctx, id)
+		if err != nil {
+			t.Errorf("%v", err)
+			continue
+		}
+		t.Logf("fetch result %v of msg %v", result, id)
+	}
 	select {}
 
 }
