@@ -6,14 +6,16 @@ import (
 	"sync"
 	"time"
 
+	errors_ "github.com/kaydxh/golang/go/errors"
 	queue_ "github.com/kaydxh/golang/pkg/pool/taskqueue/queue"
 	"github.com/sirupsen/logrus"
 )
 
 type PoolOptions struct {
-	workerBurst  uint32
-	fetcherBurst uint32
-	fetchTimeout time.Duration
+	workerBurst   uint32
+	fetcherBurst  uint32
+	fetchTimeout  time.Duration
+	resultExpired time.Duration
 }
 
 type Pool struct {
@@ -26,9 +28,10 @@ type Pool struct {
 
 func defaultPoolOptions() PoolOptions {
 	return PoolOptions{
-		workerBurst:  1,
-		fetcherBurst: 1,
-		fetchTimeout: 10 * time.Second,
+		workerBurst:   1,
+		fetcherBurst:  1,
+		fetchTimeout:  10 * time.Second,
+		resultExpired: 30 * time.Minute,
 	}
 }
 
@@ -114,11 +117,29 @@ func (p *Pool) Consume(ctx context.Context) error {
 	return nil
 }
 
+func (p *Pool) FetchResult(ctx context.Context, key string) (*queue_.MessageResult, error) {
+	result, err := p.taskq.FetchResult(ctx, key)
+	if err != nil {
+		logrus.WithError(err).Errorf("failed to fetch result of msg %v", key)
+		return nil, err
+	}
+
+	return result, nil
+}
+
 func (p *Pool) Process(ctx context.Context, msg *queue_.Message) error {
 
 	tasker := Get(msg.Scheme)
 	if tasker == nil {
 		return fmt.Errorf("not regiter task scheme %v", msg.Scheme)
+	}
+
+	var errs []error
+	result := &queue_.MessageResult{
+		Id:      msg.Id,
+		InnerId: msg.InnerId,
+		Name:    msg.Name,
+		Scheme:  msg.Scheme,
 	}
 
 	clean := func() {
@@ -132,9 +153,18 @@ func (p *Pool) Process(ctx context.Context, msg *queue_.Message) error {
 	}
 	defer clean()
 
-	err := tasker.TaskHandler(msg)
+	result, err := tasker.TaskHandler(msg)
 	if err != nil {
-		return fmt.Errorf("failed to handle task %v, err: %v", msg, err)
+		errs = append(errs, err)
+		logrus.WithError(err).Errorf("failed to handle task %v, err: %v", msg, err)
+	}
+	result.Err = err
+	_, err = p.taskq.AddResult(ctx, result, p.opts.resultExpired)
+	if err != nil {
+		errs = append(errs, err)
+		//only log error
+		logrus.WithError(err).Errorf("failed to add msg result: %v", result)
+		return errors_.NewAggregate(errs)
 	}
 
 	return nil

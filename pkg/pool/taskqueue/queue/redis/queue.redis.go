@@ -153,3 +153,44 @@ func (q *Queue) Delete(ctx context.Context, msg *queue_.Message) error {
 	}
 	return q.db.XDel(ctx, q.stream, msg.InnerId).Err()
 }
+
+func (q *Queue) AddResult(ctx context.Context, result *queue_.MessageResult, expired time.Duration) (string, error) {
+
+	if result.InnerId == "" {
+		return "", fmt.Errorf("innerId is empty")
+	}
+
+	data, err := json.Marshal(result)
+	if err != nil {
+		return "", err
+	}
+
+	_, err = q.db.Set(ctx, result.InnerId, string(data), expired).Result()
+	if err != nil {
+		logrus.WithError(err).Errorf("failed to set msg result[name: %v, id: %v]", result.Name, result.Id)
+		return "", err
+	}
+
+	return result.InnerId, nil
+}
+
+func (q *Queue) FetchResult(ctx context.Context, key string) (*queue_.MessageResult, error) {
+
+	if key == "" {
+		return nil, fmt.Errorf("key is empty")
+	}
+
+	val, err := q.db.Get(ctx, key).Result()
+	if err != nil {
+		logrus.WithError(err).Errorf("failed to get msg result of %v", key)
+		return nil, err
+	}
+
+	result := &queue_.MessageResult{}
+	err = json.Unmarshal([]byte(val), result)
+	if err != nil {
+		return nil, err
+	}
+
+	return result, nil
+}
