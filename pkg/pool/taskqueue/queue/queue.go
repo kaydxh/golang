@@ -20,7 +20,7 @@ type QueueOptions struct {
 }
 
 type Queue interface {
-	Add(ctx context.Context, msg *Message) error
+	Add(ctx context.Context, msg *Message) (string, error)
 	FetchOne(ctx context.Context, waitTimeout time.Duration) (*Message, error)
 	Delete(ctx context.Context, msg *Message) error
 }

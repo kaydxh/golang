@@ -43,14 +43,14 @@ func NewPool(taskq queue_.Queue, opts ...PoolOption) *Pool {
 	return p
 }
 
-func (p *Pool) Publish(ctx context.Context, msg *queue_.Message) error {
-	err := p.taskq.Add(ctx, msg)
+func (p *Pool) Publish(ctx context.Context, msg *queue_.Message) (string, error) {
+	taskId, err := p.taskq.Add(ctx, msg)
 	if err != nil {
 		logrus.WithError(err).Errorf("failed to publish msg: %v", msg)
-		return err
+		return "", err
 	}
 	logrus.Infof("succeed in publishing msg: %v", msg)
-	return nil
+	return taskId, nil
 }
 
 func (p *Pool) Consume(ctx context.Context) error {

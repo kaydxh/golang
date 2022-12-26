@@ -37,9 +37,9 @@ func NewQueue(db *redis.Client, opts queue_.QueueOptions) *Queue {
 // https://redis.io/commands/xadd/
 // * 为自动生成Id
 // XADD taskq-redis-stream  *  taskq "123"
-func (q *Queue) Add(ctx context.Context, msg *queue_.Message) error {
+func (q *Queue) Add(ctx context.Context, msg *queue_.Message) (string, error) {
 	if msg.Name == "" {
-		return fmt.Errorf("messgae name is empty")
+		return "", fmt.Errorf("messgae name is empty")
 	}
 	if msg.Id == "" {
 		msg.Id = uuid.NewString()
@@ -48,22 +48,23 @@ func (q *Queue) Add(ctx context.Context, msg *queue_.Message) error {
 	//todo check message name if exists
 	data, err := json.Marshal(msg)
 	if err != nil {
-		return err
+		return "", err
 	}
 
 	// xadd msg to redis
-	err = q.db.XAdd(ctx, &redis.XAddArgs{
+	cmd := q.db.XAdd(ctx, &redis.XAddArgs{
 		Stream: q.stream,
 		Values: map[string]interface{}{
 			"message": string(data),
 		},
-	}).Err()
+	})
+	err = cmd.Err()
 	if err != nil {
 		logrus.WithError(err).Errorf("failed to xadd msg [name: %v, id: %v]", msg.Name, msg.Id)
-		return err
+		return "", err
 	}
-
-	return nil
+	msg.InnerId = cmd.Val()
+	return cmd.Val(), nil
 }
 
 // get all
