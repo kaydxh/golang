@@ -16,6 +16,8 @@ type PoolOptions struct {
 	fetcherBurst  uint32
 	fetchTimeout  time.Duration
 	resultExpired time.Duration
+
+	resultCallbackFunc queue_.ResultCallbackFunc
 }
 
 type Pool struct {
@@ -159,6 +161,13 @@ func (p *Pool) Process(ctx context.Context, msg *queue_.Message) error {
 		logrus.WithError(err).Errorf("failed to handle task %v, err: %v", msg, err)
 	}
 	result.Err = err
+
+	//callback result
+	if p.opts.resultCallbackFunc != nil {
+		p.opts.resultCallbackFunc(ctx, result)
+	}
+
+	//write to queue
 	_, err = p.taskq.AddResult(ctx, result, p.opts.resultExpired)
 	if err != nil {
 		errs = append(errs, err)

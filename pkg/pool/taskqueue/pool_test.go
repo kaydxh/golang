@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"sync"
 	"testing"
-	"time"
 
 	"github.com/go-redis/redis/v8"
 	redis_ "github.com/kaydxh/golang/pkg/database/redis"
@@ -96,7 +95,9 @@ func TestTaskQueue(t *testing.T) {
 		Name: "redis",
 	})
 
-	pool := taskq_.NewPool(redisq, taskq_.WithFetcherBurst(1))
+	pool := taskq_.NewPool(redisq, taskq_.WithFetcherBurst(1), taskq_.WithResultCallbackFunc(func(ctx context.Context, result *queue_.MessageResult) {
+		t.Logf("--> callback fetch result %v of msg", result)
+	}))
 	ctx := context.Background()
 	err = pool.Consume(ctx)
 	if err != nil {
@@ -140,16 +141,18 @@ func TestTaskQueue(t *testing.T) {
 
 	wg.Wait()
 
-	time.Sleep(5 * time.Second)
+	/*
+		time.Sleep(5 * time.Second)
 
-	for _, id := range ids {
-		result, err := pool.FetchResult(ctx, id)
-		if err != nil {
-			t.Errorf("%v", err)
-			continue
+		for _, id := range ids {
+			result, err := pool.FetchResult(ctx, id)
+			if err != nil {
+				t.Errorf("%v", err)
+				continue
+			}
+			t.Logf("fetch result %v of msg %v", result, id)
 		}
-		t.Logf("fetch result %v of msg %v", result, id)
-	}
+	*/
 	select {}
 
 }

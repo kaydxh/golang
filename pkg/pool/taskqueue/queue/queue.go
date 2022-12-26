@@ -27,3 +27,5 @@ type Queue interface {
 	AddResult(ctx context.Context, result *MessageResult, expired time.Duration) (string, error)
 	FetchResult(ctx context.Context, key string) (*MessageResult, error)
 }
+
+type ResultCallbackFunc func(ctx context.Context, result *MessageResult)

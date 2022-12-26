@@ -21,7 +21,11 @@
  */
 package taskqueue
 
-import "time"
+import (
+	"time"
+
+	queue_ "github.com/kaydxh/golang/pkg/pool/taskqueue/queue"
+)
 
 func WithWorkerBurst(burst uint32) PoolOption {
 	return PoolOptionFunc(func(c *Pool) {
@@ -38,5 +42,11 @@ func WithFetcherBurst(burst uint32) PoolOption {
 func WithFetchTimeout(timeout time.Duration) PoolOption {
 	return PoolOptionFunc(func(c *Pool) {
 		c.opts.fetchTimeout = timeout
+	})
+}
+
+func WithResultCallbackFunc(callback queue_.ResultCallbackFunc) PoolOption {
+	return PoolOptionFunc(func(c *Pool) {
+		c.opts.resultCallbackFunc = callback
 	})
 }
