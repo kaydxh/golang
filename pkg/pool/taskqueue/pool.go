@@ -142,13 +142,6 @@ func (p *Pool) Process(ctx context.Context, msg *queue_.Message) error {
 	}
 
 	var errs []error
-	result := &queue_.MessageResult{
-		Id:      msg.Id,
-		InnerId: msg.InnerId,
-		Name:    msg.Name,
-		Scheme:  msg.Scheme,
-	}
-
 	clean := func() {
 		err := p.taskq.Delete(ctx, msg)
 		if err != nil {
@@ -164,6 +157,14 @@ func (p *Pool) Process(ctx context.Context, msg *queue_.Message) error {
 	if err != nil {
 		errs = append(errs, err)
 		logrus.WithError(err).Errorf("failed to handle task %v, err: %v", msg, err)
+	}
+	if result == nil {
+		result = &queue_.MessageResult{
+			Id:      msg.Id,
+			InnerId: msg.InnerId,
+			Name:    msg.Name,
+			Scheme:  msg.Scheme,
+		}
 	}
 	result.Err = err
 
