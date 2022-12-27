@@ -6,16 +6,18 @@ import (
 	"sync"
 	"time"
 
+	context_ "github.com/kaydxh/golang/go/context"
 	errors_ "github.com/kaydxh/golang/go/errors"
 	queue_ "github.com/kaydxh/golang/pkg/pool/taskqueue/queue"
 	"github.com/sirupsen/logrus"
 )
 
 type PoolOptions struct {
-	workerBurst   uint32
-	fetcherBurst  uint32
-	fetchTimeout  time.Duration
-	resultExpired time.Duration
+	workerBurst    uint32
+	fetcherBurst   uint32
+	fetchTimeout   time.Duration
+	resultExpired  time.Duration
+	processTimeout time.Duration
 
 	resultCallbackFunc queue_.ResultCallbackFunc
 }
@@ -130,6 +132,9 @@ func (p *Pool) FetchResult(ctx context.Context, key string) (*queue_.MessageResu
 }
 
 func (p *Pool) Process(ctx context.Context, msg *queue_.Message) error {
+
+	ctx, cancel := context_.WithTimeout(ctx, p.opts.processTimeout)
+	defer cancel()
 
 	tasker := Get(msg.Scheme)
 	if tasker == nil {
