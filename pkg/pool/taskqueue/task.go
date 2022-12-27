@@ -1,6 +1,7 @@
 package taskqueue
 
 import (
+	"context"
 	"sync"
 
 	queue_ "github.com/kaydxh/golang/pkg/pool/taskqueue/queue"
@@ -17,6 +18,6 @@ type Task struct {
 type TaskerMap sync.Map
 
 type Tasker interface {
-	TaskHandler(message *queue_.Message) (*queue_.MessageResult, error)
+	TaskHandler(ctx context.Context, message *queue_.Message) (*queue_.MessageResult, error)
 	Scheme() string
 }

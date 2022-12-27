@@ -45,6 +45,12 @@ func WithFetchTimeout(timeout time.Duration) PoolOption {
 	})
 }
 
+func WithResultExpired(resultExpired time.Duration) PoolOption {
+	return PoolOptionFunc(func(c *Pool) {
+		c.opts.resultExpired = resultExpired
+	})
+}
+
 func WithResultCallbackFunc(callback queue_.ResultCallbackFunc) PoolOption {
 	return PoolOptionFunc(func(c *Pool) {
 		c.opts.resultCallbackFunc = callback

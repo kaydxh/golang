@@ -32,7 +32,7 @@ func (t TaskA) Scheme() string {
 	return "taskA"
 }
 
-func (t TaskA) TaskHandler(msg *queue_.Message) (*queue_.MessageResult, error) {
+func (t TaskA) TaskHandler(ctx context.Context, msg *queue_.Message) (*queue_.MessageResult, error) {
 	var args TaskAArgs
 	err := json.Unmarshal([]byte(msg.Args), &args)
 	if err != nil {
@@ -141,9 +141,9 @@ func TestTaskQueue(t *testing.T) {
 
 	wg.Wait()
 
-	/*
-		time.Sleep(5 * time.Second)
+	//	time.Sleep(5 * time.Second)
 
+	/*
 		for _, id := range ids {
 			result, err := pool.FetchResult(ctx, id)
 			if err != nil {
