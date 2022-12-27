@@ -155,7 +155,7 @@ func (p *Pool) Process(ctx context.Context, msg *queue_.Message) error {
 	}
 	defer clean()
 
-	result, err := tasker.TaskHandler(msg)
+	result, err := tasker.TaskHandler(ctx, msg)
 	if err != nil {
 		errs = append(errs, err)
 		logrus.WithError(err).Errorf("failed to handle task %v, err: %v", msg, err)
