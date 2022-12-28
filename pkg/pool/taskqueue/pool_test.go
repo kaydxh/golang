@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"sync"
 	"testing"
+	"time"
 
 	"github.com/go-redis/redis/v8"
 	redis_ "github.com/kaydxh/golang/pkg/database/redis"
@@ -33,6 +34,8 @@ func (t TaskA) Scheme() string {
 }
 
 func (t TaskA) TaskHandler(ctx context.Context, msg *queue_.Message) (*queue_.MessageResult, error) {
+
+	time.Sleep(30 * time.Second)
 	var args TaskAArgs
 	err := json.Unmarshal([]byte(msg.Args), &args)
 	if err != nil {
@@ -95,7 +98,7 @@ func TestTaskQueue(t *testing.T) {
 		Name: "redis",
 	})
 
-	pool := taskq_.NewPool(redisq, taskq_.WithFetcherBurst(1), taskq_.WithResultCallbackFunc(func(ctx context.Context, result *queue_.MessageResult) {
+	pool := taskq_.NewPool(redisq, taskq_.WithFetcherBurst(1), taskq_.WithProcessTimeout(5*time.Second), taskq_.WithResultCallbackFunc(func(ctx context.Context, result *queue_.MessageResult) {
 		t.Logf("--> callback fetch result %v of msg", result)
 	}))
 	ctx := context.Background()

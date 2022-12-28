@@ -98,6 +98,7 @@ func (p *Pool) Consume(ctx context.Context) error {
 				msg, err := p.taskq.FetchOne(ctx, p.opts.fetchTimeout)
 				if err != nil {
 					logrus.Errorf("faild to fetch msg, err: %v", err)
+					//todo backoff
 					continue
 				}
 				if msg == nil {
@@ -131,10 +132,26 @@ func (p *Pool) FetchResult(ctx context.Context, key string) (*queue_.MessageResu
 	return result, nil
 }
 
-func (p *Pool) Process(ctx context.Context, msg *queue_.Message) error {
-
+func (p *Pool) Process(ctx context.Context, msg *queue_.Message) (err error) {
 	ctx, cancel := context_.WithTimeout(ctx, p.opts.processTimeout)
 	defer cancel()
+
+	done := make(chan struct{}, 1)
+	go func() {
+		err = p.doProcess(ctx, msg)
+		done <- struct{}{}
+	}()
+
+	select {
+	case <-done:
+	case <-ctx.Done():
+		return fmt.Errorf("process task timeout %v", p.opts.processTimeout)
+	}
+
+	return err
+}
+
+func (p *Pool) doProcess(ctx context.Context, msg *queue_.Message) error {
 
 	tasker := Get(msg.Scheme)
 	if tasker == nil {
