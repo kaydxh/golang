@@ -96,37 +96,20 @@ func (p *Pool) Consume(ctx context.Context) (err error) {
 
 			for {
 
-				/*
-					msg, err := p.taskq.FetchOne(ctx, p.opts.fetchTimeout)
-					if err != nil {
-						logrus.Errorf("faild to fetch msg, err: %v", err)
-						//todo backoff
-						continue
-					}
-					if msg == nil {
-						logrus.Infof("no msg to fetch")
-						continue
-					}
-				*/
-
-				var msg *queue_.Message
-				err := time_.RetryWithContext(ctx, func(ctx context.Context) error {
-					msg, err = p.taskq.FetchOne(ctx, p.opts.fetchTimeout)
-					if err != nil {
-						logrus.Errorf("faild to fetch msg, err: %v", err)
-						return err
-					}
-					if msg == nil {
-						logrus.Infof("no msg to fetch")
-						return fmt.Errorf("no msg to fetch")
-					}
-					return nil
-
-				}, 1*time.Second, 1)
-
+				const backoff = time.Second
+				msg, err := p.taskq.FetchOne(ctx, p.opts.fetchTimeout)
 				if err != nil {
+					logrus.Errorf("faild to fetch msg, err: %v", err)
+					//todo backoff
+					time.Sleep(backoff)
 					continue
 				}
+				if msg == nil {
+					logrus.Infof("no msg to fetch")
+					time.Sleep(backoff)
+					continue
+				}
+
 				select {
 				case p.msgChan <- msg:
 				case <-ctx.Done():
