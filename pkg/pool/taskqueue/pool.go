@@ -6,8 +6,8 @@ import (
 	"sync"
 	"time"
 
-	context_ "github.com/kaydxh/golang/go/context"
 	errors_ "github.com/kaydxh/golang/go/errors"
+	time_ "github.com/kaydxh/golang/go/time"
 	queue_ "github.com/kaydxh/golang/pkg/pool/taskqueue/queue"
 	"github.com/sirupsen/logrus"
 )
@@ -60,7 +60,7 @@ func (p *Pool) Publish(ctx context.Context, msg *queue_.Message) (string, error)
 	return taskId, nil
 }
 
-func (p *Pool) Consume(ctx context.Context) error {
+func (p *Pool) Consume(ctx context.Context) (err error) {
 
 	var i uint32
 	for i = 0; i < p.opts.workerBurst; i++ {
@@ -95,17 +95,38 @@ func (p *Pool) Consume(ctx context.Context) error {
 			defer p.wg.Done()
 
 			for {
-				msg, err := p.taskq.FetchOne(ctx, p.opts.fetchTimeout)
-				if err != nil {
-					logrus.Errorf("faild to fetch msg, err: %v", err)
-					//todo backoff
-					continue
-				}
-				if msg == nil {
-					logrus.Infof("no msg to fetch")
-					continue
-				}
 
+				/*
+					msg, err := p.taskq.FetchOne(ctx, p.opts.fetchTimeout)
+					if err != nil {
+						logrus.Errorf("faild to fetch msg, err: %v", err)
+						//todo backoff
+						continue
+					}
+					if msg == nil {
+						logrus.Infof("no msg to fetch")
+						continue
+					}
+				*/
+
+				var msg *queue_.Message
+				err := time_.RetryWithContext(ctx, func(ctx context.Context) error {
+					msg, err = p.taskq.FetchOne(ctx, p.opts.fetchTimeout)
+					if err != nil {
+						logrus.Errorf("faild to fetch msg, err: %v", err)
+						return err
+					}
+					if msg == nil {
+						logrus.Infof("no msg to fetch")
+						return fmt.Errorf("no msg to fetch")
+					}
+
+					return nil
+				}, 1*time.Second, 1)
+
+				if err != nil {
+					continue
+				}
 				select {
 				case p.msgChan <- msg:
 				case <-ctx.Done():
@@ -132,26 +153,7 @@ func (p *Pool) FetchResult(ctx context.Context, key string) (*queue_.MessageResu
 	return result, nil
 }
 
-func (p *Pool) Process(ctx context.Context, msg *queue_.Message) (err error) {
-	ctx, cancel := context_.WithTimeout(ctx, p.opts.processTimeout)
-	defer cancel()
-
-	done := make(chan struct{}, 1)
-	go func() {
-		err = p.doProcess(ctx, msg)
-		done <- struct{}{}
-	}()
-
-	select {
-	case <-done:
-	case <-ctx.Done():
-		return fmt.Errorf("process task timeout %v", p.opts.processTimeout)
-	}
-
-	return err
-}
-
-func (p *Pool) doProcess(ctx context.Context, msg *queue_.Message) error {
+func (p *Pool) Process(ctx context.Context, msg *queue_.Message) error {
 
 	tasker := Get(msg.Scheme)
 	if tasker == nil {
@@ -170,20 +172,37 @@ func (p *Pool) doProcess(ctx context.Context, msg *queue_.Message) error {
 	}
 	defer clean()
 
-	result, err := tasker.TaskHandler(ctx, msg)
-	if err != nil {
-		errs = append(errs, err)
-		logrus.WithError(err).Errorf("failed to handle task %v, err: %v", msg, err)
+	done := make(chan struct{}, 1)
+	result := &queue_.MessageResult{
+		Id:      msg.Id,
+		InnerId: msg.InnerId,
+		Name:    msg.Name,
+		Scheme:  msg.Scheme,
 	}
-	if result == nil {
-		result = &queue_.MessageResult{
-			Id:      msg.Id,
-			InnerId: msg.InnerId,
-			Name:    msg.Name,
-			Scheme:  msg.Scheme,
+
+	timer := time.NewTimer(p.opts.processTimeout)
+	defer timer.Stop()
+
+	go func() {
+		result_, err_ := tasker.TaskHandler(ctx, msg)
+		if err_ != nil {
+			errs = append(errs, err_)
+			logrus.WithError(err_).Errorf("failed to handle task %v, err: %v", msg, err_)
+
+		} else {
+			if result_ != nil {
+				result = result_
+			}
 		}
+		result.Err = err_
+		done <- struct{}{}
+	}()
+
+	select {
+	case <-done:
+	case <-timer.C:
+		result.Err = fmt.Errorf("process task timeout %v", p.opts.processTimeout)
 	}
-	result.Err = err
 
 	//callback result
 	if p.opts.resultCallbackFunc != nil {
@@ -191,7 +210,7 @@ func (p *Pool) doProcess(ctx context.Context, msg *queue_.Message) error {
 	}
 
 	//write to queue
-	_, err = p.taskq.AddResult(ctx, result, p.opts.resultExpired)
+	_, err := p.taskq.AddResult(ctx, result, p.opts.resultExpired)
 	if err != nil {
 		errs = append(errs, err)
 		//only log error
