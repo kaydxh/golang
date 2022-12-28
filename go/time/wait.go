@@ -23,12 +23,16 @@ package time
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"time"
 
+	errors_ "github.com/kaydxh/golang/go/errors"
 	runtime_ "github.com/kaydxh/golang/go/runtime"
 	"github.com/sirupsen/logrus"
 )
+
+var ErrTimeout = errors.New("timeout error")
 
 // Until loops until context timout, running f every period.
 // Until is syntactic sugar on top of JitterUntil with zero jitter factor and
@@ -148,4 +152,36 @@ func BackOffUntilWithContext(
 			}
 		}()
 	}
+}
+
+func CallWithTimeout(ctx context.Context, timeout time.Duration, f func(ctx context.Context) error) error {
+
+	var errs []error
+	done := make(chan struct{}, 1)
+
+	timer := time.NewTimer(timeout)
+	defer timer.Stop()
+
+	tc := New(true)
+	go func() {
+		err := f(ctx)
+		if err != nil {
+			errs = append(errs, err)
+		}
+		tc.Tick("call func")
+
+		done <- struct{}{}
+		logrus.WithField("modulel", "CallWithTimeout").WithField("timeout", timeout).Infof("finish call function %v", tc.String())
+	}()
+
+	select {
+	case <-ctx.Done():
+		return ctx.Err()
+	case <-done:
+	case <-timer.C:
+		return ErrTimeout
+	}
+
+	return errors_.NewAggregate(errs)
+
 }
