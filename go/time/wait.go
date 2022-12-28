@@ -156,13 +156,20 @@ func BackOffUntilWithContext(
 
 func CallWithTimeout(ctx context.Context, timeout time.Duration, f func(ctx context.Context) error) error {
 
+	tc := New(true)
+	// nerver timeout
+	if timeout <= 0 {
+		err := f(ctx)
+		tc.Tick("call func")
+		logrus.WithField("modulel", "CallWithTimeout").WithField("timeout", timeout).Infof("finish call function %v, err: %v", tc.String(), err)
+		return err
+	}
+
 	var errs []error
 	done := make(chan struct{}, 1)
-
 	timer := time.NewTimer(timeout)
 	defer timer.Stop()
 
-	tc := New(true)
 	go func() {
 		err := f(ctx)
 		if err != nil {
@@ -171,7 +178,7 @@ func CallWithTimeout(ctx context.Context, timeout time.Duration, f func(ctx cont
 		tc.Tick("call func")
 
 		done <- struct{}{}
-		logrus.WithField("modulel", "CallWithTimeout").WithField("timeout", timeout).Infof("finish call function %v", tc.String())
+		logrus.WithField("modulel", "CallWithTimeout").WithField("timeout", timeout).Infof("finish call function %v, err: %v", tc.String(), err)
 	}()
 
 	select {
