@@ -105,7 +105,7 @@ func (p *Pool) Consume(ctx context.Context) (err error) {
 					continue
 				}
 				if msg == nil {
-					logrus.Infof("no msg to fetch")
+					logrus.Debugf("no msg to fetch")
 					time.Sleep(backoff)
 					continue
 				}
