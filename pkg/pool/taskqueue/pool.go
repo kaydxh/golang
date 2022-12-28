@@ -57,6 +57,21 @@ func (p *Pool) Publish(ctx context.Context, msg *queue_.Message) (string, error)
 		return "", err
 	}
 	logrus.Infof("succeed in publishing msg: %v", msg)
+
+	result := &queue_.MessageResult{
+		Id:      msg.Id,
+		InnerId: msg.InnerId,
+		Name:    msg.Name,
+		Scheme:  msg.Scheme,
+		Status:  queue_.MessageStatus_Doing,
+	}
+
+	//write to queue
+	_, err = p.taskq.AddResult(ctx, result, p.opts.resultExpired)
+	if err != nil {
+		//only log error, this error not stop to handle msg
+		logrus.WithError(err).Errorf("failed to add msg result: %v", result)
+	}
 	return taskId, nil
 }
 

@@ -41,6 +41,7 @@ type MessageStatus = string
 
 const (
 	MessageStatus_Unknown MessageStatus = "Status_Unknown"
+	MessageStatus_Pending MessageStatus = "Status_Pending"
 	MessageStatus_Success MessageStatus = "Status_Success"
 	MessageStatus_Doing   MessageStatus = "Status_Doing"
 	MessageStatus_Fail    MessageStatus = "Status_Fail"
