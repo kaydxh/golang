@@ -37,6 +37,15 @@ type Message struct {
 	Args string
 }
 
+type MessageStatus = string
+
+const (
+	MessageStatus_Unknown MessageStatus = "Status_Unknown"
+	MessageStatus_Success MessageStatus = "Status_Success"
+	MessageStatus_Doing   MessageStatus = "Status_Doing"
+	MessageStatus_Fail    MessageStatus = "Status_Fail"
+)
+
 type MessageResult struct {
 	// 业务标识
 	Id string
@@ -50,6 +59,8 @@ type MessageResult struct {
 
 	// Args is json format, for run task
 	Result string
+
+	Status MessageStatus
 
 	Err error
 }

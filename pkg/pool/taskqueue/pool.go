@@ -155,14 +155,13 @@ func (p *Pool) Process(ctx context.Context, msg *queue_.Message) error {
 	}
 	defer clean()
 
-	//	done := make(chan struct{}, 1)
 	result := &queue_.MessageResult{
 		Id:      msg.Id,
 		InnerId: msg.InnerId,
 		Name:    msg.Name,
 		Scheme:  msg.Scheme,
+		Status:  queue_.MessageStatus_Doing,
 	}
-
 	err := time_.CallWithTimeout(ctx, p.opts.processTimeout, func(ctx context.Context) error {
 		result_, err_ := tasker.TaskHandler(ctx, msg)
 		if err_ != nil {
@@ -176,6 +175,14 @@ func (p *Pool) Process(ctx context.Context, msg *queue_.Message) error {
 		return err_
 	})
 	result.Err = err
+
+	if err == time_.ErrTimeout || err == context.Canceled {
+		result.Status = queue_.MessageStatus_Fail
+	} else {
+		// success means the message is processed, but not means hander
+		// function return nil, just not run timeout or canceled
+		result.Status = queue_.MessageStatus_Success
+	}
 
 	//callback result
 	if p.opts.resultCallbackFunc != nil {
