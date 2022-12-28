@@ -120,8 +120,8 @@ func (p *Pool) Consume(ctx context.Context) (err error) {
 						logrus.Infof("no msg to fetch")
 						return fmt.Errorf("no msg to fetch")
 					}
-
 					return nil
+
 				}, 1*time.Second, 1)
 
 				if err != nil {
@@ -172,7 +172,7 @@ func (p *Pool) Process(ctx context.Context, msg *queue_.Message) error {
 	}
 	defer clean()
 
-	done := make(chan struct{}, 1)
+	//	done := make(chan struct{}, 1)
 	result := &queue_.MessageResult{
 		Id:      msg.Id,
 		InnerId: msg.InnerId,
@@ -180,29 +180,19 @@ func (p *Pool) Process(ctx context.Context, msg *queue_.Message) error {
 		Scheme:  msg.Scheme,
 	}
 
-	timer := time.NewTimer(p.opts.processTimeout)
-	defer timer.Stop()
-
-	go func() {
+	err := time_.CallWithTimeout(ctx, p.opts.processTimeout, func(ctx context.Context) error {
 		result_, err_ := tasker.TaskHandler(ctx, msg)
 		if err_ != nil {
 			errs = append(errs, err_)
 			logrus.WithError(err_).Errorf("failed to handle task %v, err: %v", msg, err_)
-
 		} else {
 			if result_ != nil {
 				result = result_
 			}
 		}
-		result.Err = err_
-		done <- struct{}{}
-	}()
-
-	select {
-	case <-done:
-	case <-timer.C:
-		result.Err = fmt.Errorf("process task timeout %v", p.opts.processTimeout)
-	}
+		return err_
+	})
+	result.Err = err
 
 	//callback result
 	if p.opts.resultCallbackFunc != nil {
@@ -210,7 +200,7 @@ func (p *Pool) Process(ctx context.Context, msg *queue_.Message) error {
 	}
 
 	//write to queue
-	_, err := p.taskq.AddResult(ctx, result, p.opts.resultExpired)
+	_, err = p.taskq.AddResult(ctx, result, p.opts.resultExpired)
 	if err != nil {
 		errs = append(errs, err)
 		//only log error
