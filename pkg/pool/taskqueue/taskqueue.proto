@@ -15,4 +15,7 @@ message TaskQueue {
   google.protobuf.Duration fetch_timeout = 5;
 
   google.protobuf.Duration result_expired = 6;
+
+  QueueType queue_type = 7;
+  enum QueueType { queue_type_redis = 0; }
 }

@@ -74,15 +74,23 @@ func (c *completedConfig) New(ctx context.Context, opts ...PoolOption) (*Pool, e
 
 func (c *completedConfig) install(ctx context.Context, opts ...PoolOption) (*Pool, error) {
 
-	db := redis_.GetDB()
-	if db == nil {
-		return nil, fmt.Errorf("db is not first installed")
+	config := &c.Proto
+
+	var queue queue_.Queue
+	switch config.GetQueueType() {
+	case TaskQueue_queue_type_redis:
+		db := redis_.GetDB()
+		if db == nil {
+			return nil, fmt.Errorf("db is not first installed")
+		}
+		queue = redisq_.NewQueue(db, queue_.QueueOptions{Name: "redis"})
+
+	default:
+		return nil, fmt.Errorf("queue type %v is not support", config.GetQueueType())
+
 	}
 
-	config := &c.Proto
-	redisq := redisq_.NewQueue(db, queue_.QueueOptions{Name: "redis"})
-
-	pool := NewPool(redisq,
+	pool := NewPool(queue,
 		WithFetcherBurst(config.GetFetcherBurst()),
 		WithWorkerBurst(config.GetWorkerBurst()),
 		WithWorkTimeout(config.GetWorkTimeout().AsDuration()),

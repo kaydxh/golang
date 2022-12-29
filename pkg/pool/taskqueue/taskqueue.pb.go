@@ -21,17 +21,61 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+type TaskQueue_QueueType int32
+
+const (
+	TaskQueue_queue_type_redis TaskQueue_QueueType = 0
+)
+
+// Enum value maps for TaskQueue_QueueType.
+var (
+	TaskQueue_QueueType_name = map[int32]string{
+		0: "queue_type_redis",
+	}
+	TaskQueue_QueueType_value = map[string]int32{
+		"queue_type_redis": 0,
+	}
+)
+
+func (x TaskQueue_QueueType) Enum() *TaskQueue_QueueType {
+	p := new(TaskQueue_QueueType)
+	*p = x
+	return p
+}
+
+func (x TaskQueue_QueueType) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (TaskQueue_QueueType) Descriptor() protoreflect.EnumDescriptor {
+	return file_pkg_pool_taskqueue_taskqueue_proto_enumTypes[0].Descriptor()
+}
+
+func (TaskQueue_QueueType) Type() protoreflect.EnumType {
+	return &file_pkg_pool_taskqueue_taskqueue_proto_enumTypes[0]
+}
+
+func (x TaskQueue_QueueType) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use TaskQueue_QueueType.Descriptor instead.
+func (TaskQueue_QueueType) EnumDescriptor() ([]byte, []int) {
+	return file_pkg_pool_taskqueue_taskqueue_proto_rawDescGZIP(), []int{0, 0}
+}
+
 type TaskQueue struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Enabled       bool               `protobuf:"varint,1,opt,name=enabled,proto3" json:"enabled,omitempty"`
-	WorkerBurst   uint32             `protobuf:"varint,2,opt,name=workerBurst,proto3" json:"workerBurst,omitempty"`
-	FetcherBurst  uint32             `protobuf:"varint,3,opt,name=fetcherBurst,proto3" json:"fetcherBurst,omitempty"`
-	WorkTimeout   *duration.Duration `protobuf:"bytes,4,opt,name=work_timeout,json=workTimeout,proto3" json:"work_timeout,omitempty"`
-	FetchTimeout  *duration.Duration `protobuf:"bytes,5,opt,name=fetch_timeout,json=fetchTimeout,proto3" json:"fetch_timeout,omitempty"`
-	ResultExpired *duration.Duration `protobuf:"bytes,6,opt,name=result_expired,json=resultExpired,proto3" json:"result_expired,omitempty"`
+	Enabled       bool                `protobuf:"varint,1,opt,name=enabled,proto3" json:"enabled,omitempty"`
+	WorkerBurst   uint32              `protobuf:"varint,2,opt,name=workerBurst,proto3" json:"workerBurst,omitempty"`
+	FetcherBurst  uint32              `protobuf:"varint,3,opt,name=fetcherBurst,proto3" json:"fetcherBurst,omitempty"`
+	WorkTimeout   *duration.Duration  `protobuf:"bytes,4,opt,name=work_timeout,json=workTimeout,proto3" json:"work_timeout,omitempty"`
+	FetchTimeout  *duration.Duration  `protobuf:"bytes,5,opt,name=fetch_timeout,json=fetchTimeout,proto3" json:"fetch_timeout,omitempty"`
+	ResultExpired *duration.Duration  `protobuf:"bytes,6,opt,name=result_expired,json=resultExpired,proto3" json:"result_expired,omitempty"`
+	QueueType     TaskQueue_QueueType `protobuf:"varint,7,opt,name=queue_type,json=queueType,proto3,enum=go.pkg.pool.taskqueue.TaskQueue_QueueType" json:"queue_type,omitempty"`
 }
 
 func (x *TaskQueue) Reset() {
@@ -108,6 +152,13 @@ func (x *TaskQueue) GetResultExpired() *duration.Duration {
 	return nil
 }
 
+func (x *TaskQueue) GetQueueType() TaskQueue_QueueType {
+	if x != nil {
+		return x.QueueType
+	}
+	return TaskQueue_queue_type_redis
+}
+
 var File_pkg_pool_taskqueue_taskqueue_proto protoreflect.FileDescriptor
 
 var file_pkg_pool_taskqueue_taskqueue_proto_rawDesc = []byte{
@@ -116,7 +167,7 @@ var file_pkg_pool_taskqueue_taskqueue_proto_rawDesc = []byte{
 	0x72, 0x6f, 0x74, 0x6f, 0x12, 0x15, 0x67, 0x6f, 0x2e, 0x70, 0x6b, 0x67, 0x2e, 0x70, 0x6f, 0x6f,
 	0x6c, 0x2e, 0x74, 0x61, 0x73, 0x6b, 0x71, 0x75, 0x65, 0x75, 0x65, 0x1a, 0x1e, 0x67, 0x6f, 0x6f,
 	0x67, 0x6c, 0x65, 0x2f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2f, 0x64, 0x75, 0x72,
-	0x61, 0x74, 0x69, 0x6f, 0x6e, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22, 0xab, 0x02, 0x0a, 0x09,
+	0x61, 0x74, 0x69, 0x6f, 0x6e, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22, 0x99, 0x03, 0x0a, 0x09,
 	0x54, 0x61, 0x73, 0x6b, 0x51, 0x75, 0x65, 0x75, 0x65, 0x12, 0x18, 0x0a, 0x07, 0x65, 0x6e, 0x61,
 	0x62, 0x6c, 0x65, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x08, 0x52, 0x07, 0x65, 0x6e, 0x61, 0x62,
 	0x6c, 0x65, 0x64, 0x12, 0x20, 0x0a, 0x0b, 0x77, 0x6f, 0x72, 0x6b, 0x65, 0x72, 0x42, 0x75, 0x72,
@@ -135,11 +186,18 @@ var file_pkg_pool_taskqueue_taskqueue_proto_rawDesc = []byte{
 	0x74, 0x5f, 0x65, 0x78, 0x70, 0x69, 0x72, 0x65, 0x64, 0x18, 0x06, 0x20, 0x01, 0x28, 0x0b, 0x32,
 	0x19, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75,
 	0x66, 0x2e, 0x44, 0x75, 0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x0d, 0x72, 0x65, 0x73, 0x75,
-	0x6c, 0x74, 0x45, 0x78, 0x70, 0x69, 0x72, 0x65, 0x64, 0x42, 0x37, 0x5a, 0x35, 0x67, 0x69, 0x74,
-	0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x6b, 0x61, 0x79, 0x64, 0x78, 0x68, 0x2f, 0x67,
-	0x6f, 0x6c, 0x61, 0x6e, 0x67, 0x2f, 0x70, 0x6b, 0x67, 0x2f, 0x70, 0x6f, 0x6f, 0x6c, 0x2f, 0x74,
-	0x61, 0x73, 0x6b, 0x71, 0x75, 0x65, 0x75, 0x65, 0x3b, 0x74, 0x61, 0x73, 0x6b, 0x71, 0x75, 0x65,
-	0x75, 0x65, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x6c, 0x74, 0x45, 0x78, 0x70, 0x69, 0x72, 0x65, 0x64, 0x12, 0x49, 0x0a, 0x0a, 0x71, 0x75, 0x65,
+	0x75, 0x65, 0x5f, 0x74, 0x79, 0x70, 0x65, 0x18, 0x07, 0x20, 0x01, 0x28, 0x0e, 0x32, 0x2a, 0x2e,
+	0x67, 0x6f, 0x2e, 0x70, 0x6b, 0x67, 0x2e, 0x70, 0x6f, 0x6f, 0x6c, 0x2e, 0x74, 0x61, 0x73, 0x6b,
+	0x71, 0x75, 0x65, 0x75, 0x65, 0x2e, 0x54, 0x61, 0x73, 0x6b, 0x51, 0x75, 0x65, 0x75, 0x65, 0x2e,
+	0x51, 0x75, 0x65, 0x75, 0x65, 0x54, 0x79, 0x70, 0x65, 0x52, 0x09, 0x71, 0x75, 0x65, 0x75, 0x65,
+	0x54, 0x79, 0x70, 0x65, 0x22, 0x21, 0x0a, 0x09, 0x51, 0x75, 0x65, 0x75, 0x65, 0x54, 0x79, 0x70,
+	0x65, 0x12, 0x14, 0x0a, 0x10, 0x71, 0x75, 0x65, 0x75, 0x65, 0x5f, 0x74, 0x79, 0x70, 0x65, 0x5f,
+	0x72, 0x65, 0x64, 0x69, 0x73, 0x10, 0x00, 0x42, 0x37, 0x5a, 0x35, 0x67, 0x69, 0x74, 0x68, 0x75,
+	0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x6b, 0x61, 0x79, 0x64, 0x78, 0x68, 0x2f, 0x67, 0x6f, 0x6c,
+	0x61, 0x6e, 0x67, 0x2f, 0x70, 0x6b, 0x67, 0x2f, 0x70, 0x6f, 0x6f, 0x6c, 0x2f, 0x74, 0x61, 0x73,
+	0x6b, 0x71, 0x75, 0x65, 0x75, 0x65, 0x3b, 0x74, 0x61, 0x73, 0x6b, 0x71, 0x75, 0x65, 0x75, 0x65,
+	0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -154,20 +212,23 @@ func file_pkg_pool_taskqueue_taskqueue_proto_rawDescGZIP() []byte {
 	return file_pkg_pool_taskqueue_taskqueue_proto_rawDescData
 }
 
+var file_pkg_pool_taskqueue_taskqueue_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
 var file_pkg_pool_taskqueue_taskqueue_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_pkg_pool_taskqueue_taskqueue_proto_goTypes = []interface{}{
-	(*TaskQueue)(nil),         // 0: go.pkg.pool.taskqueue.TaskQueue
-	(*duration.Duration)(nil), // 1: google.protobuf.Duration
+	(TaskQueue_QueueType)(0),  // 0: go.pkg.pool.taskqueue.TaskQueue.QueueType
+	(*TaskQueue)(nil),         // 1: go.pkg.pool.taskqueue.TaskQueue
+	(*duration.Duration)(nil), // 2: google.protobuf.Duration
 }
 var file_pkg_pool_taskqueue_taskqueue_proto_depIdxs = []int32{
-	1, // 0: go.pkg.pool.taskqueue.TaskQueue.work_timeout:type_name -> google.protobuf.Duration
-	1, // 1: go.pkg.pool.taskqueue.TaskQueue.fetch_timeout:type_name -> google.protobuf.Duration
-	1, // 2: go.pkg.pool.taskqueue.TaskQueue.result_expired:type_name -> google.protobuf.Duration
-	3, // [3:3] is the sub-list for method output_type
-	3, // [3:3] is the sub-list for method input_type
-	3, // [3:3] is the sub-list for extension type_name
-	3, // [3:3] is the sub-list for extension extendee
-	0, // [0:3] is the sub-list for field type_name
+	2, // 0: go.pkg.pool.taskqueue.TaskQueue.work_timeout:type_name -> google.protobuf.Duration
+	2, // 1: go.pkg.pool.taskqueue.TaskQueue.fetch_timeout:type_name -> google.protobuf.Duration
+	2, // 2: go.pkg.pool.taskqueue.TaskQueue.result_expired:type_name -> google.protobuf.Duration
+	0, // 3: go.pkg.pool.taskqueue.TaskQueue.queue_type:type_name -> go.pkg.pool.taskqueue.TaskQueue.QueueType
+	4, // [4:4] is the sub-list for method output_type
+	4, // [4:4] is the sub-list for method input_type
+	4, // [4:4] is the sub-list for extension type_name
+	4, // [4:4] is the sub-list for extension extendee
+	0, // [0:4] is the sub-list for field type_name
 }
 
 func init() { file_pkg_pool_taskqueue_taskqueue_proto_init() }
@@ -194,13 +255,14 @@ func file_pkg_pool_taskqueue_taskqueue_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_pkg_pool_taskqueue_taskqueue_proto_rawDesc,
-			NumEnums:      0,
+			NumEnums:      1,
 			NumMessages:   1,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
 		GoTypes:           file_pkg_pool_taskqueue_taskqueue_proto_goTypes,
 		DependencyIndexes: file_pkg_pool_taskqueue_taskqueue_proto_depIdxs,
+		EnumInfos:         file_pkg_pool_taskqueue_taskqueue_proto_enumTypes,
 		MessageInfos:      file_pkg_pool_taskqueue_taskqueue_proto_msgTypes,
 	}.Build()
 	File_pkg_pool_taskqueue_taskqueue_proto = out.File
