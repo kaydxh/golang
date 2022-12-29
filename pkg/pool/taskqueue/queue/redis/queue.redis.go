@@ -184,7 +184,7 @@ func (q *Queue) FetchResult(ctx context.Context, key string) (*queue_.MessageRes
 	if err != nil {
 		// redis has't the key
 		if err == redis.Nil {
-			return nil, fmt.Errorf("key %v is not exist", key)
+			return nil, nil
 		}
 		logrus.WithError(err).Errorf("failed to get msg result of %v", key)
 		return nil, err
