@@ -13,11 +13,11 @@ import (
 )
 
 type PoolOptions struct {
-	workerBurst    uint32
-	fetcherBurst   uint32
-	fetchTimeout   time.Duration
-	resultExpired  time.Duration
-	processTimeout time.Duration
+	workerBurst   uint32
+	fetcherBurst  uint32
+	fetchTimeout  time.Duration
+	resultExpired time.Duration
+	workTimeout   time.Duration
 
 	resultCallbackFunc queue_.ResultCallbackFunc
 }
@@ -90,7 +90,7 @@ func (p *Pool) Consume(ctx context.Context) (err error) {
 						logrus.Errorf("message channel is closed.")
 						return
 					}
-					err := p.Process(ctx, msg)
+					err := p.Work(ctx, msg)
 					if err != nil {
 						logrus.Errorf("faild to process msg, err: %v", err)
 					}
@@ -151,7 +151,7 @@ func (p *Pool) FetchResult(ctx context.Context, key string) (*queue_.MessageResu
 	return result, nil
 }
 
-func (p *Pool) Process(ctx context.Context, msg *queue_.Message) error {
+func (p *Pool) Work(ctx context.Context, msg *queue_.Message) error {
 
 	tasker := Get(msg.Scheme)
 	if tasker == nil {
@@ -177,12 +177,13 @@ func (p *Pool) Process(ctx context.Context, msg *queue_.Message) error {
 		Scheme:  msg.Scheme,
 		Status:  queue_.MessageStatus_Doing,
 	}
-	err := time_.CallWithTimeout(ctx, p.opts.processTimeout, func(ctx context.Context) error {
+	err := time_.CallWithTimeout(ctx, p.opts.workTimeout, func(ctx context.Context) error {
 		result_, err_ := tasker.TaskHandler(ctx, msg)
 		if err_ != nil {
 			errs = append(errs, err_)
 			logrus.WithError(err_).Errorf("failed to handle task %v, err: %v", msg, err_)
 		} else {
+
 			if result_ != nil {
 				result = result_
 			}

@@ -98,7 +98,7 @@ func TestTaskQueue(t *testing.T) {
 		Name: "redis",
 	})
 
-	pool := taskq_.NewPool(redisq, taskq_.WithFetcherBurst(1), taskq_.WithProcessTimeout(5*time.Second), taskq_.WithResultCallbackFunc(func(ctx context.Context, result *queue_.MessageResult) {
+	pool := taskq_.NewPool(redisq, taskq_.WithFetcherBurst(1), taskq_.WithWorkTimeout(-1), taskq_.WithResultCallbackFunc(func(ctx context.Context, result *queue_.MessageResult) {
 		t.Logf("--> callback fetch result %v of msg", result)
 	}))
 	ctx := context.Background()
