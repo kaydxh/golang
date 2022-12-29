@@ -60,6 +60,7 @@ func (c *completedConfig) New(ctx context.Context, opts ...PoolOption) (*Pool, e
 	}
 
 	if !c.Proto.GetEnabled() {
+		logrus.Warnf("TaskQueue disenabled")
 		return nil, nil
 	}
 
@@ -87,7 +88,6 @@ func (c *completedConfig) install(ctx context.Context, opts ...PoolOption) (*Poo
 
 	default:
 		return nil, fmt.Errorf("queue type %v is not support", config.GetQueueType())
-
 	}
 
 	pool := NewPool(queue,
