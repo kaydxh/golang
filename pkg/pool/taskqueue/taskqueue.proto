@@ -8,8 +8,8 @@ option go_package = "github.com/kaydxh/golang/pkg/pool/taskqueue;taskqueue";
 message TaskQueue {
   bool enabled = 1;
 
-  uint32 workerBurst = 2;
-  uint32 fetcherBurst = 3;
+  uint32 worker_burst = 2;
+  uint32 fetcher_burst = 3;
 
   google.protobuf.Duration work_timeout = 4;
   google.protobuf.Duration fetch_timeout = 5;
