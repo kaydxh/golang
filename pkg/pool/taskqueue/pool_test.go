@@ -73,7 +73,7 @@ var (
 
 func GetDBOrDie() *redis.Client {
 	once.Do(func() {
-		cfgFile := "./redis.yaml"
+		cfgFile := "./taskq.yaml"
 		config := redis_.NewConfig(redis_.WithViper(viper_.GetViper(cfgFile, "database.redis")))
 
 		db, err = config.Complete().New(context.Background())
@@ -158,4 +158,60 @@ func TestTaskQueue(t *testing.T) {
 	*/
 	select {}
 
+}
+
+func TestTaskQueueServer(t *testing.T) {
+
+	GetDBOrDie()
+	taskq_.Register(TaskA{})
+	cfgFile := "./taskq.yaml"
+	config := taskq_.NewConfig(taskq_.WithViper(viper_.GetViper(cfgFile, "taskqueue")))
+
+	ctx := context.Background()
+	pool, err := config.Complete().New(ctx,
+		taskq_.WithResultCallbackFunc(func(ctx context.Context, result *queue_.MessageResult) {
+			t.Logf("--> callback fetch result %v of msg", result)
+		}))
+	if err != nil {
+		t.Errorf("failed to install taskqueue, err: %v", err)
+		return
+	}
+
+	args := TaskAArgs{
+		Param1: "param1",
+		Param2: 10,
+	}
+
+	data, err := json.Marshal(args)
+	if err != nil {
+		t.Errorf("failed to marshal args, err: %v", err)
+		return
+	}
+
+	var (
+		ids []string
+		wg  sync.WaitGroup
+	)
+	for i := 0; i < 10; i++ {
+		msg := &queue_.Message{
+			Scheme: "taskA",
+			Args:   string(data),
+		}
+		wg.Add(1)
+		go func(i int, m *queue_.Message) {
+			defer wg.Done()
+			m.Name = fmt.Sprintf("taskA-%v", i)
+			id, err := pool.Publish(ctx, m)
+			if err != nil {
+				t.Errorf("failed to pulibsh task, err: %v", err)
+				return
+			}
+			t.Logf("pulibsh task, innerId: %v, msg: %v", id, m)
+			ids = append(ids, id)
+		}(i, msg)
+	}
+
+	wg.Wait()
+
+	select {}
 }
