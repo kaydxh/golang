@@ -51,9 +51,9 @@ func WithResultExpired(resultExpired time.Duration) PoolOption {
 	})
 }
 
-func WithProcessTimeout(timeout time.Duration) PoolOption {
+func WithWorkTimeout(timeout time.Duration) PoolOption {
 	return PoolOptionFunc(func(c *Pool) {
-		c.opts.processTimeout = timeout
+		c.opts.workTimeout = timeout
 	})
 }
 
