@@ -176,6 +176,9 @@ func TestTaskQueueServer(t *testing.T) {
 		t.Errorf("failed to install taskqueue, err: %v", err)
 		return
 	}
+	if pool == nil {
+		return
+	}
 
 	args := TaskAArgs{
 		Param1: "param1",
