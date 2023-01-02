@@ -37,6 +37,10 @@ type FactoryConfig[T any] struct {
 	Addr             string
 	Timeout          time.Duration //接口处理超时时间
 	NewServiceClient func(*grpc.ClientConn) T
+
+	// not include the first call
+	RetryTimes    int
+	RetryInterval time.Duration
 }
 
 func (fc *FactoryConfig[T]) ApplyOptions(configFuncs ...FactoryConfigFunc[T]) error {
@@ -64,6 +68,10 @@ type Repository[T any] struct {
 
 	Conn   *grpc.ClientConn
 	Client T
+
+	// not include the first call
+	RetryTimes    int
+	RetryInterval time.Duration
 }
 
 func newRepository[T any](ctx context.Context, fc FactoryConfig[T]) (Repository[T], error) {
@@ -73,9 +81,11 @@ func newRepository[T any](ctx context.Context, fc FactoryConfig[T]) (Repository[
 	}
 
 	repo := Repository[T]{
-		Timeout: fc.Timeout,
-		Conn:    conn,
-		Client:  fc.NewServiceClient(conn),
+		Timeout:       fc.Timeout,
+		Conn:          conn,
+		Client:        fc.NewServiceClient(conn),
+		RetryTimes:    fc.RetryTimes,
+		RetryInterval: fc.RetryInterval,
 	}
 
 	return repo, nil
