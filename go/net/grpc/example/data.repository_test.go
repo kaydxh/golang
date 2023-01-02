@@ -48,7 +48,16 @@ func TestNow(t *testing.T) {
 	var resp any
 	err = respWrap.Call(ctx,
 		func(ctx context.Context) error {
-			resp, err = respWrap.Now(ctx, &date_.NowRequest{})
+			// short connection
+			newClient, conn, err := respWrap.NewConnect()
+			if err != nil {
+				return err
+			}
+			defer conn.Close()
+
+			resp, err = newClient.Now(ctx, &date_.NowRequest{})
+			//long connection
+			//resp, err = respWrap.Now(ctx, &date_.NowRequest{})
 			return err
 		})
 	if err != nil {
