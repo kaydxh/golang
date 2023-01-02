@@ -44,7 +44,13 @@ func TestNow(t *testing.T) {
 	respWrap := date_.Repository{
 		Repository: repository,
 	}
-	resp, err := respWrap.Now(ctx, &date_.NowRequest{})
+	//resp, err := respWrap.Now(ctx, &date_.NowRequest{})
+	var resp any
+	err = respWrap.Call(ctx,
+		func(ctx context.Context) error {
+			resp, err = respWrap.Now(ctx, &date_.NowRequest{})
+			return err
+		})
 	if err != nil {
 		t.Errorf("failed to call Now, err: %v", err)
 	}
