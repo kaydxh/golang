@@ -57,6 +57,7 @@ func (c *completedConfig) New(ctx context.Context) (*sqlx.DB, error) {
 	}
 
 	if !c.Proto.GetEnabled() {
+		logrus.Warnf("Mysql disenabled")
 		return nil, nil
 	}
 
