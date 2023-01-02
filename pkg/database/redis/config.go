@@ -57,6 +57,7 @@ func (c *completedConfig) New(ctx context.Context) (*redis.Client, error) {
 	}
 
 	if !c.Proto.GetEnabled() {
+		logrus.Warnf("Redis disenabled")
 		return nil, nil
 	}
 
