@@ -66,12 +66,29 @@ func (fc FactoryConfig[T]) Validate() error {
 type Repository[T any] struct {
 	Timeout time.Duration
 
-	Conn   *grpc.ClientConn
-	Client T
+	Addr             string
+	NewServiceClient func(*grpc.ClientConn) T
+	Conn             *grpc.ClientConn
+	Client           T
 
 	// not include the first call
 	RetryTimes    int
 	RetryInterval time.Duration
+}
+
+func (r *Repository[T]) NewConnect() (client T, conn *grpc.ClientConn, err error) {
+
+	var zeroClient T
+	conn, err = GetGrpcClientConn(r.Addr, r.Timeout)
+	if err != nil {
+		return zeroClient, nil, err
+	}
+
+	return r.NewServiceClient(conn), conn, nil
+}
+
+func (r *Repository[T]) Close(conn *grpc.ClientConn) (err error) {
+	return conn.Close()
 }
 
 func newRepository[T any](ctx context.Context, fc FactoryConfig[T]) (Repository[T], error) {
@@ -81,11 +98,13 @@ func newRepository[T any](ctx context.Context, fc FactoryConfig[T]) (Repository[
 	}
 
 	repo := Repository[T]{
-		Timeout:       fc.Timeout,
-		Conn:          conn,
-		Client:        fc.NewServiceClient(conn),
-		RetryTimes:    fc.RetryTimes,
-		RetryInterval: fc.RetryInterval,
+		Timeout:          fc.Timeout,
+		Addr:             fc.Addr,
+		NewServiceClient: fc.NewServiceClient,
+		Conn:             conn,
+		Client:           fc.NewServiceClient(conn),
+		RetryTimes:       fc.RetryTimes,
+		RetryInterval:    fc.RetryInterval,
 	}
 
 	return repo, nil
