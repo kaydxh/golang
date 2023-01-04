@@ -32,6 +32,13 @@ import (
 func (r *Repository[T]) Call(ctx context.Context, f func(ctx context.Context) error) (err error) {
 
 	logger := logs_.GetLogger(ctx)
+	tc := time_.New(true)
+	summary := func() {
+		tc.Tick("grpc call")
+		logger.Infof(tc.String())
+	}
+	defer summary()
+
 	err = time_.RetryWithContext(ctx, func(ctx context.Context) error {
 		ctx, cancel := context_.WithTimeout(ctx, r.Timeout)
 		defer cancel()
