@@ -42,11 +42,8 @@ func (h *statHandler) TagRPC(ctx context.Context, info *stats.RPCTagInfo) contex
 func (h *statHandler) HandleRPC(ctx context.Context, s stats.RPCStats) {
 	logger := logs_.GetLogger(ctx)
 	switch v := s.(type) {
-	case *stats.InHeader:
-		logger.WithField("local_addr", v.LocalAddr).WithField("remote_addr", v.RemoteAddr).Infof("InHeader HandleRPC")
 	case *stats.OutHeader:
-		logger.WithField("local_addr", v.LocalAddr).WithField("remote_addr", v.RemoteAddr).Infof("OutHeader HandleRPC")
-
+		logger.WithField("local_addr", v.LocalAddr).WithField("remote_addr", v.RemoteAddr).Infof("OutHeader HandleRPC method %v", v.FullMethod)
 	}
 
 }
