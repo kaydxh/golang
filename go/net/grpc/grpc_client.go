@@ -28,7 +28,7 @@ import (
 	"time"
 
 	context_ "github.com/kaydxh/golang/go/context"
-	interceptorratetimer_ "github.com/kaydxh/golang/pkg/middleware/grpc-middleware/timer"
+	interceptortimer_ "github.com/kaydxh/golang/pkg/middleware/grpc-middleware/timer"
 	"google.golang.org/grpc"
 )
 
@@ -91,7 +91,7 @@ func ClientDialOptions() []grpc.DialOption {
 		grpc.WithInitialWindowSize(defaultMaxMsgSize),
 		grpc.WithInitialConnWindowSize(defaultMaxMsgSize),
 		grpc.WithStatsHandler(&statHandler{}),
-		grpc.WithUnaryInterceptor(interceptorratetimer_.UnaryClientInterceptor()),
+		grpc.WithUnaryInterceptor(interceptortimer_.UnaryClientInterceptor()),
 	)
 	return opts
 }
