@@ -29,7 +29,8 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
-	interceptorratetimer_ "github.com/kaydxh/golang/pkg/middleware/grpc-middleware/timer"
+
+	//	interceptorratetimer_ "github.com/kaydxh/golang/pkg/middleware/grpc-middleware/timer"
 	viper_ "github.com/kaydxh/golang/pkg/viper"
 	"google.golang.org/grpc"
 
@@ -179,7 +180,8 @@ func (c *Config) installGrpcMessageSizeOptions() []gw_.GRPCGatewayOption {
 		opts,
 		gw_.WithClientDialOptions(
 			grpc.WithDefaultCallOptions(grpc.MaxCallSendMsgSize(maxRecvMsgSize)),
-			grpc.WithUnaryInterceptor(interceptorratetimer_.UnaryClientInterceptor())),
+			//		grpc.WithUnaryInterceptor(interceptorratetimer_.UnaryClientInterceptor())),
+		),
 	)
 
 	// response
