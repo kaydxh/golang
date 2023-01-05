@@ -29,7 +29,7 @@ import (
 	"google.golang.org/grpc"
 )
 
-func UnaryClientInterceptor() grpc.UnaryClientInterceptor {
+func UnaryClientInterceptorOfTimer() grpc.UnaryClientInterceptor {
 
 	return func(ctx context.Context, method string, req, reply interface{}, cc *grpc.ClientConn, invoker grpc.UnaryInvoker, opts ...grpc.CallOption) error {
 

@@ -1,5 +1,5 @@
 /*
- *Copyright (c) 2022, kaydxh
+ *Copyright (c) 2023, kaydxh
  *
  *Permission is hereby granted, free of charge, to any person obtaining a copy
  *of this software and associated documentation files (the "Software"), to deal
@@ -19,30 +19,33 @@
  *OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  *SOFTWARE.
  */
-package interceptortimer
+package interceptordebug
 
 import (
 	"context"
 
-	time_ "github.com/kaydxh/golang/go/time"
+	reflect_ "github.com/kaydxh/golang/go/reflect"
 	logs_ "github.com/kaydxh/golang/pkg/logs"
-
 	"google.golang.org/grpc"
+	"google.golang.org/protobuf/proto"
 )
 
-//  UnaryServerInterceptorOfTimer returns a new unary server interceptors that timing request
-func UnaryServerInterceptorOfTimer() grpc.UnaryServerInterceptor {
+func UnaryClientInterceptorOfInOutputPrinter() grpc.UnaryClientInterceptor {
 
-	return func(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (interface{}, error) {
+	return func(ctx context.Context, method string, req, reply interface{}, cc *grpc.ClientConn, invoker grpc.UnaryInvoker, opts ...grpc.CallOption) error {
 
-		tc := time_.New(true)
 		logger := logs_.GetLogger(ctx)
-		summary := func() {
-			tc.Tick(info.FullMethod)
-			logger.WithField("method", info.FullMethod).Infof(tc.String())
+		reqProto, ok := any(req).(proto.Message)
+		if ok {
+			logger.WithField("request", reflect_.TruncateBytes(proto.Clone(reqProto))).Info("send")
 		}
-		defer summary()
 
-		return handler(ctx, req)
+		err := invoker(ctx, method, req, reply, cc, opts...)
+		respProto, ok := any(reply).(proto.Message)
+		if ok {
+			logger.WithField("response", reflect_.TruncateBytes(proto.Clone(respProto))).Info("recv")
+		}
+
+		return err
 	}
 }
