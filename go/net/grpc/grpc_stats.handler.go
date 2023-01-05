@@ -24,7 +24,7 @@ package grpc
 import (
 	"context"
 
-	"github.com/sirupsen/logrus"
+	logs_ "github.com/kaydxh/golang/pkg/logs"
 	"google.golang.org/grpc/stats"
 )
 
@@ -51,7 +51,8 @@ func (s *statHandler) HandleRPC(context.Context, stats.RPCStats) {
 // connection will be derived from the context returned.
 //  - On client side, the context is not derived from the context returned.
 func (s *statHandler) TagConn(ctx context.Context, info *stats.ConnTagInfo) context.Context {
-	logrus.WithField("local_addr", info.LocalAddr).WithField("remote_addr", info.RemoteAddr).Infof("tag conn")
+	logger := logs_.GetLogger(ctx)
+	logger.WithField("local_addr", info.LocalAddr).WithField("remote_addr", info.RemoteAddr).Infof("tag conn")
 	return ctx
 }
 
