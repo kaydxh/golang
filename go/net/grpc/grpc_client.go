@@ -89,6 +89,7 @@ func ClientDialOptions() []grpc.DialOption {
 		),
 		grpc.WithInitialWindowSize(defaultMaxMsgSize),
 		grpc.WithInitialConnWindowSize(defaultMaxMsgSize),
+		grpc.WithStatsHandler(&statHandler{}),
 	)
 	return opts
 }
