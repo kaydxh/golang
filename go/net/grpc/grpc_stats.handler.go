@@ -34,12 +34,21 @@ type statHandler struct {
 // TagRPC can attach some information to the given context.
 // The context used for the rest lifetime of the RPC will be derived from
 // the returned context.
-func (s *statHandler) TagRPC(ctx context.Context, info *stats.RPCTagInfo) context.Context {
+func (h *statHandler) TagRPC(ctx context.Context, info *stats.RPCTagInfo) context.Context {
 	return ctx
 }
 
 // HandleRPC processes the RPC stats.
-func (s *statHandler) HandleRPC(context.Context, stats.RPCStats) {
+func (h *statHandler) HandleRPC(ctx context.Context, s stats.RPCStats) {
+	logger := logs_.GetLogger(ctx)
+	switch v := s.(type) {
+	case *stats.InHeader:
+		logger.WithField("local_addr", v.LocalAddr).WithField("remote_addr", v.RemoteAddr).Infof("InHeader HandleRPC")
+	case *stats.OutHeader:
+		logger.WithField("local_addr", v.LocalAddr).WithField("remote_addr", v.RemoteAddr).Infof("OutHeader HandleRPC")
+
+	}
+
 }
 
 // TagConn can attach some information to the given context.
