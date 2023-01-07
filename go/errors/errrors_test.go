@@ -22,6 +22,7 @@
 package errors_test
 
 import (
+	"errors"
 	"fmt"
 	"testing"
 
@@ -38,4 +39,41 @@ func TestError(t *testing.T) {
 	multiErrorStrings := err.Error()
 	t.Logf("multiErrorStrings: %v", multiErrorStrings)
 
+}
+
+func TestErrorIs(t *testing.T) {
+	var ErrInternal = errors.New("internal error")
+	testCases := []struct {
+		err1     error
+		err2     error
+		expected bool
+	}{
+		{
+			err1:     ErrInternal,
+			err2:     ErrInternal,
+			expected: true,
+		},
+		{
+			// the same error messge is not mean the same error
+			err1:     errors.New("internal error"),
+			err2:     errors.New("internal error"),
+			expected: false,
+		},
+
+		{
+			err1:     errors.New("internal error1"),
+			err2:     errors.New("internal error2"),
+			expected: false,
+		},
+	}
+
+	for i, testCase := range testCases {
+		t.Run(fmt.Sprintf("%v", i), func(t *testing.T) {
+			err := errors_.NewAggregate([]error{testCase.err1})
+			if err.Is(testCase.err2) != testCase.expected {
+				t.Fatalf("err[%v] is not expected err2[%v]", err, testCase.err2)
+			}
+
+		})
+	}
 }
