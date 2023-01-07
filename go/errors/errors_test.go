@@ -90,12 +90,25 @@ func TestErrore(t *testing.T) {
 			code:     100,
 			expected: true,
 		},
+		{
+			err:      errors_.Errore(fmt.Errorf("failed to process,%d", 2), ErrInternal),
+			code:     100,
+			expected: true,
+		},
+		{
+			err:      fmt.Errorf("failed to process, %v", 2),
+			code:     100,
+			expected: false,
+		},
 	}
 
 	for i, testCase := range testCases {
 		t.Run(fmt.Sprintf("%v", i), func(t *testing.T) {
 			err := errors_.Errore(testCase.code, testCase.err)
-			t.Logf("err[%v] ", err)
+			if errors.Is(err, ErrInternal) != testCase.expected {
+				t.Fatalf("err[%v], epected[%v] test err[%v]", err, testCase.expected, testCase.err)
+			}
+			t.Logf("err[%v] expected[%v] test err[%v] ", err, testCase.expected, testCase.err)
 		})
 	}
 }
