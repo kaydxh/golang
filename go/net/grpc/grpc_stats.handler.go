@@ -43,7 +43,7 @@ func (h *statHandler) HandleRPC(ctx context.Context, s stats.RPCStats) {
 	logger := logs_.GetLogger(ctx)
 	switch v := s.(type) {
 	case *stats.OutHeader:
-		logger.WithField("local_addr", v.LocalAddr).WithField("remote_addr", v.RemoteAddr).Infof("OutHeader HandleRPC method %v", v.FullMethod)
+		logger.WithField("local_addr", v.LocalAddr).WithField("remote_addr", v.RemoteAddr).Infof("HandleRPC method %v", v.FullMethod)
 	}
 
 }
