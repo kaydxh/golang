@@ -77,3 +77,25 @@ func TestErrorIs(t *testing.T) {
 		})
 	}
 }
+
+func TestErrore(t *testing.T) {
+	var ErrInternal = errors.New("FailedOperation__Internal")
+	testCases := []struct {
+		err      error
+		code     int32
+		expected bool
+	}{
+		{
+			err:      ErrInternal,
+			code:     100,
+			expected: true,
+		},
+	}
+
+	for i, testCase := range testCases {
+		t.Run(fmt.Sprintf("%v", i), func(t *testing.T) {
+			err := errors_.Errore(testCase.code, testCase.err)
+			t.Logf("err[%v] ", err)
+		})
+	}
+}

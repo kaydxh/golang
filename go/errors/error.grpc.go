@@ -23,6 +23,9 @@ package errors
 
 import (
 	"errors"
+	"fmt"
+	"strconv"
+	"strings"
 
 	"google.golang.org/genproto/googleapis/rpc/errdetails"
 	"google.golang.org/grpc/codes"
@@ -91,4 +94,51 @@ func ErrorToCode(err error) codes.Code {
 	}
 
 	return s.Code()
+}
+
+func Errorf(code interface{}, format string, a ...interface{}) error {
+	c, ok := code.(codes.Code)
+	if !ok {
+		c = codes.Unknown
+		num, err := strconv.Atoi(fmt.Sprintf("%d", code))
+		if err == nil {
+			c = codes.Code(num)
+		}
+	}
+
+	if c == codes.OK {
+		return nil
+	}
+
+	var message string
+	codeStringer, ok := code.(fmt.Stringer)
+	if ok {
+		message = strings.ReplaceAll(codeStringer.String(), "__", ".")
+	} else {
+		message = c.String()
+	}
+	s := status.New(c, fmt.Sprintf(format, a...))
+	if s.Code() != codes.OK && message != "" {
+		detail, err := s.WithDetails(&errdetails.ErrorInfo{
+			Reason: message,
+		})
+		if err == nil {
+			// replace new status with reason
+			s = detail
+		}
+	}
+
+	return s.Err()
+}
+
+func Errore(code interface{}, err error) error {
+	if err == nil {
+		return nil
+	}
+	_, ok := FromError(err)
+	if ok {
+		return err
+	}
+
+	return NewAggregate([]error{Errorf(code, err.Error()), err})
 }
