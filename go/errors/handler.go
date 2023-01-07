@@ -57,3 +57,14 @@ func HandleError(err error) {
 		fn(err)
 	}
 }
+
+func ErrorChain(handlers ...func(err error, handled bool) (error, bool)) func(err error, handled bool) error {
+	return func(err error, handled bool) error {
+		for _, h := range handlers {
+			if h != nil {
+				err, handled = h(err, handled)
+			}
+		}
+		return err
+	}
+}
