@@ -33,6 +33,7 @@ import (
 	http_ "github.com/kaydxh/golang/go/net/http"
 	runtime_ "github.com/kaydxh/golang/go/runtime"
 	strings_ "github.com/kaydxh/golang/go/strings"
+	"github.com/sirupsen/logrus"
 
 	//resource_ "github.com/kaydxh/golang/pkg/middleware/resource"
 
@@ -57,6 +58,7 @@ func HTTPError(ctx context.Context, mux *runtime.ServeMux,
 		},
 		RequestId: requestId,
 	}
+	logrus.WithField("request_id", requestId).WithField("response", errResponse).Errorf("send")
 
 	// ForwardResponseMessage forwards the message "resp" from gRPC server to REST client
 	runtime.ForwardResponseMessage(ctx, mux, marshaler, w, r, errResponse)

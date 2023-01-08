@@ -26,6 +26,7 @@ import (
 
 	errors_ "github.com/kaydxh/golang/go/errors"
 	reflect_ "github.com/kaydxh/golang/go/reflect"
+	"github.com/sirupsen/logrus"
 	"google.golang.org/grpc"
 )
 
@@ -44,6 +45,7 @@ func UnaryServerInterceptorOfError() grpc.UnaryServerInterceptor {
 			ErrorMsg:  errors_.ErrorToString(err),
 			SessionId: reflect_.RetrieveId(req, reflect_.FieldNameSessionId),
 		}
+		logrus.WithField("request_id", errResponse.SessionId).WithField("response", errResponse).Errorf("send")
 
 		return errResponse, nil
 	}
