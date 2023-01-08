@@ -131,14 +131,6 @@ func Errorf(code interface{}, format string, a ...interface{}) error {
 	return s.Err()
 }
 
-func Errore(code interface{}, err error) error {
-	if err == nil {
-		return nil
-	}
-	_, ok := FromError(err)
-	if ok {
-		return err
-	}
-
-	return NewAggregate([]error{Errorf(code, err.Error()), err})
+func Errore(errlist ...error) error {
+	return NewAggregate(errlist)
 }
