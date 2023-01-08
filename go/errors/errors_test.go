@@ -104,7 +104,8 @@ func TestErrore(t *testing.T) {
 
 	for i, testCase := range testCases {
 		t.Run(fmt.Sprintf("%v", i), func(t *testing.T) {
-			err := errors_.Errore(testCase.code, testCase.err)
+			//err := errors_.Errore(testCase.code, testCase.err)
+			err := errors_.Errore(testCase.err)
 			if errors.Is(err, ErrInternal) != testCase.expected {
 				t.Fatalf("err[%v], epected[%v] test err[%v]", err, testCase.expected, testCase.err)
 			}
