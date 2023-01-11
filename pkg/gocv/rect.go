@@ -43,17 +43,14 @@ func (r Rect) Scale(factor float32) Rect {
 
 // Empty reports whether the rectangle contains no points.
 func (r Rect) Empty() bool {
-	return r.Width == 0 || r.Height == 0
+	return r.Width <= 0 || r.Height <= 0
+}
+
+func (r Rect) Area() int32 {
+	return r.Width * r.Height
 }
 
 func (r Rect) Intersect(s Rect) Rect {
-	if r.X < s.X {
-		r.X = s.X
-	}
-	if r.Y < s.Y {
-		r.Y = s.Y
-	}
-
 	rMaxX := r.X + r.Width
 	sMaxX := s.X + s.Width
 	if rMaxX > sMaxX {
@@ -63,6 +60,18 @@ func (r Rect) Intersect(s Rect) Rect {
 
 	rMaxY := r.Y + r.Height
 	sMaxY := s.Y + s.Height
+	if rMaxY > sMaxY {
+		rMaxY = sMaxY
+	}
+
+	if r.X < s.X {
+		r.X = s.X
+	}
+	r.Width = rMaxX - r.X
+
+	if r.Y < s.Y {
+		r.Y = s.Y
+	}
 	if rMaxY > sMaxY {
 		rMaxY = sMaxY
 	}
@@ -119,4 +128,30 @@ func (r Rect) In(s Rect) bool {
 	// does not require that r.Max.In(s).
 	return s.X <= r.X && r.Y <= s.Y &&
 		s.Width <= r.Width && r.Height <= s.Height
+}
+
+// return closest rect
+func (r Rect) Closest(rects ...Rect) (float32, Rect) {
+	if len(rects) == 0 {
+		return 0, ZR
+	}
+
+	var (
+		maxAreaRatio float32
+		closestRect  Rect
+	)
+	for _, s := range rects {
+		var areaRatio float32
+		ia := r.Intersect(s)
+		if !ia.Empty() {
+			areaRatio = float32(ia.Area()) / float32(r.Area())
+			if maxAreaRatio < areaRatio {
+				maxAreaRatio = areaRatio
+				closestRect = s
+			}
+		}
+
+	}
+
+	return maxAreaRatio, closestRect
 }

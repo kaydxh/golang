@@ -62,12 +62,60 @@ func TestScale(t *testing.T) {
 			}
 			r2 := r.Scale(testCase.factor).Intersect(r)
 			t.Logf("r2: %v", r2)
-			/*
-				r2 := r.Scale(testCase.factor)
-				t.Logf("r2: %v", r2)
-				r3 := r.Intersect(r2)
-				t.Logf("r3: %v", r3)
-			*/
+		})
+	}
+}
+
+func TestClosest(t *testing.T) {
+	testCases := []struct {
+		r  gocv_.Rect
+		rs []gocv_.Rect
+	}{
+		{
+			r: gocv_.Rect{
+				X:      1042,
+				Y:      518,
+				Width:  389,
+				Height: 467,
+			},
+			rs: []gocv_.Rect{
+				// out
+				{
+					X:      0,
+					Y:      10,
+					Width:  10,
+					Height: 10,
+				},
+				{
+					X:      400,
+					Y:      600,
+					Width:  700,
+					Height: 700,
+				},
+
+				// small in
+				{
+					X:      1100,
+					Y:      600,
+					Width:  300,
+					Height: 300,
+				},
+
+				//big in
+				{
+					X:      938,
+					Y:      245,
+					Width:  807,
+					Height: 819,
+				},
+			},
+		},
+	}
+
+	for i, testCase := range testCases {
+		t.Run(fmt.Sprintf("%d", i), func(t *testing.T) {
+			_, cr := testCase.r.Closest(testCase.rs...)
+			t.Logf("cr: %v", cr)
 		})
 	}
 }
