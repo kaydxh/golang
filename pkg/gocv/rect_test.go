@@ -71,42 +71,61 @@ func TestClosest(t *testing.T) {
 		r  gocv_.Rect
 		rs []gocv_.Rect
 	}{
+		/*
+			{
+				r: gocv_.Rect{
+					X:      1042,
+					Y:      518,
+					Width:  389,
+					Height: 467,
+				},
+				rs: []gocv_.Rect{
+					// out
+					{
+						X:      0,
+						Y:      10,
+						Width:  10,
+						Height: 10,
+					},
+					{
+						X:      400,
+						Y:      600,
+						Width:  700,
+						Height: 700,
+					},
+
+					// small in
+					{
+						X:      1100,
+						Y:      600,
+						Width:  300,
+						Height: 300,
+					},
+
+					//big in
+					{
+						X:      938,
+						Y:      245,
+						Width:  807,
+						Height: 819,
+					},
+				},
+			},
+		*/
 		{
 			r: gocv_.Rect{
-				X:      1042,
-				Y:      518,
-				Width:  389,
-				Height: 467,
+				X:      1031,
+				Y:      728,
+				Width:  561,
+				Height: 340,
 			},
 			rs: []gocv_.Rect{
-				// out
-				{
-					X:      0,
-					Y:      10,
-					Width:  10,
-					Height: 10,
-				},
-				{
-					X:      400,
-					Y:      600,
-					Width:  700,
-					Height: 700,
-				},
-
-				// small in
-				{
-					X:      1100,
-					Y:      600,
-					Width:  300,
-					Height: 300,
-				},
-
 				//big in
 				{
 					X:      938,
-					Y:      245,
-					Width:  807,
-					Height: 819,
+					Y:      244,
+					Width:  808,
+					Height: 820,
 				},
 			},
 		},
@@ -114,8 +133,8 @@ func TestClosest(t *testing.T) {
 
 	for i, testCase := range testCases {
 		t.Run(fmt.Sprintf("%d", i), func(t *testing.T) {
-			_, cr := testCase.r.Closest(testCase.rs...)
-			t.Logf("cr: %v", cr)
+			area, cr := testCase.r.Closest(testCase.rs...)
+			t.Logf("cr: %v, area: %v", cr, area)
 		})
 	}
 }
