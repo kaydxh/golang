@@ -135,6 +135,9 @@ func (r Rect) Closest(rects ...Rect) (float32, Rect) {
 	if len(rects) == 0 {
 		return 0, ZR
 	}
+	if r.Empty() {
+		return 0, ZR
+	}
 
 	var (
 		maxAreaRatio float32
