@@ -15,3 +15,11 @@ func LocalMiddlewareWrap[REQ any, RESP any](handler func(ctx context.Context, re
 				handler,
 			)))
 }
+
+// the function need to called by controller, without inout printer
+func LocalTinyMiddlewareWrap[REQ any, RESP any](handler func(ctx context.Context, req REQ) (RESP, error)) func(ctx context.Context, req REQ) (RESP, error) {
+	return interceptordebug_.HandleReuestId(
+		interceptoropentelemetry_.HandleMetric(
+			handler,
+		))
+}
