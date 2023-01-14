@@ -25,25 +25,33 @@ import (
 	"context"
 
 	reflect_ "github.com/kaydxh/golang/go/reflect"
+	strings_ "github.com/kaydxh/golang/go/strings"
 	logs_ "github.com/kaydxh/golang/pkg/logs"
 	"google.golang.org/grpc"
 	"google.golang.org/protobuf/proto"
 )
 
-func UnaryClientInterceptorOfInOutputPrinter() grpc.UnaryClientInterceptor {
+func UnaryClientInterceptorOfInOutputPrinter(filterMethods ...string) grpc.UnaryClientInterceptor {
 
 	return func(ctx context.Context, method string, req, reply interface{}, cc *grpc.ClientConn, invoker grpc.UnaryInvoker, opts ...grpc.CallOption) error {
 
 		logger := logs_.GetLogger(ctx)
-		reqProto, ok := any(req).(proto.Message)
-		if ok {
-			logger.WithField("request", reflect_.TruncateBytes(proto.Clone(reqProto))).Info("send")
+
+		enablePrint := !strings_.SliceContainsCaseInSensitive(filterMethods, method)
+		if enablePrint {
+			reqProto, ok := any(req).(proto.Message)
+			if ok {
+				logger.WithField("request", reflect_.TruncateBytes(proto.Clone(reqProto))).Info("send")
+			}
 		}
 
 		err := invoker(ctx, method, req, reply, cc, opts...)
-		respProto, ok := any(reply).(proto.Message)
-		if ok {
-			logger.WithField("response", reflect_.TruncateBytes(proto.Clone(respProto))).Info("recv")
+
+		if enablePrint {
+			respProto, ok := any(reply).(proto.Message)
+			if ok {
+				logger.WithField("response", reflect_.TruncateBytes(proto.Clone(respProto))).Info("recv")
+			}
 		}
 
 		return err

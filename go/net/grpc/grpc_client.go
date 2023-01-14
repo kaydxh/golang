@@ -81,7 +81,7 @@ func (g *GrpcClient) Close() error {
 	return nil
 }
 
-func ClientDialOptions() []grpc.DialOption {
+func ClientDialOptions(disablePrintMethods ...string) []grpc.DialOption {
 	var opts []grpc.DialOption
 	opts = append(opts,
 		grpc.WithInsecure(),
@@ -93,16 +93,16 @@ func ClientDialOptions() []grpc.DialOption {
 		grpc.WithInitialConnWindowSize(defaultMaxMsgSize),
 		grpc.WithStatsHandler(&statHandler{}),
 		grpc.WithUnaryInterceptor(interceptortimer_.UnaryClientInterceptorOfTimer()),
-		grpc.WithUnaryInterceptor(interceptordebug_.UnaryClientInterceptorOfInOutputPrinter()),
+		grpc.WithUnaryInterceptor(interceptordebug_.UnaryClientInterceptorOfInOutputPrinter(disablePrintMethods...)),
 	)
 	return opts
 }
 
-func GetGrpcClientConn(addr string, connectionTimeout time.Duration) (*grpc.ClientConn, error) {
+func GetGrpcClientConn(addr string, connectionTimeout time.Duration, disablePrintMethods ...string) (*grpc.ClientConn, error) {
 	ctx, cancel := context_.WithTimeout(context.Background(), connectionTimeout)
 	defer cancel()
 
-	conn, err := grpc.DialContext(ctx, addr, ClientDialOptions()...)
+	conn, err := grpc.DialContext(ctx, addr, ClientDialOptions(disablePrintMethods...)...)
 	if err != nil {
 		return nil, fmt.Errorf("failed to connect address: %v", addr)
 	}

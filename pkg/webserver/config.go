@@ -180,7 +180,6 @@ func (c *Config) installGrpcMessageSizeOptions() []gw_.GRPCGatewayOption {
 		opts,
 		gw_.WithClientDialOptions(
 			grpc.WithDefaultCallOptions(grpc.MaxCallSendMsgSize(maxRecvMsgSize)),
-			//		grpc.WithUnaryInterceptor(interceptorratetimer_.UnaryClientInterceptor())),
 		),
 	)
 
