@@ -41,6 +41,8 @@ type FactoryConfig[T any] struct {
 	// not include the first call
 	RetryTimes    int
 	RetryInterval time.Duration
+
+	DisablePrintInoutMethods []string
 }
 
 func (fc *FactoryConfig[T]) ApplyOptions(configFuncs ...FactoryConfigFunc[T]) error {
@@ -74,6 +76,8 @@ type Repository[T any] struct {
 	// not include the first call
 	RetryTimes    int
 	RetryInterval time.Duration
+
+	DisablePrintInoutMethods []string
 }
 
 func (r *Repository[T]) NewConnect() (client T, conn *grpc.ClientConn, err error) {
@@ -92,23 +96,23 @@ func (r *Repository[T]) Close(conn *grpc.ClientConn) (err error) {
 }
 
 func newRepository[T any](ctx context.Context, fc FactoryConfig[T]) (Repository[T], error) {
-	conn, err := GetGrpcClientConn(fc.Addr, fc.Timeout)
+	conn, err := GetGrpcClientConn(fc.Addr, fc.Timeout, fc.DisablePrintInoutMethods...)
 	if err != nil {
 		return Repository[T]{}, err
 	}
 
 	repo := Repository[T]{
-		Timeout:          fc.Timeout,
-		Addr:             fc.Addr,
-		NewServiceClient: fc.NewServiceClient,
-		Conn:             conn,
-		Client:           fc.NewServiceClient(conn),
-		RetryTimes:       fc.RetryTimes,
-		RetryInterval:    fc.RetryInterval,
+		Timeout:                  fc.Timeout,
+		Addr:                     fc.Addr,
+		NewServiceClient:         fc.NewServiceClient,
+		Conn:                     conn,
+		Client:                   fc.NewServiceClient(conn),
+		RetryTimes:               fc.RetryTimes,
+		RetryInterval:            fc.RetryInterval,
+		DisablePrintInoutMethods: fc.DisablePrintInoutMethods,
 	}
 
 	return repo, nil
-
 }
 
 type Factory[T any] struct {
