@@ -92,13 +92,18 @@ func ClientDialOptions(disablePrintMethods ...string) []grpc.DialOption {
 		grpc.WithInitialWindowSize(defaultMaxMsgSize),
 		grpc.WithInitialConnWindowSize(defaultMaxMsgSize),
 		grpc.WithStatsHandler(&statHandler{}),
-		grpc.WithUnaryInterceptor(interceptortimer_.UnaryClientInterceptorOfTimer()),
-		grpc.WithUnaryInterceptor(interceptordebug_.UnaryClientInterceptorOfInOutputPrinter(disablePrintMethods...)),
+		grpc.WithChainUnaryInterceptor(
+			interceptortimer_.UnaryClientInterceptorOfTimer(),
+			interceptordebug_.UnaryClientInterceptorOfInOutputPrinter(disablePrintMethods...)),
 	)
 	return opts
 }
 
-func GetGrpcClientConn(addr string, connectionTimeout time.Duration, disablePrintMethods ...string) (*grpc.ClientConn, error) {
+func GetGrpcClientConn(
+	addr string,
+	connectionTimeout time.Duration,
+	disablePrintMethods ...string,
+) (*grpc.ClientConn, error) {
 	ctx, cancel := context_.WithTimeout(context.Background(), connectionTimeout)
 	defer cancel()
 
