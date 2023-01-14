@@ -28,7 +28,6 @@ message Web {
     int32 max_concurrency = 2;
     // timeout 0 is not unlimited
     google.protobuf.Duration timeout = 3;
-    bool enable_inoutput_printer = 10;
 
     enum ApiFormatter {
       api_noop = 0;
@@ -41,6 +40,7 @@ message Web {
   Debug debug = 10;
   message Debug {
     bool enable_profiling = 1;
+    repeated string disable_print_inoutput_methods = 2;
   }
 
   Monitor monitor = 11;
