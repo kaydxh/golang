@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package go.pkg.container.docker;
+import "google/protobuf/duration.proto";
+
+option go_package = "github.com/kaydxh/go.pkg.container.docker;docker";
+
+message Docker {
+  bool enabled = 1;
+  string address = 2;
+}
