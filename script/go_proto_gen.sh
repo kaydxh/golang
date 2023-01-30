@@ -132,7 +132,7 @@ for proto in $(find ${PROTOC_FILE_DIR} -type f -name '*.proto' -print0 | xargs -
   if [[ "${WITH_DOC}" -eq 1 ]]; then
     # output file name
     doc_option="--doc_opt=markdown,${proto_base_name}.md"
-    doc_out_option="--doc_out=${SCRIPT_PATH}/../doc/${api_conf_yaml_dir}"
+    doc_out_option="--doc_out=${SCRIPT_PATH}/../doc"
   fi
 
   if [[ "${WITH_CPP}" -eq 1 ]]; then
