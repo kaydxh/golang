@@ -12,7 +12,7 @@ for i in $(find . -name '*.go')
 do
   if  ! grep -q Copyright "$i" ; then
      # exclud third_party and tutorial
-     if [[ "$i" != *"third_party"* && "$i" != *"tutorial"* ]]; then
+     if [[ "$i" != *"third_party"* && "$i" != *"tutorial"* && "$i" != *".pb."* ]]; then
        #echo "$i"
        cat "${SCRIPT_PATH}"/copyright.txt "$i" >"$i".new && mv "$i".new "$i"
      fi
