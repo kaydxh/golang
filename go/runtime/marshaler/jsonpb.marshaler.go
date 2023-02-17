@@ -23,7 +23,6 @@ package marshaler
 
 import (
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
-	jsonpb_ "github.com/kaydxh/golang/pkg/protobuf/jsonpb"
 )
 
 type JSONPb struct {
@@ -81,12 +80,8 @@ func NewJSONPb(options ...JSONPbOption) *JSONPb {
 }
 
 func (j *JSONPb) Marshal(v interface{}) ([]byte, error) {
-	respStruct, err := jsonpb_.MarshaToStructpb(v)
-	if err != nil {
-		return nil, err
-	}
 
-	return j.JSONPb.Marshal(respStruct)
+	return j.JSONPb.Marshal(v)
 }
 
 /*

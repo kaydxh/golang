@@ -86,7 +86,7 @@ func (c *completedConfig) Validate() error {
 	return c.Validator.Struct(c)
 }
 
-func (c *completedConfig) New() (*GenericWebServer, error) {
+func (c *completedConfig) New(ctx context.Context, opts ...gw_.GRPCGatewayOption) (*GenericWebServer, error) {
 	if c.completeError != nil {
 		return nil, c.completeError
 	}
@@ -95,13 +95,16 @@ func (c *completedConfig) New() (*GenericWebServer, error) {
 		return nil, err
 	}
 
-	return c.install()
+	return c.install(ctx, opts...)
 }
 
-func (c *completedConfig) install() (*GenericWebServer, error) {
+func (c *completedConfig) install(ctx context.Context, opts ...gw_.GRPCGatewayOption) (*GenericWebServer, error) {
 	c.Config.opts.gatewayOptions = append(c.Config.opts.gatewayOptions, c.installGrpcMessageSizeOptions()...)
 	c.Config.opts.gatewayOptions = append(c.Config.opts.gatewayOptions, c.installHttpMiddlewareChain()...)
 	c.Config.opts.gatewayOptions = append(c.Config.opts.gatewayOptions, c.installGrpcMiddlewareChain()...)
+
+	//append opts...
+	c.Config.opts.gatewayOptions = append(c.Config.opts.gatewayOptions, opts...)
 	grpcBackend := gw_.NewGRPCGateWay(c.opts.bindAddress, c.Config.opts.gatewayOptions...)
 	//grpcBackend.ApplyOptions()
 	gin.SetMode(gin.ReleaseMode)
