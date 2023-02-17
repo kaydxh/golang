@@ -22,6 +22,11 @@
 package marshaler
 
 import (
+	"encoding/json"
+	"fmt"
+
+	"github.com/golang/protobuf/proto"
+	structpb "github.com/golang/protobuf/ptypes/struct"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 )
 
@@ -39,9 +44,12 @@ type JSONPb struct {
 
 func NewDefaultJSONPb() *JSONPb {
 	return NewJSONPb(
+		// ummarshal for input
+		// marshal for output
 		// use json name
 		// only for mashaler
 		WithUseProtoNames(false),
+		//false means use enum string for output
 		WithUseEnumNumbers(false),
 		WithEmitUnpopulated(true),
 		WithIndent("\t"),
@@ -80,8 +88,46 @@ func NewJSONPb(options ...JSONPbOption) *JSONPb {
 }
 
 func (j *JSONPb) Marshal(v interface{}) ([]byte, error) {
-
 	return j.JSONPb.Marshal(v)
+}
+
+func (j *JSONPb) MarshaToStructpb(v interface{}) (*structpb.Struct, error) {
+	var jb []byte
+	switch v := v.(type) {
+	case nil:
+		return &structpb.Struct{}, nil
+
+	case *structpb.Struct:
+		return v, nil
+
+	case proto.Message:
+		data, err := j.JSONPb.Marshal(v)
+		if err != nil {
+			return nil, fmt.Errorf("failed to Marshal json: %v", err)
+		}
+		jb = []byte(data)
+
+	case []byte:
+		jb = v
+	case *[]byte:
+		jb = *v
+	case string:
+		jb = []byte(v)
+	case *string:
+		jb = []byte(*v)
+	default:
+		var err error
+		jb, err = json.Marshal(v)
+		if err != nil {
+			return nil, fmt.Errorf("failed to Marshal json: %v", err)
+		}
+	}
+
+	var dataStructpb structpb.Struct
+	if err := j.JSONPb.Unmarshal(jb, &dataStructpb); err != nil {
+		return nil, err
+	}
+	return &dataStructpb, nil
 }
 
 /*
