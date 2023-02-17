@@ -23,7 +23,6 @@ package tcloud
 
 import (
 	marshaler_ "github.com/kaydxh/golang/go/runtime/marshaler"
-	jsonpb_ "github.com/kaydxh/golang/pkg/protobuf/jsonpb"
 )
 
 type JSONPb struct {
@@ -38,7 +37,7 @@ func NewDefaultJSONPb() *JSONPb {
 
 // Marshal marshals "v" into JSON.
 func (j *JSONPb) Marshal(v interface{}) ([]byte, error) {
-	respStruct, err := jsonpb_.MarshaToStructpb(v)
+	respStruct, err := j.JSONPb.MarshaToStructpb(v)
 	if err != nil {
 		return nil, err
 	}
