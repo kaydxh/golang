@@ -57,7 +57,7 @@ func HandleReuestId[REQ any, RESP any](handler resource_.HandlerWithContext[REQ,
 		ctx = context.WithValue(ctx, http_.DefaultHTTPRequestIDKey, id)
 		resp, err := handler(ctx, req)
 		// try set requestId to response
-		reflect_.TrySetId(req, reflect_.FieldNameRequestId, id)
+		reflect_.TrySetId(resp, reflect_.FieldNameRequestId, id)
 		// write RequestId to HTTP Header
 		if err_ := grpc.SetHeader(ctx, metadata.Pairs(http_.DefaultHTTPRequestIDKey, id)); err_ != nil {
 			logrus.WithError(err_).WithField("request_id", id).Warningf("grpc.SendHeader, ignore")
