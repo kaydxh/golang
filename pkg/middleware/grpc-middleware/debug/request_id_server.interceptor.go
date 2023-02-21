@@ -24,6 +24,8 @@ package interceptordebug
 import (
 	"context"
 
+	context_ "github.com/kaydxh/golang/go/context"
+
 	"github.com/google/uuid"
 	http_ "github.com/kaydxh/golang/go/net/http"
 	reflect_ "github.com/kaydxh/golang/go/reflect"
@@ -48,13 +50,16 @@ func HandleReuestId[REQ any, RESP any](handler resource_.HandlerWithContext[REQ,
 		// retrieve requestId from request
 		id := reflect_.RetrieveId(req, reflect_.FieldNameRequestId)
 		if id == "" {
-			//if id is empty, set new uuid to request
-			id = uuid.NewString()
-			reflect_.TrySetId(req, reflect_.FieldNameRequestId, id)
+			id = context_.ExtractRequestIDFromContext(ctx)
+			if id == "" {
+				//if id is empty, set new uuid to request
+				id = uuid.NewString()
+				reflect_.TrySetId(req, reflect_.FieldNameRequestId, id)
+			}
 		}
 
 		//set "X-Request-ID" to context
-		ctx = context.WithValue(ctx, http_.DefaultHTTPRequestIDKey, id)
+		ctx = context_.SetPairContext(ctx, http_.DefaultHTTPRequestIDKey, id)
 		resp, err := handler(ctx, req)
 		// try set requestId to response
 		reflect_.TrySetId(resp, reflect_.FieldNameRequestId, id)
