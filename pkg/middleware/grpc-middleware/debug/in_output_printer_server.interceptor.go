@@ -25,6 +25,7 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	reflect_ "github.com/kaydxh/golang/go/reflect"
 	logs_ "github.com/kaydxh/golang/pkg/logs"
 	"google.golang.org/grpc"
@@ -49,23 +50,30 @@ func (j *JsonpbMarshaller) MarshalJson() ([]byte, error) {
 func UnaryServerInterceptorOfInOutputPrinter() grpc.UnaryServerInterceptor {
 
 	return func(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (interface{}, error) {
-		return HandleInOutputPrinter(handler)(ctx, req)
+		return HandleInOutputPrinter(info, handler)(ctx, req)
 	}
 }
 
-func HandleInOutputPrinter[REQ any, RESP any](handler func(ctx context.Context, req REQ) (RESP, error)) func(ctx context.Context, req REQ) (RESP, error) {
+func HandleInOutputPrinter[REQ any, RESP any](info *grpc.UnaryServerInfo, handler func(ctx context.Context, req REQ) (RESP, error)) func(ctx context.Context, req REQ) (RESP, error) {
 	return func(ctx context.Context, req REQ) (RESP, error) {
 		logger := logs_.GetLogger(ctx)
 
+		var method string
+		if info != nil {
+			method = info.FullMethod
+		} else {
+			method, _ = runtime.RPCMethod(ctx)
+		}
+
 		reqProto, ok := any(req).(proto.Message)
 		if ok {
-			logger.WithField("request", reflect_.TruncateBytes(proto.Clone(reqProto))).Info("recv")
+			logger.WithField("method", method).WithField("request", reflect_.TruncateBytes(proto.Clone(reqProto))).Info("recv")
 		}
 
 		resp, err := handler(ctx, req)
 		respProto, ok := any(resp).(proto.Message)
 		if ok {
-			logger.WithField("response", reflect_.TruncateBytes(proto.Clone(respProto))).Info("send")
+			logger.WithField("method", method).WithField("response", reflect_.TruncateBytes(proto.Clone(respProto))).Info("send")
 		}
 
 		return resp, err

@@ -11,6 +11,7 @@ import (
 func LocalMiddlewareWrap[REQ any, RESP any](handler func(ctx context.Context, req REQ) (RESP, error)) func(ctx context.Context, req REQ) (RESP, error) {
 	return interceptordebug_.HandleReuestId(
 		interceptordebug_.HandleInOutputPrinter(
+			nil,
 			interceptoropentelemetry_.HandleMetric(
 				handler,
 			)))
