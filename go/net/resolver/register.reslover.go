@@ -62,6 +62,16 @@ func Get(scheme string) Builder {
 	return nil
 }
 
+func GetDefault() Builder {
+	resolversMu.Lock()
+	defer resolversMu.Unlock()
+
+	if b, ok := m[defaultScheme]; ok {
+		return b
+	}
+	return nil
+}
+
 // SetDefaultScheme sets the default scheme that will be used. The default
 // default scheme is "passthrough".
 //
