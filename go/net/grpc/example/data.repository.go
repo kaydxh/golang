@@ -3,9 +3,7 @@ package date
 import (
 	"context"
 
-	context_ "github.com/kaydxh/golang/go/context"
 	grpc_ "github.com/kaydxh/golang/go/net/grpc"
-	"github.com/sirupsen/logrus"
 )
 
 type Repository struct {
@@ -14,13 +12,18 @@ type Repository struct {
 
 func (r *Repository) Now(ctx context.Context, req *NowRequest) (resp *NowResponse, err error) {
 
-	ctx, cancel := context_.WithTimeout(ctx, r.Timeout)
-	defer cancel()
+	err = r.Call(ctx, func(ctx context.Context) error {
+		nowResp, err := r.Client.Now(ctx, &NowRequest{})
+		if err != nil {
+			return err
+		}
 
-	resp, err = r.Client.Now(ctx, req)
-	if err != nil {
-		logrus.Errorf("failed to call Now method, err: %v", err)
-	}
+		resp = &NowResponse{
+			RequestId: req.RequestId,
+			Date:      nowResp.GetDate(),
+		}
+		return nil
+	})
 
-	return resp, nil
+	return resp, err
 }
