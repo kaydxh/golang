@@ -122,13 +122,7 @@ func (c *completedConfig) install(ctx context.Context, opts ...gw_.GRPCGatewayOp
 	var errs []error
 	if c.Proto.GetDebug().GetEnableProfiling() {
 		fmt.Printf("- install debug handler")
-		err := ws.AddPostStartHook("debug_hanlder", func(ctx context.Context) error {
-			ws.InstallWebHandlers(profiler_.NewController())
-			return nil
-		})
-		if err != nil {
-			errs = append(errs, err)
-		}
+		ws.InstallWebHandlers(profiler_.NewController())
 	}
 	err := c.installDefaultHander(ws)
 	if err != nil {
@@ -139,10 +133,8 @@ func (c *completedConfig) install(ctx context.Context, opts ...gw_.GRPCGatewayOp
 }
 
 func (c *completedConfig) installDefaultHander(ws *GenericWebServer) error {
-	return ws.AddPostStartHook("default_hanlder", func(ctx context.Context) error {
-		ws.InstallWebHandlers(healthz_.NewController())
-		return nil
-	})
+	ws.InstallWebHandlers(healthz_.NewController())
+	return nil
 }
 
 // Complete set default ServerRunOptions.
