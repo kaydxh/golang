@@ -21,13 +21,16 @@ message Ft {
 
   repeated Proxy proxies = 11;
   message Proxy {
-    // target_addr即将url中的域名地址改为target_addr进行转发，
-    // target_url 第三方代理代理进行下载, 如socks5://127.0.0.1:8080
+    // target_host即将url中的域名地址改为target_host进行转发，
+    // proxy_url 第三方代理代理进行下载, 如socks5://127.0.0.1:8080
+    // proxy_host 为proxy_url中的host地址，如果设置了，将代替url中的host
+
     // target_addr和target_url都设置值的情况下，优先使用target_addr
     // reset dns to target_addr in url,
-    string target_addr = 1;
+    string target_host = 1;
 
     // reset url to target url
-    string target_url = 2;
+    string proxy_url = 2;
+    string proxy_host = 3;
   }
 }

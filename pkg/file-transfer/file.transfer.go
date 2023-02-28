@@ -84,10 +84,16 @@ func (f *FileTransfer) Download(ctx context.Context, downloadUrl string) (data [
 	proxy := f.getProxy()
 
 	opts := []http_.ClientOption{http_.WithDisableKeepAlives(true)}
-	if proxy.TargetAddr != "" {
-		opts = append(opts, http_.WithProxyTarget(proxy.TargetAddr))
-	} else if proxy.TargetUrl != "" {
-		opts = append(opts, http_.WithProxy(proxy.TargetUrl))
+	if proxy.TargetHost != "" {
+		opts = append(opts, http_.WithTargetHost(proxy.TargetHost))
+	} else {
+
+		if proxy.ProxyUrl != "" {
+			opts = append(opts, http_.WithProxyURL(proxy.ProxyUrl))
+		}
+		if proxy.ProxyHost != "" {
+			opts = append(opts, http_.WithProxyHost(proxy.ProxyHost))
+		}
 	}
 	opts = append(opts, http_.WithTimeout(f.opts.downloadTimeout))
 
@@ -97,6 +103,7 @@ func (f *FileTransfer) Download(ctx context.Context, downloadUrl string) (data [
 			logger.WithError(err).Errorf("new http client err: %v", err)
 			return err
 		}
+
 		data, err = client.Get(ctx, downloadUrl)
 		if err != nil {
 			logger.WithError(err).Errorf("http client get err: %v", err)
@@ -120,10 +127,16 @@ func (f *FileTransfer) Upload(ctx context.Context, uploadUrl string, body []byte
 	proxy := f.getProxy()
 
 	opts := []http_.ClientOption{http_.WithDisableKeepAlives(true)}
-	if proxy.TargetAddr != "" {
-		opts = append(opts, http_.WithProxyTarget(proxy.TargetAddr))
-	} else if proxy.TargetUrl != "" {
-		opts = append(opts, http_.WithProxy(proxy.TargetUrl))
+	if proxy.TargetHost != "" {
+		opts = append(opts, http_.WithTargetHost(proxy.TargetHost))
+	} else {
+
+		if proxy.ProxyUrl != "" {
+			opts = append(opts, http_.WithProxyURL(proxy.ProxyUrl))
+		}
+		if proxy.ProxyHost != "" {
+			opts = append(opts, http_.WithProxyHost(proxy.ProxyHost))
+		}
 	}
 	opts = append(opts, http_.WithTimeout(f.opts.uploadTimeout))
 
