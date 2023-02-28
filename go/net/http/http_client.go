@@ -141,26 +141,16 @@ func NewClient(options ...ClientOption) (*Client, error) {
 	if c.opts.disableKeepAlives {
 		transport.DisableKeepAlives = c.opts.disableKeepAlives
 	}
-	if len(c.opts.proxyURL) > 0 {
-		//c.Transport.Proxy = ProxyFuncFromContextOrEnvironment
-
-		//RequestWithProxyTarget(
-
-		/*
-			proxyURL, err := url.Parse(c.opts.proxy)
-			if err != nil {
-				logrus.WithError(err).Errorf("proxy URL %s is not valid", c.opts.proxy)
-				return nil, err
-			}
-
-			transport.Proxy = http.ProxyURL(proxyURL)
-		*/
-	}
 	c.Transport = RoundTripFunc(func(req *http.Request) (resp *http.Response, err error) {
 		if c.opts.proxyURL != "" || c.opts.proxyHost != "" {
 			transport.Proxy = ProxyFuncFromContextOrEnvironment
+
+			proxyUrl := "http://"
+			if c.opts.proxyURL != "" {
+				proxyUrl = c.opts.proxyURL
+			}
 			proxy := &Proxy{
-				ProxyUrl:    c.opts.proxyURL,
+				ProxyUrl:    proxyUrl,
 				ProxyTarget: c.opts.proxyHost,
 			}
 			req = RequestWithContextProxy(req, proxy)
@@ -177,7 +167,6 @@ func NewClient(options ...ClientOption) (*Client, error) {
 		return RoundTripperWithTarget(transport).RoundTrip(req)
 
 	})
-	//	RoundTripperWithTarget(transport)
 
 	return c, nil
 }
