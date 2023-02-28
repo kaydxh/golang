@@ -76,12 +76,14 @@ func GetResolver(ctx context.Context, target string, opts ...ResolverBuildOption
 	opt.ApplyOptions(opts...)
 	targetInfo, err := ParseTarget(target)
 	if err != nil {
-		return nil, fmt.Errorf("target[%v] is invalid", targetInfo.Scheme)
-	}
+		// support no scheme, just ip:port format
+		if targetInfo.Scheme == "" {
+			return GetDefault().Build(Target{
+				Endpoint: target,
+			})
+		}
 
-	// support no scheme, just ip:port format
-	if targetInfo.Scheme == "" {
-		return GetDefault().Build(targetInfo)
+		return nil, fmt.Errorf("target[%v] is invalid", targetInfo)
 	}
 
 	builder := Get(targetInfo.Scheme)
