@@ -29,6 +29,7 @@ import (
 	"time"
 
 	resolve_ "github.com/kaydxh/golang/go/net/resolver/resolve"
+	logs_ "github.com/kaydxh/golang/pkg/logs"
 )
 
 func RequestWithContextProxy(req *http.Request, proxy *Proxy) *http.Request {
@@ -39,10 +40,14 @@ func RequestWithContextProxy(req *http.Request, proxy *Proxy) *http.Request {
 }
 
 func ProxyFuncFromContextOrEnvironment(req *http.Request) (*url.URL, error) {
+	logger := logs_.GetLogger(req.Context())
 	proxy := FromContextProxy(req.Context())
 	if proxy == nil || proxy.ProxyUrl == "" {
 		return http.ProxyFromEnvironment(req)
 	}
+	defer func() {
+		logger.Infof("http request proxy: %v\n", proxy)
+	}()
 
 	proxyUrl, err := ParseProxyUrl(proxy.ProxyUrl)
 	if err != nil {
@@ -65,6 +70,7 @@ func ProxyFuncFromContextOrEnvironment(req *http.Request) (*url.URL, error) {
 		proxyUrl.Host = address.Addr
 	}
 	proxy.ProxyAddrResolved = address
+
 	return proxyUrl, nil
 }
 

@@ -25,6 +25,7 @@ import (
 	"net/http"
 
 	resolve_ "github.com/kaydxh/golang/go/net/resolver/resolve"
+	logs_ "github.com/kaydxh/golang/pkg/logs"
 )
 
 func RequestWithContextTargetHost(req *http.Request, target *Host) *http.Request {
@@ -39,6 +40,7 @@ func TargetHostFuncFromContext(req *http.Request) error {
 	if host == nil || host.HostTarget == "" {
 		return nil
 	}
+
 	if req.URL == nil {
 		return nil
 	}
@@ -64,6 +66,11 @@ func TargetHostFuncFromContext(req *http.Request) error {
 
 func RoundTripperWithTarget(rt http.RoundTripper) http.RoundTripper {
 	return RoundTripFunc(func(req *http.Request) (resp *http.Response, err error) {
+
+		logger := logs_.GetLogger(req.Context())
+		defer func() {
+			logger.Infof("http request host: %v\n", req.Host)
+		}()
 		err = TargetHostFuncFromContext(req)
 		if err != nil {
 			return nil, err
