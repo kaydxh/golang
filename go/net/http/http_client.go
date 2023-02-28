@@ -24,6 +24,7 @@ package http
 import (
 	"bytes"
 	"context"
+	"crypto/tls"
 	"fmt"
 	"io"
 	"io/ioutil"
@@ -106,6 +107,8 @@ func NewClient(options ...ClientOption) (*Client, error) {
 		// As a special case, if req.URL.Host is "localhost" (with or without
 		// a port number), then a nil URL and nil error will be returned.
 		Proxy: http.ProxyFromEnvironment,
+		// skip verify for https
+		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
 	}
 	if c.opts.timeout != 0 {
 		c.Client.Timeout = c.opts.timeout
