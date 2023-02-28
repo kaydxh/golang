@@ -57,40 +57,25 @@ func WithDisableKeepAlives(disableKeepAlives bool) ClientOption {
 	})
 }
 
-/*
-func WithProxyTargetAddr(addr string) ClientOption {
-	proxyFunc := func(req *http.Request) (*url.URL, error) {
-		proxyURL, err := url.Parse("http://" + addr)
-		if err != nil {
-			return proxyURL, nil
-		}
-
-		if addr != "" {
-			proxyURL.Host = addr
-		}
-
-		//	http.ProxyURL(proxyURL)
-
-		return proxyURL, nil
-	}
-
-	return ClientOptionFunc(func(c *Client) {
-		c.opts.proxy = proxyFunc
-	})
-}
-*/
-
 // http://xxx:yyy@goproxy.com
-func WithProxy(proxyURL string) ClientOption {
+func WithProxyURL(proxyURL string) ClientOption {
 	return ClientOptionFunc(func(c *Client) {
-		c.opts.proxy = proxyURL
+		c.opts.proxyURL = proxyURL
 	})
 }
 
 //dns:///ai-media-1256936300.cos.ap-guangzhou.myqcloud.com
-func WithProxyTarget(target string) ClientOption {
+// redirect
+func WithTargetHost(target string) ClientOption {
 	return ClientOptionFunc(func(c *Client) {
-		c.opts.proxyTarget = target
+		c.opts.targetHost = target
+	})
+}
+
+// replace host in proxy url
+func WithProxyHost(target string) ClientOption {
+	return ClientOptionFunc(func(c *Client) {
+		c.opts.proxyHost = target
 	})
 }
 

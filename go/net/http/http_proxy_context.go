@@ -1,5 +1,5 @@
 /*
- *Copyright (c) 2022, kaydxh
+ *Copyright (c) 2023, kaydxh
  *
  *Permission is hereby granted, free of charge, to any person obtaining a copy
  *of this software and associated documentation files (the "Software"), to deal
@@ -22,28 +22,52 @@
 package http
 
 import (
-	"net/http"
+	"context"
+	"fmt"
+	"net/url"
 
-	url_ "github.com/kaydxh/golang/go/net/url"
+	"github.com/kaydxh/golang/go/net/resolver"
 )
 
-func RequestWithTargetHost(req *http.Request, target string) error {
-	if target == "" {
-		return nil
-	}
+type proxyContextKey struct{}
 
-	newUrl, err := url_.ResolveWithTarget(req.Context(), req.URL, target)
-	if err != nil {
-		return err
-	}
-	req.URL = newUrl
-	req.Host = newUrl.Host
+type Proxy struct {
+	ProxyUrl    string
+	ProxyTarget string
 
-	return nil
+	ProxyAddrResolved resolver.Address
 }
 
-func NewClientWithTargetHost(target string, opts ...ClientOption) *Client {
-	opts = append(opts, WithTargetHost(target))
-	c, _ := NewClient(opts...)
-	return c
+func FromContextProxy(ctx context.Context) *Proxy {
+	proxy, _ := ctx.Value(proxyContextKey{}).(*Proxy)
+	return proxy
+}
+
+func WithContextProxy(ctx context.Context, proxy *Proxy) context.Context {
+	if proxy == nil {
+		panic("nil proxy")
+	}
+	return context.WithValue(ctx, proxyContextKey{}, proxy)
+}
+
+func ParseProxyUrl(proxy string) (*url.URL, error) {
+	if proxy == "" {
+		return nil, nil
+	}
+
+	proxyURL, err := url.Parse(proxy)
+	if err != nil ||
+		(proxyURL.Scheme != "http" &&
+			proxyURL.Scheme != "https" &&
+			proxyURL.Scheme != "socks5") {
+
+		//default use http://
+		if proxyURL, err := url.Parse("http://" + proxy); err == nil {
+			return proxyURL, nil
+		}
+	}
+	if err != nil {
+		return nil, fmt.Errorf("invalid proxy address %q: %v", proxy, err)
+	}
+	return proxyURL, nil
 }

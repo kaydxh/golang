@@ -26,10 +26,12 @@ import (
 	"time"
 
 	http_ "github.com/kaydxh/golang/go/net/http"
+	"golang.org/x/net/context"
 	"gotest.tools/v3/assert"
 )
 
 func TestHttpClientGet(t *testing.T) {
+	ctx := context.Background()
 	client, err := http_.NewClient(http_.WithTimeout(5 * time.Second))
 	if err != nil {
 		t.Fatalf("expect nil, got %v", err)
@@ -50,7 +52,7 @@ func TestHttpClientGet(t *testing.T) {
 	}
 
 	for _, test := range testCases {
-		data, err := client.Get(test.url)
+		data, err := client.Get(ctx, test.url)
 		if test.expected {
 			assert.NilError(t, err)
 		} else {
@@ -63,8 +65,8 @@ func TestHttpClientGet(t *testing.T) {
 }
 
 func TestHttpClientGetWithProxy(t *testing.T) {
-	//client, err := http_.NewClient(http_.WithTimeout(5*time.Second), http_.WithProxyTargetAddr("ai-media-1256936300.cos.ap-guangzhou.myqcloud.com"))
-	client, err := http_.NewClient(http_.WithTimeout(5*time.Second), http_.WithProxyTarget("dns:///ai-media-1256936300.cos.ap-guangzhou.myqcloud.com"))
+	ctx := context.Background()
+	client, err := http_.NewClient(http_.WithTimeout(5*time.Second), http_.WithTargetHost("dns:///ai-media-1256936300.cos.ap-guangzhou.myqcloud.com"))
 	if err != nil {
 		t.Fatalf("expect nil, got %v", err)
 	}
@@ -81,7 +83,7 @@ func TestHttpClientGetWithProxy(t *testing.T) {
 	}
 
 	for _, test := range testCases {
-		data, err := client.Get(test.url)
+		data, err := client.Get(ctx, test.url)
 		if test.expected {
 			assert.NilError(t, err)
 		} else {
@@ -94,6 +96,7 @@ func TestHttpClientGetWithProxy(t *testing.T) {
 }
 
 func TestHttpClientPost(t *testing.T) {
+	ctx := context.Background()
 	client, err := http_.NewClient(http_.WithTimeout(5 * time.Second))
 	if err != nil {
 		t.Fatalf("expect nil, got %v", err)
@@ -117,7 +120,7 @@ func TestHttpClientPost(t *testing.T) {
 	}
 
 	for _, test := range testCases {
-		data, err := client.Post(test.url, "application/text", nil, test.data)
+		data, err := client.Post(ctx, test.url, "application/text", nil, test.data)
 		if test.expected {
 			assert.NilError(t, err)
 		} else {

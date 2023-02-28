@@ -1,5 +1,5 @@
 /*
- *Copyright (c) 2022, kaydxh
+ *Copyright (c) 2023, kaydxh
  *
  *Permission is hereby granted, free of charge, to any person obtaining a copy
  *of this software and associated documentation files (the "Software"), to deal
@@ -24,26 +24,52 @@ package http
 import (
 	"net/http"
 
-	url_ "github.com/kaydxh/golang/go/net/url"
+	resolve_ "github.com/kaydxh/golang/go/net/resolver/resolve"
 )
 
-func RequestWithTargetHost(req *http.Request, target string) error {
-	if target == "" {
+func RequestWithContextTargetHost(req *http.Request, target *Host) *http.Request {
+	if target == nil {
+		return req
+	}
+	return req.WithContext(WithContextHost(req.Context(), target))
+}
+
+func TargetHostFuncFromContext(req *http.Request) error {
+	host := FromContextHost(req.Context())
+	if host == nil || host.HostTarget == "" {
+		return nil
+	}
+	if req.URL == nil {
 		return nil
 	}
 
-	newUrl, err := url_.ResolveWithTarget(req.Context(), req.URL, target)
+	if host.HostTarget == "" {
+		return nil
+	}
+
+	// replace host of host if target of host if resolved
+	address, err := resolve_.ResolveOne(req.Context(), host.HostTarget)
 	if err != nil {
 		return err
 	}
-	req.URL = newUrl
-	req.Host = newUrl.Host
-
+	if address.Addr != "" {
+		req.URL.Host = address.Addr
+	}
+	host.HostTargetAddrResolved = address
+	if host.ReplaceHostInRequest {
+		req.Host = req.URL.Host
+	}
 	return nil
 }
 
-func NewClientWithTargetHost(target string, opts ...ClientOption) *Client {
-	opts = append(opts, WithTargetHost(target))
-	c, _ := NewClient(opts...)
-	return c
+func RoundTripperWithTarget(rt http.RoundTripper) http.RoundTripper {
+	return RoundTripFunc(func(req *http.Request) (resp *http.Response, err error) {
+		err = TargetHostFuncFromContext(req)
+		if err != nil {
+			return nil, err
+		}
+		return rt.RoundTrip(req)
+	})
 }
+
+var DefaultTransportInsecureWithHost = RoundTripperWithTarget(DefaultTransportInsecure)

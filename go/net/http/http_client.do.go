@@ -74,10 +74,12 @@ func (c *Client) HttpDo(ctx context.Context, method string, url string, contentT
 }
 
 func (c *Client) Do(ctx context.Context, req *http.Request) (*http.Response, error) {
-	err := RequestWithProxyTarget(req, c.opts.proxyTarget)
-	if err != nil {
-		return nil, err
-	}
+	/*
+		err := RequestWithTargetHost(req, c.opts.targetHost)
+		if err != nil {
+			return nil, err
+		}
+	*/
 
 	logger := logs_.GetLogger(ctx)
 	logger.WithField("target_addr", req.Host).Infof("http do %v", req.URL.Path)
