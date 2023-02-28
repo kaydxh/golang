@@ -1,5 +1,5 @@
 /*
- *Copyright (c) 2022, kaydxh
+ *Copyright (c) 2023, kaydxh
  *
  *Permission is hereby granted, free of charge, to any person obtaining a copy
  *of this software and associated documentation files (the "Software"), to deal
@@ -22,28 +22,26 @@
 package http
 
 import (
+	"crypto/tls"
+	"net"
 	"net/http"
-
-	url_ "github.com/kaydxh/golang/go/net/url"
+	"time"
 )
 
-func RequestWithTargetHost(req *http.Request, target string) error {
-	if target == "" {
-		return nil
-	}
+var DefaultTransportInsecure = &http.Transport{
+	Proxy: http.ProxyFromEnvironment,
+	DialContext: (&net.Dialer{
+		Timeout:   30 * time.Second,
+		KeepAlive: 30 * time.Second,
+	}).DialContext,
+	ForceAttemptHTTP2:     true,
+	MaxIdleConns:          100,
+	IdleConnTimeout:       90 * time.Second,
+	TLSHandshakeTimeout:   10 * time.Second,
+	ExpectContinueTimeout: 1 * time.Second,
 
-	newUrl, err := url_.ResolveWithTarget(req.Context(), req.URL, target)
-	if err != nil {
-		return err
-	}
-	req.URL = newUrl
-	req.Host = newUrl.Host
-
-	return nil
+	// skip verify for https
+	TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
 }
 
-func NewClientWithTargetHost(target string, opts ...ClientOption) *Client {
-	opts = append(opts, WithTargetHost(target))
-	c, _ := NewClient(opts...)
-	return c
-}
+var DefaultTransportInsecureWithHostAndProxy = RoundTripperWithTarget(DefaultTransportInsecureWithProxy)

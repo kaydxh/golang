@@ -24,18 +24,15 @@ package http
 import (
 	"bytes"
 	"context"
-	"crypto/tls"
 	"fmt"
 	"io"
 	"io/ioutil"
 	"log"
 	"net"
 	"net/http"
-	"net/url"
 	"time"
 
 	"github.com/gin-gonic/gin/binding"
-	"github.com/sirupsen/logrus"
 )
 
 type Client struct {
@@ -74,10 +71,13 @@ type Client struct {
 		// If Proxy is nil or returns a nil *URL, no proxy is used.
 		//proxy func(*http.Request) (*url.URL, error)
 		// like forward proxy
-		proxy string
+		proxyURL string
 
-		// proxyTarget is host:port, redirct to it, like reverse proxy
-		proxyTarget string
+		// proxyHost is host:port, or domain, replace host in proxy
+		proxyHost string
+
+		// targetHost is host:port, redirct to it, like reverse proxy
+		targetHost string
 
 		ErrorLog *log.Logger
 	}
@@ -86,35 +86,37 @@ type Client struct {
 func NewClient(options ...ClientOption) (*Client, error) {
 	c := &Client{}
 	c.ApplyOptions(options...)
-	//	var transport *http.Transport = http.DefaultTransport
-	transport := &http.Transport{
+	transport := DefaultTransportInsecure
+	/*
+		transport := &http.Transport{
 
-		// ProxyFromEnvironment returns the URL of the proxy to use for a
-		// given request, as indicated by the environment variables
-		// HTTP_PROXY, HTTPS_PROXY and NO_PROXY (or the lowercase versions
-		// thereof). HTTPS_PROXY takes precedence over HTTP_PROXY for https
-		// requests.
-		//
-		// The environment values may be either a complete URL or a
-		// "host[:port]", in which case the "http" scheme is assumed.
-		// The schemes "http", "https", and "socks5" are supported.
-		// An error is returned if the value is a different form.
-		//
-		// A nil URL and nil error are returned if no proxy is defined in the
-		// environment, or a proxy should not be used for the given request,
-		// as defined by NO_PROXY.
-		//
-		// As a special case, if req.URL.Host is "localhost" (with or without
-		// a port number), then a nil URL and nil error will be returned.
-		Proxy: http.ProxyFromEnvironment,
-		// skip verify for https
-		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
-	}
+			// ProxyFromEnvironment returns the URL of the proxy to use for a
+			// given request, as indicated by the environment variables
+			// HTTP_PROXY, HTTPS_PROXY and NO_PROXY (or the lowercase versions
+			// thereof). HTTPS_PROXY takes precedence over HTTP_PROXY for https
+			// requests.
+			//
+			// The environment values may be either a complete URL or a
+			// "host[:port]", in which case the "http" scheme is assumed.
+			// The schemes "http", "https", and "socks5" are supported.
+			// An error is returned if the value is a different form.
+			//
+			// A nil URL and nil error are returned if no proxy is defined in the
+			// environment, or a proxy should not be used for the given request,
+			// as defined by NO_PROXY.
+			//
+			// As a special case, if req.URL.Host is "localhost" (with or without
+			// a port number), then a nil URL and nil error will be returned.
+			Proxy: http.ProxyFromEnvironment,
+			// skip verify for https
+			TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+		}
+	*/
 	if c.opts.timeout != 0 {
 		c.Client.Timeout = c.opts.timeout
 	}
 	if c.opts.dialTimeout != 0 {
-		transport.Dial = func(network, addr string) (net.Conn, error) {
+		transport.DialContext = func(ctx context.Context, network, addr string) (net.Conn, error) {
 			conn, err := net.DialTimeout(
 				network,
 				addr,
@@ -139,16 +141,43 @@ func NewClient(options ...ClientOption) (*Client, error) {
 	if c.opts.disableKeepAlives {
 		transport.DisableKeepAlives = c.opts.disableKeepAlives
 	}
-	if len(c.opts.proxy) > 0 {
-		proxyURL, err := url.Parse(c.opts.proxy)
-		if err != nil {
-			logrus.WithError(err).Errorf("proxy URL %s is not valid", c.opts.proxy)
-			return nil, err
+	if len(c.opts.proxyURL) > 0 {
+		//c.Transport.Proxy = ProxyFuncFromContextOrEnvironment
+
+		//RequestWithProxyTarget(
+
+		/*
+			proxyURL, err := url.Parse(c.opts.proxy)
+			if err != nil {
+				logrus.WithError(err).Errorf("proxy URL %s is not valid", c.opts.proxy)
+				return nil, err
+			}
+
+			transport.Proxy = http.ProxyURL(proxyURL)
+		*/
+	}
+	c.Transport = RoundTripFunc(func(req *http.Request) (resp *http.Response, err error) {
+		if c.opts.proxyURL != "" || c.opts.proxyHost != "" {
+			transport.Proxy = ProxyFuncFromContextOrEnvironment
+			proxy := &Proxy{
+				ProxyUrl:    c.opts.proxyURL,
+				ProxyTarget: c.opts.proxyHost,
+			}
+			req = RequestWithContextProxy(req, proxy)
 		}
 
-		transport.Proxy = http.ProxyURL(proxyURL)
-	}
-	c.Transport = transport
+		if c.opts.targetHost != "" {
+			host := &Host{
+				HostTarget:           c.opts.targetHost,
+				ReplaceHostInRequest: true,
+			}
+			req = RequestWithContextTargetHost(req, host)
+		}
+
+		return RoundTripperWithTarget(transport).RoundTrip(req)
+
+	})
+	//	RoundTripperWithTarget(transport)
 
 	return c, nil
 }

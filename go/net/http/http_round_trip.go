@@ -1,5 +1,5 @@
 /*
- *Copyright (c) 2022, kaydxh
+ *Copyright (c) 2023, kaydxh
  *
  *Permission is hereby granted, free of charge, to any person obtaining a copy
  *of this software and associated documentation files (the "Software"), to deal
@@ -21,29 +21,10 @@
  */
 package http
 
-import (
-	"net/http"
+import "net/http"
 
-	url_ "github.com/kaydxh/golang/go/net/url"
-)
+type RoundTripFunc func(req *http.Request) (resp *http.Response, err error)
 
-func RequestWithTargetHost(req *http.Request, target string) error {
-	if target == "" {
-		return nil
-	}
-
-	newUrl, err := url_.ResolveWithTarget(req.Context(), req.URL, target)
-	if err != nil {
-		return err
-	}
-	req.URL = newUrl
-	req.Host = newUrl.Host
-
-	return nil
-}
-
-func NewClientWithTargetHost(target string, opts ...ClientOption) *Client {
-	opts = append(opts, WithTargetHost(target))
-	c, _ := NewClient(opts...)
-	return c
+func (f RoundTripFunc) RoundTrip(req *http.Request) (resp *http.Response, err error) {
+	return f(req)
 }

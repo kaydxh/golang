@@ -1,5 +1,5 @@
 /*
- *Copyright (c) 2022, kaydxh
+ *Copyright (c) 2023, kaydxh
  *
  *Permission is hereby granted, free of charge, to any person obtaining a copy
  *of this software and associated documentation files (the "Software"), to deal
@@ -22,28 +22,42 @@
 package http
 
 import (
-	"net/http"
+	"context"
+	"fmt"
+	"net/url"
 
-	url_ "github.com/kaydxh/golang/go/net/url"
+	"github.com/kaydxh/golang/go/net/resolver"
 )
 
-func RequestWithTargetHost(req *http.Request, target string) error {
-	if target == "" {
-		return nil
-	}
+type hostContextKey struct{}
 
-	newUrl, err := url_.ResolveWithTarget(req.Context(), req.URL, target)
-	if err != nil {
-		return err
-	}
-	req.URL = newUrl
-	req.Host = newUrl.Host
+type Host struct {
+	HostTarget           string
+	ReplaceHostInRequest bool
 
-	return nil
+	HostTargetAddrResolved resolver.Address
 }
 
-func NewClientWithTargetHost(target string, opts ...ClientOption) *Client {
-	opts = append(opts, WithTargetHost(target))
-	c, _ := NewClient(opts...)
-	return c
+func FromContextHost(ctx context.Context) *Host {
+	host, _ := ctx.Value(hostContextKey{}).(*Host)
+	return host
+}
+
+func WithContextHost(ctx context.Context, host *Host) context.Context {
+	if host == nil {
+		panic("nil host")
+	}
+	return context.WithValue(ctx, hostContextKey{}, host)
+}
+
+func ParseTargetUrl(host string) (*url.URL, error) {
+	if host == "" {
+		return nil, nil
+	}
+
+	hostURL, err := url.Parse(host)
+	if err != nil {
+		return nil, fmt.Errorf("invalid host address %q: %v", host, err)
+	}
+	return hostURL, nil
 }
