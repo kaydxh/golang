@@ -46,7 +46,7 @@ func ProxyFuncFromContextOrEnvironment(req *http.Request) (*url.URL, error) {
 		return http.ProxyFromEnvironment(req)
 	}
 	defer func() {
-		logger.Infof("http request proxy: %v\n", proxy)
+		logger.Infof("http request proxy: %v", proxy)
 	}()
 
 	proxyUrl, err := ParseProxyUrl(proxy.ProxyUrl)

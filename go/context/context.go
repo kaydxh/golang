@@ -84,6 +84,10 @@ func SetPairContext(ctx context.Context, key, value string) context.Context {
 	return context.WithValue(ctx, key, value)
 }
 
+func WithContextRequestId(ctx context.Context, id string) context.Context {
+	return context.WithValue(ctx, DefaultHTTPRequestIDKey, id)
+}
+
 func ExtractRequestIDFromContext(ctx context.Context) string {
 
 	if v, ok := ctx.Value(DefaultHTTPRequestIDKey).(string); ok {

@@ -26,6 +26,8 @@ import (
 	"io"
 	"net/http"
 
+	time_ "github.com/kaydxh/golang/go/time"
+
 	logs_ "github.com/kaydxh/golang/pkg/logs"
 )
 
@@ -81,8 +83,14 @@ func (c *Client) Do(ctx context.Context, req *http.Request) (*http.Response, err
 		}
 	*/
 
+	tc := time_.New(true)
 	logger := logs_.GetLogger(ctx)
 	logger.WithField("target_addr", req.Host).Infof("http do %v", req.URL.Path)
+	summary := func() {
+		tc.Tick(req.Method)
+		logger.WithField("method", req.Method).Infof(tc.String())
+	}
+	defer summary()
 
 	return c.Client.Do(req)
 }
