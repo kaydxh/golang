@@ -69,7 +69,7 @@ func RoundTripperWithTarget(rt http.RoundTripper) http.RoundTripper {
 
 		logger := logs_.GetLogger(req.Context())
 		defer func() {
-			logger.Infof("http request host: %v\n", req.Host)
+			logger.Infof("http request host: %v", req.Host)
 		}()
 		err = TargetHostFuncFromContext(req)
 		if err != nil {

@@ -28,7 +28,7 @@ import (
 
 	http_ "github.com/kaydxh/golang/go/net/http"
 	time_ "github.com/kaydxh/golang/go/time"
-	"github.com/sirupsen/logrus"
+	logs_ "github.com/kaydxh/golang/pkg/logs"
 	"go.opentelemetry.io/otel"
 )
 
@@ -79,7 +79,8 @@ func (f *FileTransfer) Download(ctx context.Context, downloadUrl string) (data [
 	ctx, span := otel.Tracer("").Start(ctx, spanName)
 	defer span.End()
 
-	logger := logrus.WithField("trace_id", span.SpanContext().TraceID()).WithField("span_id", span.SpanContext().SpanID()).WithField("download_url", downloadUrl)
+	logger := logs_.GetLogger(ctx)
+	logger = logger.WithField("trace_id", span.SpanContext().TraceID()).WithField("span_id", span.SpanContext().SpanID()).WithField("download_url", downloadUrl)
 
 	proxy := f.getProxy()
 
@@ -122,7 +123,8 @@ func (f *FileTransfer) Upload(ctx context.Context, uploadUrl string, body []byte
 	ctx, span := otel.Tracer("").Start(ctx, spanName)
 	defer span.End()
 
-	logger := logrus.WithField("trace_id", span.SpanContext().TraceID()).WithField("span_id", span.SpanContext().SpanID()).WithField("upload_url", uploadUrl)
+	logger := logs_.GetLogger(ctx)
+	logger = logger.WithField("trace_id", span.SpanContext().TraceID()).WithField("span_id", span.SpanContext().SpanID()).WithField("upload_url", uploadUrl)
 
 	proxy := f.getProxy()
 
