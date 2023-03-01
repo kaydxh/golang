@@ -25,7 +25,6 @@ import (
 	"context"
 	"fmt"
 	"testing"
-	"time"
 )
 
 func TestDeletePrefixKeys(t *testing.T) {
@@ -33,40 +32,69 @@ func TestDeletePrefixKeys(t *testing.T) {
 
 	testCases := []struct {
 		KeyPrefix string
+		// 是否有过期时间
+		ttl           bool
+		printInterval int64
+		dump          bool
 	}{
 		{
-			KeyPrefix: "zset",
+			KeyPrefix:     "test-",
+			ttl:           false,
+			printInterval: 500,
+			dump:          true,
 		},
 	}
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-	defer cancel()
+	ctx := context.Background()
+	//ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	//defer cancel()
 
+	var count int64
 	for _, testCase := range testCases {
-		iter := db.Scan(ctx, 0, fmt.Sprintf("%s:*", testCase.KeyPrefix), 0).Iterator()
+		iter := db.Scan(ctx, 0, fmt.Sprintf("%s*", testCase.KeyPrefix), 0).Iterator()
 		for iter.Next(ctx) {
 			key := iter.Val()
 			value, err := db.Get(ctx, key).Result()
 			if err != nil {
 				t.Fatalf("failed to get key[%v], err: %v", key, err)
 			}
-			t.Logf("get key[%v] value[%v]", key, value)
+			if testCase.dump {
+				dumpVal, err := db.Dump(ctx, key).Result()
+				if err != nil {
+					t.Fatalf("failed to Dump, err: %v", err)
+				}
+				t.Logf("key[%v], dumpValue[%v], value[%v]", key, dumpVal, value)
+			}
+
+			//t.Logf("get key[%v] value[%v]", key, value)
 
 			//todo delete
-			d, err := db.TTL(ctx, key).Result()
-			if err != nil {
-				t.Fatalf("failed to get key[%v], err: %v", key, err)
+			if testCase.ttl {
+				d, err := db.TTL(ctx, key).Result()
+				if err != nil {
+					t.Fatalf("failed to get key[%v], err: %v", key, err)
+				}
+				if d == -1 { // -1 means no TTL
+					count++
+					//t.Logf("no ttl key[%v]", key)
+					/*
+						if err := db.Del(ctx, key).Err(); err != nil {
+							t.Fatalf("failed to delete key[%v], err: %v", key, err)
+						}
+					*/
+				}
+
+			} else {
+				count++
 			}
-			if d == -1 { // -1 means no TTL
-				t.Logf("no ttl key[%v]", key)
-				/*
-					if err := db.Del(ctx, key).Err(); err != nil {
-						t.Fatalf("failed to delete key[%v], err: %v", key, err)
-					}
-				*/
+
+			if count%testCase.printInterval == 0 {
+				t.Logf("delete key number: %v ...", count)
 			}
 		}
 		if err := iter.Err(); err != nil {
 			t.Fatalf("failed to iter err: %v", err)
 		}
 	}
+	t.Logf("delete all key number: %v", count)
+
 }
