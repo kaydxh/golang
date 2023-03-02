@@ -27,21 +27,31 @@ import (
 	"testing"
 )
 
+//go test -v --count=1 --test.timeout=0  -test.run  TestDeletePrefixKeys
 func TestDeletePrefixKeys(t *testing.T) {
 	db := GetDBOrDie()
 
 	testCases := []struct {
 		KeyPrefix string
 		// 是否有过期时间
-		ttl   bool
-		batch int64
-		dump  bool
+		ttl        bool
+		batch      int64
+		deleteKeys bool
+		dump       bool
 	}{
 		{
-			KeyPrefix: "test-",
-			ttl:       false,
-			batch:     500,
-			dump:      true,
+			KeyPrefix:  "test-",
+			ttl:        false,
+			batch:      500,
+			deleteKeys: false,
+			dump:       false,
+		},
+		{
+			KeyPrefix:  "test",
+			ttl:        false,
+			batch:      500,
+			deleteKeys: false,
+			dump:       false,
 		},
 	}
 	ctx := context.Background()
@@ -51,77 +61,84 @@ func TestDeletePrefixKeys(t *testing.T) {
 	var count int64
 	var deletedKeys []string
 	for _, testCase := range testCases {
-		iter := db.Scan(ctx, 0, fmt.Sprintf("%s*", testCase.KeyPrefix), 0).Iterator()
-		if err != nil {
-			t.Fatalf("failed to scan key[%v], err: %v", testCase.KeyPrefix, err)
-		}
-
-		for iter.Next(ctx) {
-			key := iter.Val()
-			/*
-				tp, err := db.Type(ctx, key).Result()
-				if err != nil {
-					t.Errorf("failed to type key[%v], err: %v", key, err)
-					continue
-				}
-
-				switch tp {
-				case redis_.TypeString:
-
-				}
-			*/
-			/*
-				value, err := db.Get(ctx, key).Result()
-				if err != nil {
-					t.Fatalf("failed to get key[%v], err: %v", key, err)
-				}
-			*/
-			if testCase.dump {
-				dumpVal, err := db.Dump(ctx, key).Result()
-				if err != nil {
-					t.Fatalf("failed to Dump, err: %v", err)
-				}
-				//t.Logf("key[%v], dumpValue[%v], value[%v]", key, dumpVal, value)
-				t.Logf("key[%v], dumpValue[%v]", key, dumpVal)
+		t.Run(fmt.Sprintf("case-[%+v]", testCase), func(t *testing.T) {
+			iter := db.Scan(ctx, 0, fmt.Sprintf("%s*", testCase.KeyPrefix), 0).Iterator()
+			if err != nil {
+				t.Fatalf("failed to scan key[%v], err: %v", testCase.KeyPrefix, err)
 			}
-			//t.Logf("get key[%v] value[%v]", key, value)
 
-			//todo delete
-			if testCase.ttl {
-				d, err := db.TTL(ctx, key).Result()
-				if err != nil {
-					t.Fatalf("failed to get key[%v], err: %v", key, err)
+			for iter.Next(ctx) {
+				key := iter.Val()
+				/*
+					tp, err := db.Type(ctx, key).Result()
+					if err != nil {
+						t.Errorf("failed to type key[%v], err: %v", key, err)
+						continue
+					}
+
+					switch tp {
+					case redis_.TypeString:
+
+					}
+				*/
+				/*
+					value, err := db.Get(ctx, key).Result()
+					if err != nil {
+						t.Fatalf("failed to get key[%v], err: %v", key, err)
+					}
+				*/
+				if testCase.dump {
+					dumpVal, err := db.Dump(ctx, key).Result()
+					if err != nil {
+						t.Fatalf("failed to Dump, err: %v", err)
+					}
+					//t.Logf("key[%v], dumpValue[%v], value[%v]", key, dumpVal, value)
+					t.Logf("key[%v], dumpValue[%v]", key, dumpVal)
 				}
-				if d == -1 { // -1 means no TTL
-					deletedKeys = append(deletedKeys, key)
+				//t.Logf("get key[%v] value[%v]", key, value)
+
+				//todo delete
+				if testCase.ttl {
+					d, err := db.TTL(ctx, key).Result()
+					if err != nil {
+						t.Fatalf("failed to get key[%v], err: %v", key, err)
+					}
+					if d == -1 { // -1 means no TTL
+						deletedKeys = append(deletedKeys, key)
+						count++
+					}
+
+				} else {
 					count++
+					deletedKeys = append(deletedKeys, key)
 				}
 
-			} else {
-				count++
-				deletedKeys = append(deletedKeys, key)
+				if count%testCase.batch == 0 {
+					if testCase.deleteKeys {
+						if err := db.Del(ctx, deletedKeys...).Err(); err != nil {
+							t.Fatalf("failed to delete keys[%v], err: %v", key, err)
+						}
+					}
+					deletedKeys = nil
+					t.Logf("key number: %v ...", count)
+				}
+			}
+			if err := iter.Err(); err != nil {
+				t.Fatalf("failed to iter err: %v", err)
 			}
 
-			if count%testCase.batch == 0 {
-				if err := db.Del(ctx, deletedKeys...).Err(); err != nil {
-					t.Fatalf("failed to delete keys[%v], err: %v", key, err)
+			if len(deletedKeys) > 0 {
+				if testCase.deleteKeys {
+					if err := db.Del(ctx, deletedKeys...).Err(); err != nil {
+						t.Fatalf("failed to delete keys[%v], err: %v", deletedKeys, err)
+					}
 				}
 				deletedKeys = nil
-				t.Logf("delete key number: %v ...", count)
+				t.Logf("key number: %v ...", count)
 			}
-		}
-		if err := iter.Err(); err != nil {
-			t.Fatalf("failed to iter err: %v", err)
-		}
 
+		})
 	}
-	if len(deletedKeys) > 0 {
-		if err := db.Del(ctx, deletedKeys...).Err(); err != nil {
-			t.Fatalf("failed to delete keys[%v], err: %v", deletedKeys, err)
-		}
-		deletedKeys = nil
-		t.Logf("delete key number: %v ...", count)
-	}
-	t.Logf("delete all key number: %v", count)
+	t.Logf("all key number: %v", count)
 
 }
