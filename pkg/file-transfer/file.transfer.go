@@ -98,7 +98,7 @@ func (f *FileTransfer) Download(ctx context.Context, downloadUrl string) (data [
 	}
 	opts = append(opts, http_.WithTimeout(f.opts.downloadTimeout))
 
-	time_.RetryWithContext(ctx, func(ctx context.Context) error {
+	err = time_.RetryWithContext(ctx, func(ctx context.Context) error {
 		client, err := http_.NewClient(opts...)
 		if err != nil {
 			logger.WithError(err).Errorf("new http client err: %v", err)
@@ -114,7 +114,7 @@ func (f *FileTransfer) Download(ctx context.Context, downloadUrl string) (data [
 
 	}, f.opts.retryInterval, f.opts.retryTimes)
 
-	return data, nil
+	return data, err
 }
 
 // short connection
@@ -142,7 +142,7 @@ func (f *FileTransfer) Upload(ctx context.Context, uploadUrl string, body []byte
 	}
 	opts = append(opts, http_.WithTimeout(f.opts.uploadTimeout))
 
-	time_.RetryWithContext(ctx, func(ctx context.Context) error {
+	err = time_.RetryWithContext(ctx, func(ctx context.Context) error {
 		client, err := http_.NewClient(opts...)
 		if err != nil {
 			logger.WithError(err).Errorf("new http client err: %v", err)
@@ -157,5 +157,5 @@ func (f *FileTransfer) Upload(ctx context.Context, uploadUrl string, body []byte
 
 	}, f.opts.retryInterval, f.opts.retryTimes)
 
-	return data, nil
+	return data, err
 }
