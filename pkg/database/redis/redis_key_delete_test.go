@@ -23,35 +23,36 @@ package redis_test
 
 import (
 	"context"
+	"flag"
 	"fmt"
 	"testing"
 )
 
+var (
+	keyPrefix  = flag.String("keyPrefix", "_JOB_SERVICE", "key prefix")
+	deleteKeys = flag.Bool("deleteKeys", false, "delete keys")
+)
+
+// GOOS=linux  GOARCH=amd64 go test  -c redis_key_delete_test.go redis_string_test.go
 //go test -v --count=1 --test.timeout=0  -test.run  TestDeletePrefixKeys
+//go test -v --count=1 --test.timeout=0  -test.run  TestDeletePrefixKeys -keyPrefix="test-" -deleteKeys=true
 func TestDeletePrefixKeys(t *testing.T) {
 	db := GetDBOrDie()
 
 	testCases := []struct {
-		KeyPrefix string
+		//	KeyPrefix string
 		// 是否有过期时间
-		ttl        bool
-		batch      int64
-		deleteKeys bool
-		dump       bool
+		ttl   bool
+		batch int64
+		//	deleteKeys bool
+		dump bool
 	}{
 		{
-			KeyPrefix:  "test-",
-			ttl:        false,
-			batch:      500,
-			deleteKeys: false,
-			dump:       false,
-		},
-		{
-			KeyPrefix:  "test",
-			ttl:        false,
-			batch:      500,
-			deleteKeys: false,
-			dump:       false,
+			//		KeyPrefix:  "_JOB_SERVICE",
+			ttl:   false,
+			batch: 500,
+			//		deleteKeys: false,
+			dump: false,
 		},
 	}
 	ctx := context.Background()
@@ -61,10 +62,10 @@ func TestDeletePrefixKeys(t *testing.T) {
 	var count int64
 	var deletedKeys []string
 	for _, testCase := range testCases {
-		t.Run(fmt.Sprintf("case-[%+v]", testCase), func(t *testing.T) {
-			iter := db.Scan(ctx, 0, fmt.Sprintf("%s*", testCase.KeyPrefix), 0).Iterator()
+		t.Run(fmt.Sprintf("case-keyPrefix[%v]-deleteKeys[%v]", *keyPrefix, *deleteKeys), func(t *testing.T) {
+			iter := db.Scan(ctx, 0, fmt.Sprintf("%s*", *keyPrefix), 0).Iterator()
 			if err != nil {
-				t.Fatalf("failed to scan key[%v], err: %v", testCase.KeyPrefix, err)
+				t.Fatalf("failed to scan key[%v], err: %v", *keyPrefix, err)
 			}
 
 			for iter.Next(ctx) {
@@ -114,7 +115,7 @@ func TestDeletePrefixKeys(t *testing.T) {
 				}
 
 				if count%testCase.batch == 0 {
-					if testCase.deleteKeys {
+					if *deleteKeys {
 						if err := db.Del(ctx, deletedKeys...).Err(); err != nil {
 							t.Fatalf("failed to delete keys[%v], err: %v", key, err)
 						}
@@ -128,7 +129,7 @@ func TestDeletePrefixKeys(t *testing.T) {
 			}
 
 			if len(deletedKeys) > 0 {
-				if testCase.deleteKeys {
+				if *deleteKeys {
 					if err := db.Del(ctx, deletedKeys...).Err(); err != nil {
 						t.Fatalf("failed to delete keys[%v], err: %v", deletedKeys, err)
 					}

@@ -27,6 +27,15 @@ import (
 	"github.com/go-redis/redis/v8"
 )
 
+const (
+	TypeString = "string"
+	TypeHash   = "hash"
+	TypeList   = "list"
+	TypeSet    = "set"
+	TypeZSet   = "zset"
+	TypeOther  = "other"
+)
+
 type RedisDB atomic.Value
 
 //check type RedisDB* whether to implement interface of atomic.Value
