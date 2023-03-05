@@ -23,7 +23,6 @@ package task
 
 import (
 	"context"
-	"fmt"
 	"sync"
 
 	errors_ "github.com/kaydxh/golang/go/errors"
@@ -87,7 +86,6 @@ func (w *Worker) Work(
 			case <-ctx.Done():
 				//  err: context canceled
 				w.TrySetError(ctx.Err())
-				fmt.Println("===cancel")
 				return
 			}
 
