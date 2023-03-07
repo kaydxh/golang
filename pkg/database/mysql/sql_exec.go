@@ -57,7 +57,7 @@ func ExecContext(
 	arg interface{},
 	tx *sqlx.Tx,
 	db *sqlx.DB,
-) (err error) {
+) (rows int64, err error) {
 	tc := time_.New(true)
 	caller := runtime_.GetShortCaller()
 	logger := logrus.WithField("caller", caller)
@@ -73,16 +73,16 @@ func ExecContext(
 
 	result, err := NamedExecContext(ctx, query, arg, tx, db)
 	if err != nil {
-		return err
+		return 0, err
 	}
 
-	rows, err := result.RowsAffected()
+	rows, err = result.RowsAffected()
 	if err != nil {
-		return err
+		return 0, err
 	}
 	logger.Infof("affected rows: %v", rows)
 
-	return nil
+	return rows, nil
 }
 
 // pointer struct model for dest
