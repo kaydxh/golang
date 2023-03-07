@@ -126,7 +126,9 @@ func BackOffUntilWithContext(
 			t, expired = backoff.NextBackOff()
 		}
 		if !expired {
-			return fmt.Errorf("got max wait time or max count")
+			return errors_.Errore(
+				fmt.Errorf("got max wait time or max count"),
+				err)
 		}
 
 		remain = t - tc.Elapse()
