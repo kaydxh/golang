@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package go.pkg.mq.kafka;
+
+import "google/protobuf/duration.proto";
+
+option go_package = "github.com/kaydxh/golang/pkg/mq/kafka;kafka";
+
+// https://github.com/confluentinc/librdkafka/blob/master/CONFIGURATION.md
+message Kafka {
+  bool enabled = 1;
+  string brokers = 2;
+  bool api_version_request = 3;
+  google.protobuf.Duration reconnect_backoff = 4;
+  google.protobuf.Duration reconnect_backoff_max = 5;
+
+  message Consumer {}
+
+  message Producer {}
+}
