@@ -8,7 +8,7 @@ import (
 )
 
 type Producer struct {
-	writer    *kafka.Writer
+	*kafka.Writer
 	config    kafka.WriterConfig
 	topic     string
 	closeOnce sync.Once
@@ -20,12 +20,12 @@ func NewProducer(config kafka.WriterConfig) (*Producer, error) {
 		config: config,
 	}
 	w := kafka.NewWriter(config)
-	p.writer = w
+	p.Writer = w
 	return p, nil
 }
 
-func (p *Producer) Send(ctx context.Context, msg kafka.Message) error {
-	return p.writer.WriteMessages(ctx, msg)
+func (p *Producer) Send(ctx context.Context, msgs ...kafka.Message) error {
+	return p.Writer.WriteMessages(ctx, msgs...)
 }
 
 func (p *Producer) Close() {
