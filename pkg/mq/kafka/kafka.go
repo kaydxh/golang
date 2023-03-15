@@ -30,9 +30,49 @@ type MQOptions struct {
 }
 
 type ProducerOptions struct {
+	// The default is to use a target batch size of 100 messages.
+	BatchSize int
+
+	// Limit the maximum size of a request in bytes before being
+	// sent to
+	// a partition.
+	//
+	// The default is to use a kafka default value of
+	// 1048576.
+	BatchBytes int
+
+	// Time limit on how often incomplete message batches will be
+	// flushed to
+	// kafka.
+	//
+	// The default is to flush at least every second.
+	BatchTimeout time.Duration
 }
 
 type ConsumerOptions struct {
+	groupID   string
+	partition int
+
+	// MinBytes indicates to the broker the minimum batch size that the consumer
+	// will accept. Setting a high minimum when consuming from a low-volume topic
+	// may result in delayed delivery when the broker does not have enough data to
+	// satisfy the defined minimum.
+	//
+	// Default: 1
+	MinBytes int
+
+	// MaxBytes indicates to the broker the maximum batch size that the consumer
+	// will accept. The broker will truncate a message to satisfy this maximum, so
+	// choose a value that is high enough for your largest message size.
+	//
+	// Default: 1MB
+	MaxBytes int
+
+	// Maximum amount of time to wait for new data to come when fetching batches
+	// of messages from kafka.
+	//
+	// Default: 10s
+	MaxWait time.Duration
 }
 
 type MQ struct {
@@ -47,7 +87,7 @@ type MQ struct {
 	opts MQOptions
 }
 
-func NewMQ(conf MQConfig, opts ...MQOption) (*MQ, error) {
+func NewMQ(conf MQConfig, opts ...MQOption) *MQ {
 	c := &MQ{
 		Conf:      conf,
 		producers: make(map[string]*Producer),
@@ -55,19 +95,23 @@ func NewMQ(conf MQConfig, opts ...MQOption) (*MQ, error) {
 	}
 	c.ApplyOptions(opts...)
 
-	var errs []error
+	return c
 
-	for _, broker := range conf.Brokers {
-		conn, err := newController(broker)
-		if err != nil {
-			errs = append(errs, err)
-			continue
+	/*
+		var errs []error
+
+		for _, broker := range conf.Brokers {
+			conn, err := newController(broker)
+			if err != nil {
+				errs = append(errs, err)
+				continue
+			}
+			c.Conn = conn
+			break
 		}
-		c.Conn = conn
-		break
-	}
 
-	return c, errors_.NewAggregate(errs)
+		return c, errors_.NewAggregate(errs)
+	*/
 
 }
 
@@ -88,6 +132,40 @@ func newController(broker string) (*kafka.Conn, error) {
 	}
 
 	return controllerConn, nil
+}
+
+func (q *MQ) InstallMQ(
+	ctx context.Context,
+	maxWaitInterval time.Duration,
+	failAfter time.Duration,
+) (*MQ, error) {
+	exp := time_.NewExponentialBackOff(
+		time_.WithExponentialBackOffOptionMaxInterval(maxWaitInterval),
+		time_.WithExponentialBackOffOptionMaxElapsedTime(failAfter),
+	)
+
+	var (
+		errs []error
+		conn *kafka.Conn
+	)
+	err := time_.BackOffUntilWithContext(ctx, func(ctx context.Context) (err_ error) {
+		for _, broker := range q.Conf.Brokers {
+			conn, err_ = newController(broker)
+			if err_ != nil {
+				errs = append(errs, err_)
+				continue
+			}
+			return nil
+		}
+		return fmt.Errorf("failed to connect kafka: %v, err: %v", q.Conf.Brokers, errors_.NewAggregate(errs))
+	}, exp, true, false)
+	if err != nil {
+		return nil, fmt.Errorf("get kafka connection fail after: %v", failAfter)
+	}
+
+	q.Conn = conn
+
+	return q, nil
 }
 
 func (q *MQ) AsProducers(ctx context.Context, topics ...string) error {
