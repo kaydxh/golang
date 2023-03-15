@@ -17,7 +17,8 @@ type Producer struct {
 
 func NewProducer(config kafka.WriterConfig) (*Producer, error) {
 	p := &Producer{
-		config: config,
+		config:  config,
+		closeCh: make(chan struct{}),
 	}
 	w := kafka.NewWriter(config)
 	p.Writer = w
@@ -30,6 +31,8 @@ func (p *Producer) Send(ctx context.Context, msgs ...kafka.Message) error {
 
 func (p *Producer) Close() {
 	p.closeOnce.Do(func() {
-		close(p.closeCh)
+		if p.closeCh != nil {
+			close(p.closeCh)
+		}
 	})
 }

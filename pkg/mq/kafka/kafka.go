@@ -76,6 +76,8 @@ func newController(broker string) (*kafka.Conn, error) {
 	if err != nil {
 		return nil, err
 	}
+	defer conn.Close()
+
 	controller, err := conn.Controller()
 	if err != nil {
 		return nil, err
@@ -88,7 +90,7 @@ func newController(broker string) (*kafka.Conn, error) {
 	return controllerConn, nil
 }
 
-func (q *MQ) AsProducers(ctx context.Context, topics []string) error {
+func (q *MQ) AsProducers(ctx context.Context, topics ...string) error {
 	for _, topic := range topics {
 
 		fn := func() error {
@@ -144,7 +146,16 @@ func (q *MQ) GetProducer(topic string) (*Producer, error) {
 	return nil, fmt.Errorf("not exist producer %v", topic)
 }
 
-func (q *MQ) AsConsumers(ctx context.Context, topics []string) error {
+func (q *MQ) Send(ctx context.Context, topic string, msgs ...kafka.Message) error {
+	p, err := q.GetProducer(topic)
+	if err != nil {
+		return err
+	}
+
+	return p.Send(ctx, msgs...)
+}
+
+func (q *MQ) AsConsumers(ctx context.Context, topics ...string) error {
 	for _, topic := range topics {
 
 		checkFn := func() bool {
@@ -216,4 +227,26 @@ func (q *MQ) GetConsumer(topic string) (*Consumer, error) {
 	}
 
 	return nil, fmt.Errorf("not exist consumer %v", topic)
+}
+
+func (q *MQ) ReadStream(ctx context.Context, topic string) <-chan kafka.Message {
+	c, err := q.GetConsumer(topic)
+	if err != nil {
+		return nil
+	}
+
+	return c.ReadStream(ctx)
+}
+
+func (q *MQ) Close() {
+	if q.Conn != nil {
+		q.Conn.Close()
+	}
+
+	for _, producer := range q.producers {
+		producer.Close()
+	}
+	for _, consumer := range q.consumers {
+		consumer.Close()
+	}
 }
