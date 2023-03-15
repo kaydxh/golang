@@ -63,6 +63,8 @@ func (c *Consumer) ReadStream(ctx context.Context) <-chan kafka.Message {
 
 func (c *Consumer) Close() {
 	c.closeOnce.Do(func() {
-		close(c.closeCh)
+		if c.closeCh != nil {
+			close(c.closeCh)
+		}
 	})
 }
