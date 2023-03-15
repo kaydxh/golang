@@ -9,10 +9,12 @@ option go_package = "github.com/kaydxh/golang/pkg/mq/kafka;kafka";
 // https://github.com/confluentinc/librdkafka/blob/master/CONFIGURATION.md
 message Kafka {
   bool enabled = 1;
-  string brokers = 2;
+  repeated string brokers = 2;
   bool api_version_request = 3;
   google.protobuf.Duration reconnect_backoff = 4;
   google.protobuf.Duration reconnect_backoff_max = 5;
+  google.protobuf.Duration max_wait_duration = 6;
+  google.protobuf.Duration fail_after_duration = 7;
 
   message Consumer {}
 
