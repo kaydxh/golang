@@ -31,7 +31,7 @@ type MQOptions struct {
 
 type ProducerOptions struct {
 	// The default is to use a target batch size of 100 messages.
-	BatchSize int
+	batchSize int
 
 	// Limit the maximum size of a request in bytes before being
 	// sent to
@@ -39,14 +39,14 @@ type ProducerOptions struct {
 	//
 	// The default is to use a kafka default value of
 	// 1048576.
-	BatchBytes int
+	batchBytes int
 
 	// Time limit on how often incomplete message batches will be
 	// flushed to
 	// kafka.
 	//
 	// The default is to flush at least every second.
-	BatchTimeout time.Duration
+	batchTimeout time.Duration
 }
 
 type ConsumerOptions struct {
@@ -59,20 +59,20 @@ type ConsumerOptions struct {
 	// satisfy the defined minimum.
 	//
 	// Default: 1
-	MinBytes int
+	minBytes int
 
 	// MaxBytes indicates to the broker the maximum batch size that the consumer
 	// will accept. The broker will truncate a message to satisfy this maximum, so
 	// choose a value that is high enough for your largest message size.
 	//
 	// Default: 1MB
-	MaxBytes int
+	maxBytes int
 
 	// Maximum amount of time to wait for new data to come when fetching batches
 	// of messages from kafka.
 	//
 	// Default: 10s
-	MaxWait time.Duration
+	maxWait time.Duration
 }
 
 type MQ struct {
@@ -96,22 +96,6 @@ func NewMQ(conf MQConfig, opts ...MQOption) *MQ {
 	c.ApplyOptions(opts...)
 
 	return c
-
-	/*
-		var errs []error
-
-		for _, broker := range conf.Brokers {
-			conn, err := newController(broker)
-			if err != nil {
-				errs = append(errs, err)
-				continue
-			}
-			c.Conn = conn
-			break
-		}
-
-		return c, errors_.NewAggregate(errs)
-	*/
 
 }
 
@@ -258,12 +242,13 @@ func (q *MQ) AsConsumers(ctx context.Context, topics ...string) error {
 				DualStack: true,
 			}
 			consumer, err := NewConsumer(kafka.ReaderConfig{
-				Brokers: q.Conf.Brokers,
-				//GroupID: "",
-				Topic:  topic,
-				Dialer: dialer,
-				//	MinBytes:       10e3,        // 10KB
-				//	MaxBytes:       10e6,        // 10MB
+				Brokers:  q.Conf.Brokers,
+				GroupID:  q.opts.consumerOpts.groupID,
+				Topic:    topic,
+				Dialer:   dialer,
+				MinBytes: q.opts.consumerOpts.minBytes,
+				MaxBytes: q.opts.consumerOpts.maxBytes,
+				MaxWait:  q.opts.consumerOpts.maxWait,
 				//	CommitInterval: time.Second, // flushes commits to Kafka every second
 			})
 			if err != nil {
