@@ -11,7 +11,7 @@ import (
 type Consumer struct {
 	*kafka.Reader
 	config     kafka.ReaderConfig
-	msgChannel chan kafka.Message
+	msgChannel chan KafkaMessage
 	streamOnce sync.Once
 	closeOnce  sync.Once
 	closeCh    chan struct{}
@@ -20,7 +20,7 @@ type Consumer struct {
 func NewConsumer(config kafka.ReaderConfig) (*Consumer, error) {
 	c := &Consumer{
 		config:     config,
-		msgChannel: make(chan kafka.Message, 1024),
+		msgChannel: make(chan KafkaMessage, 1024),
 		closeCh:    make(chan struct{}),
 	}
 	r := kafka.NewReader(config)
@@ -29,7 +29,7 @@ func NewConsumer(config kafka.ReaderConfig) (*Consumer, error) {
 	return c, nil
 }
 
-func (c *Consumer) ReadStream(ctx context.Context) <-chan kafka.Message {
+func (c *Consumer) ReadStream(ctx context.Context) <-chan KafkaMessage {
 	c.streamOnce.Do(func() {
 		go func() {
 			for {
@@ -48,11 +48,10 @@ func (c *Consumer) ReadStream(ctx context.Context) <-chan kafka.Message {
 
 				default:
 					msg, err := c.Reader.ReadMessage(ctx)
-					if err != nil {
-						logrus.WithError(err).Errorf("failed to read message")
-						continue
+					c.msgChannel <- KafkaMessage{
+						Err: err,
+						Msg: &msg,
 					}
-					c.msgChannel <- msg
 				}
 			}
 		}()
