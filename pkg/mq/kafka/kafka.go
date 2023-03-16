@@ -323,14 +323,13 @@ func (q *MQ) ReadStream(ctx context.Context, topic string) <-chan KafkaMessage {
 }
 
 func (q *MQ) Close() {
-	if q.Conn != nil {
-		q.Conn.Close()
-	}
-
 	for _, producer := range q.producers {
 		producer.Close()
 	}
 	for _, consumer := range q.consumers {
 		consumer.Close()
+	}
+	if q.Conn != nil {
+		q.Conn.Close()
 	}
 }
