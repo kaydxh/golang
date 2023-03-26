@@ -29,6 +29,7 @@ import (
 	"google.golang.org/protobuf/proto"
 )
 
+// proto.Message is interface
 type Config[T proto.Message] struct {
 	Proto     T
 	Validator *validator.Validate
