@@ -22,16 +22,23 @@
 package jsonpb
 
 import (
+	"bytes"
 	"io"
 
-	"github.com/gogo/protobuf/proto"
-	"github.com/golang/protobuf/jsonpb"
+	marshaler_ "github.com/kaydxh/golang/go/runtime/marshaler"
+	"google.golang.org/protobuf/proto"
 )
 
-func UnmarshalWithAllowUnknownFields(r io.Reader, pb proto.Message) error {
-	unmarshaler := &jsonpb.Unmarshaler{
-		AllowUnknownFields: true,
+func UnmarshalReaderWithAllowUnknownFields(r io.Reader, pb proto.Message) error {
+	buf := new(bytes.Buffer)
+	_, err := buf.ReadFrom(r)
+	if err != nil {
+		return err
 	}
+	return UnmarshalWithAllowUnknownFields(buf.Bytes(), pb)
+}
 
-	return unmarshaler.Unmarshal(r, pb)
+func UnmarshalWithAllowUnknownFields(data []byte, pb proto.Message) error {
+	jsonpb := marshaler_.NewDefaultJSONPb()
+	return jsonpb.Unmarshal(data, pb)
 }

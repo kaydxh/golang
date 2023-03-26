@@ -25,9 +25,9 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/golang/protobuf/proto"
 	structpb "github.com/golang/protobuf/ptypes/struct"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
+	"google.golang.org/protobuf/proto"
 )
 
 type JSONPb struct {
