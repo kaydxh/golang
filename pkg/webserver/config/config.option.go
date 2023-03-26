@@ -19,15 +19,15 @@
  *OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  *SOFTWARE.
  */
-package jsonpb
+package config
 
 import (
-	structpb "github.com/golang/protobuf/ptypes/struct"
-	marshaler_ "github.com/kaydxh/golang/go/runtime/marshaler"
+	"github.com/spf13/viper"
+	"google.golang.org/protobuf/proto"
 )
 
-func MarshaToStructpb(v interface{}) (*structpb.Struct, error) {
-
-	jsonpb := marshaler_.NewDefaultJSONPb()
-	return jsonpb.MarshaToStructpb(v)
+func WithViper[T proto.Message](v *viper.Viper) ConfigOption[T] {
+	return ConfigOptionFunc[T](func(c *Config[T]) {
+		c.opts.viper = v
+	})
 }

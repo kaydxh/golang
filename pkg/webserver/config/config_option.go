@@ -19,15 +19,43 @@
  *OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  *SOFTWARE.
  */
-package jsonpb
+package config
 
-import (
-	structpb "github.com/golang/protobuf/ptypes/struct"
-	marshaler_ "github.com/kaydxh/golang/go/runtime/marshaler"
-)
+import "google.golang.org/protobuf/proto"
 
-func MarshaToStructpb(v interface{}) (*structpb.Struct, error) {
+// A ConfigOption sets options.
+type ConfigOption[T proto.Message] interface {
+	apply(*Config[T])
+}
 
-	jsonpb := marshaler_.NewDefaultJSONPb()
-	return jsonpb.MarshaToStructpb(v)
+// EmptyConfigOption does not alter the configuration. It can be embedded
+// in another structure to build custom options.
+//
+// This API is EXPERIMENTAL.
+type EmptyConfigOption[T proto.Message] struct{}
+
+func (EmptyConfigOption[T]) apply(*Config[T]) {}
+
+// ConfigOptionFunc wraps a function that modifies Client into an
+// implementation of the ConfigOption interface.
+type ConfigOptionFunc[T proto.Message] func(*Config[T])
+
+func (f ConfigOptionFunc[T]) apply(do *Config[T]) {
+	f(do)
+}
+
+// sample code for option, default for nothing to change
+func _ConfigOptionWithDefault[T proto.Message]() ConfigOption[T] {
+	return ConfigOptionFunc[T](func(*Config[T]) {
+		// nothing to change
+	})
+}
+func (o *Config[T]) ApplyOptions(options ...ConfigOption[T]) *Config[T] {
+	for _, opt := range options {
+		if opt == nil {
+			continue
+		}
+		opt.apply(o)
+	}
+	return o
 }
