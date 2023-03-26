@@ -4,5 +4,5 @@ diskcleaner:
   paths: [ "/data" ] 
   exts: [".jpg"]
   check_interval: 60s
-  base_expired : 144h
+  base_expired : 518400s # 144h
   min_expired: 60s

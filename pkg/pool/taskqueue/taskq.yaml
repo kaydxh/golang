@@ -9,7 +9,7 @@ database:
     max_idle_connections: 10
     dial_timeout: 5s
     max_wait_duration: 20s
-    fail_after_duration: 5m
+    fail_after_duration: 300s
 
 taskqueue:
     enabled: true
