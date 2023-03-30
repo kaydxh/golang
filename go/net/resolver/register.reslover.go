@@ -24,9 +24,11 @@ package resolver
 import "sync"
 
 var (
+	builderMu   sync.RWMutex
 	resolversMu sync.RWMutex
 	// m is a map from scheme to resolver builder.
-	m = make(map[string]Builder)
+	m            = make(map[string]Builder)
+	resolverPool = make(map[string]Resolver)
 	// defaultScheme is the default scheme to use.
 	defaultScheme = "passthrough"
 )
@@ -37,8 +39,8 @@ var (
 // used as the scheme registered with this builder.
 //
 func Register(b Builder) {
-	resolversMu.Lock()
-	defer resolversMu.Unlock()
+	builderMu.Lock()
+	defer builderMu.Unlock()
 
 	if b == nil {
 		panic("register builder is nil")
@@ -53,8 +55,8 @@ func Register(b Builder) {
 //
 // If no builder is register with the scheme, nil will be returned.
 func Get(scheme string) Builder {
-	resolversMu.Lock()
-	defer resolversMu.Unlock()
+	builderMu.Lock()
+	defer builderMu.Unlock()
 
 	if b, ok := m[scheme]; ok {
 		return b
@@ -63,13 +65,36 @@ func Get(scheme string) Builder {
 }
 
 func GetDefault() Builder {
-	resolversMu.Lock()
-	defer resolversMu.Unlock()
+	builderMu.Lock()
+	defer builderMu.Unlock()
 
 	if b, ok := m[defaultScheme]; ok {
 		return b
 	}
 	return nil
+}
+
+func getResolver(scheme string) Resolver {
+	resolversMu.Lock()
+	defer resolversMu.Unlock()
+
+	if b, ok := resolverPool[scheme]; ok {
+		return b
+	}
+	return nil
+}
+
+func setResolver(scheme string, r Resolver) {
+	resolversMu.Lock()
+	defer resolversMu.Unlock()
+
+	if r == nil {
+		panic("register resolver is nil")
+	}
+	if _, ok := resolverPool[scheme]; ok {
+		panic("double register scheme " + scheme)
+	}
+	resolverPool[scheme] = r
 }
 
 // SetDefaultScheme sets the default scheme that will be used. The default
