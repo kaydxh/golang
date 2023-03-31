@@ -52,7 +52,7 @@ func TestRotateFileWithInterval(t *testing.T) {
 	)
 
 	for i := 0; i < 10; i++ {
-		n, err := rotateFiler.Write([]byte("hello word"))
+		_, n, err := rotateFiler.Write([]byte("hello word"))
 		if err != nil {
 			t.Errorf("faild to write, err: %v", err)
 		}
@@ -73,7 +73,7 @@ func TestRotateFileWithIntervalAndSize(t *testing.T) {
 	)
 
 	for i := 0; i < 0; i++ {
-		n, err := rotateFiler.Write([]byte("hello word"))
+		_, n, err := rotateFiler.Write([]byte("hello word"))
 		if err != nil {
 			t.Errorf("faild to write, err: %v", err)
 		}
@@ -87,13 +87,14 @@ func TestRotateFileWithSize(t *testing.T) {
 
 	rotateFiler, _ := rotate_.NewRotateFiler(
 		filepath.Join(getWdOrDie(), "log"),
-		rotate_.WithRotateSize(15),
+		rotate_.WithRotateSize(1500),
 		rotate_.WithSuffixName(".log"),
 		rotate_.WithPrefixName(filepath.Base(os.Args[0])),
 	)
 
 	for i := 0; i < 10; i++ {
-		n, err := rotateFiler.Write([]byte("hello word"))
+		//_, n, err := rotateFiler.Write([]byte("hello word"))
+		_, n, err := rotateFiler.WriteBytesLine([][]byte{[]byte("hello word")})
 		if err != nil {
 			t.Errorf("faild to write, err: %v", err)
 		}
@@ -114,7 +115,7 @@ func TestRotateMaxCount(t *testing.T) {
 	)
 
 	for i := 0; i < 10; i++ {
-		n, err := rotateFiler.Write([]byte("hello word"))
+		_, n, err := rotateFiler.Write([]byte("hello word"))
 		if err != nil {
 			t.Errorf("faild to write, err: %v", err)
 		}
