@@ -109,6 +109,16 @@ func (f *RotateFiler) Write(p []byte) (file *os.File, n int, err error) {
 	return f.file, n, err
 }
 
+func (f *RotateFiler) WriteBytesLine(p [][]byte) (file *os.File, n int, err error) {
+
+	var data []byte
+	for _, d := range p {
+		data = append(data, d...)
+		data = append(data, '\n')
+	}
+	return f.Write(data)
+}
+
 func (f *RotateFiler) generateRotateFilename() string {
 	if f.opts.rotateInterval > 0 {
 		now := time.Now()
