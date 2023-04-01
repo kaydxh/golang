@@ -23,6 +23,7 @@ package binlog
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -30,10 +31,12 @@ import (
 	"sync/atomic"
 	"time"
 
+	"github.com/google/uuid"
 	"github.com/kaydxh/golang/go/errors"
-	io_ "github.com/kaydxh/golang/go/io"
 	rotate_ "github.com/kaydxh/golang/pkg/file-rotate"
 	mq_ "github.com/kaydxh/golang/pkg/mq"
+	taskq_ "github.com/kaydxh/golang/pkg/pool/taskqueue"
+	queue_ "github.com/kaydxh/golang/pkg/pool/taskqueue/queue"
 	s3_ "github.com/kaydxh/golang/pkg/storage/s3"
 	"github.com/sirupsen/logrus"
 	"golang.org/x/sync/errgroup"
@@ -60,6 +63,7 @@ type BinlogService struct {
 	consumers []mq_.Consumer
 
 	rotateFiler *rotate_.RotateFiler
+	taskq       *taskq_.Pool
 
 	opts BinlogOptions
 
@@ -102,34 +106,39 @@ func NewBinlogService(consumers []mq_.Consumer, opts ...BinlogServiceOption) (*B
 		rotate_.WithRotateInterval(bs.opts.rotateInterval),
 		rotate_.WithSuffixName(bs.opts.suffixName),
 		rotate_.WithPrefixName(bs.opts.prefixName),
-		rotate_.WithRotateCallback(bs.Archive),
+		rotate_.WithRotateCallback(bs.rotateCallback),
 	)
 	bs.rotateFiler = rotateFiler
 
 	return bs, nil
 }
 
-func (srv *BinlogService) Archive(ctx context.Context, path string) {
+func (srv *BinlogService) rotateCallback(ctx context.Context, path string) {
 	logger := srv.logger()
 
 	if srv.opts.bucket != nil {
-		data, err := io_.ReadFile(path)
+		args := &ArchiveTaskArgs{
+			LocalFilePath:  path,
+			RemoteRootPath: filepath.Join(srv.opts.remotePrefixPath, filepath.Base(path)),
+		}
+		data, err := json.Marshal(args)
 		if err != nil {
-			logger.WithError(err).Errorf("failed to read binlog[%v]", path)
+			logger.WithError(err).Errorf("failed to marshal args: %v", args)
 			return
 		}
-		if len(data) == 0 {
-			logger.Info("binlog[%v] is empty, not need to archive", path)
+
+		id := uuid.NewString()
+		msg := &queue_.Message{
+			Id:     id,
+			Name:   id,
+			Scheme: ArchiveTaskScheme,
+			Args:   string(data),
+		}
+		_, err = srv.taskq.Publish(ctx, msg)
+		if err != nil {
+			logger.WithError(err).Errorf("failed to publish msg: %v", msg)
 			return
 		}
-		logger.Infof("start to archive binlog[%v], size[%v]", path, len(data))
-
-		remotePath := filepath.Join(srv.opts.remotePrefixPath, filepath.Base(path))
-		err = srv.opts.bucket.WriteAll(ctx, remotePath, data, nil)
-		if err != nil {
-			logger.WithError(err).Errorf("failed to upload binlog [%v] size[%v] to [%v]", path, len(data), remotePath)
-		}
-
 	}
 }
 
@@ -148,7 +157,6 @@ func (srv *BinlogService) Run(ctx context.Context) error {
 		errors.HandleError(srv.Serve(ctx))
 	}()
 	return nil
-
 }
 
 func (srv *BinlogService) flush(ctx context.Context, consumer mq_.Consumer) error {
