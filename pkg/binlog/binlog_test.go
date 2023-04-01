@@ -19,11 +19,23 @@
  *OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  *SOFTWARE.
  */
-package mq
 
-import "context"
+package binlog_test
 
-type Consumer interface {
-	ReadStream(ctx context.Context, topic string) <-chan Message
-	Close()
+import (
+	"testing"
+
+	binlog_ "github.com/kaydxh/golang/pkg/binlog"
+	"golang.org/x/net/context"
+)
+
+func TestNewBinlog(t *testing.T) {
+	channels := []binlog_.Channel{
+		{
+			Name: "topic1",
+		},
+	}
+
+	bs := binlog_.NewBinlogService(channels)
+	bs.Run(context.Background())
 }
