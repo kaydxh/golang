@@ -23,9 +23,27 @@ package binlog
 
 import "time"
 
-func WithMaxFlushBatchSize(batch int) BinlogServiceOption {
+func WitRootPath(rootPath string) BinlogServiceOption {
 	return BinlogServiceOptionFunc(func(c *BinlogService) {
-		c.opts.maxFlushBatchSize = batch
+		c.opts.rootPath = rootPath
+	})
+}
+
+func WithPrefixName(prefixName string) BinlogServiceOption {
+	return BinlogServiceOptionFunc(func(c *BinlogService) {
+		c.opts.prefixName = prefixName
+	})
+}
+
+func WithSufffixName(suffixName string) BinlogServiceOption {
+	return BinlogServiceOptionFunc(func(c *BinlogService) {
+		c.opts.suffixName = suffixName
+	})
+}
+
+func WithFlushBatchSize(batch int) BinlogServiceOption {
+	return BinlogServiceOptionFunc(func(c *BinlogService) {
+		c.opts.flushBatchSize = batch
 	})
 }
 
@@ -35,14 +53,14 @@ func WithFlushInterval(flushInterval time.Duration) BinlogServiceOption {
 	})
 }
 
-func WithMaxRotateInterval(maxRotateInterval time.Duration) BinlogServiceOption {
+func WithRotateInterval(rotateInterval time.Duration) BinlogServiceOption {
 	return BinlogServiceOptionFunc(func(c *BinlogService) {
-		c.opts.maxRotateInterval = maxRotateInterval
+		c.opts.rotateInterval = rotateInterval
 	})
 }
 
-func WithMaxRotateSize(maxRotateSize int64) BinlogServiceOption {
+func WithRotateSize(rotateSize int64) BinlogServiceOption {
 	return BinlogServiceOptionFunc(func(c *BinlogService) {
-		c.opts.maxRotateSize = maxRotateSize
+		c.opts.rotateSize = rotateSize
 	})
 }
