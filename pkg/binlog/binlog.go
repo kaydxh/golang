@@ -24,6 +24,7 @@ package binlog
 import (
 	"context"
 	"fmt"
+	"os"
 	"sync"
 	"sync/atomic"
 	"time"
@@ -36,10 +37,13 @@ import (
 )
 
 type BinlogOptions struct {
-	maxFlushBatchSize int
-	flushInterval     time.Duration
-	maxRotateInterval time.Duration
-	maxRotateSize     int64
+	rootPath       string
+	prefixName     string
+	suffixName     string
+	flushBatchSize int
+	flushInterval  time.Duration
+	rotateInterval time.Duration
+	rotateSize     int64
 }
 
 type Channel struct {
@@ -61,12 +65,20 @@ type BinlogService struct {
 }
 
 func defaultBinlogServiceOptions() BinlogOptions {
-	return BinlogOptions{
-		maxFlushBatchSize: 1024,
-		flushInterval:     time.Second, // 1s
-		maxRotateInterval: time.Hour,
-		maxRotateSize:     512 * 1024 * 1024, //512M
+	opts := BinlogOptions{
+		prefixName:     "segment",
+		suffixName:     "log",
+		flushBatchSize: 1024,
+		flushInterval:  time.Second, // 1s
+		rotateInterval: time.Hour,
+		rotateSize:     512 * 1024 * 1024, //512M
 	}
+	path, err := os.Getwd()
+	if err != nil {
+		path = "/"
+	}
+	opts.rootPath = path
+	return opts
 }
 
 func NewBinlogService(channels []Channel, opts ...BinlogServiceOption) *BinlogService {
@@ -75,6 +87,15 @@ func NewBinlogService(channels []Channel, opts ...BinlogServiceOption) *BinlogSe
 		opts:     defaultBinlogServiceOptions(),
 	}
 	bs.ApplyOptions(opts...)
+
+	rotateFiler, _ := rotate_.NewRotateFiler(
+		bs.opts.rootPath,
+		rotate_.WithRotateSize(bs.opts.rotateSize),
+		rotate_.WithRotateInterval(bs.opts.rotateInterval),
+		rotate_.WithSuffixName(bs.opts.suffixName),
+		rotate_.WithPrefixName(bs.opts.prefixName),
+	)
+	bs.rotateFiler = rotateFiler
 	return bs
 }
 
@@ -119,7 +140,7 @@ func (srv *BinlogService) flush(ctx context.Context, channel Channel) error {
 					flushBatchData = nil
 				}
 			default:
-				if len(flushBatchData) >= srv.opts.maxFlushBatchSize {
+				if len(flushBatchData) >= srv.opts.flushBatchSize {
 					_, _, err = srv.rotateFiler.WriteBytesLine(flushBatchData)
 					flushBatchData = nil
 					return err
