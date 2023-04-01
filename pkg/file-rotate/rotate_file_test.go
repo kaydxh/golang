@@ -22,6 +22,7 @@
 package rotatefile_test
 
 import (
+	"context"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -87,12 +88,16 @@ func TestRotateFileWithSize(t *testing.T) {
 
 	rotateFiler, _ := rotate_.NewRotateFiler(
 		filepath.Join(getWdOrDie(), "log"),
-		rotate_.WithRotateSize(1500),
+		rotate_.WithRotateSize(10),
+		rotate_.WithRotateInterval(15*time.Second),
 		rotate_.WithSuffixName(".log"),
 		rotate_.WithPrefixName(filepath.Base(os.Args[0])),
+		rotate_.WithRotateCallback(func(ctx context.Context, path string) {
+			t.Logf("=======callback path: %v", path)
+		}),
 	)
 
-	for i := 0; i < 10; i++ {
+	for i := 0; i < 5; i++ {
 		//_, n, err := rotateFiler.Write([]byte("hello word"))
 		_, n, err := rotateFiler.WriteBytesLine([][]byte{[]byte("hello word")})
 		if err != nil {
@@ -101,6 +106,8 @@ func TestRotateFileWithSize(t *testing.T) {
 		time.Sleep(time.Second)
 		t.Logf("successed to write %v bytes", n)
 	}
+
+	select {}
 
 }
 

@@ -63,6 +63,7 @@ type RotateFiler struct {
 		rotateSize int64
 		//rotate file in rotateInterval
 		rotateInterval     time.Duration
+		syncInterval       time.Duration
 		rotateCallbackFunc EventCallbackFunc
 	}
 }
@@ -82,6 +83,13 @@ func NewRotateFiler(filedir string, options ...RotateFilerOption) (*RotateFiler,
 		if r.opts.fileTimeLayout == "" {
 			r.opts.fileTimeLayout = time_.ShortTimeFormat
 		}
+	}
+
+	if r.opts.rotateCallbackFunc != nil {
+		if r.opts.syncInterval == 0 {
+			r.opts.syncInterval = 30 * time.Second
+		}
+		go r.watch()
 	}
 
 	return r, nil
@@ -129,6 +137,22 @@ func (f *RotateFiler) generateRotateFilename() string {
 		return time_.TruncateToUTCString(now, f.opts.rotateInterval, f.opts.fileTimeLayout)
 	}
 	return ""
+}
+
+func (f *RotateFiler) watch() {
+	timer := time.NewTicker(f.opts.syncInterval)
+	defer timer.Stop()
+
+	for {
+		select {
+		case <-timer.C:
+			func() {
+				f.mu.Lock()
+				defer f.mu.Unlock()
+				f.getWriterNolock(0)
+			}()
+		}
+	}
 }
 
 func (f *RotateFiler) getWriterNolock(length int64) (io.Writer, error) {
