@@ -25,13 +25,16 @@ import (
 	"context"
 	"fmt"
 	"os"
+	"path/filepath"
 	"sync"
 	"sync/atomic"
 	"time"
 
 	"github.com/kaydxh/golang/go/errors"
+	io_ "github.com/kaydxh/golang/go/io"
 	rotate_ "github.com/kaydxh/golang/pkg/file-rotate"
 	mq_ "github.com/kaydxh/golang/pkg/mq"
+	s3_ "github.com/kaydxh/golang/pkg/storage/s3"
 	"github.com/sirupsen/logrus"
 	"golang.org/x/sync/errgroup"
 )
@@ -44,6 +47,9 @@ type BinlogOptions struct {
 	flushInterval  time.Duration
 	rotateInterval time.Duration
 	rotateSize     int64
+
+	bucket           *s3_.Storage
+	remotePrefixPath string
 }
 
 type Channel struct {
@@ -53,8 +59,6 @@ type Channel struct {
 type BinlogService struct {
 	consumers []mq_.Consumer
 
-	// 所分配的channel
-	//channels    []Channel
 	rotateFiler *rotate_.RotateFiler
 
 	opts BinlogOptions
@@ -71,7 +75,7 @@ func defaultBinlogServiceOptions() BinlogOptions {
 		flushBatchSize: 1024,
 		flushInterval:  time.Second, // 1s
 		rotateInterval: time.Hour,
-		rotateSize:     512 * 1024 * 1024, //512M
+		rotateSize:     100 * 1024 * 1024, //100M
 	}
 	path, err := os.Getwd()
 	if err != nil {
@@ -98,10 +102,35 @@ func NewBinlogService(consumers []mq_.Consumer, opts ...BinlogServiceOption) (*B
 		rotate_.WithRotateInterval(bs.opts.rotateInterval),
 		rotate_.WithSuffixName(bs.opts.suffixName),
 		rotate_.WithPrefixName(bs.opts.prefixName),
+		rotate_.WithRotateCallback(bs.Archive),
 	)
 	bs.rotateFiler = rotateFiler
 
 	return bs, nil
+}
+
+func (srv *BinlogService) Archive(ctx context.Context, path string) {
+	logger := srv.logger()
+
+	if srv.opts.bucket != nil {
+		data, err := io_.ReadFile(path)
+		if err != nil {
+			logger.WithError(err).Errorf("failed to read binlog[%v]", path)
+			return
+		}
+		if len(data) == 0 {
+			logger.Info("binlog[%v] is empty, not need to archive", path)
+			return
+		}
+		logger.Infof("start to archive binlog[%v], size[%v]", path, len(data))
+
+		remotePath := filepath.Join(srv.opts.remotePrefixPath, filepath.Base(path))
+		err = srv.opts.bucket.WriteAll(ctx, remotePath, data, nil)
+		if err != nil {
+			logger.WithError(err).Errorf("failed to upload binlog [%v] size[%v] to [%v]", path, len(data), remotePath)
+		}
+
+	}
 }
 
 func (srv *BinlogService) logger() logrus.FieldLogger {

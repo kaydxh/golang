@@ -72,7 +72,7 @@ func (c *completedConfig) install(ctx context.Context) (*blob.Bucket, error) {
 		*storageConfig,
 	)
 
-	return s.bucket, err
+	return s.Bucket, err
 }
 
 // Complete set default ServerRunOptions.
