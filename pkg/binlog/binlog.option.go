@@ -1,5 +1,5 @@
 /*
- *Copyright (c) 2023, kaydxh
+ *Copyright (c) 2022, kaydxh
  *
  *Permission is hereby granted, free of charge, to any person obtaining a copy
  *of this software and associated documentation files (the "Software"), to deal
@@ -19,11 +19,30 @@
  *OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  *SOFTWARE.
  */
-package mq
+package binlog
 
-import "context"
+import "time"
 
-type Consumer interface {
-	ReadStream(ctx context.Context, topic string) <-chan Message
-	Close()
+func WithMaxFlushBatchSize(batch int) BinlogServiceOption {
+	return BinlogServiceOptionFunc(func(c *BinlogService) {
+		c.opts.maxFlushBatchSize = batch
+	})
+}
+
+func WithFlushInterval(flushInterval time.Duration) BinlogServiceOption {
+	return BinlogServiceOptionFunc(func(c *BinlogService) {
+		c.opts.flushInterval = flushInterval
+	})
+}
+
+func WithMaxRotateInterval(maxRotateInterval time.Duration) BinlogServiceOption {
+	return BinlogServiceOptionFunc(func(c *BinlogService) {
+		c.opts.maxRotateInterval = maxRotateInterval
+	})
+}
+
+func WithMaxRotateSize(maxRotateSize int64) BinlogServiceOption {
+	return BinlogServiceOptionFunc(func(c *BinlogService) {
+		c.opts.maxRotateSize = maxRotateSize
+	})
 }

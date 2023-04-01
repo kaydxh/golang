@@ -23,4 +23,6 @@ package mq
 
 type Message interface {
 	Error() error
+	Key() []byte
+	Value() []byte
 }
