@@ -51,10 +51,10 @@ type Channel struct {
 }
 
 type BinlogService struct {
-	consumer mq_.Consumer
+	consumers []mq_.Consumer
 
 	// 所分配的channel
-	channels    []Channel
+	//channels    []Channel
 	rotateFiler *rotate_.RotateFiler
 
 	opts BinlogOptions
@@ -81,10 +81,14 @@ func defaultBinlogServiceOptions() BinlogOptions {
 	return opts
 }
 
-func NewBinlogService(channels []Channel, opts ...BinlogServiceOption) *BinlogService {
+func NewBinlogService(consumers []mq_.Consumer, opts ...BinlogServiceOption) (*BinlogService, error) {
+	if len(consumers) == 0 {
+		return nil, fmt.Errorf("consumers is empty")
+	}
+
 	bs := &BinlogService{
-		channels: channels,
-		opts:     defaultBinlogServiceOptions(),
+		consumers: consumers,
+		opts:      defaultBinlogServiceOptions(),
 	}
 	bs.ApplyOptions(opts...)
 
@@ -96,7 +100,8 @@ func NewBinlogService(channels []Channel, opts ...BinlogServiceOption) *BinlogSe
 		rotate_.WithPrefixName(bs.opts.prefixName),
 	)
 	bs.rotateFiler = rotateFiler
-	return bs
+
+	return bs, nil
 }
 
 func (srv *BinlogService) logger() logrus.FieldLogger {
@@ -117,15 +122,15 @@ func (srv *BinlogService) Run(ctx context.Context) error {
 
 }
 
-func (srv *BinlogService) flush(ctx context.Context, channel Channel) error {
+func (srv *BinlogService) flush(ctx context.Context, consumer mq_.Consumer) error {
 	logger := srv.logger()
 	timer := time.NewTicker(srv.opts.flushInterval)
 	defer timer.Stop()
 
 	var flushBatchData [][]byte
-	for msg := range srv.consumer.ReadStream(ctx, channel.Name) {
+	for msg := range consumer.ReadStream(ctx) {
 		if msg.Error() != nil {
-			logger.WithError(msg.Error()).Errorf("faild to read stream %v", channel)
+			logger.WithError(msg.Error()).Errorf("faild to read stream %v", consumer.Channel())
 			continue
 		}
 
@@ -153,7 +158,7 @@ func (srv *BinlogService) flush(ctx context.Context, channel Channel) error {
 		}
 		err := flushFunc(ctx, msg.Value())
 		if err != nil {
-			logger.WithError(msg.Error()).Errorf("faild to flush message for channel[%v]", channel)
+			logger.WithError(msg.Error()).Errorf("faild to flush message for channel[%v]", consumer.Channel())
 			return err
 		}
 	}
@@ -178,10 +183,10 @@ func (srv *BinlogService) Serve(ctx context.Context) error {
 	srv.mu.Unlock()
 
 	g, gCtx := errgroup.WithContext(ctx)
-	for _, channel := range srv.channels {
-		channel := channel
+	for _, consumer := range srv.consumers {
+		consumer := consumer
 		g.Go(func() error {
-			return srv.flush(gCtx, channel)
+			return srv.flush(gCtx, consumer)
 		})
 	}
 	err := g.Wait()
@@ -197,6 +202,12 @@ func (srv *BinlogService) Shutdown() {
 	srv.inShutdown.Store(true)
 	srv.mu.Lock()
 	defer srv.mu.Unlock()
+
+	for _, consumer := range srv.consumers {
+		if consumer != nil {
+			consumer.Close()
+		}
+	}
 	if srv.cancel != nil {
 		srv.cancel()
 	}
