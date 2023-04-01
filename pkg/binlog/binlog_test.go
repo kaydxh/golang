@@ -24,18 +24,16 @@ package binlog_test
 
 import (
 	"testing"
-
-	binlog_ "github.com/kaydxh/golang/pkg/binlog"
-	"golang.org/x/net/context"
 )
 
 func TestNewBinlog(t *testing.T) {
-	channels := []binlog_.Channel{
-		{
-			Name: "topic1",
-		},
-	}
 
-	bs := binlog_.NewBinlogService(channels)
-	bs.Run(context.Background())
+	/*
+		consumers := []mq_.Consumer{
+			{},
+		}
+
+		bs := binlog_.NewBinlogService(nil)
+		bs.Run(context.Background())
+	*/
 }

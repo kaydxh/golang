@@ -24,6 +24,7 @@ package mq
 import "context"
 
 type Consumer interface {
-	ReadStream(ctx context.Context, topic string) <-chan Message
+	ReadStream(ctx context.Context) <-chan Message
+	Channel() string
 	Close()
 }
