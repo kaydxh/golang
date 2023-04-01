@@ -22,6 +22,7 @@
 package rotatefile
 
 import (
+	"context"
 	"fmt"
 	"io"
 	"os"
@@ -38,6 +39,8 @@ import (
 	time_ "github.com/kaydxh/golang/go/time"
 	cleanup_ "github.com/kaydxh/golang/pkg/file-cleanup"
 )
+
+type EventCallbackFunc func(ctx context.Context, path string)
 
 type RotateFiler struct {
 	file        *os.File
@@ -59,7 +62,8 @@ type RotateFiler struct {
 		//rotate file when file size larger than rotateSize
 		rotateSize int64
 		//rotate file in rotateInterval
-		rotateInterval time.Duration
+		rotateInterval     time.Duration
+		rotateCallbackFunc EventCallbackFunc
 	}
 }
 
@@ -179,6 +183,10 @@ func (f *RotateFiler) getWriterNolock(length int64) (io.Writer, error) {
 		}
 
 		if f.file != nil {
+			//callback
+			if f.opts.rotateCallbackFunc != nil {
+				f.opts.rotateCallbackFunc(context.Background(), f.file.Name())
+			}
 			f.file.Close()
 		}
 		f.file = fn

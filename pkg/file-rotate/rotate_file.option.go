@@ -66,3 +66,9 @@ func WithRotateInterval(rotateInterval time.Duration) RotateFilerOption {
 		c.opts.rotateInterval = rotateInterval
 	})
 }
+
+func WithRotateCallback(callback EventCallbackFunc) RotateFilerOption {
+	return RotateFilerOptionFunc(func(c *RotateFiler) {
+		c.opts.rotateCallbackFunc = callback
+	})
+}
