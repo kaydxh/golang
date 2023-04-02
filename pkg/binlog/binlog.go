@@ -37,7 +37,6 @@ import (
 	mq_ "github.com/kaydxh/golang/pkg/mq"
 	taskq_ "github.com/kaydxh/golang/pkg/pool/taskqueue"
 	queue_ "github.com/kaydxh/golang/pkg/pool/taskqueue/queue"
-	s3_ "github.com/kaydxh/golang/pkg/storage/s3"
 	"github.com/sirupsen/logrus"
 	"golang.org/x/sync/errgroup"
 )
@@ -51,8 +50,8 @@ type BinlogOptions struct {
 	rotateInterval time.Duration
 	rotateSize     int64
 
-	bucket           *s3_.Storage
 	remotePrefixPath string
+	archive          bool
 }
 
 type Channel struct {
@@ -62,8 +61,10 @@ type Channel struct {
 type BinlogService struct {
 	consumers []mq_.Consumer
 
-	rotateFiler *rotate_.RotateFiler
-	taskq       *taskq_.Pool
+	rotateFiler    *rotate_.RotateFiler
+	rotateFilers   map[string]*rotate_.RotateFiler //message key -> rotateFilter
+	rotateFilersMu sync.Mutex
+	taskq          *taskq_.Pool
 
 	opts BinlogOptions
 
@@ -74,9 +75,10 @@ type BinlogService struct {
 
 func defaultBinlogServiceOptions() BinlogOptions {
 	opts := BinlogOptions{
-		prefixName:     "segment",
-		suffixName:     "log",
-		flushBatchSize: 1024,
+		prefixName: "segment",
+		suffixName: "log",
+		//flushBatchSize: 1024,
+		flushBatchSize: 1,
 		flushInterval:  time.Second, // 1s
 		rotateInterval: time.Hour,
 		rotateSize:     100 * 1024 * 1024, //100M
@@ -89,14 +91,19 @@ func defaultBinlogServiceOptions() BinlogOptions {
 	return opts
 }
 
-func NewBinlogService(consumers []mq_.Consumer, opts ...BinlogServiceOption) (*BinlogService, error) {
+func NewBinlogService(taskq *taskq_.Pool, consumers []mq_.Consumer, opts ...BinlogServiceOption) (*BinlogService, error) {
+	if taskq == nil {
+		return nil, fmt.Errorf("taskq is empty")
+	}
 	if len(consumers) == 0 {
 		return nil, fmt.Errorf("consumers is empty")
 	}
 
 	bs := &BinlogService{
-		consumers: consumers,
-		opts:      defaultBinlogServiceOptions(),
+		rotateFilers: make(map[string]*rotate_.RotateFiler, 0),
+		taskq:        taskq,
+		consumers:    consumers,
+		opts:         defaultBinlogServiceOptions(),
 	}
 	bs.ApplyOptions(opts...)
 
@@ -116,7 +123,7 @@ func NewBinlogService(consumers []mq_.Consumer, opts ...BinlogServiceOption) (*B
 func (srv *BinlogService) rotateCallback(ctx context.Context, path string) {
 	logger := srv.logger()
 
-	if srv.opts.bucket != nil {
+	if srv.opts.archive {
 		args := &ArchiveTaskArgs{
 			LocalFilePath:  path,
 			RemoteRootPath: filepath.Join(srv.opts.remotePrefixPath, filepath.Base(path)),
@@ -159,6 +166,29 @@ func (srv *BinlogService) Run(ctx context.Context) error {
 	return nil
 }
 
+func (srv *BinlogService) getOrCreateRotateFilers(ctx context.Context, key string) *rotate_.RotateFiler {
+	if key == "" {
+		return srv.rotateFiler
+	}
+
+	srv.rotateFilersMu.Lock()
+	defer srv.rotateFilersMu.Unlock()
+	rotateFiler, ok := srv.rotateFilers[key]
+	if !ok {
+		rotateFiler, _ = rotate_.NewRotateFiler(
+			filepath.Join(srv.opts.rootPath, key),
+			rotate_.WithRotateSize(srv.opts.rotateSize),
+			rotate_.WithRotateInterval(srv.opts.rotateInterval),
+			rotate_.WithSuffixName(srv.opts.suffixName),
+			rotate_.WithPrefixName(srv.opts.prefixName),
+			rotate_.WithRotateCallback(srv.rotateCallback),
+		)
+		srv.rotateFilers[key] = rotateFiler
+	}
+
+	return rotateFiler
+}
+
 func (srv *BinlogService) flush(ctx context.Context, consumer mq_.Consumer) error {
 	logger := srv.logger()
 	timer := time.NewTicker(srv.opts.flushInterval)
@@ -171,19 +201,20 @@ func (srv *BinlogService) flush(ctx context.Context, consumer mq_.Consumer) erro
 			continue
 		}
 
-		flushFunc := func(ctx context.Context, data []byte) (err error) {
+		rotateFiler := srv.getOrCreateRotateFilers(ctx, string(msg.Key()))
+		flushFunc := func(ctx context.Context, rotateFiler *rotate_.RotateFiler, data []byte) (err error) {
 			flushBatchData = append(flushBatchData, data)
 			select {
 			case <-ctx.Done():
 				return ctx.Err()
 			case <-timer.C:
 				if len(flushBatchData) > 0 {
-					_, _, err = srv.rotateFiler.WriteBytesLine(flushBatchData)
+					_, _, err = rotateFiler.WriteBytesLine(flushBatchData)
 					flushBatchData = nil
 				}
 			default:
 				if len(flushBatchData) >= srv.opts.flushBatchSize {
-					_, _, err = srv.rotateFiler.WriteBytesLine(flushBatchData)
+					_, _, err = rotateFiler.WriteBytesLine(flushBatchData)
 					flushBatchData = nil
 					return err
 				}
@@ -193,7 +224,7 @@ func (srv *BinlogService) flush(ctx context.Context, consumer mq_.Consumer) erro
 			}
 			return nil
 		}
-		err := flushFunc(ctx, msg.Value())
+		err := flushFunc(ctx, rotateFiler, msg.Value())
 		if err != nil {
 			logger.WithError(msg.Error()).Errorf("faild to flush message for channel[%v]", consumer.Channel())
 			return err
