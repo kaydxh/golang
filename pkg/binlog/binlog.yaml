@@ -1,0 +1,5 @@
+binlog:
+  enabled: true
+  filepath: ./binlog
+  rotate_interval: 3600s #1h
+  rotate_size: 104857600 #100M
