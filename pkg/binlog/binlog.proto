@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package go.pkg.binlog;
+import "google/protobuf/duration.proto";
+
+option go_package = "github.com/kaydxh/go.pkg.binlog;binlog";
+
+message Binlog {
+  bool enabled = 1;
+
+  string filepath = 3;
+  google.protobuf.Duration max_age = 4;
+  int64 max_count = 5;
+  google.protobuf.Duration rotate_interval = 6;
+}
