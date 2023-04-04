@@ -47,7 +47,7 @@ type CompletedConfig struct {
 	*completedConfig
 }
 
-func (c *completedConfig) New(ctx context.Context) (*ResolverService, error) {
+func (c *completedConfig) New(ctx context.Context, opts ...ResolverQueryOption) (*ResolverService, error) {
 
 	logrus.Infof("Installing Resolver")
 
@@ -59,7 +59,7 @@ func (c *completedConfig) New(ctx context.Context) (*ResolverService, error) {
 		return nil, nil
 	}
 
-	rs, err := c.install(ctx)
+	rs, err := c.install(ctx, opts...)
 	if err != nil {
 		return nil, err
 	}
