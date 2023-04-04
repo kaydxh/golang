@@ -68,38 +68,45 @@ func (c *completedConfig) New(ctx context.Context) (*ResolverService, error) {
 	return rs, nil
 }
 
-func (c *completedConfig) install(ctx context.Context) (*ResolverService, error) {
+func (c *completedConfig) install(ctx context.Context, opts ...ResolverQueryOption) (*ResolverService, error) {
 	resolverInterval := c.Proto.GetResolveInterval().AsDuration()
 	rs := NewResolverService(resolverInterval)
 
+	var (
+		rOpts       []ResolverQueryOption
+		serverNames []string
+	)
+
+	rOpts = append(rOpts,
+		WithResolverType(c.Proto.GetResolverType()),
+		WithLoadBalanceMode(c.Proto.GetLoadBalanceMode()),
+	)
+
 	if c.Proto.ResolverType == Resolver_resolver_type_k8s {
-		for _, svc := range c.Proto.GetK8S().GetServiceNames() {
-			rq, err := NewResolverQuery(
-				svc,
-				WithResolverType(c.Proto.GetResolverType()),
-				WithLoadBalanceMode(c.Proto.GetLoadBalanceMode()),
-				WithNodeGroup(c.Proto.GetK8S().GetNodeGroup()),
-				WithNodeUnit(c.Proto.GetK8S().GetNodeUnit()),
-			)
-			if err != nil {
-				return nil, err
-			}
-			rs.AddService(rq)
-		}
+		rOpts = append(rOpts,
+			WithNodeGroup(c.Proto.GetK8S().GetNodeGroup()),
+			WithNodeUnit(c.Proto.GetK8S().GetNodeUnit()),
+		)
+		rOpts = append(rOpts, opts...)
+
+		serverNames = c.Proto.GetK8S().GetServiceNames()
 
 	} else {
 
-		for _, domain := range c.Proto.GetDomains() {
-			rq, err := NewResolverQuery(
-				domain,
-				WithResolverType(c.Proto.GetResolverType()),
-				WithLoadBalanceMode(c.Proto.GetLoadBalanceMode()),
-			)
-			if err != nil {
-				return nil, err
-			}
-			rs.AddService(rq)
+		rOpts = append(rOpts, opts...)
+		serverNames = c.Proto.GetDomains()
+
+	}
+
+	for _, domain := range serverNames {
+		rq, err := NewResolverQuery(
+			domain,
+			rOpts...,
+		)
+		if err != nil {
+			return nil, err
 		}
+		rs.AddService(rq)
 	}
 
 	return rs, nil
