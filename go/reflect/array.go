@@ -26,25 +26,34 @@ import (
 )
 
 func ArrayAllTagsVaules(req interface{}, key string) []map[string]interface{} {
-	values := reflect.ValueOf(req)
+	sliceValues := reflect.ValueOf(req)
 
 	var valuesMap []map[string]interface{}
-	for i := 0; i < values.Len(); i++ {
-		value := values.Index(i)
-		if value.Kind() != reflect.Struct {
-			continue
+	for i := 0; i < sliceValues.Len(); i++ {
+		structValue := sliceValues.Index(i)
+		structType := structValue.Type()
+
+		tagValues := make(map[string]interface{})
+
+		if structType.Kind() == reflect.Ptr {
+			structType = structType.Elem()
+			structValue = structValue.Elem()
 		}
 
-		tagValues := map[string]interface{}{}
-		for j := 0; j < value.NumField(); j++ {
-			f := value.Field(j)
-			if !f.CanInterface() {
+		if structType.Kind() != reflect.Struct {
+			return nil
+		}
+
+		for j := 0; j < structType.NumField(); j++ {
+			field := structType.Field(j)
+			value := structValue.Field(j)
+			if !value.CanInterface() {
 				continue
 			}
 
-			field := value.Type().Field(j)
-			if tag := field.Tag.Get(key); tag != "" {
-				tagValues[tag] = f.Interface()
+			tag := field.Tag.Get(key)
+			if tag != "" {
+				tagValues[tag] = value.Interface()
 			}
 		}
 
