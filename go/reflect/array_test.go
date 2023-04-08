@@ -27,7 +27,29 @@ import (
 	reflect_ "github.com/kaydxh/golang/go/reflect"
 )
 
-func TestArrayAllTagsValues(t *testing.T) {
+func TestPointerStructArrayAllTagsValues(t *testing.T) {
+	type HttpRequest struct {
+		RequestId string `db:"request_id"`
+		Username  string `db:"username"`
+	}
+
+	req := []*HttpRequest{
+		&HttpRequest{
+			RequestId: "123",
+			Username:  "123-username",
+		},
+		&HttpRequest{
+			RequestId: "456",
+			Username:  "456-username",
+		},
+	}
+
+	tagsValues := reflect_.ArrayAllTagsVaules(req, "db")
+	t.Logf("tagsValues: %v", tagsValues)
+	//assert.Equal(t, []string{"request_id"}, fields)
+}
+
+func TestStructArrayAllTagsValues(t *testing.T) {
 	type HttpRequest struct {
 		RequestId string `db:"request_id"`
 		Username  string `db:"username"`
