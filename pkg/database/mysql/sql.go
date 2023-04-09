@@ -190,3 +190,15 @@ func JoinNamedColumnsValuesBatch(cols []string, batch int) string {
 
 	return strings.Join(batchNamedCols, ",")
 }
+
+func TransferToNamedColumnsValues(req []map[string]interface{}) map[string]interface{} {
+
+	valuesMap := make(map[string]interface{}, 0)
+	for i, values := range req {
+		for k, v := range values {
+			valuesMap[fmt.Sprintf("%s_%d", k, i)] = v
+		}
+	}
+
+	return valuesMap
+}
