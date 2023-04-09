@@ -156,3 +156,37 @@ func namedTableColumnsValues(cmp SqlCompare, cols ...string) []string {
 	}
 	return namedCols
 }
+
+/*
+(
+ :group_id_1,
+ :page_id_1,
+ :fea_id_1,
+ :entity_id_1,
+ :feature0_1,
+ :feature1_1,
+ :extend_info_1
+ ),
+(
+ :group_id_2,
+ :page_id_2,
+ :fea_id_2,
+ :entity_id_2,
+ :feature0_2,
+ :feature1_2,
+ :extend_info_2
+ )
+*/
+func JoinNamedColumnsValuesBatch(cols []string, batch int) string {
+
+	var batchNamedCols []string
+	for i := 0; i < batch; i++ {
+		var namedCols []string
+		for _, col := range cols {
+			namedCols = append(namedCols, fmt.Sprintf(":%s_%d", col, i))
+		}
+		batchNamedCols = append(batchNamedCols, fmt.Sprintf("(%v)", strings.Join(namedCols, ",")))
+	}
+
+	return strings.Join(batchNamedCols, ",")
+}
