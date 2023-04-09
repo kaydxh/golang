@@ -158,6 +158,7 @@ func namedTableColumnsValues(cmp SqlCompare, cols ...string) []string {
 }
 
 /*
+used for batch insert
 (
  :group_id_1,
  :page_id_1,
@@ -191,7 +192,8 @@ func JoinNamedColumnsValuesBatch(cols []string, batch int) string {
 	return strings.Join(batchNamedCols, ",")
 }
 
-func TransferToNamedColumnsValues(req []map[string]interface{}) map[string]interface{} {
+// used for batch insert
+func TransferToNamedColumnsValuesBatch(req []map[string]interface{}) map[string]interface{} {
 
 	valuesMap := make(map[string]interface{}, 0)
 	for i, values := range req {
@@ -201,4 +203,9 @@ func TransferToNamedColumnsValues(req []map[string]interface{}) map[string]inter
 	}
 
 	return valuesMap
+}
+
+// req is slice of struct or pointer struct
+func BuildNamedColumnsValuesBatch(req interface{}) map[string]interface{} {
+	return TransferToNamedColumnsValuesBatch(reflect_.ArrayAllTagsVaules(req, dbTag))
 }
