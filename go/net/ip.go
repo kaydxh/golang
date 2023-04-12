@@ -26,7 +26,11 @@ import (
 	"errors"
 	"fmt"
 	"net"
+	"os"
 	"strconv"
+
+	hash_ "github.com/kaydxh/golang/go/encoding/hash"
+	os_ "github.com/kaydxh/golang/go/os"
 )
 
 // This code is borrowed from https://github.com/uber/tchannel-go/blob/dev/localip.go
@@ -216,4 +220,20 @@ func ParseTarget(target, defaultPort string) (host, port string, err error) {
 		return host, port, nil
 	}
 	return "", "", fmt.Errorf("invalid target address %v, error info: %v", target, err)
+}
+
+// 1 get k8s pod name
+// 2 get ip:pid
+func GetServerName() string {
+	serverName := fmt.Sprintf("%v:%v", os.Getenv("POD_NAMESPACE"), os.Getenv("POD_NAME"))
+	if serverName == ":" {
+		ip, _ := GetHostIP()
+		pid := os_.GetProcId()
+		return fmt.Sprintf("%s:%v", ip.String(), pid)
+	}
+	return serverName
+}
+
+func GetServerId() uint32 {
+	return hash_.HashCode(GetServerName())
 }
