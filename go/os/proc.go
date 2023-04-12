@@ -59,7 +59,12 @@ func GetPidsByName(
 }
 
 // 获取进程唯一标识符
-func GetProcId() string {
+func GetProcIdWithRand() string {
 	s, _ := os.Hostname()
 	return fmt.Sprintf("%s:pid:%v:%v", s, os.Getpid(), rand.Int())
+}
+
+func GetProcId() string {
+	s, _ := os.Hostname()
+	return fmt.Sprintf("%s:pid:%v", s, os.Getpid())
 }
