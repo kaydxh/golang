@@ -88,3 +88,8 @@ func TestLookupHostIPv4(t *testing.T) {
 	}
 	t.Logf("ips: %v", ips)
 }
+
+func TestGetServerName(t *testing.T) {
+	serverName := net_.GetServerName()
+	t.Logf("serverName: %v", serverName)
+}
