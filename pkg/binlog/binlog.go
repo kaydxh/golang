@@ -33,7 +33,6 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/kaydxh/golang/go/errors"
-	rotate_ "github.com/kaydxh/golang/pkg/file-rotate"
 	mq_ "github.com/kaydxh/golang/pkg/mq"
 	taskq_ "github.com/kaydxh/golang/pkg/pool/taskqueue"
 	queue_ "github.com/kaydxh/golang/pkg/pool/taskqueue/queue"
@@ -61,10 +60,13 @@ type Channel struct {
 type BinlogService struct {
 	consumers []mq_.Consumer
 
-	rotateFiler    *rotate_.RotateFiler
-	rotateFilers   map[string]*rotate_.RotateFiler //message key -> rotateFilter
-	rotateFilersMu sync.Mutex
-	taskq          *taskq_.Pool
+	//rotateFiler *rotate_.RotateFiler
+	dataStore DataStore
+	//rotateFilers   map[string]*rotate_.RotateFiler //message key -> rotateFilter
+	//dataStores     map[string]DataStore //message key -> rotateFilter
+	//rotateFilersMu sync.Mutex
+
+	taskq *taskq_.Pool
 
 	opts BinlogOptions
 
@@ -91,7 +93,7 @@ func defaultBinlogServiceOptions() BinlogOptions {
 	return opts
 }
 
-func NewBinlogService(taskq *taskq_.Pool, consumers []mq_.Consumer, opts ...BinlogServiceOption) (*BinlogService, error) {
+func NewBinlogService(dataStore DataStore, taskq *taskq_.Pool, consumers []mq_.Consumer, opts ...BinlogServiceOption) (*BinlogService, error) {
 	if taskq == nil {
 		return nil, fmt.Errorf("taskq is empty")
 	}
@@ -100,22 +102,26 @@ func NewBinlogService(taskq *taskq_.Pool, consumers []mq_.Consumer, opts ...Binl
 	}
 
 	bs := &BinlogService{
-		rotateFilers: make(map[string]*rotate_.RotateFiler, 0),
-		taskq:        taskq,
-		consumers:    consumers,
-		opts:         defaultBinlogServiceOptions(),
+		dataStore: dataStore,
+		//rotateFilers: make(map[string]*rotate_.RotateFiler, 0),
+		//dataStores: make(map[string]DataStore, 0),
+		taskq:     taskq,
+		consumers: consumers,
+		opts:      defaultBinlogServiceOptions(),
 	}
 	bs.ApplyOptions(opts...)
 
-	rotateFiler, _ := rotate_.NewRotateFiler(
-		bs.opts.rootPath,
-		rotate_.WithRotateSize(bs.opts.rotateSize),
-		rotate_.WithRotateInterval(bs.opts.rotateInterval),
-		rotate_.WithSuffixName(bs.opts.suffixName),
-		rotate_.WithPrefixName(bs.opts.prefixName),
-		rotate_.WithRotateCallback(bs.rotateCallback),
-	)
-	bs.rotateFiler = rotateFiler
+	/*
+		rotateFiler, _ := rotate_.NewRotateFiler(
+			bs.opts.rootPath,
+			rotate_.WithRotateSize(bs.opts.rotateSize),
+			rotate_.WithRotateInterval(bs.opts.rotateInterval),
+			rotate_.WithSuffixName(bs.opts.suffixName),
+			rotate_.WithPrefixName(bs.opts.prefixName),
+			rotate_.WithRotateCallback(bs.rotateCallback),
+		)
+		bs.rotateFiler = rotateFiler
+	*/
 
 	return bs, nil
 }
@@ -166,6 +172,7 @@ func (srv *BinlogService) Run(ctx context.Context) error {
 	return nil
 }
 
+/*
 func (srv *BinlogService) getOrCreateRotateFilers(ctx context.Context, key string) *rotate_.RotateFiler {
 	if key == "" {
 		return srv.rotateFiler
@@ -188,6 +195,7 @@ func (srv *BinlogService) getOrCreateRotateFilers(ctx context.Context, key strin
 
 	return rotateFiler
 }
+*/
 
 func (srv *BinlogService) flush(ctx context.Context, consumer mq_.Consumer) error {
 	logger := srv.logger()
@@ -201,20 +209,20 @@ func (srv *BinlogService) flush(ctx context.Context, consumer mq_.Consumer) erro
 			continue
 		}
 
-		rotateFiler := srv.getOrCreateRotateFilers(ctx, string(msg.Key()))
-		flushFunc := func(ctx context.Context, rotateFiler *rotate_.RotateFiler, data []byte) (err error) {
+		//rotateFiler := srv.getOrCreateRotateFilers(ctx, string(msg.Key()))
+		flushFunc := func(ctx context.Context, data []byte) (err error) {
 			flushBatchData = append(flushBatchData, data)
 			select {
 			case <-ctx.Done():
 				return ctx.Err()
 			case <-timer.C:
 				if len(flushBatchData) > 0 {
-					_, _, err = rotateFiler.WriteBytesLine(flushBatchData)
+					_, _, err = srv.dataStore.WriteData(ctx, string(msg.Key()), "", nil, flushBatchData)
 					flushBatchData = nil
 				}
 			default:
 				if len(flushBatchData) >= srv.opts.flushBatchSize {
-					_, _, err = rotateFiler.WriteBytesLine(flushBatchData)
+					_, _, err = srv.dataStore.WriteData(ctx, string(msg.Key()), "", nil, flushBatchData)
 					flushBatchData = nil
 					return err
 				}
@@ -224,7 +232,7 @@ func (srv *BinlogService) flush(ctx context.Context, consumer mq_.Consumer) erro
 			}
 			return nil
 		}
-		err := flushFunc(ctx, rotateFiler, msg.Value())
+		err := flushFunc(ctx, msg.Value())
 		if err != nil {
 			logger.WithError(msg.Error()).Errorf("faild to flush message for channel[%v]", consumer.Channel())
 			return err
