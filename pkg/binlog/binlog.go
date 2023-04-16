@@ -33,6 +33,7 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/kaydxh/golang/go/errors"
+	ds_ "github.com/kaydxh/golang/pkg/binlog/datastore"
 	mq_ "github.com/kaydxh/golang/pkg/mq"
 	taskq_ "github.com/kaydxh/golang/pkg/pool/taskqueue"
 	queue_ "github.com/kaydxh/golang/pkg/pool/taskqueue/queue"
@@ -61,7 +62,7 @@ type BinlogService struct {
 	consumers []mq_.Consumer
 
 	//rotateFiler *rotate_.RotateFiler
-	dataStore DataStore
+	dataStore ds_.DataStore
 	//rotateFilers   map[string]*rotate_.RotateFiler //message key -> rotateFilter
 	//dataStores     map[string]DataStore //message key -> rotateFilter
 	//rotateFilersMu sync.Mutex
@@ -93,7 +94,7 @@ func defaultBinlogServiceOptions() BinlogOptions {
 	return opts
 }
 
-func NewBinlogService(dataStore DataStore, taskq *taskq_.Pool, consumers []mq_.Consumer, opts ...BinlogServiceOption) (*BinlogService, error) {
+func NewBinlogService(dataStore ds_.DataStore, taskq *taskq_.Pool, consumers []mq_.Consumer, opts ...BinlogServiceOption) (*BinlogService, error) {
 	if taskq == nil {
 		return nil, fmt.Errorf("taskq is empty")
 	}
@@ -217,12 +218,12 @@ func (srv *BinlogService) flush(ctx context.Context, consumer mq_.Consumer) erro
 				return ctx.Err()
 			case <-timer.C:
 				if len(flushBatchData) > 0 {
-					_, _, err = srv.dataStore.WriteData(ctx, string(msg.Key()), "", nil, flushBatchData)
+					_, _, err = srv.dataStore.WriteData(ctx, "", nil, string(msg.Key()), flushBatchData)
 					flushBatchData = nil
 				}
 			default:
 				if len(flushBatchData) >= srv.opts.flushBatchSize {
-					_, _, err = srv.dataStore.WriteData(ctx, string(msg.Key()), "", nil, flushBatchData)
+					_, _, err = srv.dataStore.WriteData(ctx, "", nil, string(msg.Key()), flushBatchData)
 					flushBatchData = nil
 					return err
 				}
