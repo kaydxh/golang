@@ -72,7 +72,8 @@ func (c *completedConfig) New(ctx context.Context, taskq *taskq_.Pool, consumers
 }
 
 func (c *completedConfig) install(ctx context.Context, taskq *taskq_.Pool, consumers []mq_.Consumer, opts ...BinlogServiceOption) (*BinlogService, error) {
-	return NewBinlogService(taskq, consumers, opts...)
+	//todo init DataStore
+	return NewBinlogService(nil, taskq, consumers, opts...)
 }
 
 // Complete set default ServerRunOptions.
