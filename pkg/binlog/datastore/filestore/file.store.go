@@ -19,25 +19,19 @@
  *OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  *SOFTWARE.
  */
-package binlog
+package filestore
 
 import (
 	"context"
-	"fmt"
 	"os"
 	"path/filepath"
 	"sync"
 
-	"github.com/jmoiron/sqlx"
-	mysql_ "github.com/kaydxh/golang/pkg/database/mysql"
+	ds_ "github.com/kaydxh/golang/pkg/binlog/datastore"
 	rotate_ "github.com/kaydxh/golang/pkg/file-rotate"
 )
 
-type DataStore interface {
-	// query arg for db, p for filedata
-	// file for filestoreage
-	WriteData(ctx context.Context, key string, query string, arg interface{}, p [][]byte) (file *os.File, n int64, err error)
-}
+var _ ds_.DataStore = (*FileDataStore)(nil)
 
 type FileDataStore struct {
 	rotateFiler    *rotate_.RotateFiler
@@ -60,7 +54,7 @@ func NewFileDataStore(filedir string, options ...rotate_.RotateFilerOption) (*Fi
 	return s, nil
 }
 
-func (s *FileDataStore) WriteData(ctx context.Context, key string, query string, arg interface{}, p [][]byte) (file *os.File, n int64, err error) {
+func (s *FileDataStore) WriteData(ctx context.Context, query string, arg interface{}, key string, p [][]byte) (file *os.File, n int64, err error) {
 	rotateFiler := s.getOrCreate(ctx, key)
 	file, tn, err := rotateFiler.WriteBytesLine(p)
 	return file, int64(tn), err
@@ -83,23 +77,4 @@ func (s *FileDataStore) getOrCreate(ctx context.Context, key string) *rotate_.Ro
 	}
 
 	return rotateFiler
-}
-
-type DBDataStore struct {
-	*sqlx.DB
-}
-
-func NewDBDataStore(db *sqlx.DB) (*DBDataStore, error) {
-	if db == nil {
-		return nil, fmt.Errorf("db is nil")
-	}
-
-	s := &DBDataStore{}
-	s.DB = db
-	return s, nil
-}
-
-func (s *DBDataStore) WriteData(ctx context.Context, query string, arg interface{}, p [][]byte) (file *os.File, n int64, err error) {
-	n, err = mysql_.ExecContext(ctx, query, mysql_.BuildNamedColumnsValuesBatch(arg), nil, s.DB)
-	return nil, n, err
 }
