@@ -61,11 +61,7 @@ type Channel struct {
 type BinlogService struct {
 	consumers []mq_.Consumer
 
-	//rotateFiler *rotate_.RotateFiler
 	dataStore ds_.DataStore
-	//rotateFilers   map[string]*rotate_.RotateFiler //message key -> rotateFilter
-	//dataStores     map[string]DataStore //message key -> rotateFilter
-	//rotateFilersMu sync.Mutex
 
 	taskq *taskq_.Pool
 
@@ -104,14 +100,11 @@ func NewBinlogService(dataStore ds_.DataStore, taskq *taskq_.Pool, consumers []m
 
 	bs := &BinlogService{
 		dataStore: dataStore,
-		//rotateFilers: make(map[string]*rotate_.RotateFiler, 0),
-		//dataStores: make(map[string]DataStore, 0),
 		taskq:     taskq,
 		consumers: consumers,
 		opts:      defaultBinlogServiceOptions(),
 	}
 	bs.ApplyOptions(opts...)
-
 	/*
 		rotateFiler, _ := rotate_.NewRotateFiler(
 			bs.opts.rootPath,
@@ -210,7 +203,6 @@ func (srv *BinlogService) flush(ctx context.Context, consumer mq_.Consumer) erro
 			continue
 		}
 
-		//rotateFiler := srv.getOrCreateRotateFilers(ctx, string(msg.Key()))
 		flushFunc := func(ctx context.Context, data []byte) (err error) {
 			flushBatchData = append(flushBatchData, data)
 			select {
