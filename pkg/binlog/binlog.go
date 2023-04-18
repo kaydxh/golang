@@ -41,6 +41,8 @@ import (
 	"golang.org/x/sync/errgroup"
 )
 
+type MessageProcFunc func(ctx context.Context, data []byte) (interface{}, error)
+
 type BinlogOptions struct {
 	rootPath       string
 	prefixName     string
@@ -52,6 +54,8 @@ type BinlogOptions struct {
 
 	remotePrefixPath string
 	archive          bool
+
+	msgProcFunc MessageProcFunc
 }
 
 type Channel struct {
@@ -196,7 +200,7 @@ func (srv *BinlogService) flush(ctx context.Context, consumer mq_.Consumer) erro
 	timer := time.NewTimer(srv.opts.flushInterval)
 	defer timer.Stop()
 
-	var flushBatchData [][]byte
+	var flushBatchData []interface{}
 	for msg := range consumer.ReadStream(ctx) {
 		if msg.Error() != nil {
 			logger.WithError(msg.Error()).Errorf("faild to read stream %v", consumer.Channel())
@@ -204,19 +208,28 @@ func (srv *BinlogService) flush(ctx context.Context, consumer mq_.Consumer) erro
 		}
 
 		flushFunc := func(ctx context.Context, data []byte) (err error) {
-			flushBatchData = append(flushBatchData, data)
+			if srv.opts.msgProcFunc != nil {
+				value, err := srv.opts.msgProcFunc(ctx, data)
+				if err != nil {
+					return err
+				}
+				flushBatchData = append(flushBatchData, value)
+			} else {
+				flushBatchData = append(flushBatchData, data)
+			}
+
 			select {
 			case <-ctx.Done():
 				return ctx.Err()
 			case <-timer.C:
 				if len(flushBatchData) > 0 {
-					_, _, err = srv.dataStore.WriteData(ctx, "", nil, string(msg.Key()), flushBatchData)
+					_, _, err = srv.dataStore.WriteData(ctx, "", flushBatchData, string(msg.Key()))
 					flushBatchData = nil
 					timer.Reset(srv.opts.flushInterval)
 				}
 			default:
 				if len(flushBatchData) >= srv.opts.flushBatchSize {
-					_, _, err = srv.dataStore.WriteData(ctx, "", nil, string(msg.Key()), flushBatchData)
+					_, _, err = srv.dataStore.WriteData(ctx, "", flushBatchData, string(msg.Key()))
 					flushBatchData = nil
 					return err
 				}

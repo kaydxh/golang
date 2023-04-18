@@ -35,6 +35,8 @@ var _ ds_.DataStore = (*DBDataStore)(nil)
 
 type DBDataStore struct {
 	*sqlx.DB
+	insertSql string
+	updateSql string
 }
 
 func NewDBDataStore(db *sqlx.DB) (*DBDataStore, error) {
@@ -47,7 +49,7 @@ func NewDBDataStore(db *sqlx.DB) (*DBDataStore, error) {
 	return s, nil
 }
 
-func (s *DBDataStore) WriteData(ctx context.Context, query string, arg interface{}, key string, p [][]byte) (file *os.File, n int64, err error) {
+func (s *DBDataStore) WriteData(ctx context.Context, query string, arg interface{}, key string) (file *os.File, n int64, err error) {
 	n, err = mysql_.ExecContext(ctx, query, mysql_.BuildNamedColumnsValuesBatch(arg), nil, s.DB)
 	return nil, n, err
 }
