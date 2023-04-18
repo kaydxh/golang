@@ -30,5 +30,5 @@ type DataStore interface {
 	// query arg for db,
 	// key、p for filedata
 	// file for filestoreage
-	WriteData(ctx context.Context, query string, arg interface{}, key string, p [][]byte) (file *os.File, n int64, err error)
+	WriteData(ctx context.Context, query string, arg interface{}, key string) (file *os.File, n int64, err error)
 }

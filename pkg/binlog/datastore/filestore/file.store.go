@@ -23,6 +23,7 @@ package filestore
 
 import (
 	"context"
+	"fmt"
 	"os"
 	"path/filepath"
 	"sync"
@@ -54,8 +55,12 @@ func NewFileDataStore(filedir string, options ...rotate_.RotateFilerOption) (*Fi
 	return s, nil
 }
 
-func (s *FileDataStore) WriteData(ctx context.Context, query string, arg interface{}, key string, p [][]byte) (file *os.File, n int64, err error) {
+func (s *FileDataStore) WriteData(ctx context.Context, query string, arg interface{}, key string) (file *os.File, n int64, err error) {
 	rotateFiler := s.getOrCreate(ctx, key)
+	p, ok := arg.([][]byte)
+	if !ok {
+		return nil, 0, fmt.Errorf("invalid data type")
+	}
 	file, tn, err := rotateFiler.WriteBytesLine(p)
 	return file, int64(tn), err
 }
