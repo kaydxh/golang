@@ -23,7 +23,13 @@ package binlog
 
 import (
 	"context"
+	"fmt"
 
+	ds_ "github.com/kaydxh/golang/pkg/binlog/datastore"
+	dbstore_ "github.com/kaydxh/golang/pkg/binlog/datastore/dbstore"
+	filestore_ "github.com/kaydxh/golang/pkg/binlog/datastore/filestore"
+	mysql_ "github.com/kaydxh/golang/pkg/database/mysql"
+	rotate_ "github.com/kaydxh/golang/pkg/file-rotate"
 	mq_ "github.com/kaydxh/golang/pkg/mq"
 	taskq_ "github.com/kaydxh/golang/pkg/pool/taskqueue"
 	viper_ "github.com/kaydxh/golang/pkg/viper"
@@ -72,8 +78,38 @@ func (c *completedConfig) New(ctx context.Context, taskq *taskq_.Pool, consumers
 }
 
 func (c *completedConfig) install(ctx context.Context, taskq *taskq_.Pool, consumers []mq_.Consumer, opts ...BinlogServiceOption) (*BinlogService, error) {
-	//todo init DataStore
-	return NewBinlogService(nil, taskq, consumers, opts...)
+	config := &c.Proto
+	var (
+		dataStore ds_.DataStore
+		err       error
+	)
+	switch config.GetBinlogType() {
+	case BinlogType_BinlogType_DB:
+		db := mysql_.GetDB()
+		if db == nil {
+			return nil, fmt.Errorf("db is not installed")
+		}
+		dataStore, err = dbstore_.NewDBDataStore(db)
+		if err != nil {
+			return nil, fmt.Errorf("db is not installed")
+		}
+	case BinlogType_BinlogType_File:
+		filelogConfig := config.GetFileLog()
+
+		dataStore, err = filestore_.NewFileDataStore(
+			filelogConfig.GetFilepath(),
+			rotate_.WithRotateSize(filelogConfig.GetRotateSize()),
+			rotate_.WithRotateInterval(filelogConfig.GetRotateInterval().AsDuration()),
+			//rotate_.WithRotateCallback(bs.rotateCallback),
+		)
+		if err != nil {
+			return nil, err
+		}
+
+	default:
+		return nil, fmt.Errorf("binlog type %v is not support", config.GetBinlogType())
+	}
+	return NewBinlogService(dataStore, taskq, consumers, opts...)
 }
 
 // Complete set default ServerRunOptions.

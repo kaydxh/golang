@@ -1,5 +1,10 @@
 binlog:
   enabled: true
-  filepath: ./binlog
-  rotate_interval: 3600s #1h
-  rotate_size: 104857600 #100M
+  binlog_type: "BinlogType_DB"
+  flush_batch_size: 1
+  flush_timeout: 10s
+
+  file_log:
+    filepath: ./binlog
+    rotate_interval: 3600s #1h
+    rotate_size: 104857600 #100M

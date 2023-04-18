@@ -8,8 +8,26 @@ option go_package = "github.com/kaydxh/go.pkg.binlog;binlog";
 message Binlog {
   bool enabled = 1;
 
-  string filepath = 3;
-  google.protobuf.Duration max_age = 4;
-  int64 max_count = 5;
-  google.protobuf.Duration rotate_interval = 6;
+  BinlogType binlog_type = 2;
+  int64 flush_batch_size = 3;
+  google.protobuf.Duration max_flush_interval = 4;
+  google.protobuf.Duration flush_timeout = 5;
+
+  DBLog db_log = 20;
+  FileLog file_log = 21;
+
+  message DBLog {}
+
+  message FileLog {
+    string filepath = 3;
+    google.protobuf.Duration max_age = 4;
+    int64 max_count = 5;
+    google.protobuf.Duration rotate_interval = 6;
+    int64 rotate_size = 7;
+  }
+}
+
+enum BinlogType {
+  BinlogType_DB = 0;
+  BinlogType_File = 1;
 }
