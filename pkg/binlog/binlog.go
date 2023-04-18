@@ -109,17 +109,6 @@ func NewBinlogService(dataStore ds_.DataStore, taskq *taskq_.Pool, consumers []m
 		opts:      defaultBinlogServiceOptions(),
 	}
 	bs.ApplyOptions(opts...)
-	/*
-		rotateFiler, _ := rotate_.NewRotateFiler(
-			bs.opts.rootPath,
-			rotate_.WithRotateSize(bs.opts.rotateSize),
-			rotate_.WithRotateInterval(bs.opts.rotateInterval),
-			rotate_.WithSuffixName(bs.opts.suffixName),
-			rotate_.WithPrefixName(bs.opts.prefixName),
-			rotate_.WithRotateCallback(bs.rotateCallback),
-		)
-		bs.rotateFiler = rotateFiler
-	*/
 
 	return bs, nil
 }
@@ -170,31 +159,6 @@ func (srv *BinlogService) Run(ctx context.Context) error {
 	return nil
 }
 
-/*
-func (srv *BinlogService) getOrCreateRotateFilers(ctx context.Context, key string) *rotate_.RotateFiler {
-	if key == "" {
-		return srv.rotateFiler
-	}
-
-	srv.rotateFilersMu.Lock()
-	defer srv.rotateFilersMu.Unlock()
-	rotateFiler, ok := srv.rotateFilers[key]
-	if !ok {
-		rotateFiler, _ = rotate_.NewRotateFiler(
-			filepath.Join(srv.opts.rootPath, key),
-			rotate_.WithRotateSize(srv.opts.rotateSize),
-			rotate_.WithRotateInterval(srv.opts.rotateInterval),
-			rotate_.WithSuffixName(srv.opts.suffixName),
-			rotate_.WithPrefixName(srv.opts.prefixName),
-			rotate_.WithRotateCallback(srv.rotateCallback),
-		)
-		srv.rotateFilers[key] = rotateFiler
-	}
-
-	return rotateFiler
-}
-*/
-
 func (srv *BinlogService) flush(ctx context.Context, consumer mq_.Consumer) error {
 	logger := srv.logger()
 	timer := time.NewTimer(srv.opts.flushInterval)
@@ -223,13 +187,13 @@ func (srv *BinlogService) flush(ctx context.Context, consumer mq_.Consumer) erro
 				return ctx.Err()
 			case <-timer.C:
 				if len(flushBatchData) > 0 {
-					_, _, err = srv.dataStore.WriteData(ctx, "", flushBatchData, string(msg.Key()))
+					_, err = srv.dataStore.WriteData(ctx, "", flushBatchData, string(msg.Key()))
 					flushBatchData = nil
 					timer.Reset(srv.opts.flushInterval)
 				}
 			default:
 				if len(flushBatchData) >= srv.opts.flushBatchSize {
-					_, _, err = srv.dataStore.WriteData(ctx, "", flushBatchData, string(msg.Key()))
+					_, err = srv.dataStore.WriteData(ctx, "", flushBatchData, string(msg.Key()))
 					flushBatchData = nil
 					return err
 				}

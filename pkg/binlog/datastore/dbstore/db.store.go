@@ -24,7 +24,6 @@ package dbstore
 import (
 	"context"
 	"fmt"
-	"os"
 
 	"github.com/jmoiron/sqlx"
 	ds_ "github.com/kaydxh/golang/pkg/binlog/datastore"
@@ -49,7 +48,7 @@ func NewDBDataStore(db *sqlx.DB) (*DBDataStore, error) {
 	return s, nil
 }
 
-func (s *DBDataStore) WriteData(ctx context.Context, query string, arg interface{}, key string) (file *os.File, n int64, err error) {
+func (s *DBDataStore) WriteData(ctx context.Context, query string, arg interface{}, key string) (n int64, err error) {
 	n, err = mysql_.ExecContext(ctx, query, mysql_.BuildNamedColumnsValuesBatch(arg), nil, s.DB)
-	return nil, n, err
+	return n, err
 }
