@@ -193,7 +193,7 @@ func (srv *BinlogService) getOrCreateRotateFilers(ctx context.Context, key strin
 
 func (srv *BinlogService) flush(ctx context.Context, consumer mq_.Consumer) error {
 	logger := srv.logger()
-	timer := time.NewTicker(srv.opts.flushInterval)
+	timer := time.NewTimer(srv.opts.flushInterval)
 	defer timer.Stop()
 
 	var flushBatchData [][]byte
@@ -212,6 +212,7 @@ func (srv *BinlogService) flush(ctx context.Context, consumer mq_.Consumer) erro
 				if len(flushBatchData) > 0 {
 					_, _, err = srv.dataStore.WriteData(ctx, "", nil, string(msg.Key()), flushBatchData)
 					flushBatchData = nil
+					timer.Reset(srv.opts.flushInterval)
 				}
 			default:
 				if len(flushBatchData) >= srv.opts.flushBatchSize {
@@ -222,6 +223,15 @@ func (srv *BinlogService) flush(ctx context.Context, consumer mq_.Consumer) erro
 				if err != nil {
 					return err
 				}
+				// https://github.com/golang/go/issues/27169
+				//https://tonybai.com/2016/12/21/how-to-use-timer-reset-in-golang-correctly/
+				if !timer.Stop() {
+					select {
+					case <-timer.C:
+					default:
+					}
+				}
+				timer.Reset(srv.opts.flushInterval)
 			}
 			return nil
 		}
