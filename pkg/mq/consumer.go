@@ -25,6 +25,6 @@ import "context"
 
 type Consumer interface {
 	ReadStream(ctx context.Context) <-chan Message
-	Channel() string
+	Topic() string
 	Close()
 }

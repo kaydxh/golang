@@ -27,3 +27,15 @@ type KafkaMessage struct {
 	Err error
 	Msg *kafka.Message
 }
+
+func (m KafkaMessage) Error() error {
+	return m.Err
+}
+
+func (m KafkaMessage) Key() []byte {
+	return m.Msg.Key
+}
+
+func (m KafkaMessage) Value() []byte {
+	return m.Msg.Value
+}
