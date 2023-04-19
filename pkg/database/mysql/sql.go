@@ -192,6 +192,20 @@ func JoinNamedColumnsValuesBatch(cols []string, batch int) string {
 	return strings.Join(batchNamedCols, ",")
 }
 
+func BuildNamedInsertSql(table string, cols []string, batch int) string {
+	if table == "" || len(cols) == 0 {
+		return ""
+	}
+	sql := fmt.Sprintf(`INSERT INTO %s 
+				(
+				 %s
+				) 
+				VALUES %s`, table,
+		strings.Join(cols, ","),
+		JoinNamedColumnsValuesBatch(cols, batch))
+	return sql
+}
+
 // used for batch insert
 func TransferToNamedColumnsValuesBatch(req []map[string]interface{}) map[string]interface{} {
 
