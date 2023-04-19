@@ -100,7 +100,7 @@ func TestAllTagsValues(t *testing.T) {
 	}
 
 	id := uuid.NewString()
-	req := HttpRequest{
+	req := &HttpRequest{
 		RequestId: id,
 		Username:  "admin",
 	}
