@@ -4,6 +4,7 @@ import (
 	"context"
 	"sync"
 
+	mq_ "github.com/kaydxh/golang/pkg/mq"
 	kafka "github.com/segmentio/kafka-go"
 	"github.com/sirupsen/logrus"
 )
@@ -11,7 +12,7 @@ import (
 type Consumer struct {
 	*kafka.Reader
 	config     kafka.ReaderConfig
-	msgChannel chan KafkaMessage
+	msgChannel chan mq_.Message
 	streamOnce sync.Once
 	closeOnce  sync.Once
 	closeCh    chan struct{}
@@ -20,7 +21,7 @@ type Consumer struct {
 func NewConsumer(config kafka.ReaderConfig) (*Consumer, error) {
 	c := &Consumer{
 		config:     config,
-		msgChannel: make(chan KafkaMessage, 1024),
+		msgChannel: make(chan mq_.Message, 1024),
 		closeCh:    make(chan struct{}),
 	}
 	r := kafka.NewReader(config)
@@ -29,7 +30,11 @@ func NewConsumer(config kafka.ReaderConfig) (*Consumer, error) {
 	return c, nil
 }
 
-func (c *Consumer) ReadStream(ctx context.Context) <-chan KafkaMessage {
+func (c *Consumer) Topic() string {
+	return c.config.Topic
+}
+
+func (c *Consumer) ReadStream(ctx context.Context) <-chan mq_.Message {
 	c.streamOnce.Do(func() {
 		go func() {
 			for {

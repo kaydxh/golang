@@ -97,7 +97,12 @@ func TestConsumer(t *testing.T) {
 	}
 
 	for msg := range c.ReadStream(ctx) {
-		t.Logf("read msg: %+v", msg)
+		if msg.Error() != nil {
+			t.Errorf("failed to read stream err: %v", err)
+			continue
+		}
+		stas := c.Stats()
+		t.Logf("read msg key[%v], value[%v], stas: %+v", string(msg.Key()), string(msg.Value()), stas)
 	}
 
 }

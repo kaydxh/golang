@@ -30,6 +30,7 @@ import (
 
 	errors_ "github.com/kaydxh/golang/go/errors"
 	time_ "github.com/kaydxh/golang/go/time"
+	mq_ "github.com/kaydxh/golang/pkg/mq"
 	kafka "github.com/segmentio/kafka-go"
 	"golang.org/x/net/context"
 )
@@ -313,7 +314,7 @@ func (q *MQ) GetConsumer(topic string) (*Consumer, error) {
 	return nil, fmt.Errorf("not exist consumer %v", topic)
 }
 
-func (q *MQ) ReadStream(ctx context.Context, topic string) <-chan KafkaMessage {
+func (q *MQ) ReadStream(ctx context.Context, topic string) <-chan mq_.Message {
 	c, err := q.GetConsumer(topic)
 	if err != nil {
 		return nil
