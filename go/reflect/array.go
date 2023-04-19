@@ -40,22 +40,30 @@ func ArrayAllTagsVaules(req interface{}, key string) []map[string]interface{} {
 			structValue = structValue.Elem()
 		}
 
-		if structType.Kind() != reflect.Struct {
-			return nil
+		if !structValue.CanInterface() {
+			continue
 		}
 
-		for j := 0; j < structType.NumField(); j++ {
-			field := structType.Field(j)
-			value := structValue.Field(j)
-			if !value.CanInterface() {
-				continue
-			}
+		tagValues = AllTagsValues(structValue.Interface(), key)
+		/*
+			// get tags for struct
+				if structType.Kind() != reflect.Struct {
+					return nil
+				}
 
-			tag := field.Tag.Get(key)
-			if tag != "" {
-				tagValues[tag] = value.Interface()
-			}
-		}
+				for j := 0; j < structType.NumField(); j++ {
+					field := structType.Field(j)
+					value := structValue.Field(j)
+					if !value.CanInterface() {
+						continue
+					}
+
+					tag := field.Tag.Get(key)
+					if tag != "" {
+						tagValues[tag] = value.Interface()
+					}
+				}
+		*/
 
 		valuesMap = append(valuesMap, tagValues)
 	}
