@@ -109,7 +109,12 @@ func (c *completedConfig) install(ctx context.Context, taskq *taskq_.Pool, consu
 	default:
 		return nil, fmt.Errorf("binlog type %v is not support", config.GetBinlogType())
 	}
-	return NewBinlogService(dataStore, taskq, consumers, opts...)
+	bs, err := NewBinlogService(dataStore, taskq, consumers, opts...)
+	if err != nil {
+		return nil, err
+	}
+	err = bs.Run(ctx)
+	return bs, err
 }
 
 // Complete set default ServerRunOptions.

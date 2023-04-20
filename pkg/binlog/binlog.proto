@@ -31,3 +31,4 @@ enum BinlogType {
   BinlogType_DB = 0;
   BinlogType_File = 1;
 }
+

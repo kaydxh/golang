@@ -64,3 +64,15 @@ func WithRotateSize(rotateSize int64) BinlogServiceOption {
 		c.opts.rotateSize = rotateSize
 	})
 }
+
+func WithMessageDecoderFunc(f MessageDecoderFunc) BinlogServiceOption {
+	return BinlogServiceOptionFunc(func(c *BinlogService) {
+		c.opts.msgDecodeFunc = f
+	})
+}
+
+func WithMessageKeyDecodeFunc(f MessageKeyDecodeFunc) BinlogServiceOption {
+	return BinlogServiceOptionFunc(func(c *BinlogService) {
+		c.opts.msgKeyDecodeFunc = f
+	})
+}
