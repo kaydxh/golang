@@ -19,10 +19,9 @@
  *OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  *SOFTWARE.
  */
-package binlog
+package datastore
 
 import (
-	"context"
 	"reflect"
 	"sort"
 )
@@ -30,8 +29,10 @@ import (
 type MessageKey struct {
 	Key     string
 	MsgType MsgType
-	Cols    []string
-	Table   string
+
+	Fields []string
+	// To db is table name
+	Path string
 }
 
 func (m MessageKey) Equual(s MessageKey) bool {
@@ -43,13 +44,13 @@ func (m MessageKey) Equual(s MessageKey) bool {
 		return false
 	}
 
-	if m.Table != s.Table {
+	if m.Path != s.Path {
 		return false
 	}
 
-	sort.Strings(m.Cols)
-	sort.Strings(s.Cols)
-	return reflect.DeepEqual(m.Cols, s.Cols)
+	sort.Strings(m.Fields)
+	sort.Strings(s.Fields)
+	return reflect.DeepEqual(m.Fields, s.Fields)
 }
 
 type Message struct {
@@ -65,6 +66,3 @@ const (
 	MsgType_Update MsgType = 2
 	MsgType_Get    MsgType = 3
 )
-
-type MessageDecoderFunc func(ctx context.Context, data []byte) (interface{}, error)
-type MessageKeyDecodeFunc func(ctx context.Context, data []byte) (MessageKey, error)

@@ -19,15 +19,12 @@
  *OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  *SOFTWARE.
  */
-package binlog
+package datastore
 
 import (
 	"context"
 )
 
 type DataStore interface {
-	// query arg for db,
-	// key、p for filedata
-	// file for filestoreage
-	WriteData(ctx context.Context, query string, arg interface{}, key string) (n int64, err error)
+	WriteData(ctx context.Context, arg interface{}, key MessageKey) (n int64, err error)
 }

@@ -54,8 +54,8 @@ func NewFileDataStore(filedir string, options ...rotate_.RotateFilerOption) (*Fi
 	return s, nil
 }
 
-func (s *FileDataStore) WriteData(ctx context.Context, query string, arg interface{}, key string) (n int64, err error) {
-	rotateFiler := s.getOrCreate(ctx, key)
+func (s *FileDataStore) WriteData(ctx context.Context, arg interface{}, key ds_.MessageKey) (n int64, err error) {
+	rotateFiler := s.getOrCreate(ctx, key.Key)
 	p, ok := arg.([][]byte)
 	if !ok {
 		return 0, fmt.Errorf("invalid data type")

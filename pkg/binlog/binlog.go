@@ -34,13 +34,15 @@ import (
 	"github.com/google/uuid"
 	"github.com/kaydxh/golang/go/errors"
 	ds_ "github.com/kaydxh/golang/pkg/binlog/datastore"
-	mysql_ "github.com/kaydxh/golang/pkg/database/mysql"
 	mq_ "github.com/kaydxh/golang/pkg/mq"
 	taskq_ "github.com/kaydxh/golang/pkg/pool/taskqueue"
 	queue_ "github.com/kaydxh/golang/pkg/pool/taskqueue/queue"
 	"github.com/sirupsen/logrus"
 	"golang.org/x/sync/errgroup"
 )
+
+type MessageDecoderFunc func(ctx context.Context, data []byte) (interface{}, error)
+type MessageKeyDecodeFunc func(ctx context.Context, data []byte) (ds_.MessageKey, error)
 
 type BinlogOptions struct {
 	rootPath       string
@@ -167,14 +169,14 @@ func (srv *BinlogService) Run(ctx context.Context) error {
 	return nil
 }
 
-func (srv *BinlogService) work(ctx context.Context, msgCh <-chan *Message) {
+func (srv *BinlogService) work(ctx context.Context, msgCh <-chan *ds_.Message) {
 	logger := srv.logger()
 	timer := time.NewTimer(srv.opts.flushInterval)
 	defer timer.Stop()
 
 	var (
 		flushBatchData []interface{}
-		lastMsgKey     MessageKey
+		lastMsgKey     ds_.MessageKey
 	)
 
 	operateFunc := func() {
@@ -185,8 +187,7 @@ func (srv *BinlogService) work(ctx context.Context, msgCh <-chan *Message) {
 			case <-timer.C:
 				logger.Info("start to flush timer")
 				if len(flushBatchData) > 0 {
-					sql := mysql_.BuildNamedInsertSql(lastMsgKey.Table, lastMsgKey.Cols, len(flushBatchData))
-					_, err := srv.dataStore.WriteData(ctx, sql, flushBatchData, lastMsgKey.Key)
+					_, err := srv.dataStore.WriteData(ctx, flushBatchData, lastMsgKey)
 					if err != nil {
 
 					}
@@ -210,7 +211,7 @@ func (srv *BinlogService) work(ctx context.Context, msgCh <-chan *Message) {
 					msgValue = msg.Value
 				}
 
-				msgKey := MessageKey{
+				msgKey := ds_.MessageKey{
 					Key: string(msg.Key),
 				}
 				if srv.opts.msgKeyDecodeFunc != nil {
@@ -220,10 +221,9 @@ func (srv *BinlogService) work(ctx context.Context, msgCh <-chan *Message) {
 					}
 				}
 
-				if msgKey.MsgType != MsgType_Insert {
+				if msgKey.MsgType != ds_.MsgType_Insert {
 					if len(flushBatchData) > 0 {
-						sql := mysql_.BuildNamedInsertSql(msgKey.Table, msgKey.Cols, len(flushBatchData))
-						_, err = srv.dataStore.WriteData(ctx, sql, flushBatchData, string(msg.Key))
+						_, err = srv.dataStore.WriteData(ctx, flushBatchData, lastMsgKey)
 						flushBatchData = nil
 					}
 					//todo do the msg
@@ -238,8 +238,7 @@ func (srv *BinlogService) work(ctx context.Context, msgCh <-chan *Message) {
 					} else {
 						logger.Infof("current msg key[%v] is not equal last msg key[%v]", msgKey, lastMsgKey)
 						if len(flushBatchData) > 0 {
-							sql := mysql_.BuildNamedInsertSql(msgKey.Table, msgKey.Cols, len(flushBatchData))
-							_, err = srv.dataStore.WriteData(ctx, sql, flushBatchData, string(msg.Key))
+							_, err = srv.dataStore.WriteData(ctx, flushBatchData, lastMsgKey)
 							flushBatchData = nil
 						}
 						//todo do the msg
@@ -250,8 +249,7 @@ func (srv *BinlogService) work(ctx context.Context, msgCh <-chan *Message) {
 
 				if len(flushBatchData) >= srv.opts.flushBatchSize {
 					logger.Infof("flush batch data size[%v] >= flush batch size[%v]", len(flushBatchData), srv.opts.flushBatchSize)
-					sql := mysql_.BuildNamedInsertSql(msgKey.Table, msgKey.Cols, srv.opts.flushBatchSize)
-					_, err = srv.dataStore.WriteData(ctx, sql, flushBatchData[:srv.opts.flushBatchSize], string(msg.Key))
+					_, err = srv.dataStore.WriteData(ctx, flushBatchData[:srv.opts.flushBatchSize], lastMsgKey)
 					flushBatchData = flushBatchData[srv.opts.flushBatchSize:]
 
 					if err != nil {
@@ -282,7 +280,7 @@ func (srv *BinlogService) flush(ctx context.Context, consumer mq_.Consumer) erro
 	timer := time.NewTimer(srv.opts.flushInterval)
 	defer timer.Stop()
 
-	msgCh := make(chan *Message)
+	msgCh := make(chan *ds_.Message)
 	srv.work(ctx, msgCh)
 	for msg := range consumer.ReadStream(ctx) {
 		logger.Infof("recv message key[%v] value[%v] from channel[%v]", string(msg.Key()), string(msg.Value()), consumer.Topic())
@@ -291,7 +289,7 @@ func (srv *BinlogService) flush(ctx context.Context, consumer mq_.Consumer) erro
 			continue
 		}
 
-		msgWrap := &Message{
+		msgWrap := &ds_.Message{
 			Key:   msg.Key(),
 			Value: msg.Value(),
 		}
