@@ -27,8 +27,6 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
-	"reflect"
-	"sort"
 	"sync"
 	"sync/atomic"
 	"time"
@@ -43,48 +41,6 @@ import (
 	"github.com/sirupsen/logrus"
 	"golang.org/x/sync/errgroup"
 )
-
-type MessageKey struct {
-	Key     string
-	MsgType MsgType
-	Cols    []string
-	Table   string
-}
-
-func (m MessageKey) Equual(s MessageKey) bool {
-	if m.Key != s.Key {
-		return false
-	}
-
-	if m.MsgType != s.MsgType {
-		return false
-	}
-
-	if m.Table != s.Table {
-		return false
-	}
-
-	sort.Strings(m.Cols)
-	sort.Strings(s.Cols)
-	return reflect.DeepEqual(m.Cols, s.Cols)
-}
-
-type Message struct {
-	Key   []byte
-	Value []byte
-}
-
-type MsgType int32
-
-const (
-	MsgType_Insert MsgType = 0
-	MsgType_Delete MsgType = 1
-	MsgType_Update MsgType = 2
-	MsgType_Get    MsgType = 3
-)
-
-type MessageDecoderFunc func(ctx context.Context, data []byte) (interface{}, error)
-type MessageKeyDecodeFunc func(ctx context.Context, data []byte) (MessageKey, error)
 
 type BinlogOptions struct {
 	rootPath       string
@@ -211,15 +167,17 @@ func (srv *BinlogService) Run(ctx context.Context) error {
 	return nil
 }
 
-func (srv *BinlogService) flush(ctx context.Context, consumer mq_.Consumer) error {
+func (srv *BinlogService) work(ctx context.Context, msgCh <-chan *Message) {
 	logger := srv.logger()
 	timer := time.NewTimer(srv.opts.flushInterval)
 	defer timer.Stop()
 
-	msgCh := make(chan Message)
-	var flushBatchData []interface{}
-	var lastMsgKey MessageKey
-	go func() {
+	var (
+		flushBatchData []interface{}
+		lastMsgKey     MessageKey
+	)
+
+	operateFunc := func() {
 		for {
 			select {
 			case <-ctx.Done():
@@ -313,16 +271,27 @@ func (srv *BinlogService) flush(ctx context.Context, consumer mq_.Consumer) erro
 			}
 		}
 
-	}()
+	}
 
+	go operateFunc()
+	return
+}
+
+func (srv *BinlogService) flush(ctx context.Context, consumer mq_.Consumer) error {
+	logger := srv.logger()
+	timer := time.NewTimer(srv.opts.flushInterval)
+	defer timer.Stop()
+
+	msgCh := make(chan *Message)
+	srv.work(ctx, msgCh)
 	for msg := range consumer.ReadStream(ctx) {
-		logger.Infof("recv message key[%v] value[%v] from channel[%v]]", string(msg.Key()), string(msg.Value()), consumer.Topic())
+		logger.Infof("recv message key[%v] value[%v] from channel[%v]", string(msg.Key()), string(msg.Value()), consumer.Topic())
 		if msg.Error() != nil {
 			logger.WithError(msg.Error()).Errorf("faild to read stream %v", consumer.Topic())
 			continue
 		}
 
-		msgWrap := Message{
+		msgWrap := &Message{
 			Key:   msg.Key(),
 			Value: msg.Value(),
 		}
