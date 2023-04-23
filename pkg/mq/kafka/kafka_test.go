@@ -46,16 +46,12 @@ func TestProducer(t *testing.T) {
 	}
 
 	topic := "topic-test-1"
-	err = mq.AsProducers(ctx, topic)
+	ps, err := mq.AsProducers(ctx, topic)
 	if err != nil {
 		t.Fatalf("failed to as producers, err: %v", err)
 	}
-	p, err := mq.GetProducer(topic)
-	if err != nil {
-		t.Fatalf("failed to get producer, err: %v", err)
-	}
 
-	err = p.Send(ctx,
+	err = ps[0].Send(ctx,
 		kafka.Message{
 			Key:   []byte("Key-A"),
 			Value: []byte("Hello World!"),
@@ -87,21 +83,17 @@ func TestConsumer(t *testing.T) {
 	}
 
 	topic := "topic-test-1"
-	err = mq.AsConsumers(ctx, topic)
+	cs, err := mq.AsConsumers(ctx, topic)
 	if err != nil {
 		t.Fatalf("failed to as producers, err: %v", err)
 	}
-	c, err := mq.GetConsumer(topic)
-	if err != nil {
-		t.Fatalf("failed to get producer, err: %v", err)
-	}
 
-	for msg := range c.ReadStream(ctx) {
+	for msg := range cs[0].ReadStream(ctx) {
 		if msg.Error() != nil {
 			t.Errorf("failed to read stream err: %v", err)
 			continue
 		}
-		stas := c.Stats()
+		stas := cs[0].Stats()
 		t.Logf("read msg key[%v], value[%v], stas: %+v", string(msg.Key()), string(msg.Value()), stas)
 	}
 
