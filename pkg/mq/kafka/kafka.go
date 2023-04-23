@@ -174,10 +174,10 @@ func (q *MQ) InstallMQ(
 	return q, nil
 }
 
-func (q *MQ) AsProducers(ctx context.Context, topics ...string) error {
+func (q *MQ) AsProducers(ctx context.Context, topics ...string) (producers []*Producer, err error) {
 	for _, topic := range topics {
 
-		fn := func() error {
+		fn := func() (*Producer, error) {
 
 			dialer := &kafka.Dialer{
 				Timeout:   q.opts.dialTimeout,
@@ -190,13 +190,13 @@ func (q *MQ) AsProducers(ctx context.Context, topics ...string) error {
 				Dialer:   dialer,
 			})
 			if err != nil {
-				return err
+				return nil, err
 			}
 
 			q.producerLock.Lock()
 			defer q.producerLock.Unlock()
 			q.producers[topic] = producer
-			return nil
+			return producer, nil
 		}
 
 		exp := time_.NewExponentialBackOff(
@@ -204,19 +204,20 @@ func (q *MQ) AsProducers(ctx context.Context, topics ...string) error {
 			time_.WithExponentialBackOffOptionMaxElapsedTime(q.opts.reconnectBackOffMax),
 		)
 		err := time_.BackOffUntilWithContext(ctx, func(ctx context.Context) (err_ error) {
-			err_ = fn()
+			producer, err_ := fn()
 			if err_ != nil {
 				return err_
 			}
+			producers = append(producers, producer)
 			return nil
 		}, exp, true, false)
 		if err != nil {
-			return fmt.Errorf("create producer for %v fail after: %v", topic, q.opts.reconnectBackOffMax.Milliseconds())
+			return nil, fmt.Errorf("create producer for %v fail after: %v", topic, q.opts.reconnectBackOffMax.Milliseconds())
 		}
 
 	}
 
-	return nil
+	return producers, nil
 }
 
 func (q *MQ) GetProducer(topic string) (*Producer, error) {
@@ -239,7 +240,7 @@ func (q *MQ) Send(ctx context.Context, topic string, msgs ...kafka.Message) erro
 	return p.Send(ctx, msgs...)
 }
 
-func (q *MQ) AsConsumers(ctx context.Context, topics ...string) error {
+func (q *MQ) AsConsumers(ctx context.Context, topics ...string) (consumers []*Consumer, err error) {
 	for _, topic := range topics {
 
 		checkFn := func() bool {
@@ -257,7 +258,7 @@ func (q *MQ) AsConsumers(ctx context.Context, topics ...string) error {
 			continue
 		}
 
-		fn := func() error {
+		fn := func() (*Consumer, error) {
 
 			dialer := &kafka.Dialer{
 				Timeout:   q.opts.dialTimeout,
@@ -274,13 +275,13 @@ func (q *MQ) AsConsumers(ctx context.Context, topics ...string) error {
 				//	CommitInterval: time.Second, // flushes commits to Kafka every second
 			})
 			if err != nil {
-				return err
+				return nil, err
 			}
 
 			q.consumerLock.Lock()
 			defer q.consumerLock.Unlock()
 			q.consumers[topic] = consumer
-			return nil
+			return consumer, nil
 		}
 
 		exp := time_.NewExponentialBackOff(
@@ -288,19 +289,20 @@ func (q *MQ) AsConsumers(ctx context.Context, topics ...string) error {
 			time_.WithExponentialBackOffOptionMaxElapsedTime(q.opts.reconnectBackOffMax),
 		)
 		err := time_.BackOffUntilWithContext(ctx, func(ctx context.Context) (err_ error) {
-			err_ = fn()
+			consumer, err_ := fn()
 			if err_ != nil {
 				return err_
 			}
+			consumers = append(consumers, consumer)
 			return nil
 		}, exp, true, false)
 		if err != nil {
-			return fmt.Errorf("create consumer for %v fail after: %v", topic, q.opts.reconnectBackOffMax.Milliseconds())
+			return nil, fmt.Errorf("create consumer for %v fail after: %v", topic, q.opts.reconnectBackOffMax.Milliseconds())
 		}
 
 	}
 
-	return nil
+	return consumers, nil
 }
 
 func (q *MQ) GetConsumer(topic string) (*Consumer, error) {
