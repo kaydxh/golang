@@ -48,7 +48,9 @@ func NewDBDataStore(db *sqlx.DB) (*DBDataStore, error) {
 	return s, nil
 }
 
-func (s *DBDataStore) WriteData(ctx context.Context, query string, arg interface{}, key string) (n int64, err error) {
-	n, err = mysql_.ExecContext(ctx, query, mysql_.BuildNamedColumnsValuesBatch(arg), nil, s.DB)
+func (s *DBDataStore) WriteData(ctx context.Context, arg interface{}, key ds_.MessageKey) (n int64, err error) {
+	columnsValues := mysql_.BuildNamedColumnsValuesBatch(arg)
+	sql := mysql_.BuildNamedInsertSql(key.Path, key.Fields, len(columnsValues))
+	n, err = mysql_.ExecContext(ctx, sql, mysql_.BuildNamedColumnsValuesBatch(arg), nil, s.DB)
 	return n, err
 }

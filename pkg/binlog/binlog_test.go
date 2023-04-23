@@ -32,6 +32,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/kaydxh/golang/pkg/binlog"
 	binlog_ "github.com/kaydxh/golang/pkg/binlog"
+	ds_ "github.com/kaydxh/golang/pkg/binlog/datastore"
 	mysql_ "github.com/kaydxh/golang/pkg/database/mysql"
 	mq_ "github.com/kaydxh/golang/pkg/mq"
 	kafka_ "github.com/kaydxh/golang/pkg/mq/kafka"
@@ -79,11 +80,11 @@ func TestProducer(t *testing.T) {
 
 	tableName := "hetu_zeus_0"
 	cols := []string{"group_id", "page_id", "fea_id", "entity_id", "feature0", "feature1", "extend_info"}
-	msgKey := &binlog_.MessageKey{
+	msgKey := &ds_.MessageKey{
 		Key:     "Key-A",
-		MsgType: binlog_.MsgType_Insert,
-		Cols:    cols,
-		Table:   tableName,
+		MsgType: ds_.MsgType_Insert,
+		Fields:  cols,
+		Path:    tableName,
 	}
 	keyData, _ := json.Marshal(msgKey)
 
@@ -155,8 +156,8 @@ func TestNewBinlog(t *testing.T) {
 
 		}),
 
-		binlog_.WithMessageKeyDecodeFunc(func(ctx context.Context, data []byte) (binlog_.MessageKey, error) {
-			var msgKey binlog_.MessageKey
+		binlog_.WithMessageKeyDecodeFunc(func(ctx context.Context, data []byte) (ds_.MessageKey, error) {
+			var msgKey ds_.MessageKey
 			err := json.Unmarshal(data, &msgKey)
 			return msgKey, err
 
