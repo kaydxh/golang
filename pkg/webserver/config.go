@@ -328,6 +328,10 @@ func (c *Config) loadViper() error {
 	return nil
 }
 
+func (c *Config) GetBindAddress() string {
+	return c.opts.bindAddress
+}
+
 // default bind port 80
 func NewConfig(options ...ConfigOption) *Config {
 	c := &Config{}

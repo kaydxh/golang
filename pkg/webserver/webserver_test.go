@@ -51,7 +51,7 @@ func TestNew(t *testing.T) {
 	cfgFile := "./webserver.yaml"
 	config := webserver_.NewConfig(webserver_.WithViper(viper_.GetViper(cfgFile, "web")))
 
-	s, err := config.Complete().New()
+	s, err := config.Complete().New(context.Background())
 	if err != nil {
 		t.Errorf("failed to new config err: %v", err)
 	}
@@ -61,7 +61,10 @@ func TestNew(t *testing.T) {
 		t.Errorf("failed to PrepareRun err: %v", err)
 	}
 
+	t.Logf("bind address: %v", config.GetBindAddress())
+
 	prepared.Run(context.Background())
+
 }
 
 func TestPrintProto(t *testing.T) {
