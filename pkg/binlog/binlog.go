@@ -277,8 +277,6 @@ func (srv *BinlogService) work(ctx context.Context, msgCh <-chan *ds_.Message) {
 
 func (srv *BinlogService) flush(ctx context.Context, consumer mq_.Consumer) error {
 	logger := srv.logger()
-	timer := time.NewTimer(srv.opts.flushInterval)
-	defer timer.Stop()
 
 	msgCh := make(chan *ds_.Message)
 	srv.work(ctx, msgCh)
