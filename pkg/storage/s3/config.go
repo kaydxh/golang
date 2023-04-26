@@ -42,7 +42,7 @@ func (c *completedConfig) New(ctx context.Context) (*blob.Bucket, error) {
 	}
 
 	if !c.Proto.GetEnabled() {
-		return nil, ErrNotEnabled
+		return nil, nil
 	}
 
 	bucket, err := c.install(ctx)
