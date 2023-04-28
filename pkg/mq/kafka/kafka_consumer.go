@@ -12,7 +12,7 @@ import (
 type Consumer struct {
 	*kafka.Reader
 	config     kafka.ReaderConfig
-	msgChannel chan mq_.Message
+	msgCh      chan mq_.Message
 	streamOnce sync.Once
 	closeOnce  sync.Once
 	closeCh    chan struct{}
@@ -20,9 +20,9 @@ type Consumer struct {
 
 func NewConsumer(config kafka.ReaderConfig) (*Consumer, error) {
 	c := &Consumer{
-		config:     config,
-		msgChannel: make(chan mq_.Message, 1024),
-		closeCh:    make(chan struct{}),
+		config:  config,
+		msgCh:   make(chan mq_.Message, 1024),
+		closeCh: make(chan struct{}),
 	}
 	r := kafka.NewReader(config)
 
@@ -45,15 +45,15 @@ func (c *Consumer) ReadStream(ctx context.Context) <-chan mq_.Message {
 						logrus.WithError(err).Errorf("failed to close consumer")
 					}
 
-					if c.msgChannel != nil {
-						close(c.msgChannel)
+					if c.msgCh != nil {
+						close(c.msgCh)
 					}
 
 					return
 
 				default:
 					msg, err := c.Reader.ReadMessage(ctx)
-					c.msgChannel <- KafkaMessage{
+					c.msgCh <- KafkaMessage{
 						Err: err,
 						Msg: &msg,
 					}
@@ -62,7 +62,7 @@ func (c *Consumer) ReadStream(ctx context.Context) <-chan mq_.Message {
 		}()
 	})
 
-	return c.msgChannel
+	return c.msgCh
 }
 
 func (c *Consumer) Close() {
