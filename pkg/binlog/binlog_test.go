@@ -69,14 +69,14 @@ func TestProducer(t *testing.T) {
 
 	topic := "topic-test-1"
 	ctx := context.Background()
-	err = mq.AsProducers(ctx, topic)
+	ps, err := mq.AsProducers(ctx, topic)
 	if err != nil {
 		t.Fatalf("failed to as producers, err: %v", err)
 	}
-	p, err := mq.GetProducer(topic)
-	if err != nil {
-		t.Fatalf("failed to get producer, err: %v", err)
+	if len(ps) == 0 {
+		t.Fatalf("producers nil")
 	}
+	p := ps[0]
 
 	tableName := "hetu_zeus_0"
 	cols := []string{"group_id", "page_id", "fea_id", "entity_id", "feature0", "feature1", "extend_info"}
@@ -123,7 +123,7 @@ func TestNewBinlog(t *testing.T) {
 
 	ctx := context.Background()
 	topic := "topic-test-1"
-	err = mq.AsConsumers(ctx, topic)
+	_, err = mq.AsConsumers(ctx, topic)
 	if err != nil {
 		t.Fatalf("failed to as producers, err: %v", err)
 	}
@@ -152,7 +152,7 @@ func TestNewBinlog(t *testing.T) {
 			if err != nil {
 				return arg, err
 			}
-			return arg, err
+			return arg, nil
 
 		}),
 
