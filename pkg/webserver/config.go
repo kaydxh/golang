@@ -286,7 +286,7 @@ func (c *Config) installGrpcMiddlewareChain() []gw_.GRPCGatewayOption {
 		opts,
 
 		// requestId
-		//gw_.WithServerUnaryInterceptorsRequestIdOptions(),
+		gw_.WithServerUnaryInterceptorsRequestIdOptions(),
 
 		// recovery
 		gw_.WithServerInterceptorsRecoveryOptions(),
@@ -298,10 +298,10 @@ func (c *Config) installGrpcMiddlewareChain() []gw_.GRPCGatewayOption {
 		),
 
 		// total req, fail req, cost time metrics, errorcode ip dims
-		//gw_.WithServerUnaryMetricInterceptorOptions(),
+		gw_.WithServerUnaryMetricInterceptorOptions(),
 
 		// print input and output body
-		//gw_.WithServerUnaryInterceptorsInOutPacketOptions(),
+		gw_.WithServerUnaryInterceptorsInOutPacketOptions(),
 		//gw_.WithServerInterceptorTimeoutOptions(grpcConfig.GetTimeout().AsDuration()),
 	)
 
