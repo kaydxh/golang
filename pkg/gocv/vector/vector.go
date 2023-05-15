@@ -59,6 +59,10 @@ func (v *Vector[T]) Assign(data []byte) error {
 	return err
 }
 
+func (v *Vector[T]) Dims() int {
+	return len(v.data)
+}
+
 func (v *Vector[T]) Len() int {
 	return len(v.data)
 }
