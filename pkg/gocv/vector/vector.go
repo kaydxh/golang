@@ -78,7 +78,7 @@ func (v Vector[T]) String() (string, error) {
 	buf := bytes.NewBuffer([]byte{'['})
 	for i, value := range v.data {
 		if i < len(v.data)-1 {
-			_, err = buf.WriteString(fmt.Sprintf("%v ", value))
+			_, err = buf.WriteString(fmt.Sprintf("%v,", value))
 		} else {
 			_, err = buf.WriteString(fmt.Sprintf("%v", value))
 		}
