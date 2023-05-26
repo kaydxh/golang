@@ -21,6 +21,10 @@ func TestSim(t *testing.T) {
 			score:    95.13,
 			expected: "",
 		},
+		{
+			score:    200.13,
+			expected: "",
+		},
 	}
 
 	for i, testCase := range testCases {

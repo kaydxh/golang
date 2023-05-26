@@ -22,11 +22,14 @@
 package cvtable
 
 import (
+	"fmt"
 	"sort"
 	"strconv"
 
 	io_ "github.com/kaydxh/golang/go/io"
 )
+
+const validateRows = 101
 
 type CVTable struct {
 	table []float64
@@ -50,28 +53,36 @@ func NewCVTable(filepath string) (*CVTable, error) {
 		}
 		c.table = append(c.table, sim)
 	}
-
+	err = c.Validate()
+	if err != nil {
+		return nil, err
+	}
 	return c, nil
+}
+
+func (c CVTable) Validate() error {
+	if len(c.table) != validateRows {
+		return fmt.Errorf("invalid cv table rows %v, must be %v", len(c.table), validateRows)
+	}
+
+	return nil
 }
 
 // score 0-100, mapping to sim
 func (c CVTable) Sim(score float64) float64 {
-	if len(c.table) == 0 {
-		return -1.1
-	}
-
-	if score < c.table[0] {
-		return -1.1
-	}
-
-	if int(score) >= len(c.table) {
-		return 1.1
+	if score <= 0 {
+		return 0
 	}
 
 	// integerPart integer part of a decimal
 	// decimalPart  decimal part of a decimal
 	integerPart := int(score)
 	decimalPart := score - float64(integerPart)
+
+	// len(c.table) - 1 == 100
+	if integerPart >= len(c.table)-1 {
+		return 1
+	}
 
 	return c.table[integerPart] + (c.table[integerPart+1]-c.table[integerPart])*decimalPart
 }
@@ -85,9 +96,9 @@ func (c CVTable) Score(sim float64) float64 {
 	}
 
 	pos := sort.Search(len(c.table), func(i int) bool { return c.table[i] >= sim })
-	var score float64
+	score := float64(pos)
 	if pos > 0 && pos < len(c.table) {
-		score = float64(pos) - 1.0 + (sim-c.table[pos-1])/(c.table[pos]-c.table[pos-1])
+		score += -1.0 + (sim-c.table[pos-1])/(c.table[pos]-c.table[pos-1])
 	}
 	if score > 100 {
 		return 100
