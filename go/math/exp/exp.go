@@ -36,3 +36,14 @@ func Max[T constraints.Ordered](s ...T) T {
 	}
 	return m
 }
+
+func Value[T constraints.Ordered](v, min, max T) T {
+	if v < min {
+		return min
+	}
+	if v > max {
+		return max
+	}
+
+	return v
+}
