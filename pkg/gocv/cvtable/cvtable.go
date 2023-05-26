@@ -27,9 +27,14 @@ import (
 	"strconv"
 
 	io_ "github.com/kaydxh/golang/go/io"
+	exp_ "github.com/kaydxh/golang/go/math/exp"
 )
 
-const validateRows = 101
+const (
+	validateRows = 101
+	maxScore     = 100
+	minScore     = 0
+)
 
 type CVTable struct {
 	table []float64
@@ -70,7 +75,7 @@ func (c CVTable) Validate() error {
 
 // score 0-100, mapping to sim
 func (c CVTable) Sim(score float64) float64 {
-	if score <= 0 {
+	if score <= minScore {
 		return 0
 	}
 
@@ -89,10 +94,10 @@ func (c CVTable) Sim(score float64) float64 {
 
 func (c CVTable) Score(sim float64) float64 {
 	if sim <= 0 {
-		return 0
+		return minScore
 	}
 	if sim >= 1 {
-		return 100
+		return maxScore
 	}
 
 	pos := sort.Search(len(c.table), func(i int) bool { return c.table[i] >= sim })
@@ -100,9 +105,6 @@ func (c CVTable) Score(sim float64) float64 {
 	if pos > 0 && pos < len(c.table) {
 		score += -1.0 + (sim-c.table[pos-1])/(c.table[pos]-c.table[pos-1])
 	}
-	if score > 100 {
-		return 100
-	}
 
-	return score
+	return exp_.Value(score, minScore, maxScore)
 }
