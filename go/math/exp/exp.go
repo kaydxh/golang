@@ -21,7 +21,13 @@
  */
 package exp
 
-import "golang.org/x/exp/constraints"
+import (
+	"math"
+
+	"golang.org/x/exp/constraints"
+)
+
+const PRECISION = 1e-6
 
 func Max[T constraints.Ordered](s ...T) T {
 	if len(s) == 0 {
@@ -37,6 +43,20 @@ func Max[T constraints.Ordered](s ...T) T {
 	return m
 }
 
+func Min[T constraints.Ordered](s ...T) T {
+	if len(s) == 0 {
+		var zero T
+		return zero
+	}
+	m := s[0]
+	for _, v := range s[1:] {
+		if m > v {
+			m = v
+		}
+	}
+	return m
+}
+
 func Value[T constraints.Ordered](v, min, max T) T {
 	if v < min {
 		return min
@@ -46,4 +66,16 @@ func Value[T constraints.Ordered](v, min, max T) T {
 	}
 
 	return v
+}
+
+func Equal[T float32 | float64](a, b T) bool {
+	return math.Abs(float64(a-b)) < PRECISION
+}
+
+func Sum[T constraints.Ordered](t ...T) T {
+	var sum T
+	for _, v := range t {
+		sum += v
+	}
+	return sum
 }
