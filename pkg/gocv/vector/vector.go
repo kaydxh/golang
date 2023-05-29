@@ -122,6 +122,19 @@ func (v Vector[T]) CosineDistance(r *Vector[T]) float64 {
 	return sum / (math.Sqrt(normL) * math.Sqrt(normR))
 }
 
+func (v Vector[T]) EuclideanDistance(r *Vector[T]) float64 {
+	if v.Len() != r.Len() {
+		return 0
+	}
+
+	var sum float64
+	for i := 0; i < v.Len(); i++ {
+		sum += math.Pow(float64(v.Data()[i]-r.Data()[i]), 2)
+	}
+
+	return math.Sqrt(sum)
+}
+
 func CreateNormalizedVector[T float32 | float64 | int8](dim int) []T {
 	var ve Vector[T]
 	for i := 0; i < dim; i++ {
@@ -136,4 +149,10 @@ func CosineDistance[T float32 | float64 | int8](l, r []T) float64 {
 	v1 := NewVector(l...)
 	v2 := NewVector(r...)
 	return v1.CosineDistance(v2)
+}
+
+func EuclideanDistance[T float32 | float64 | int8](l, r []T) float64 {
+	v1 := NewVector(l...)
+	v2 := NewVector(r...)
+	return v1.EuclideanDistance(v2)
 }
