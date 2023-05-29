@@ -34,10 +34,14 @@ type Vector[T float32 | float64 | int8] struct {
 	data []T
 }
 
-func NewVector[T float32 | float64 | int8]() *Vector[T] {
-	return &Vector[T]{
+func NewVector[T float32 | float64 | int8](data ...T) *Vector[T] {
+	v := &Vector[T]{
 		data: make([]T, 0),
 	}
+	if len(data) > 0 {
+		v.data = data
+	}
+	return v
 }
 
 func (v *Vector[T]) Append(t T) {
@@ -99,6 +103,25 @@ func (v Vector[T]) String() (string, error) {
 	return buf.String(), nil
 }
 
+func (v Vector[T]) CosineDistance(r *Vector[T]) float64 {
+	if v.Len() != r.Len() {
+		return 0
+	}
+
+	var (
+		sum   float64
+		normL float64
+		normR float64
+	)
+	for i := 0; i < v.Len(); i++ {
+		sum += float64(v.Data()[i] * r.Data()[i])
+		normL += float64(v.Data()[i] * v.Data()[i])
+		normR += float64(r.Data()[i] * r.Data()[i])
+	}
+
+	return sum / (math.Sqrt(normL) * math.Sqrt(normR))
+}
+
 func CreateNormalizedVector[T float32 | float64 | int8](dim int) []T {
 	var ve Vector[T]
 	for i := 0; i < dim; i++ {
@@ -107,4 +130,10 @@ func CreateNormalizedVector[T float32 | float64 | int8](dim int) []T {
 	ve.Norm()
 
 	return ve.Data()
+}
+
+func CosineDistance[T float32 | float64 | int8](l, r []T) float64 {
+	v1 := NewVector(l...)
+	v2 := NewVector(r...)
+	return v1.CosineDistance(v2)
 }
