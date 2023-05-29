@@ -28,13 +28,14 @@ import (
 	"math"
 
 	rand_ "github.com/kaydxh/golang/go/math/rand"
+	"golang.org/x/exp/constraints"
 )
 
-type Vector[T float32 | float64 | int8] struct {
+type Vector[T constraints.Integer | constraints.Float] struct {
 	data []T
 }
 
-func NewVector[T float32 | float64 | int8](data ...T) *Vector[T] {
+func NewVector[T constraints.Integer | constraints.Float](data ...T) *Vector[T] {
 	v := &Vector[T]{
 		data: make([]T, 0),
 	}
@@ -135,7 +136,7 @@ func (v Vector[T]) EuclideanDistance(r *Vector[T]) float64 {
 	return math.Sqrt(sum)
 }
 
-func CreateNormalizedVector[T float32 | float64 | int8](dim int) []T {
+func CreateNormalizedVector[T constraints.Integer | constraints.Float](dim int) []T {
 	var ve Vector[T]
 	for i := 0; i < dim; i++ {
 		ve.Append(T(rand_.Float64()))
@@ -145,13 +146,13 @@ func CreateNormalizedVector[T float32 | float64 | int8](dim int) []T {
 	return ve.Data()
 }
 
-func CosineDistance[T float32 | float64 | int8](l, r []T) float64 {
+func CosineDistance[T constraints.Integer | constraints.Float](l, r []T) float64 {
 	v1 := NewVector(l...)
 	v2 := NewVector(r...)
 	return v1.CosineDistance(v2)
 }
 
-func EuclideanDistance[T float32 | float64 | int8](l, r []T) float64 {
+func EuclideanDistance[T constraints.Integer | constraints.Float](l, r []T) float64 {
 	v1 := NewVector(l...)
 	v2 := NewVector(r...)
 	return v1.EuclideanDistance(v2)
