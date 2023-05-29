@@ -62,8 +62,21 @@ func TestCosineDistance(t *testing.T) {
 	v1 := vector.NewVector(data1...)
 	v2 := vector.NewVector(data2...)
 	distance := v1.CosineDistance(v2)
-	t.Logf("distance: %v", distance)
+	t.Logf("cosine distance: %v", distance)
 
 	distance = vector.CosineDistance(data1, data2)
-	t.Logf("distance: %v", distance)
+	t.Logf("cosine distance: %v", distance)
+}
+
+func TestEuclideanDistance(t *testing.T) {
+	dim := 1024
+	data1 := vector.CreateNormalizedVector[float32](dim)
+	data2 := vector.CreateNormalizedVector[float32](dim)
+	v1 := vector.NewVector(data1...)
+	v2 := vector.NewVector(data2...)
+	distance := v1.EuclideanDistance(v2)
+	t.Logf("euclidean distance: %v", distance)
+
+	distance = vector.EuclideanDistance(data1, data2)
+	t.Logf("euclidean distance: %v", distance)
 }
