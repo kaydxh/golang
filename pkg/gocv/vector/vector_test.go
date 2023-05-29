@@ -31,7 +31,7 @@ import (
 
 func TestVector(t *testing.T) {
 	var ve vector.Vector[float32]
-	for i := 0; i < 512; i++ {
+	for i := 0; i < 1024; i++ {
 		ve.Append(rand.Float32())
 	}
 	t.Logf("len: %v", ve.Len())
@@ -47,4 +47,10 @@ func TestVector(t *testing.T) {
 		t.Fatalf("failed to get norm string, err: %v", err)
 	}
 	t.Logf("Norm string: %v", s)
+}
+
+func TestCreateNormalizedVector(t *testing.T) {
+	dim := 1024
+	data := vector.CreateNormalizedVector[float32](dim)
+	t.Logf("data: %v", data)
 }

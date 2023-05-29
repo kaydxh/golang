@@ -26,6 +26,8 @@ import (
 	"encoding/binary"
 	"fmt"
 	"math"
+
+	rand_ "github.com/kaydxh/golang/go/math/rand"
 )
 
 type Vector[T float32 | float64 | int8] struct {
@@ -67,6 +69,10 @@ func (v *Vector[T]) Len() int {
 	return len(v.data)
 }
 
+func (v *Vector[T]) Data() []T {
+	return v.data
+}
+
 func (v Vector[T]) Bytes() ([]byte, error) {
 	buf := new(bytes.Buffer)
 	err := binary.Write(buf, binary.LittleEndian, v.data)
@@ -91,4 +97,14 @@ func (v Vector[T]) String() (string, error) {
 		return "", err
 	}
 	return buf.String(), nil
+}
+
+func CreateNormalizedVector[T float32 | float64 | int8](dim int) []T {
+	var ve Vector[T]
+	for i := 0; i < dim; i++ {
+		ve.Append(T(rand_.Float64()))
+	}
+	ve.Norm()
+
+	return ve.Data()
 }
