@@ -54,3 +54,16 @@ func TestCreateNormalizedVector(t *testing.T) {
 	data := vector.CreateNormalizedVector[float32](dim)
 	t.Logf("data: %v", data)
 }
+
+func TestCosineDistance(t *testing.T) {
+	dim := 1024
+	data1 := vector.CreateNormalizedVector[float32](dim)
+	data2 := vector.CreateNormalizedVector[float32](dim)
+	v1 := vector.NewVector(data1...)
+	v2 := vector.NewVector(data2...)
+	distance := v1.CosineDistance(v2)
+	t.Logf("distance: %v", distance)
+
+	distance = vector.CosineDistance(data1, data2)
+	t.Logf("distance: %v", distance)
+}
