@@ -64,14 +64,14 @@ func ExtractIntegerFromContext(ctx context.Context, key string) (int64, error) {
 }
 
 func ExtractFromContext(ctx context.Context, key string) string {
-	switch requestIDs := ctx.Value(key).(type) {
+	switch value := ctx.Value(key).(type) {
 	case string:
-		if requestIDs != "" {
-			return requestIDs
+		if value != "" {
+			return value
 		}
 	case []string:
-		if len(requestIDs) > 0 {
-			return requestIDs[0]
+		if len(value) > 0 {
+			return value[0]
 		}
 	default:
 		return ""
