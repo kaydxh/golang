@@ -84,6 +84,12 @@ func SetPairContext(ctx context.Context, key, value string) context.Context {
 	return context.WithValue(ctx, key, value)
 }
 
+func AppendContext(ctx context.Context, key string, values ...string) context.Context {
+	currentValues := ctx.Value(key).([]string)
+	currentValues = append(currentValues, values...)
+	return context.WithValue(ctx, key, currentValues)
+}
+
 func WithContextRequestId(ctx context.Context, id string) context.Context {
 	return context.WithValue(ctx, DefaultHTTPRequestIDKey, id)
 }
