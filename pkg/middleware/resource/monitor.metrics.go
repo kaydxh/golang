@@ -33,6 +33,10 @@ var (
 	DefaultMetricMonitor = NewMetricMonitor()
 )
 
+func GlobalMeter() metric.Meter {
+	return meter
+}
+
 func NewMetricMonitor() *MetricMonitor {
 	var err error
 	m := &MetricMonitor{}
