@@ -29,6 +29,20 @@ type Dimension struct {
 	Error        error
 }
 
+func AppendAttrsContext(ctx context.Context, values ...string) context.Context {
+	return AppendContext(ctx, OpentelemetryDimKeys, values...)
+}
+
+func AppendMetricCountContext(ctx context.Context, values ...string) context.Context {
+	return AppendContext(ctx, OpentelemetryMetricCountKeys, values...)
+}
+
+func AppendContext(ctx context.Context, key string, values ...string) context.Context {
+	currentValues := ctx.Value(key).([]string)
+	currentValues = append(currentValues, values...)
+	return context.WithValue(ctx, key, currentValues)
+}
+
 func ExtractAttrsWithContext(ctx context.Context) []attribute.KeyValue {
 	var (
 		attrs []attribute.KeyValue
