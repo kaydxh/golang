@@ -2,6 +2,7 @@ package resource
 
 import (
 	"context"
+	"sync"
 	"time"
 
 	"go.opentelemetry.io/otel"
@@ -27,6 +28,9 @@ type MetricMonitor struct {
 	TotalReqCounter   syncint64.Counter
 	FailCntCounter    syncint64.Counter
 	CostTimeHistogram syncfloat64.Histogram
+
+	BusinessCounters   map[string]syncint64.Counter
+	businessCountersMu sync.RWMutex
 }
 
 var (
@@ -39,7 +43,9 @@ func GlobalMeter() metric.Meter {
 
 func NewMetricMonitor() *MetricMonitor {
 	var err error
-	m := &MetricMonitor{}
+	m := &MetricMonitor{
+		BusinessCounters: make(map[string]syncint64.Counter, 0),
+	}
 	call := func(f func()) {
 		if err != nil {
 			return
@@ -62,11 +68,30 @@ func NewMetricMonitor() *MetricMonitor {
 	return m
 }
 
+func (m *MetricMonitor) GetOrNewBusinessCounter(key string) (syncint64.Counter, error) {
+	m.businessCountersMu.Lock()
+	defer m.businessCountersMu.Unlock()
+	counter, ok := DefaultMetricMonitor.BusinessCounters[key]
+	if ok {
+		return counter, nil
+	}
+
+	counter, err := meter.SyncInt64().Counter(key)
+	if err != nil {
+		return nil, err
+	}
+	DefaultMetricMonitor.BusinessCounters[key] = counter
+	return counter, nil
+}
+
 func ReportMetric(ctx context.Context, dim Dimension, costTime time.Duration) {
-	attrs := Attrs(dim)
+	attrs := ExtractAttrsWithContext(ctx)
+	attrs = append(attrs, Attrs(dim)...)
+
 	DefaultMetricMonitor.TotalReqCounter.Add(ctx, 1, attrs...)
 	if dim.Error != nil {
 		DefaultMetricMonitor.FailCntCounter.Add(ctx, 1, attrs...)
 	}
 	DefaultMetricMonitor.CostTimeHistogram.Record(ctx, float64(costTime.Milliseconds()), attrs...)
+	ReportBusinessMetric(ctx, attrs)
 }

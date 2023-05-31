@@ -1,11 +1,14 @@
 package resource
 
 import (
+	"context"
 	"fmt"
 
+	context_ "github.com/kaydxh/golang/go/context"
 	errors_ "github.com/kaydxh/golang/go/errors"
 	net_ "github.com/kaydxh/golang/go/net"
 	app_ "github.com/kaydxh/golang/pkg/webserver/app"
+	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/attribute"
 )
 
@@ -18,9 +21,72 @@ var (
 	ErrorCodeKey    = attribute.Key("error_code")    // error code
 )
 
+var OpentelemetryDimKeys = "opentelemetry_dim_keys"
+var OpentelemetryMetricCountKeys = "opentelemetry_metric_count_keys"
+
 type Dimension struct {
 	CalleeMethod string
 	Error        error
+}
+
+func ExtractAttrsWithContext(ctx context.Context) []attribute.KeyValue {
+	var (
+		attrs []attribute.KeyValue
+		dims  []string
+	)
+
+	switch value := ctx.Value(OpentelemetryDimKeys).(type) {
+	case string:
+		dims = append(dims, value)
+
+	case []string:
+		dims = append(dims, value...)
+	}
+
+	for _, dim := range dims {
+		var dimKey = attribute.Key(dim)
+		sv := context_.ExtractStringFromContext(ctx, dim)
+		if sv != "" {
+			attrs = append(attrs, dimKey.String(sv))
+			continue
+		}
+
+		iv, err := context_.ExtractIntegerFromContext(ctx, dim)
+		if err == nil {
+			attrs = append(attrs, dimKey.Int64(iv))
+			continue
+		}
+	}
+
+	return attrs
+}
+
+func ReportBusinessMetric(ctx context.Context, attrs []attribute.KeyValue) {
+	var metrics []string
+
+	switch value := ctx.Value(OpentelemetryMetricCountKeys).(type) {
+	case string:
+		metrics = append(metrics, value)
+
+	case []string:
+		metrics = append(metrics, value...)
+	}
+
+	for _, metric := range metrics {
+		counter, err := DefaultMetricMonitor.GetOrNewBusinessCounter(metric)
+		if err != nil {
+			otel.Handle(err)
+			continue
+		}
+
+		iv, err := context_.ExtractIntegerFromContext(ctx, metric)
+		if err == nil {
+			counter.Add(ctx, iv, attrs...)
+			continue
+		}
+	}
+
+	return
 }
 
 func Attrs(dim Dimension) []attribute.KeyValue {
