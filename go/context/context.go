@@ -80,12 +80,33 @@ func ExtractFromContext(ctx context.Context, key string) string {
 	return ""
 }
 
+func UpdateOrNewPairContext(ctx context.Context, key string, value interface{}) context.Context {
+	err := UpdateContext(ctx, key, value)
+	if err == nil {
+		return ctx
+	}
+
+	return context.WithValue(ctx, key, map[string]interface{}{
+		key: value,
+	})
+}
+
+func UpdateContext(ctx context.Context, key string, value interface{}) error {
+	currentValues, ok := ctx.Value(key).(map[string]interface{})
+	if ok {
+		currentValues[key] = value
+		return nil
+	}
+
+	return fmt.Errorf("key[%v] is not exist in context", key)
+}
+
 func SetPairContext(ctx context.Context, key, value string) context.Context {
 	return context.WithValue(ctx, key, value)
 }
 
 func AppendContext(ctx context.Context, key string, values ...string) context.Context {
-	currentValues := ctx.Value(key).([]string)
+	currentValues, _ := ctx.Value(key).([]string)
 	currentValues = append(currentValues, values...)
 	return context.WithValue(ctx, key, currentValues)
 }
