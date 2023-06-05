@@ -31,6 +31,9 @@ type MetricMonitor struct {
 
 	BusinessCounters   map[string]syncint64.Counter
 	businessCountersMu sync.RWMutex
+
+	BusinessHistogram   map[string]syncfloat64.Histogram
+	businessHistogramMu sync.RWMutex
 }
 
 var (
@@ -44,7 +47,8 @@ func GlobalMeter() metric.Meter {
 func NewMetricMonitor() *MetricMonitor {
 	var err error
 	m := &MetricMonitor{
-		BusinessCounters: make(map[string]syncint64.Counter, 0),
+		BusinessCounters:  make(map[string]syncint64.Counter, 0),
+		BusinessHistogram: make(map[string]syncfloat64.Histogram, 0),
 	}
 	call := func(f func()) {
 		if err != nil {
@@ -82,6 +86,22 @@ func (m *MetricMonitor) GetOrNewBusinessCounter(key string) (syncint64.Counter, 
 	}
 	DefaultMetricMonitor.BusinessCounters[key] = counter
 	return counter, nil
+}
+
+func (m *MetricMonitor) GetOrNewBusinessHistogram(key string) (syncfloat64.Histogram, error) {
+	m.businessHistogramMu.Lock()
+	defer m.businessHistogramMu.Unlock()
+	histogram, ok := DefaultMetricMonitor.BusinessHistogram[key]
+	if ok {
+		return histogram, nil
+	}
+
+	histogram, err := meter.SyncFloat64().Histogram(key)
+	if err != nil {
+		return nil, err
+	}
+	DefaultMetricMonitor.BusinessHistogram[key] = histogram
+	return histogram, nil
 }
 
 func ReportMetric(ctx context.Context, dim Dimension, costTime time.Duration) {

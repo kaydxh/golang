@@ -110,30 +110,56 @@ func ReportBusinessMetric(ctx context.Context, attrs []attribute.KeyValue) {
 
 	for key, value := range values {
 
-		counter, err := DefaultMetricMonitor.GetOrNewBusinessCounter(key)
-		if err != nil {
-			otel.Handle(err)
-			continue
-		}
-
-		var n int64
+		var (
+			n           int64
+			f           float64
+			counterType bool
+		)
 		switch value := value.(type) {
 		case int:
 			n = int64(value)
+			counterType = true
 
 		case int32:
 			n = int64(value)
+			counterType = true
 		case int64:
 			n = int64(value)
+			counterType = true
 
 		case uint:
 			n = int64(value)
+			counterType = true
 		case uint32:
 			n = int64(value)
+			counterType = true
 		case uint64:
 			n = int64(value)
+			counterType = true
+
+		case float32:
+			f = float64(value)
+		case float64:
+			f = float64(value)
 		}
-		counter.Add(ctx, n, attrs...)
+
+		if counterType {
+			counter, err := DefaultMetricMonitor.GetOrNewBusinessCounter(key)
+			if err != nil {
+				otel.Handle(err)
+				continue
+			}
+			counter.Add(ctx, n, attrs...)
+
+		} else {
+
+			histogram, err := DefaultMetricMonitor.GetOrNewBusinessHistogram(key)
+			if err != nil {
+				otel.Handle(err)
+				continue
+			}
+			histogram.Record(ctx, f, attrs...)
+		}
 	}
 
 	return
