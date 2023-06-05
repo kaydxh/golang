@@ -27,6 +27,9 @@ func handleMetric[REQ any, RESP any](info *grpc.UnaryServerInfo, handler resourc
 	return func(ctx context.Context, req REQ) (RESP, error) {
 
 		tc := time_.New(true)
+
+		ctx = resource_.AddKeysContext(ctx, resource_.AddAttrKeysContext, resource_.AddMetricKeysContext)
+
 		resp, err := handler(ctx, req)
 
 		var method string
