@@ -80,21 +80,12 @@ func ExtractFromContext(ctx context.Context, key string) string {
 	return ""
 }
 
-func UpdateOrNewPairContext(ctx context.Context, key string, value interface{}) context.Context {
-	err := UpdateContext(ctx, key, value)
-	if err == nil {
-		return ctx
-	}
-
-	return context.WithValue(ctx, key, map[string]interface{}{
-		key: value,
-	})
-}
-
-func UpdateContext(ctx context.Context, key string, value interface{}) error {
+func UpdateContext(ctx context.Context, key string, values map[string]interface{}) error {
 	currentValues, ok := ctx.Value(key).(map[string]interface{})
 	if ok {
-		currentValues[key] = value
+		for k, v := range values {
+			currentValues[k] = v
+		}
 		return nil
 	}
 

@@ -21,20 +21,45 @@ var (
 	ErrorCodeKey    = attribute.Key("error_code")    // error code
 )
 
-var OpentelemetryDimKeys = "opentelemetry_dim_keys"
-var OpentelemetryMetricCountKeys = "opentelemetry_metric_count_keys"
+var OpentelemetryDimsKey = "opentelemetry_dims_key"
+var OpentelemetryMetricsKey = "opentelemetry_metrics_key"
 
 type Dimension struct {
 	CalleeMethod string
 	Error        error
 }
 
+type AddKeyContexFunc func(ctx context.Context) context.Context
+
+func AddKeysContext(ctx context.Context, ops ...AddKeyContexFunc) context.Context {
+	for _, op := range ops {
+		ctx = op(ctx)
+	}
+	return ctx
+}
+
+func AddAttrKeysContext(ctx context.Context) context.Context {
+	return context.WithValue(ctx, OpentelemetryDimsKey, map[string]interface{}{})
+}
+
+func UpdateAttrsContext(ctx context.Context, values map[string]interface{}) error {
+	return context_.UpdateContext(ctx, OpentelemetryDimsKey, values)
+}
+
+func AddMetricKeysContext(ctx context.Context) context.Context {
+	return context.WithValue(ctx, OpentelemetryMetricsKey, map[string]interface{}{})
+}
+
+func UpdateMetricContext(ctx context.Context, values map[string]interface{}) error {
+	return context_.UpdateContext(ctx, OpentelemetryMetricsKey, values)
+}
+
 func AppendAttrsContext(ctx context.Context, values ...string) context.Context {
-	return context_.AppendContext(ctx, OpentelemetryDimKeys, values...)
+	return context_.AppendContext(ctx, OpentelemetryDimsKey, values...)
 }
 
 func AppendMetricCountContext(ctx context.Context, values ...string) context.Context {
-	return context_.AppendContext(ctx, OpentelemetryMetricCountKeys, values...)
+	return context_.AppendContext(ctx, OpentelemetryMetricsKey, values...)
 }
 
 func ExtractAttrsWithContext(ctx context.Context) []attribute.KeyValue {
@@ -43,7 +68,7 @@ func ExtractAttrsWithContext(ctx context.Context) []attribute.KeyValue {
 		dims  []string
 	)
 
-	switch value := ctx.Value(OpentelemetryDimKeys).(type) {
+	switch value := ctx.Value(OpentelemetryDimsKey).(type) {
 	case string:
 		dims = append(dims, value)
 
@@ -72,7 +97,7 @@ func ExtractAttrsWithContext(ctx context.Context) []attribute.KeyValue {
 func ReportBusinessMetric(ctx context.Context, attrs []attribute.KeyValue) {
 	var metrics []string
 
-	switch value := ctx.Value(OpentelemetryMetricCountKeys).(type) {
+	switch value := ctx.Value(OpentelemetryMetricsKey).(type) {
 	case string:
 		metrics = append(metrics, value)
 
