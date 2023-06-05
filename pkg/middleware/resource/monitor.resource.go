@@ -63,31 +63,39 @@ func AppendMetricCountContext(ctx context.Context, values ...string) context.Con
 }
 
 func ExtractAttrsWithContext(ctx context.Context) []attribute.KeyValue {
-	var (
-		attrs []attribute.KeyValue
-		dims  []string
-	)
+	var attrs []attribute.KeyValue
 
-	switch value := ctx.Value(OpentelemetryDimsKey).(type) {
-	case string:
-		dims = append(dims, value)
-
-	case []string:
-		dims = append(dims, value...)
+	values, ok := ctx.Value(OpentelemetryDimsKey).(map[string]interface{})
+	if !ok {
+		return nil
 	}
+	for key, value := range values {
+		var dimKey = attribute.Key(key)
+		switch value := value.(type) {
+		case string:
+			attrs = append(attrs, dimKey.String(value))
 
-	for _, dim := range dims {
-		var dimKey = attribute.Key(dim)
-		sv := context_.ExtractStringFromContext(ctx, dim)
-		if sv != "" {
-			attrs = append(attrs, dimKey.String(sv))
-			continue
-		}
+		case int:
+			attrs = append(attrs, dimKey.Int(value))
+		case int32:
+			attrs = append(attrs, dimKey.Int(int(value)))
+		case int64:
+			attrs = append(attrs, dimKey.Int64(int64(value)))
 
-		iv, err := context_.ExtractIntegerFromContext(ctx, dim)
-		if err == nil {
-			attrs = append(attrs, dimKey.Int64(iv))
-			continue
+		case uint:
+			attrs = append(attrs, dimKey.Int(int(value)))
+		case uint32:
+			attrs = append(attrs, dimKey.Int(int(value)))
+		case uint64:
+			attrs = append(attrs, dimKey.Int64(int64(value)))
+
+		case float32:
+			attrs = append(attrs, dimKey.Float64(float64(value)))
+		case float64:
+			attrs = append(attrs, dimKey.Float64(value))
+
+		case bool:
+			attrs = append(attrs, dimKey.Bool(value))
 		}
 	}
 
@@ -95,28 +103,37 @@ func ExtractAttrsWithContext(ctx context.Context) []attribute.KeyValue {
 }
 
 func ReportBusinessMetric(ctx context.Context, attrs []attribute.KeyValue) {
-	var metrics []string
-
-	switch value := ctx.Value(OpentelemetryMetricsKey).(type) {
-	case string:
-		metrics = append(metrics, value)
-
-	case []string:
-		metrics = append(metrics, value...)
+	values, ok := ctx.Value(OpentelemetryMetricsKey).(map[string]interface{})
+	if !ok {
+		return
 	}
 
-	for _, metric := range metrics {
-		counter, err := DefaultMetricMonitor.GetOrNewBusinessCounter(metric)
+	for key, value := range values {
+
+		counter, err := DefaultMetricMonitor.GetOrNewBusinessCounter(key)
 		if err != nil {
 			otel.Handle(err)
 			continue
 		}
 
-		iv, err := context_.ExtractIntegerFromContext(ctx, metric)
-		if err == nil {
-			counter.Add(ctx, iv, attrs...)
-			continue
+		var n int64
+		switch value := value.(type) {
+		case int:
+			n = int64(value)
+
+		case int32:
+			n = int64(value)
+		case int64:
+			n = int64(value)
+
+		case uint:
+			n = int64(value)
+		case uint32:
+			n = int64(value)
+		case uint64:
+			n = int64(value)
 		}
+		counter.Add(ctx, n, attrs...)
 	}
 
 	return
