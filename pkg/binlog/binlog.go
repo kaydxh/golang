@@ -251,7 +251,6 @@ func (srv *BinlogService) work(ctx context.Context, msgCh <-chan *ds_.Message) {
 					logger.Infof("flush batch data size[%v] >= flush batch size[%v]", len(flushBatchData), srv.opts.flushBatchSize)
 					_, err = srv.dataStore.WriteData(ctx, flushBatchData[:srv.opts.flushBatchSize], lastMsgKey)
 					flushBatchData = flushBatchData[srv.opts.flushBatchSize:]
-
 					if err != nil {
 						break
 					}
