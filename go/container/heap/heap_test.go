@@ -145,23 +145,29 @@ func compareStudentScore(val1 interface{}, val2 interface{}) bool {
 
 func TestMaxHeap(t *testing.T) {
 	h := heap_.NewHeap(testStudentObjectKeyFunc, compareStudentScore)
-	h.Add(&Student{
+	h.AddIfHeapOrder(&Student{
 		Id:    "id_1",
 		Name:  "name_1",
 		Score: 89.2,
 	})
-	h.Add(&Student{
+	h.AddIfHeapOrder(&Student{
 		Id:    "id_2",
 		Name:  "name_2",
 		Score: 87.2,
 	})
-	h.Add(&Student{
+	h.AddIfHeapOrder(&Student{
 		Id:    "id_3",
 		Name:  "name_3",
 		Score: 97.2,
 	})
+	h.AddIfHeapOrder(&Student{
+		Id:    "id_1",
+		Name:  "name_3",
+		Score: 88.2,
+	})
+	t.Logf("list key: %v", h.ListKeys())
 
-	sz := len(h.List())
+	sz := len(h.ListKeys())
 	for i := 0; i < sz; i++ {
 		obj, err := h.Pop()
 		if err != nil {

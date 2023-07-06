@@ -287,6 +287,7 @@ func (h *Heap) List() []interface{} {
 }
 
 // ListKeys returns a list of all the keys of the objects currently in the Heap.
+// Note: the key order is random, because it's data structure is map
 func (h *Heap) ListKeys() []string {
 	h.lock.RLock()
 	defer h.lock.RUnlock()
