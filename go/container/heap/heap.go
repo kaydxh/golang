@@ -204,6 +204,28 @@ func (h *Heap) AddIfNotPresent(obj interface{}) error {
 	return nil
 }
 
+// AddIfHeapOrder inserts an item, and puts it in the queue. If an item with
+// the key is present in the map, and new obj meet the sort of heap,
+// then update the item, or  no changes is made to the item.
+func (h *Heap) AddIfHeapOrder(obj interface{}) error {
+	key := h.data.keyFunc(obj)
+	h.lock.Lock()
+	defer h.lock.Unlock()
+	if h.closed {
+		return fmt.Errorf(closedMsg)
+	}
+	if existedObj, exists := h.data.items[key]; exists {
+		if !h.data.lessFunc(existedObj.obj, obj) {
+			h.data.items[key].obj = obj
+			heap.Fix(h.data, h.data.items[key].index)
+		}
+	} else {
+		h.addIfNotPresentLocked(key, obj)
+	}
+	h.cond.Broadcast()
+	return nil
+}
+
 // addIfNotPresentLocked assumes the lock is already held and adds the provided
 // item to the queue if it does not already exist.
 func (h *Heap) addIfNotPresentLocked(key string, obj interface{}) {
