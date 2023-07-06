@@ -125,3 +125,48 @@ func TestHeap_GetByKey(t *testing.T) {
 		t.Fatalf("didn't expect to get any object")
 	}
 }
+
+type Student struct {
+	Id    string
+	Name  string
+	Score float32
+}
+
+func testStudentObjectKeyFunc(obj interface{}) string {
+	return obj.(*Student).Id
+}
+
+//maxheap
+func compareStudentScore(val1 interface{}, val2 interface{}) bool {
+	first := val1.(*Student).Score
+	second := val2.(*Student).Score
+	return first > second
+}
+
+func TestMaxHeap(t *testing.T) {
+	h := heap_.NewHeap(testStudentObjectKeyFunc, compareStudentScore)
+	h.Add(&Student{
+		Id:    "id_1",
+		Name:  "name_1",
+		Score: 89.2,
+	})
+	h.Add(&Student{
+		Id:    "id_2",
+		Name:  "name_2",
+		Score: 87.2,
+	})
+	h.Add(&Student{
+		Id:    "id_3",
+		Name:  "name_3",
+		Score: 97.2,
+	})
+
+	sz := len(h.List())
+	for i := 0; i < sz; i++ {
+		obj, err := h.Pop()
+		if err != nil {
+			t.Fatalf("failed to pop, err: %v", err)
+		}
+		t.Logf("get obj: %v", obj.(*Student))
+	}
+}
