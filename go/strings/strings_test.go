@@ -22,6 +22,8 @@
 package strings_test
 
 import (
+	"fmt"
+	"strings"
 	"testing"
 
 	strconv_ "github.com/kaydxh/golang/go/strconv"
@@ -192,6 +194,29 @@ func TestGetStringOrFallback(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			if got := strings_.GetStringOrFallback(tt.args.value, tt.args.defaultValue); got != tt.want {
 				t.Errorf("GetStringOrFallback() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestLastIndex(t *testing.T) {
+	tests := []struct {
+		value string
+		tag   string
+	}{
+		// TODO: Add test cases.
+		{
+			value: "abc_fashion_0",
+			tag:   "_fashion",
+		},
+	}
+	for i, tt := range tests {
+		t.Run(fmt.Sprintf("%v", i), func(t *testing.T) {
+			index := strings.LastIndex(tt.value, tt.tag)
+			if index != -1 {
+				t.Logf("result: %v", tt.value[:index])
+			} else {
+				t.Logf("result: %v", tt.value)
 			}
 		})
 	}
