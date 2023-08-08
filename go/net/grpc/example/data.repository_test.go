@@ -8,6 +8,8 @@ import (
 
 	grpc_ "github.com/kaydxh/golang/go/net/grpc"
 	date_ "github.com/kaydxh/golang/go/net/grpc/example"
+	_ "github.com/kaydxh/golang/go/net/resolver/dns"
+	_ "github.com/kaydxh/golang/go/net/resolver/passthrough"
 	"google.golang.org/grpc"
 )
 
@@ -26,7 +28,8 @@ func TestNow(t *testing.T) {
 	*/
 
 	factory, err := grpc_.NewFactory(grpc_.FactoryConfig[date_.DateServiceClient]{
-		Addr:    "localhost:10001",
+		//Addr:    "localhost:10001",
+		Addr:    "127.0.0.1:10001",
 		Timeout: 5 * time.Second,
 		NewServiceClient: func(c *grpc.ClientConn) date_.DateServiceClient {
 			return date_.NewDateServiceClient(c)
@@ -44,29 +47,28 @@ func TestNow(t *testing.T) {
 	respWrap := date_.Repository{
 		Repository: repository,
 	}
-	resp, err := respWrap.Now(ctx, &date_.NowRequest{})
-	/*
-		var resp any
-		err = respWrap.Call(ctx,
-			func(ctx context.Context) error {
-				// short connection
-				newClient, conn, err := respWrap.NewConnect()
-				if err != nil {
-					return err
-				}
-				defer conn.Close()
-
-				resp, err = newClient.Now(ctx, &date_.NowRequest{})
-				//long connection
-				//resp, err = respWrap.Now(ctx, &date_.NowRequest{})
+	//resp, err := respWrap.Now(ctx, &date_.NowRequest{})
+	var resp any
+	err = respWrap.Call(ctx,
+		func(ctx context.Context) error {
+			// short connection
+			newClient, conn, err := respWrap.NewConnect(ctx)
+			if err != nil {
 				return err
-			})
-	*/
+			}
+			defer conn.Close()
+
+			resp, err = newClient.Now(ctx, &date_.NowRequest{})
+			//long connection
+			//resp, err = respWrap.Now(ctx, &date_.NowRequest{})
+			return err
+		})
 	if err != nil {
 		t.Errorf("failed to call Now, err: %v", err)
 		return
 	}
 
-	t.Logf("resp: %v", resp.RequestId)
+	//t.Logf("resp: %v", resp.RequestId)
+	t.Logf("resp: %v", resp)
 
 }
