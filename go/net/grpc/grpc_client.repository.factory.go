@@ -27,6 +27,7 @@ import (
 	"time"
 
 	"github.com/go-playground/validator/v10"
+	resolve_ "github.com/kaydxh/golang/go/net/resolver/resolve"
 	"google.golang.org/grpc"
 )
 
@@ -80,10 +81,20 @@ type Repository[T any] struct {
 	DisablePrintInoutMethods []string
 }
 
-func (r *Repository[T]) NewConnect() (client T, conn *grpc.ClientConn, err error) {
+func (r *Repository[T]) NewConnect(ctx context.Context) (client T, conn *grpc.ClientConn, err error) {
 
 	var zeroClient T
-	conn, err = GetGrpcClientConn(r.Addr, r.Timeout)
+
+	addr := r.Addr
+	address, err := resolve_.ResolveOne(ctx, addr)
+	if err != nil {
+		return zeroClient, nil, err
+	}
+	if address.Addr != "" {
+		addr = address.Addr
+	}
+
+	conn, err = GetGrpcClientConn(addr, r.Timeout)
 	if err != nil {
 		return zeroClient, nil, err
 	}
