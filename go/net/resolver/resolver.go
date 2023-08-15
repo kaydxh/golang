@@ -86,20 +86,13 @@ func GetResolver(ctx context.Context, target string, opts ...ResolverBuildOption
 		return nil, fmt.Errorf("target[%v] is invalid", targetInfo)
 	}
 
-	resolver := getResolver(targetInfo.Scheme)
-	if resolver == nil {
-		builder := Get(targetInfo.Scheme)
-		if builder == nil {
-			return nil, fmt.Errorf("scheme[%v] was not registered", targetInfo.Scheme)
-		}
-
-		r, err := builder.Build(targetInfo)
-		if err != nil {
-			return nil, fmt.Errorf("failed to build target[%v], err: %v", targetInfo, err)
-		}
-		setResolver(targetInfo.Scheme, r)
-		return r, nil
+	builder := Get(targetInfo.Scheme)
+	if builder == nil {
+		return nil, fmt.Errorf("scheme[%v] was not registered", targetInfo.Scheme)
 	}
-
-	return resolver, nil
+	r, err := builder.Build(targetInfo)
+	if err != nil {
+		return nil, fmt.Errorf("failed to build target[%v], err: %v", targetInfo, err)
+	}
+	return r, nil
 }
