@@ -74,27 +74,27 @@ func GetDefault() Builder {
 	return nil
 }
 
-func getResolver(scheme string) Resolver {
+func getResolver(target string) Resolver {
 	resolversMu.Lock()
 	defer resolversMu.Unlock()
 
-	if b, ok := resolverPool[scheme]; ok {
+	if b, ok := resolverPool[target]; ok {
 		return b
 	}
 	return nil
 }
 
-func setResolver(scheme string, r Resolver) {
+func setResolver(target string, r Resolver) {
 	resolversMu.Lock()
 	defer resolversMu.Unlock()
 
 	if r == nil {
 		panic("register resolver is nil")
 	}
-	if _, ok := resolverPool[scheme]; ok {
-		panic("double register scheme " + scheme)
+	if _, ok := resolverPool[target]; ok {
+		panic("double register target " + target)
 	}
-	resolverPool[scheme] = r
+	resolverPool[target] = r
 }
 
 // SetDefaultScheme sets the default scheme that will be used. The default
