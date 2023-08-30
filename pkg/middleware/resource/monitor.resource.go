@@ -10,9 +10,10 @@ import (
 	app_ "github.com/kaydxh/golang/pkg/webserver/app"
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/attribute"
+	"go.opentelemetry.io/otel/metric"
 )
 
-//dims
+// dims
 var (
 	CallerMethodKey = attribute.Key("caller_method") // caller method
 	CalleeMethodKey = attribute.Key("callee_method") // callee method
@@ -149,7 +150,7 @@ func ReportBusinessMetric(ctx context.Context, attrs []attribute.KeyValue) {
 				otel.Handle(err)
 				continue
 			}
-			counter.Add(ctx, n, attrs...)
+			counter.Add(ctx, n, metric.WithAttributes(attrs...))
 
 		} else {
 
@@ -158,7 +159,7 @@ func ReportBusinessMetric(ctx context.Context, attrs []attribute.KeyValue) {
 				otel.Handle(err)
 				continue
 			}
-			histogram.Record(ctx, f, attrs...)
+			histogram.Record(ctx, f, metric.WithAttributes(attrs...))
 		}
 	}
 

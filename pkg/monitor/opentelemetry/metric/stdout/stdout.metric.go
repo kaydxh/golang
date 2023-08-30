@@ -26,7 +26,7 @@ import (
 	"fmt"
 
 	"go.opentelemetry.io/otel/exporters/stdout/stdoutmetric"
-	"go.opentelemetry.io/otel/sdk/metric/export"
+	"go.opentelemetry.io/otel/sdk/metric"
 )
 
 type StdoutExporterBuilderOptions struct {
@@ -52,7 +52,7 @@ func NewStdoutExporterBuilder(opts ...StdoutExporterBuilderOption) *StdoutExport
 
 func (p *StdoutExporterBuilder) Build(
 	ctx context.Context,
-) (export.Exporter, error) {
+) (metric.Exporter, error) {
 
 	exporter, err := stdoutmetric.New(p.opts.stdoutmetricOpts...)
 	if err != nil {

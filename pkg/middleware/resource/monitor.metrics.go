@@ -7,9 +7,6 @@ import (
 
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/metric"
-	"go.opentelemetry.io/otel/metric/global"
-	"go.opentelemetry.io/otel/metric/instrument/syncfloat64"
-	"go.opentelemetry.io/otel/metric/instrument/syncint64"
 )
 
 const (
@@ -18,21 +15,21 @@ const (
 )
 
 var (
-	meter = global.MeterProvider().Meter(
+	meter = otel.GetMeterProvider().Meter(
 		instrumentationName,
 		metric.WithInstrumentationVersion(instrumentationVersion),
 	)
 )
 
 type MetricMonitor struct {
-	TotalReqCounter   syncint64.Counter
-	FailCntCounter    syncint64.Counter
-	CostTimeHistogram syncfloat64.Histogram
+	TotalReqCounter   metric.Int64Counter
+	FailCntCounter    metric.Int64Counter
+	CostTimeHistogram metric.Float64Histogram
 
-	BusinessCounters   map[string]syncint64.Counter
+	BusinessCounters   map[string]metric.Int64Counter
 	businessCountersMu sync.RWMutex
 
-	BusinessHistogram   map[string]syncfloat64.Histogram
+	BusinessHistogram   map[string]metric.Float64Histogram
 	businessHistogramMu sync.RWMutex
 }
 
@@ -47,8 +44,8 @@ func GlobalMeter() metric.Meter {
 func NewMetricMonitor() *MetricMonitor {
 	var err error
 	m := &MetricMonitor{
-		BusinessCounters:  make(map[string]syncint64.Counter, 0),
-		BusinessHistogram: make(map[string]syncfloat64.Histogram, 0),
+		BusinessCounters:  make(map[string]metric.Int64Counter, 0),
+		BusinessHistogram: make(map[string]metric.Float64Histogram, 0),
 	}
 	call := func(f func()) {
 		if err != nil {
@@ -57,13 +54,13 @@ func NewMetricMonitor() *MetricMonitor {
 		f()
 	}
 	call(func() {
-		m.TotalReqCounter, err = meter.SyncInt64().Counter("total_req")
+		m.TotalReqCounter, err = meter.Int64Counter("total_req")
 	})
 	call(func() {
-		m.FailCntCounter, err = meter.SyncInt64().Counter("fail_cnt")
+		m.FailCntCounter, err = meter.Int64Counter("fail_cnt")
 	})
 	call(func() {
-		m.CostTimeHistogram, err = meter.SyncFloat64().Histogram("cost_time")
+		m.CostTimeHistogram, err = meter.Float64Histogram("cost_time")
 	})
 	if err != nil {
 		otel.Handle(err)
@@ -72,7 +69,7 @@ func NewMetricMonitor() *MetricMonitor {
 	return m
 }
 
-func (m *MetricMonitor) GetOrNewBusinessCounter(key string) (syncint64.Counter, error) {
+func (m *MetricMonitor) GetOrNewBusinessCounter(key string) (metric.Int64Counter, error) {
 	m.businessCountersMu.Lock()
 	defer m.businessCountersMu.Unlock()
 	counter, ok := DefaultMetricMonitor.BusinessCounters[key]
@@ -80,7 +77,7 @@ func (m *MetricMonitor) GetOrNewBusinessCounter(key string) (syncint64.Counter, 
 		return counter, nil
 	}
 
-	counter, err := meter.SyncInt64().Counter(key)
+	counter, err := meter.Int64Counter(key)
 	if err != nil {
 		return nil, err
 	}
@@ -88,7 +85,7 @@ func (m *MetricMonitor) GetOrNewBusinessCounter(key string) (syncint64.Counter, 
 	return counter, nil
 }
 
-func (m *MetricMonitor) GetOrNewBusinessHistogram(key string) (syncfloat64.Histogram, error) {
+func (m *MetricMonitor) GetOrNewBusinessHistogram(key string) (metric.Float64Histogram, error) {
 	m.businessHistogramMu.Lock()
 	defer m.businessHistogramMu.Unlock()
 	histogram, ok := DefaultMetricMonitor.BusinessHistogram[key]
@@ -96,7 +93,7 @@ func (m *MetricMonitor) GetOrNewBusinessHistogram(key string) (syncfloat64.Histo
 		return histogram, nil
 	}
 
-	histogram, err := meter.SyncFloat64().Histogram(key)
+	histogram, err := meter.Float64Histogram(key)
 	if err != nil {
 		return nil, err
 	}
@@ -108,10 +105,10 @@ func ReportMetric(ctx context.Context, dim Dimension, costTime time.Duration) {
 	attrs := ExtractAttrsWithContext(ctx)
 	attrs = append(attrs, Attrs(dim)...)
 
-	DefaultMetricMonitor.TotalReqCounter.Add(ctx, 1, attrs...)
+	DefaultMetricMonitor.TotalReqCounter.Add(ctx, 1, metric.WithAttributes(attrs...))
 	if dim.Error != nil {
-		DefaultMetricMonitor.FailCntCounter.Add(ctx, 1, attrs...)
+		DefaultMetricMonitor.FailCntCounter.Add(ctx, 1, metric.WithAttributes(attrs...))
 	}
-	DefaultMetricMonitor.CostTimeHistogram.Record(ctx, float64(costTime.Milliseconds()), attrs...)
+	DefaultMetricMonitor.CostTimeHistogram.Record(ctx, float64(costTime.Milliseconds()), metric.WithAttributes(attrs...))
 	ReportBusinessMetric(ctx, attrs)
 }

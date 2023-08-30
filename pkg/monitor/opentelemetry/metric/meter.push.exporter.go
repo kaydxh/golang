@@ -24,9 +24,9 @@ package metric
 import (
 	"context"
 
-	"go.opentelemetry.io/otel/sdk/metric/export"
+	"go.opentelemetry.io/otel/sdk/metric"
 )
 
 type PushExporterBuilder interface {
-	Build(ctx context.Context) (export.Exporter, error)
+	Build(ctx context.Context) (metric.Exporter, error)
 }
