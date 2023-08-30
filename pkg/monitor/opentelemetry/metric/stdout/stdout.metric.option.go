@@ -21,12 +21,20 @@
  */
 package stdout
 
-import "go.opentelemetry.io/otel/exporters/stdout/stdoutmetric"
+import (
+	"encoding/json"
+	"io"
+
+	"go.opentelemetry.io/otel/exporters/stdout/stdoutmetric"
+)
 
 func WithPrettyPrint(prettyPrint bool) StdoutExporterBuilderOption {
 	return StdoutExporterBuilderOptionFunc(func(m *StdoutExporterBuilder) {
 		if prettyPrint {
-			m.opts.stdoutmetricOpts = append(m.opts.stdoutmetricOpts, stdoutmetric.WithPrettyPrint())
+			// Print with a JSON encoder that indents with two spaces.
+			enc := json.NewEncoder(io.Discard)
+			enc.SetIndent("", "  ")
+			m.opts.stdoutmetricOpts = append(m.opts.stdoutmetricOpts, stdoutmetric.WithEncoder(enc))
 		}
 	})
 }

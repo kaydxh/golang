@@ -26,12 +26,8 @@ import (
 	"fmt"
 	"time"
 
-	"go.opentelemetry.io/otel/metric/global"
-	controller "go.opentelemetry.io/otel/sdk/metric/controller/basic"
-	"go.opentelemetry.io/otel/sdk/metric/export"
-	"go.opentelemetry.io/otel/sdk/metric/export/aggregation"
-	processor "go.opentelemetry.io/otel/sdk/metric/processor/basic"
-	"go.opentelemetry.io/otel/sdk/metric/selector/simple"
+	"go.opentelemetry.io/otel"
+	"go.opentelemetry.io/otel/sdk/metric"
 )
 
 type MeterOptinos struct {
@@ -41,8 +37,7 @@ type MeterOptinos struct {
 }
 
 type Meter struct {
-	Controller controller.Controller
-	opts       MeterOptinos
+	opts MeterOptinos
 }
 
 func defaultMeterOptions() MeterOptinos {
@@ -59,55 +54,46 @@ func NewMeter(opts ...MeterOption) *Meter {
 	return m
 }
 
-//https://github.com/open-telemetry/opentelemetry-go/blob/example/prometheus/v0.30.0/example/prometheus/main.go
-//https://github.com/kaydxh/newrelic-opentelemetry-examples/blob/main/go/metrics.go
+// https://github.com/open-telemetry/opentelemetry-go/blob/example/prometheus/v0.30.0/example/prometheus/main.go
+// https://github.com/kaydxh/newrelic-opentelemetry-examples/blob/main/go/metrics.go
 func (m *Meter) Install(ctx context.Context) (err error) {
-
-	var metricControllerOptions []controller.Option
-	if m.opts.collectPeriod > 0 {
-		metricControllerOptions = append(
-			metricControllerOptions,
-			controller.WithCollectPeriod(m.opts.collectPeriod),
-		)
-	}
+	var readers []metric.Reader
 
 	if m.opts.PushExporterBuilder != nil {
 		exporter, err := m.createPushExporter(ctx)
 		if err != nil {
 			return err
 		}
-		metricControllerOptions = append(metricControllerOptions, controller.WithExporter(exporter))
-
+		if exporter != nil { // such as prometheus, that's a puller actually
+			var opts []metric.PeriodicReaderOption
+			if m.opts.collectPeriod > 0 {
+				opts = append(opts, metric.WithInterval(m.opts.collectPeriod))
+			}
+			reader := metric.NewPeriodicReader(exporter, opts...)
+			readers = append(readers, reader)
+		}
 	}
-
-	c := controller.New(
-		processor.NewFactory(
-			simple.NewWithHistogramDistribution(),
-			aggregation.CumulativeTemporalitySelector(),
-			processor.WithMemory(true),
-		),
-		metricControllerOptions...,
-	)
 	if m.opts.PullExporterBuilder != nil {
-		_, err = m.createPullExporter(ctx, c)
+		reader, err := m.createPullReader(ctx)
 		if err != nil {
 			return err
 		}
+		readers = append(readers, reader)
+	}
+	var metricProviderOptions []metric.Option
+
+	for _, reader := range readers {
+		metricProviderOptions = append(metricProviderOptions, metric.WithReader(reader)) // 默认cumulative
 	}
 
-	err = c.Start(ctx)
-	if err != nil {
-		return err
-	}
-
-	global.SetMeterProvider(c)
-
+	sdk := metric.NewMeterProvider(metricProviderOptions...)
+	otel.SetMeterProvider(sdk)
 	return nil
 }
 
-func (m *Meter) createPushExporter(ctx context.Context) (export.Exporter, error) {
+func (m *Meter) createPushExporter(ctx context.Context) (metric.Exporter, error) {
 	if m.opts.PushExporterBuilder == nil {
-		return nil, fmt.Errorf("push metric exporter builder is nil")
+		return nil, fmt.Errorf("push metric reader builder is nil")
 	}
 
 	return m.opts.PushExporterBuilder.Build(ctx)
@@ -116,11 +102,11 @@ func (m *Meter) createPushExporter(ctx context.Context) (export.Exporter, error)
 // Pull Exporter supports Prometheus pulls.  It does not implement the
 // sdk/export/metric.Exporter interface--instead it creates a pull
 // controller and reads the latest checkpointed data on-scrape.
-func (m *Meter) createPullExporter(ctx context.Context, c *controller.Controller,
-) (aggregation.TemporalitySelector, error) {
+func (m *Meter) createPullReader(ctx context.Context,
+) (metric.Reader, error) {
 	if m.opts.PullExporterBuilder == nil {
 		return nil, fmt.Errorf("pull metric exporter builder is nil")
 	}
 
-	return m.opts.PullExporterBuilder.Build(ctx, c)
+	return m.opts.PullExporterBuilder.Build(ctx)
 }
