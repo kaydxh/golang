@@ -23,7 +23,7 @@ package stdout
 
 import (
 	"encoding/json"
-	"io"
+	"os"
 
 	"go.opentelemetry.io/otel/exporters/stdout/stdoutmetric"
 )
@@ -32,7 +32,7 @@ func WithPrettyPrint(prettyPrint bool) StdoutExporterBuilderOption {
 	return StdoutExporterBuilderOptionFunc(func(m *StdoutExporterBuilder) {
 		if prettyPrint {
 			// Print with a JSON encoder that indents with two spaces.
-			enc := json.NewEncoder(io.Discard)
+			enc := json.NewEncoder(os.Stdout)
 			enc.SetIndent("", "  ")
 			m.opts.stdoutmetricOpts = append(m.opts.stdoutmetricOpts, stdoutmetric.WithEncoder(enc))
 		}
