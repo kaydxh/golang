@@ -7,7 +7,7 @@ set -o errexit
 set -o nounset
 # Fail on any error.
 set -o pipefail
-# set -o xtrace
+#set -o xtrace
 
 # example, generate golang proto files
 # bash go_proto_gen.sh -I . --proto_file_path pkg/webserver/webserver.proto --with-go
@@ -111,6 +111,8 @@ go_grpc_option=""
 doc_option=""
 doc_out_option=""
 cpp_option=""
+cpp_out_option=""
+cpp_grpc_option=""
 grpc_gateway_option=""
 grpc_gateway_out_option="--grpc-gateway_out=logtostderr=true"
 grpc_gateway_delete_option="--grpc-gateway_opt=allow_delete_body=true"
@@ -137,6 +139,8 @@ for proto in $(find ${PROTOC_FILE_DIR} -type f -name '*.proto' -print0 | xargs -
 
   if [[ "${WITH_CPP}" -eq 1 ]]; then
     cpp_option="--cpp_out=."
+    cpp_out_option="--grpc_out=."
+    cpp_grpc_option="--plugin=protoc-gen-grpc=`which grpc_cpp_plugin`"
   fi
 
   if [[ "${WITH_GO}" -eq 1 ]]; then
@@ -146,6 +150,6 @@ for proto in $(find ${PROTOC_FILE_DIR} -type f -name '*.proto' -print0 | xargs -
     go_grpc_option="--go-grpc_out=${source_relative_option}"
   fi
 
-  protoc ${proto_headers} ${go_out_option} ${go_tag_option} ${go_opt_option} ${go_grpc_option} ${grpc_gateway_option} ${cpp_option} ${doc_option} ${doc_out_option} "${proto}"
+  protoc ${proto_headers} ${go_out_option} ${go_tag_option} ${go_opt_option} ${go_grpc_option} ${grpc_gateway_option} ${cpp_out_option} ${cpp_option} ${doc_option} ${doc_out_option} ${cpp_grpc_option} "${proto}"
   #protoc -I . ${proto_headers} --go-tag_out=paths=source_relative:. --go-grpc_out=paths=source_relative:. --grpc-gateway_out=logtostderr=true,grpc_api_configuration=${api_conf_yaml},paths=source_relative:. --grpc-gateway_opt=allow_delete_body=true ${f}
 done
