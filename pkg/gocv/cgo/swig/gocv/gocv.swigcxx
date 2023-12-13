@@ -1,0 +1,24 @@
+//go:build ignore
+/* swig -go -cgo -c++ -intgosize 64 gocv.swigcxx */
+
+%module(directors="1") gocv
+%include <typemaps.i>
+%include <std_map.i>
+%include <std_string.i>
+%include <std_vector.i>
+%include <exception.i>
+%{
+#include "gocv.h"
+%}
+%exception {
+    try {
+        $action;
+    } catch (const std::exception& e) {
+        _swig_gopanic(e.what());
+    }
+}
+
+%header %{
+
+%}
+%include "gocv.h"
