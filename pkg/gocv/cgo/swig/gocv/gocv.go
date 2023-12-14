@@ -35,66 +35,67 @@ typedef _gostring_ swig_type_5;
 typedef _gostring_ swig_type_6;
 typedef _gostring_ swig_type_7;
 typedef _gostring_ swig_type_8;
-extern void _wrap_Swig_free_gocv_e0e444adc12721f6(uintptr_t arg1);
-extern uintptr_t _wrap_Swig_malloc_gocv_e0e444adc12721f6(swig_intgo arg1);
-extern void _wrap_MagickInitializeMagickRequest_path_set_gocv_e0e444adc12721f6(uintptr_t arg1, swig_type_1 arg2);
-extern swig_type_2 _wrap_MagickInitializeMagickRequest_path_get_gocv_e0e444adc12721f6(uintptr_t arg1);
-extern uintptr_t _wrap_new_MagickInitializeMagickRequest_gocv_e0e444adc12721f6(void);
-extern void _wrap_delete_MagickInitializeMagickRequest_gocv_e0e444adc12721f6(uintptr_t arg1);
-extern uintptr_t _wrap_new_MagickInitializeMagickResponse_gocv_e0e444adc12721f6(void);
-extern void _wrap_delete_MagickInitializeMagickResponse_gocv_e0e444adc12721f6(uintptr_t arg1);
-extern void _wrap_MagickImageDecodeRequest_image_set_gocv_e0e444adc12721f6(uintptr_t arg1, swig_type_3 arg2);
-extern swig_type_4 _wrap_MagickImageDecodeRequest_image_get_gocv_e0e444adc12721f6(uintptr_t arg1);
-extern void _wrap_MagickImageDecodeRequest_target_color_space_set_gocv_e0e444adc12721f6(uintptr_t arg1, swig_type_5 arg2);
-extern swig_type_6 _wrap_MagickImageDecodeRequest_target_color_space_get_gocv_e0e444adc12721f6(uintptr_t arg1);
-extern uintptr_t _wrap_new_MagickImageDecodeRequest_gocv_e0e444adc12721f6(void);
-extern void _wrap_delete_MagickImageDecodeRequest_gocv_e0e444adc12721f6(uintptr_t arg1);
-extern swig_intgo _wrap_UndefinedOrientation_gocv_e0e444adc12721f6(void);
-extern swig_intgo _wrap_TopLeftOrientation_gocv_e0e444adc12721f6(void);
-extern swig_intgo _wrap_TopRightOrientation_gocv_e0e444adc12721f6(void);
-extern swig_intgo _wrap_BottomRightOrientation_gocv_e0e444adc12721f6(void);
-extern swig_intgo _wrap_BottomLeftOrientation_gocv_e0e444adc12721f6(void);
-extern swig_intgo _wrap_LeftTopOrientation_gocv_e0e444adc12721f6(void);
-extern swig_intgo _wrap_RightTopOrientation_gocv_e0e444adc12721f6(void);
-extern swig_intgo _wrap_RightBottomOrientation_gocv_e0e444adc12721f6(void);
-extern swig_intgo _wrap_LeftBottomOrientation_gocv_e0e444adc12721f6(void);
-extern swig_intgo _wrap_UndefinedColorspace_gocv_e0e444adc12721f6(void);
-extern swig_intgo _wrap_RGBColorspace_gocv_e0e444adc12721f6(void);
-extern swig_intgo _wrap_GRAYColorspace_gocv_e0e444adc12721f6(void);
-extern swig_intgo _wrap_TransparentColorspace_gocv_e0e444adc12721f6(void);
-extern swig_intgo _wrap_OHTAColorspace_gocv_e0e444adc12721f6(void);
-extern swig_intgo _wrap_XYZColorspace_gocv_e0e444adc12721f6(void);
-extern swig_intgo _wrap_YCCColorspace_gocv_e0e444adc12721f6(void);
-extern swig_intgo _wrap_YIQColorspace_gocv_e0e444adc12721f6(void);
-extern swig_intgo _wrap_YPbPrColorspace_gocv_e0e444adc12721f6(void);
-extern swig_intgo _wrap_YUVColorspace_gocv_e0e444adc12721f6(void);
-extern swig_intgo _wrap_CMYKColorspace_gocv_e0e444adc12721f6(void);
-extern swig_intgo _wrap_sRGBColorspace_gocv_e0e444adc12721f6(void);
-extern swig_intgo _wrap_HSLColorspace_gocv_e0e444adc12721f6(void);
-extern swig_intgo _wrap_HWBColorspace_gocv_e0e444adc12721f6(void);
-extern swig_intgo _wrap_LABColorspace_gocv_e0e444adc12721f6(void);
-extern swig_intgo _wrap_CineonLogRGBColorspace_gocv_e0e444adc12721f6(void);
-extern swig_intgo _wrap_Rec601LumaColorspace_gocv_e0e444adc12721f6(void);
-extern swig_intgo _wrap_Rec601YCbCrColorspace_gocv_e0e444adc12721f6(void);
-extern swig_intgo _wrap_Rec709LumaColorspace_gocv_e0e444adc12721f6(void);
-extern swig_intgo _wrap_Rec709YCbCrColorspace_gocv_e0e444adc12721f6(void);
-extern void _wrap_MagickImageDecodeResponse_mat_set_gocv_e0e444adc12721f6(uintptr_t arg1, uintptr_t arg2);
-extern uintptr_t _wrap_MagickImageDecodeResponse_mat_get_gocv_e0e444adc12721f6(uintptr_t arg1);
-extern void _wrap_MagickImageDecodeResponse_rows_set_gocv_e0e444adc12721f6(uintptr_t arg1, uintptr_t arg2);
-extern uintptr_t _wrap_MagickImageDecodeResponse_rows_get_gocv_e0e444adc12721f6(uintptr_t arg1);
-extern void _wrap_MagickImageDecodeResponse_columns_set_gocv_e0e444adc12721f6(uintptr_t arg1, uintptr_t arg2);
-extern uintptr_t _wrap_MagickImageDecodeResponse_columns_get_gocv_e0e444adc12721f6(uintptr_t arg1);
-extern void _wrap_MagickImageDecodeResponse_magick_set_gocv_e0e444adc12721f6(uintptr_t arg1, swig_type_7 arg2);
-extern swig_type_8 _wrap_MagickImageDecodeResponse_magick_get_gocv_e0e444adc12721f6(uintptr_t arg1);
-extern void _wrap_MagickImageDecodeResponse_orientation_type_set_gocv_e0e444adc12721f6(uintptr_t arg1, swig_intgo arg2);
-extern swig_intgo _wrap_MagickImageDecodeResponse_orientation_type_get_gocv_e0e444adc12721f6(uintptr_t arg1);
-extern void _wrap_MagickImageDecodeResponse_colorspace_type_set_gocv_e0e444adc12721f6(uintptr_t arg1, swig_intgo arg2);
-extern swig_intgo _wrap_MagickImageDecodeResponse_colorspace_type_get_gocv_e0e444adc12721f6(uintptr_t arg1);
-extern uintptr_t _wrap_new_MagickImageDecodeResponse_gocv_e0e444adc12721f6(void);
-extern void _wrap_delete_MagickImageDecodeResponse_gocv_e0e444adc12721f6(uintptr_t arg1);
-extern uintptr_t _wrap_new_MagicImage_gocv_e0e444adc12721f6(void);
-extern void _wrap_delete_MagicImage_gocv_e0e444adc12721f6(uintptr_t arg1);
-extern void _wrap_MagicImage_MagickImageDecode_gocv_e0e444adc12721f6(uintptr_t arg1, uintptr_t arg2, uintptr_t arg3);
+extern void _wrap_Swig_free_gocv_ba346308b44e7b91(uintptr_t arg1);
+extern uintptr_t _wrap_Swig_malloc_gocv_ba346308b44e7b91(swig_intgo arg1);
+extern void _wrap_MagickInitializeMagickRequest_path_set_gocv_ba346308b44e7b91(uintptr_t arg1, swig_type_1 arg2);
+extern swig_type_2 _wrap_MagickInitializeMagickRequest_path_get_gocv_ba346308b44e7b91(uintptr_t arg1);
+extern uintptr_t _wrap_new_MagickInitializeMagickRequest_gocv_ba346308b44e7b91(void);
+extern void _wrap_delete_MagickInitializeMagickRequest_gocv_ba346308b44e7b91(uintptr_t arg1);
+extern uintptr_t _wrap_new_MagickInitializeMagickResponse_gocv_ba346308b44e7b91(void);
+extern void _wrap_delete_MagickInitializeMagickResponse_gocv_ba346308b44e7b91(uintptr_t arg1);
+extern void _wrap_MagickImageDecodeRequest_image_set_gocv_ba346308b44e7b91(uintptr_t arg1, swig_type_3 arg2);
+extern swig_type_4 _wrap_MagickImageDecodeRequest_image_get_gocv_ba346308b44e7b91(uintptr_t arg1);
+extern void _wrap_MagickImageDecodeRequest_target_color_space_set_gocv_ba346308b44e7b91(uintptr_t arg1, swig_type_5 arg2);
+extern swig_type_6 _wrap_MagickImageDecodeRequest_target_color_space_get_gocv_ba346308b44e7b91(uintptr_t arg1);
+extern uintptr_t _wrap_new_MagickImageDecodeRequest_gocv_ba346308b44e7b91(void);
+extern void _wrap_delete_MagickImageDecodeRequest_gocv_ba346308b44e7b91(uintptr_t arg1);
+extern swig_intgo _wrap_UndefinedOrientation_gocv_ba346308b44e7b91(void);
+extern swig_intgo _wrap_TopLeftOrientation_gocv_ba346308b44e7b91(void);
+extern swig_intgo _wrap_TopRightOrientation_gocv_ba346308b44e7b91(void);
+extern swig_intgo _wrap_BottomRightOrientation_gocv_ba346308b44e7b91(void);
+extern swig_intgo _wrap_BottomLeftOrientation_gocv_ba346308b44e7b91(void);
+extern swig_intgo _wrap_LeftTopOrientation_gocv_ba346308b44e7b91(void);
+extern swig_intgo _wrap_RightTopOrientation_gocv_ba346308b44e7b91(void);
+extern swig_intgo _wrap_RightBottomOrientation_gocv_ba346308b44e7b91(void);
+extern swig_intgo _wrap_LeftBottomOrientation_gocv_ba346308b44e7b91(void);
+extern swig_intgo _wrap_UndefinedColorspace_gocv_ba346308b44e7b91(void);
+extern swig_intgo _wrap_RGBColorspace_gocv_ba346308b44e7b91(void);
+extern swig_intgo _wrap_GRAYColorspace_gocv_ba346308b44e7b91(void);
+extern swig_intgo _wrap_TransparentColorspace_gocv_ba346308b44e7b91(void);
+extern swig_intgo _wrap_OHTAColorspace_gocv_ba346308b44e7b91(void);
+extern swig_intgo _wrap_XYZColorspace_gocv_ba346308b44e7b91(void);
+extern swig_intgo _wrap_YCCColorspace_gocv_ba346308b44e7b91(void);
+extern swig_intgo _wrap_YIQColorspace_gocv_ba346308b44e7b91(void);
+extern swig_intgo _wrap_YPbPrColorspace_gocv_ba346308b44e7b91(void);
+extern swig_intgo _wrap_YUVColorspace_gocv_ba346308b44e7b91(void);
+extern swig_intgo _wrap_CMYKColorspace_gocv_ba346308b44e7b91(void);
+extern swig_intgo _wrap_sRGBColorspace_gocv_ba346308b44e7b91(void);
+extern swig_intgo _wrap_HSLColorspace_gocv_ba346308b44e7b91(void);
+extern swig_intgo _wrap_HWBColorspace_gocv_ba346308b44e7b91(void);
+extern swig_intgo _wrap_LABColorspace_gocv_ba346308b44e7b91(void);
+extern swig_intgo _wrap_CineonLogRGBColorspace_gocv_ba346308b44e7b91(void);
+extern swig_intgo _wrap_Rec601LumaColorspace_gocv_ba346308b44e7b91(void);
+extern swig_intgo _wrap_Rec601YCbCrColorspace_gocv_ba346308b44e7b91(void);
+extern swig_intgo _wrap_Rec709LumaColorspace_gocv_ba346308b44e7b91(void);
+extern swig_intgo _wrap_Rec709YCbCrColorspace_gocv_ba346308b44e7b91(void);
+extern void _wrap_MagickImageDecodeResponse_mat_set_gocv_ba346308b44e7b91(uintptr_t arg1, uintptr_t arg2);
+extern uintptr_t _wrap_MagickImageDecodeResponse_mat_get_gocv_ba346308b44e7b91(uintptr_t arg1);
+extern void _wrap_MagickImageDecodeResponse_rows_set_gocv_ba346308b44e7b91(uintptr_t arg1, swig_intgo arg2);
+extern swig_intgo _wrap_MagickImageDecodeResponse_rows_get_gocv_ba346308b44e7b91(uintptr_t arg1);
+extern void _wrap_MagickImageDecodeResponse_columns_set_gocv_ba346308b44e7b91(uintptr_t arg1, swig_intgo arg2);
+extern swig_intgo _wrap_MagickImageDecodeResponse_columns_get_gocv_ba346308b44e7b91(uintptr_t arg1);
+extern void _wrap_MagickImageDecodeResponse_magick_set_gocv_ba346308b44e7b91(uintptr_t arg1, swig_type_7 arg2);
+extern swig_type_8 _wrap_MagickImageDecodeResponse_magick_get_gocv_ba346308b44e7b91(uintptr_t arg1);
+extern void _wrap_MagickImageDecodeResponse_orientation_type_set_gocv_ba346308b44e7b91(uintptr_t arg1, swig_intgo arg2);
+extern swig_intgo _wrap_MagickImageDecodeResponse_orientation_type_get_gocv_ba346308b44e7b91(uintptr_t arg1);
+extern void _wrap_MagickImageDecodeResponse_colorspace_type_set_gocv_ba346308b44e7b91(uintptr_t arg1, swig_intgo arg2);
+extern swig_intgo _wrap_MagickImageDecodeResponse_colorspace_type_get_gocv_ba346308b44e7b91(uintptr_t arg1);
+extern uintptr_t _wrap_new_MagickImageDecodeResponse_gocv_ba346308b44e7b91(void);
+extern void _wrap_delete_MagickImageDecodeResponse_gocv_ba346308b44e7b91(uintptr_t arg1);
+extern uintptr_t _wrap_new_Wrapped_MagicImage_gocv_ba346308b44e7b91(void);
+extern void _wrap_delete_Wrapped_MagicImage_gocv_ba346308b44e7b91(uintptr_t arg1);
+extern void _wrap_Wrapped_MagicImage_MagickInitializeMagick_gocv_ba346308b44e7b91(uintptr_t arg1, uintptr_t arg2);
+extern void _wrap_Wrapped_MagicImage_Wrapped_MagickImageDecode_gocv_ba346308b44e7b91(uintptr_t arg1, uintptr_t arg2, uintptr_t arg3);
 #undef intgo
 */
 import "C"
@@ -102,6 +103,7 @@ import "C"
 import "unsafe"
 import _ "runtime/cgo"
 import "sync"
+import "fmt"
 
 
 type _ unsafe.Pointer
@@ -126,8 +128,8 @@ func getSwigcptr(v interface { Swigcptr() uintptr }) uintptr {
 
 type _ sync.Mutex
 
-//export cgo_panic__gocv_e0e444adc12721f6
-func cgo_panic__gocv_e0e444adc12721f6(p *byte) {
+//export cgo_panic__gocv_ba346308b44e7b91
+func cgo_panic__gocv_ba346308b44e7b91(p *byte) {
 	s := (*[1024]byte)(unsafe.Pointer(p))[:]
 	for i, b := range s {
 		if b == 0 {
@@ -148,13 +150,13 @@ func swigCopyString(s string) string {
 
 func Swig_free(arg1 uintptr) {
 	_swig_i_0 := arg1
-	C._wrap_Swig_free_gocv_e0e444adc12721f6(C.uintptr_t(_swig_i_0))
+	C._wrap_Swig_free_gocv_ba346308b44e7b91(C.uintptr_t(_swig_i_0))
 }
 
 func Swig_malloc(arg1 int) (_swig_ret uintptr) {
 	var swig_r uintptr
 	_swig_i_0 := arg1
-	swig_r = (uintptr)(C._wrap_Swig_malloc_gocv_e0e444adc12721f6(C.swig_intgo(_swig_i_0)))
+	swig_r = (uintptr)(C._wrap_Swig_malloc_gocv_ba346308b44e7b91(C.swig_intgo(_swig_i_0)))
 	return swig_r
 }
 
@@ -170,7 +172,7 @@ func (p SwigcptrMagickInitializeMagickRequest) SwigIsMagickInitializeMagickReque
 func (arg1 SwigcptrMagickInitializeMagickRequest) SetPath(arg2 string) {
 	_swig_i_0 := arg1
 	_swig_i_1 := arg2
-	C._wrap_MagickInitializeMagickRequest_path_set_gocv_e0e444adc12721f6(C.uintptr_t(_swig_i_0), *(*C.swig_type_1)(unsafe.Pointer(&_swig_i_1)))
+	C._wrap_MagickInitializeMagickRequest_path_set_gocv_ba346308b44e7b91(C.uintptr_t(_swig_i_0), *(*C.swig_type_1)(unsafe.Pointer(&_swig_i_1)))
 	if Swig_escape_always_false {
 		Swig_escape_val = arg2
 	}
@@ -179,7 +181,7 @@ func (arg1 SwigcptrMagickInitializeMagickRequest) SetPath(arg2 string) {
 func (arg1 SwigcptrMagickInitializeMagickRequest) GetPath() (_swig_ret string) {
 	var swig_r string
 	_swig_i_0 := arg1
-	swig_r_p := C._wrap_MagickInitializeMagickRequest_path_get_gocv_e0e444adc12721f6(C.uintptr_t(_swig_i_0))
+	swig_r_p := C._wrap_MagickInitializeMagickRequest_path_get_gocv_ba346308b44e7b91(C.uintptr_t(_swig_i_0))
 	swig_r = *(*string)(unsafe.Pointer(&swig_r_p))
 	var swig_r_1 string
  swig_r_1 = swigCopyString(swig_r) 
@@ -188,13 +190,13 @@ func (arg1 SwigcptrMagickInitializeMagickRequest) GetPath() (_swig_ret string) {
 
 func NewMagickInitializeMagickRequest() (_swig_ret MagickInitializeMagickRequest) {
 	var swig_r MagickInitializeMagickRequest
-	swig_r = (MagickInitializeMagickRequest)(SwigcptrMagickInitializeMagickRequest(C._wrap_new_MagickInitializeMagickRequest_gocv_e0e444adc12721f6()))
+	swig_r = (MagickInitializeMagickRequest)(SwigcptrMagickInitializeMagickRequest(C._wrap_new_MagickInitializeMagickRequest_gocv_ba346308b44e7b91()))
 	return swig_r
 }
 
 func DeleteMagickInitializeMagickRequest(arg1 MagickInitializeMagickRequest) {
 	_swig_i_0 := getSwigcptr(arg1)
-	C._wrap_delete_MagickInitializeMagickRequest_gocv_e0e444adc12721f6(C.uintptr_t(_swig_i_0))
+	C._wrap_delete_MagickInitializeMagickRequest_gocv_ba346308b44e7b91(C.uintptr_t(_swig_i_0))
 }
 
 type MagickInitializeMagickRequest interface {
@@ -215,13 +217,13 @@ func (p SwigcptrMagickInitializeMagickResponse) SwigIsMagickInitializeMagickResp
 
 func NewMagickInitializeMagickResponse() (_swig_ret MagickInitializeMagickResponse) {
 	var swig_r MagickInitializeMagickResponse
-	swig_r = (MagickInitializeMagickResponse)(SwigcptrMagickInitializeMagickResponse(C._wrap_new_MagickInitializeMagickResponse_gocv_e0e444adc12721f6()))
+	swig_r = (MagickInitializeMagickResponse)(SwigcptrMagickInitializeMagickResponse(C._wrap_new_MagickInitializeMagickResponse_gocv_ba346308b44e7b91()))
 	return swig_r
 }
 
 func DeleteMagickInitializeMagickResponse(arg1 MagickInitializeMagickResponse) {
 	_swig_i_0 := getSwigcptr(arg1)
-	C._wrap_delete_MagickInitializeMagickResponse_gocv_e0e444adc12721f6(C.uintptr_t(_swig_i_0))
+	C._wrap_delete_MagickInitializeMagickResponse_gocv_ba346308b44e7b91(C.uintptr_t(_swig_i_0))
 }
 
 type MagickInitializeMagickResponse interface {
@@ -241,7 +243,7 @@ func (p SwigcptrMagickImageDecodeRequest) SwigIsMagickImageDecodeRequest() {
 func (arg1 SwigcptrMagickImageDecodeRequest) SetImage(arg2 string) {
 	_swig_i_0 := arg1
 	_swig_i_1 := arg2
-	C._wrap_MagickImageDecodeRequest_image_set_gocv_e0e444adc12721f6(C.uintptr_t(_swig_i_0), *(*C.swig_type_3)(unsafe.Pointer(&_swig_i_1)))
+	C._wrap_MagickImageDecodeRequest_image_set_gocv_ba346308b44e7b91(C.uintptr_t(_swig_i_0), *(*C.swig_type_3)(unsafe.Pointer(&_swig_i_1)))
 	if Swig_escape_always_false {
 		Swig_escape_val = arg2
 	}
@@ -250,7 +252,7 @@ func (arg1 SwigcptrMagickImageDecodeRequest) SetImage(arg2 string) {
 func (arg1 SwigcptrMagickImageDecodeRequest) GetImage() (_swig_ret string) {
 	var swig_r string
 	_swig_i_0 := arg1
-	swig_r_p := C._wrap_MagickImageDecodeRequest_image_get_gocv_e0e444adc12721f6(C.uintptr_t(_swig_i_0))
+	swig_r_p := C._wrap_MagickImageDecodeRequest_image_get_gocv_ba346308b44e7b91(C.uintptr_t(_swig_i_0))
 	swig_r = *(*string)(unsafe.Pointer(&swig_r_p))
 	var swig_r_1 string
  swig_r_1 = swigCopyString(swig_r) 
@@ -260,7 +262,7 @@ func (arg1 SwigcptrMagickImageDecodeRequest) GetImage() (_swig_ret string) {
 func (arg1 SwigcptrMagickImageDecodeRequest) SetTarget_color_space(arg2 string) {
 	_swig_i_0 := arg1
 	_swig_i_1 := arg2
-	C._wrap_MagickImageDecodeRequest_target_color_space_set_gocv_e0e444adc12721f6(C.uintptr_t(_swig_i_0), *(*C.swig_type_5)(unsafe.Pointer(&_swig_i_1)))
+	C._wrap_MagickImageDecodeRequest_target_color_space_set_gocv_ba346308b44e7b91(C.uintptr_t(_swig_i_0), *(*C.swig_type_5)(unsafe.Pointer(&_swig_i_1)))
 	if Swig_escape_always_false {
 		Swig_escape_val = arg2
 	}
@@ -269,7 +271,7 @@ func (arg1 SwigcptrMagickImageDecodeRequest) SetTarget_color_space(arg2 string) 
 func (arg1 SwigcptrMagickImageDecodeRequest) GetTarget_color_space() (_swig_ret string) {
 	var swig_r string
 	_swig_i_0 := arg1
-	swig_r_p := C._wrap_MagickImageDecodeRequest_target_color_space_get_gocv_e0e444adc12721f6(C.uintptr_t(_swig_i_0))
+	swig_r_p := C._wrap_MagickImageDecodeRequest_target_color_space_get_gocv_ba346308b44e7b91(C.uintptr_t(_swig_i_0))
 	swig_r = *(*string)(unsafe.Pointer(&swig_r_p))
 	var swig_r_1 string
  swig_r_1 = swigCopyString(swig_r) 
@@ -278,13 +280,13 @@ func (arg1 SwigcptrMagickImageDecodeRequest) GetTarget_color_space() (_swig_ret 
 
 func NewMagickImageDecodeRequest() (_swig_ret MagickImageDecodeRequest) {
 	var swig_r MagickImageDecodeRequest
-	swig_r = (MagickImageDecodeRequest)(SwigcptrMagickImageDecodeRequest(C._wrap_new_MagickImageDecodeRequest_gocv_e0e444adc12721f6()))
+	swig_r = (MagickImageDecodeRequest)(SwigcptrMagickImageDecodeRequest(C._wrap_new_MagickImageDecodeRequest_gocv_ba346308b44e7b91()))
 	return swig_r
 }
 
 func DeleteMagickImageDecodeRequest(arg1 MagickImageDecodeRequest) {
 	_swig_i_0 := getSwigcptr(arg1)
-	C._wrap_delete_MagickImageDecodeRequest_gocv_e0e444adc12721f6(C.uintptr_t(_swig_i_0))
+	C._wrap_delete_MagickImageDecodeRequest_gocv_ba346308b44e7b91(C.uintptr_t(_swig_i_0))
 }
 
 type MagickImageDecodeRequest interface {
@@ -299,63 +301,63 @@ type MagickImageDecodeRequest interface {
 type GocvOrientationType int
 func _swig_getUndefinedOrientation() (_swig_ret GocvOrientationType) {
 	var swig_r GocvOrientationType
-	swig_r = (GocvOrientationType)(C._wrap_UndefinedOrientation_gocv_e0e444adc12721f6())
+	swig_r = (GocvOrientationType)(C._wrap_UndefinedOrientation_gocv_ba346308b44e7b91())
 	return swig_r
 }
 
 var UndefinedOrientation GocvOrientationType = _swig_getUndefinedOrientation()
 func _swig_getTopLeftOrientation() (_swig_ret GocvOrientationType) {
 	var swig_r GocvOrientationType
-	swig_r = (GocvOrientationType)(C._wrap_TopLeftOrientation_gocv_e0e444adc12721f6())
+	swig_r = (GocvOrientationType)(C._wrap_TopLeftOrientation_gocv_ba346308b44e7b91())
 	return swig_r
 }
 
 var TopLeftOrientation GocvOrientationType = _swig_getTopLeftOrientation()
 func _swig_getTopRightOrientation() (_swig_ret GocvOrientationType) {
 	var swig_r GocvOrientationType
-	swig_r = (GocvOrientationType)(C._wrap_TopRightOrientation_gocv_e0e444adc12721f6())
+	swig_r = (GocvOrientationType)(C._wrap_TopRightOrientation_gocv_ba346308b44e7b91())
 	return swig_r
 }
 
 var TopRightOrientation GocvOrientationType = _swig_getTopRightOrientation()
 func _swig_getBottomRightOrientation() (_swig_ret GocvOrientationType) {
 	var swig_r GocvOrientationType
-	swig_r = (GocvOrientationType)(C._wrap_BottomRightOrientation_gocv_e0e444adc12721f6())
+	swig_r = (GocvOrientationType)(C._wrap_BottomRightOrientation_gocv_ba346308b44e7b91())
 	return swig_r
 }
 
 var BottomRightOrientation GocvOrientationType = _swig_getBottomRightOrientation()
 func _swig_getBottomLeftOrientation() (_swig_ret GocvOrientationType) {
 	var swig_r GocvOrientationType
-	swig_r = (GocvOrientationType)(C._wrap_BottomLeftOrientation_gocv_e0e444adc12721f6())
+	swig_r = (GocvOrientationType)(C._wrap_BottomLeftOrientation_gocv_ba346308b44e7b91())
 	return swig_r
 }
 
 var BottomLeftOrientation GocvOrientationType = _swig_getBottomLeftOrientation()
 func _swig_getLeftTopOrientation() (_swig_ret GocvOrientationType) {
 	var swig_r GocvOrientationType
-	swig_r = (GocvOrientationType)(C._wrap_LeftTopOrientation_gocv_e0e444adc12721f6())
+	swig_r = (GocvOrientationType)(C._wrap_LeftTopOrientation_gocv_ba346308b44e7b91())
 	return swig_r
 }
 
 var LeftTopOrientation GocvOrientationType = _swig_getLeftTopOrientation()
 func _swig_getRightTopOrientation() (_swig_ret GocvOrientationType) {
 	var swig_r GocvOrientationType
-	swig_r = (GocvOrientationType)(C._wrap_RightTopOrientation_gocv_e0e444adc12721f6())
+	swig_r = (GocvOrientationType)(C._wrap_RightTopOrientation_gocv_ba346308b44e7b91())
 	return swig_r
 }
 
 var RightTopOrientation GocvOrientationType = _swig_getRightTopOrientation()
 func _swig_getRightBottomOrientation() (_swig_ret GocvOrientationType) {
 	var swig_r GocvOrientationType
-	swig_r = (GocvOrientationType)(C._wrap_RightBottomOrientation_gocv_e0e444adc12721f6())
+	swig_r = (GocvOrientationType)(C._wrap_RightBottomOrientation_gocv_ba346308b44e7b91())
 	return swig_r
 }
 
 var RightBottomOrientation GocvOrientationType = _swig_getRightBottomOrientation()
 func _swig_getLeftBottomOrientation() (_swig_ret GocvOrientationType) {
 	var swig_r GocvOrientationType
-	swig_r = (GocvOrientationType)(C._wrap_LeftBottomOrientation_gocv_e0e444adc12721f6())
+	swig_r = (GocvOrientationType)(C._wrap_LeftBottomOrientation_gocv_ba346308b44e7b91())
 	return swig_r
 }
 
@@ -363,140 +365,140 @@ var LeftBottomOrientation GocvOrientationType = _swig_getLeftBottomOrientation()
 type GocvColorspaceType int
 func _swig_getUndefinedColorspace() (_swig_ret GocvColorspaceType) {
 	var swig_r GocvColorspaceType
-	swig_r = (GocvColorspaceType)(C._wrap_UndefinedColorspace_gocv_e0e444adc12721f6())
+	swig_r = (GocvColorspaceType)(C._wrap_UndefinedColorspace_gocv_ba346308b44e7b91())
 	return swig_r
 }
 
 var UndefinedColorspace GocvColorspaceType = _swig_getUndefinedColorspace()
 func _swig_getRGBColorspace() (_swig_ret GocvColorspaceType) {
 	var swig_r GocvColorspaceType
-	swig_r = (GocvColorspaceType)(C._wrap_RGBColorspace_gocv_e0e444adc12721f6())
+	swig_r = (GocvColorspaceType)(C._wrap_RGBColorspace_gocv_ba346308b44e7b91())
 	return swig_r
 }
 
 var RGBColorspace GocvColorspaceType = _swig_getRGBColorspace()
 func _swig_getGRAYColorspace() (_swig_ret GocvColorspaceType) {
 	var swig_r GocvColorspaceType
-	swig_r = (GocvColorspaceType)(C._wrap_GRAYColorspace_gocv_e0e444adc12721f6())
+	swig_r = (GocvColorspaceType)(C._wrap_GRAYColorspace_gocv_ba346308b44e7b91())
 	return swig_r
 }
 
 var GRAYColorspace GocvColorspaceType = _swig_getGRAYColorspace()
 func _swig_getTransparentColorspace() (_swig_ret GocvColorspaceType) {
 	var swig_r GocvColorspaceType
-	swig_r = (GocvColorspaceType)(C._wrap_TransparentColorspace_gocv_e0e444adc12721f6())
+	swig_r = (GocvColorspaceType)(C._wrap_TransparentColorspace_gocv_ba346308b44e7b91())
 	return swig_r
 }
 
 var TransparentColorspace GocvColorspaceType = _swig_getTransparentColorspace()
 func _swig_getOHTAColorspace() (_swig_ret GocvColorspaceType) {
 	var swig_r GocvColorspaceType
-	swig_r = (GocvColorspaceType)(C._wrap_OHTAColorspace_gocv_e0e444adc12721f6())
+	swig_r = (GocvColorspaceType)(C._wrap_OHTAColorspace_gocv_ba346308b44e7b91())
 	return swig_r
 }
 
 var OHTAColorspace GocvColorspaceType = _swig_getOHTAColorspace()
 func _swig_getXYZColorspace() (_swig_ret GocvColorspaceType) {
 	var swig_r GocvColorspaceType
-	swig_r = (GocvColorspaceType)(C._wrap_XYZColorspace_gocv_e0e444adc12721f6())
+	swig_r = (GocvColorspaceType)(C._wrap_XYZColorspace_gocv_ba346308b44e7b91())
 	return swig_r
 }
 
 var XYZColorspace GocvColorspaceType = _swig_getXYZColorspace()
 func _swig_getYCCColorspace() (_swig_ret GocvColorspaceType) {
 	var swig_r GocvColorspaceType
-	swig_r = (GocvColorspaceType)(C._wrap_YCCColorspace_gocv_e0e444adc12721f6())
+	swig_r = (GocvColorspaceType)(C._wrap_YCCColorspace_gocv_ba346308b44e7b91())
 	return swig_r
 }
 
 var YCCColorspace GocvColorspaceType = _swig_getYCCColorspace()
 func _swig_getYIQColorspace() (_swig_ret GocvColorspaceType) {
 	var swig_r GocvColorspaceType
-	swig_r = (GocvColorspaceType)(C._wrap_YIQColorspace_gocv_e0e444adc12721f6())
+	swig_r = (GocvColorspaceType)(C._wrap_YIQColorspace_gocv_ba346308b44e7b91())
 	return swig_r
 }
 
 var YIQColorspace GocvColorspaceType = _swig_getYIQColorspace()
 func _swig_getYPbPrColorspace() (_swig_ret GocvColorspaceType) {
 	var swig_r GocvColorspaceType
-	swig_r = (GocvColorspaceType)(C._wrap_YPbPrColorspace_gocv_e0e444adc12721f6())
+	swig_r = (GocvColorspaceType)(C._wrap_YPbPrColorspace_gocv_ba346308b44e7b91())
 	return swig_r
 }
 
 var YPbPrColorspace GocvColorspaceType = _swig_getYPbPrColorspace()
 func _swig_getYUVColorspace() (_swig_ret GocvColorspaceType) {
 	var swig_r GocvColorspaceType
-	swig_r = (GocvColorspaceType)(C._wrap_YUVColorspace_gocv_e0e444adc12721f6())
+	swig_r = (GocvColorspaceType)(C._wrap_YUVColorspace_gocv_ba346308b44e7b91())
 	return swig_r
 }
 
 var YUVColorspace GocvColorspaceType = _swig_getYUVColorspace()
 func _swig_getCMYKColorspace() (_swig_ret GocvColorspaceType) {
 	var swig_r GocvColorspaceType
-	swig_r = (GocvColorspaceType)(C._wrap_CMYKColorspace_gocv_e0e444adc12721f6())
+	swig_r = (GocvColorspaceType)(C._wrap_CMYKColorspace_gocv_ba346308b44e7b91())
 	return swig_r
 }
 
 var CMYKColorspace GocvColorspaceType = _swig_getCMYKColorspace()
 func _swig_getsRGBColorspace() (_swig_ret GocvColorspaceType) {
 	var swig_r GocvColorspaceType
-	swig_r = (GocvColorspaceType)(C._wrap_sRGBColorspace_gocv_e0e444adc12721f6())
+	swig_r = (GocvColorspaceType)(C._wrap_sRGBColorspace_gocv_ba346308b44e7b91())
 	return swig_r
 }
 
 var SRGBColorspace GocvColorspaceType = _swig_getsRGBColorspace()
 func _swig_getHSLColorspace() (_swig_ret GocvColorspaceType) {
 	var swig_r GocvColorspaceType
-	swig_r = (GocvColorspaceType)(C._wrap_HSLColorspace_gocv_e0e444adc12721f6())
+	swig_r = (GocvColorspaceType)(C._wrap_HSLColorspace_gocv_ba346308b44e7b91())
 	return swig_r
 }
 
 var HSLColorspace GocvColorspaceType = _swig_getHSLColorspace()
 func _swig_getHWBColorspace() (_swig_ret GocvColorspaceType) {
 	var swig_r GocvColorspaceType
-	swig_r = (GocvColorspaceType)(C._wrap_HWBColorspace_gocv_e0e444adc12721f6())
+	swig_r = (GocvColorspaceType)(C._wrap_HWBColorspace_gocv_ba346308b44e7b91())
 	return swig_r
 }
 
 var HWBColorspace GocvColorspaceType = _swig_getHWBColorspace()
 func _swig_getLABColorspace() (_swig_ret GocvColorspaceType) {
 	var swig_r GocvColorspaceType
-	swig_r = (GocvColorspaceType)(C._wrap_LABColorspace_gocv_e0e444adc12721f6())
+	swig_r = (GocvColorspaceType)(C._wrap_LABColorspace_gocv_ba346308b44e7b91())
 	return swig_r
 }
 
 var LABColorspace GocvColorspaceType = _swig_getLABColorspace()
 func _swig_getCineonLogRGBColorspace() (_swig_ret GocvColorspaceType) {
 	var swig_r GocvColorspaceType
-	swig_r = (GocvColorspaceType)(C._wrap_CineonLogRGBColorspace_gocv_e0e444adc12721f6())
+	swig_r = (GocvColorspaceType)(C._wrap_CineonLogRGBColorspace_gocv_ba346308b44e7b91())
 	return swig_r
 }
 
 var CineonLogRGBColorspace GocvColorspaceType = _swig_getCineonLogRGBColorspace()
 func _swig_getRec601LumaColorspace() (_swig_ret GocvColorspaceType) {
 	var swig_r GocvColorspaceType
-	swig_r = (GocvColorspaceType)(C._wrap_Rec601LumaColorspace_gocv_e0e444adc12721f6())
+	swig_r = (GocvColorspaceType)(C._wrap_Rec601LumaColorspace_gocv_ba346308b44e7b91())
 	return swig_r
 }
 
 var Rec601LumaColorspace GocvColorspaceType = _swig_getRec601LumaColorspace()
 func _swig_getRec601YCbCrColorspace() (_swig_ret GocvColorspaceType) {
 	var swig_r GocvColorspaceType
-	swig_r = (GocvColorspaceType)(C._wrap_Rec601YCbCrColorspace_gocv_e0e444adc12721f6())
+	swig_r = (GocvColorspaceType)(C._wrap_Rec601YCbCrColorspace_gocv_ba346308b44e7b91())
 	return swig_r
 }
 
 var Rec601YCbCrColorspace GocvColorspaceType = _swig_getRec601YCbCrColorspace()
 func _swig_getRec709LumaColorspace() (_swig_ret GocvColorspaceType) {
 	var swig_r GocvColorspaceType
-	swig_r = (GocvColorspaceType)(C._wrap_Rec709LumaColorspace_gocv_e0e444adc12721f6())
+	swig_r = (GocvColorspaceType)(C._wrap_Rec709LumaColorspace_gocv_ba346308b44e7b91())
 	return swig_r
 }
 
 var Rec709LumaColorspace GocvColorspaceType = _swig_getRec709LumaColorspace()
 func _swig_getRec709YCbCrColorspace() (_swig_ret GocvColorspaceType) {
 	var swig_r GocvColorspaceType
-	swig_r = (GocvColorspaceType)(C._wrap_Rec709YCbCrColorspace_gocv_e0e444adc12721f6())
+	swig_r = (GocvColorspaceType)(C._wrap_Rec709YCbCrColorspace_gocv_ba346308b44e7b91())
 	return swig_r
 }
 
@@ -513,46 +515,46 @@ func (p SwigcptrMagickImageDecodeResponse) SwigIsMagickImageDecodeResponse() {
 func (arg1 SwigcptrMagickImageDecodeResponse) SetMat(arg2 Cv_Mat) {
 	_swig_i_0 := arg1
 	_swig_i_1 := getSwigcptr(arg2)
-	C._wrap_MagickImageDecodeResponse_mat_set_gocv_e0e444adc12721f6(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))
+	C._wrap_MagickImageDecodeResponse_mat_set_gocv_ba346308b44e7b91(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))
 }
 
 func (arg1 SwigcptrMagickImageDecodeResponse) GetMat() (_swig_ret Cv_Mat) {
 	var swig_r Cv_Mat
 	_swig_i_0 := arg1
-	swig_r = (Cv_Mat)(SwigcptrCv_Mat(C._wrap_MagickImageDecodeResponse_mat_get_gocv_e0e444adc12721f6(C.uintptr_t(_swig_i_0))))
+	swig_r = (Cv_Mat)(SwigcptrCv_Mat(C._wrap_MagickImageDecodeResponse_mat_get_gocv_ba346308b44e7b91(C.uintptr_t(_swig_i_0))))
 	return swig_r
 }
 
-func (arg1 SwigcptrMagickImageDecodeResponse) SetRows(arg2 Int64_t) {
+func (arg1 SwigcptrMagickImageDecodeResponse) SetRows(arg2 int) {
 	_swig_i_0 := arg1
-	_swig_i_1 := getSwigcptr(arg2)
-	C._wrap_MagickImageDecodeResponse_rows_set_gocv_e0e444adc12721f6(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))
+	_swig_i_1 := arg2
+	C._wrap_MagickImageDecodeResponse_rows_set_gocv_ba346308b44e7b91(C.uintptr_t(_swig_i_0), C.swig_intgo(_swig_i_1))
 }
 
-func (arg1 SwigcptrMagickImageDecodeResponse) GetRows() (_swig_ret Int64_t) {
-	var swig_r Int64_t
+func (arg1 SwigcptrMagickImageDecodeResponse) GetRows() (_swig_ret int) {
+	var swig_r int
 	_swig_i_0 := arg1
-	swig_r = (Int64_t)(SwigcptrInt64_t(C._wrap_MagickImageDecodeResponse_rows_get_gocv_e0e444adc12721f6(C.uintptr_t(_swig_i_0))))
+	swig_r = (int)(C._wrap_MagickImageDecodeResponse_rows_get_gocv_ba346308b44e7b91(C.uintptr_t(_swig_i_0)))
 	return swig_r
 }
 
-func (arg1 SwigcptrMagickImageDecodeResponse) SetColumns(arg2 Int64_t) {
+func (arg1 SwigcptrMagickImageDecodeResponse) SetColumns(arg2 int) {
 	_swig_i_0 := arg1
-	_swig_i_1 := getSwigcptr(arg2)
-	C._wrap_MagickImageDecodeResponse_columns_set_gocv_e0e444adc12721f6(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))
+	_swig_i_1 := arg2
+	C._wrap_MagickImageDecodeResponse_columns_set_gocv_ba346308b44e7b91(C.uintptr_t(_swig_i_0), C.swig_intgo(_swig_i_1))
 }
 
-func (arg1 SwigcptrMagickImageDecodeResponse) GetColumns() (_swig_ret Int64_t) {
-	var swig_r Int64_t
+func (arg1 SwigcptrMagickImageDecodeResponse) GetColumns() (_swig_ret int) {
+	var swig_r int
 	_swig_i_0 := arg1
-	swig_r = (Int64_t)(SwigcptrInt64_t(C._wrap_MagickImageDecodeResponse_columns_get_gocv_e0e444adc12721f6(C.uintptr_t(_swig_i_0))))
+	swig_r = (int)(C._wrap_MagickImageDecodeResponse_columns_get_gocv_ba346308b44e7b91(C.uintptr_t(_swig_i_0)))
 	return swig_r
 }
 
 func (arg1 SwigcptrMagickImageDecodeResponse) SetMagick(arg2 string) {
 	_swig_i_0 := arg1
 	_swig_i_1 := arg2
-	C._wrap_MagickImageDecodeResponse_magick_set_gocv_e0e444adc12721f6(C.uintptr_t(_swig_i_0), *(*C.swig_type_7)(unsafe.Pointer(&_swig_i_1)))
+	C._wrap_MagickImageDecodeResponse_magick_set_gocv_ba346308b44e7b91(C.uintptr_t(_swig_i_0), *(*C.swig_type_7)(unsafe.Pointer(&_swig_i_1)))
 	if Swig_escape_always_false {
 		Swig_escape_val = arg2
 	}
@@ -561,7 +563,7 @@ func (arg1 SwigcptrMagickImageDecodeResponse) SetMagick(arg2 string) {
 func (arg1 SwigcptrMagickImageDecodeResponse) GetMagick() (_swig_ret string) {
 	var swig_r string
 	_swig_i_0 := arg1
-	swig_r_p := C._wrap_MagickImageDecodeResponse_magick_get_gocv_e0e444adc12721f6(C.uintptr_t(_swig_i_0))
+	swig_r_p := C._wrap_MagickImageDecodeResponse_magick_get_gocv_ba346308b44e7b91(C.uintptr_t(_swig_i_0))
 	swig_r = *(*string)(unsafe.Pointer(&swig_r_p))
 	var swig_r_1 string
  swig_r_1 = swigCopyString(swig_r) 
@@ -571,38 +573,38 @@ func (arg1 SwigcptrMagickImageDecodeResponse) GetMagick() (_swig_ret string) {
 func (arg1 SwigcptrMagickImageDecodeResponse) SetOrientation_type(arg2 GocvOrientationType) {
 	_swig_i_0 := arg1
 	_swig_i_1 := arg2
-	C._wrap_MagickImageDecodeResponse_orientation_type_set_gocv_e0e444adc12721f6(C.uintptr_t(_swig_i_0), C.swig_intgo(_swig_i_1))
+	C._wrap_MagickImageDecodeResponse_orientation_type_set_gocv_ba346308b44e7b91(C.uintptr_t(_swig_i_0), C.swig_intgo(_swig_i_1))
 }
 
 func (arg1 SwigcptrMagickImageDecodeResponse) GetOrientation_type() (_swig_ret GocvOrientationType) {
 	var swig_r GocvOrientationType
 	_swig_i_0 := arg1
-	swig_r = (GocvOrientationType)(C._wrap_MagickImageDecodeResponse_orientation_type_get_gocv_e0e444adc12721f6(C.uintptr_t(_swig_i_0)))
+	swig_r = (GocvOrientationType)(C._wrap_MagickImageDecodeResponse_orientation_type_get_gocv_ba346308b44e7b91(C.uintptr_t(_swig_i_0)))
 	return swig_r
 }
 
 func (arg1 SwigcptrMagickImageDecodeResponse) SetColorspace_type(arg2 GocvColorspaceType) {
 	_swig_i_0 := arg1
 	_swig_i_1 := arg2
-	C._wrap_MagickImageDecodeResponse_colorspace_type_set_gocv_e0e444adc12721f6(C.uintptr_t(_swig_i_0), C.swig_intgo(_swig_i_1))
+	C._wrap_MagickImageDecodeResponse_colorspace_type_set_gocv_ba346308b44e7b91(C.uintptr_t(_swig_i_0), C.swig_intgo(_swig_i_1))
 }
 
 func (arg1 SwigcptrMagickImageDecodeResponse) GetColorspace_type() (_swig_ret GocvColorspaceType) {
 	var swig_r GocvColorspaceType
 	_swig_i_0 := arg1
-	swig_r = (GocvColorspaceType)(C._wrap_MagickImageDecodeResponse_colorspace_type_get_gocv_e0e444adc12721f6(C.uintptr_t(_swig_i_0)))
+	swig_r = (GocvColorspaceType)(C._wrap_MagickImageDecodeResponse_colorspace_type_get_gocv_ba346308b44e7b91(C.uintptr_t(_swig_i_0)))
 	return swig_r
 }
 
 func NewMagickImageDecodeResponse() (_swig_ret MagickImageDecodeResponse) {
 	var swig_r MagickImageDecodeResponse
-	swig_r = (MagickImageDecodeResponse)(SwigcptrMagickImageDecodeResponse(C._wrap_new_MagickImageDecodeResponse_gocv_e0e444adc12721f6()))
+	swig_r = (MagickImageDecodeResponse)(SwigcptrMagickImageDecodeResponse(C._wrap_new_MagickImageDecodeResponse_gocv_ba346308b44e7b91()))
 	return swig_r
 }
 
 func DeleteMagickImageDecodeResponse(arg1 MagickImageDecodeResponse) {
 	_swig_i_0 := getSwigcptr(arg1)
-	C._wrap_delete_MagickImageDecodeResponse_gocv_e0e444adc12721f6(C.uintptr_t(_swig_i_0))
+	C._wrap_delete_MagickImageDecodeResponse_gocv_ba346308b44e7b91(C.uintptr_t(_swig_i_0))
 }
 
 type MagickImageDecodeResponse interface {
@@ -610,10 +612,10 @@ type MagickImageDecodeResponse interface {
 	SwigIsMagickImageDecodeResponse()
 	SetMat(arg2 Cv_Mat)
 	GetMat() (_swig_ret Cv_Mat)
-	SetRows(arg2 Int64_t)
-	GetRows() (_swig_ret Int64_t)
-	SetColumns(arg2 Int64_t)
-	GetColumns() (_swig_ret Int64_t)
+	SetRows(arg2 int)
+	GetRows() (_swig_ret int)
+	SetColumns(arg2 int)
+	GetColumns() (_swig_ret int)
 	SetMagick(arg2 string)
 	GetMagick() (_swig_ret string)
 	SetOrientation_type(arg2 GocvOrientationType)
@@ -622,47 +624,81 @@ type MagickImageDecodeResponse interface {
 	GetColorspace_type() (_swig_ret GocvColorspaceType)
 }
 
-type SwigcptrMagicImage uintptr
+type SwigcptrWrapped_MagicImage uintptr
 
-func (p SwigcptrMagicImage) Swigcptr() uintptr {
+func (p SwigcptrWrapped_MagicImage) Swigcptr() uintptr {
 	return (uintptr)(p)
 }
 
-func (p SwigcptrMagicImage) SwigIsMagicImage() {
+func (p SwigcptrWrapped_MagicImage) SwigIsWrapped_MagicImage() {
 }
 
-func NewMagicImage() (_swig_ret MagicImage) {
-	var swig_r MagicImage
-	swig_r = (MagicImage)(SwigcptrMagicImage(C._wrap_new_MagicImage_gocv_e0e444adc12721f6()))
+func NewWrapped_MagicImage() (_swig_ret Wrapped_MagicImage) {
+	var swig_r Wrapped_MagicImage
+	swig_r = (Wrapped_MagicImage)(SwigcptrWrapped_MagicImage(C._wrap_new_Wrapped_MagicImage_gocv_ba346308b44e7b91()))
 	return swig_r
 }
 
-func DeleteMagicImage(arg1 MagicImage) {
+func DeleteWrapped_MagicImage(arg1 Wrapped_MagicImage) {
 	_swig_i_0 := getSwigcptr(arg1)
-	C._wrap_delete_MagicImage_gocv_e0e444adc12721f6(C.uintptr_t(_swig_i_0))
+	C._wrap_delete_Wrapped_MagicImage_gocv_ba346308b44e7b91(C.uintptr_t(_swig_i_0))
 }
 
-func (arg1 SwigcptrMagicImage) MagickImageDecode(arg2 MagickImageDecodeRequest, arg3 MagickImageDecodeResponse) {
+func Wrapped_MagicImageMagickInitializeMagick(arg1 MagickInitializeMagickRequest, arg2 MagickInitializeMagickResponse) {
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := getSwigcptr(arg2)
+	C._wrap_Wrapped_MagicImage_MagickInitializeMagick_gocv_ba346308b44e7b91(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))
+}
+
+func (arg1 SwigcptrWrapped_MagicImage) Wrapped_MagickImageDecode(arg2 MagickImageDecodeRequest, arg3 MagickImageDecodeResponse) {
 	_swig_i_0 := arg1
 	_swig_i_1 := getSwigcptr(arg2)
 	_swig_i_2 := getSwigcptr(arg3)
-	C._wrap_MagicImage_MagickImageDecode_gocv_e0e444adc12721f6(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1), C.uintptr_t(_swig_i_2))
+	C._wrap_Wrapped_MagicImage_Wrapped_MagickImageDecode_gocv_ba346308b44e7b91(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1), C.uintptr_t(_swig_i_2))
 }
+
+type Wrapped_MagicImage interface {
+	Swigcptr() uintptr
+	SwigIsWrapped_MagicImage()
+	Wrapped_MagickImageDecode(arg2 MagickImageDecodeRequest, arg3 MagickImageDecodeResponse)
+}
+
+
 
 type MagicImage interface {
-	Swigcptr() uintptr
-	SwigIsMagicImage()
-	MagickImageDecode(arg2 MagickImageDecodeRequest, arg3 MagickImageDecodeResponse)
+   Wrapped_MagicImage 
+   MagickImageDecode(MagickImageDecodeRequest) (MagickImageDecodeResponse, error)
+}
+
+func NewMagicImage() MagicImage {
+     mi := NewWrapped_MagicImage()
+     return mi.(MagicImage)
+}
+
+// catch will recover from a panic and store the recover message to the error 
+// parameter. The error must be passed by reference in order to be returned to the
+// calling function.
+func catch(err *error) {
+    if r := recover(); r != nil {
+        *err = fmt.Errorf("%v", r)
+    }
+}
+
+func MagickInitializeMagick(req MagickInitializeMagickRequest) (resp MagickInitializeMagickResponse, err error) {
+   defer catch(&err)
+   resp = NewMagickInitializeMagickResponse()
+   Wrapped_MagicImageMagickInitializeMagick(req, resp)
+   return
+}
+
+func (arg SwigcptrWrapped_MagicImage) MagickImageDecode(req MagickImageDecodeRequest) (resp MagickImageDecodeResponse, err error) {
+	defer catch(&err)
+    resp = NewMagickImageDecodeResponse()
+	arg.Wrapped_MagickImageDecode(req, resp)
+	return
 }
 
 
-type SwigcptrInt64_t uintptr
-type Int64_t interface {
-	Swigcptr() uintptr;
-}
-func (p SwigcptrInt64_t) Swigcptr() uintptr {
-	return uintptr(p)
-}
 
 type SwigcptrCv_Mat uintptr
 type Cv_Mat interface {

@@ -2,6 +2,7 @@
 #define GOCV_CGO_SWIG_GOCV_GOCV_H_
 
 #include <opencv2/opencv.hpp>
+#include <stdexcept>
 #include <string>
 
 namespace gocv {
@@ -57,8 +58,8 @@ enum ColorspaceType {
 
 struct MagickImageDecodeResponse {
     cv::Mat mat;
-    int64_t rows;        // height
-    int64_t columns;     // width
+    int rows;            // height
+    int columns;         // width
     std::string magick;  // File type magick identifier (.e.g "GIF")
     OrientationType orientation_type;
     ColorspaceType colorspace_type;
@@ -73,8 +74,11 @@ public:
 MagicImage() = default;
 ~MagicImage();
 
+static void MagickInitializeMagick(const MagickInitializeMagickRequest& req,
+                                   MagickInitializeMagickResponse& resp);
+
 void MagickImageDecode(const MagickImageDecodeRequest& req,
-                       MagickImageDecodeResponse* resp);
+                       MagickImageDecodeResponse& resp);
 
 };
 
