@@ -10,6 +10,7 @@
 %{
 #include "gocv.h"
 %}
+
 %exception {
     try {
         $action;
@@ -18,7 +19,55 @@
     }
 }
 
+%rename(Wrapped_MagicImage) MagicImage;
+%rename(Wrapped_MagickImageDecode)  MagickImageDecode;
+%rename(Wrapped_Divide) Divide;
+
+/*
+%typemap(gotype) int "int32"
+%typemap(gotype) int64 "int64"
+%typemap(gotype) int64* "*int64"
+*/
+
 %header %{
 
 %}
 %include "gocv.h"
+
+%go_import("fmt")
+%insert(go_wrapper) %{
+
+type MagicImage interface {
+   Wrapped_MagicImage 
+   MagickImageDecode(MagickImageDecodeRequest) (MagickImageDecodeResponse, error)
+}
+
+func NewMagicImage() MagicImage {
+     mi := NewWrapped_MagicImage()
+     return mi.(MagicImage)
+}
+
+// catch will recover from a panic and store the recover message to the error 
+// parameter. The error must be passed by reference in order to be returned to the
+// calling function.
+func catch(err *error) {
+    if r := recover(); r != nil {
+        *err = fmt.Errorf("%v", r)
+    }
+}
+
+func MagickInitializeMagick(req MagickInitializeMagickRequest) (resp MagickInitializeMagickResponse, err error) {
+   defer catch(&err)
+   resp = NewMagickInitializeMagickResponse()
+   Wrapped_MagicImageMagickInitializeMagick(req, resp)
+   return
+}
+
+func (arg SwigcptrWrapped_MagicImage) MagickImageDecode(req MagickImageDecodeRequest) (resp MagickImageDecodeResponse, err error) {
+	defer catch(&err)
+    resp = NewMagickImageDecodeResponse()
+	arg.Wrapped_MagickImageDecode(req, resp)
+	return
+}
+
+%}

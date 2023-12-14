@@ -13,9 +13,9 @@ extern
 #ifdef __cplusplus
   "C"
 #endif
-  void cgo_panic__gocv_e0e444adc12721f6(const char*);
+  void cgo_panic__gocv_ba346308b44e7b91(const char*);
 static void _swig_gopanic(const char *p) {
-  cgo_panic__gocv_e0e444adc12721f6(p);
+  cgo_panic__gocv_ba346308b44e7b91(p);
 }
 
 
@@ -367,7 +367,7 @@ static void* Swig_malloc(int c) {
 extern "C" {
 #endif
 
-void _wrap_Swig_free_gocv_e0e444adc12721f6(void *_swig_go_0) {
+void _wrap_Swig_free_gocv_ba346308b44e7b91(void *_swig_go_0) {
   void *arg1 = (void *) 0 ;
   
   arg1 = *(void **)&_swig_go_0; 
@@ -377,7 +377,7 @@ void _wrap_Swig_free_gocv_e0e444adc12721f6(void *_swig_go_0) {
 }
 
 
-void *_wrap_Swig_malloc_gocv_e0e444adc12721f6(intgo _swig_go_0) {
+void *_wrap_Swig_malloc_gocv_ba346308b44e7b91(intgo _swig_go_0) {
   int arg1 ;
   void *result = 0 ;
   void *_swig_go_result;
@@ -390,7 +390,7 @@ void *_wrap_Swig_malloc_gocv_e0e444adc12721f6(intgo _swig_go_0) {
 }
 
 
-void _wrap_MagickInitializeMagickRequest_path_set_gocv_e0e444adc12721f6(gocv::MagickInitializeMagickRequest *_swig_go_0, _gostring_ _swig_go_1) {
+void _wrap_MagickInitializeMagickRequest_path_set_gocv_ba346308b44e7b91(gocv::MagickInitializeMagickRequest *_swig_go_0, _gostring_ _swig_go_1) {
   gocv::MagickInitializeMagickRequest *arg1 = (gocv::MagickInitializeMagickRequest *) 0 ;
   std::string *arg2 = 0 ;
   
@@ -405,7 +405,7 @@ void _wrap_MagickInitializeMagickRequest_path_set_gocv_e0e444adc12721f6(gocv::Ma
 }
 
 
-_gostring_ _wrap_MagickInitializeMagickRequest_path_get_gocv_e0e444adc12721f6(gocv::MagickInitializeMagickRequest *_swig_go_0) {
+_gostring_ _wrap_MagickInitializeMagickRequest_path_get_gocv_ba346308b44e7b91(gocv::MagickInitializeMagickRequest *_swig_go_0) {
   gocv::MagickInitializeMagickRequest *arg1 = (gocv::MagickInitializeMagickRequest *) 0 ;
   std::string *result = 0 ;
   _gostring_ _swig_go_result;
@@ -418,7 +418,7 @@ _gostring_ _wrap_MagickInitializeMagickRequest_path_get_gocv_e0e444adc12721f6(go
 }
 
 
-gocv::MagickInitializeMagickRequest *_wrap_new_MagickInitializeMagickRequest_gocv_e0e444adc12721f6() {
+gocv::MagickInitializeMagickRequest *_wrap_new_MagickInitializeMagickRequest_gocv_ba346308b44e7b91() {
   gocv::MagickInitializeMagickRequest *result = 0 ;
   gocv::MagickInitializeMagickRequest *_swig_go_result;
   
@@ -435,7 +435,7 @@ gocv::MagickInitializeMagickRequest *_wrap_new_MagickInitializeMagickRequest_goc
 }
 
 
-void _wrap_delete_MagickInitializeMagickRequest_gocv_e0e444adc12721f6(gocv::MagickInitializeMagickRequest *_swig_go_0) {
+void _wrap_delete_MagickInitializeMagickRequest_gocv_ba346308b44e7b91(gocv::MagickInitializeMagickRequest *_swig_go_0) {
   gocv::MagickInitializeMagickRequest *arg1 = (gocv::MagickInitializeMagickRequest *) 0 ;
   
   arg1 = *(gocv::MagickInitializeMagickRequest **)&_swig_go_0; 
@@ -451,7 +451,7 @@ void _wrap_delete_MagickInitializeMagickRequest_gocv_e0e444adc12721f6(gocv::Magi
 }
 
 
-gocv::MagickInitializeMagickResponse *_wrap_new_MagickInitializeMagickResponse_gocv_e0e444adc12721f6() {
+gocv::MagickInitializeMagickResponse *_wrap_new_MagickInitializeMagickResponse_gocv_ba346308b44e7b91() {
   gocv::MagickInitializeMagickResponse *result = 0 ;
   gocv::MagickInitializeMagickResponse *_swig_go_result;
   
@@ -468,7 +468,7 @@ gocv::MagickInitializeMagickResponse *_wrap_new_MagickInitializeMagickResponse_g
 }
 
 
-void _wrap_delete_MagickInitializeMagickResponse_gocv_e0e444adc12721f6(gocv::MagickInitializeMagickResponse *_swig_go_0) {
+void _wrap_delete_MagickInitializeMagickResponse_gocv_ba346308b44e7b91(gocv::MagickInitializeMagickResponse *_swig_go_0) {
   gocv::MagickInitializeMagickResponse *arg1 = (gocv::MagickInitializeMagickResponse *) 0 ;
   
   arg1 = *(gocv::MagickInitializeMagickResponse **)&_swig_go_0; 
@@ -484,7 +484,7 @@ void _wrap_delete_MagickInitializeMagickResponse_gocv_e0e444adc12721f6(gocv::Mag
 }
 
 
-void _wrap_MagickImageDecodeRequest_image_set_gocv_e0e444adc12721f6(gocv::MagickImageDecodeRequest *_swig_go_0, _gostring_ _swig_go_1) {
+void _wrap_MagickImageDecodeRequest_image_set_gocv_ba346308b44e7b91(gocv::MagickImageDecodeRequest *_swig_go_0, _gostring_ _swig_go_1) {
   gocv::MagickImageDecodeRequest *arg1 = (gocv::MagickImageDecodeRequest *) 0 ;
   std::string *arg2 = 0 ;
   
@@ -499,7 +499,7 @@ void _wrap_MagickImageDecodeRequest_image_set_gocv_e0e444adc12721f6(gocv::Magick
 }
 
 
-_gostring_ _wrap_MagickImageDecodeRequest_image_get_gocv_e0e444adc12721f6(gocv::MagickImageDecodeRequest *_swig_go_0) {
+_gostring_ _wrap_MagickImageDecodeRequest_image_get_gocv_ba346308b44e7b91(gocv::MagickImageDecodeRequest *_swig_go_0) {
   gocv::MagickImageDecodeRequest *arg1 = (gocv::MagickImageDecodeRequest *) 0 ;
   std::string *result = 0 ;
   _gostring_ _swig_go_result;
@@ -512,7 +512,7 @@ _gostring_ _wrap_MagickImageDecodeRequest_image_get_gocv_e0e444adc12721f6(gocv::
 }
 
 
-void _wrap_MagickImageDecodeRequest_target_color_space_set_gocv_e0e444adc12721f6(gocv::MagickImageDecodeRequest *_swig_go_0, _gostring_ _swig_go_1) {
+void _wrap_MagickImageDecodeRequest_target_color_space_set_gocv_ba346308b44e7b91(gocv::MagickImageDecodeRequest *_swig_go_0, _gostring_ _swig_go_1) {
   gocv::MagickImageDecodeRequest *arg1 = (gocv::MagickImageDecodeRequest *) 0 ;
   std::string *arg2 = 0 ;
   
@@ -527,7 +527,7 @@ void _wrap_MagickImageDecodeRequest_target_color_space_set_gocv_e0e444adc12721f6
 }
 
 
-_gostring_ _wrap_MagickImageDecodeRequest_target_color_space_get_gocv_e0e444adc12721f6(gocv::MagickImageDecodeRequest *_swig_go_0) {
+_gostring_ _wrap_MagickImageDecodeRequest_target_color_space_get_gocv_ba346308b44e7b91(gocv::MagickImageDecodeRequest *_swig_go_0) {
   gocv::MagickImageDecodeRequest *arg1 = (gocv::MagickImageDecodeRequest *) 0 ;
   std::string *result = 0 ;
   _gostring_ _swig_go_result;
@@ -540,7 +540,7 @@ _gostring_ _wrap_MagickImageDecodeRequest_target_color_space_get_gocv_e0e444adc1
 }
 
 
-gocv::MagickImageDecodeRequest *_wrap_new_MagickImageDecodeRequest_gocv_e0e444adc12721f6() {
+gocv::MagickImageDecodeRequest *_wrap_new_MagickImageDecodeRequest_gocv_ba346308b44e7b91() {
   gocv::MagickImageDecodeRequest *result = 0 ;
   gocv::MagickImageDecodeRequest *_swig_go_result;
   
@@ -557,7 +557,7 @@ gocv::MagickImageDecodeRequest *_wrap_new_MagickImageDecodeRequest_gocv_e0e444ad
 }
 
 
-void _wrap_delete_MagickImageDecodeRequest_gocv_e0e444adc12721f6(gocv::MagickImageDecodeRequest *_swig_go_0) {
+void _wrap_delete_MagickImageDecodeRequest_gocv_ba346308b44e7b91(gocv::MagickImageDecodeRequest *_swig_go_0) {
   gocv::MagickImageDecodeRequest *arg1 = (gocv::MagickImageDecodeRequest *) 0 ;
   
   arg1 = *(gocv::MagickImageDecodeRequest **)&_swig_go_0; 
@@ -573,7 +573,7 @@ void _wrap_delete_MagickImageDecodeRequest_gocv_e0e444adc12721f6(gocv::MagickIma
 }
 
 
-intgo _wrap_UndefinedOrientation_gocv_e0e444adc12721f6() {
+intgo _wrap_UndefinedOrientation_gocv_ba346308b44e7b91() {
   gocv::OrientationType result;
   intgo _swig_go_result;
   
@@ -591,7 +591,7 @@ intgo _wrap_UndefinedOrientation_gocv_e0e444adc12721f6() {
 }
 
 
-intgo _wrap_TopLeftOrientation_gocv_e0e444adc12721f6() {
+intgo _wrap_TopLeftOrientation_gocv_ba346308b44e7b91() {
   gocv::OrientationType result;
   intgo _swig_go_result;
   
@@ -609,7 +609,7 @@ intgo _wrap_TopLeftOrientation_gocv_e0e444adc12721f6() {
 }
 
 
-intgo _wrap_TopRightOrientation_gocv_e0e444adc12721f6() {
+intgo _wrap_TopRightOrientation_gocv_ba346308b44e7b91() {
   gocv::OrientationType result;
   intgo _swig_go_result;
   
@@ -627,7 +627,7 @@ intgo _wrap_TopRightOrientation_gocv_e0e444adc12721f6() {
 }
 
 
-intgo _wrap_BottomRightOrientation_gocv_e0e444adc12721f6() {
+intgo _wrap_BottomRightOrientation_gocv_ba346308b44e7b91() {
   gocv::OrientationType result;
   intgo _swig_go_result;
   
@@ -645,7 +645,7 @@ intgo _wrap_BottomRightOrientation_gocv_e0e444adc12721f6() {
 }
 
 
-intgo _wrap_BottomLeftOrientation_gocv_e0e444adc12721f6() {
+intgo _wrap_BottomLeftOrientation_gocv_ba346308b44e7b91() {
   gocv::OrientationType result;
   intgo _swig_go_result;
   
@@ -663,7 +663,7 @@ intgo _wrap_BottomLeftOrientation_gocv_e0e444adc12721f6() {
 }
 
 
-intgo _wrap_LeftTopOrientation_gocv_e0e444adc12721f6() {
+intgo _wrap_LeftTopOrientation_gocv_ba346308b44e7b91() {
   gocv::OrientationType result;
   intgo _swig_go_result;
   
@@ -681,7 +681,7 @@ intgo _wrap_LeftTopOrientation_gocv_e0e444adc12721f6() {
 }
 
 
-intgo _wrap_RightTopOrientation_gocv_e0e444adc12721f6() {
+intgo _wrap_RightTopOrientation_gocv_ba346308b44e7b91() {
   gocv::OrientationType result;
   intgo _swig_go_result;
   
@@ -699,7 +699,7 @@ intgo _wrap_RightTopOrientation_gocv_e0e444adc12721f6() {
 }
 
 
-intgo _wrap_RightBottomOrientation_gocv_e0e444adc12721f6() {
+intgo _wrap_RightBottomOrientation_gocv_ba346308b44e7b91() {
   gocv::OrientationType result;
   intgo _swig_go_result;
   
@@ -717,7 +717,7 @@ intgo _wrap_RightBottomOrientation_gocv_e0e444adc12721f6() {
 }
 
 
-intgo _wrap_LeftBottomOrientation_gocv_e0e444adc12721f6() {
+intgo _wrap_LeftBottomOrientation_gocv_ba346308b44e7b91() {
   gocv::OrientationType result;
   intgo _swig_go_result;
   
@@ -735,7 +735,7 @@ intgo _wrap_LeftBottomOrientation_gocv_e0e444adc12721f6() {
 }
 
 
-intgo _wrap_UndefinedColorspace_gocv_e0e444adc12721f6() {
+intgo _wrap_UndefinedColorspace_gocv_ba346308b44e7b91() {
   gocv::ColorspaceType result;
   intgo _swig_go_result;
   
@@ -753,7 +753,7 @@ intgo _wrap_UndefinedColorspace_gocv_e0e444adc12721f6() {
 }
 
 
-intgo _wrap_RGBColorspace_gocv_e0e444adc12721f6() {
+intgo _wrap_RGBColorspace_gocv_ba346308b44e7b91() {
   gocv::ColorspaceType result;
   intgo _swig_go_result;
   
@@ -771,7 +771,7 @@ intgo _wrap_RGBColorspace_gocv_e0e444adc12721f6() {
 }
 
 
-intgo _wrap_GRAYColorspace_gocv_e0e444adc12721f6() {
+intgo _wrap_GRAYColorspace_gocv_ba346308b44e7b91() {
   gocv::ColorspaceType result;
   intgo _swig_go_result;
   
@@ -789,7 +789,7 @@ intgo _wrap_GRAYColorspace_gocv_e0e444adc12721f6() {
 }
 
 
-intgo _wrap_TransparentColorspace_gocv_e0e444adc12721f6() {
+intgo _wrap_TransparentColorspace_gocv_ba346308b44e7b91() {
   gocv::ColorspaceType result;
   intgo _swig_go_result;
   
@@ -807,7 +807,7 @@ intgo _wrap_TransparentColorspace_gocv_e0e444adc12721f6() {
 }
 
 
-intgo _wrap_OHTAColorspace_gocv_e0e444adc12721f6() {
+intgo _wrap_OHTAColorspace_gocv_ba346308b44e7b91() {
   gocv::ColorspaceType result;
   intgo _swig_go_result;
   
@@ -825,7 +825,7 @@ intgo _wrap_OHTAColorspace_gocv_e0e444adc12721f6() {
 }
 
 
-intgo _wrap_XYZColorspace_gocv_e0e444adc12721f6() {
+intgo _wrap_XYZColorspace_gocv_ba346308b44e7b91() {
   gocv::ColorspaceType result;
   intgo _swig_go_result;
   
@@ -843,7 +843,7 @@ intgo _wrap_XYZColorspace_gocv_e0e444adc12721f6() {
 }
 
 
-intgo _wrap_YCCColorspace_gocv_e0e444adc12721f6() {
+intgo _wrap_YCCColorspace_gocv_ba346308b44e7b91() {
   gocv::ColorspaceType result;
   intgo _swig_go_result;
   
@@ -861,7 +861,7 @@ intgo _wrap_YCCColorspace_gocv_e0e444adc12721f6() {
 }
 
 
-intgo _wrap_YIQColorspace_gocv_e0e444adc12721f6() {
+intgo _wrap_YIQColorspace_gocv_ba346308b44e7b91() {
   gocv::ColorspaceType result;
   intgo _swig_go_result;
   
@@ -879,7 +879,7 @@ intgo _wrap_YIQColorspace_gocv_e0e444adc12721f6() {
 }
 
 
-intgo _wrap_YPbPrColorspace_gocv_e0e444adc12721f6() {
+intgo _wrap_YPbPrColorspace_gocv_ba346308b44e7b91() {
   gocv::ColorspaceType result;
   intgo _swig_go_result;
   
@@ -897,7 +897,7 @@ intgo _wrap_YPbPrColorspace_gocv_e0e444adc12721f6() {
 }
 
 
-intgo _wrap_YUVColorspace_gocv_e0e444adc12721f6() {
+intgo _wrap_YUVColorspace_gocv_ba346308b44e7b91() {
   gocv::ColorspaceType result;
   intgo _swig_go_result;
   
@@ -915,7 +915,7 @@ intgo _wrap_YUVColorspace_gocv_e0e444adc12721f6() {
 }
 
 
-intgo _wrap_CMYKColorspace_gocv_e0e444adc12721f6() {
+intgo _wrap_CMYKColorspace_gocv_ba346308b44e7b91() {
   gocv::ColorspaceType result;
   intgo _swig_go_result;
   
@@ -933,7 +933,7 @@ intgo _wrap_CMYKColorspace_gocv_e0e444adc12721f6() {
 }
 
 
-intgo _wrap_sRGBColorspace_gocv_e0e444adc12721f6() {
+intgo _wrap_sRGBColorspace_gocv_ba346308b44e7b91() {
   gocv::ColorspaceType result;
   intgo _swig_go_result;
   
@@ -951,7 +951,7 @@ intgo _wrap_sRGBColorspace_gocv_e0e444adc12721f6() {
 }
 
 
-intgo _wrap_HSLColorspace_gocv_e0e444adc12721f6() {
+intgo _wrap_HSLColorspace_gocv_ba346308b44e7b91() {
   gocv::ColorspaceType result;
   intgo _swig_go_result;
   
@@ -969,7 +969,7 @@ intgo _wrap_HSLColorspace_gocv_e0e444adc12721f6() {
 }
 
 
-intgo _wrap_HWBColorspace_gocv_e0e444adc12721f6() {
+intgo _wrap_HWBColorspace_gocv_ba346308b44e7b91() {
   gocv::ColorspaceType result;
   intgo _swig_go_result;
   
@@ -987,7 +987,7 @@ intgo _wrap_HWBColorspace_gocv_e0e444adc12721f6() {
 }
 
 
-intgo _wrap_LABColorspace_gocv_e0e444adc12721f6() {
+intgo _wrap_LABColorspace_gocv_ba346308b44e7b91() {
   gocv::ColorspaceType result;
   intgo _swig_go_result;
   
@@ -1005,7 +1005,7 @@ intgo _wrap_LABColorspace_gocv_e0e444adc12721f6() {
 }
 
 
-intgo _wrap_CineonLogRGBColorspace_gocv_e0e444adc12721f6() {
+intgo _wrap_CineonLogRGBColorspace_gocv_ba346308b44e7b91() {
   gocv::ColorspaceType result;
   intgo _swig_go_result;
   
@@ -1023,7 +1023,7 @@ intgo _wrap_CineonLogRGBColorspace_gocv_e0e444adc12721f6() {
 }
 
 
-intgo _wrap_Rec601LumaColorspace_gocv_e0e444adc12721f6() {
+intgo _wrap_Rec601LumaColorspace_gocv_ba346308b44e7b91() {
   gocv::ColorspaceType result;
   intgo _swig_go_result;
   
@@ -1041,7 +1041,7 @@ intgo _wrap_Rec601LumaColorspace_gocv_e0e444adc12721f6() {
 }
 
 
-intgo _wrap_Rec601YCbCrColorspace_gocv_e0e444adc12721f6() {
+intgo _wrap_Rec601YCbCrColorspace_gocv_ba346308b44e7b91() {
   gocv::ColorspaceType result;
   intgo _swig_go_result;
   
@@ -1059,7 +1059,7 @@ intgo _wrap_Rec601YCbCrColorspace_gocv_e0e444adc12721f6() {
 }
 
 
-intgo _wrap_Rec709LumaColorspace_gocv_e0e444adc12721f6() {
+intgo _wrap_Rec709LumaColorspace_gocv_ba346308b44e7b91() {
   gocv::ColorspaceType result;
   intgo _swig_go_result;
   
@@ -1077,7 +1077,7 @@ intgo _wrap_Rec709LumaColorspace_gocv_e0e444adc12721f6() {
 }
 
 
-intgo _wrap_Rec709YCbCrColorspace_gocv_e0e444adc12721f6() {
+intgo _wrap_Rec709YCbCrColorspace_gocv_ba346308b44e7b91() {
   gocv::ColorspaceType result;
   intgo _swig_go_result;
   
@@ -1095,7 +1095,7 @@ intgo _wrap_Rec709YCbCrColorspace_gocv_e0e444adc12721f6() {
 }
 
 
-void _wrap_MagickImageDecodeResponse_mat_set_gocv_e0e444adc12721f6(gocv::MagickImageDecodeResponse *_swig_go_0, cv::Mat *_swig_go_1) {
+void _wrap_MagickImageDecodeResponse_mat_set_gocv_ba346308b44e7b91(gocv::MagickImageDecodeResponse *_swig_go_0, cv::Mat *_swig_go_1) {
   gocv::MagickImageDecodeResponse *arg1 = (gocv::MagickImageDecodeResponse *) 0 ;
   cv::Mat arg2 ;
   cv::Mat *argp2 ;
@@ -1114,7 +1114,7 @@ void _wrap_MagickImageDecodeResponse_mat_set_gocv_e0e444adc12721f6(gocv::MagickI
 }
 
 
-cv::Mat *_wrap_MagickImageDecodeResponse_mat_get_gocv_e0e444adc12721f6(gocv::MagickImageDecodeResponse *_swig_go_0) {
+cv::Mat *_wrap_MagickImageDecodeResponse_mat_get_gocv_ba346308b44e7b91(gocv::MagickImageDecodeResponse *_swig_go_0) {
   gocv::MagickImageDecodeResponse *arg1 = (gocv::MagickImageDecodeResponse *) 0 ;
   cv::Mat result;
   cv::Mat *_swig_go_result;
@@ -1127,71 +1127,57 @@ cv::Mat *_wrap_MagickImageDecodeResponse_mat_get_gocv_e0e444adc12721f6(gocv::Mag
 }
 
 
-void _wrap_MagickImageDecodeResponse_rows_set_gocv_e0e444adc12721f6(gocv::MagickImageDecodeResponse *_swig_go_0, int64_t *_swig_go_1) {
+void _wrap_MagickImageDecodeResponse_rows_set_gocv_ba346308b44e7b91(gocv::MagickImageDecodeResponse *_swig_go_0, intgo _swig_go_1) {
   gocv::MagickImageDecodeResponse *arg1 = (gocv::MagickImageDecodeResponse *) 0 ;
-  int64_t arg2 ;
-  int64_t *argp2 ;
+  int arg2 ;
   
   arg1 = *(gocv::MagickImageDecodeResponse **)&_swig_go_0; 
-  
-  argp2 = (int64_t *)_swig_go_1;
-  if (argp2 == NULL) {
-    _swig_gopanic("Attempt to dereference null int64_t");
-  }
-  arg2 = (int64_t)*argp2;
-  
+  arg2 = (int)_swig_go_1; 
   
   if (arg1) (arg1)->rows = arg2;
   
 }
 
 
-int64_t *_wrap_MagickImageDecodeResponse_rows_get_gocv_e0e444adc12721f6(gocv::MagickImageDecodeResponse *_swig_go_0) {
+intgo _wrap_MagickImageDecodeResponse_rows_get_gocv_ba346308b44e7b91(gocv::MagickImageDecodeResponse *_swig_go_0) {
   gocv::MagickImageDecodeResponse *arg1 = (gocv::MagickImageDecodeResponse *) 0 ;
-  int64_t result;
-  int64_t *_swig_go_result;
+  int result;
+  intgo _swig_go_result;
   
   arg1 = *(gocv::MagickImageDecodeResponse **)&_swig_go_0; 
   
-  result =  ((arg1)->rows);
-  *(int64_t **)&_swig_go_result = new int64_t(result); 
+  result = (int) ((arg1)->rows);
+  _swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-void _wrap_MagickImageDecodeResponse_columns_set_gocv_e0e444adc12721f6(gocv::MagickImageDecodeResponse *_swig_go_0, int64_t *_swig_go_1) {
+void _wrap_MagickImageDecodeResponse_columns_set_gocv_ba346308b44e7b91(gocv::MagickImageDecodeResponse *_swig_go_0, intgo _swig_go_1) {
   gocv::MagickImageDecodeResponse *arg1 = (gocv::MagickImageDecodeResponse *) 0 ;
-  int64_t arg2 ;
-  int64_t *argp2 ;
+  int arg2 ;
   
   arg1 = *(gocv::MagickImageDecodeResponse **)&_swig_go_0; 
-  
-  argp2 = (int64_t *)_swig_go_1;
-  if (argp2 == NULL) {
-    _swig_gopanic("Attempt to dereference null int64_t");
-  }
-  arg2 = (int64_t)*argp2;
-  
+  arg2 = (int)_swig_go_1; 
   
   if (arg1) (arg1)->columns = arg2;
   
 }
 
 
-int64_t *_wrap_MagickImageDecodeResponse_columns_get_gocv_e0e444adc12721f6(gocv::MagickImageDecodeResponse *_swig_go_0) {
+intgo _wrap_MagickImageDecodeResponse_columns_get_gocv_ba346308b44e7b91(gocv::MagickImageDecodeResponse *_swig_go_0) {
   gocv::MagickImageDecodeResponse *arg1 = (gocv::MagickImageDecodeResponse *) 0 ;
-  int64_t result;
-  int64_t *_swig_go_result;
+  int result;
+  intgo _swig_go_result;
   
   arg1 = *(gocv::MagickImageDecodeResponse **)&_swig_go_0; 
   
-  result =  ((arg1)->columns);
-  *(int64_t **)&_swig_go_result = new int64_t(result); 
+  result = (int) ((arg1)->columns);
+  _swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-void _wrap_MagickImageDecodeResponse_magick_set_gocv_e0e444adc12721f6(gocv::MagickImageDecodeResponse *_swig_go_0, _gostring_ _swig_go_1) {
+void _wrap_MagickImageDecodeResponse_magick_set_gocv_ba346308b44e7b91(gocv::MagickImageDecodeResponse *_swig_go_0, _gostring_ _swig_go_1) {
   gocv::MagickImageDecodeResponse *arg1 = (gocv::MagickImageDecodeResponse *) 0 ;
   std::string *arg2 = 0 ;
   
@@ -1206,7 +1192,7 @@ void _wrap_MagickImageDecodeResponse_magick_set_gocv_e0e444adc12721f6(gocv::Magi
 }
 
 
-_gostring_ _wrap_MagickImageDecodeResponse_magick_get_gocv_e0e444adc12721f6(gocv::MagickImageDecodeResponse *_swig_go_0) {
+_gostring_ _wrap_MagickImageDecodeResponse_magick_get_gocv_ba346308b44e7b91(gocv::MagickImageDecodeResponse *_swig_go_0) {
   gocv::MagickImageDecodeResponse *arg1 = (gocv::MagickImageDecodeResponse *) 0 ;
   std::string *result = 0 ;
   _gostring_ _swig_go_result;
@@ -1219,7 +1205,7 @@ _gostring_ _wrap_MagickImageDecodeResponse_magick_get_gocv_e0e444adc12721f6(gocv
 }
 
 
-void _wrap_MagickImageDecodeResponse_orientation_type_set_gocv_e0e444adc12721f6(gocv::MagickImageDecodeResponse *_swig_go_0, intgo _swig_go_1) {
+void _wrap_MagickImageDecodeResponse_orientation_type_set_gocv_ba346308b44e7b91(gocv::MagickImageDecodeResponse *_swig_go_0, intgo _swig_go_1) {
   gocv::MagickImageDecodeResponse *arg1 = (gocv::MagickImageDecodeResponse *) 0 ;
   gocv::OrientationType arg2 ;
   
@@ -1231,7 +1217,7 @@ void _wrap_MagickImageDecodeResponse_orientation_type_set_gocv_e0e444adc12721f6(
 }
 
 
-intgo _wrap_MagickImageDecodeResponse_orientation_type_get_gocv_e0e444adc12721f6(gocv::MagickImageDecodeResponse *_swig_go_0) {
+intgo _wrap_MagickImageDecodeResponse_orientation_type_get_gocv_ba346308b44e7b91(gocv::MagickImageDecodeResponse *_swig_go_0) {
   gocv::MagickImageDecodeResponse *arg1 = (gocv::MagickImageDecodeResponse *) 0 ;
   gocv::OrientationType result;
   intgo _swig_go_result;
@@ -1244,7 +1230,7 @@ intgo _wrap_MagickImageDecodeResponse_orientation_type_get_gocv_e0e444adc12721f6
 }
 
 
-void _wrap_MagickImageDecodeResponse_colorspace_type_set_gocv_e0e444adc12721f6(gocv::MagickImageDecodeResponse *_swig_go_0, intgo _swig_go_1) {
+void _wrap_MagickImageDecodeResponse_colorspace_type_set_gocv_ba346308b44e7b91(gocv::MagickImageDecodeResponse *_swig_go_0, intgo _swig_go_1) {
   gocv::MagickImageDecodeResponse *arg1 = (gocv::MagickImageDecodeResponse *) 0 ;
   gocv::ColorspaceType arg2 ;
   
@@ -1256,7 +1242,7 @@ void _wrap_MagickImageDecodeResponse_colorspace_type_set_gocv_e0e444adc12721f6(g
 }
 
 
-intgo _wrap_MagickImageDecodeResponse_colorspace_type_get_gocv_e0e444adc12721f6(gocv::MagickImageDecodeResponse *_swig_go_0) {
+intgo _wrap_MagickImageDecodeResponse_colorspace_type_get_gocv_ba346308b44e7b91(gocv::MagickImageDecodeResponse *_swig_go_0) {
   gocv::MagickImageDecodeResponse *arg1 = (gocv::MagickImageDecodeResponse *) 0 ;
   gocv::ColorspaceType result;
   intgo _swig_go_result;
@@ -1269,7 +1255,7 @@ intgo _wrap_MagickImageDecodeResponse_colorspace_type_get_gocv_e0e444adc12721f6(
 }
 
 
-gocv::MagickImageDecodeResponse *_wrap_new_MagickImageDecodeResponse_gocv_e0e444adc12721f6() {
+gocv::MagickImageDecodeResponse *_wrap_new_MagickImageDecodeResponse_gocv_ba346308b44e7b91() {
   gocv::MagickImageDecodeResponse *result = 0 ;
   gocv::MagickImageDecodeResponse *_swig_go_result;
   
@@ -1286,7 +1272,7 @@ gocv::MagickImageDecodeResponse *_wrap_new_MagickImageDecodeResponse_gocv_e0e444
 }
 
 
-void _wrap_delete_MagickImageDecodeResponse_gocv_e0e444adc12721f6(gocv::MagickImageDecodeResponse *_swig_go_0) {
+void _wrap_delete_MagickImageDecodeResponse_gocv_ba346308b44e7b91(gocv::MagickImageDecodeResponse *_swig_go_0) {
   gocv::MagickImageDecodeResponse *arg1 = (gocv::MagickImageDecodeResponse *) 0 ;
   
   arg1 = *(gocv::MagickImageDecodeResponse **)&_swig_go_0; 
@@ -1302,7 +1288,7 @@ void _wrap_delete_MagickImageDecodeResponse_gocv_e0e444adc12721f6(gocv::MagickIm
 }
 
 
-gocv::MagicImage *_wrap_new_MagicImage_gocv_e0e444adc12721f6() {
+gocv::MagicImage *_wrap_new_Wrapped_MagicImage_gocv_ba346308b44e7b91() {
   gocv::MagicImage *result = 0 ;
   gocv::MagicImage *_swig_go_result;
   
@@ -1319,7 +1305,7 @@ gocv::MagicImage *_wrap_new_MagicImage_gocv_e0e444adc12721f6() {
 }
 
 
-void _wrap_delete_MagicImage_gocv_e0e444adc12721f6(gocv::MagicImage *_swig_go_0) {
+void _wrap_delete_Wrapped_MagicImage_gocv_ba346308b44e7b91(gocv::MagicImage *_swig_go_0) {
   gocv::MagicImage *arg1 = (gocv::MagicImage *) 0 ;
   
   arg1 = *(gocv::MagicImage **)&_swig_go_0; 
@@ -1335,10 +1321,28 @@ void _wrap_delete_MagicImage_gocv_e0e444adc12721f6(gocv::MagicImage *_swig_go_0)
 }
 
 
-void _wrap_MagicImage_MagickImageDecode_gocv_e0e444adc12721f6(gocv::MagicImage *_swig_go_0, gocv::MagickImageDecodeRequest *_swig_go_1, gocv::MagickImageDecodeResponse *_swig_go_2) {
+void _wrap_Wrapped_MagicImage_MagickInitializeMagick_gocv_ba346308b44e7b91(gocv::MagickInitializeMagickRequest *_swig_go_0, gocv::MagickInitializeMagickResponse *_swig_go_1) {
+  gocv::MagickInitializeMagickRequest *arg1 = 0 ;
+  gocv::MagickInitializeMagickResponse *arg2 = 0 ;
+  
+  arg1 = *(gocv::MagickInitializeMagickRequest **)&_swig_go_0; 
+  arg2 = *(gocv::MagickInitializeMagickResponse **)&_swig_go_1; 
+  
+  {
+    try {
+      gocv::MagicImage::MagickInitializeMagick((gocv::MagickInitializeMagickRequest const &)*arg1,*arg2);;
+    } catch (const std::exception& e) {
+      _swig_gopanic(e.what());
+    }
+  }
+  
+}
+
+
+void _wrap_Wrapped_MagicImage_Wrapped_MagickImageDecode_gocv_ba346308b44e7b91(gocv::MagicImage *_swig_go_0, gocv::MagickImageDecodeRequest *_swig_go_1, gocv::MagickImageDecodeResponse *_swig_go_2) {
   gocv::MagicImage *arg1 = (gocv::MagicImage *) 0 ;
   gocv::MagickImageDecodeRequest *arg2 = 0 ;
-  gocv::MagickImageDecodeResponse *arg3 = (gocv::MagickImageDecodeResponse *) 0 ;
+  gocv::MagickImageDecodeResponse *arg3 = 0 ;
   
   arg1 = *(gocv::MagicImage **)&_swig_go_0; 
   arg2 = *(gocv::MagickImageDecodeRequest **)&_swig_go_1; 
@@ -1346,7 +1350,7 @@ void _wrap_MagicImage_MagickImageDecode_gocv_e0e444adc12721f6(gocv::MagicImage *
   
   {
     try {
-      (arg1)->MagickImageDecode((gocv::MagickImageDecodeRequest const &)*arg2,arg3);;
+      (arg1)->MagickImageDecode((gocv::MagickImageDecodeRequest const &)*arg2,*arg3);;
     } catch (const std::exception& e) {
       _swig_gopanic(e.what());
     }

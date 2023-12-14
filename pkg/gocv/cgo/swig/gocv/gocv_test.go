@@ -18,20 +18,21 @@ func TestMagickImageDecode(t *testing.T) {
 		return
 	}
 	t.Logf("data size: %v", len(data))
-	req := gocv_.NewMagickImageDecodeRequest()
-	req.SetImage(string(data))
-
-	resp := gocv_.NewMagickImageDecodeResponse()
-	defer func() {
-
-	}()
 
 	sdk := gocv_.NewMagicImage()
-	sdk.MagickImageDecode(req, resp)
+	initReq := gocv_.NewMagickInitializeMagickRequest()
+	_, err = gocv_.MagickInitializeMagick(initReq)
 	if err != nil {
 		t.Error(err.Error())
 		return
 	}
 
-	t.Logf("resp: %v", resp)
+	req := gocv_.NewMagickImageDecodeRequest()
+	req.SetImage(string(data))
+	resp, err := sdk.MagickImageDecode(req)
+	if err != nil {
+		t.Error(err.Error())
+		return
+	}
+	t.Logf("resp row: %d, colunms: %v, magick: %v", resp.GetRows(), resp.GetColumns(), resp.GetMagick())
 }
