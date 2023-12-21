@@ -80,13 +80,15 @@ func MakeDir(name string) error {
 	return os.Mkdir(name, 0755)
 }
 
+// if name is empty, create a directory named name, or creates a new temporary directory in the directory dir
+// pattern can be empty
 func MakeTempDirAll(name, pattern string) (string, error) {
 	if name != "" {
+		// make base dir, or if the dir is not exist, MakeTempDirAll return error
 		err := MakeDirAll(name)
 		if err != nil {
 			return "", err
 		}
-		return name, nil
 	}
 
 	return os.MkdirTemp(name, pattern)
