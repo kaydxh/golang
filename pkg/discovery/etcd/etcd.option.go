@@ -42,3 +42,9 @@ func WithMaxCallSendMsgSize(msgSize int) EtcdKVOption {
 		c.opts.MaxCallSendMsgSize = msgSize
 	})
 }
+
+func WithAutoSyncInterval(autoSyncInterval time.Duration) EtcdKVOption {
+	return EtcdKVOptionFunc(func(c *EtcdKV) {
+		c.opts.autoSyncInterval = autoSyncInterval
+	})
+}

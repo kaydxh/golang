@@ -57,6 +57,7 @@ type EtcdKV struct {
 		dialTimeout        time.Duration
 		MaxCallSendMsgSize int
 		maxCallRecvMsgSize int
+		autoSyncInterval   time.Duration
 	}
 }
 
@@ -102,6 +103,7 @@ func (d *EtcdKV) GetKV(ctx context.Context) (*clientv3.Client, error) {
 		Password:           d.Conf.Password,
 		MaxCallRecvMsgSize: d.opts.maxCallRecvMsgSize,
 		MaxCallSendMsgSize: d.opts.MaxCallSendMsgSize,
+		AutoSyncInterval:   d.opts.autoSyncInterval,
 		DialTimeout:        d.opts.dialTimeout,
 	})
 	if err != nil {

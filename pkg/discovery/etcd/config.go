@@ -80,6 +80,7 @@ func (c *completedConfig) install(ctx context.Context) (*clientv3.Client, error)
 		WithDialTimeout(c.Proto.GetDialTimeout().AsDuration()),
 		WithMaxCallRecvMsgSize(int(c.Proto.MaxCallRecvMsgSize)),
 		WithMaxCallSendMsgSize(int(c.Proto.MaxCallSendMsgSize)),
+		WithAutoSyncInterval(c.Proto.GetAutoSyncInterval().AsDuration()),
 	)
 
 	return db.GetKVUntil(
