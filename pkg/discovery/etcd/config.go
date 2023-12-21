@@ -74,8 +74,12 @@ func (c *completedConfig) install(ctx context.Context) (*clientv3.Client, error)
 	db := NewEtcdKV(
 		EtcdConfig{
 			Addresses: c.Proto.GetAddresses(),
+			UserName:  c.Proto.GetUsername(),
+			Password:  c.Proto.GetPassword(),
 		},
 		WithDialTimeout(c.Proto.GetDialTimeout().AsDuration()),
+		WithMaxCallRecvMsgSize(int(c.Proto.MaxCallRecvMsgSize)),
+		WithMaxCallSendMsgSize(int(c.Proto.MaxCallSendMsgSize)),
 	)
 
 	return db.GetKVUntil(
