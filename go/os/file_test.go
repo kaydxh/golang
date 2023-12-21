@@ -155,7 +155,6 @@ func TestReadSubDirs(t *testing.T) {
 	}
 
 	t.Logf("got sub dirs: %v", subDirs)
-
 }
 
 func TestReadDirFileNames(t *testing.T) {
@@ -166,5 +165,16 @@ func TestReadDirFileNames(t *testing.T) {
 	}
 
 	t.Logf("got filenames: %v", fileNames)
+
+}
+
+func TestMakeTempDirAll(t *testing.T) {
+	//  /var/folders/by/jt3bf2n52fv6v7lrbndtdmjr0000gn/T/example690523200.12
+	dir, err := os_.MakeTempDirAll("", "example*.12")
+	if err != nil {
+		t.Errorf("expect nil, got %v", err)
+	}
+
+	t.Logf("got dir: %v", dir)
 
 }
