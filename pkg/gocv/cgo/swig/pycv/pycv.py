@@ -36,7 +36,16 @@ class CVSDK:
                del self.sdk
             self.sdk = None
             self.gpu_id = gpu_id
-            self.init_kwargs = copy.copy(**kwargs)
+            self.init_kwargs = copy.copy(kwargs)
+
+            if "sdk_dir" in kwargs:
+                sdk_dir = kwargs.get("sdk_dir")
+                del kwargs["sdk_dir"]
+                if sdk_dir not in sys.path:
+                    sys.path.append(sdk_dir)
+
+            # init sdk isinstance
+            # self.sdk = None
 
         except ValueError as err:
             return {
@@ -56,7 +65,8 @@ class CVSDK:
     
     def do(self, **kwargs):
         try:
-            arg1 = kwargs.get("args1", "")
+            arg1 = kwargs.get("arg1", "")
+            arg2 = kwargs.get("arg2", "")
             #todo sdk call
             return {
                     "result": "ok"
