@@ -1,0 +1,80 @@
+//go:build ignore
+/* swig -go -cgo -c++ -intgosize 64 pycv.swigcxx */
+
+%module(directors="1") pycv
+%include <typemaps.i>
+%include <std_map.i>
+%include <std_string.i>
+%include <std_vector.i>
+%include <exception.i>
+%{
+#include "pycv.h"
+%}
+
+%exception {
+    try {
+        $action;
+    } catch (const std::exception& e) {
+        _swig_gopanic(e.what());
+    }
+}
+
+%rename(Wrapped_PyImage) PyImage;
+%rename(Wrapped_PyImage_LocalInit) LocalInit;
+%rename(Wrapped_PyImage_Do) Do;
+
+%header %{
+
+%}
+%include "pycv.h"
+
+%go_import("fmt")
+%insert(go_wrapper) %{
+
+type PyImage interface {
+   Wrapped_PyImage  
+   LocalInit(LocalInitRequest) (LocalInitResponse, error);
+   Do(DoRequest) (DoResponse, error);
+}
+
+func NewPyImage() PyImage {
+     e := NewWrapped_PyImage()
+     return e.(PyImage)
+}
+
+// catch will recover from a panic and store the recover message to the error 
+// parameter. The error must be passed by reference in order to be returned to the
+// calling function.
+func catch(err *error) {
+    if r := recover(); r != nil {
+        *err = fmt.Errorf("%v", r)
+    }
+}
+
+func GlobalInit(model_dir string, gpu_id int) (err error) {
+   defer catch(&err)
+   Wrapped_PyImageGlobalInit(model_dir, gpu_id)
+   return
+}
+
+func GlobalRelease() (err error){
+   defer catch(&err)
+   Wrapped_PyImageGlobalRelease()
+   return
+}
+
+func (arg SwigcptrWrapped_PyImage) LocalInit(req LocalInitRequest) (resp LocalInitResponse, err error) {
+   defer catch(&err)
+   resp = NewLocalInitResponse()
+   arg.Wrapped_PyImage_LocalInit(req, resp)
+   return
+}
+
+func (arg SwigcptrWrapped_PyImage) Do(req DoRequest) (resp DoResponse, err error) {
+   defer catch(&err)
+   resp = NewDoResponse()
+   arg.Wrapped_PyImage_Do(req, resp)
+   return
+}
+
+%}

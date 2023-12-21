@@ -1,0 +1,12 @@
+//go:build ignore
+
+%header
+%{
+    #ifndef __SDK_CGO_UNKNOWN_PLATFORM__
+    #include <pybind11/embed.h>
+    #endif
+%}
+namespace pybind11 {
+class object {};
+}  // namespace pybind11
+
