@@ -37,7 +37,7 @@ func TestGetKV(t *testing.T) {
 		Addresses []string
 	}{
 		{
-			Addresses: []string{"127.0.0.1:3306"},
+			Addresses: []string{"9.135.121.151:2379"},
 		},
 	}
 
@@ -63,7 +63,7 @@ func TestGetKVUntil(t *testing.T) {
 		DailTimeout time.Duration
 	}{
 		{
-			Addresses:   []string{"127.0.0.1:3306"},
+			Addresses:   []string{"9.135.121.151:2379"},
 			DailTimeout: 3 * time.Second,
 		},
 	}

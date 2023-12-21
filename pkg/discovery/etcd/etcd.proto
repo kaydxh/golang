@@ -8,6 +8,22 @@ option go_package = "github.com/kaydxh/go.pkg.discovery.etcd;etcd";
 message Etcd {
   bool enabled = 1;
   repeated string addresses = 2;
+  string username = 3;
+  string password = 4;
+  int32 max_call_send_msg_size = 5; //If 0, it defaults to 2.0 MiB (2 * 1024 * 1024)
+
+  // MaxCallRecvMsgSize is the client-side response receive limit.
+  // If 0, it defaults to "math.MaxInt32", because range response can
+  // easily exceed request send limits.
+  // Make sure that "MaxCallRecvMsgSize" >= server-side default
+  // send/recv limit.
+  // ("--max-request-bytes" flag to etcd or
+  // "embed.Config.MaxRequestBytes").
+  int32 max_call_recv_msg_size = 6; 
+	// AutoSyncInterval is the interval to update endpoints with its latest members.
+	// 0 disables auto-sync. By default auto-sync is disabled.
+  google.protobuf.Duration auto_sync_interval = 7;
+
   google.protobuf.Duration dial_timeout = 8;
 
   google.protobuf.Duration max_wait_duration = 12;

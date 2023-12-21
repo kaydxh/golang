@@ -30,3 +30,15 @@ func WithDialTimeout(dialTimeout time.Duration) EtcdKVOption {
 		c.opts.dialTimeout = dialTimeout
 	})
 }
+
+func WithMaxCallRecvMsgSize(msgSize int) EtcdKVOption {
+	return EtcdKVOptionFunc(func(c *EtcdKV) {
+		c.opts.maxCallRecvMsgSize = msgSize
+	})
+}
+
+func WithMaxCallSendMsgSize(msgSize int) EtcdKVOption {
+	return EtcdKVOptionFunc(func(c *EtcdKV) {
+		c.opts.MaxCallSendMsgSize = msgSize
+	})
+}

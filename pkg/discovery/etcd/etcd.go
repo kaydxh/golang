@@ -38,20 +38,25 @@ var (
 	mu     sync.Mutex
 )
 
-// Default values for Mysql.
-//const ()
+// Default values for Etcd.
+const (
+	DefaultDialTimeout = 5 * time.Second
+)
 
 type EtcdConfig struct {
 	Addresses []string
+	UserName  string
+	Password  string
 }
 
 type EtcdKV struct {
-	//DSN        string
 	Conf EtcdConfig
 	kv   *clientv3.Client
 
 	opts struct {
-		dialTimeout time.Duration
+		dialTimeout        time.Duration
+		MaxCallSendMsgSize int
+		maxCallRecvMsgSize int
 	}
 }
 
@@ -59,6 +64,7 @@ func NewEtcdKV(conf EtcdConfig, opts ...EtcdKVOption) *EtcdKV {
 	kv := &EtcdKV{
 		Conf: conf,
 	}
+	kv.opts.dialTimeout = DefaultDialTimeout
 	kv.ApplyOptions(opts...)
 
 	return kv
@@ -84,14 +90,19 @@ func (d *EtcdKV) GetKV(ctx context.Context) (*clientv3.Client, error) {
 	if len(d.Conf.Addresses) == 0 {
 		return nil, fmt.Errorf("invalid etcd address")
 	}
+	logrus.Infof("dialTimeout: %v", d.opts.dialTimeout)
 
 	ctx, cancel := context.WithTimeout(context.Background(), d.opts.dialTimeout)
 	defer cancel()
 
 	kv, err := clientv3.New(clientv3.Config{
-		Endpoints:   d.Conf.Addresses,
-		Context:     ctx,
-		DialTimeout: d.opts.dialTimeout,
+		Endpoints:          d.Conf.Addresses,
+		Context:            ctx,
+		Username:           d.Conf.UserName,
+		Password:           d.Conf.Password,
+		MaxCallRecvMsgSize: d.opts.maxCallRecvMsgSize,
+		MaxCallSendMsgSize: d.opts.MaxCallSendMsgSize,
+		DialTimeout:        d.opts.dialTimeout,
 	})
 	if err != nil {
 		return nil, err
