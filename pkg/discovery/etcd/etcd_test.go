@@ -29,6 +29,7 @@ import (
 
 	etcd_ "github.com/kaydxh/golang/pkg/discovery/etcd"
 	viper_ "github.com/kaydxh/golang/pkg/viper"
+	"github.com/sirupsen/logrus"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -83,15 +84,25 @@ func TestGetKVUntil(t *testing.T) {
 
 }
 
+func CreateCallback(ctx context.Context, key, value string) {
+	logrus.Infof("create key: %v, value: %v", key, value)
+}
+
+func DeleteCallback(ctx context.Context, key, value string) {
+	logrus.Infof("delete key: %v, value: %v", key, value)
+}
+
 func TestNew(t *testing.T) {
 
 	cfgFile := "./etcd.yaml"
-	config := etcd_.NewConfig(etcd_.WithViper(viper_.GetViper(cfgFile, "discovery.etc")))
+	config := etcd_.NewConfig(etcd_.WithViper(viper_.GetViper(cfgFile, "discovery.etcd")))
 
-	kv, err := config.Complete().New(context.Background())
+	kv, err := config.Complete().New(context.Background(), CreateCallback, DeleteCallback)
 	if err != nil {
 		t.Errorf("failed to new config err: %v", err)
+		return
 	}
+	_ = kv
 
-	t.Logf("kv: %#v", kv)
+	select {}
 }

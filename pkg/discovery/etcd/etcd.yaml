@@ -1,12 +1,15 @@
 discovery:
   etcd:
-    enabled: true
-    addresses: ["localhost:3306"]
-    username: ""
-    password : ""
-    max_call_send_msg_size : 0 
-    max_call_recv_msg_size : 0
-    auto_sync_interval: 0
-    dial_timeout: 5s
-    max_wait_duration: 20s
-    fail_after_duration: 60s
+     enabled: true
+     addresses: 
+       - "localhost:2379"
+     username: ""
+     password: ""
+     max_call_send_msg_size: 0 
+     max_call_recv_msg_size: 0
+     auto_sync_interval: 0s
+     dial_timeout: 5s
+     max_wait_duration: 20s
+     fail_after_duration: 60s
+     watch_paths: 
+       - "foo"
