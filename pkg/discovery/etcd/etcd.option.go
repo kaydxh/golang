@@ -27,13 +27,13 @@ import (
 
 func WithDialTimeout(dialTimeout time.Duration) EtcdKVOption {
 	return EtcdKVOptionFunc(func(c *EtcdKV) {
-		c.opts.dialTimeout = dialTimeout
+		c.opts.DialTimeout = dialTimeout
 	})
 }
 
 func WithMaxCallRecvMsgSize(msgSize int) EtcdKVOption {
 	return EtcdKVOptionFunc(func(c *EtcdKV) {
-		c.opts.maxCallRecvMsgSize = msgSize
+		c.opts.MaxCallRecvMsgSize = msgSize
 	})
 }
 
@@ -45,6 +45,24 @@ func WithMaxCallSendMsgSize(msgSize int) EtcdKVOption {
 
 func WithAutoSyncInterval(autoSyncInterval time.Duration) EtcdKVOption {
 	return EtcdKVOptionFunc(func(c *EtcdKV) {
-		c.opts.autoSyncInterval = autoSyncInterval
+		c.opts.AutoSyncInterval = autoSyncInterval
+	})
+}
+
+func WithWatchPaths(paths []string) EtcdKVOption {
+	return EtcdKVOptionFunc(func(c *EtcdKV) {
+		c.opts.WatchPaths = paths
+	})
+}
+
+func WithWatchCreateCallbackFunc(f EventCallbackFunc) EtcdKVOption {
+	return EtcdKVOptionFunc(func(c *EtcdKV) {
+		c.opts.CreateCallbackFunc = f
+	})
+}
+
+func WithWatchDeleteCallbackFunc(f EventCallbackFunc) EtcdKVOption {
+	return EtcdKVOptionFunc(func(c *EtcdKV) {
+		c.opts.DeleteCallbackFunc = f
 	})
 }

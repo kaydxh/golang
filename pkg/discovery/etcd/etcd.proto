@@ -28,4 +28,6 @@ message Etcd {
 
   google.protobuf.Duration max_wait_duration = 12;
   google.protobuf.Duration fail_after_duration = 13;
+
+  repeated string watch_paths = 14;
 }

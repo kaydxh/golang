@@ -48,7 +48,7 @@ type CompletedConfig struct {
 	*completedConfig
 }
 
-func (c *completedConfig) New(ctx context.Context) (*clientv3.Client, error) {
+func (c *completedConfig) New(ctx context.Context, createCallbackFunc, deleteCallbackFunc EventCallbackFunc) (*clientv3.Client, error) {
 
 	logrus.Infof("Installing Etcd")
 
@@ -61,7 +61,7 @@ func (c *completedConfig) New(ctx context.Context) (*clientv3.Client, error) {
 		return nil, nil
 	}
 
-	etcdKV, err := c.install(ctx)
+	etcdKV, err := c.install(ctx, createCallbackFunc, deleteCallbackFunc)
 	if err != nil {
 		return nil, err
 	}
@@ -70,8 +70,8 @@ func (c *completedConfig) New(ctx context.Context) (*clientv3.Client, error) {
 	return etcdKV, nil
 }
 
-func (c *completedConfig) install(ctx context.Context) (*clientv3.Client, error) {
-	db := NewEtcdKV(
+func (c *completedConfig) install(ctx context.Context, createCallbackFunc, deleteCallbackFunc EventCallbackFunc) (*clientv3.Client, error) {
+	etcdKV := NewEtcdKV(
 		EtcdConfig{
 			Addresses: c.Proto.GetAddresses(),
 			UserName:  c.Proto.GetUsername(),
@@ -81,13 +81,22 @@ func (c *completedConfig) install(ctx context.Context) (*clientv3.Client, error)
 		WithMaxCallRecvMsgSize(int(c.Proto.MaxCallRecvMsgSize)),
 		WithMaxCallSendMsgSize(int(c.Proto.MaxCallSendMsgSize)),
 		WithAutoSyncInterval(c.Proto.GetAutoSyncInterval().AsDuration()),
+		WithWatchPaths(c.Proto.WatchPaths),
+		WithWatchCreateCallbackFunc(createCallbackFunc),
+		WithWatchDeleteCallbackFunc(deleteCallbackFunc),
 	)
 
-	return db.GetKVUntil(
+	kv, err := etcdKV.GetKVUntil(
 		ctx,
 		c.Proto.GetMaxWaitDuration().AsDuration(),
 		c.Proto.GetFailAfterDuration().AsDuration(),
 	)
+	if err != nil {
+		return nil, err
+	}
+
+	etcdKV.Watch(ctx)
+	return kv, nil
 }
 
 // Complete set default ServerRunOptions.
