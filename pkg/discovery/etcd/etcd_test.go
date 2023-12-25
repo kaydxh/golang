@@ -105,10 +105,12 @@ func TestNew(t *testing.T) {
 		return
 	}
 	_ = kv
-	kv.Lock(ctx, "/kay/lock", 15*time.Second)
+	kv.Lock(ctx, etcd_.WithLockKey("/kay/lock"), etcd_.WithLockTTL(15*time.Second))
+	kv.Lock(ctx, etcd_.WithLockKey("/kay/lock1"), etcd_.WithLockTTL(15*time.Second))
 
-	time.Sleep(3 * time.Second)
+	time.Sleep(20 * time.Second)
 
+	// only unlock the latest lock /kay/lock1
 	kv.Unlock(ctx)
 	/*
 		go func() {
