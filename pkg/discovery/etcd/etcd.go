@@ -24,10 +24,12 @@ package etcd
 import (
 	"context"
 	"fmt"
+	"path/filepath"
 	"sync"
 	"time"
 
 	clientv3 "go.etcd.io/etcd/client/v3"
+	"go.etcd.io/etcd/client/v3/concurrency"
 
 	time_ "github.com/kaydxh/golang/go/time"
 	"github.com/sirupsen/logrus"
@@ -43,6 +45,7 @@ var (
 // Default values for Etcd.
 const (
 	DefaultDialTimeout = 5 * time.Second
+	DefaultLockTTL     = 15 * time.Second
 )
 
 type EtcdConfig struct {
@@ -57,6 +60,8 @@ type EtcdKVOptions struct {
 	MaxCallRecvMsgSize int
 	AutoSyncInterval   time.Duration
 
+	LockPrefixPath     string
+	LockTTL            time.Duration
 	WatchPaths         []string
 	CreateCallbackFunc EventCallbackFunc
 	DeleteCallbackFunc EventCallbackFunc
@@ -64,7 +69,10 @@ type EtcdKVOptions struct {
 
 type EtcdKV struct {
 	Conf EtcdConfig
-	kv   *clientv3.Client
+	*clientv3.Client
+
+	session *concurrency.Session
+	mutex   *concurrency.Mutex
 
 	opts EtcdKVOptions
 }
@@ -74,6 +82,7 @@ func NewEtcdKV(conf EtcdConfig, opts ...EtcdKVOption) *EtcdKV {
 		Conf: conf,
 	}
 	kv.opts.DialTimeout = DefaultDialTimeout
+	kv.opts.LockTTL = DefaultLockTTL
 	kv.ApplyOptions(opts...)
 
 	return kv
@@ -92,8 +101,8 @@ func CloseKV() error {
 }
 
 func (d *EtcdKV) GetKV(ctx context.Context) (*clientv3.Client, error) {
-	if d.kv != nil {
-		return d.kv, nil
+	if d.Client != nil {
+		return d.Client, nil
 	}
 
 	if len(d.Conf.Addresses) == 0 {
@@ -123,7 +132,7 @@ func (d *EtcdKV) GetKV(ctx context.Context) (*clientv3.Client, error) {
 	}
 	logrus.Infof("kv status: %v", status)
 
-	d.kv = kv
+	d.Client = kv
 	etcdKV.Store(kv)
 
 	return kv, nil
@@ -157,13 +166,58 @@ func (d *EtcdKV) GetKVUntil(
 func (d *EtcdKV) Watch(ctx context.Context) {
 	for _, path := range d.opts.WatchPaths {
 		fmt.Printf("watch path: %v\n", path)
-		Watch(ctx, d.kv, path, d.opts.CreateCallbackFunc, d.opts.DeleteCallbackFunc)
+		Watch(ctx, d.Client, path, d.opts.CreateCallbackFunc, d.opts.DeleteCallbackFunc)
 	}
 }
 
 func (d *EtcdKV) Close() error {
-	if d.kv == nil {
+	if d.Client == nil {
 		return fmt.Errorf("no etcd pool")
 	}
-	return d.kv.Close()
+	return d.Client.Close()
+}
+
+func (d *EtcdKV) Lock(ctx context.Context, key string, ttl time.Duration) error {
+
+	lockTTL := ttl
+	if lockTTL <= 0 {
+		lockTTL = d.opts.LockTTL
+	}
+	session, err := concurrency.NewSession(d.Client, concurrency.WithContext(ctx), concurrency.WithTTL(int(lockTTL.Seconds())))
+	if err != nil {
+		return err
+	}
+
+	path := filepath.Join(d.opts.LockPrefixPath, key)
+	mutex := concurrency.NewMutex(session, path)
+	if err := mutex.Lock(ctx); err != nil {
+		return err
+	}
+
+	go func() {
+		select {
+		case <-ctx.Done():
+			logrus.Infof("lock[%v]'s context is done, err: %v", path, ctx.Err())
+		case <-session.Done():
+			logrus.Infof("lock[%v]'s session is done", path)
+		}
+
+	}()
+
+	d.session = session
+	d.mutex = mutex
+
+	return nil
+}
+
+func (d *EtcdKV) Unlock(ctx context.Context) error {
+	if d.mutex == nil {
+		return fmt.Errorf("lock mutx is nil")
+	}
+	err := d.mutex.Unlock(ctx)
+	if err != nil {
+		return err
+	}
+
+	return d.session.Close()
 }

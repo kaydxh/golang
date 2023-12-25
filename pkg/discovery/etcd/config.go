@@ -27,7 +27,6 @@ import (
 	viper_ "github.com/kaydxh/golang/pkg/viper"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
-	clientv3 "go.etcd.io/etcd/client/v3"
 )
 
 type Config struct {
@@ -48,7 +47,7 @@ type CompletedConfig struct {
 	*completedConfig
 }
 
-func (c *completedConfig) New(ctx context.Context, createCallbackFunc, deleteCallbackFunc EventCallbackFunc) (*clientv3.Client, error) {
+func (c *completedConfig) New(ctx context.Context, createCallbackFunc, deleteCallbackFunc EventCallbackFunc) (*EtcdKV, error) {
 
 	logrus.Infof("Installing Etcd")
 
@@ -70,7 +69,7 @@ func (c *completedConfig) New(ctx context.Context, createCallbackFunc, deleteCal
 	return etcdKV, nil
 }
 
-func (c *completedConfig) install(ctx context.Context, createCallbackFunc, deleteCallbackFunc EventCallbackFunc) (*clientv3.Client, error) {
+func (c *completedConfig) install(ctx context.Context, createCallbackFunc, deleteCallbackFunc EventCallbackFunc) (*EtcdKV, error) {
 	etcdKV := NewEtcdKV(
 		EtcdConfig{
 			Addresses: c.Proto.GetAddresses(),
@@ -86,7 +85,7 @@ func (c *completedConfig) install(ctx context.Context, createCallbackFunc, delet
 		WithWatchDeleteCallbackFunc(deleteCallbackFunc),
 	)
 
-	kv, err := etcdKV.GetKVUntil(
+	_, err := etcdKV.GetKVUntil(
 		ctx,
 		c.Proto.GetMaxWaitDuration().AsDuration(),
 		c.Proto.GetFailAfterDuration().AsDuration(),
@@ -96,7 +95,7 @@ func (c *completedConfig) install(ctx context.Context, createCallbackFunc, delet
 	}
 
 	etcdKV.Watch(ctx)
-	return kv, nil
+	return etcdKV, nil
 }
 
 // Complete set default ServerRunOptions.

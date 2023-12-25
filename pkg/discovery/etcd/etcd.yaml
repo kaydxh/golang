@@ -2,7 +2,7 @@ discovery:
   etcd:
      enabled: true
      addresses: 
-       - "localhost:2379"
+       - "9.135.121.151:2379"
      username: ""
      password: ""
      max_call_send_msg_size: 0 

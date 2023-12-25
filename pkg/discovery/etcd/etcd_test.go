@@ -97,12 +97,26 @@ func TestNew(t *testing.T) {
 	cfgFile := "./etcd.yaml"
 	config := etcd_.NewConfig(etcd_.WithViper(viper_.GetViper(cfgFile, "discovery.etcd")))
 
-	kv, err := config.Complete().New(context.Background(), CreateCallback, DeleteCallback)
+	ctx := context.Background()
+
+	kv, err := config.Complete().New(ctx, CreateCallback, DeleteCallback)
 	if err != nil {
 		t.Errorf("failed to new config err: %v", err)
 		return
 	}
 	_ = kv
+	kv.Lock(ctx, "/kay/lock", 15*time.Second)
+
+	time.Sleep(3 * time.Second)
+
+	kv.Unlock(ctx)
+	/*
+		go func() {
+			t.Logf("before lock by routine 1")
+			kv.Lock(ctx, "kay/lock", 15*time.Second)
+			t.Logf("after lock by routine 1")
+		}()
+	*/
 
 	select {}
 }
