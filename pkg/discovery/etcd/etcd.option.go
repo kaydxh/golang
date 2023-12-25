@@ -66,3 +66,21 @@ func WithWatchDeleteCallbackFunc(f EventCallbackFunc) EtcdKVOption {
 		c.opts.DeleteCallbackFunc = f
 	})
 }
+
+func WithLockTTL(ttl time.Duration) EtcdKVOption {
+	return EtcdKVOptionFunc(func(c *EtcdKV) {
+		c.opts.LockTTL = ttl
+	})
+}
+
+func WithLockPrefixPath(prefix string) EtcdKVOption {
+	return EtcdKVOptionFunc(func(c *EtcdKV) {
+		c.opts.LockPrefixPath = prefix
+	})
+}
+
+func WithLockKey(key string) EtcdKVOption {
+	return EtcdKVOptionFunc(func(c *EtcdKV) {
+		c.opts.LockKey = key
+	})
+}

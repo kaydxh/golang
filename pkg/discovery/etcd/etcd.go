@@ -61,6 +61,7 @@ type EtcdKVOptions struct {
 	AutoSyncInterval   time.Duration
 
 	LockPrefixPath     string
+	LockKey            string
 	LockTTL            time.Duration
 	WatchPaths         []string
 	CreateCallbackFunc EventCallbackFunc
@@ -81,9 +82,13 @@ func NewEtcdKV(conf EtcdConfig, opts ...EtcdKVOption) *EtcdKV {
 	kv := &EtcdKV{
 		Conf: conf,
 	}
-	kv.opts.DialTimeout = DefaultDialTimeout
-	kv.opts.LockTTL = DefaultLockTTL
 	kv.ApplyOptions(opts...)
+	if kv.opts.DialTimeout == 0 {
+		kv.opts.DialTimeout = DefaultDialTimeout
+	}
+	if kv.opts.LockTTL == 0 {
+		kv.opts.LockTTL = DefaultLockTTL
+	}
 
 	return kv
 }
@@ -177,19 +182,17 @@ func (d *EtcdKV) Close() error {
 	return d.Client.Close()
 }
 
-func (d *EtcdKV) Lock(ctx context.Context, key string, ttl time.Duration) error {
+func (d *EtcdKV) Lock(ctx context.Context, opts ...EtcdKVOption) error {
+	d.ApplyOptions(opts...)
 
-	lockTTL := ttl
-	if lockTTL <= 0 {
-		lockTTL = d.opts.LockTTL
-	}
+	lockTTL := d.opts.LockTTL
 	session, err := concurrency.NewSession(d.Client, concurrency.WithContext(ctx), concurrency.WithTTL(int(lockTTL.Seconds())))
 	if err != nil {
 		return err
 	}
 
-	path := filepath.Join(d.opts.LockPrefixPath, key)
-	mutex := concurrency.NewMutex(session, path)
+	keyPath := filepath.Join(d.opts.LockPrefixPath, d.opts.LockKey)
+	mutex := concurrency.NewMutex(session, keyPath)
 	if err := mutex.Lock(ctx); err != nil {
 		return err
 	}
@@ -197,9 +200,9 @@ func (d *EtcdKV) Lock(ctx context.Context, key string, ttl time.Duration) error 
 	go func() {
 		select {
 		case <-ctx.Done():
-			logrus.Infof("lock[%v]'s context is done, err: %v", path, ctx.Err())
+			logrus.Infof("lock[%v]'s context is done, err: %v", keyPath, ctx.Err())
 		case <-session.Done():
-			logrus.Infof("lock[%v]'s session is done", path)
+			logrus.Infof("lock[%v]'s session is done", keyPath)
 		}
 
 	}()
