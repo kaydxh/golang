@@ -224,3 +224,17 @@ func (d *EtcdKV) Unlock(ctx context.Context) error {
 
 	return d.session.Close()
 }
+
+func (d *EtcdKV) TxPipelined(ctx context.Context, cmps []clientv3.Cmp, doOps, elOps []clientv3.Op) error {
+	txn := d.Client.Txn(ctx)
+	resp, err := txn.If(cmps...).Then(doOps...).Else(elOps...).Commit()
+	if err != nil {
+		return err
+	}
+
+	if resp.Succeeded {
+		return nil
+	}
+
+	return fmt.Errorf("condition not meet, run else ops in transaction")
+}

@@ -31,6 +31,7 @@ import (
 	viper_ "github.com/kaydxh/golang/pkg/viper"
 	"github.com/sirupsen/logrus"
 	"github.com/stretchr/testify/assert"
+	clientv3 "go.etcd.io/etcd/client/v3"
 )
 
 func TestGetKV(t *testing.T) {
@@ -92,14 +93,24 @@ func DeleteCallback(ctx context.Context, key, value string) {
 	logrus.Infof("delete key: %v, value: %v", key, value)
 }
 
-func TestNew(t *testing.T) {
-
+func InstallEtcd(ctx context.Context) (*etcd_.EtcdKV, error) {
 	cfgFile := "./etcd.yaml"
 	config := etcd_.NewConfig(etcd_.WithViper(viper_.GetViper(cfgFile, "discovery.etcd")))
 
-	ctx := context.Background()
-
 	kv, err := config.Complete().New(ctx, CreateCallback, DeleteCallback)
+	if err != nil {
+		logrus.Errorf("failed to new config err: %v", err)
+		return nil, err
+	}
+
+	return kv, nil
+
+}
+
+func TestNew(t *testing.T) {
+
+	ctx := context.Background()
+	kv, err := InstallEtcd(ctx)
 	if err != nil {
 		t.Errorf("failed to new config err: %v", err)
 		return
@@ -112,6 +123,7 @@ func TestNew(t *testing.T) {
 
 	// only unlock the latest lock /kay/lock1
 	kv.Unlock(ctx)
+	kv.TxPipelined(ctx, nil, []clientv3.Op{clientv3.OpPut("foo", "foo_new_value")}, nil)
 	/*
 		go func() {
 			t.Logf("before lock by routine 1")
@@ -121,4 +133,14 @@ func TestNew(t *testing.T) {
 	*/
 
 	select {}
+}
+
+func TestTxPipelined(t *testing.T) {
+	ctx := context.Background()
+	kv, err := InstallEtcd(ctx)
+	if err != nil {
+		t.Errorf("failed to new config err: %v", err)
+		return
+	}
+	kv.TxPipelined(ctx, nil, []clientv3.Op{clientv3.OpPut("foo", "foo_new_value")}, nil)
 }
