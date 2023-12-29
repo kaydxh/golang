@@ -29,6 +29,8 @@ import (
 
 func TestSysTotalMemory(t *testing.T) {
 	total := syscall_.MemoryUsage{}.SysTotalMemory()
-	t.Logf("total: %v", total)
+	t.Logf("total: %vG", total/1024/1024/1024)
 
+	free := syscall_.MemoryUsage{}.SysFreeMemory()
+	t.Logf("free: %vG", free/1024/1024/1024)
 }

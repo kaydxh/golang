@@ -26,7 +26,7 @@ import "syscall"
 type MemoryUsage struct {
 }
 
-func (m memoryusage) SysTotalMemory() uint64 {
+func (m MemoryUsage) SysTotalMemory() uint64 {
 	in := &syscall.Sysinfo_t{}
 	err := syscall.Sysinfo(in)
 	if err != nil {
@@ -36,7 +36,7 @@ func (m memoryusage) SysTotalMemory() uint64 {
 	return uint64(in.Totalram) * uint64(in.Unit)
 }
 
-func (m memoryusage) sysFreeMemory() uint64 {
+func (m MemoryUsage) SysFreeMemory() uint64 {
 	in := &syscall.Sysinfo_t{}
 	err := syscall.Sysinfo(in)
 	if err != nil {
