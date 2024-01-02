@@ -9,9 +9,7 @@ import (
 
 	"github.com/kaydxh/golang/go/errors"
 	time_ "github.com/kaydxh/golang/go/time"
-	resource_ "github.com/kaydxh/golang/pkg/middleware/resource"
 	"github.com/sirupsen/logrus"
-	"go.opentelemetry.io/otel"
 )
 
 const (
@@ -35,31 +33,14 @@ type ResourceStatsService struct {
 
 func NewResourceStatsService(opts ...ResourceStatsServiceOption) (*ResourceStatsService, error) {
 	var err error
-	r := &ResourceStatsService{
-		metrics: &ResourceStatsMetrics{},
-	}
+	r := &ResourceStatsService{}
 
-	call := func(f func()) {
-		if err != nil {
-			return
-		}
-		f()
-	}
-	call(func() {
-		r.metrics.MemoryTotalHistogram, err = resource_.GlobalMeter().SyncFloat64().Histogram("memory_total")
-	})
-	call(func() {
-		r.metrics.MemoryUsageHistogram, err = resource_.GlobalMeter().SyncFloat64().Histogram("memory_usage")
-	})
-	call(func() {
-		r.metrics.MemoryFreeHistogram, err = resource_.GlobalMeter().SyncFloat64().Histogram("memory_free")
-	})
+	m, err := NewResourceStatsMetrics()
 	if err != nil {
-		otel.Handle(err)
+		return nil, err
 	}
-
+	r.metrics = m
 	r.ApplyOptions(opts...)
-
 	if r.opts.checkInterval <= 0 {
 		r.opts.checkInterval = DefaultCheckInterval
 	}
