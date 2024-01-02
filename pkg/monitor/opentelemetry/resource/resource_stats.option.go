@@ -31,10 +31,8 @@ func WithStatsCheckInterval(interval time.Duration) ResourceStatsServiceOption {
 	})
 }
 
-/*
-func WithDiskUsageCallBack(f func(diskPath string, diskUsage float32)) DiskCleanerConfigOption {
-	return DiskCleanerConfigOptionFunc(func(c *DiskCleanerConfig) {
-		c.diskUsageCallBack = f
+func WithMemoryCallBack(f func(total uint64, free uint64, usage float64)) ResourceStatsServiceOption {
+	return ResourceStatsServiceOptionFunc(func(c *ResourceStatsService) {
+		c.opts.memoryCallBack = f
 	})
 }
-*/

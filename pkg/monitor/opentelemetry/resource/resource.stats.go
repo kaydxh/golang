@@ -17,7 +17,8 @@ const (
 )
 
 type ResourceStatsOptions struct {
-	checkInterval time.Duration
+	checkInterval  time.Duration
+	memoryCallBack func(total, free uint64, usage float64)
 }
 
 type ResourceStatsService struct {
@@ -84,7 +85,10 @@ func (s *ResourceStatsService) Serve(ctx context.Context) error {
 	s.mu.Unlock()
 
 	time_.UntilWithContxt(ctx, func(ctx context.Context) error {
-		s.metrics.ReportMetric(ctx)
+		total, free, usage := s.metrics.ReportMetric(ctx)
+		if s.opts.memoryCallBack != nil {
+			s.opts.memoryCallBack(uint64(total), uint64(free), usage)
+		}
 		return nil
 	}, s.opts.checkInterval)
 	if err := ctx.Err(); err != nil {
