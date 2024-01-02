@@ -1,5 +1,5 @@
 /*
- *Copyright (c) 2023, kaydxh
+ *Copyright (c) 2022, kaydxh
  *
  *Permission is hereby granted, free of charge, to any person obtaining a copy
  *of this software and associated documentation files (the "Software"), to deal
@@ -19,39 +19,22 @@
  *OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  *SOFTWARE.
  */
-package syscall
+package resource
 
-import "syscall"
+import (
+	"time"
+)
 
-type MemoryUsage struct {
+func WithStatsCheckInterval(interval time.Duration) ResourceStatsServiceOption {
+	return ResourceStatsServiceOptionFunc(func(c *ResourceStatsService) {
+		c.opts.checkInterval = interval
+	})
 }
 
-func (m MemoryUsage) SysTotalMemory() uint64 {
-	in := &syscall.Sysinfo_t{}
-	err := syscall.Sysinfo(in)
-	if err != nil {
-		return 0
-	}
-
-	return uint64(in.Totalram) * uint64(in.Unit)
+/*
+func WithDiskUsageCallBack(f func(diskPath string, diskUsage float32)) DiskCleanerConfigOption {
+	return DiskCleanerConfigOptionFunc(func(c *DiskCleanerConfig) {
+		c.diskUsageCallBack = f
+	})
 }
-
-func (m MemoryUsage) SysFreeMemory() uint64 {
-	in := &syscall.Sysinfo_t{}
-	err := syscall.Sysinfo(in)
-	if err != nil {
-		return 0
-	}
-
-	return uint64(in.Freeram) * uint64(in.Unit)
-}
-
-func (m MemoryUsage) SysUsageMemory() float64 {
-	total := m.SysTotalMemory()
-	use := total - s.SysFreeMemory()
-	if use <= 0 {
-		return 1.0
-	}
-
-	return float64(use) / float64(total)
-}
+*/
