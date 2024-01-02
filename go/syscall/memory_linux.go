@@ -48,7 +48,7 @@ func (m MemoryUsage) SysFreeMemory() uint64 {
 
 func (m MemoryUsage) SysUsageMemory() float64 {
 	total := m.SysTotalMemory()
-	use := total - s.SysFreeMemory()
+	use := total - m.SysFreeMemory()
 	if use <= 0 {
 		return 1.0
 	}
