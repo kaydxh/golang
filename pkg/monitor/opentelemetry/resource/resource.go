@@ -7,8 +7,15 @@ import (
 	syscall_ "github.com/kaydxh/golang/go/syscall"
 	resource_ "github.com/kaydxh/golang/pkg/middleware/resource"
 	app_ "github.com/kaydxh/golang/pkg/webserver/app"
+	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/metric/instrument/syncfloat64"
+)
+
+const (
+	MemoryTotalKey = "memory_total"
+	MemoryUsageKey = "memory_usage"
+	MemoryFreeKey  = "memory_free"
 )
 
 type ResourceStatsMetrics struct {
@@ -29,6 +36,31 @@ func Attrs() []attribute.KeyValue {
 	}
 
 	return attrs
+}
+
+func NewResourceStatsMetrics() (*ResourceStatsMetrics, error) {
+	var err error
+	r := &ResourceStatsMetrics{}
+	call := func(f func()) {
+		if err != nil {
+			return
+		}
+		f()
+	}
+	call(func() {
+		r.MemoryTotalHistogram, err = resource_.GlobalMeter().SyncFloat64().Histogram(MemoryTotalKey)
+	})
+	call(func() {
+		r.MemoryUsageHistogram, err = resource_.GlobalMeter().SyncFloat64().Histogram(MemoryUsageKey)
+	})
+	call(func() {
+		r.MemoryFreeHistogram, err = resource_.GlobalMeter().SyncFloat64().Histogram(MemoryFreeKey)
+	})
+	if err != nil {
+		otel.Handle(err)
+	}
+
+	return r, nil
 }
 
 func (r *ResourceStatsMetrics) ReportMetric(ctx context.Context) {
