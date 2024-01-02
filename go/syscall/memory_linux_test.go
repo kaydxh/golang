@@ -23,6 +23,7 @@ package syscall_test
 
 import (
 	"testing"
+	"time"
 
 	syscall_ "github.com/kaydxh/golang/go/syscall"
 )
@@ -33,4 +34,13 @@ func TestSysTotalMemory(t *testing.T) {
 
 	free := syscall_.MemoryUsage{}.SysFreeMemory()
 	t.Logf("free: %vG", free/1024/1024/1024)
+
+	for {
+		usage := syscall_.MemoryUsage{}.SysUsageMemory()
+		t.Logf("usage: %v", usage)
+		time.Sleep(time.Second)
+	}
+
+	select {}
+	// t.Logf("memStats: %+v", memStats)
 }
