@@ -8,15 +8,10 @@ import (
 	"time"
 
 	"github.com/kaydxh/golang/go/errors"
-	net_ "github.com/kaydxh/golang/go/net"
-	syscall_ "github.com/kaydxh/golang/go/syscall"
 	time_ "github.com/kaydxh/golang/go/time"
 	resource_ "github.com/kaydxh/golang/pkg/middleware/resource"
-	app_ "github.com/kaydxh/golang/pkg/webserver/app"
 	"github.com/sirupsen/logrus"
 	"go.opentelemetry.io/otel"
-	"go.opentelemetry.io/otel/attribute"
-	"go.opentelemetry.io/otel/metric/instrument/syncfloat64"
 )
 
 const (
@@ -25,12 +20,6 @@ const (
 
 type ResourceStatsOptions struct {
 	checkInterval time.Duration
-}
-
-type ResourceStatsMetrics struct {
-	MemoryTotalHistogram syncfloat64.Histogram
-	MemoryUsageHistogram syncfloat64.Histogram
-	MemoryFreeHistogram  syncfloat64.Histogram
 }
 
 type ResourceStatsService struct {
@@ -42,20 +31,6 @@ type ResourceStatsService struct {
 
 	mu     sync.Mutex
 	cancel func()
-}
-
-func Attrs() []attribute.KeyValue {
-	var attrs []attribute.KeyValue
-	hostIP, err := net_.GetHostIP()
-	if err == nil && hostIP.String() != "" {
-		attrs = append(attrs, resource_.PodIpKey.String(hostIP.String()))
-	}
-	appName := app_.GetVersion().AppName
-	if appName != "" {
-		attrs = append(attrs, resource_.ServerNameKey.String(appName))
-	}
-
-	return attrs
 }
 
 func NewResourceStatsService(opts ...ResourceStatsServiceOption) (*ResourceStatsService, error) {
@@ -110,21 +85,6 @@ func (s *ResourceStatsService) getLogger() *logrus.Entry {
 	return logrus.WithField("module", "ResourceStatsService")
 }
 
-func (s *ResourceStatsService) ReportMetric(ctx context.Context) {
-	logger := s.getLogger()
-	attrs := Attrs()
-
-	total := float64(syscall_.MemoryUsage{}.SysTotalMemory())
-	free := float64(syscall_.MemoryUsage{}.SysFreeMemory())
-	usage := float64(syscall_.MemoryUsage{}.SysUsageMemory())
-
-	s.metrics.MemoryTotalHistogram.Record(ctx, total, attrs...)
-	s.metrics.MemoryFreeHistogram.Record(ctx, free, attrs...)
-	s.metrics.MemoryUsageHistogram.Record(ctx, usage, attrs...)
-
-	logger.Infof("total: %v, free: %v, usage: %v", total, free, usage)
-}
-
 // Serve ...
 func (s *ResourceStatsService) Serve(ctx context.Context) error {
 	logger := s.getLogger()
@@ -143,7 +103,7 @@ func (s *ResourceStatsService) Serve(ctx context.Context) error {
 	s.mu.Unlock()
 
 	time_.UntilWithContxt(ctx, func(ctx context.Context) error {
-		s.ReportMetric(ctx)
+		s.metrics.ReportMetric(ctx)
 		return nil
 	}, s.opts.checkInterval)
 	if err := ctx.Err(); err != nil {
