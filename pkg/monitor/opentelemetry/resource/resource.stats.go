@@ -85,6 +85,10 @@ func NewResourceStatsService(opts ...ResourceStatsServiceOption) (*ResourceStats
 
 	r.ApplyOptions(opts...)
 
+	if r.opts.checkInterval <= 0 {
+		r.opts.checkInterval = DefaultCheckInterval
+	}
+
 	return r, nil
 }
 
@@ -107,12 +111,18 @@ func (s *ResourceStatsService) getLogger() *logrus.Entry {
 }
 
 func (s *ResourceStatsService) ReportMetric(ctx context.Context) {
+	logger := s.getLogger()
 	attrs := Attrs()
 
-	s.metrics.MemoryTotalHistogram.Record(ctx, float64(syscall_.MemoryUsage{}.SysTotalMemory()), attrs...)
-	s.metrics.MemoryFreeHistogram.Record(ctx, float64(syscall_.MemoryUsage{}.SysFreeMemory()), attrs...)
-	s.metrics.MemoryUsageHistogram.Record(ctx, float64(syscall_.MemoryUsage{}.SysUsageMemory()), attrs...)
+	total := float64(syscall_.MemoryUsage{}.SysTotalMemory())
+	free := float64(syscall_.MemoryUsage{}.SysFreeMemory())
+	usage := float64(syscall_.MemoryUsage{}.SysUsageMemory())
 
+	s.metrics.MemoryTotalHistogram.Record(ctx, total, attrs...)
+	s.metrics.MemoryFreeHistogram.Record(ctx, free, attrs...)
+	s.metrics.MemoryUsageHistogram.Record(ctx, usage, attrs...)
+
+	logger.Infof("total: %v, free: %v, usage: %v", total, free, usage)
 }
 
 // Serve ...
