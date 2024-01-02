@@ -39,7 +39,8 @@ type Config struct {
 	Proto Monitor_OpenTelemetry
 	opts  struct {
 		// If set, overrides params below
-		viper *viper.Viper
+		viper                       *viper.Viper
+		resourceStatsServiceOptions []resource.ResourceStatsServiceOption
 	}
 }
 
@@ -163,7 +164,15 @@ func (c *completedConfig) installTracer(ctx context.Context) ([]OpenTelemetryOpt
 }
 
 func (c *completedConfig) installResource(ctx context.Context) (*resource.ResourceStatsService, error) {
-	statsServer, err := resource.NewResourceStatsService()
+
+	var opts []resource.ResourceStatsServiceOption
+	collectDuration := c.Proto.GetMetricCollectDuration().AsDuration()
+	if collectDuration > 0 {
+		opts = append(opts, resource.WithStatsCheckInterval(collectDuration))
+	}
+	opts = append(opts, c.opts.resourceStatsServiceOptions...)
+
+	statsServer, err := resource.NewResourceStatsService(opts...)
 	if err != nil {
 		return nil, err
 	}

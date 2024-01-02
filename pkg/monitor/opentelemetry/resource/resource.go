@@ -63,15 +63,16 @@ func NewResourceStatsMetrics() (*ResourceStatsMetrics, error) {
 	return r, nil
 }
 
-func (r *ResourceStatsMetrics) ReportMetric(ctx context.Context) {
+func (r *ResourceStatsMetrics) ReportMetric(ctx context.Context) (total, free, usage float64) {
 	attrs := Attrs()
 
-	total := float64(syscall_.MemoryUsage{}.SysTotalMemory())
-	free := float64(syscall_.MemoryUsage{}.SysFreeMemory())
-	usage := float64(syscall_.MemoryUsage{}.SysUsageMemory())
+	total = float64(syscall_.MemoryUsage{}.SysTotalMemory())
+	free = float64(syscall_.MemoryUsage{}.SysFreeMemory())
+	usage = float64(syscall_.MemoryUsage{}.SysUsageMemory())
 
 	r.MemoryTotalHistogram.Record(ctx, total, attrs...)
 	r.MemoryFreeHistogram.Record(ctx, free, attrs...)
 	r.MemoryUsageHistogram.Record(ctx, usage, attrs...)
 
+	return total, free, usage
 }
