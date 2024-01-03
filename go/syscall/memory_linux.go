@@ -23,6 +23,9 @@ package syscall
 
 import "syscall"
 
+// 其他实现可以参考https://github.com/shirou/gopsutil
+// /proc/meminfo
+// /proc/pid/status
 type MemoryUsage struct {
 }
 
@@ -44,14 +47,4 @@ func (m MemoryUsage) SysFreeMemory() uint64 {
 	}
 
 	return uint64(in.Freeram) * uint64(in.Unit)
-}
-
-func (m MemoryUsage) SysUsageMemory() float64 {
-	total := m.SysTotalMemory()
-	use := total - m.SysFreeMemory()
-	if use <= 0 {
-		return 1.0
-	}
-
-	return float64(use) / float64(total)
 }
