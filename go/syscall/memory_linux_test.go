@@ -48,6 +48,7 @@ func TestSysTotalMemory(t *testing.T) {
 			v.Used,
 			v.Available,
 		)
+
 	}
 
 }
