@@ -4,24 +4,24 @@ import (
 	"context"
 
 	net_ "github.com/kaydxh/golang/go/net"
-	syscall_ "github.com/kaydxh/golang/go/syscall"
 	resource_ "github.com/kaydxh/golang/pkg/middleware/resource"
 	app_ "github.com/kaydxh/golang/pkg/webserver/app"
+	"github.com/shirou/gopsutil/mem"
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/metric/instrument/syncfloat64"
 )
 
 const (
-	MemoryTotalKey = "memory_total"
-	MemoryUsageKey = "memory_usage"
-	MemoryFreeKey  = "memory_free"
+	MemoryTotalKey     = "memory_total"
+	MemoryUsageKey     = "memory_usage"
+	MemoryAvaliableKey = "memory_avaliable"
 )
 
 type ResourceStatsMetrics struct {
-	MemoryTotalHistogram syncfloat64.Histogram
-	MemoryUsageHistogram syncfloat64.Histogram
-	MemoryFreeHistogram  syncfloat64.Histogram
+	MemoryTotalHistogram     syncfloat64.Histogram
+	MemoryUsageHistogram     syncfloat64.Histogram
+	MemoryAvaliableHistogram syncfloat64.Histogram
 }
 
 func Attrs() []attribute.KeyValue {
@@ -54,7 +54,7 @@ func NewResourceStatsMetrics() (*ResourceStatsMetrics, error) {
 		r.MemoryUsageHistogram, err = resource_.GlobalMeter().SyncFloat64().Histogram(MemoryUsageKey)
 	})
 	call(func() {
-		r.MemoryFreeHistogram, err = resource_.GlobalMeter().SyncFloat64().Histogram(MemoryFreeKey)
+		r.MemoryAvaliableHistogram, err = resource_.GlobalMeter().SyncFloat64().Histogram(MemoryAvaliableKey)
 	})
 	if err != nil {
 		otel.Handle(err)
@@ -63,16 +63,20 @@ func NewResourceStatsMetrics() (*ResourceStatsMetrics, error) {
 	return r, nil
 }
 
-func (r *ResourceStatsMetrics) ReportMetric(ctx context.Context) (total, free, usage float64) {
+func (r *ResourceStatsMetrics) ReportMetric(ctx context.Context) (total, avaiable, usage float64) {
 	attrs := Attrs()
 
-	total = float64(syscall_.MemoryUsage{}.SysTotalMemory())
-	free = float64(syscall_.MemoryUsage{}.SysFreeMemory())
-	usage = float64(syscall_.MemoryUsage{}.SysUsageMemory())
+	v, err := mem.VirtualMemory()
+	if err != nil {
+		return 0, 0, 0
+	}
 
+	total = float64(v.Total)
+	avaiable = float64(v.Available)
+	usage = v.UsedPercent
 	r.MemoryTotalHistogram.Record(ctx, total, attrs...)
-	r.MemoryFreeHistogram.Record(ctx, free, attrs...)
+	r.MemoryAvaliableHistogram.Record(ctx, avaiable, attrs...)
 	r.MemoryUsageHistogram.Record(ctx, usage, attrs...)
 
-	return total, free, usage
+	return total, avaiable, usage
 }
