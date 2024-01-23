@@ -18,14 +18,15 @@
  *LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  *OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  *SOFTWARE.
- */
-package syscall_test
+ */package syscall_test
 
 import (
+	"fmt"
 	"testing"
 	"time"
 
 	syscall_ "github.com/kaydxh/golang/go/syscall"
+	"github.com/shirou/gopsutil/mem"
 )
 
 func TestSysTotalMemory(t *testing.T) {
@@ -36,11 +37,18 @@ func TestSysTotalMemory(t *testing.T) {
 	t.Logf("free: %vG", free/1024/1024/1024)
 
 	for {
-		usage := syscall_.MemoryUsage{}.SysUsageMemory()
-		t.Logf("usage: %v", usage)
 		time.Sleep(time.Second)
+		v, _ := mem.VirtualMemory()
+
+		fmt.Printf(
+			"Total: %v, Free:%v, UsedPercent:%f%%, Used:%v, Available: %v\n",
+			v.Total,
+			v.Free,
+			v.UsedPercent,
+			v.Used,
+			v.Available,
+		)
+
 	}
 
-	select {}
-	// t.Logf("memStats: %+v", memStats)
 }

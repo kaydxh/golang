@@ -85,9 +85,9 @@ func (s *ResourceStatsService) Serve(ctx context.Context) error {
 	s.mu.Unlock()
 
 	time_.UntilWithContxt(ctx, func(ctx context.Context) error {
-		total, free, usage := s.metrics.ReportMetric(ctx)
+		total, avaiable, usage := s.metrics.ReportMetric(ctx)
 		if s.opts.memoryCallBack != nil {
-			s.opts.memoryCallBack(uint64(total), uint64(free), usage)
+			s.opts.memoryCallBack(uint64(total), uint64(avaiable), usage)
 		}
 		return nil
 	}, s.opts.checkInterval)
