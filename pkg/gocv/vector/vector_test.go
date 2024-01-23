@@ -66,6 +66,9 @@ func TestCosineDistance(t *testing.T) {
 
 	distance = vector.CosineDistance(data1, data2)
 	t.Logf("cosine distance: %v", distance)
+
+	distance = vector.CosineDistance(data1, data1)
+	t.Logf("cosine distance: %v", distance)
 }
 
 func TestEuclideanDistance(t *testing.T) {
