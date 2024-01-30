@@ -35,7 +35,7 @@ func TestStringSetInsert(t *testing.T) {
 	}
 
 	if !s.Has("a") || !s.Has("b") || !s.Has("c") || !s.Has("d") || !s.Has("e") {
-		t.Errorf("UnExpected  contents: %#v", s)
+		t.Errorf("UnExpected contents: %#v", s)
 	}
 
 	//%v output value
