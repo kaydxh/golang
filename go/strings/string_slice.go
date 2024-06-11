@@ -153,3 +153,14 @@ func SliceIntersectionInt(s1 []int, s2 []int) []int {
 	return ss
 }
 */
+
+func Filter(ss []string, cond func(string) bool) []string {
+	var res []string
+	for _, s := range ss {
+		if cond(s) {
+			res = append(res, s)
+		}
+	}
+
+	return res
+}
