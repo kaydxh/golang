@@ -21,6 +21,11 @@
  */
 package bytes
 
+import (
+	"reflect"
+	"unsafe"
+)
+
 func Truncate(s []byte, n int) []byte {
 	if n < 0 {
 		n = 0
@@ -31,4 +36,29 @@ func Truncate(s []byte, n int) []byte {
 	}
 
 	return s[:n]
+}
+
+func Encode[T any](m T) []byte {
+	if reflect.ValueOf(m).IsZero() {
+		return nil
+	}
+
+	sz := int(unsafe.Sizeof(m))
+	p := make([]byte, sz)
+
+	slice := (*reflect.SliceHeader)(unsafe.Pointer(&p))
+	slice.Data = uintptr(unsafe.Pointer(&m))
+	slice.Len = sz
+	slice.Cap = sz
+	return p
+}
+
+func Decode[T any](b []byte) T {
+	var zero T
+	if len(b) == 0 {
+		return zero
+	}
+
+	var m T = *(*T)(unsafe.Pointer(&b[0]))
+	return m
 }
