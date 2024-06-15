@@ -9,7 +9,7 @@ import (
 	bytes_ "github.com/kaydxh/golang/go/bytes"
 )
 
-func TestToBytes(t *testing.T) {
+func TestEncodeAndDecode(t *testing.T) {
 	// to bytes
 	type MyStruct struct {
 		X, Y, Z int
