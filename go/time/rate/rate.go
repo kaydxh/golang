@@ -95,11 +95,7 @@ func (lim *Limiter) AllowN(now time.Time, n int, timeout time.Duration) bool {
 	}
 
 	err := lim.WaitFor(timeout)
-	if err != nil {
-		return false
-	}
-
-	return true
+	return err == nil
 }
 
 func (lim *Limiter) Put() {
