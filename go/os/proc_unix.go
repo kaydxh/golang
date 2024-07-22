@@ -1,5 +1,5 @@
 /*
- *Copyright (c) 2022, kaydxh
+ *Copyright (c) 2024, kaydxh
  *
  *Permission is hereby granted, free of charge, to any person obtaining a copy
  *of this software and associated documentation files (the "Software"), to deal
@@ -19,27 +19,14 @@
  *OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  *SOFTWARE.
  */
-package os_test
 
-import (
-	"testing"
-	"time"
+package os
 
-	os_ "github.com/kaydxh/golang/go/os"
-)
+import "golang.org/x/sys/unix"
 
-func TestGetPidsByName(t *testing.T) {
-	timeout := 3000
-	pids, msg, err := os_.GetPidsByName(time.Duration(timeout), "kay")
-	if err != nil {
-		t.Errorf("expect nil, got %v, msg: %v", err, msg)
-	}
-
-	t.Logf("pids: %v", pids)
-}
-
-func TestExistPid(t *testing.T) {
-	pid := 35458
-	exist := os_.ExistPid(pid)
-	t.Logf("pid: %v %v", pid, exist)
+func ExistPid(pid int) bool {
+	// OS X & BSD systems don't have a proc filesystem.
+	// Use kill -0 pid to judge if the process exists.
+	err := unix.Kill(pid, 0)
+	return err == nil
 }
