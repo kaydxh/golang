@@ -1,5 +1,5 @@
 /*
- *Copyright (c) 2022, kaydxh
+ *Copyright (c) 2024, kaydxh
  *
  *Permission is hereby granted, free of charge, to any person obtaining a copy
  *of this software and associated documentation files (the "Software"), to deal
@@ -19,27 +19,16 @@
  *OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  *SOFTWARE.
  */
-package os_test
+
+package os
 
 import (
-	"testing"
-	"time"
-
-	os_ "github.com/kaydxh/golang/go/os"
+	"os"
+	"path/filepath"
+	"strconv"
 )
 
-func TestGetPidsByName(t *testing.T) {
-	timeout := 3000
-	pids, msg, err := os_.GetPidsByName(time.Duration(timeout), "kay")
-	if err != nil {
-		t.Errorf("expect nil, got %v, msg: %v", err, msg)
-	}
-
-	t.Logf("pids: %v", pids)
-}
-
-func TestExistPid(t *testing.T) {
-	pid := 35458
-	exist := os_.ExistPid(pid)
-	t.Logf("pid: %v %v", pid, exist)
+func ExistPid(pid int) bool {
+	_, err := os.Stat(filepath.Join("/proc", strconv.Itoa(pid)))
+	return err == nil // err is nil if file exists
 }
