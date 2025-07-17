@@ -23,14 +23,10 @@ package prometheus
 
 import (
 	"context"
-	"fmt"
-	"net/http"
-	url_ "net/url"
 
 	"github.com/prometheus/client_golang/prometheus"
 	prometheusmetric "go.opentelemetry.io/otel/exporters/prometheus"
-	controller "go.opentelemetry.io/otel/sdk/metric/controller/basic"
-	"go.opentelemetry.io/otel/sdk/metric/export/aggregation"
+	"go.opentelemetry.io/otel/sdk/metric"
 )
 
 const (
@@ -61,24 +57,11 @@ func NewPrometheusExporterBuilder(opts ...PrometheusExporterBuilderOption) *Prom
 	return builder
 }
 
-func (p *PrometheusExporterBuilder) Build(
-	ctx context.Context,
-	c *controller.Controller,
-) (aggregation.TemporalitySelector, error) {
+func (p *PrometheusExporterBuilder) Build(ctx context.Context) (metric.Reader, error) {
+	return NewPrometheusReader(ctx, prometheus.NewRegistry())
+}
 
-	exporter, err := prometheusmetric.New(prometheusmetric.Config{
-		Registerer: prometheus.DefaultRegisterer,
-		Gatherer:   prometheus.DefaultGatherer,
-	}, c)
-	if err != nil {
-		return nil, fmt.Errorf("new prometheusmetric err: %v", err)
-	}
-
-	u, err := url_.Parse(p.opts.Url)
-	if err != nil {
-		return nil, fmt.Errorf("parse url: %v, err: %v", p.opts.Url, err)
-	}
-
-	http.HandleFunc(u.Path, exporter.ServeHTTP)
-	return exporter, nil
+// NewPrometheusReader ...
+func NewPrometheusReader(ctx context.Context, reg prometheus.Registerer) (*prometheusmetric.Exporter, error) {
+	return prometheusmetric.New(prometheusmetric.WithRegisterer(reg))
 }
