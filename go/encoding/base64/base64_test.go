@@ -18,12 +18,15 @@
  *LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  *OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  *SOFTWARE.
- */
-package base64_test
+ */package base64_test
 
 import (
+	"encoding/binary"
+	"fmt"
+	"math"
 	"testing"
 
+	io_ "github.com/kaydxh/golang/go/io"
 	base64_ "github.com/kaydxh/golang/go/encoding/base64"
 	"gotest.tools/v3/assert"
 )
@@ -95,6 +98,66 @@ func TestURL(t *testing.T) {
 			}
 
 			assert.Equal(t, testCase.name, decoded)
+		})
+	}
+}
+
+func TestDecodeString(t *testing.T) {
+	testCases := []struct {
+		value    string
+		expected string
+	}{
+		{
+			value:    "PeNT+D5jU/g=",
+			expected: "",
+		},
+	}
+
+	for i, testCase := range testCases {
+		t.Run(fmt.Sprintf("%d", i), func(t *testing.T) {
+			decoded, err := base64_.DecodeString(testCase.value)
+			if err != nil {
+				t.Fatalf("failed to decode string, err: %v", err)
+			}
+			t.Logf("decode string len: %v, value len: %v", len(decoded), len(testCase.value))
+
+			j := 0
+			for i := 0; i < len(decoded); i += 4 {
+				bits := binary.LittleEndian.Uint32([]byte(decoded[i : i+4]))
+				fmt.Printf("%f ", math.Float32frombits(bits))
+				j++
+			}
+			fmt.Printf("j=%v", j)
+
+		})
+	}
+}
+
+func TestDecodeFile(t *testing.T) {
+	testCases := []struct {
+		value    string
+		expected string
+	}{
+		{
+			value:    "./1.txt",
+			expected: "",
+		},
+	}
+
+	for i, testCase := range testCases {
+	  encodedValue, err := io_.ReadFile(testCase.value)
+	  if err != nil {
+		t.Fatalf("failed to read file: %v, err: %v", testCase.value, err)
+	  }
+		t.Run(fmt.Sprintf("%d", i), func(t *testing.T) {
+			decoded, err := base64_.DecodeString(string(encodedValue))
+			if err != nil {
+				t.Fatalf("failed to decode string, err: %v", err)
+			}
+			t.Logf("decode string len: %v, value len: %v", len(decoded), len(testCase.value))
+
+			io_.WriteFile(testCase.value+".mp4", []byte(decoded), false)
+
 		})
 	}
 }

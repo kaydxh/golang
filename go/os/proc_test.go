@@ -30,10 +30,16 @@ import (
 
 func TestGetPidsByName(t *testing.T) {
 	timeout := 3000
-	pids, msg, err := os_.GetPidsByName(time.Duration(timeout), "kayxhding")
+	pids, msg, err := os_.GetPidsByName(time.Duration(timeout), "kay")
 	if err != nil {
 		t.Errorf("expect nil, got %v, msg: %v", err, msg)
 	}
 
 	t.Logf("pids: %v", pids)
+}
+
+func TestExistPid(t *testing.T) {
+	pid := 35458
+	exist := os_.ExistPid(pid)
+	t.Logf("pid: %v %v", pid, exist)
 }

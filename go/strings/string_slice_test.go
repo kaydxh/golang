@@ -136,3 +136,28 @@ func TestSliceContains(t *testing.T) {
 		})
 	}
 }
+
+func TestFilter(t *testing.T) {
+	testCases := []struct {
+		s        []string
+		cond     func(string) bool
+		expected []string
+	}{
+		{
+			s: []string{"a", "bdx"},
+			cond: func(s string) bool {
+				return s == "a"
+			},
+			expected: []string{"a"},
+		},
+	}
+
+	for i, testCase := range testCases {
+		t.Run(fmt.Sprintf("case-%d", i), func(t *testing.T) {
+			result := strings_.Filter(testCase.s, testCase.cond)
+			t.Logf("result:%v", result)
+			assert.Equal(t, testCase.expected, result)
+		})
+	}
+
+}

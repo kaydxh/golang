@@ -1,0 +1,12 @@
+prefix=${pcfiledir}/../third_path/pybind11
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+
+Name: pybind11
+Description: Seamless operability between C++11 and Python
+Version: 2.10.4
+Libs: #-L${libdir} -lprotobuf -pthread
+Libs.private: -lz
+Cflags: -I${includedir} #-pthread
+Requires: python3-embed

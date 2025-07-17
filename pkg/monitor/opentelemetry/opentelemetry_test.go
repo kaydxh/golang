@@ -29,6 +29,7 @@ import (
 
 	opentelemetry_ "github.com/kaydxh/golang/pkg/monitor/opentelemetry"
 	viper_ "github.com/kaydxh/golang/pkg/viper"
+	"github.com/sirupsen/logrus"
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/metric"
@@ -50,9 +51,16 @@ var (
 	funcNameKey        = attribute.Key("function_name")
 )
 
+func memoryUsageCallBack(total, free uint64, usage float64) {
+	logrus.Infof("memory total: %v, free: %v, usage: %v", total, free, usage)
+}
+
 func TestMetric(t *testing.T) {
 	cfgFile := "./opentelemetry.yaml"
-	config := opentelemetry_.NewConfig(opentelemetry_.WithViper(viper_.GetViper(cfgFile, "monitor.open_telemetry")))
+	config := opentelemetry_.NewConfig(
+		opentelemetry_.WithViper(viper_.GetViper(cfgFile, "monitor.open_telemetry")),
+		opentelemetry_.WithMemoryCallBack(memoryUsageCallBack),
+	)
 
 	ctx := context.Background()
 	err := config.Complete().New(ctx)
