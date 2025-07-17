@@ -80,6 +80,20 @@ func MakeDir(name string) error {
 	return os.Mkdir(name, 0755)
 }
 
+// if name is empty, create a directory named name, or creates a new temporary directory in the directory dir
+// pattern can be empty
+func MakeTempDirAll(name, pattern string) (string, error) {
+	if name != "" {
+		// make base dir, or if the dir is not exist, MakeTempDirAll return error
+		err := MakeDirAll(name)
+		if err != nil {
+			return "", err
+		}
+	}
+
+	return os.MkdirTemp(name, pattern)
+}
+
 func OpenAll(path string, flag int, perm os.FileMode) (*os.File, error) {
 	dir, file := filepath.Split(path)
 	// file or dir exists
@@ -126,7 +140,7 @@ func SameFile(fi1, fi2 string) bool {
 	return os.SameFile(stat1, stat2)
 }
 
-//oldname and newname is full path
+// oldname and newname is full path
 func SymLink(oldname, newname string) error {
 
 	oldname, err := filepath.Abs(oldname)

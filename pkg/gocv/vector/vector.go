@@ -60,6 +60,7 @@ func (v *Vector[T]) Norm() {
 		v.data[i] = T(float64(value) / magnitude)
 	}
 }
+
 func (v *Vector[T]) Assign(data []byte) error {
 	buf := bytes.NewReader(data)
 	err := binary.Read(buf, binary.LittleEndian, v.data)

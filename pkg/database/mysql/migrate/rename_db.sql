@@ -7,7 +7,7 @@ SET @queryCount = (
 SELECT COUNT(*) FROM information_schema.TABLES
 WHERE table_schema IN ('old_db_name'));
 
-drop procedure  if exists test_move;
+DROP PROCEDURE  IF EXISTS test_move;
 CREATE PROCEDURE test_move ()
 BEGIN
 
@@ -18,8 +18,8 @@ DO
 	SELECT CONCAT('RENAME TABLE ',table_schema,'.',table_name, ' TO ','new_db_name.',table_name,';')
 		FROM information_schema.TABLES WHERE table_schema IN ('old_db_name') ORDER BY table_name LIMIT 1 );
 	PREPARE stmt FROM @queryString;
-	select @queryString as ``;
-	select i as ``;
+	SELECT @queryString as ``;
+	SELECT i as ``;
 	EXECUTE stmt;
 	SET i=i+1;
 END WHILE ;

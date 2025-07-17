@@ -22,11 +22,18 @@
 package opentelemetry
 
 import (
+	"github.com/kaydxh/golang/pkg/monitor/opentelemetry/resource"
 	"github.com/spf13/viper"
 )
 
 func WithViper(v *viper.Viper) ConfigOption {
 	return ConfigOptionFunc(func(c *Config) {
 		c.opts.viper = v
+	})
+}
+
+func WithMemoryCallBack(f func(total, free uint64, usage float64)) ConfigOption {
+	return ConfigOptionFunc(func(c *Config) {
+		c.opts.resourceStatsServiceOptions = append(c.opts.resourceStatsServiceOptions, resource.WithMemoryCallBack(f))
 	})
 }
