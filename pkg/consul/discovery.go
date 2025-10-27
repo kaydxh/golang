@@ -47,7 +47,8 @@ type ServiceRegistryServer struct {
 
 	inShutdown atomic.Bool // true when when server is in shutdown
 
-	mu     sync.Mutex
+	mu sync.Mutex
+
 	cancel func()
 }
 
