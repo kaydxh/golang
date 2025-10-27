@@ -156,3 +156,70 @@ func namedTableColumnsValues(cmp SqlCompare, cols ...string) []string {
 	}
 	return namedCols
 }
+
+/*
+used for batch insert
+(
+ :group_id_1,
+ :page_id_1,
+ :fea_id_1,
+ :entity_id_1,
+ :feature0_1,
+ :feature1_1,
+ :extend_info_1
+ ),
+(
+ :group_id_2,
+ :page_id_2,
+ :fea_id_2,
+ :entity_id_2,
+ :feature0_2,
+ :feature1_2,
+ :extend_info_2
+ )
+*/
+func JoinNamedColumnsValuesBatch(cols []string, batch int) string {
+
+	var batchNamedCols []string
+	for i := 0; i < batch; i++ {
+		var namedCols []string
+		for _, col := range cols {
+			namedCols = append(namedCols, fmt.Sprintf(":%s_%d", col, i))
+		}
+		batchNamedCols = append(batchNamedCols, fmt.Sprintf("(%v)", strings.Join(namedCols, ",")))
+	}
+
+	return strings.Join(batchNamedCols, ",")
+}
+
+func BuildNamedInsertSql(table string, cols []string, batch int) string {
+	if table == "" || len(cols) == 0 {
+		return ""
+	}
+	sql := fmt.Sprintf(`INSERT INTO %s 
+				(
+				 %s
+				) 
+				VALUES %s`, table,
+		strings.Join(cols, ","),
+		JoinNamedColumnsValuesBatch(cols, batch))
+	return sql
+}
+
+// used for batch insert
+func TransferToNamedColumnsValuesBatch(req []map[string]interface{}) map[string]interface{} {
+
+	valuesMap := make(map[string]interface{}, 0)
+	for i, values := range req {
+		for k, v := range values {
+			valuesMap[fmt.Sprintf("%s_%d", k, i)] = v
+		}
+	}
+
+	return valuesMap
+}
+
+// req is slice of struct or pointer struct
+func BuildNamedColumnsValuesBatch(req interface{}) map[string]interface{} {
+	return TransferToNamedColumnsValuesBatch(reflect_.ArrayAllTagsVaules(req, dbTag))
+}

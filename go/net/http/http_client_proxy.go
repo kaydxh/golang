@@ -27,7 +27,7 @@ import (
 	url_ "github.com/kaydxh/golang/go/net/url"
 )
 
-func RequestWithProxyTarget(req *http.Request, target string) error {
+func RequestWithTargetHost(req *http.Request, target string) error {
 	if target == "" {
 		return nil
 	}
@@ -42,8 +42,8 @@ func RequestWithProxyTarget(req *http.Request, target string) error {
 	return nil
 }
 
-func NewClientWithProxyTarget(target string, opts ...ClientOption) *Client {
-	opts = append(opts, WithProxyTarget(target))
+func NewClientWithTargetHost(target string, opts ...ClientOption) *Client {
+	opts = append(opts, WithTargetHost(target))
 	c, _ := NewClient(opts...)
 	return c
 }

@@ -170,3 +170,11 @@ func SplitToNums[T any](s, sep string, convert func(string) (T, error)) ([]T, er
 	ss := SplitOmitEmpty(s, sep)
 	return strconv_.ParseNums(ss, convert)
 }
+
+func EqualCaseInsensitive(src, dst string) bool {
+	return strings.ToLower(src) == strings.ToLower(dst)
+}
+
+func EmptyString(str string) bool {
+	return strings.TrimSpace(str) == ""
+}

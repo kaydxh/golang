@@ -27,6 +27,7 @@ import (
 
 	prometheus_ "github.com/kaydxh/golang/pkg/monitor/opentelemetry/metric/prometheus"
 	stdoutmetric_ "github.com/kaydxh/golang/pkg/monitor/opentelemetry/metric/stdout"
+	"github.com/kaydxh/golang/pkg/monitor/opentelemetry/resource"
 	jaeger_ "github.com/kaydxh/golang/pkg/monitor/opentelemetry/tracer/jaeger"
 	stdouttrace_ "github.com/kaydxh/golang/pkg/monitor/opentelemetry/tracer/stdout"
 	viper_ "github.com/kaydxh/golang/pkg/viper"
@@ -38,7 +39,8 @@ type Config struct {
 	Proto Monitor_OpenTelemetry
 	opts  struct {
 		// If set, overrides params below
-		viper *viper.Viper
+		viper                       *viper.Viper
+		resourceStatsServiceOptions []resource.ResourceStatsServiceOption
 	}
 }
 
@@ -89,7 +91,13 @@ func (c *completedConfig) install(ctx context.Context) error {
 	openTelemetryOpts = append(openTelemetryOpts, opts...)
 
 	ot := NewOpenTelemetry(openTelemetryOpts...)
-	return ot.Install(ctx)
+	err = ot.Install(ctx)
+	if err != nil {
+		return err
+	}
+
+	_, err = c.installResource(ctx)
+	return err
 }
 
 func (c *completedConfig) installMeter(ctx context.Context) ([]OpenTelemetryOption, error) {
@@ -153,6 +161,24 @@ func (c *completedConfig) installTracer(ctx context.Context) ([]OpenTelemetryOpt
 	}
 
 	return opts, nil
+}
+
+func (c *completedConfig) installResource(ctx context.Context) (*resource.ResourceStatsService, error) {
+
+	var opts []resource.ResourceStatsServiceOption
+	collectDuration := c.Proto.GetMetricCollectDuration().AsDuration()
+	if collectDuration > 0 {
+		opts = append(opts, resource.WithStatsCheckInterval(collectDuration))
+	}
+	opts = append(opts, c.opts.resourceStatsServiceOptions...)
+
+	statsServer, err := resource.NewResourceStatsService(opts...)
+	if err != nil {
+		return nil, err
+	}
+	statsServer.Run(ctx)
+
+	return statsServer, nil
 }
 
 // Complete set default ServerRunOptions.

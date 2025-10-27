@@ -23,6 +23,7 @@ package interceptordebug
 
 import (
 	"bytes"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 
@@ -34,8 +35,11 @@ func InOutputPrinter(handler http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		logger := logs_.GetLogger(r.Context())
 		ww := http_.NewResponseWriterWrapper(w)
+
+		calleeMethod := fmt.Sprintf("%v %v", r.Method, r.URL.Path)
+
 		defer func() {
-			logger.WithField("response", ww.String()).Info("send")
+			logger.WithField("method", calleeMethod).WithField("response", ww.String()).Info("send")
 		}()
 		if r != nil {
 			buf, err := ioutil.ReadAll(r.Body)
@@ -44,7 +48,7 @@ func InOutputPrinter(handler http.Handler) http.Handler {
 			}
 			rdr := ioutil.NopCloser(bytes.NewBuffer(buf))
 			r.Body = rdr
-			logger.WithField("request", string(buf)).Info("recv")
+			logger.WithField("method", calleeMethod).WithField("request", string(buf)).Info("recv")
 
 		}
 

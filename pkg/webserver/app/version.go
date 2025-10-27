@@ -37,11 +37,6 @@ type Version struct {
 	AppName      string `json:"appName"`
 }
 
-// String returns info as a human-friendly version string.
-func (v Version) String() string {
-	return v.GitVersion
-}
-
 var (
 	// semantic version, derived by build scripts (see
 	// https://git.k8s.io/community/contributors/design-proposals/release/versioning.md

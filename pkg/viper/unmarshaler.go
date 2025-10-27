@@ -22,14 +22,13 @@
 package viper
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"reflect"
 
-	"github.com/gogo/protobuf/proto"
 	jsonpb_ "github.com/kaydxh/golang/pkg/protobuf/jsonpb"
 	"github.com/mitchellh/mapstructure"
+	"google.golang.org/protobuf/proto"
 
 	"github.com/spf13/viper"
 )
@@ -57,7 +56,7 @@ func UnmarshalProtoMessageWithJsonpbHookFunc(v proto.Message) mapstructure.Decod
 			return nil, err
 		}
 
-		err = jsonpb_.UnmarshalWithAllowUnknownFields(bytes.NewReader(dataBytes), v)
+		err = jsonpb_.UnmarshalWithAllowUnknownFields(dataBytes, v)
 		if err != nil {
 			return data, err
 		}

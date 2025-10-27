@@ -31,11 +31,11 @@ func TestSetInsert(t *testing.T) {
 	s := set_.NewObject("10", "2", "5")
 	s.Insert("a", "d", "e")
 	if len(s) != 5 {
-		t.Errorf("Expected  len=5: %d", len(s))
+		t.Errorf("Expected len=5: %d", len(s))
 	}
 
 	if !s.Has("a") || !s.Has("b") || !s.Has("c") || !s.Has("d") || !s.Has("e") {
-		t.Errorf("UnExpected  contents: %#v", s)
+		t.Errorf("UnExpected contents: %#v", s)
 	}
 
 	//%v output value

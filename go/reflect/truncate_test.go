@@ -140,8 +140,57 @@ func TestTruncateBytes(t *testing.T) {
 
 	for i, testCase := range testCases {
 		t.Run(fmt.Sprintf("case-%v", i), func(t *testing.T) {
+			t.Logf("req: %+v\n, ", testCase.req)
 			truncateReq := reflect_.TruncateBytes(testCase.req)
-			t.Logf("req: %v\n, truncateReq: %s", testCase.req, truncateReq)
+			//t.Logf("req: %+v\n, truncateReq: %+v", testCase.req, truncateReq)
+			t.Logf("truncateReq: %+v", truncateReq)
 		})
 	}
+}
+
+func TestTruncateBytesWithMaxArraySize(t *testing.T) {
+
+	testCases := []struct {
+		req interface{}
+	}{
+		{
+			req: &struct {
+				RequestId string
+				Image     []byte
+				Item      []struct {
+					a     int
+					Image []byte
+				}
+			}{
+				RequestId: uuid.New().String(),
+				Image:     []byte("12345678"),
+				Item: []struct {
+					a     int
+					Image []byte
+				}{
+					{
+						a:     1,
+						Image: []byte("12345678"),
+					},
+					{
+						a:     2,
+						Image: []byte("12345678"),
+					},
+					{
+						a:     3,
+						Image: []byte("12345678"),
+					},
+				},
+			},
+		},
+	}
+
+	for i, testCase := range testCases {
+		t.Run(fmt.Sprintf("case-%v", i), func(t *testing.T) {
+			t.Logf("req: %+v\n", testCase.req)
+			//	truncateReq := reflect_.TruncateBytesWithMaxArraySize(testCase.req, 1)
+			//	t.Logf("truncateReq: %+v", truncateReq)
+		})
+	}
+
 }

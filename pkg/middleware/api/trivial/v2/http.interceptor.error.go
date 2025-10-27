@@ -35,9 +35,6 @@ import (
 	strings_ "github.com/kaydxh/golang/go/strings"
 	"github.com/sirupsen/logrus"
 
-	//resource_ "github.com/kaydxh/golang/pkg/middleware/resource"
-
-	jsonpb_ "github.com/kaydxh/golang/pkg/protobuf/jsonpb"
 	"google.golang.org/protobuf/proto"
 )
 
@@ -66,12 +63,7 @@ func HTTPError(ctx context.Context, mux *runtime.ServeMux,
 
 // cant not rewrite message, only append message to response
 func HTTPForwardResponse(ctx context.Context, r http.ResponseWriter, message proto.Message) error {
-	respStruct, err := jsonpb_.MarshaToStructpb(message)
-	if err != nil {
-		return err
-	}
-
-	jb, err := json.Marshal(respStruct)
+	jb, err := json.Marshal(message)
 	if err != nil {
 		return fmt.Errorf("jsonpb.Marshal: %v", err)
 	}

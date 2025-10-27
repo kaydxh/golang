@@ -34,9 +34,7 @@ func (*passthroughBuilder) Build(target resolver.Target, opts ...resolver.Resolv
 	opt.ApplyOptions(opts...)
 	r := &passthroughResolver{
 		target: target,
-		cc:     opt.Cc,
 	}
-	r.start()
 	return r, nil
 }
 
@@ -46,13 +44,6 @@ func (*passthroughBuilder) Scheme() string {
 
 type passthroughResolver struct {
 	target resolver.Target
-	cc     resolver.ClientConn
-}
-
-func (r *passthroughResolver) start() {
-	if r.cc != nil {
-		r.cc.UpdateState(resolver.State{Addresses: []resolver.Address{{Addr: r.target.Endpoint}}})
-	}
 }
 
 func (r *passthroughResolver) ResolveOne(opts ...resolver.ResolveOneOption) (resolver.Address, error) {

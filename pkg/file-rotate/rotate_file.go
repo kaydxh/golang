@@ -22,6 +22,7 @@
 package rotatefile
 
 import (
+	"context"
 	"fmt"
 	"io"
 	"os"
@@ -38,6 +39,8 @@ import (
 	time_ "github.com/kaydxh/golang/go/time"
 	cleanup_ "github.com/kaydxh/golang/pkg/file-cleanup"
 )
+
+type EventCallbackFunc func(ctx context.Context, path string)
 
 type RotateFiler struct {
 	file        *os.File
@@ -59,7 +62,9 @@ type RotateFiler struct {
 		//rotate file when file size larger than rotateSize
 		rotateSize int64
 		//rotate file in rotateInterval
-		rotateInterval time.Duration
+		rotateInterval     time.Duration
+		syncInterval       time.Duration
+		rotateCallbackFunc EventCallbackFunc
 	}
 }
 
@@ -78,6 +83,13 @@ func NewRotateFiler(filedir string, options ...RotateFilerOption) (*RotateFiler,
 		if r.opts.fileTimeLayout == "" {
 			r.opts.fileTimeLayout = time_.ShortTimeFormat
 		}
+	}
+
+	if r.opts.rotateCallbackFunc != nil {
+		if r.opts.syncInterval == 0 {
+			r.opts.syncInterval = 30 * time.Second
+		}
+		go r.watch()
 	}
 
 	return r, nil
@@ -109,12 +121,38 @@ func (f *RotateFiler) Write(p []byte) (file *os.File, n int, err error) {
 	return f.file, n, err
 }
 
+func (f *RotateFiler) WriteBytesLine(p [][]byte) (file *os.File, n int, err error) {
+
+	var data []byte
+	for _, d := range p {
+		data = append(data, d...)
+		data = append(data, '\n')
+	}
+	return f.Write(data)
+}
+
 func (f *RotateFiler) generateRotateFilename() string {
 	if f.opts.rotateInterval > 0 {
 		now := time.Now()
 		return time_.TruncateToUTCString(now, f.opts.rotateInterval, f.opts.fileTimeLayout)
 	}
 	return ""
+}
+
+func (f *RotateFiler) watch() {
+	timer := time.NewTicker(f.opts.syncInterval)
+	defer timer.Stop()
+
+	for {
+		select {
+		case <-timer.C:
+			func() {
+				f.mu.Lock()
+				defer f.mu.Unlock()
+				f.getWriterNolock(0)
+			}()
+		}
+	}
 }
 
 func (f *RotateFiler) getWriterNolock(length int64) (io.Writer, error) {
@@ -169,6 +207,10 @@ func (f *RotateFiler) getWriterNolock(length int64) (io.Writer, error) {
 		}
 
 		if f.file != nil {
+			//callback
+			if f.opts.rotateCallbackFunc != nil {
+				f.opts.rotateCallbackFunc(context.Background(), f.file.Name())
+			}
 			f.file.Close()
 		}
 		f.file = fn

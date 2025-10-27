@@ -82,9 +82,13 @@ func (r *ResolverQuery) SetDefault() {
 func NewResolverQuery(domain string, opts ...ResolverQueryOption) (ResolverQuery, error) {
 	rq := NewDefaultResolverQuery(domain)
 	rq.ApplyOptions(opts...)
-	err := rq.SetResolver()
-	if err != nil {
-		return rq, err
+
+	// if resolver is not set, use default
+	if rq.resolver == nil {
+		err := rq.SetResolver()
+		if err != nil {
+			return rq, err
+		}
 	}
 
 	return rq, nil

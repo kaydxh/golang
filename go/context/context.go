@@ -64,14 +64,14 @@ func ExtractIntegerFromContext(ctx context.Context, key string) (int64, error) {
 }
 
 func ExtractFromContext(ctx context.Context, key string) string {
-	switch requestIDs := ctx.Value(key).(type) {
+	switch value := ctx.Value(key).(type) {
 	case string:
-		if requestIDs != "" {
-			return requestIDs
+		if value != "" {
+			return value
 		}
 	case []string:
-		if len(requestIDs) > 0 {
-			return requestIDs[0]
+		if len(value) > 0 {
+			return value[0]
 		}
 	default:
 		return ""
@@ -80,8 +80,30 @@ func ExtractFromContext(ctx context.Context, key string) string {
 	return ""
 }
 
+func UpdateContext(ctx context.Context, key string, values map[string]interface{}) error {
+	currentValues, ok := ctx.Value(key).(map[string]interface{})
+	if ok {
+		for k, v := range values {
+			currentValues[k] = v
+		}
+		return nil
+	}
+
+	return fmt.Errorf("key[%v] is not exist in context", key)
+}
+
 func SetPairContext(ctx context.Context, key, value string) context.Context {
 	return context.WithValue(ctx, key, value)
+}
+
+func AppendContext(ctx context.Context, key string, values ...string) context.Context {
+	currentValues, _ := ctx.Value(key).([]string)
+	currentValues = append(currentValues, values...)
+	return context.WithValue(ctx, key, currentValues)
+}
+
+func WithContextRequestId(ctx context.Context, id string) context.Context {
+	return context.WithValue(ctx, DefaultHTTPRequestIDKey, id)
 }
 
 func ExtractRequestIDFromContext(ctx context.Context) string {

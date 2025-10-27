@@ -33,9 +33,9 @@ type StorageConfig struct {
 }
 
 type Storage struct {
-	Conf   StorageConfig
-	bucket *blob.Bucket
-	opts   struct {
+	Conf StorageConfig
+	*blob.Bucket
+	opts struct {
 
 		// 前缀路径,一般以"/"结尾, 操作子目录
 		// the PrefixPath should end with "/", so that the resulting operates in a subfoleder
@@ -73,7 +73,7 @@ func NewStorage(ctx context.Context, conf StorageConfig, opts ...StorageOption) 
 		bucket = blob.PrefixedBucket(bucket, s.opts.PrefixPath)
 	}
 
-	s.bucket = bucket
+	s.Bucket = bucket
 	return s, nil
 }
 

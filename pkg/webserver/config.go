@@ -86,7 +86,7 @@ func (c *completedConfig) Validate() error {
 	return c.Validator.Struct(c)
 }
 
-func (c *completedConfig) New() (*GenericWebServer, error) {
+func (c *completedConfig) New(ctx context.Context, opts ...gw_.GRPCGatewayOption) (*GenericWebServer, error) {
 	if c.completeError != nil {
 		return nil, c.completeError
 	}
@@ -95,13 +95,16 @@ func (c *completedConfig) New() (*GenericWebServer, error) {
 		return nil, err
 	}
 
-	return c.install()
+	return c.install(ctx, opts...)
 }
 
-func (c *completedConfig) install() (*GenericWebServer, error) {
+func (c *completedConfig) install(ctx context.Context, opts ...gw_.GRPCGatewayOption) (*GenericWebServer, error) {
 	c.Config.opts.gatewayOptions = append(c.Config.opts.gatewayOptions, c.installGrpcMessageSizeOptions()...)
 	c.Config.opts.gatewayOptions = append(c.Config.opts.gatewayOptions, c.installHttpMiddlewareChain()...)
 	c.Config.opts.gatewayOptions = append(c.Config.opts.gatewayOptions, c.installGrpcMiddlewareChain()...)
+
+	//append opts...
+	c.Config.opts.gatewayOptions = append(c.Config.opts.gatewayOptions, opts...)
 	grpcBackend := gw_.NewGRPCGateWay(c.opts.bindAddress, c.Config.opts.gatewayOptions...)
 	//grpcBackend.ApplyOptions()
 	gin.SetMode(gin.ReleaseMode)
@@ -119,13 +122,7 @@ func (c *completedConfig) install() (*GenericWebServer, error) {
 	var errs []error
 	if c.Proto.GetDebug().GetEnableProfiling() {
 		fmt.Printf("- install debug handler")
-		err := ws.AddPostStartHook("debug_hanlder", func(ctx context.Context) error {
-			ws.InstallWebHandlers(profiler_.NewController())
-			return nil
-		})
-		if err != nil {
-			errs = append(errs, err)
-		}
+		ws.InstallWebHandlers(profiler_.NewController())
 	}
 	err := c.installDefaultHander(ws)
 	if err != nil {
@@ -136,10 +133,8 @@ func (c *completedConfig) install() (*GenericWebServer, error) {
 }
 
 func (c *completedConfig) installDefaultHander(ws *GenericWebServer) error {
-	return ws.AddPostStartHook("default_hanlder", func(ctx context.Context) error {
-		ws.InstallWebHandlers(healthz_.NewController())
-		return nil
-	})
+	ws.InstallWebHandlers(healthz_.NewController())
+	return nil
 }
 
 // Complete set default ServerRunOptions.
@@ -208,7 +203,7 @@ func (c *Config) installHttpMiddlewareChain() []gw_.GRPCGatewayOption {
 	opts = append(
 		opts,
 		// request id
-		//	gw_.WithHttpHandlerInterceptorRequestIDOptions(),
+		gw_.WithHttpHandlerInterceptorRequestIDOptions(),
 
 		// http recoverer
 		gw_.WithHttpHandlerInterceptorRecoveryOptions(),
@@ -219,7 +214,7 @@ func (c *Config) installHttpMiddlewareChain() []gw_.GRPCGatewayOption {
 		// http body proto
 		gw_.WithServerInterceptorsHttpBodyProtoOptions(),
 
-		//gw_.WithHttpHandlerInterceptorsMetricOptions(),
+		gw_.WithHttpHandlerInterceptorsTimerOptions(),
 
 		// limit rate
 		gw_.WithHttpHandlerInterceptorsLimitAllOptions(
@@ -291,7 +286,7 @@ func (c *Config) installGrpcMiddlewareChain() []gw_.GRPCGatewayOption {
 		opts,
 
 		// requestId
-		//gw_.WithServerUnaryInterceptorsRequestIdOptions(),
+		gw_.WithServerUnaryInterceptorsRequestIdOptions(),
 
 		// recovery
 		gw_.WithServerInterceptorsRecoveryOptions(),
@@ -303,10 +298,10 @@ func (c *Config) installGrpcMiddlewareChain() []gw_.GRPCGatewayOption {
 		),
 
 		// total req, fail req, cost time metrics, errorcode ip dims
-		//gw_.WithServerUnaryMetricInterceptorOptions(),
+		gw_.WithServerUnaryMetricInterceptorOptions(),
 
 		// print input and output body
-		//gw_.WithServerUnaryInterceptorsInOutPacketOptions(),
+		gw_.WithServerUnaryInterceptorsInOutPacketOptions(),
 		//gw_.WithServerInterceptorTimeoutOptions(grpcConfig.GetTimeout().AsDuration()),
 	)
 
@@ -331,6 +326,10 @@ func (c *Config) loadViper() error {
 	}
 
 	return nil
+}
+
+func (c *Config) GetBindAddress() string {
+	return c.opts.bindAddress
 }
 
 // default bind port 80
