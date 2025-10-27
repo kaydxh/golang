@@ -1,0 +1,31 @@
+database:
+  mysql:
+    enabled: true
+    address: "localhost:3306"
+    username: "root"
+    password: ""
+    db_name: "sealet"
+    max_connections: 100
+    max_idle_connections: 10
+    dial_timeout: 5s
+    max_wait_duration: 20s
+    fail_after_duration: 100s
+    interpolate_params: true
+
+mq:
+  kafka:
+    enabled: true
+    brokers: ["localhost:9092"]
+    max_wait_duration: 5s
+    fail_after_duration: 30s
+
+binlog:
+  enabled: true
+  binlog_type: "BinlogType_DB"
+  flush_batch_size: 1
+  flush_timeout: 10s
+
+  file_log:
+    filepath: ./binlog
+    rotate_interval: 3600s #1h
+    rotate_size: 104857600 #100M

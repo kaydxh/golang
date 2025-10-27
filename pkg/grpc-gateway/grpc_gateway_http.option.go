@@ -35,8 +35,8 @@ import (
 	httpinterceptordebug_ "github.com/kaydxh/golang/pkg/middleware/http-middleware/debug"
 	httpinterceptorhttp_ "github.com/kaydxh/golang/pkg/middleware/http-middleware/http"
 	httpinterceptoropentelemetr_ "github.com/kaydxh/golang/pkg/middleware/http-middleware/monitor/opentelemetry"
-	httpinterceptorprometheus_ "github.com/kaydxh/golang/pkg/middleware/http-middleware/monitor/prometheus"
 	httpinterceptorlimiter_ "github.com/kaydxh/golang/pkg/middleware/http-middleware/ratelimiter"
+	httpinterceptortimer_ "github.com/kaydxh/golang/pkg/middleware/http-middleware/timer"
 )
 
 func WithGatewayMuxOptions(opts ...runtime.ServeMuxOption) GRPCGatewayOption {
@@ -188,9 +188,9 @@ func WithHttpHandlerInterceptorRequestIDOptions() GRPCGatewayOption {
 	})
 }
 
-func WithHttpHandlerInterceptorsTimerOptions(enabledMetric bool) GRPCGatewayOption {
+func WithHttpHandlerInterceptorsTimerOptions() GRPCGatewayOption {
 	return WithHttpHandlerInterceptorOptions(http_.HandlerInterceptor{
-		Interceptor: httpinterceptorprometheus_.InterceptorOfTimer(enabledMetric),
+		Interceptor: httpinterceptortimer_.ServerInterceptorOfTimer,
 	})
 }
 

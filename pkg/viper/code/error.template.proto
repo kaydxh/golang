@@ -1,12 +1,11 @@
 syntax = "proto3";
 
 // 错误码
-package youtu.ocr.api.code;
+package go.pkg.viper.code;
 import "google/protobuf/descriptor.proto";
 // import "github.com/googleapis/googleapis/google/rpc/code.proto";
 
-option go_package = "git.code.oa.com/yt-industry-ocr/yt-industry-ocr-backend/protobuf-spec/"
-                    "code;code";
+option go_package = "github.com/kaydxh/go.pkg.viper.code/code;code";
 
 message ErrorTemplate {
   repeated ErrorItem error_template = 1;

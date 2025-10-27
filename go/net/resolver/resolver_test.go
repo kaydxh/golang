@@ -30,6 +30,7 @@ import (
 	"github.com/kaydxh/golang/go/net/resolver"
 	resolver_ "github.com/kaydxh/golang/go/net/resolver"
 	_ "github.com/kaydxh/golang/go/net/resolver/dns"
+	_ "github.com/kaydxh/golang/go/net/resolver/passthrough"
 	resolve_ "github.com/kaydxh/golang/go/net/resolver/resolve"
 )
 
@@ -40,12 +41,27 @@ func TestResolveOne(t *testing.T) {
 		expected string
 	}{
 		{
-			target:   "dns:///www.baidu.com",
+			target:   "dns:///www.baidu.com:10000",
 			iptype:   resolver.Resolver_ip_type_v4,
 			expected: "",
 		},
 		{
 			target:   "dns:///www.google.com",
+			iptype:   resolver.Resolver_ip_type_v4,
+			expected: "",
+		},
+		{
+			target:   "dns:///198.121.11.1",
+			iptype:   resolver.Resolver_ip_type_v4,
+			expected: "",
+		},
+		{
+			target:   "passthrough:///198.121.11.2",
+			iptype:   resolver.Resolver_ip_type_v4,
+			expected: "",
+		},
+		{
+			target:   "198.121.11.2",
 			iptype:   resolver.Resolver_ip_type_v4,
 			expected: "",
 		},

@@ -29,10 +29,10 @@ import (
 
 	opentelemetry_ "github.com/kaydxh/golang/pkg/monitor/opentelemetry"
 	viper_ "github.com/kaydxh/golang/pkg/viper"
+	"github.com/sirupsen/logrus"
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/metric"
-	"go.opentelemetry.io/otel/metric/global"
 	"golang.org/x/net/context"
 )
 
@@ -42,18 +42,25 @@ const (
 )
 
 var (
-	meter = global.MeterProvider().Meter(
+	meter = otel.GetMeterProvider().Meter(
 		"",
 		metric.WithInstrumentationVersion(instrumentationVersion),
 	)
 
-	funcLoopCounter, _ = meter.SyncInt64().Counter("function_loops")
+	funcLoopCounter, _ = meter.Int64Counter("function_loops")
 	funcNameKey        = attribute.Key("function_name")
 )
 
+func memoryUsageCallBack(total, free uint64, usage float64) {
+	logrus.Infof("memory total: %v, free: %v, usage: %v", total, free, usage)
+}
+
 func TestMetric(t *testing.T) {
 	cfgFile := "./opentelemetry.yaml"
-	config := opentelemetry_.NewConfig(opentelemetry_.WithViper(viper_.GetViper(cfgFile, "monitor.open_telemetry")))
+	config := opentelemetry_.NewConfig(
+		opentelemetry_.WithViper(viper_.GetViper(cfgFile, "monitor.open_telemetry")),
+		opentelemetry_.WithMemoryCallBack(memoryUsageCallBack),
+	)
 
 	ctx := context.Background()
 	err := config.Complete().New(ctx)
@@ -76,11 +83,11 @@ func TestMetric(t *testing.T) {
 func metrics(ctx context.Context, n int) {
 	funcNameKV := funcNameKey.String("metrics")
 	for i := 0; i < n; i++ {
-		funcLoopCounter.Add(ctx, 1, funcNameKV)
+		funcLoopCounter.Add(ctx, 1, metric.WithAttributes(funcNameKV))
 	}
 }
 
-//https://github.com/open-telemetry/opentelemetry-go/blob/main/example/jaeger/main.go
+// https://github.com/open-telemetry/opentelemetry-go/blob/main/example/jaeger/main.go
 func TestTrace(t *testing.T) {
 	cfgFile := "./opentelemetry.yaml"
 	config := opentelemetry_.NewConfig(opentelemetry_.WithViper(viper_.GetViper(cfgFile, "monitor.open_telemetry")))

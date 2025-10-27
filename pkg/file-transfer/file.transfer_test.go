@@ -53,6 +53,36 @@ func TestDownload(t *testing.T) {
 				t.Fatalf("failed to download: %v, got : %s", testCase.Url, err)
 			}
 			t.Logf("data len: %v", len(data))
+			t.Logf("data : %v", string(data))
+		})
+	}
+
+}
+
+func TestDownloadByProxy(t *testing.T) {
+	cfgFile := "./ft.yaml"
+	config := filetransfer_.NewConfig(filetransfer_.WithViper(viper_.GetViper(cfgFile, "filetransfer")))
+	ft, err := config.Complete().New(context.Background())
+	if err != nil {
+		t.Errorf("failed to new config err: %v", err)
+	}
+
+	testCases := []struct {
+		Url string
+	}{
+		{
+			Url: "http://quyujiaofu-new-1300074211.cos.ap-guangzhou.myqcloud.com/hk_test/480p.jpg",
+		},
+	}
+
+	for i, testCase := range testCases {
+		t.Run(fmt.Sprintf("%d", i), func(t *testing.T) {
+			data, err := ft.Download(context.Background(), testCase.Url)
+			if err != nil {
+				t.Fatalf("failed to download: %v, got : %s", testCase.Url, err)
+			}
+			t.Logf("data len: %v", len(data))
+			t.Logf("data : %v", string(data))
 		})
 	}
 

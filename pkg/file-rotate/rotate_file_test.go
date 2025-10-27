@@ -22,6 +22,7 @@
 package rotatefile_test
 
 import (
+	"context"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -52,7 +53,7 @@ func TestRotateFileWithInterval(t *testing.T) {
 	)
 
 	for i := 0; i < 10; i++ {
-		n, err := rotateFiler.Write([]byte("hello word"))
+		_, n, err := rotateFiler.Write([]byte("hello word"))
 		if err != nil {
 			t.Errorf("faild to write, err: %v", err)
 		}
@@ -73,7 +74,7 @@ func TestRotateFileWithIntervalAndSize(t *testing.T) {
 	)
 
 	for i := 0; i < 0; i++ {
-		n, err := rotateFiler.Write([]byte("hello word"))
+		_, n, err := rotateFiler.Write([]byte("hello word"))
 		if err != nil {
 			t.Errorf("faild to write, err: %v", err)
 		}
@@ -87,19 +88,26 @@ func TestRotateFileWithSize(t *testing.T) {
 
 	rotateFiler, _ := rotate_.NewRotateFiler(
 		filepath.Join(getWdOrDie(), "log"),
-		rotate_.WithRotateSize(15),
+		rotate_.WithRotateSize(10),
+		rotate_.WithRotateInterval(15*time.Second),
 		rotate_.WithSuffixName(".log"),
 		rotate_.WithPrefixName(filepath.Base(os.Args[0])),
+		rotate_.WithRotateCallback(func(ctx context.Context, path string) {
+			t.Logf("=======callback path: %v", path)
+		}),
 	)
 
-	for i := 0; i < 10; i++ {
-		n, err := rotateFiler.Write([]byte("hello word"))
+	for i := 0; i < 5; i++ {
+		//_, n, err := rotateFiler.Write([]byte("hello word"))
+		_, n, err := rotateFiler.WriteBytesLine([][]byte{[]byte("hello word")})
 		if err != nil {
 			t.Errorf("faild to write, err: %v", err)
 		}
 		time.Sleep(time.Second)
 		t.Logf("successed to write %v bytes", n)
 	}
+
+	select {}
 
 }
 
@@ -114,7 +122,7 @@ func TestRotateMaxCount(t *testing.T) {
 	)
 
 	for i := 0; i < 10; i++ {
-		n, err := rotateFiler.Write([]byte("hello word"))
+		_, n, err := rotateFiler.Write([]byte("hello word"))
 		if err != nil {
 			t.Errorf("faild to write, err: %v", err)
 		}

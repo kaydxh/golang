@@ -28,7 +28,7 @@ import (
 
 	http_ "github.com/kaydxh/golang/go/net/http"
 	time_ "github.com/kaydxh/golang/go/time"
-	"github.com/sirupsen/logrus"
+	logs_ "github.com/kaydxh/golang/pkg/logs"
 	"go.opentelemetry.io/otel"
 )
 
@@ -79,24 +79,32 @@ func (f *FileTransfer) Download(ctx context.Context, downloadUrl string) (data [
 	ctx, span := otel.Tracer("").Start(ctx, spanName)
 	defer span.End()
 
-	logger := logrus.WithField("trace_id", span.SpanContext().TraceID()).WithField("span_id", span.SpanContext().SpanID()).WithField("download_url", downloadUrl)
+	logger := logs_.GetLogger(ctx)
+	logger = logger.WithField("trace_id", span.SpanContext().TraceID()).WithField("span_id", span.SpanContext().SpanID()).WithField("download_url", downloadUrl)
 
 	proxy := f.getProxy()
 
 	opts := []http_.ClientOption{http_.WithDisableKeepAlives(true)}
-	if proxy.TargetAddr != "" {
-		opts = append(opts, http_.WithProxyTarget(proxy.TargetAddr))
-	} else if proxy.TargetUrl != "" {
-		opts = append(opts, http_.WithProxy(proxy.TargetUrl))
+	if proxy.TargetHost != "" {
+		opts = append(opts, http_.WithTargetHost(proxy.TargetHost))
+	} else {
+
+		if proxy.ProxyUrl != "" {
+			opts = append(opts, http_.WithProxyURL(proxy.ProxyUrl))
+		}
+		if proxy.ProxyHost != "" {
+			opts = append(opts, http_.WithProxyHost(proxy.ProxyHost))
+		}
 	}
 	opts = append(opts, http_.WithTimeout(f.opts.downloadTimeout))
 
-	time_.RetryWithContext(ctx, func(ctx context.Context) error {
+	err = time_.RetryWithContext(ctx, func(ctx context.Context) error {
 		client, err := http_.NewClient(opts...)
 		if err != nil {
 			logger.WithError(err).Errorf("new http client err: %v", err)
 			return err
 		}
+
 		data, err = client.Get(ctx, downloadUrl)
 		if err != nil {
 			logger.WithError(err).Errorf("http client get err: %v", err)
@@ -106,7 +114,7 @@ func (f *FileTransfer) Download(ctx context.Context, downloadUrl string) (data [
 
 	}, f.opts.retryInterval, f.opts.retryTimes)
 
-	return data, nil
+	return data, err
 }
 
 // short connection
@@ -115,19 +123,26 @@ func (f *FileTransfer) Upload(ctx context.Context, uploadUrl string, body []byte
 	ctx, span := otel.Tracer("").Start(ctx, spanName)
 	defer span.End()
 
-	logger := logrus.WithField("trace_id", span.SpanContext().TraceID()).WithField("span_id", span.SpanContext().SpanID()).WithField("upload_url", uploadUrl)
+	logger := logs_.GetLogger(ctx)
+	logger = logger.WithField("trace_id", span.SpanContext().TraceID()).WithField("span_id", span.SpanContext().SpanID()).WithField("upload_url", uploadUrl)
 
 	proxy := f.getProxy()
 
 	opts := []http_.ClientOption{http_.WithDisableKeepAlives(true)}
-	if proxy.TargetAddr != "" {
-		opts = append(opts, http_.WithProxyTarget(proxy.TargetAddr))
-	} else if proxy.TargetUrl != "" {
-		opts = append(opts, http_.WithProxy(proxy.TargetUrl))
+	if proxy.TargetHost != "" {
+		opts = append(opts, http_.WithTargetHost(proxy.TargetHost))
+	} else {
+
+		if proxy.ProxyUrl != "" {
+			opts = append(opts, http_.WithProxyURL(proxy.ProxyUrl))
+		}
+		if proxy.ProxyHost != "" {
+			opts = append(opts, http_.WithProxyHost(proxy.ProxyHost))
+		}
 	}
 	opts = append(opts, http_.WithTimeout(f.opts.uploadTimeout))
 
-	time_.RetryWithContext(ctx, func(ctx context.Context) error {
+	err = time_.RetryWithContext(ctx, func(ctx context.Context) error {
 		client, err := http_.NewClient(opts...)
 		if err != nil {
 			logger.WithError(err).Errorf("new http client err: %v", err)
@@ -142,5 +157,5 @@ func (f *FileTransfer) Upload(ctx context.Context, uploadUrl string, body []byte
 
 	}, f.opts.retryInterval, f.opts.retryTimes)
 
-	return data, nil
+	return data, err
 }

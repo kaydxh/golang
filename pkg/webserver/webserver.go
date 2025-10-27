@@ -29,7 +29,7 @@ import (
 	"github.com/gin-gonic/gin"
 	context_ "github.com/kaydxh/golang/go/context"
 	syscall_ "github.com/kaydxh/golang/go/syscall"
-	"github.com/kaydxh/golang/pkg/consul"
+	"github.com/kaydxh/golang/pkg/discovery/consul"
 	gw_ "github.com/kaydxh/golang/pkg/grpc-gateway"
 	"github.com/sirupsen/logrus"
 )

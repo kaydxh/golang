@@ -76,12 +76,29 @@ func GetResolver(ctx context.Context, target string, opts ...ResolverBuildOption
 	opt.ApplyOptions(opts...)
 	targetInfo, err := ParseTarget(target)
 	if err != nil {
-		return nil, fmt.Errorf("target[%v] is invalid", targetInfo.Scheme)
-	}
-	builder := Get(targetInfo.Scheme)
-	if builder == nil {
-		return nil, fmt.Errorf("scheme[%v] was not registered", targetInfo.Scheme)
+		// support no scheme, just ip:port format
+		if targetInfo.Scheme == "" {
+			return GetDefault().Build(Target{
+				Endpoint: target,
+			})
+		}
+
+		return nil, fmt.Errorf("target[%v] is invalid", targetInfo)
 	}
 
-	return builder.Build(targetInfo)
+	r := getResolver(target)
+	if r == nil {
+		builder := Get(targetInfo.Scheme)
+		if builder == nil {
+			return nil, fmt.Errorf("scheme[%v] was not registered", targetInfo.Scheme)
+		}
+
+		r, err = builder.Build(targetInfo)
+		if err != nil {
+			return nil, fmt.Errorf("failed to build target[%v], err: %v", targetInfo, err)
+		}
+
+		setResolver(target, r)
+	}
+	return r, nil
 }

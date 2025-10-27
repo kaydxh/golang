@@ -19,14 +19,22 @@ func UnaryServerMetricInterceptor() grpc.UnaryServerInterceptor {
 	}
 }
 
-func HandleMetric[REQ any, RESP any](handler resource_.HandlerWithContext[REQ, RESP]) resource_.HandlerWithContext[REQ, RESP] {
+func HandleMetric[REQ any, RESP any](
+	handler resource_.HandlerWithContext[REQ, RESP],
+) resource_.HandlerWithContext[REQ, RESP] {
 	return handleMetric(nil, handler)
 }
 
-func handleMetric[REQ any, RESP any](info *grpc.UnaryServerInfo, handler resource_.HandlerWithContext[REQ, RESP]) resource_.HandlerWithContext[REQ, RESP] {
+func handleMetric[REQ any, RESP any](
+	info *grpc.UnaryServerInfo,
+	handler resource_.HandlerWithContext[REQ, RESP],
+) resource_.HandlerWithContext[REQ, RESP] {
 	return func(ctx context.Context, req REQ) (RESP, error) {
 
 		tc := time_.New(true)
+
+		ctx = resource_.AddKeysContext(ctx, resource_.AddAttrKeysContext, resource_.AddMetricKeysContext)
+
 		resp, err := handler(ctx, req)
 
 		var method string

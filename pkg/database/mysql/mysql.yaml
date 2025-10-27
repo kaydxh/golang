@@ -4,10 +4,10 @@ database:
     address: "localhost:3306"
     username: "root"
     password: "12345"
-    db_name: "test"
+    db_name: "sealet"
     max_connections: 100
     max_idle_connections: 10
     dial_timeout: 5s
     max_wait_duration: 20s
-    fail_after_duration: 5m
+    fail_after_duration: 60s
     interpolate_params: true

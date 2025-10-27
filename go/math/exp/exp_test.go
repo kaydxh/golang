@@ -28,7 +28,7 @@ import (
 	exp_ "github.com/kaydxh/golang/go/math/exp"
 )
 
-func TestWriteFile(t *testing.T) {
+func TestMax(t *testing.T) {
 	testCases := []struct {
 		v1       int64
 		v2       int64
@@ -54,6 +54,32 @@ func TestWriteFile(t *testing.T) {
 
 			}
 
+		})
+	}
+}
+
+func TestEqual(t *testing.T) {
+	testCases := []struct {
+		a        float32
+		b        float32
+		expected string
+	}{
+		{
+			a:        10.1,
+			b:        10.1009,
+			expected: "",
+		},
+		{
+			a:        10.1,
+			b:        10.100000009,
+			expected: "",
+		},
+	}
+
+	for i, testCase := range testCases {
+		t.Run(fmt.Sprintf("case-%v", i), func(t *testing.T) {
+			equal := exp_.Equal(testCase.a, testCase.b)
+			t.Logf("equal: %v", equal)
 		})
 	}
 }

@@ -1,0 +1,12 @@
+database:
+  redis:
+    enabled: true
+    addresses: 
+      - "localhost:6380"
+    password: ""
+    db: 0 
+    max_connections: 100
+    max_idle_connections: 10
+    dial_timeout: 5s
+    max_wait_duration: 20s
+    fail_after_duration: 30s

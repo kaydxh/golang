@@ -134,6 +134,25 @@ func TestOrderCondition(t *testing.T) {
 	}
 }
 
+func TestJoinNamedColumnsValuesBatch(t *testing.T) {
+	testCases := []struct {
+		cols  []string
+		batch int
+	}{
+		{
+			cols:  []string{"task_name", "task_id", "task_arg"},
+			batch: 4,
+		},
+	}
+
+	for i, testCase := range testCases {
+		t.Run(fmt.Sprintf("case-%v", i), func(t *testing.T) {
+			query := mysql_.JoinNamedColumnsValuesBatch(testCase.cols, testCase.batch)
+			t.Logf("sql: %v", query)
+		})
+	}
+}
+
 /*
 func TestGenerateSQL(t *testing.T) {
 	arg := struct {

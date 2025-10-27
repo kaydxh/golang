@@ -24,10 +24,9 @@ package metric
 import (
 	"context"
 
-	controller "go.opentelemetry.io/otel/sdk/metric/controller/basic"
-	"go.opentelemetry.io/otel/sdk/metric/export/aggregation"
+	"go.opentelemetry.io/otel/sdk/metric"
 )
 
 type PullExporterBuilder interface {
-	Build(ctx context.Context, c *controller.Controller) (aggregation.TemporalitySelector, error)
+	Build(ctx context.Context) (metric.Reader, error)
 }
