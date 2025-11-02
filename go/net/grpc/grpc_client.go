@@ -46,11 +46,15 @@ const (
 	defaultKeepaliveTimeout = 3 * time.Second
 )
 
+// connPoolEntry 连接池条目
+type connPoolEntry struct {
+	conn *grpc.ClientConn
+	mu   sync.Mutex
+}
+
 var (
-	// connPool 全局连接池，key 为 address，value 为 *grpc.ClientConn
+	// connPool 全局连接池，key 为 address，value 为 *connPoolEntry
 	connPool sync.Map
-	// connPoolMutex 连接池互斥锁，用于保证同一地址的连接创建是原子的
-	connPoolMutex sync.Map
 )
 
 // GrpcClient gRPC 客户端封装
@@ -163,34 +167,28 @@ func ClientDialOptions(maxMsgSize int, keepaliveTime, keepaliveTimeout time.Dura
 }
 
 // GetGrpcClientConn 获取一个 gRPC 客户端长连接（支持连接复用）
-// 对于相同的地址，会复用已存在的连接；如果连接不存在或已关闭，则创建新连接
+// 对于相同的地址和配置，会复用已存在的连接；如果连接不存在或已关闭，则创建新连接
 func GetGrpcClientConn(addr string, disablePrintMethods ...string) (*grpc.ClientConn, error) {
-	// 尝试从连接池获取已存在的连接
-	if conn, ok := connPool.Load(addr); ok {
-		clientConn := conn.(*grpc.ClientConn)
-		// 检查连接状态，如果连接正常则直接返回
-		state := clientConn.GetState()
-		if state != connectivity.Shutdown && state != connectivity.TransientFailure {
-			return clientConn, nil
-		}
-		// 连接已关闭或失败，从池中删除
-		connPool.Delete(addr)
-	}
+	// 获取或创建连接池条目
+	value, _ := connPool.LoadOrStore(addr, &connPoolEntry{})
+	entry := value.(*connPoolEntry)
 
-	// 使用互斥锁确保同一地址只创建一次连接
-	mutex, _ := connPoolMutex.LoadOrStore(addr, &sync.Mutex{})
-	mu := mutex.(*sync.Mutex)
-	mu.Lock()
-	defer mu.Unlock()
+	entry.mu.Lock()
+	defer entry.mu.Unlock()
 
-	// 双重检查：可能在等待锁的过程中，其他 goroutine 已经创建了连接
-	if conn, ok := connPool.Load(addr); ok {
-		clientConn := conn.(*grpc.ClientConn)
-		state := clientConn.GetState()
-		if state != connectivity.Shutdown && state != connectivity.TransientFailure {
-			return clientConn, nil
+	// 检查现有连接是否可用
+	if entry.conn != nil {
+		state := entry.conn.GetState()
+		// 检查连接是否处于可用状态或可恢复状态
+		if isConnAvailable(state) {
+			// 检查配置是否一致
+			return entry.conn, nil
+
+		} else {
+			entry.conn.Close()
+			// 连接不可用，清理
+			entry.conn = nil
 		}
-		connPool.Delete(addr)
 	}
 
 	// 创建新连接
@@ -205,16 +203,31 @@ func GetGrpcClientConn(addr string, disablePrintMethods ...string) (*grpc.Client
 		return nil, fmt.Errorf("failed to create grpc client for address %s: %w", addr, err)
 	}
 
-	// 将新连接存入连接池
-	connPool.Store(addr, conn)
+	// 保存新连接
+	entry.conn = conn
 
 	return conn, nil
 }
 
+// isConnAvailable 检查连接状态是否可用
+func isConnAvailable(state connectivity.State) bool {
+	// Ready: 连接就绪
+	// Idle: 连接空闲但可用
+	// Connecting: 正在连接，可以等待
+	// TransientFailure: 暂时失败，不可用
+	// Shutdown: 已关闭，不可用
+	return state == connectivity.Ready || state == connectivity.Idle || state == connectivity.Connecting
+}
+
 // CloseGrpcClientConn 关闭指定地址的 gRPC 连接并从连接池中移除
 func CloseGrpcClientConn(addr string) error {
-	if conn, ok := connPool.LoadAndDelete(addr); ok {
-		return conn.(*grpc.ClientConn).Close()
+	if value, ok := connPool.LoadAndDelete(addr); ok {
+		entry := value.(*connPoolEntry)
+		entry.mu.Lock()
+		defer entry.mu.Unlock()
+		if entry.conn != nil {
+			return entry.conn.Close()
+		}
 	}
 	return nil
 }
@@ -222,12 +235,27 @@ func CloseGrpcClientConn(addr string) error {
 // CloseAllGrpcClientConns 关闭所有连接池中的连接
 func CloseAllGrpcClientConns() error {
 	var lastErr error
+	var keys []interface{}
+
+	// 先收集所有的 key
 	connPool.Range(func(key, value interface{}) bool {
-		if err := value.(*grpc.ClientConn).Close(); err != nil {
-			lastErr = err
-		}
-		connPool.Delete(key)
+		keys = append(keys, key)
 		return true
 	})
+
+	// 逐个关闭并删除
+	for _, key := range keys {
+		if value, ok := connPool.LoadAndDelete(key); ok {
+			entry := value.(*connPoolEntry)
+			entry.mu.Lock()
+			if entry.conn != nil {
+				if err := entry.conn.Close(); err != nil {
+					lastErr = err
+				}
+			}
+			entry.mu.Unlock()
+		}
+	}
+
 	return lastErr
 }
