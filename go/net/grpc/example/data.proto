@@ -1,21 +1,33 @@
 syntax = "proto3";
 
-package sea.api.date;
+package sea.api.seadate;
 import "google/protobuf/descriptor.proto";
 
-option go_package = "github.com/kaydxh/sea/api/openapi-spec/date;date";
+option go_package = "github.com/kaydxh/sea/api/protoapi-spec/seadate/v1;v1";
 
-service DateService {
+service SeaDateService {
   // 生成当前时间
   rpc Now(NowRequest) returns (NowResponse) {};
+  rpc NowError(NowErrorRequest) returns (NowErrorResponse) {};
 }
 
 message NowRequest {
-  string request_id = 1 [json_name = "RequestId"];  //请求ID
+  // proto name 默认为变量名，proto json默认为小驼峰模式, json默认为变量名
+  // [json_name = "RequestId"]将指定proto json的标签, 此时需要设置
+  // protojson编解码器选项UseProtoNames为false
+  string request_id = 1 [json_name = "RequestId"];  // 请求ID
 }
 
 message NowResponse {
   string request_id = 1 [json_name = "RequestId"];  // 请求ID
-  string date = 2 [json_name = "Date"];             //当前时间
+  string date = 2 [json_name = "Date"];             // 当前时间
 }
 
+message NowErrorRequest {
+  string request_id = 1 [json_name = "RequestId"];  // 请求ID
+}
+
+message NowErrorResponse {
+  string request_id = 1 [json_name = "RequestId"];  // 请求ID
+  string date = 2 [json_name = "Date"];             // 当前时间
+}
