@@ -31,13 +31,12 @@ import (
 func TestGetGrpcClientConn(t *testing.T) {
 
 	var (
-		serverAddress     = "127.0.0.1:8001"
-		connectionTimeout = 5 * time.Second
+		serverAddress = "127.0.0.1:8001"
 	)
 
-	conn, err := grpc_.GetGrpcClientConn(serverAddress, connectionTimeout)
+	conn, err := grpc_.GetGrpcClientConn(serverAddress)
 	if err != nil {
-		t.Fatalf("failed to get local addrs, err: %v", err)
+		t.Fatalf("failed to get grpc client conn, err: %v", err)
 		return
 	}
 	defer conn.Close()
@@ -46,13 +45,13 @@ func TestGetGrpcClientConn(t *testing.T) {
 func TestNewGrpcClient(t *testing.T) {
 
 	var (
-		serverAddress     = "127.0.0.1:8001"
-		connectionTimeout = 5 * time.Second
+		serverAddress = "127.0.0.1:8001"
+		callTimeout   = 5 * time.Second
 	)
 
-	gClient, err := grpc_.NewGrpcClient(serverAddress, grpc_.WithConnectionTimeout(connectionTimeout))
+	gClient, err := grpc_.NewGrpcClient(serverAddress, grpc_.WithCallTimeout(callTimeout))
 	if err != nil {
-		t.Fatalf("failed to get local addrs, err: %v", err)
+		t.Fatalf("failed to create grpc client, err: %v", err)
 		return
 	}
 	defer gClient.Close()

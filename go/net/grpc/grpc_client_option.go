@@ -42,12 +42,6 @@ func (f GrpcClientOptionFunc) apply(do *GrpcClient) {
 	f(do)
 }
 
-// sample code for option, default for nothing to change
-func _GrpcClientOptionWithDefault() GrpcClientOption {
-	return GrpcClientOptionFunc(func(*GrpcClient) {
-		// nothing to change
-	})
-}
 func (o *GrpcClient) ApplyOptions(options ...GrpcClientOption) *GrpcClient {
 	for _, opt := range options {
 		if opt == nil {
