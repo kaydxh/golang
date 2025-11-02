@@ -24,7 +24,7 @@ package interceptordebug
 import (
 	"bytes"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 
 	http_ "github.com/kaydxh/golang/go/net/http"
@@ -42,11 +42,11 @@ func InOutputPrinter(handler http.Handler) http.Handler {
 			logger.WithField("method", calleeMethod).WithField("response", ww.String()).Info("send")
 		}()
 		if r != nil {
-			buf, err := ioutil.ReadAll(r.Body)
+			buf, err := io.ReadAll(r.Body)
 			if err != nil {
 				return
 			}
-			rdr := ioutil.NopCloser(bytes.NewBuffer(buf))
+			rdr := io.NopCloser(bytes.NewBuffer(buf))
 			r.Body = rdr
 			logger.WithField("method", calleeMethod).WithField("request", string(buf)).Info("recv")
 
