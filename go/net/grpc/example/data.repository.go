@@ -1,4 +1,4 @@
-package date
+package v1
 
 import (
 	"context"
@@ -7,7 +7,7 @@ import (
 )
 
 type Repository struct {
-	grpc_.Repository[DateServiceClient]
+	grpc_.Repository[SeaDateServiceClient]
 }
 
 func (r *Repository) Now(ctx context.Context, req *NowRequest) (resp *NowResponse, err error) {
