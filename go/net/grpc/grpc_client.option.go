@@ -21,18 +21,39 @@
  */
 package grpc
 
-import (
-	"time"
-)
+import "time"
 
+// WithMaxMsgSize 设置最大消息大小
 func WithMaxMsgSize(maxMsgSize int) GrpcClientOption {
 	return GrpcClientOptionFunc(func(c *GrpcClient) {
 		c.opts.maxMsgSize = maxMsgSize
 	})
 }
 
-func WithConnectionTimeout(connectionTimeout time.Duration) GrpcClientOption {
+// WithCallTimeout 设置默认调用超时时间
+func WithCallTimeout(timeout time.Duration) GrpcClientOption {
 	return GrpcClientOptionFunc(func(c *GrpcClient) {
-		c.opts.connectionTimeout = connectionTimeout
+		c.opts.callTimeout = timeout
+	})
+}
+
+// WithKeepaliveTime 设置 keepalive 时间间隔
+func WithKeepaliveTime(keepaliveTime time.Duration) GrpcClientOption {
+	return GrpcClientOptionFunc(func(c *GrpcClient) {
+		c.opts.keepaliveTime = keepaliveTime
+	})
+}
+
+// WithKeepaliveTimeout 设置 keepalive 超时时间
+func WithKeepaliveTimeout(keepaliveTimeout time.Duration) GrpcClientOption {
+	return GrpcClientOptionFunc(func(c *GrpcClient) {
+		c.opts.keepaliveTimeout = keepaliveTimeout
+	})
+}
+
+// WithDisablePrintMethods 设置不需要在调试日志中打印的方法列表
+func WithDisablePrintMethods(methods ...string) GrpcClientOption {
+	return GrpcClientOptionFunc(func(c *GrpcClient) {
+		c.opts.disablePrintMethods = methods
 	})
 }
