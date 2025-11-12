@@ -52,7 +52,7 @@ func NewTracer(opts ...TracerOption) *Tracer {
 	return t
 }
 
-//https://github.com/open-telemetry/opentelemetry-go/blob/main/example/jaeger/main.go
+// https://github.com/open-telemetry/opentelemetry-go/blob/main/example/jaeger/main.go
 func (t *Tracer) Install(ctx context.Context) (err error) {
 	exp, err := t.createExporter(ctx)
 	if err != nil {
