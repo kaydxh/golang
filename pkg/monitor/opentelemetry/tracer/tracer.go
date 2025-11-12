@@ -26,13 +26,19 @@ import (
 	"fmt"
 
 	"go.opentelemetry.io/otel"
+	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/sdk/resource"
 	sdktrace "go.opentelemetry.io/otel/sdk/trace"
-	semconv "go.opentelemetry.io/otel/semconv/v1.10.0"
+	semconv "go.opentelemetry.io/otel/semconv/v1.26.0"
+	"go.opentelemetry.io/otel/trace"
 )
 
 type TracerOptions struct {
-	builer TracerExporterBuilder
+	builer           TracerExporterBuilder
+	serviceName      string
+	serviceVersion   string
+	serviceNamespace string
+	tracerProvider   *sdktrace.TracerProvider
 }
 
 type Tracer struct {
@@ -53,18 +59,43 @@ func (t *Tracer) Install(ctx context.Context) (err error) {
 		return err
 	}
 
+	// Build resource attributes
+	resourceAttrs := []resource.Option{
+		resource.WithSchemaURL(semconv.SchemaURL),
+	}
+
+	// Add service information if provided
+	if t.opts.serviceName != "" {
+		attrs := []attribute.KeyValue{
+			semconv.ServiceName(t.opts.serviceName),
+		}
+		if t.opts.serviceVersion != "" {
+			attrs = append(attrs, semconv.ServiceVersion(t.opts.serviceVersion))
+		}
+		if t.opts.serviceNamespace != "" {
+			attrs = append(attrs, semconv.ServiceNamespace(t.opts.serviceNamespace))
+		}
+		resourceAttrs = append(resourceAttrs, resource.WithAttributes(attrs...))
+	}
+
+	res, err := resource.New(ctx, resourceAttrs...)
+	if err != nil {
+		return fmt.Errorf("creating resource: %w", err)
+	}
+
 	tp := sdktrace.NewTracerProvider(
 		// Always be sure to batch in production.
 		sdktrace.WithBatcher(exp),
 		// Record information about this application in a Resource.
-		sdktrace.WithResource(resource.NewWithAttributes(
-			semconv.SchemaURL,
-		)),
+		sdktrace.WithResource(res),
 	)
 
 	// Register our TracerProvider as the global so any imported
 	// instrumentation in the future will default to using it.
 	otel.SetTracerProvider(tp)
+
+	// Store the tracer provider for later use
+	t.opts.tracerProvider = tp
 
 	return nil
 }
@@ -75,4 +106,20 @@ func (t *Tracer) createExporter(ctx context.Context) (sdktrace.SpanExporter, err
 	}
 
 	return t.opts.builer.Build(ctx)
+}
+
+// TracerProvider returns the configured TracerProvider
+func (t *Tracer) TracerProvider() trace.TracerProvider {
+	if t.opts.tracerProvider != nil {
+		return t.opts.tracerProvider
+	}
+	return otel.GetTracerProvider()
+}
+
+// Shutdown shuts down the tracer provider
+func (t *Tracer) Shutdown(ctx context.Context) error {
+	if t.opts.tracerProvider != nil {
+		return t.opts.tracerProvider.Shutdown(ctx)
+	}
+	return nil
 }

@@ -26,3 +26,24 @@ func WithExporterBuilder(builder TracerExporterBuilder) TracerOption {
 		m.opts.builer = builder
 	})
 }
+
+// WithServiceName sets the service name for the tracer
+func WithServiceName(name string) TracerOption {
+	return TracerOptionFunc(func(m *Tracer) {
+		m.opts.serviceName = name
+	})
+}
+
+// WithServiceVersion sets the service version for the tracer
+func WithServiceVersion(version string) TracerOption {
+	return TracerOptionFunc(func(m *Tracer) {
+		m.opts.serviceVersion = version
+	})
+}
+
+// WithServiceNamespace sets the service namespace for the tracer
+func WithServiceNamespace(namespace string) TracerOption {
+	return TracerOptionFunc(func(m *Tracer) {
+		m.opts.serviceNamespace = namespace
+	})
+}
