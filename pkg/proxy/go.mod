@@ -1,6 +1,6 @@
 module github.com/kaydxh/golang/pkg/proxy
 
-go 1.24.0
+go 1.25.3
 
 replace github.com/kaydxh/golang/go => ../../go
 
@@ -12,8 +12,8 @@ replace github.com/kaydxh/golang/pkg/protobuf => ../protobuf
 
 require (
 	github.com/gin-gonic/gin v1.11.0
-	github.com/kaydxh/golang/go v0.0.132
-	github.com/kaydxh/golang/pkg/logs v0.0.0-00010101000000-000000000000
+	github.com/kaydxh/golang/go v0.0.0-20251125160242-e06b25c89946
+	github.com/kaydxh/golang/pkg/logs v0.0.0-20251125132602-62c26b682228
 )
 
 require (
@@ -34,13 +34,13 @@ require (
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/kaydxh/golang/pkg/file-cleanup v0.0.0-20251125132602-62c26b682228 // indirect
 	github.com/kaydxh/golang/pkg/file-rotate v0.0.0-20251125132602-62c26b682228 // indirect
-	github.com/kaydxh/golang/pkg/protobuf v0.0.132 // indirect
-	github.com/kaydxh/golang/pkg/viper v0.0.0-00010101000000-000000000000 // indirect
+	github.com/kaydxh/golang/pkg/protobuf v0.0.0-20251125160242-e06b25c89946 // indirect
+	github.com/kaydxh/golang/pkg/viper v0.0.0-20251125160242-e06b25c89946 // indirect
 	github.com/klauspost/cpuid/v2 v2.3.0 // indirect
 	github.com/leodido/go-urn v1.4.0 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
-	github.com/modern-go/concurrent v0.0.0-20180228061459-e0a39a4cb421 // indirect
+	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.2 // indirect
 	github.com/pelletier/go-toml/v2 v2.2.4 // indirect
 	github.com/pkg/errors v0.9.1 // indirect

@@ -10,8 +10,8 @@ replace github.com/kaydxh/golang/pkg/protobuf => ../protobuf
 
 require (
 	github.com/hashicorp/consul/api v1.33.0
-	github.com/kaydxh/golang/go v0.0.132
-	github.com/kaydxh/golang/pkg/viper v0.0.0-00010101000000-000000000000
+	github.com/kaydxh/golang/go v0.0.0-20251125160242-e06b25c89946
+	github.com/kaydxh/golang/pkg/viper v0.0.0-20251125160242-e06b25c89946
 	github.com/sirupsen/logrus v1.9.3
 	github.com/spf13/viper v1.21.0
 	github.com/stretchr/testify v1.11.1
@@ -51,7 +51,7 @@ require (
 	github.com/hashicorp/golang-lru v0.5.4 // indirect
 	github.com/hashicorp/serf v0.10.1 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
-	github.com/kaydxh/golang/pkg/protobuf v0.0.132 // indirect
+	github.com/kaydxh/golang/pkg/protobuf v0.0.0-20251125160242-e06b25c89946 // indirect
 	github.com/klauspost/cpuid/v2 v2.3.0 // indirect
 	github.com/leodido/go-urn v1.4.0 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect

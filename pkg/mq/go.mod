@@ -1,6 +1,6 @@
 module github.com/kaydxh/golang/pkg/mq
 
-go 1.24.0
+go 1.25.3
 
 replace github.com/kaydxh/golang/go => ../../go
 
@@ -10,8 +10,8 @@ replace github.com/kaydxh/golang/pkg/protobuf => ../protobuf
 
 require (
 	github.com/golang/protobuf v1.5.4
-	github.com/kaydxh/golang/go v0.0.132
-	github.com/kaydxh/golang/pkg/viper v0.0.0-00010101000000-000000000000
+	github.com/kaydxh/golang/go v0.0.0-20251125160242-e06b25c89946
+	github.com/kaydxh/golang/pkg/viper v0.0.0-20251125160242-e06b25c89946
 	github.com/segmentio/kafka-go v0.4.49
 	github.com/sirupsen/logrus v1.9.3
 	github.com/spf13/viper v1.21.0
@@ -34,12 +34,12 @@ require (
 	github.com/goccy/go-yaml v1.18.0 // indirect
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.27.3 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
-	github.com/kaydxh/golang/pkg/protobuf v0.0.132 // indirect
+	github.com/kaydxh/golang/pkg/protobuf v0.0.0-20251125160242-e06b25c89946 // indirect
 	github.com/klauspost/compress v1.15.9 // indirect
 	github.com/klauspost/cpuid/v2 v2.3.0 // indirect
 	github.com/leodido/go-urn v1.4.0 // indirect
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
-	github.com/modern-go/concurrent v0.0.0-20180228061459-e0a39a4cb421 // indirect
+	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.2 // indirect
 	github.com/pelletier/go-toml/v2 v2.2.4 // indirect
 	github.com/pierrec/lz4/v4 v4.1.15 // indirect
