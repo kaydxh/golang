@@ -20,11 +20,11 @@ require (
 	github.com/gin-gonic/gin v1.11.0
 	github.com/go-playground/validator/v10 v10.28.0
 	github.com/golang/protobuf v1.5.4
-	github.com/kaydxh/golang/go v0.0.132
-	github.com/kaydxh/golang/pkg/discovery v0.0.0-00010101000000-000000000000
-	github.com/kaydxh/golang/pkg/grpc-gateway v0.0.0-00010101000000-000000000000
-	github.com/kaydxh/golang/pkg/protobuf v0.0.132
-	github.com/kaydxh/golang/pkg/viper v0.0.0-00010101000000-000000000000
+	github.com/kaydxh/golang/go v0.0.0-20251125160242-e06b25c89946
+	github.com/kaydxh/golang/pkg/discovery v0.0.0-20251125160242-e06b25c89946
+	github.com/kaydxh/golang/pkg/grpc-gateway v0.0.0-20251125160242-e06b25c89946
+	github.com/kaydxh/golang/pkg/protobuf v0.0.0-20251125160242-e06b25c89946
+	github.com/kaydxh/golang/pkg/viper v0.0.0-20251125160242-e06b25c89946
 	github.com/sirupsen/logrus v1.9.3
 	github.com/spf13/cobra v1.10.1
 	github.com/spf13/viper v1.21.0
@@ -68,7 +68,7 @@ require (
 	github.com/kaydxh/golang/pkg/file-cleanup v0.0.0-20251125132602-62c26b682228 // indirect
 	github.com/kaydxh/golang/pkg/file-rotate v0.0.0-20251125132602-62c26b682228 // indirect
 	github.com/kaydxh/golang/pkg/logs v0.0.0-20251125132602-62c26b682228 // indirect
-	github.com/kaydxh/golang/pkg/middleware v0.0.0-00010101000000-000000000000 // indirect
+	github.com/kaydxh/golang/pkg/middleware v0.0.0-20251125160242-e06b25c89946 // indirect
 	github.com/klauspost/cpuid/v2 v2.3.0 // indirect
 	github.com/leodido/go-urn v1.4.0 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect

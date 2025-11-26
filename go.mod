@@ -1,10 +1,10 @@
 module github.com/kaydxh/golang
 
-go 1.24.0
+go 1.25.3
 
 require (
 	github.com/go-playground/validator/v10 v10.28.0
-	github.com/kaydxh/golang/go v0.0.132
+	github.com/kaydxh/golang/go v0.0.0-20251125160242-e06b25c89946
 	github.com/stretchr/testify v1.11.1
 )
 

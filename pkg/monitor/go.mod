@@ -1,7 +1,6 @@
 module github.com/kaydxh/golang/pkg/monitor
 
-go 1.24.0
-
+go 1.25.3
 
 replace github.com/kaydxh/golang/go => ../../go
 
@@ -17,10 +16,10 @@ replace github.com/kaydxh/golang/pkg/logs => ../logs
 
 require (
 	github.com/golang/protobuf v1.5.4
-	github.com/kaydxh/golang/go v0.0.0-00010101000000-000000000000
-	github.com/kaydxh/golang/pkg/middleware v0.0.0-00010101000000-000000000000
-	github.com/kaydxh/golang/pkg/viper v0.0.0-00010101000000-000000000000
-	github.com/kaydxh/golang/pkg/webserver v0.0.0-00010101000000-000000000000
+	github.com/kaydxh/golang/go v0.0.0-20251125160242-e06b25c89946
+	github.com/kaydxh/golang/pkg/middleware v0.0.0-20251125160242-e06b25c89946
+	github.com/kaydxh/golang/pkg/viper v0.0.0-20251125160242-e06b25c89946
+	github.com/kaydxh/golang/pkg/webserver v0.0.0-20251125160242-e06b25c89946
 	github.com/prometheus/client_golang v1.23.2
 	github.com/shirou/gopsutil v3.21.11+incompatible
 	github.com/sirupsen/logrus v1.9.3
@@ -46,14 +45,14 @@ require (
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
 	github.com/cloudwego/base64x v0.1.6 // indirect
 	github.com/fsnotify/fsnotify v1.9.0 // indirect
-	github.com/gabriel-vasile/mimetype v1.4.8 // indirect
+	github.com/gabriel-vasile/mimetype v1.4.10 // indirect
 	github.com/gin-gonic/gin v1.11.0 // indirect
 	github.com/go-logr/logr v1.4.3 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect
 	github.com/go-ole/go-ole v1.2.6 // indirect
 	github.com/go-playground/locales v0.14.1 // indirect
 	github.com/go-playground/universal-translator v0.18.1 // indirect
-	github.com/go-playground/validator/v10 v10.27.0 // indirect
+	github.com/go-playground/validator/v10 v10.28.0 // indirect
 	github.com/go-viper/mapstructure/v2 v2.4.0 // indirect
 	github.com/goccy/go-json v0.10.2 // indirect
 	github.com/goccy/go-yaml v1.18.0 // indirect
@@ -62,7 +61,7 @@ require (
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.27.3 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
-	github.com/kaydxh/golang/pkg/protobuf v0.0.0-00010101000000-000000000000 // indirect
+	github.com/kaydxh/golang/pkg/protobuf v0.0.0-20251125160242-e06b25c89946 // indirect
 	github.com/klauspost/cpuid/v2 v2.3.0 // indirect
 	github.com/leodido/go-urn v1.4.0 // indirect
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
