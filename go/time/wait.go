@@ -73,8 +73,6 @@ func RetryWithContext(
 			// forever run
 			WithExponentialBackOffOptionMaxElapsedTime(0),
 			WithExponentialBackOffOptionInitialInterval(period),
-			// ensure equal interval
-			WithExponentialBackOffOptionMultiplier(1),
 			WithExponentialBackOffOptionRandomizationFactor(0),
 			WithExponentialBackOffOptionMaxElapsedCount(retryTimes),
 		), true, false)
