@@ -27,8 +27,6 @@ import (
 	"sync"
 	"time"
 
-	interceptordebug_ "github.com/kaydxh/golang/pkg/middleware/grpc-middleware/debug"
-	interceptortimer_ "github.com/kaydxh/golang/pkg/middleware/grpc-middleware/timer"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/connectivity"
 	"google.golang.org/grpc/credentials/insecure"
@@ -65,11 +63,14 @@ type GrpcClient struct {
 
 // grpcClientOptions gRPC 客户端配置选项
 type grpcClientOptions struct {
-	maxMsgSize          int           // 最大消息大小
-	disablePrintMethods []string      // 禁止打印的方法列表
-	callTimeout         time.Duration // 默认调用超时时间
-	keepaliveTime       time.Duration // keepalive 时间间隔
-	keepaliveTimeout    time.Duration // keepalive 超时时间
+	maxMsgSize           int                          // 最大消息大小
+	disablePrintMethods  []string                     // 禁止打印的方法列表
+	callTimeout          time.Duration                // 默认调用超时时间
+	keepaliveTime        time.Duration                // keepalive 时间间隔
+	keepaliveTimeout     time.Duration                // keepalive 超时时间
+	unaryInterceptors    []grpc.UnaryClientInterceptor  // 自定义 Unary 拦截器
+	streamInterceptors   []grpc.StreamClientInterceptor // 自定义 Stream 拦截器
+	additionalDialOpts   []grpc.DialOption            // 额外的拨号选项
 }
 
 // NewGrpcClient 创建一个新的 gRPC 客户端
@@ -110,7 +111,9 @@ func (g *GrpcClient) buildDialOptions() []grpc.DialOption {
 		g.opts.maxMsgSize,
 		g.opts.keepaliveTime,
 		g.opts.keepaliveTimeout,
-		g.opts.disablePrintMethods...,
+		g.opts.unaryInterceptors,
+		g.opts.streamInterceptors,
+		g.opts.additionalDialOpts...,
 	)
 }
 
@@ -133,7 +136,13 @@ func (g *GrpcClient) Close() error {
 }
 
 // ClientDialOptions 创建 gRPC 拨号选项
-func ClientDialOptions(maxMsgSize int, keepaliveTime, keepaliveTimeout time.Duration, disablePrintMethods ...string) []grpc.DialOption {
+func ClientDialOptions(
+	maxMsgSize int,
+	keepaliveTime, keepaliveTimeout time.Duration,
+	unaryInterceptors []grpc.UnaryClientInterceptor,
+	streamInterceptors []grpc.StreamClientInterceptor,
+	additionalOpts ...grpc.DialOption,
+) []grpc.DialOption {
 	// 设置默认值
 	if maxMsgSize == 0 {
 		maxMsgSize = defaultMaxMsgSize
@@ -145,7 +154,7 @@ func ClientDialOptions(maxMsgSize int, keepaliveTime, keepaliveTimeout time.Dura
 		keepaliveTimeout = defaultKeepaliveTimeout
 	}
 
-	return []grpc.DialOption{
+	opts := []grpc.DialOption{
 		grpc.WithTransportCredentials(insecure.NewCredentials()),
 		grpc.WithDefaultCallOptions(
 			grpc.MaxCallRecvMsgSize(maxMsgSize),
@@ -154,21 +163,33 @@ func ClientDialOptions(maxMsgSize int, keepaliveTime, keepaliveTimeout time.Dura
 		grpc.WithInitialWindowSize(int32(maxMsgSize)),
 		grpc.WithInitialConnWindowSize(int32(maxMsgSize)),
 		grpc.WithStatsHandler(&statHandler{}),
-		grpc.WithChainUnaryInterceptor(
-			interceptortimer_.UnaryClientInterceptorOfTimer(),
-			interceptordebug_.UnaryClientInterceptorOfInOutputPrinter(disablePrintMethods...),
-		),
 		grpc.WithKeepaliveParams(keepalive.ClientParameters{
 			Time:                keepaliveTime,
 			Timeout:             keepaliveTimeout,
 			PermitWithoutStream: true,
 		}),
 	}
+
+	// 添加自定义 Unary 拦截器
+	if len(unaryInterceptors) > 0 {
+		opts = append(opts, grpc.WithChainUnaryInterceptor(unaryInterceptors...))
+	}
+
+	// 添加自定义 Stream 拦截器
+	if len(streamInterceptors) > 0 {
+		opts = append(opts, grpc.WithChainStreamInterceptor(streamInterceptors...))
+	}
+
+	// 添加额外的拨号选项
+	opts = append(opts, additionalOpts...)
+
+	return opts
 }
 
 // GetGrpcClientConn 获取一个 gRPC 客户端长连接（支持连接复用）
 // 对于相同的地址和配置，会复用已存在的连接；如果连接不存在或已关闭，则创建新连接
-func GetGrpcClientConn(addr string, disablePrintMethods ...string) (*grpc.ClientConn, error) {
+// 参数 opts 可以传入自定义的拨号选项，如拦截器等
+func GetGrpcClientConn(addr string, opts ...grpc.DialOption) (*grpc.ClientConn, error) {
 	// 获取或创建连接池条目
 	value, _ := connPool.LoadOrStore(addr, &connPoolEntry{})
 	entry := value.(*connPoolEntry)
@@ -192,13 +213,15 @@ func GetGrpcClientConn(addr string, disablePrintMethods ...string) (*grpc.Client
 	}
 
 	// 创建新连接
-	opts := ClientDialOptions(
+	dialOpts := ClientDialOptions(
 		defaultMaxMsgSize,
 		defaultKeepaliveTime,
 		defaultKeepaliveTimeout,
-		disablePrintMethods...,
+		nil, // 不再硬编码拦截器
+		nil,
+		opts..., // 允许调用方传入自定义选项
 	)
-	conn, err := grpc.NewClient(addr, opts...)
+	conn, err := grpc.NewClient(addr, dialOpts...)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create grpc client for address %s: %w", addr, err)
 	}
