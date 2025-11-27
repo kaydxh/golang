@@ -124,7 +124,7 @@ func TestRetryWithContext(t *testing.T) {
 		{
 			name:      "test-retry-error",
 			period:    5 * time.Second,
-			retryTime: 0,
+			retryTime: 5,
 			f: func(context.Context) error {
 				time.Sleep(time.Second)
 				fmt.Println("test-retry-error-sliding")
