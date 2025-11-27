@@ -26,12 +26,12 @@ import (
 
 	context_ "github.com/kaydxh/golang/go/context"
 	time_ "github.com/kaydxh/golang/go/time"
-	logs_ "github.com/kaydxh/golang/pkg/logs"
+	"github.com/sirupsen/logrus"
 )
 
 func (r *Repository[T]) Call(ctx context.Context, f func(ctx context.Context) error) (err error) {
 
-	logger := logs_.GetLogger(ctx)
+	logger := logrus.WithContext(ctx)
 	err = time_.RetryWithContext(ctx, func(ctx context.Context) error {
 		ctx, cancel := context_.WithTimeout(ctx, r.Timeout)
 		defer cancel()

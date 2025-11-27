@@ -29,7 +29,7 @@ import (
 	"time"
 
 	resolve_ "github.com/kaydxh/golang/go/net/resolver/resolve"
-	logs_ "github.com/kaydxh/golang/pkg/logs"
+	"github.com/sirupsen/logrus"
 )
 
 func RequestWithContextProxy(req *http.Request, proxy *Proxy) *http.Request {
@@ -40,7 +40,7 @@ func RequestWithContextProxy(req *http.Request, proxy *Proxy) *http.Request {
 }
 
 func ProxyFuncFromContextOrEnvironment(req *http.Request) (*url.URL, error) {
-	logger := logs_.GetLogger(req.Context())
+	logger := logrus.WithContext(req.Context())
 	proxy := FromContextProxy(req.Context())
 	if proxy == nil || proxy.ProxyUrl == "" {
 		return http.ProxyFromEnvironment(req)

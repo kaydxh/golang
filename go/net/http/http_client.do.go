@@ -27,8 +27,7 @@ import (
 	"net/http"
 
 	time_ "github.com/kaydxh/golang/go/time"
-
-	logs_ "github.com/kaydxh/golang/pkg/logs"
+	"github.com/sirupsen/logrus"
 )
 
 func (c *Client) get(ctx context.Context, url string) (*http.Response, error) {
@@ -84,7 +83,7 @@ func (c *Client) Do(ctx context.Context, req *http.Request) (*http.Response, err
 	*/
 
 	tc := time_.New(true)
-	logger := logs_.GetLogger(ctx)
+	logger := logrus.WithContext(ctx)
 	logger.WithField("target_addr", req.Host).Infof("http do %v", req.URL.Path)
 	summary := func() {
 		tc.Tick(req.Method)

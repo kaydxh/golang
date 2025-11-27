@@ -94,7 +94,7 @@ func (r *Repository[T]) NewConnect(ctx context.Context) (client T, conn *grpc.Cl
 		addr = address.Addr
 	}
 
-	conn, err = GetGrpcClientConn(addr, r.DisablePrintInoutMethods...)
+	conn, err = GetGrpcClientConn(addr)
 	if err != nil {
 		return zeroClient, nil, err
 	}
@@ -107,7 +107,7 @@ func (r *Repository[T]) Close(conn *grpc.ClientConn) (err error) {
 }
 
 func newRepository[T any](ctx context.Context, fc FactoryConfig[T]) (Repository[T], error) {
-	conn, err := GetGrpcClientConn(fc.Addr, fc.DisablePrintInoutMethods...)
+	conn, err := GetGrpcClientConn(fc.Addr)
 	if err != nil {
 		return Repository[T]{}, err
 	}

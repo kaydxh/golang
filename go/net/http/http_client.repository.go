@@ -29,7 +29,7 @@ import (
 	"github.com/kaydxh/golang/go/encoding/protojson"
 	reflect_ "github.com/kaydxh/golang/go/reflect"
 	time_ "github.com/kaydxh/golang/go/time"
-	logs_ "github.com/kaydxh/golang/pkg/logs"
+	"github.com/sirupsen/logrus"
 	"google.golang.org/protobuf/proto"
 )
 
@@ -39,7 +39,7 @@ func (r *Repository[REQ, RESP]) PostPbJson(ctx context.Context, req *REQ) (resp 
 
 func (r *Repository[REQ, RESP]) PostPbJsonWithUrl(ctx context.Context, url string, req *REQ) (resp *RESP, err error) {
 
-	logger := logs_.GetLogger(ctx)
+	logger := logrus.WithContext(ctx)
 	tc := time_.New(true)
 	summary := func() {
 		tc.Tick("PostPbJson")
@@ -93,7 +93,7 @@ func (r *Repository[REQ, RESP]) PostPbJsonWithUrl(ctx context.Context, url strin
 
 func (r *Repository[REQ, RESP]) PostPb(ctx context.Context, req *REQ) (resp *RESP, err error) {
 
-	logger := logs_.GetLogger(ctx)
+	logger := logrus.WithContext(ctx)
 	tc := time_.New(true)
 	summary := func() {
 		tc.Tick("PostPbJson")
@@ -148,7 +148,7 @@ func (r *Repository[REQ, RESP]) PostPb(ctx context.Context, req *REQ) (resp *RES
 /*
 func (r *Repository[REQ, RESP]) Do(ctx context.Context, method string, contentType string, req *REQ) (resp *RESP, err error) {
 
-	logger := logs_.GetLogger(ctx)
+	logger := logrus.WithContext(ctx)
 	tc := time_.New(true)
 	summary := func() {
 		tc.Tick("PostPbJson")
