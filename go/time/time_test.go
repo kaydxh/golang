@@ -30,17 +30,17 @@ import (
 
 func TestNowString(t *testing.T) {
 	now := time_.NowString("")
-	t.Logf(now)
+	t.Logf("now: %s", now)
 }
 
 func TestBeginningOfDayString(t *testing.T) {
 	beginTime := time_.BeginningOfDayString(-1, "")
-	t.Logf(beginTime)
+	t.Logf("beginTime: %s", beginTime)
 }
 
 func TestEndOfDayString(t *testing.T) {
 	endTime := time_.EndOfDayString(-1, "")
-	t.Logf(endTime)
+	t.Logf("endTime: %s", endTime)
 }
 
 func TestTruncateToUTCString(t *testing.T) {
