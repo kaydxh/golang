@@ -1,6 +1,6 @@
 module github.com/kaydxh/golang/pkg/file-transfer
 
-go 1.25.3
+go 1.24.0
 
 replace github.com/kaydxh/golang/go => ../../go
 
@@ -12,10 +12,10 @@ require (
 	github.com/golang/protobuf v1.5.4
 	github.com/kaydxh/golang/go v0.0.0-20251125160242-e06b25c89946
 	github.com/kaydxh/golang/pkg/logs v0.0.0-20251125132602-62c26b682228
-	github.com/kaydxh/golang/pkg/viper v0.0.0-20251125160242-e06b25c89946
+	github.com/kaydxh/golang/pkg/viper v0.0.0-00010101000000-000000000000
 	github.com/sirupsen/logrus v1.9.3
 	github.com/spf13/viper v1.21.0
-	go.opentelemetry.io/otel v1.38.0
+	go.opentelemetry.io/otel v1.28.0
 	google.golang.org/protobuf v1.36.10
 )
 
@@ -34,11 +34,11 @@ require (
 	github.com/go-viper/mapstructure/v2 v2.4.0 // indirect
 	github.com/goccy/go-json v0.10.2 // indirect
 	github.com/goccy/go-yaml v1.18.0 // indirect
-	github.com/grpc-ecosystem/grpc-gateway/v2 v2.27.3 // indirect
+	github.com/grpc-ecosystem/grpc-gateway/v2 v2.21.0 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/kaydxh/golang/pkg/file-cleanup v0.0.0-20251125132602-62c26b682228 // indirect
 	github.com/kaydxh/golang/pkg/file-rotate v0.0.0-20251125132602-62c26b682228 // indirect
-	github.com/kaydxh/golang/pkg/protobuf v0.0.0-20251125160242-e06b25c89946 // indirect
+	github.com/kaydxh/golang/pkg/protobuf v0.0.0-00010101000000-000000000000 // indirect
 	github.com/klauspost/cpuid/v2 v2.3.0 // indirect
 	github.com/leodido/go-urn v1.4.0 // indirect
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
@@ -54,9 +54,8 @@ require (
 	github.com/subosito/gotenv v1.6.0 // indirect
 	github.com/twitchyliquid64/golang-asm v0.15.1 // indirect
 	github.com/ugorji/go/codec v1.3.0 // indirect
-	go.opentelemetry.io/auto/sdk v1.2.1 // indirect
-	go.opentelemetry.io/otel/metric v1.38.0 // indirect
-	go.opentelemetry.io/otel/trace v1.38.0 // indirect
+	go.opentelemetry.io/otel/metric v1.28.0 // indirect
+	go.opentelemetry.io/otel/trace v1.28.0 // indirect
 	go.uber.org/atomic v1.11.0 // indirect
 	go.yaml.in/yaml/v3 v3.0.4 // indirect
 	golang.org/x/arch v0.20.0 // indirect
@@ -65,7 +64,7 @@ require (
 	golang.org/x/sys v0.38.0 // indirect
 	golang.org/x/text v0.31.0 // indirect
 	golang.org/x/time v0.14.0 // indirect
-	google.golang.org/genproto/googleapis/api v0.0.0-20251022142026-3a174f9686a8 // indirect
+	google.golang.org/genproto/googleapis/api v0.0.0-20240814211410-ddb44dafa142 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20251124214823-79d6a2a48846 // indirect
-	google.golang.org/grpc v1.77.0 // indirect
+	google.golang.org/grpc v1.65.0 // indirect
 )
