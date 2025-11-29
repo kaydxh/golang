@@ -1,6 +1,6 @@
 module github.com/kaydxh/golang/pkg/scheduler
 
-go 1.25.3
+go 1.24.0
 
 replace github.com/kaydxh/golang/go => ../../go
 
@@ -11,5 +11,3 @@ require (
 	golang.org/x/net v0.47.0
 	google.golang.org/protobuf v1.36.10
 )
-
-require github.com/stretchr/testify v1.11.1 // indirect
