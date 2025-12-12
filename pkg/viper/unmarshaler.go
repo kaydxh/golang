@@ -26,11 +26,10 @@ import (
 	"fmt"
 	"reflect"
 
+	mapstructure "github.com/go-viper/mapstructure/v2"
 	jsonpb_ "github.com/kaydxh/golang/pkg/protobuf/jsonpb"
-	"github.com/mitchellh/mapstructure"
-	"google.golang.org/protobuf/proto"
-
 	"github.com/spf13/viper"
+	"google.golang.org/protobuf/proto"
 )
 
 func UnmarshalProtoMessageWithJsonPb(v *viper.Viper, msg proto.Message, options ...viper.DecoderConfigOption) error {

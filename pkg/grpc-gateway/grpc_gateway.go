@@ -80,7 +80,10 @@ func NewGRPCGateWay(addr string, options ...GRPCGatewayOption) *GRPCGateway {
 func (g *GRPCGateway) initOnce() {
 	g.once.Do(func() {
 		//now not support tls
-		g.opts.clientDialOptions = append(g.opts.clientDialOptions, grpc_.ClientDialOptions()...)
+		g.opts.clientDialOptions = append(g.opts.clientDialOptions, grpc_.ClientDialOptions(
+			0, 0, 0, // 使用默认值
+			nil, nil, // 客户端拦截器为空
+		)...)
 
 		serverOptions := []grpc.ServerOption{}
 		serverOptions = append(

@@ -3,8 +3,8 @@ module github.com/kaydxh/golang/pkg/viper
 go 1.24.0
 
 require (
+	github.com/go-viper/mapstructure/v2 v2.4.0
 	github.com/kaydxh/golang/pkg/protobuf v0.0.0-00010101000000-000000000000
-	github.com/mitchellh/mapstructure v1.5.0
 	github.com/spf13/viper v1.21.0
 	google.golang.org/protobuf v1.36.10
 )
@@ -19,7 +19,6 @@ require (
 	github.com/go-playground/locales v0.14.1 // indirect
 	github.com/go-playground/universal-translator v0.18.1 // indirect
 	github.com/go-playground/validator/v10 v10.28.0 // indirect
-	github.com/go-viper/mapstructure/v2 v2.4.0 // indirect
 	github.com/goccy/go-json v0.10.2 // indirect
 	github.com/goccy/go-yaml v1.18.0 // indirect
 	github.com/golang/protobuf v1.5.4 // indirect
