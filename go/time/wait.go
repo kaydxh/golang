@@ -155,40 +155,51 @@ func BackOffUntilWithContext(
 }
 
 func CallWithTimeout(ctx context.Context, timeout time.Duration, f func(ctx context.Context) error) error {
-
 	tc := New(true)
-	// nerver timeout
+	
+	// never timeout
 	if timeout <= 0 {
 		err := f(ctx)
 		tc.Tick("call func")
-		logrus.WithField("modulel", "CallWithTimeout").WithField("timeout", timeout).Infof("finish call function %v, err: %v", tc.String(), err)
+		logrus.WithField("module", "CallWithTimeout").
+			WithField("timeout", timeout).
+			Infof("finish call function %v, err: %v", tc.String(), err)
 		return err
 	}
 
-	var errs []error
-	done := make(chan struct{}, 1)
-	timer := time.NewTimer(timeout)
-	defer timer.Stop()
+	// 创建带超时的 context
+	timeoutCtx, cancel := context.WithTimeout(ctx, timeout)
+	defer cancel() // 确保取消，避免资源泄漏
+
+	// 使用 channel 传递结果（避免数据竞争）
+	type result struct {
+		err error
+	}
+	done := make(chan result, 1)
 
 	go func() {
-		err := f(ctx)
-		if err != nil {
-			errs = append(errs, err)
-		}
+		err := f(timeoutCtx) // 使用带超时的 context
 		tc.Tick("call func")
-
-		done <- struct{}{}
-		logrus.WithField("modulel", "CallWithTimeout").WithField("timeout", timeout).Infof("finish call function %v, err: %v", tc.String(), err)
+		
+		// 非阻塞发送结果，避免 goroutine 泄漏
+		select {
+		case done <- result{err: err}:
+			logrus.WithField("module", "CallWithTimeout").
+				WithField("timeout", timeout).
+				Infof("finish call function %v, err: %v", tc.String(), err)
+		case <-timeoutCtx.Done():
+			// 超时了，不发送结果
+			logrus.WithField("module", "CallWithTimeout").
+				Warnf("function completed after timeout, err: %v", err)
+		}
 	}()
 
 	select {
 	case <-ctx.Done():
 		return ctx.Err()
-	case <-done:
-	case <-timer.C:
+	case res := <-done:
+		return res.err
+	case <-timeoutCtx.Done():
 		return ErrTimeout
 	}
-
-	return errors_.NewAggregate(errs)
-
 }
