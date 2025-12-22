@@ -14,10 +14,13 @@
 package idgen
 
 import (
+	"encoding/binary"
 	"errors"
 	"fmt"
 	"sync"
 	"time"
+
+	"github.com/google/uuid"
 )
 
 const (
@@ -161,4 +164,17 @@ func GetWorkerID(id uint64) int64 {
 func GetSequence(id uint64) int64 {
 	_, _, sequence := ParseID(id)
 	return sequence
+}
+
+// GenerateUint64FromUUID 生成uint64
+func GenerateUint64FromUUID() uint64 {
+	id := uuid.New()
+	return UUIDToUint64XOR(id)
+}
+
+// UUIDToUint64XOR 将UUID转换为uint64
+func UUIDToUint64XOR(id uuid.UUID) uint64 {
+	high := binary.BigEndian.Uint64(id[:8])
+	low := binary.BigEndian.Uint64(id[8:])
+	return high ^ low
 }
