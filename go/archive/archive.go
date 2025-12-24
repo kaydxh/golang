@@ -25,7 +25,10 @@ import (
 	"github.com/kaydxh/golang/go/archive/option"
 )
 
-type Archvier interface {
-	Extract(srcFile, destDir string) ([]string, error)
-	ExtractStream(srcFile, destDir string) (<-chan option.ExtractMsg, error)
+// Archiver defines the interface for archive extraction operations
+type Archiver interface {
+	// Extract extracts all files from srcFile to destDir and returns a list of extracted file info
+	Extract(srcFile, destDir string) ([]*option.FileInfo, error)
+	// ExtractStream extracts files from srcFile to destDir and streams the results through a channel
+	ExtractStream(srcFile, destDir string) <-chan option.ExtractMsg
 }

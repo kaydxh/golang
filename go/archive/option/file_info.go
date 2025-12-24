@@ -46,11 +46,16 @@ type ExtractMsg struct {
 }
 
 func (e *ExtractMsg) String() string {
+	if e.Error != nil {
+		return fmt.Sprintf("{error: %v}", e.Error)
+	}
+	if e.FileInfo == nil {
+		return "{fileInfo: nil}"
+	}
 	return fmt.Sprintf(
 		"{path: [%v], size: [%v], modeTime: [%v]}",
 		e.FileInfo.Path,
 		e.FileInfo.FileInfo.Size(),
 		e.FileInfo.FileInfo.ModTime(),
 	)
-
 }
