@@ -112,11 +112,12 @@ func (c *completedConfig) install(ctx context.Context, opts ...gw_.GRPCGatewayOp
 	fmt.Printf(" - listen address[%s]\n", c.opts.bindAddress)
 
 	ws := &GenericWebServer{
-		ginBackend:       ginBackend,
-		grpcBackend:      grpcBackend,
-		postStartHooks:   map[string]postStartHookEntry{},
-		preShutdownHooks: map[string]preShutdownHookEntry{},
-		readinessStopCh:  make(chan struct{}),
+		ginBackend:        ginBackend,
+		grpcBackend:       grpcBackend,
+		HealthzController: healthz_.NewController(),
+		postStartHooks:    map[string]postStartHookEntry{},
+		preShutdownHooks:  map[string]preShutdownHookEntry{},
+		readinessStopCh:   make(chan struct{}),
 	}
 
 	var errs []error
@@ -133,7 +134,7 @@ func (c *completedConfig) install(ctx context.Context, opts ...gw_.GRPCGatewayOp
 }
 
 func (c *completedConfig) installDefaultHander(ws *GenericWebServer) error {
-	ws.InstallWebHandlers(healthz_.NewController())
+	ws.InstallWebHandlers(ws.HealthzController)
 	return nil
 }
 
