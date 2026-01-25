@@ -31,6 +31,7 @@ import (
 	syscall_ "github.com/kaydxh/golang/go/syscall"
 	"github.com/kaydxh/golang/pkg/discovery/consul"
 	gw_ "github.com/kaydxh/golang/pkg/grpc-gateway"
+	healthz_ "github.com/kaydxh/golang/pkg/webserver/controller/healthz"
 	"github.com/sirupsen/logrus"
 )
 
@@ -56,19 +57,8 @@ type GenericWebServer struct {
 	preShutdownHooks       map[string]preShutdownHookEntry
 	preShutdownHooksCalled bool
 
-	// healthz checks
-	//	healthzLock            sync.Mutex
-	//	healthzChecks          []healthz.HealthCheck
-	//	healthzChecksInstalled bool
-	// livez checks
-	//	livezLock            sync.Mutex
-	//	livezChecks          []healthz.HealthCheck
-	//	livezChecksInstalled bool
-	// readyz checks
-	//	readyzLock            sync.Mutex
-	//	readyzChecks          []healthz.HealthCheck
-	//	readyzChecksInstalled bool
-	//	livezGracePeriod      time.Duration
+	// HealthzController handles /healthz, /livez, /readyz endpoints.
+	HealthzController *healthz_.Controller
 
 	// the readiness stop channel is used to signal that the apiserver has initiated a shutdown sequence, this
 	// will cause readyz to return unhealthy.
@@ -121,6 +111,18 @@ func (s preparedGenericWebServer) Run(ctx context.Context) error {
 	logrus.Infof("Installed http server on %s", s.grpcBackend.Addr)
 
 	<-ctx.Done()
+
+	// Mark server as not ready to stop receiving new requests
+	if s.HealthzController != nil {
+		s.HealthzController.SetReady(false)
+	}
+
+	// Wait for shutdown delay to allow load balancers to drain connections
+	if s.ShutdownDelayDuration > 0 {
+		logrus.Infof("Waiting %v before shutdown for connection draining", s.ShutdownDelayDuration)
+		time.Sleep(s.ShutdownDelayDuration)
+	}
+
 	// run shutdown hooks directly. This includes deregistering from the kubernetes endpoint in case of kube-apiserver.
 	err = s.RunPreShutdownHooks()
 	if err != nil {
@@ -163,4 +165,35 @@ func (s *GenericWebServer) InstallWebHandlers(handlers ...WebHandler) {
 		}
 		h.SetRoutes(s.ginBackend, s.grpcBackend)
 	}
+}
+
+// AddLivezChecker adds a liveness checker.
+// Liveness probes determine if the application is running.
+func (s *GenericWebServer) AddLivezChecker(checker healthz_.HealthChecker) {
+	if s.HealthzController != nil {
+		s.HealthzController.AddLivezChecker(checker)
+	}
+}
+
+// AddReadyzChecker adds a readiness checker.
+// Readiness probes determine if the application is ready to receive traffic.
+func (s *GenericWebServer) AddReadyzChecker(checker healthz_.HealthChecker) {
+	if s.HealthzController != nil {
+		s.HealthzController.AddReadyzChecker(checker)
+	}
+}
+
+// SetReady sets the readiness state of the server.
+func (s *GenericWebServer) SetReady(ready bool) {
+	if s.HealthzController != nil {
+		s.HealthzController.SetReady(ready)
+	}
+}
+
+// IsReady returns the current readiness state.
+func (s *GenericWebServer) IsReady() bool {
+	if s.HealthzController != nil {
+		return s.HealthzController.IsReady()
+	}
+	return true
 }
