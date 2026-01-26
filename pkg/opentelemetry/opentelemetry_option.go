@@ -21,46 +21,39 @@
  */
 package opentelemetry
 
-import (
-	"context"
-
-	metric_ "github.com/kaydxh/golang/pkg/monitor/opentelemetry/metric"
-	tracer_ "github.com/kaydxh/golang/pkg/monitor/opentelemetry/tracer"
-)
-
-type OpenTelemetryOptions struct {
-	meterOptions  []metric_.MeterOption
-	tracerOptions []tracer_.TracerOption
+// A OpenTelemetryServiceOption sets options.
+type OpenTelemetryServiceOption interface {
+	apply(*OpenTelemetryService)
 }
 
-type OpenTelemetry struct {
-	opts OpenTelemetryOptions
+// EmptyOpenTelemetryServiceOption does not alter the configuration. It can be embedded
+// in another structure to build custom options.
+//
+// This API is EXPERIMENTAL.
+type EmptyOpenTelemetryServiceOption struct{}
+
+func (EmptyOpenTelemetryServiceOption) apply(*OpenTelemetryService) {}
+
+// OpenTelemetryServiceOptionFunc wraps a function that modifies Client into an
+// implementation of the OpenTelemetryServiceOption interface.
+type OpenTelemetryServiceOptionFunc func(*OpenTelemetryService)
+
+func (f OpenTelemetryServiceOptionFunc) apply(do *OpenTelemetryService) {
+	f(do)
 }
 
-func NewOpenTelemetry(opts ...OpenTelemetryOption) *OpenTelemetry {
-	t := &OpenTelemetry{}
-	t.ApplyOptions(opts...)
-
-	return t
+// sample code for option, default for nothing to change
+func _OpenTelemetryServiceOptionWithDefault() OpenTelemetryServiceOption {
+	return OpenTelemetryServiceOptionFunc(func(*OpenTelemetryService) {
+		// nothing to change
+	})
 }
-
-func (t *OpenTelemetry) Install(ctx context.Context) error {
-
-	if len(t.opts.meterOptions) > 0 {
-		meter := metric_.NewMeter(t.opts.meterOptions...)
-		err := meter.Install(ctx)
-		if err != nil {
-			return err
+func (o *OpenTelemetryService) ApplyOptions(options ...OpenTelemetryServiceOption) *OpenTelemetryService {
+	for _, opt := range options {
+		if opt == nil {
+			continue
 		}
+		opt.apply(o)
 	}
-
-	if len(t.opts.tracerOptions) > 0 {
-		tracer := tracer_.NewTracer(t.opts.tracerOptions...)
-		err := tracer.Install(ctx)
-		if err != nil {
-			return err
-		}
-	}
-
-	return nil
+	return o
 }

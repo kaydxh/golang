@@ -32,8 +32,7 @@ import (
 	rate_ "github.com/kaydxh/golang/go/time/rate"
 	interceptortcloud_ "github.com/kaydxh/golang/pkg/middleware/api/tcloud/v3.0"
 	interceptordebug_ "github.com/kaydxh/golang/pkg/middleware/grpc-middleware/debug"
-	interceptoropentelemetry_ "github.com/kaydxh/golang/pkg/middleware/grpc-middleware/monitor/opentelemetry"
-	interceptorprometheus_ "github.com/kaydxh/golang/pkg/middleware/grpc-middleware/monitor/prometheus"
+	interceptoropentelemetry_ "github.com/kaydxh/golang/pkg/middleware/grpc-middleware/opentelemetry"
 	interceptorratelimit_ "github.com/kaydxh/golang/pkg/middleware/grpc-middleware/ratelimit"
 
 	"github.com/sirupsen/logrus"
@@ -118,19 +117,25 @@ func WithServerInterceptorsRecoveryOptions() GRPCGatewayOption {
 	})
 }
 
+// Deprecated: Use WithServerUnaryMetricInterceptorOptions instead
 func WithServerUnaryInterceptorsTimerOptions(enabledMetric bool) GRPCGatewayOption {
 	return GRPCGatewayOptionFunc(func(c *GRPCGateway) {
-		WithServerUnaryInterceptorsOptions(interceptorprometheus_.UnaryServerInterceptorOfTimer(enabledMetric)).apply(c)
+		if enabledMetric {
+			WithServerUnaryInterceptorsOptions(interceptoropentelemetry_.UnaryServerMetricInterceptor()).apply(c)
+		}
 	})
 }
 
+// Deprecated: Use WithServerUnaryMetricInterceptorOptions instead
 func WithServerUnaryInterceptorsCodeMessageOptions(enabledMetric bool) GRPCGatewayOption {
 	return GRPCGatewayOptionFunc(func(c *GRPCGateway) {
-		WithServerUnaryInterceptorsOptions(
-			interceptorprometheus_.UnaryServerInterceptorOfCodeMessage(enabledMetric),
-		).apply(
-			c,
-		)
+		if enabledMetric {
+			WithServerUnaryInterceptorsOptions(
+				interceptoropentelemetry_.UnaryServerMetricInterceptor(),
+			).apply(
+				c,
+			)
+		}
 	})
 }
 

@@ -54,4 +54,3 @@ func StreamClientTraceInterceptorWithTracer(tracerProvider trace.TracerProvider,
 	defaultOpts = append(defaultOpts, opts...)
 	return otelgrpc.StreamClientInterceptor(defaultOpts...)
 }
-

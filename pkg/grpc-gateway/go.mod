@@ -20,7 +20,7 @@ replace github.com/kaydxh/golang/pkg/file-cleanup => ../file-cleanup
 
 replace github.com/kaydxh/golang/pkg/file-rotate => ../file-rotate
 
-replace github.com/kaydxh/golang/pkg/monitor => ../monitor
+replace github.com/kaydxh/golang/pkg/opentelemetry => ../opentelemetry
 
 require (
 	github.com/gin-gonic/gin v1.11.0

@@ -40,13 +40,75 @@ message Web {
     repeated string disable_print_inoutput_methods = 2;
   }
 
-  Monitor monitor = 11;
-  message Monitor {
-    Prometheus prometheus = 1;
+  // OpenTelemetry 统一监控配置（替代旧的 Monitor）
+  OpenTelemetry open_telemetry = 12;
+  message OpenTelemetry {
+    bool enabled = 1;
+
+    google.protobuf.Duration metric_collect_duration = 2;
+    OtelTraceExporterType otel_trace_exporter_type = 3;
+    OtelMetricExporterType otel_metric_exporter_type = 4;
+    OtelLogExporterType otel_log_exporter_type = 5;
+
+    OtelMetricExporter otel_metric_exporter = 6;
+    OtelTraceExporter otel_trace_exporter = 7;
+
+    Resource resource = 10;
+
+    // 从旧 Monitor.Prometheus 迁移的配置
+    bool enabled_metric_timer_cost = 20;
+    bool enabled_metric_code_message = 21;
+
+    message Resource {
+      string service_name = 1;
+      map<string, string> attrs = 2;
+    }
+
+    message OtelMetricExporter {
+      Prometheus prometheus = 1;
+      Stdout stdout = 2;
+    }
+
+    message OtelTraceExporter {
+      Jaeger jaeger = 1;
+      Stdout stdout = 2;
+    }
 
     message Prometheus {
-      bool enabled_metric_timer_cost = 1;
-      bool enabled_metric_code_message = 2;
+      string url = 1;
+    }
+
+    message Jaeger {
+      string url = 1;
+    }
+
+    message Stdout {
+      bool pretty_print = 1;
+    }
+
+    enum OtelTraceExporterType {
+      trace_none = 0;
+      trace_stdout = 1;
+      trace_otlp = 2;
+      trace_jaeger = 3;
+      trace_zipkin = 4;
+    }
+
+    enum OtelMetricExporterType {
+      metric_none = 0;
+      metric_stdout = 1;
+      metric_otlp = 2;
+      metric_prometheus = 3;
+    }
+
+    enum OtelLogExporterType {
+      log_none = 0;
+      log_otlp = 1;
     }
   }
+
+  // Deprecated: 使用 open_telemetry 替代
+  // 保留字段编号以保持向后兼容
+  reserved 11;
+  reserved "monitor";
 }

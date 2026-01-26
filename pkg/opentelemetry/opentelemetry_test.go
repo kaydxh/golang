@@ -27,7 +27,7 @@ import (
 	"testing"
 	"time"
 
-	opentelemetry_ "github.com/kaydxh/golang/pkg/monitor/opentelemetry"
+	opentelemetry_ "github.com/kaydxh/golang/pkg/opentelemetry"
 	viper_ "github.com/kaydxh/golang/pkg/viper"
 	"github.com/sirupsen/logrus"
 	"go.opentelemetry.io/otel"
@@ -58,7 +58,7 @@ func memoryUsageCallBack(total, free uint64, usage float64) {
 func TestMetric(t *testing.T) {
 	cfgFile := "./opentelemetry.yaml"
 	config := opentelemetry_.NewConfig(
-		opentelemetry_.WithViper(viper_.GetViper(cfgFile, "monitor.open_telemetry")),
+		opentelemetry_.WithViper(viper_.GetViper(cfgFile, "open_telemetry")),
 		opentelemetry_.WithMemoryCallBack(memoryUsageCallBack),
 	)
 
@@ -90,7 +90,7 @@ func metrics(ctx context.Context, n int) {
 // https://github.com/open-telemetry/opentelemetry-go/blob/main/example/jaeger/main.go
 func TestTrace(t *testing.T) {
 	cfgFile := "./opentelemetry.yaml"
-	config := opentelemetry_.NewConfig(opentelemetry_.WithViper(viper_.GetViper(cfgFile, "monitor.open_telemetry")))
+	config := opentelemetry_.NewConfig(opentelemetry_.WithViper(viper_.GetViper(cfgFile, "open_telemetry")))
 
 	ctx := context.Background()
 	err := config.Complete().New(ctx)

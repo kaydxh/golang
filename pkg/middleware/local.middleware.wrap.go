@@ -4,7 +4,7 @@ import (
 	"context"
 
 	interceptordebug_ "github.com/kaydxh/golang/pkg/middleware/grpc-middleware/debug"
-	interceptoropentelemetry_ "github.com/kaydxh/golang/pkg/middleware/grpc-middleware/monitor/opentelemetry"
+	interceptoropentelemetry_ "github.com/kaydxh/golang/pkg/middleware/grpc-middleware/opentelemetry"
 )
 
 // the function need to called by controller
