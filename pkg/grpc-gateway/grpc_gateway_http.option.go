@@ -235,6 +235,68 @@ func WithHttpHandlerInterceptorsLimitAllOptions(burst int) GRPCGatewayOption {
 	return WithHttpHandlerInterceptorOptions(handler)
 }
 
+// HTTPQPSLimitConfig HTTP QPS限流配置
+type HTTPQPSLimitConfig struct {
+	// DefaultQPS 默认QPS限制，0表示不限制
+	DefaultQPS float64
+	// DefaultBurst 默认突发容量
+	DefaultBurst int
+	// MaxConcurrency 最大并发数限制，0表示不限制
+	// 与QPS限流不同，并发控制限制的是同时处理的请求数，请求完成后令牌会归还
+	MaxConcurrency int
+	// PathQPS 路径级QPS配置，key为URL路径（如 /api/v1/users）
+	PathQPS map[string]float64
+	// PathBurst 路径级突发容量配置
+	PathBurst map[string]int
+	// PathMaxConcurrency 路径级最大并发数配置
+	PathMaxConcurrency map[string]int
+}
+
+// WithHttpHandlerInterceptorsQPSLimitOptions HTTP QPS限流中间件选项
+// 支持全局默认QPS和路径级QPS配置
+func WithHttpHandlerInterceptorsQPSLimitOptions(config HTTPQPSLimitConfig) GRPCGatewayOption {
+	return GRPCGatewayOptionFunc(func(c *GRPCGateway) {
+		// QPS限流
+		if config.DefaultQPS > 0 || len(config.PathQPS) > 0 {
+			// 创建方法级QPS限流器
+			defaultBurst := config.DefaultBurst
+			if defaultBurst <= 0 {
+				defaultBurst = int(config.DefaultQPS)
+			}
+			limiter := httpinterceptorlimiter_.NewQPSRateLimiter(config.DefaultQPS, defaultBurst)
+
+			// 设置路径级QPS配置
+			for path, qps := range config.PathQPS {
+				burst := config.PathBurst[path]
+				if burst <= 0 {
+					burst = int(qps)
+				}
+				limiter.SetPathQPS(path, qps, burst)
+			}
+
+			WithHttpHandlerInterceptorOptions(http_.HandlerInterceptor{
+				Interceptor: limiter.Handler,
+			}).apply(c)
+		}
+
+		// 并发控制
+		if config.MaxConcurrency > 0 || len(config.PathMaxConcurrency) > 0 {
+			limiter := httpinterceptorlimiter_.NewConcurrencyLimiter(config.MaxConcurrency)
+
+			// 设置路径级并发配置
+			for path, maxConcurrency := range config.PathMaxConcurrency {
+				if maxConcurrency > 0 {
+					limiter.SetPathConcurrency(path, maxConcurrency)
+				}
+			}
+
+			WithHttpHandlerInterceptorOptions(http_.HandlerInterceptor{
+				Interceptor: limiter.Handler,
+			}).apply(c)
+		}
+	})
+}
+
 // CleanPath
 func WithHttpHandlerInterceptorCleanPathOptions() GRPCGatewayOption {
 	return WithHttpHandlerInterceptorOptions(http_.HandlerInterceptor{

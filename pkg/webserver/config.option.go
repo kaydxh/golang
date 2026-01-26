@@ -45,3 +45,25 @@ func WithGRPCGatewayOptions(opts ...gw_.GRPCGatewayOption) ConfigOption {
 		c.opts.gatewayOptions = append(c.opts.gatewayOptions, opts...)
 	})
 }
+
+// WithGRPCQPSLimit 设置gRPC QPS限流配置
+func WithGRPCQPSLimit(config *QPSLimitConfig) ConfigOption {
+	return ConfigOptionFunc(func(c *Config) {
+		c.opts.grpcQPSLimit = config
+	})
+}
+
+// WithHTTPQPSLimit 设置HTTP QPS限流配置
+func WithHTTPQPSLimit(config *QPSLimitConfig) ConfigOption {
+	return ConfigOptionFunc(func(c *Config) {
+		c.opts.httpQPSLimit = config
+	})
+}
+
+// WithQPSLimit 同时设置gRPC和HTTP QPS限流配置
+func WithQPSLimit(grpcConfig, httpConfig *QPSLimitConfig) ConfigOption {
+	return ConfigOptionFunc(func(c *Config) {
+		c.opts.grpcQPSLimit = grpcConfig
+		c.opts.httpQPSLimit = httpConfig
+	})
+}

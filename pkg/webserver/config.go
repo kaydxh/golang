@@ -68,6 +68,9 @@ type Config struct {
 		//shutdownTimeoutDuration force shutdonw server after some time
 		shutdownTimeoutDuration time.Duration
 		gatewayOptions          []gw_.GRPCGatewayOption
+		// QPS限流配置（扩展配置，不依赖proto）
+		grpcQPSLimit *QPSLimitConfig
+		httpQPSLimit *QPSLimitConfig
 	}
 }
 
@@ -216,12 +219,14 @@ func (c *Config) installHttpMiddlewareChain() []gw_.GRPCGatewayOption {
 		gw_.WithServerInterceptorsHttpBodyProtoOptions(),
 
 		gw_.WithHttpHandlerInterceptorsTimerOptions(),
-
-		// limit rate
-		gw_.WithHttpHandlerInterceptorsLimitAllOptions(
-			int(httpConfig.GetMaxConcurrency()),
-		),
 	)
+
+	// QPS限流和并发控制（通过扩展配置）
+	if c.opts.httpQPSLimit != nil {
+		opts = append(opts, gw_.WithHttpHandlerInterceptorsQPSLimitOptions(
+			c.opts.httpQPSLimit.ToHTTPQPSLimitConfig(),
+		))
+	}
 
 	//options
 	/*
@@ -280,8 +285,6 @@ func (c *Config) installHttpMiddlewareChain() []gw_.GRPCGatewayOption {
 }
 
 func (c *Config) installGrpcMiddlewareChain() []gw_.GRPCGatewayOption {
-
-	grpcConfig := c.Proto.GetGrpc()
 	var opts []gw_.GRPCGatewayOption
 	opts = append(
 		opts,
@@ -292,12 +295,6 @@ func (c *Config) installGrpcMiddlewareChain() []gw_.GRPCGatewayOption {
 		// recovery
 		gw_.WithServerInterceptorsRecoveryOptions(),
 
-		// limit rate
-		gw_.WithServerInterceptorsLimitRateOptions(
-			int(grpcConfig.GetMaxConcurrencyUnary()),
-			int(grpcConfig.GetMaxConcurrencyStream()),
-		),
-
 		// total req, fail req, cost time metrics, errorcode ip dims
 		gw_.WithServerUnaryMetricInterceptorOptions(),
 
@@ -305,6 +302,13 @@ func (c *Config) installGrpcMiddlewareChain() []gw_.GRPCGatewayOption {
 		gw_.WithServerUnaryInterceptorsInOutPacketOptions(),
 		//gw_.WithServerInterceptorTimeoutOptions(grpcConfig.GetTimeout().AsDuration()),
 	)
+
+	// QPS限流和并发控制（通过扩展配置）
+	if c.opts.grpcQPSLimit != nil {
+		opts = append(opts, gw_.WithServerInterceptorsQPSLimitOptions(
+			c.opts.grpcQPSLimit.ToGRPCQPSLimitConfig(),
+		))
+	}
 
 	return opts
 }

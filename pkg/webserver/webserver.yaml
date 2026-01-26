@@ -3,13 +3,10 @@ web:
     host: 0.0.0.0
     port: 10000
   grpc:
-    max_concurrency_unary: 0 # max concurrency for grpc unary api, 0 means unlimited
-    max_concurrency_stream: 0 # max concurrency for grpc stream api
     max_receive_message_size: 0 # 0 means max message size 
     max_send_message_size : 0
     timeout: 0s
   http:
-    max_concurrency: 0
     timeout: 0s
   debug:
     enable_profiling: true
@@ -33,4 +30,16 @@ web:
         jaeger:
           url: http://localhost:14268/api/trace
       resource:
+  # QPS限流配置
+  qps_limit:
+    grpc:
+      default_qps: 0        # 默认QPS，0表示不限制
+      default_burst: 0      # 默认突发容量
+      max_concurrency: 0    # 最大并发数限制，0表示不限制
+      method_qps: []
+    http:
+      default_qps: 0
+      default_burst: 0
+      max_concurrency: 0
+      method_qps: []
 
