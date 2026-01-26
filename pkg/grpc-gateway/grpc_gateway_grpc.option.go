@@ -42,6 +42,23 @@ import (
 	"google.golang.org/grpc/status"
 )
 
+// QPSLimitConfig QPS限流配置
+type QPSLimitConfig struct {
+	// DefaultQPS 默认QPS限制，0表示不限制
+	DefaultQPS float64
+	// DefaultBurst 默认突发容量
+	DefaultBurst int
+	// MaxConcurrency 最大并发数限制，0表示不限制
+	// 与QPS限流不同，并发控制限制的是同时处理的请求数，请求完成后令牌会归还
+	MaxConcurrency int
+	// MethodQPS 方法级QPS配置，key为完整方法名（如 /package.Service/Method）
+	MethodQPS map[string]float64
+	// MethodBurst 方法级突发容量配置
+	MethodBurst map[string]int
+	// MethodMaxConcurrency 方法级最大并发数配置
+	MethodMaxConcurrency map[string]int
+}
+
 func WithServerOptions(opts ...grpc.ServerOption) GRPCGatewayOption {
 	return GRPCGatewayOptionFunc(func(c *GRPCGateway) {
 		c.opts.serverOptions = append(c.opts.serverOptions, opts...)
@@ -151,6 +168,55 @@ func WithServerInterceptorsLimitRateOptions(burstUnary, burstStream int) GRPCGat
 		if burstStream > 0 {
 			limiterStream := rate_.NewLimiter(burstStream)
 			WithServerStreamInterceptorsOptions(interceptorratelimit_.StreamServerInterceptor(limiterStream)).apply(c)
+		}
+	})
+}
+
+// WithServerInterceptorsQPSLimitOptions QPS限流拦截器选项
+// 支持全局默认QPS和方法级QPS配置
+func WithServerInterceptorsQPSLimitOptions(config QPSLimitConfig) GRPCGatewayOption {
+	return GRPCGatewayOptionFunc(func(c *GRPCGateway) {
+		// QPS限流
+		if config.DefaultQPS > 0 || len(config.MethodQPS) > 0 {
+			// 创建方法级QPS限流器
+			defaultBurst := config.DefaultBurst
+			if defaultBurst <= 0 {
+				defaultBurst = int(config.DefaultQPS)
+			}
+			methodLimiter := rate_.NewMethodQPSLimiter(config.DefaultQPS, defaultBurst)
+
+			// 设置方法级QPS配置
+			for method, qps := range config.MethodQPS {
+				burst := config.MethodBurst[method]
+				if burst <= 0 {
+					burst = int(qps)
+				}
+				methodLimiter.SetMethodQPS(method, qps, burst)
+			}
+
+			WithServerUnaryInterceptorsOptions(
+				interceptorratelimit_.UnaryServerInterceptorQPS(methodLimiter),
+			).apply(c)
+		}
+
+		// 并发控制
+		if config.MaxConcurrency > 0 || len(config.MethodMaxConcurrency) > 0 {
+			defaultConcurrency := config.MaxConcurrency
+			if defaultConcurrency <= 0 {
+				defaultConcurrency = 0 // 不限制
+			}
+			concurrencyLimiter := rate_.NewMethodLimiter(defaultConcurrency)
+
+			// 设置方法级并发配置
+			for method, maxConcurrency := range config.MethodMaxConcurrency {
+				if maxConcurrency > 0 {
+					concurrencyLimiter.AddLimiter(method, rate_.NewLimiter(maxConcurrency))
+				}
+			}
+
+			WithServerUnaryInterceptorsOptions(
+				interceptorratelimit_.UnaryServerInterceptorConcurrency(concurrencyLimiter),
+			).apply(c)
 		}
 	})
 }

@@ -15,8 +15,6 @@ message Web {
 
   Grpc grpc = 3;
   message Grpc {
-    int32 max_concurrency_unary = 1;
-    int32 max_concurrency_stream = 2;
     int32 max_receive_message_size = 3;
     int32 max_send_message_size = 4;
     google.protobuf.Duration timeout = 5;
@@ -25,7 +23,6 @@ message Web {
   Http http = 4;
   message Http {
     ApiFormatter api_formatter = 1;
-    int32 max_concurrency = 2;
     // timeout 0 is not unlimited
     google.protobuf.Duration timeout = 3;
 
