@@ -72,4 +72,3 @@ func GetTracerProvider() trace.TracerProvider {
 func GetTracer(name string, opts ...trace.TracerOption) trace.Tracer {
 	return otel.Tracer(name, opts...)
 }
-

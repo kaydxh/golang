@@ -19,39 +19,21 @@
  *OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  *SOFTWARE.
  */
-package interceptorprometheus
+package opentelemetry
 
 import (
-	"fmt"
-	"net/http"
-
-	time_ "github.com/kaydxh/golang/go/time"
-	logs_ "github.com/kaydxh/golang/pkg/logs"
-	prometheus_ "github.com/kaydxh/golang/pkg/monitor/prometheus"
+	"github.com/kaydxh/golang/pkg/opentelemetry/resource"
+	"github.com/spf13/viper"
 )
 
-func InterceptorOfTimer(enabledMetric bool) func(handler http.Handler) http.Handler {
-	return func(handler http.Handler) http.Handler {
-		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-			tc := time_.New(true)
-			logger := logs_.GetLogger(r.Context())
-			summary := func() {
-				tc.Tick(r.Method)
-				if enabledMetric {
-					prometheus_.M.DurationCost.WithLabelValues(
-						r.Method,
-					).Observe(
-						float64(tc.Elapse().Milliseconds()),
-					)
-				}
+func WithViper(v *viper.Viper) ConfigOption {
+	return ConfigOptionFunc(func(c *Config) {
+		c.opts.viper = v
+	})
+}
 
-				logger.WithField("method", fmt.Sprintf("%s %s", r.Method, r.URL.Path)).Infof(tc.String())
-			}
-			defer summary()
-
-			handler.ServeHTTP(w, r)
-		})
-
-	}
-
+func WithMemoryCallBack(f func(total, free uint64, usage float64)) ConfigOption {
+	return ConfigOptionFunc(func(c *Config) {
+		c.opts.resourceStatsServiceOptions = append(c.opts.resourceStatsServiceOptions, resource.WithMemoryCallBack(f))
+	})
 }

@@ -34,7 +34,7 @@ import (
 	interceptortrivialv2_ "github.com/kaydxh/golang/pkg/middleware/api/trivial/v2"
 	httpinterceptordebug_ "github.com/kaydxh/golang/pkg/middleware/http-middleware/debug"
 	httpinterceptorhttp_ "github.com/kaydxh/golang/pkg/middleware/http-middleware/http"
-	httpinterceptoropentelemetr_ "github.com/kaydxh/golang/pkg/middleware/http-middleware/monitor/opentelemetry"
+	httpinterceptoropentelemetr_ "github.com/kaydxh/golang/pkg/middleware/http-middleware/opentelemetry"
 	httpinterceptorlimiter_ "github.com/kaydxh/golang/pkg/middleware/http-middleware/ratelimiter"
 	httpinterceptortimer_ "github.com/kaydxh/golang/pkg/middleware/http-middleware/timer"
 )

@@ -1,0 +1,38 @@
+# OpenTelemetry 统一监控配置（去掉 monitor 包装层）
+open_telemetry:
+  enabled: true
+  metric_collect_duration: 60s
+  otel_trace_exporter_type: trace_stdout
+  otel_metric_exporter_type: metric_stdout
+  otel_log_exporter_type: log_none
+  otel_metric_exporter:
+    stdout:
+      pretty_print: true
+    prometheus:
+      url: /metrics
+    # OTLP 配置（用于腾讯云 Prometheus 等）
+    otlp:
+      endpoint: ""           # 腾讯云 Prometheus Remote Write 地址
+      token: ""              # 认证 Token
+      protocol: "http"       # http 或 grpc
+      insecure: false        # 是否禁用 TLS
+      url_path: "/v1/metrics"
+      headers: {}
+  otel_trace_exporter:
+    stdout:
+      pretty_print: true
+    jaeger:
+      url: http://localhost:14268/api/traces
+    # OTLP 配置（用于腾讯云 APM 等）
+    otlp:
+      endpoint: ""
+      token: ""
+      protocol: "http"
+      insecure: false
+  resource:
+    service_name: ""
+    attrs: {}
+  # 从旧 monitor.prometheus 迁移的配置
+  enabled_metric_timer_cost: true
+  enabled_metric_code_message: true
+

@@ -22,18 +22,45 @@
 package opentelemetry
 
 import (
-	"github.com/kaydxh/golang/pkg/monitor/opentelemetry/resource"
-	"github.com/spf13/viper"
+	"context"
+
+	metric_ "github.com/kaydxh/golang/pkg/opentelemetry/metric"
+	tracer_ "github.com/kaydxh/golang/pkg/opentelemetry/tracer"
 )
 
-func WithViper(v *viper.Viper) ConfigOption {
-	return ConfigOptionFunc(func(c *Config) {
-		c.opts.viper = v
-	})
+type OpenTelemetryServiceOptions struct {
+	meterOptions  []metric_.MeterOption
+	tracerOptions []tracer_.TracerOption
 }
 
-func WithMemoryCallBack(f func(total, free uint64, usage float64)) ConfigOption {
-	return ConfigOptionFunc(func(c *Config) {
-		c.opts.resourceStatsServiceOptions = append(c.opts.resourceStatsServiceOptions, resource.WithMemoryCallBack(f))
-	})
+type OpenTelemetryService struct {
+	opts OpenTelemetryServiceOptions
+}
+
+func NewOpenTelemetryService(opts ...OpenTelemetryServiceOption) *OpenTelemetryService {
+	t := &OpenTelemetryService{}
+	t.ApplyOptions(opts...)
+
+	return t
+}
+
+func (t *OpenTelemetryService) Install(ctx context.Context) error {
+
+	if len(t.opts.meterOptions) > 0 {
+		meter := metric_.NewMeter(t.opts.meterOptions...)
+		err := meter.Install(ctx)
+		if err != nil {
+			return err
+		}
+	}
+
+	if len(t.opts.tracerOptions) > 0 {
+		tracer := tracer_.NewTracer(t.opts.tracerOptions...)
+		err := tracer.Install(ctx)
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
 }

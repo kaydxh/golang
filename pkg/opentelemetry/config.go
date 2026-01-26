@@ -25,18 +25,19 @@ import (
 	"context"
 	"fmt"
 
-	prometheus_ "github.com/kaydxh/golang/pkg/monitor/opentelemetry/metric/prometheus"
-	stdoutmetric_ "github.com/kaydxh/golang/pkg/monitor/opentelemetry/metric/stdout"
-	"github.com/kaydxh/golang/pkg/monitor/opentelemetry/resource"
-	jaeger_ "github.com/kaydxh/golang/pkg/monitor/opentelemetry/tracer/jaeger"
-	stdouttrace_ "github.com/kaydxh/golang/pkg/monitor/opentelemetry/tracer/stdout"
+	otlpmetric_ "github.com/kaydxh/golang/pkg/opentelemetry/metric/otlp"
+	prometheus_ "github.com/kaydxh/golang/pkg/opentelemetry/metric/prometheus"
+	stdoutmetric_ "github.com/kaydxh/golang/pkg/opentelemetry/metric/stdout"
+	"github.com/kaydxh/golang/pkg/opentelemetry/resource"
+	jaeger_ "github.com/kaydxh/golang/pkg/opentelemetry/tracer/jaeger"
+	stdouttrace_ "github.com/kaydxh/golang/pkg/opentelemetry/tracer/stdout"
 	viper_ "github.com/kaydxh/golang/pkg/viper"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
 )
 
 type Config struct {
-	Proto Monitor_OpenTelemetry
+	Proto OpenTelemetry
 	opts  struct {
 		// If set, overrides params below
 		viper                       *viper.Viper
@@ -77,7 +78,7 @@ func (c *completedConfig) New(ctx context.Context) error {
 
 func (c *completedConfig) install(ctx context.Context) error {
 
-	var openTelemetryOpts []OpenTelemetryOption
+	var openTelemetryOpts []OpenTelemetryServiceOption
 	opts, err := c.installMeter(ctx)
 	if err != nil {
 		return err
@@ -90,7 +91,7 @@ func (c *completedConfig) install(ctx context.Context) error {
 	}
 	openTelemetryOpts = append(openTelemetryOpts, opts...)
 
-	ot := NewOpenTelemetry(openTelemetryOpts...)
+	ot := NewOpenTelemetryService(openTelemetryOpts...)
 	err = ot.Install(ctx)
 	if err != nil {
 		return err
@@ -100,9 +101,9 @@ func (c *completedConfig) install(ctx context.Context) error {
 	return err
 }
 
-func (c *completedConfig) installMeter(ctx context.Context) ([]OpenTelemetryOption, error) {
+func (c *completedConfig) installMeter(ctx context.Context) ([]OpenTelemetryServiceOption, error) {
 
-	var opts []OpenTelemetryOption
+	var opts []OpenTelemetryServiceOption
 	collectDuration := c.Proto.GetMetricCollectDuration().AsDuration()
 	if collectDuration > 0 {
 		opts = append(opts, WithMetricCollectDuration(collectDuration))
@@ -110,19 +111,58 @@ func (c *completedConfig) installMeter(ctx context.Context) ([]OpenTelemetryOpti
 
 	metricType := c.Proto.OtelMetricExporterType
 	switch metricType {
-	case Monitor_OpenTelemetry_metric_prometheus:
+	case OtelMetricExporterType_metric_prometheus:
 		builder := prometheus_.NewPrometheusExporterBuilder(
 			prometheus_.WithMetricUrlPath(c.Proto.GetOtelMetricExporter().GetPrometheus().GetUrl()),
 		)
 		opts = append(opts, WithMeterPullExporter(builder))
 
-	case Monitor_OpenTelemetry_metric_stdout:
+	case OtelMetricExporterType_metric_stdout:
 		builder := stdoutmetric_.NewStdoutExporterBuilder(
 			stdoutmetric_.WithPrettyPrint(c.Proto.GetOtelMetricExporter().GetStdout().GetPrettyPrint()),
 		)
 		opts = append(opts, WithMeterPushExporter(builder))
 
-	case Monitor_OpenTelemetry_metric_none:
+	case OtelMetricExporterType_metric_otlp:
+		otlpConfig := c.Proto.GetOtelMetricExporter().GetOtlp()
+		var otlpOpts []otlpmetric_.OTLPExporterBuilderOption
+
+		if otlpConfig.GetEndpoint() != "" {
+			otlpOpts = append(otlpOpts, otlpmetric_.WithEndpoint(otlpConfig.GetEndpoint()))
+		}
+
+		// Set protocol
+		protocol := otlpConfig.GetProtocol()
+		if protocol == "grpc" {
+			otlpOpts = append(otlpOpts, otlpmetric_.WithProtocol(otlpmetric_.ProtocolGRPC))
+		} else {
+			otlpOpts = append(otlpOpts, otlpmetric_.WithProtocol(otlpmetric_.ProtocolHTTP))
+		}
+
+		// Set insecure
+		otlpOpts = append(otlpOpts, otlpmetric_.WithInsecure(otlpConfig.GetInsecure()))
+
+		// Set URL path for HTTP
+		if otlpConfig.GetUrlPath() != "" {
+			otlpOpts = append(otlpOpts, otlpmetric_.WithURLPath(otlpConfig.GetUrlPath()))
+		}
+
+		// Set headers (including token)
+		headers := make(map[string]string)
+		for k, v := range otlpConfig.GetHeaders() {
+			headers[k] = v
+		}
+		if otlpConfig.GetToken() != "" {
+			headers["Authorization"] = "Bearer " + otlpConfig.GetToken()
+		}
+		if len(headers) > 0 {
+			otlpOpts = append(otlpOpts, otlpmetric_.WithHeaders(headers))
+		}
+
+		builder := otlpmetric_.NewOTLPExporterBuilder(otlpOpts...)
+		opts = append(opts, WithMeterPushExporter(builder))
+
+	case OtelMetricExporterType_metric_none:
 		// not enable metric
 		return nil, nil
 
@@ -134,25 +174,25 @@ func (c *completedConfig) installMeter(ctx context.Context) ([]OpenTelemetryOpti
 	return opts, nil
 }
 
-func (c *completedConfig) installTracer(ctx context.Context) ([]OpenTelemetryOption, error) {
+func (c *completedConfig) installTracer(ctx context.Context) ([]OpenTelemetryServiceOption, error) {
 
-	var opts []OpenTelemetryOption
+	var opts []OpenTelemetryServiceOption
 	tracerType := c.Proto.OtelTraceExporterType
 	switch tracerType {
-	case Monitor_OpenTelemetry_trace_jaeger:
+	case OtelTraceExporterType_trace_jaeger:
 		builder, err := jaeger_.NewJaegerExporertBuilder(c.Proto.GetOtelTraceExporter().GetJaeger().GetUrl())
 		if err != nil {
 			return nil, fmt.Errorf("new jaeger exporter builder err: %v", err)
 		}
 		opts = append(opts, WithTracerExporter(builder))
 
-	case Monitor_OpenTelemetry_trace_stdout:
+	case OtelTraceExporterType_trace_stdout:
 		builder := stdouttrace_.NewStdoutExporterBuilder(
 			stdouttrace_.WithPrettyPrint(c.Proto.GetOtelTraceExporter().GetStdout().GetPrettyPrint()),
 		)
 		opts = append(opts, WithTracerExporter(builder))
 
-	case Monitor_OpenTelemetry_trace_none:
+	case OtelTraceExporterType_trace_none:
 		// not enable tracer
 		return nil, nil
 
