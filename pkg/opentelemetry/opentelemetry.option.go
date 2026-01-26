@@ -26,6 +26,7 @@ import (
 
 	"github.com/kaydxh/golang/pkg/opentelemetry/metric"
 	"github.com/kaydxh/golang/pkg/opentelemetry/tracer"
+	"go.opentelemetry.io/otel/sdk/resource"
 )
 
 func WithMeterPushExporter(pushExporterBuilder metric.PushExporterBuilder) OpenTelemetryServiceOption {
@@ -50,5 +51,45 @@ func WithMetricCollectDuration(period time.Duration) OpenTelemetryServiceOption 
 func WithTracerExporter(exporterBuilder tracer.TracerExporterBuilder) OpenTelemetryServiceOption {
 	return OpenTelemetryServiceOptionFunc(func(o *OpenTelemetryService) {
 		o.opts.tracerOptions = append(o.opts.tracerOptions, tracer.WithExporterBuilder(exporterBuilder))
+	})
+}
+
+// WithResource sets a custom resource for both tracer and meter
+func WithResource(res *resource.Resource) OpenTelemetryServiceOption {
+	return OpenTelemetryServiceOptionFunc(func(o *OpenTelemetryService) {
+		o.opts.meterOptions = append(o.opts.meterOptions, metric.WithResource(res))
+		o.opts.tracerOptions = append(o.opts.tracerOptions, tracer.WithResource(res))
+	})
+}
+
+// ========================================
+// App MeterProvider Options (双 Provider 支持)
+// ========================================
+
+// WithAppMeterPushExporter sets the push exporter for App MeterProvider
+func WithAppMeterPushExporter(pushExporterBuilder metric.PushExporterBuilder) OpenTelemetryServiceOption {
+	return OpenTelemetryServiceOptionFunc(func(o *OpenTelemetryService) {
+		o.opts.appMeterOptions = append(o.opts.appMeterOptions, metric.WithPushExporter(pushExporterBuilder))
+	})
+}
+
+// WithAppMeterPullExporter sets the pull exporter for App MeterProvider
+func WithAppMeterPullExporter(pullExporterBuilder metric.PullExporterBuilder) OpenTelemetryServiceOption {
+	return OpenTelemetryServiceOptionFunc(func(o *OpenTelemetryService) {
+		o.opts.appMeterOptions = append(o.opts.appMeterOptions, metric.WithPullExporter(pullExporterBuilder))
+	})
+}
+
+// WithAppMetricCollectDuration sets the collect duration for App MeterProvider
+func WithAppMetricCollectDuration(period time.Duration) OpenTelemetryServiceOption {
+	return OpenTelemetryServiceOptionFunc(func(o *OpenTelemetryService) {
+		o.opts.appMeterOptions = append(o.opts.appMeterOptions, metric.WithCollectPeriod(period))
+	})
+}
+
+// WithAppMeterResource sets a custom resource for App MeterProvider
+func WithAppMeterResource(res *resource.Resource) OpenTelemetryServiceOption {
+	return OpenTelemetryServiceOptionFunc(func(o *OpenTelemetryService) {
+		o.opts.appMeterOptions = append(o.opts.appMeterOptions, metric.WithResource(res))
 	})
 }

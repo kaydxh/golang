@@ -25,12 +25,14 @@ import (
 	"context"
 
 	metric_ "github.com/kaydxh/golang/pkg/opentelemetry/metric"
+	"github.com/kaydxh/golang/pkg/opentelemetry/metric/api"
 	tracer_ "github.com/kaydxh/golang/pkg/opentelemetry/tracer"
 )
 
 type OpenTelemetryServiceOptions struct {
-	meterOptions  []metric_.MeterOption
-	tracerOptions []tracer_.TracerOption
+	meterOptions    []metric_.MeterOption
+	appMeterOptions []metric_.MeterOption // App MeterProvider options
+	tracerOptions   []tracer_.TracerOption
 }
 
 type OpenTelemetryService struct {
@@ -46,11 +48,24 @@ func NewOpenTelemetryService(opts ...OpenTelemetryServiceOption) *OpenTelemetryS
 
 func (t *OpenTelemetryService) Install(ctx context.Context) error {
 
+	// Install Global MeterProvider
 	if len(t.opts.meterOptions) > 0 {
 		meter := metric_.NewMeter(t.opts.meterOptions...)
 		err := meter.Install(ctx)
 		if err != nil {
 			return err
+		}
+	}
+
+	// Install App MeterProvider (separate from global)
+	if len(t.opts.appMeterOptions) > 0 {
+		appMeter := metric_.NewMeter(t.opts.appMeterOptions...)
+		appProvider, err := appMeter.InstallAsAppProvider(ctx)
+		if err != nil {
+			return err
+		}
+		if appProvider != nil {
+			api.SetAppMeterProvider(appProvider)
 		}
 	}
 

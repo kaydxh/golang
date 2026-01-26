@@ -39,6 +39,7 @@ type TracerOptions struct {
 	serviceVersion   string
 	serviceNamespace string
 	tracerProvider   *sdktrace.TracerProvider
+	resource         *resource.Resource
 }
 
 type Tracer struct {
@@ -59,28 +60,34 @@ func (t *Tracer) Install(ctx context.Context) (err error) {
 		return err
 	}
 
-	// Build resource attributes
-	resourceAttrs := []resource.Option{
-		resource.WithSchemaURL(semconv.SchemaURL),
-	}
+	// Use custom resource if provided
+	var res *resource.Resource
+	if t.opts.resource != nil {
+		res = t.opts.resource
+	} else {
+		// Build resource attributes
+		resourceAttrs := []resource.Option{
+			resource.WithSchemaURL(semconv.SchemaURL),
+		}
 
-	// Add service information if provided
-	if t.opts.serviceName != "" {
-		attrs := []attribute.KeyValue{
-			semconv.ServiceName(t.opts.serviceName),
+		// Add service information if provided
+		if t.opts.serviceName != "" {
+			attrs := []attribute.KeyValue{
+				semconv.ServiceName(t.opts.serviceName),
+			}
+			if t.opts.serviceVersion != "" {
+				attrs = append(attrs, semconv.ServiceVersion(t.opts.serviceVersion))
+			}
+			if t.opts.serviceNamespace != "" {
+				attrs = append(attrs, semconv.ServiceNamespace(t.opts.serviceNamespace))
+			}
+			resourceAttrs = append(resourceAttrs, resource.WithAttributes(attrs...))
 		}
-		if t.opts.serviceVersion != "" {
-			attrs = append(attrs, semconv.ServiceVersion(t.opts.serviceVersion))
-		}
-		if t.opts.serviceNamespace != "" {
-			attrs = append(attrs, semconv.ServiceNamespace(t.opts.serviceNamespace))
-		}
-		resourceAttrs = append(resourceAttrs, resource.WithAttributes(attrs...))
-	}
 
-	res, err := resource.New(ctx, resourceAttrs...)
-	if err != nil {
-		return fmt.Errorf("creating resource: %w", err)
+		res, err = resource.New(ctx, resourceAttrs...)
+		if err != nil {
+			return fmt.Errorf("creating resource: %w", err)
+		}
 	}
 
 	tp := sdktrace.NewTracerProvider(

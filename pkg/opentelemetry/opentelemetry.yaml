@@ -1,15 +1,19 @@
 # OpenTelemetry 统一监控配置（去掉 monitor 包装层）
 open_telemetry:
   enabled: true
-  metric_collect_duration: 60s
-  otel_trace_exporter_type: trace_stdout
-  otel_metric_exporter_type: metric_stdout
-  otel_log_exporter_type: log_none
+
+  # ========================================
+  # Global MeterProvider - 基础设施/运维指标
+  # ========================================
+  # 用途：CPU、内存、GC、网络、gRPC 调用统计等基础指标
+  # 使用 API：api.GlobalIncrCounter(), api.GlobalRecordHistogram()
+  metric_collect_duration: 60s           # 采集周期：60秒（基础指标变化慢）
+  otel_metric_exporter_type: metric_prometheus  # 本地 Prometheus 拉取
   otel_metric_exporter:
     stdout:
       pretty_print: true
     prometheus:
-      url: /metrics
+      url: /metrics                      # Prometheus 拉取端点
     # OTLP 配置（用于腾讯云 Prometheus 等）
     otlp:
       endpoint: ""           # 腾讯云 Prometheus Remote Write 地址
@@ -18,20 +22,67 @@ open_telemetry:
       insecure: false        # 是否禁用 TLS
       url_path: "/v1/metrics"
       headers: {}
+
+  # ========================================
+  # App MeterProvider - 应用级/业务指标
+  # ========================================
+  # 用途：订单数、用户注册、业务延迟、API 调用等业务指标
+  # 使用 API：api.IncrCounter(), api.RecordHistogram()
+  app_meter_provider:
+    enabled: true                        # 启用独立的 App MeterProvider
+    exporter_type: metric_otlp           # 推送到远程 OTLP（腾讯云 Prometheus）
+    collect_duration: 30s                # 采集周期：30秒（业务指标需要更实时）
+    exporter:
+      otlp:
+        endpoint: "prometheus.tencentcloudapi.com:4317"  # 腾讯云 Prometheus 地址
+        token: "your-app-metrics-token"  # 认证 Token
+        protocol: "grpc"                 # 使用 gRPC 协议
+        insecure: false
+        url_path: "/v1/metrics"
+        headers: {}
+    resource:
+      service_name: "my-app-business"    # 业务指标专用服务名
+      attrs:
+        metric_type: "business"          # 标记为业务指标
+        team: "platform"
+
+  # ========================================
+  # Trace 配置
+  # ========================================
+  otel_trace_exporter_type: trace_stdout
+  otel_log_exporter_type: log_none
   otel_trace_exporter:
     stdout:
       pretty_print: true
     jaeger:
       url: http://localhost:14268/api/traces
-    # OTLP 配置（用于腾讯云 APM 等）
+    # OTLP 配置（用于腾讯云 APM、Jaeger OTLP、Tempo 等）
     otlp:
-      endpoint: ""
-      token: ""
-      protocol: "http"
-      insecure: false
+      endpoint: ""              # e.g., "tempo.example.com:4317" for gRPC
+      token: ""                 # Bearer token for authentication
+      protocol: "grpc"          # http 或 grpc
+      insecure: false           # 是否禁用 TLS
+      url_path: "/v1/traces"    # HTTP 协议的 URL 路径
+      headers: {}               # 自定义 headers
+
+  # ========================================
+  # 通用资源配置（Global Provider 使用）
+  # ========================================
   resource:
-    service_name: ""
-    attrs: {}
+    service_name: ""           # 服务名称（默认使用进程名）
+    service_version: ""        # 服务版本
+    attrs: {}                  # 自定义属性
+    # K8s 资源属性配置
+    k8s:
+      enabled: true            # 是否启用 K8s 属性自动检测（默认 true）
+      # 以下属性会自动从环境变量读取，也可以手动覆盖
+      # node_ip: ""            # 覆盖 NODE_IP 环境变量
+      # pod_namespace: ""      # 覆盖 POD_NAMESPACE 环境变量
+      # pod_name: ""           # 覆盖 POD_NAME 环境变量
+      # pod_ip: ""             # 覆盖 POD_IP 环境变量
+      # container_name: ""     # 覆盖 CONTAINER_NAME 环境变量
+      # container_platform: "" # 覆盖 CONTAINER_PLATFORM 环境变量 (e.g., STKE, TKE)
+
   # 从旧 monitor.prometheus 迁移的配置
   enabled_metric_timer_cost: true
   enabled_metric_code_message: true

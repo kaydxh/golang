@@ -18,6 +18,7 @@ require (
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.27.3
 	github.com/kaydxh/golang/go v0.0.0-20251125160242-e06b25c89946
 	github.com/kaydxh/golang/pkg/logs v0.0.0-20251125132602-62c26b682228
+	github.com/kaydxh/golang/pkg/opentelemetry v0.0.0-00010101000000-000000000000
 	github.com/kaydxh/golang/pkg/protobuf v0.0.0-20251125160242-e06b25c89946
 	github.com/kaydxh/golang/pkg/webserver v0.0.0-00010101000000-000000000000
 	github.com/sirupsen/logrus v1.9.3

@@ -21,6 +21,10 @@
  */
 package tracer
 
+import (
+	"go.opentelemetry.io/otel/sdk/resource"
+)
+
 func WithExporterBuilder(builder TracerExporterBuilder) TracerOption {
 	return TracerOptionFunc(func(m *Tracer) {
 		m.opts.builer = builder
@@ -45,5 +49,12 @@ func WithServiceVersion(version string) TracerOption {
 func WithServiceNamespace(namespace string) TracerOption {
 	return TracerOptionFunc(func(m *Tracer) {
 		m.opts.serviceNamespace = namespace
+	})
+}
+
+// WithResource sets a custom resource for the tracer
+func WithResource(res *resource.Resource) TracerOption {
+	return TracerOptionFunc(func(m *Tracer) {
+		m.opts.resource = res
 	})
 }

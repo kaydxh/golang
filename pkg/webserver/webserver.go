@@ -197,3 +197,8 @@ func (s *GenericWebServer) IsReady() bool {
 	}
 	return true
 }
+
+// GetGinEngine returns the underlying gin.Engine for registering custom routes.
+func (s *GenericWebServer) GetGinEngine() *gin.Engine {
+	return s.ginBackend
+}

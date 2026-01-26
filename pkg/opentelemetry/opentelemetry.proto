@@ -20,14 +20,54 @@ message OpenTelemetry {
 
   Resource resource = 10;
 
+  // App MeterProvider configuration (separate from global)
+  // If enabled, creates an independent MeterProvider for application-level metrics
+  AppMeterProvider app_meter_provider = 11;
+
   // 从旧 Monitor.Prometheus 迁移的配置
   bool enabled_metric_timer_cost = 20;
   bool enabled_metric_code_message = 21;
 }
 
+// AppMeterProvider configuration for application-level metrics
+// Allows separation between infrastructure metrics (global) and business metrics (app)
+message AppMeterProvider {
+  bool enabled = 1;  // Enable separate App MeterProvider
+
+  // Exporter type for app metrics (if different from global)
+  // If not set, uses the same exporter type as global
+  OtelMetricExporterType exporter_type = 2;
+
+  // Exporter configuration (if different from global)
+  OtelMetricExporter exporter = 3;
+
+  // Collect duration for app metrics (if different from global)
+  google.protobuf.Duration collect_duration = 4;
+
+  // Resource attributes specific to app metrics
+  // If not set, inherits from global resource
+  Resource resource = 5;
+}
+
 message Resource {
-  string service_name = 1;  // default use process name
-  map<string, string> attrs = 2;
+  string service_name = 1;     // default use process name
+  string service_version = 2;  // service version
+  map<string, string> attrs = 3;
+
+  // K8s resource configuration
+  K8sResource k8s = 10;
+}
+
+message K8sResource {
+  bool enabled = 1;  // enable K8s attribute detection from env vars (default: true)
+
+  // Override values (if not set, read from environment variables)
+  string node_ip = 2;           // override NODE_IP env var
+  string pod_namespace = 3;     // override POD_NAMESPACE env var
+  string pod_name = 4;          // override POD_NAME env var
+  string pod_ip = 5;            // override POD_IP env var
+  string container_name = 6;    // override CONTAINER_NAME env var
+  string container_platform = 7; // override CONTAINER_PLATFORM env var (e.g., STKE, TKE)
 }
 
 message OtelMetricExporter {

@@ -219,6 +219,9 @@ func (c *Config) installHttpMiddlewareChain() []gw_.GRPCGatewayOption {
 		gw_.WithServerInterceptorsHttpBodyProtoOptions(),
 
 		gw_.WithHttpHandlerInterceptorsTimerOptions(),
+
+		// http metric (total req, fail req, cost time, error code)
+		gw_.WithHttpHandlerInterceptorsMetricOptions(),
 	)
 
 	// QPS限流和并发控制（通过扩展配置）

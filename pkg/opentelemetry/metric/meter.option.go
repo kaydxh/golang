@@ -21,7 +21,11 @@
  */
 package metric
 
-import "time"
+import (
+	"time"
+
+	"go.opentelemetry.io/otel/sdk/resource"
+)
 
 func WithPushExporter(pushExporterBuilder PushExporterBuilder) MeterOption {
 	return MeterOptionFunc(func(m *Meter) {
@@ -38,5 +42,12 @@ func WithPullExporter(pullExporterBuilder PullExporterBuilder) MeterOption {
 func WithCollectPeriod(period time.Duration) MeterOption {
 	return MeterOptionFunc(func(m *Meter) {
 		m.opts.collectPeriod = period
+	})
+}
+
+// WithResource sets a custom resource for the meter
+func WithResource(res *resource.Resource) MeterOption {
+	return MeterOptionFunc(func(m *Meter) {
+		m.opts.resource = res
 	})
 }

@@ -22,6 +22,7 @@
 package opentelemetry
 
 import (
+	"github.com/gin-gonic/gin"
 	"github.com/kaydxh/golang/pkg/opentelemetry/resource"
 	"github.com/spf13/viper"
 )
@@ -35,5 +36,13 @@ func WithViper(v *viper.Viper) ConfigOption {
 func WithMemoryCallBack(f func(total, free uint64, usage float64)) ConfigOption {
 	return ConfigOptionFunc(func(c *Config) {
 		c.opts.resourceStatsServiceOptions = append(c.opts.resourceStatsServiceOptions, resource.WithMemoryCallBack(f))
+	})
+}
+
+// WithGinRouter sets the gin router for registering /metrics endpoint.
+// When set, the /metrics route will be automatically registered when using prometheus exporter.
+func WithGinRouter(router gin.IRouter) ConfigOption {
+	return ConfigOptionFunc(func(c *Config) {
+		c.opts.ginRouter = router
 	})
 }
