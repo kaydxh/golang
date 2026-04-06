@@ -41,7 +41,7 @@ func UnaryClientInterceptorOfInOutputPrinter(filterMethods ...string) grpc.Unary
 		if enablePrint {
 			reqProto, ok := any(req).(proto.Message)
 			if ok {
-				logger.WithField("request", reflect_.TruncateBytes(proto.Clone(reqProto))).Info("send")
+				logger.WithField("request", reflect_.TruncateBytesAndStrings(proto.Clone(reqProto))).Info("send")
 			}
 		}
 
@@ -50,7 +50,7 @@ func UnaryClientInterceptorOfInOutputPrinter(filterMethods ...string) grpc.Unary
 		if enablePrint {
 			respProto, ok := any(reply).(proto.Message)
 			if ok {
-				logger.WithField("response", reflect_.TruncateBytes(proto.Clone(respProto))).Info("recv")
+				logger.WithField("response", reflect_.TruncateBytesAndStrings(proto.Clone(respProto))).Info("recv")
 			}
 		}
 

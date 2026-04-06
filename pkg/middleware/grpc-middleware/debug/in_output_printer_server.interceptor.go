@@ -67,13 +67,13 @@ func HandleInOutputPrinter[REQ any, RESP any](info *grpc.UnaryServerInfo, handle
 
 		reqProto, ok := any(req).(proto.Message)
 		if ok {
-			logger.WithField("method", method).WithField("request", reflect_.TruncateBytes(proto.Clone(reqProto))).Info("recv")
+			logger.WithField("method", method).WithField("request", reflect_.TruncateBytesAndStrings(proto.Clone(reqProto))).Info("recv")
 		}
 
 		resp, err := handler(ctx, req)
 		respProto, ok := any(resp).(proto.Message)
 		if ok {
-			logger.WithField("method", method).WithField("response", reflect_.TruncateBytes(proto.Clone(respProto))).Info("send")
+			logger.WithField("method", method).WithField("response", reflect_.TruncateBytesAndStrings(proto.Clone(respProto))).Info("send")
 		}
 
 		return resp, err
