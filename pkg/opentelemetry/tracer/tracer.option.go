@@ -58,3 +58,13 @@ func WithResource(res *resource.Resource) TracerOption {
 		m.opts.resource = res
 	})
 }
+
+// WithExporterLogging enables logging for trace export operations
+// name: exporter name for logging (e.g., "OTLP", "Jaeger", "stdout")
+// endpoint: endpoint address for logging
+func WithExporterLogging(name, endpoint string) TracerOption {
+	return TracerOptionFunc(func(m *Tracer) {
+		m.opts.exporterName = name
+		m.opts.exporterEndpoint = endpoint
+	})
+}

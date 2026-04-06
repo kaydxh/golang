@@ -57,3 +57,13 @@ func (o *Meter) ApplyOptions(options ...MeterOption) *Meter {
 	}
 	return o
 }
+
+// WithExporterLogging enables logging for metric export operations
+// name: exporter name for logging (e.g., "OTLP", "stdout")
+// endpoint: endpoint address for logging
+func WithExporterLogging(name, endpoint string) MeterOption {
+	return MeterOptionFunc(func(m *Meter) {
+		m.opts.exporterName = name
+		m.opts.exporterEndpoint = endpoint
+	})
+}

@@ -2,17 +2,18 @@
 // versions:
 // 	protoc-gen-go v1.36.10
 // 	protoc        v5.29.3
-// source: opentelemetry.proto
+// source: pkg/opentelemetry/opentelemetry.proto
 
 package opentelemetry
 
 import (
-	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
-	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
-	durationpb "google.golang.org/protobuf/types/known/durationpb"
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
+
+	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
+	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
+	durationpb "google.golang.org/protobuf/types/known/durationpb"
 )
 
 const (
@@ -28,8 +29,6 @@ const (
 	OtelTraceExporterType_trace_none   OtelTraceExporterType = 0
 	OtelTraceExporterType_trace_stdout OtelTraceExporterType = 1
 	OtelTraceExporterType_trace_otlp   OtelTraceExporterType = 2
-	OtelTraceExporterType_trace_jaeger OtelTraceExporterType = 3
-	OtelTraceExporterType_trace_zipkin OtelTraceExporterType = 4
 )
 
 // Enum value maps for OtelTraceExporterType.
@@ -38,15 +37,11 @@ var (
 		0: "trace_none",
 		1: "trace_stdout",
 		2: "trace_otlp",
-		3: "trace_jaeger",
-		4: "trace_zipkin",
 	}
 	OtelTraceExporterType_value = map[string]int32{
 		"trace_none":   0,
 		"trace_stdout": 1,
 		"trace_otlp":   2,
-		"trace_jaeger": 3,
-		"trace_zipkin": 4,
 	}
 )
 
@@ -61,11 +56,11 @@ func (x OtelTraceExporterType) String() string {
 }
 
 func (OtelTraceExporterType) Descriptor() protoreflect.EnumDescriptor {
-	return file_opentelemetry_proto_enumTypes[0].Descriptor()
+	return file_pkg_opentelemetry_opentelemetry_proto_enumTypes[0].Descriptor()
 }
 
 func (OtelTraceExporterType) Type() protoreflect.EnumType {
-	return &file_opentelemetry_proto_enumTypes[0]
+	return &file_pkg_opentelemetry_opentelemetry_proto_enumTypes[0]
 }
 
 func (x OtelTraceExporterType) Number() protoreflect.EnumNumber {
@@ -74,7 +69,7 @@ func (x OtelTraceExporterType) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use OtelTraceExporterType.Descriptor instead.
 func (OtelTraceExporterType) EnumDescriptor() ([]byte, []int) {
-	return file_opentelemetry_proto_rawDescGZIP(), []int{0}
+	return file_pkg_opentelemetry_opentelemetry_proto_rawDescGZIP(), []int{0}
 }
 
 type OtelMetricExporterType int32
@@ -113,11 +108,11 @@ func (x OtelMetricExporterType) String() string {
 }
 
 func (OtelMetricExporterType) Descriptor() protoreflect.EnumDescriptor {
-	return file_opentelemetry_proto_enumTypes[1].Descriptor()
+	return file_pkg_opentelemetry_opentelemetry_proto_enumTypes[1].Descriptor()
 }
 
 func (OtelMetricExporterType) Type() protoreflect.EnumType {
-	return &file_opentelemetry_proto_enumTypes[1]
+	return &file_pkg_opentelemetry_opentelemetry_proto_enumTypes[1]
 }
 
 func (x OtelMetricExporterType) Number() protoreflect.EnumNumber {
@@ -126,7 +121,7 @@ func (x OtelMetricExporterType) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use OtelMetricExporterType.Descriptor instead.
 func (OtelMetricExporterType) EnumDescriptor() ([]byte, []int) {
-	return file_opentelemetry_proto_rawDescGZIP(), []int{1}
+	return file_pkg_opentelemetry_opentelemetry_proto_rawDescGZIP(), []int{1}
 }
 
 type OtelLogExporterType int32
@@ -159,11 +154,11 @@ func (x OtelLogExporterType) String() string {
 }
 
 func (OtelLogExporterType) Descriptor() protoreflect.EnumDescriptor {
-	return file_opentelemetry_proto_enumTypes[2].Descriptor()
+	return file_pkg_opentelemetry_opentelemetry_proto_enumTypes[2].Descriptor()
 }
 
 func (OtelLogExporterType) Type() protoreflect.EnumType {
-	return &file_opentelemetry_proto_enumTypes[2]
+	return &file_pkg_opentelemetry_opentelemetry_proto_enumTypes[2]
 }
 
 func (x OtelLogExporterType) Number() protoreflect.EnumNumber {
@@ -172,7 +167,7 @@ func (x OtelLogExporterType) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use OtelLogExporterType.Descriptor instead.
 func (OtelLogExporterType) EnumDescriptor() ([]byte, []int) {
-	return file_opentelemetry_proto_rawDescGZIP(), []int{2}
+	return file_pkg_opentelemetry_opentelemetry_proto_rawDescGZIP(), []int{2}
 }
 
 // OpenTelemetry 统一监控配置（去掉 Monitor 包装层）
@@ -189,16 +184,13 @@ type OpenTelemetry struct {
 	// App MeterProvider configuration (separate from global)
 	// If enabled, creates an independent MeterProvider for application-level metrics
 	AppMeterProvider *AppMeterProvider `protobuf:"bytes,11,opt,name=app_meter_provider,json=appMeterProvider,proto3" json:"app_meter_provider,omitempty"`
-	// 从旧 Monitor.Prometheus 迁移的配置
-	EnabledMetricTimerCost   bool `protobuf:"varint,20,opt,name=enabled_metric_timer_cost,json=enabledMetricTimerCost,proto3" json:"enabled_metric_timer_cost,omitempty"`
-	EnabledMetricCodeMessage bool `protobuf:"varint,21,opt,name=enabled_metric_code_message,json=enabledMetricCodeMessage,proto3" json:"enabled_metric_code_message,omitempty"`
-	unknownFields            protoimpl.UnknownFields
-	sizeCache                protoimpl.SizeCache
+	unknownFields    protoimpl.UnknownFields
+	sizeCache        protoimpl.SizeCache
 }
 
 func (x *OpenTelemetry) Reset() {
 	*x = OpenTelemetry{}
-	mi := &file_opentelemetry_proto_msgTypes[0]
+	mi := &file_pkg_opentelemetry_opentelemetry_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -210,7 +202,7 @@ func (x *OpenTelemetry) String() string {
 func (*OpenTelemetry) ProtoMessage() {}
 
 func (x *OpenTelemetry) ProtoReflect() protoreflect.Message {
-	mi := &file_opentelemetry_proto_msgTypes[0]
+	mi := &file_pkg_opentelemetry_opentelemetry_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -223,7 +215,7 @@ func (x *OpenTelemetry) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use OpenTelemetry.ProtoReflect.Descriptor instead.
 func (*OpenTelemetry) Descriptor() ([]byte, []int) {
-	return file_opentelemetry_proto_rawDescGZIP(), []int{0}
+	return file_pkg_opentelemetry_opentelemetry_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *OpenTelemetry) GetEnabled() bool {
@@ -289,20 +281,6 @@ func (x *OpenTelemetry) GetAppMeterProvider() *AppMeterProvider {
 	return nil
 }
 
-func (x *OpenTelemetry) GetEnabledMetricTimerCost() bool {
-	if x != nil {
-		return x.EnabledMetricTimerCost
-	}
-	return false
-}
-
-func (x *OpenTelemetry) GetEnabledMetricCodeMessage() bool {
-	if x != nil {
-		return x.EnabledMetricCodeMessage
-	}
-	return false
-}
-
 // AppMeterProvider configuration for application-level metrics
 // Allows separation between infrastructure metrics (global) and business metrics (app)
 type AppMeterProvider struct {
@@ -324,7 +302,7 @@ type AppMeterProvider struct {
 
 func (x *AppMeterProvider) Reset() {
 	*x = AppMeterProvider{}
-	mi := &file_opentelemetry_proto_msgTypes[1]
+	mi := &file_pkg_opentelemetry_opentelemetry_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -336,7 +314,7 @@ func (x *AppMeterProvider) String() string {
 func (*AppMeterProvider) ProtoMessage() {}
 
 func (x *AppMeterProvider) ProtoReflect() protoreflect.Message {
-	mi := &file_opentelemetry_proto_msgTypes[1]
+	mi := &file_pkg_opentelemetry_opentelemetry_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -349,7 +327,7 @@ func (x *AppMeterProvider) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AppMeterProvider.ProtoReflect.Descriptor instead.
 func (*AppMeterProvider) Descriptor() ([]byte, []int) {
-	return file_opentelemetry_proto_rawDescGZIP(), []int{1}
+	return file_pkg_opentelemetry_opentelemetry_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *AppMeterProvider) GetEnabled() bool {
@@ -393,14 +371,19 @@ type Resource struct {
 	ServiceVersion string                 `protobuf:"bytes,2,opt,name=service_version,json=serviceVersion,proto3" json:"service_version,omitempty"` // service version
 	Attrs          map[string]string      `protobuf:"bytes,3,rep,name=attrs,proto3" json:"attrs,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
 	// K8s resource configuration
-	K8S           *K8SResource `protobuf:"bytes,10,opt,name=k8s,proto3" json:"k8s,omitempty"`
+	K8S *K8SResource `protobuf:"bytes,10,opt,name=k8s,proto3" json:"k8s,omitempty"`
+	// APM (Application Performance Management) configuration
+	// For Tencent Cloud APM: https://console.cloud.tencent.com/apm/monitor/access
+	Apm *Apm `protobuf:"bytes,11,opt,name=apm,proto3" json:"apm,omitempty"`
+	// ZhiYan platform configuration for internal monitoring
+	Zhiyan        *ZhiYan `protobuf:"bytes,12,opt,name=zhiyan,proto3" json:"zhiyan,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *Resource) Reset() {
 	*x = Resource{}
-	mi := &file_opentelemetry_proto_msgTypes[2]
+	mi := &file_pkg_opentelemetry_opentelemetry_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -412,7 +395,7 @@ func (x *Resource) String() string {
 func (*Resource) ProtoMessage() {}
 
 func (x *Resource) ProtoReflect() protoreflect.Message {
-	mi := &file_opentelemetry_proto_msgTypes[2]
+	mi := &file_pkg_opentelemetry_opentelemetry_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -425,7 +408,7 @@ func (x *Resource) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Resource.ProtoReflect.Descriptor instead.
 func (*Resource) Descriptor() ([]byte, []int) {
-	return file_opentelemetry_proto_rawDescGZIP(), []int{2}
+	return file_pkg_opentelemetry_opentelemetry_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *Resource) GetServiceName() string {
@@ -456,6 +439,199 @@ func (x *Resource) GetK8S() *K8SResource {
 	return nil
 }
 
+func (x *Resource) GetApm() *Apm {
+	if x != nil {
+		return x.Apm
+	}
+	return nil
+}
+
+func (x *Resource) GetZhiyan() *ZhiYan {
+	if x != nil {
+		return x.Zhiyan
+	}
+	return nil
+}
+
+// APM configuration for Application Performance Management
+// Token is required for APM data reporting and will be added as resource attribute
+type Apm struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// APM Token for authentication, associated with business system
+	// Get from: https://console.cloud.tencent.com/apm/monitor/access
+	Token         string `protobuf:"bytes,1,opt,name=token,proto3" json:"token,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *Apm) Reset() {
+	*x = Apm{}
+	mi := &file_pkg_opentelemetry_opentelemetry_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Apm) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Apm) ProtoMessage() {}
+
+func (x *Apm) ProtoReflect() protoreflect.Message {
+	mi := &file_pkg_opentelemetry_opentelemetry_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Apm.ProtoReflect.Descriptor instead.
+func (*Apm) Descriptor() ([]byte, []int) {
+	return file_pkg_opentelemetry_opentelemetry_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *Apm) GetToken() string {
+	if x != nil {
+		return x.Token
+	}
+	return ""
+}
+
+// ZhiYan platform configuration for internal monitoring
+type ZhiYan struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// App mark for metric reporting (上报 appMark)
+	// Used for business data reporting
+	AppMark string `protobuf:"bytes,1,opt,name=app_mark,json=appMark,proto3" json:"app_mark,omitempty"`
+	// Global app mark for modcall and system-level metric reporting
+	// Used for infrastructure/global metrics
+	GlobalAppMark string `protobuf:"bytes,2,opt,name=global_app_mark,json=globalAppMark,proto3" json:"global_app_mark,omitempty"`
+	// Environment for metric reporting (e.g., "prod", "test", "dev")
+	// If empty, defaults to "prod" for production environment
+	Env string `protobuf:"bytes,3,opt,name=env,proto3" json:"env,omitempty"`
+	// Instance mark for attribute reporting
+	// If empty, uses pod IP or host IP
+	InstanceMark string `protobuf:"bytes,4,opt,name=instance_mark,json=instanceMark,proto3" json:"instance_mark,omitempty"`
+	// APM Token for trace reporting to ZhiYan APM
+	// Format: "空间ID#日志租户#监控宝租户" e.g., "1481#sdk-xxx#5546_35686___apm"
+	// 监控宝 > 应用性能监控 > 接入管理
+	ZhiyanApmToken string `protobuf:"bytes,5,opt,name=zhiyan_apm_token,json=zhiyanApmToken,proto3" json:"zhiyan_apm_token,omitempty"`
+	// Whether to expand resource attributes to metric dimensions
+	// "yes" or "no" (default: "no")
+	ExpandKey string `protobuf:"bytes,6,opt,name=expand_key,json=expandKey,proto3" json:"expand_key,omitempty"`
+	// Metric group for ZhiYan (指标组)
+	// This is used as the scope name when creating Meter
+	// If empty, defaults to "default"
+	// Common values: "default", "client_report", "server_report"
+	MetricGroup string `protobuf:"bytes,7,opt,name=metric_group,json=metricGroup,proto3" json:"metric_group,omitempty"`
+	// Data granularity for metric reporting (数据粒度)
+	// Valid values: 10, 30, 60 (default: 60, minutes)
+	// For sub-minute reporting, set data_type to "second"
+	DataGrain int32 `protobuf:"varint,8,opt,name=data_grain,json=dataGrain,proto3" json:"data_grain,omitempty"`
+	// Data type for metric reporting (数据类型)
+	// Set to "second" for sub-minute granularity data
+	DataType      string `protobuf:"bytes,9,opt,name=data_type,json=dataType,proto3" json:"data_type,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ZhiYan) Reset() {
+	*x = ZhiYan{}
+	mi := &file_pkg_opentelemetry_opentelemetry_proto_msgTypes[4]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ZhiYan) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ZhiYan) ProtoMessage() {}
+
+func (x *ZhiYan) ProtoReflect() protoreflect.Message {
+	mi := &file_pkg_opentelemetry_opentelemetry_proto_msgTypes[4]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ZhiYan.ProtoReflect.Descriptor instead.
+func (*ZhiYan) Descriptor() ([]byte, []int) {
+	return file_pkg_opentelemetry_opentelemetry_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *ZhiYan) GetAppMark() string {
+	if x != nil {
+		return x.AppMark
+	}
+	return ""
+}
+
+func (x *ZhiYan) GetGlobalAppMark() string {
+	if x != nil {
+		return x.GlobalAppMark
+	}
+	return ""
+}
+
+func (x *ZhiYan) GetEnv() string {
+	if x != nil {
+		return x.Env
+	}
+	return ""
+}
+
+func (x *ZhiYan) GetInstanceMark() string {
+	if x != nil {
+		return x.InstanceMark
+	}
+	return ""
+}
+
+func (x *ZhiYan) GetZhiyanApmToken() string {
+	if x != nil {
+		return x.ZhiyanApmToken
+	}
+	return ""
+}
+
+func (x *ZhiYan) GetExpandKey() string {
+	if x != nil {
+		return x.ExpandKey
+	}
+	return ""
+}
+
+func (x *ZhiYan) GetMetricGroup() string {
+	if x != nil {
+		return x.MetricGroup
+	}
+	return ""
+}
+
+func (x *ZhiYan) GetDataGrain() int32 {
+	if x != nil {
+		return x.DataGrain
+	}
+	return 0
+}
+
+func (x *ZhiYan) GetDataType() string {
+	if x != nil {
+		return x.DataType
+	}
+	return ""
+}
+
 type K8SResource struct {
 	state   protoimpl.MessageState `protogen:"open.v1"`
 	Enabled bool                   `protobuf:"varint,1,opt,name=enabled,proto3" json:"enabled,omitempty"` // enable K8s attribute detection from env vars (default: true)
@@ -472,7 +648,7 @@ type K8SResource struct {
 
 func (x *K8SResource) Reset() {
 	*x = K8SResource{}
-	mi := &file_opentelemetry_proto_msgTypes[3]
+	mi := &file_pkg_opentelemetry_opentelemetry_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -484,7 +660,7 @@ func (x *K8SResource) String() string {
 func (*K8SResource) ProtoMessage() {}
 
 func (x *K8SResource) ProtoReflect() protoreflect.Message {
-	mi := &file_opentelemetry_proto_msgTypes[3]
+	mi := &file_pkg_opentelemetry_opentelemetry_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -497,7 +673,7 @@ func (x *K8SResource) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use K8SResource.ProtoReflect.Descriptor instead.
 func (*K8SResource) Descriptor() ([]byte, []int) {
-	return file_opentelemetry_proto_rawDescGZIP(), []int{3}
+	return file_pkg_opentelemetry_opentelemetry_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *K8SResource) GetEnabled() bool {
@@ -560,7 +736,7 @@ type OtelMetricExporter struct {
 
 func (x *OtelMetricExporter) Reset() {
 	*x = OtelMetricExporter{}
-	mi := &file_opentelemetry_proto_msgTypes[4]
+	mi := &file_pkg_opentelemetry_opentelemetry_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -572,7 +748,7 @@ func (x *OtelMetricExporter) String() string {
 func (*OtelMetricExporter) ProtoMessage() {}
 
 func (x *OtelMetricExporter) ProtoReflect() protoreflect.Message {
-	mi := &file_opentelemetry_proto_msgTypes[4]
+	mi := &file_pkg_opentelemetry_opentelemetry_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -585,7 +761,7 @@ func (x *OtelMetricExporter) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use OtelMetricExporter.ProtoReflect.Descriptor instead.
 func (*OtelMetricExporter) Descriptor() ([]byte, []int) {
-	return file_opentelemetry_proto_rawDescGZIP(), []int{4}
+	return file_pkg_opentelemetry_opentelemetry_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *OtelMetricExporter) GetPrometheus() *Prometheus {
@@ -611,16 +787,15 @@ func (x *OtelMetricExporter) GetOtlp() *OTLP {
 
 type OtelTraceExporter struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Jaeger        *Jaeger                `protobuf:"bytes,1,opt,name=jaeger,proto3" json:"jaeger,omitempty"`
-	Stdout        *Stdout                `protobuf:"bytes,2,opt,name=stdout,proto3" json:"stdout,omitempty"`
-	Otlp          *OTLP                  `protobuf:"bytes,3,opt,name=otlp,proto3" json:"otlp,omitempty"`
+	Stdout        *Stdout                `protobuf:"bytes,1,opt,name=stdout,proto3" json:"stdout,omitempty"`
+	Otlp          *OTLP                  `protobuf:"bytes,2,opt,name=otlp,proto3" json:"otlp,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *OtelTraceExporter) Reset() {
 	*x = OtelTraceExporter{}
-	mi := &file_opentelemetry_proto_msgTypes[5]
+	mi := &file_pkg_opentelemetry_opentelemetry_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -632,7 +807,7 @@ func (x *OtelTraceExporter) String() string {
 func (*OtelTraceExporter) ProtoMessage() {}
 
 func (x *OtelTraceExporter) ProtoReflect() protoreflect.Message {
-	mi := &file_opentelemetry_proto_msgTypes[5]
+	mi := &file_pkg_opentelemetry_opentelemetry_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -645,14 +820,7 @@ func (x *OtelTraceExporter) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use OtelTraceExporter.ProtoReflect.Descriptor instead.
 func (*OtelTraceExporter) Descriptor() ([]byte, []int) {
-	return file_opentelemetry_proto_rawDescGZIP(), []int{5}
-}
-
-func (x *OtelTraceExporter) GetJaeger() *Jaeger {
-	if x != nil {
-		return x.Jaeger
-	}
-	return nil
+	return file_pkg_opentelemetry_opentelemetry_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *OtelTraceExporter) GetStdout() *Stdout {
@@ -678,7 +846,7 @@ type Prometheus struct {
 
 func (x *Prometheus) Reset() {
 	*x = Prometheus{}
-	mi := &file_opentelemetry_proto_msgTypes[6]
+	mi := &file_pkg_opentelemetry_opentelemetry_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -690,7 +858,7 @@ func (x *Prometheus) String() string {
 func (*Prometheus) ProtoMessage() {}
 
 func (x *Prometheus) ProtoReflect() protoreflect.Message {
-	mi := &file_opentelemetry_proto_msgTypes[6]
+	mi := &file_pkg_opentelemetry_opentelemetry_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -703,54 +871,10 @@ func (x *Prometheus) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Prometheus.ProtoReflect.Descriptor instead.
 func (*Prometheus) Descriptor() ([]byte, []int) {
-	return file_opentelemetry_proto_rawDescGZIP(), []int{6}
+	return file_pkg_opentelemetry_opentelemetry_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *Prometheus) GetUrl() string {
-	if x != nil {
-		return x.Url
-	}
-	return ""
-}
-
-type Jaeger struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Url           string                 `protobuf:"bytes,1,opt,name=url,proto3" json:"url,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *Jaeger) Reset() {
-	*x = Jaeger{}
-	mi := &file_opentelemetry_proto_msgTypes[7]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *Jaeger) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*Jaeger) ProtoMessage() {}
-
-func (x *Jaeger) ProtoReflect() protoreflect.Message {
-	mi := &file_opentelemetry_proto_msgTypes[7]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use Jaeger.ProtoReflect.Descriptor instead.
-func (*Jaeger) Descriptor() ([]byte, []int) {
-	return file_opentelemetry_proto_rawDescGZIP(), []int{7}
-}
-
-func (x *Jaeger) GetUrl() string {
 	if x != nil {
 		return x.Url
 	}
@@ -766,7 +890,7 @@ type Stdout struct {
 
 func (x *Stdout) Reset() {
 	*x = Stdout{}
-	mi := &file_opentelemetry_proto_msgTypes[8]
+	mi := &file_pkg_opentelemetry_opentelemetry_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -778,7 +902,7 @@ func (x *Stdout) String() string {
 func (*Stdout) ProtoMessage() {}
 
 func (x *Stdout) ProtoReflect() protoreflect.Message {
-	mi := &file_opentelemetry_proto_msgTypes[8]
+	mi := &file_pkg_opentelemetry_opentelemetry_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -791,7 +915,7 @@ func (x *Stdout) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Stdout.ProtoReflect.Descriptor instead.
 func (*Stdout) Descriptor() ([]byte, []int) {
-	return file_opentelemetry_proto_rawDescGZIP(), []int{8}
+	return file_pkg_opentelemetry_opentelemetry_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *Stdout) GetPrettyPrint() bool {
@@ -816,14 +940,18 @@ type OTLP struct {
 	// Custom headers for authentication
 	Headers map[string]string `protobuf:"bytes,5,rep,name=headers,proto3" json:"headers,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
 	// URL path for HTTP protocol (default: "/v1/metrics")
-	UrlPath       string `protobuf:"bytes,6,opt,name=url_path,json=urlPath,proto3" json:"url_path,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	UrlPath string `protobuf:"bytes,6,opt,name=url_path,json=urlPath,proto3" json:"url_path,omitempty"`
+	// Enable gzip compression (ZhiYan requires compression=gzip)
+	Compression bool `protobuf:"varint,7,opt,name=compression,proto3" json:"compression,omitempty"`
+	// Use Delta temporality instead of Cumulative (ZhiYan requires temporality_selector=delta)
+	TemporalityDelta bool `protobuf:"varint,8,opt,name=temporality_delta,json=temporalityDelta,proto3" json:"temporality_delta,omitempty"`
+	unknownFields    protoimpl.UnknownFields
+	sizeCache        protoimpl.SizeCache
 }
 
 func (x *OTLP) Reset() {
 	*x = OTLP{}
-	mi := &file_opentelemetry_proto_msgTypes[9]
+	mi := &file_pkg_opentelemetry_opentelemetry_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -835,7 +963,7 @@ func (x *OTLP) String() string {
 func (*OTLP) ProtoMessage() {}
 
 func (x *OTLP) ProtoReflect() protoreflect.Message {
-	mi := &file_opentelemetry_proto_msgTypes[9]
+	mi := &file_pkg_opentelemetry_opentelemetry_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -848,7 +976,7 @@ func (x *OTLP) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use OTLP.ProtoReflect.Descriptor instead.
 func (*OTLP) Descriptor() ([]byte, []int) {
-	return file_opentelemetry_proto_rawDescGZIP(), []int{9}
+	return file_pkg_opentelemetry_opentelemetry_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *OTLP) GetEndpoint() string {
@@ -893,11 +1021,25 @@ func (x *OTLP) GetUrlPath() string {
 	return ""
 }
 
-var File_opentelemetry_proto protoreflect.FileDescriptor
+func (x *OTLP) GetCompression() bool {
+	if x != nil {
+		return x.Compression
+	}
+	return false
+}
 
-const file_opentelemetry_proto_rawDesc = "" +
+func (x *OTLP) GetTemporalityDelta() bool {
+	if x != nil {
+		return x.TemporalityDelta
+	}
+	return false
+}
+
+var File_pkg_opentelemetry_opentelemetry_proto protoreflect.FileDescriptor
+
+const file_pkg_opentelemetry_opentelemetry_proto_rawDesc = "" +
 	"\n" +
-	"\x13opentelemetry.proto\x12\x14go.pkg.opentelemetry\x1a\x1egoogle/protobuf/duration.proto\"\xec\x06\n" +
+	"%pkg/opentelemetry/opentelemetry.proto\x12\x14go.pkg.opentelemetry\x1a\x1egoogle/protobuf/duration.proto\"\xf2\x05\n" +
 	"\rOpenTelemetry\x12\x18\n" +
 	"\aenabled\x18\x01 \x01(\bR\aenabled\x12Q\n" +
 	"\x17metric_collect_duration\x18\x02 \x01(\v2\x19.google.protobuf.DurationR\x15metricCollectDuration\x12d\n" +
@@ -908,25 +1050,39 @@ const file_opentelemetry_proto_rawDesc = "" +
 	"\x13otel_trace_exporter\x18\a \x01(\v2'.go.pkg.opentelemetry.OtelTraceExporterR\x11otelTraceExporter\x12:\n" +
 	"\bresource\x18\n" +
 	" \x01(\v2\x1e.go.pkg.opentelemetry.ResourceR\bresource\x12T\n" +
-	"\x12app_meter_provider\x18\v \x01(\v2&.go.pkg.opentelemetry.AppMeterProviderR\x10appMeterProvider\x129\n" +
-	"\x19enabled_metric_timer_cost\x18\x14 \x01(\bR\x16enabledMetricTimerCost\x12=\n" +
-	"\x1benabled_metric_code_message\x18\x15 \x01(\bR\x18enabledMetricCodeMessage\"\xc7\x02\n" +
+	"\x12app_meter_provider\x18\v \x01(\v2&.go.pkg.opentelemetry.AppMeterProviderR\x10appMeterProvider\"\xc7\x02\n" +
 	"\x10AppMeterProvider\x12\x18\n" +
 	"\aenabled\x18\x01 \x01(\bR\aenabled\x12Q\n" +
 	"\rexporter_type\x18\x02 \x01(\x0e2,.go.pkg.opentelemetry.OtelMetricExporterTypeR\fexporterType\x12D\n" +
 	"\bexporter\x18\x03 \x01(\v2(.go.pkg.opentelemetry.OtelMetricExporterR\bexporter\x12D\n" +
 	"\x10collect_duration\x18\x04 \x01(\v2\x19.google.protobuf.DurationR\x0fcollectDuration\x12:\n" +
-	"\bresource\x18\x05 \x01(\v2\x1e.go.pkg.opentelemetry.ResourceR\bresource\"\x86\x02\n" +
+	"\bresource\x18\x05 \x01(\v2\x1e.go.pkg.opentelemetry.ResourceR\bresource\"\xe9\x02\n" +
 	"\bResource\x12!\n" +
 	"\fservice_name\x18\x01 \x01(\tR\vserviceName\x12'\n" +
 	"\x0fservice_version\x18\x02 \x01(\tR\x0eserviceVersion\x12?\n" +
 	"\x05attrs\x18\x03 \x03(\v2).go.pkg.opentelemetry.Resource.AttrsEntryR\x05attrs\x123\n" +
 	"\x03k8s\x18\n" +
-	" \x01(\v2!.go.pkg.opentelemetry.K8sResourceR\x03k8s\x1a8\n" +
+	" \x01(\v2!.go.pkg.opentelemetry.K8sResourceR\x03k8s\x12+\n" +
+	"\x03apm\x18\v \x01(\v2\x19.go.pkg.opentelemetry.ApmR\x03apm\x124\n" +
+	"\x06zhiyan\x18\f \x01(\v2\x1c.go.pkg.opentelemetry.ZhiYanR\x06zhiyan\x1a8\n" +
 	"\n" +
 	"AttrsEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\xed\x01\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\x1b\n" +
+	"\x03Apm\x12\x14\n" +
+	"\x05token\x18\x01 \x01(\tR\x05token\"\xaa\x02\n" +
+	"\x06ZhiYan\x12\x19\n" +
+	"\bapp_mark\x18\x01 \x01(\tR\aappMark\x12&\n" +
+	"\x0fglobal_app_mark\x18\x02 \x01(\tR\rglobalAppMark\x12\x10\n" +
+	"\x03env\x18\x03 \x01(\tR\x03env\x12#\n" +
+	"\rinstance_mark\x18\x04 \x01(\tR\finstanceMark\x12(\n" +
+	"\x10zhiyan_apm_token\x18\x05 \x01(\tR\x0ezhiyanApmToken\x12\x1d\n" +
+	"\n" +
+	"expand_key\x18\x06 \x01(\tR\texpandKey\x12!\n" +
+	"\fmetric_group\x18\a \x01(\tR\vmetricGroup\x12\x1d\n" +
+	"\n" +
+	"data_grain\x18\b \x01(\x05R\tdataGrain\x12\x1b\n" +
+	"\tdata_type\x18\t \x01(\tR\bdataType\"\xed\x01\n" +
 	"\vK8sResource\x12\x18\n" +
 	"\aenabled\x18\x01 \x01(\bR\aenabled\x12\x17\n" +
 	"\anode_ip\x18\x02 \x01(\tR\x06nodeIp\x12#\n" +
@@ -940,36 +1096,33 @@ const file_opentelemetry_proto_rawDesc = "" +
 	"prometheus\x18\x01 \x01(\v2 .go.pkg.opentelemetry.PrometheusR\n" +
 	"prometheus\x124\n" +
 	"\x06stdout\x18\x02 \x01(\v2\x1c.go.pkg.opentelemetry.StdoutR\x06stdout\x12.\n" +
-	"\x04otlp\x18\x03 \x01(\v2\x1a.go.pkg.opentelemetry.OTLPR\x04otlp\"\xaf\x01\n" +
+	"\x04otlp\x18\x03 \x01(\v2\x1a.go.pkg.opentelemetry.OTLPR\x04otlp\"y\n" +
 	"\x11OtelTraceExporter\x124\n" +
-	"\x06jaeger\x18\x01 \x01(\v2\x1c.go.pkg.opentelemetry.JaegerR\x06jaeger\x124\n" +
-	"\x06stdout\x18\x02 \x01(\v2\x1c.go.pkg.opentelemetry.StdoutR\x06stdout\x12.\n" +
-	"\x04otlp\x18\x03 \x01(\v2\x1a.go.pkg.opentelemetry.OTLPR\x04otlp\"\x1e\n" +
+	"\x06stdout\x18\x01 \x01(\v2\x1c.go.pkg.opentelemetry.StdoutR\x06stdout\x12.\n" +
+	"\x04otlp\x18\x02 \x01(\v2\x1a.go.pkg.opentelemetry.OTLPR\x04otlp\"\x1e\n" +
 	"\n" +
 	"Prometheus\x12\x10\n" +
-	"\x03url\x18\x01 \x01(\tR\x03url\"\x1a\n" +
-	"\x06Jaeger\x12\x10\n" +
 	"\x03url\x18\x01 \x01(\tR\x03url\"+\n" +
 	"\x06Stdout\x12!\n" +
-	"\fpretty_print\x18\x01 \x01(\bR\vprettyPrint\"\x8a\x02\n" +
+	"\fpretty_print\x18\x01 \x01(\bR\vprettyPrint\"\xd9\x02\n" +
 	"\x04OTLP\x12\x1a\n" +
 	"\bendpoint\x18\x01 \x01(\tR\bendpoint\x12\x14\n" +
 	"\x05token\x18\x02 \x01(\tR\x05token\x12\x1a\n" +
 	"\bprotocol\x18\x03 \x01(\tR\bprotocol\x12\x1a\n" +
 	"\binsecure\x18\x04 \x01(\bR\binsecure\x12A\n" +
 	"\aheaders\x18\x05 \x03(\v2'.go.pkg.opentelemetry.OTLP.HeadersEntryR\aheaders\x12\x19\n" +
-	"\burl_path\x18\x06 \x01(\tR\aurlPath\x1a:\n" +
+	"\burl_path\x18\x06 \x01(\tR\aurlPath\x12 \n" +
+	"\vcompression\x18\a \x01(\bR\vcompression\x12+\n" +
+	"\x11temporality_delta\x18\b \x01(\bR\x10temporalityDelta\x1a:\n" +
 	"\fHeadersEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01*m\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01*I\n" +
 	"\x15OtelTraceExporterType\x12\x0e\n" +
 	"\n" +
 	"trace_none\x10\x00\x12\x10\n" +
 	"\ftrace_stdout\x10\x01\x12\x0e\n" +
 	"\n" +
-	"trace_otlp\x10\x02\x12\x10\n" +
-	"\ftrace_jaeger\x10\x03\x12\x10\n" +
-	"\ftrace_zipkin\x10\x04*d\n" +
+	"trace_otlp\x10\x02*d\n" +
 	"\x16OtelMetricExporterType\x12\x0f\n" +
 	"\vmetric_none\x10\x00\x12\x11\n" +
 	"\rmetric_stdout\x10\x01\x12\x0f\n" +
@@ -980,87 +1133,89 @@ const file_opentelemetry_proto_rawDesc = "" +
 	"\blog_otlp\x10\x01B:Z8github.com/kaydxh/golang/pkg/opentelemetry;opentelemetryb\x06proto3"
 
 var (
-	file_opentelemetry_proto_rawDescOnce sync.Once
-	file_opentelemetry_proto_rawDescData []byte
+	file_pkg_opentelemetry_opentelemetry_proto_rawDescOnce sync.Once
+	file_pkg_opentelemetry_opentelemetry_proto_rawDescData []byte
 )
 
-func file_opentelemetry_proto_rawDescGZIP() []byte {
-	file_opentelemetry_proto_rawDescOnce.Do(func() {
-		file_opentelemetry_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_opentelemetry_proto_rawDesc), len(file_opentelemetry_proto_rawDesc)))
+func file_pkg_opentelemetry_opentelemetry_proto_rawDescGZIP() []byte {
+	file_pkg_opentelemetry_opentelemetry_proto_rawDescOnce.Do(func() {
+		file_pkg_opentelemetry_opentelemetry_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_pkg_opentelemetry_opentelemetry_proto_rawDesc), len(file_pkg_opentelemetry_opentelemetry_proto_rawDesc)))
 	})
-	return file_opentelemetry_proto_rawDescData
+	return file_pkg_opentelemetry_opentelemetry_proto_rawDescData
 }
 
-var file_opentelemetry_proto_enumTypes = make([]protoimpl.EnumInfo, 3)
-var file_opentelemetry_proto_msgTypes = make([]protoimpl.MessageInfo, 12)
-var file_opentelemetry_proto_goTypes = []any{
+var file_pkg_opentelemetry_opentelemetry_proto_enumTypes = make([]protoimpl.EnumInfo, 3)
+var file_pkg_opentelemetry_opentelemetry_proto_msgTypes = make([]protoimpl.MessageInfo, 13)
+var file_pkg_opentelemetry_opentelemetry_proto_goTypes = []any{
 	(OtelTraceExporterType)(0),  // 0: go.pkg.opentelemetry.OtelTraceExporterType
 	(OtelMetricExporterType)(0), // 1: go.pkg.opentelemetry.OtelMetricExporterType
 	(OtelLogExporterType)(0),    // 2: go.pkg.opentelemetry.OtelLogExporterType
 	(*OpenTelemetry)(nil),       // 3: go.pkg.opentelemetry.OpenTelemetry
 	(*AppMeterProvider)(nil),    // 4: go.pkg.opentelemetry.AppMeterProvider
 	(*Resource)(nil),            // 5: go.pkg.opentelemetry.Resource
-	(*K8SResource)(nil),         // 6: go.pkg.opentelemetry.K8sResource
-	(*OtelMetricExporter)(nil),  // 7: go.pkg.opentelemetry.OtelMetricExporter
-	(*OtelTraceExporter)(nil),   // 8: go.pkg.opentelemetry.OtelTraceExporter
-	(*Prometheus)(nil),          // 9: go.pkg.opentelemetry.Prometheus
-	(*Jaeger)(nil),              // 10: go.pkg.opentelemetry.Jaeger
-	(*Stdout)(nil),              // 11: go.pkg.opentelemetry.Stdout
-	(*OTLP)(nil),                // 12: go.pkg.opentelemetry.OTLP
-	nil,                         // 13: go.pkg.opentelemetry.Resource.AttrsEntry
-	nil,                         // 14: go.pkg.opentelemetry.OTLP.HeadersEntry
-	(*durationpb.Duration)(nil), // 15: google.protobuf.Duration
+	(*Apm)(nil),                 // 6: go.pkg.opentelemetry.Apm
+	(*ZhiYan)(nil),              // 7: go.pkg.opentelemetry.ZhiYan
+	(*K8SResource)(nil),         // 8: go.pkg.opentelemetry.K8sResource
+	(*OtelMetricExporter)(nil),  // 9: go.pkg.opentelemetry.OtelMetricExporter
+	(*OtelTraceExporter)(nil),   // 10: go.pkg.opentelemetry.OtelTraceExporter
+	(*Prometheus)(nil),          // 11: go.pkg.opentelemetry.Prometheus
+	(*Stdout)(nil),              // 12: go.pkg.opentelemetry.Stdout
+	(*OTLP)(nil),                // 13: go.pkg.opentelemetry.OTLP
+	nil,                         // 14: go.pkg.opentelemetry.Resource.AttrsEntry
+	nil,                         // 15: go.pkg.opentelemetry.OTLP.HeadersEntry
+	(*durationpb.Duration)(nil), // 16: google.protobuf.Duration
 }
-var file_opentelemetry_proto_depIdxs = []int32{
-	15, // 0: go.pkg.opentelemetry.OpenTelemetry.metric_collect_duration:type_name -> google.protobuf.Duration
+var file_pkg_opentelemetry_opentelemetry_proto_depIdxs = []int32{
+	16, // 0: go.pkg.opentelemetry.OpenTelemetry.metric_collect_duration:type_name -> google.protobuf.Duration
 	0,  // 1: go.pkg.opentelemetry.OpenTelemetry.otel_trace_exporter_type:type_name -> go.pkg.opentelemetry.OtelTraceExporterType
 	1,  // 2: go.pkg.opentelemetry.OpenTelemetry.otel_metric_exporter_type:type_name -> go.pkg.opentelemetry.OtelMetricExporterType
 	2,  // 3: go.pkg.opentelemetry.OpenTelemetry.otel_log_exporter_type:type_name -> go.pkg.opentelemetry.OtelLogExporterType
-	7,  // 4: go.pkg.opentelemetry.OpenTelemetry.otel_metric_exporter:type_name -> go.pkg.opentelemetry.OtelMetricExporter
-	8,  // 5: go.pkg.opentelemetry.OpenTelemetry.otel_trace_exporter:type_name -> go.pkg.opentelemetry.OtelTraceExporter
+	9,  // 4: go.pkg.opentelemetry.OpenTelemetry.otel_metric_exporter:type_name -> go.pkg.opentelemetry.OtelMetricExporter
+	10, // 5: go.pkg.opentelemetry.OpenTelemetry.otel_trace_exporter:type_name -> go.pkg.opentelemetry.OtelTraceExporter
 	5,  // 6: go.pkg.opentelemetry.OpenTelemetry.resource:type_name -> go.pkg.opentelemetry.Resource
 	4,  // 7: go.pkg.opentelemetry.OpenTelemetry.app_meter_provider:type_name -> go.pkg.opentelemetry.AppMeterProvider
 	1,  // 8: go.pkg.opentelemetry.AppMeterProvider.exporter_type:type_name -> go.pkg.opentelemetry.OtelMetricExporterType
-	7,  // 9: go.pkg.opentelemetry.AppMeterProvider.exporter:type_name -> go.pkg.opentelemetry.OtelMetricExporter
-	15, // 10: go.pkg.opentelemetry.AppMeterProvider.collect_duration:type_name -> google.protobuf.Duration
+	9,  // 9: go.pkg.opentelemetry.AppMeterProvider.exporter:type_name -> go.pkg.opentelemetry.OtelMetricExporter
+	16, // 10: go.pkg.opentelemetry.AppMeterProvider.collect_duration:type_name -> google.protobuf.Duration
 	5,  // 11: go.pkg.opentelemetry.AppMeterProvider.resource:type_name -> go.pkg.opentelemetry.Resource
-	13, // 12: go.pkg.opentelemetry.Resource.attrs:type_name -> go.pkg.opentelemetry.Resource.AttrsEntry
-	6,  // 13: go.pkg.opentelemetry.Resource.k8s:type_name -> go.pkg.opentelemetry.K8sResource
-	9,  // 14: go.pkg.opentelemetry.OtelMetricExporter.prometheus:type_name -> go.pkg.opentelemetry.Prometheus
-	11, // 15: go.pkg.opentelemetry.OtelMetricExporter.stdout:type_name -> go.pkg.opentelemetry.Stdout
-	12, // 16: go.pkg.opentelemetry.OtelMetricExporter.otlp:type_name -> go.pkg.opentelemetry.OTLP
-	10, // 17: go.pkg.opentelemetry.OtelTraceExporter.jaeger:type_name -> go.pkg.opentelemetry.Jaeger
-	11, // 18: go.pkg.opentelemetry.OtelTraceExporter.stdout:type_name -> go.pkg.opentelemetry.Stdout
-	12, // 19: go.pkg.opentelemetry.OtelTraceExporter.otlp:type_name -> go.pkg.opentelemetry.OTLP
-	14, // 20: go.pkg.opentelemetry.OTLP.headers:type_name -> go.pkg.opentelemetry.OTLP.HeadersEntry
-	21, // [21:21] is the sub-list for method output_type
-	21, // [21:21] is the sub-list for method input_type
-	21, // [21:21] is the sub-list for extension type_name
-	21, // [21:21] is the sub-list for extension extendee
-	0,  // [0:21] is the sub-list for field type_name
+	14, // 12: go.pkg.opentelemetry.Resource.attrs:type_name -> go.pkg.opentelemetry.Resource.AttrsEntry
+	8,  // 13: go.pkg.opentelemetry.Resource.k8s:type_name -> go.pkg.opentelemetry.K8sResource
+	6,  // 14: go.pkg.opentelemetry.Resource.apm:type_name -> go.pkg.opentelemetry.Apm
+	7,  // 15: go.pkg.opentelemetry.Resource.zhiyan:type_name -> go.pkg.opentelemetry.ZhiYan
+	11, // 16: go.pkg.opentelemetry.OtelMetricExporter.prometheus:type_name -> go.pkg.opentelemetry.Prometheus
+	12, // 17: go.pkg.opentelemetry.OtelMetricExporter.stdout:type_name -> go.pkg.opentelemetry.Stdout
+	13, // 18: go.pkg.opentelemetry.OtelMetricExporter.otlp:type_name -> go.pkg.opentelemetry.OTLP
+	12, // 19: go.pkg.opentelemetry.OtelTraceExporter.stdout:type_name -> go.pkg.opentelemetry.Stdout
+	13, // 20: go.pkg.opentelemetry.OtelTraceExporter.otlp:type_name -> go.pkg.opentelemetry.OTLP
+	15, // 21: go.pkg.opentelemetry.OTLP.headers:type_name -> go.pkg.opentelemetry.OTLP.HeadersEntry
+	22, // [22:22] is the sub-list for method output_type
+	22, // [22:22] is the sub-list for method input_type
+	22, // [22:22] is the sub-list for extension type_name
+	22, // [22:22] is the sub-list for extension extendee
+	0,  // [0:22] is the sub-list for field type_name
 }
 
-func init() { file_opentelemetry_proto_init() }
-func file_opentelemetry_proto_init() {
-	if File_opentelemetry_proto != nil {
+func init() { file_pkg_opentelemetry_opentelemetry_proto_init() }
+func file_pkg_opentelemetry_opentelemetry_proto_init() {
+	if File_pkg_opentelemetry_opentelemetry_proto != nil {
 		return
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_opentelemetry_proto_rawDesc), len(file_opentelemetry_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_pkg_opentelemetry_opentelemetry_proto_rawDesc), len(file_pkg_opentelemetry_opentelemetry_proto_rawDesc)),
 			NumEnums:      3,
-			NumMessages:   12,
+			NumMessages:   13,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
-		GoTypes:           file_opentelemetry_proto_goTypes,
-		DependencyIndexes: file_opentelemetry_proto_depIdxs,
-		EnumInfos:         file_opentelemetry_proto_enumTypes,
-		MessageInfos:      file_opentelemetry_proto_msgTypes,
+		GoTypes:           file_pkg_opentelemetry_opentelemetry_proto_goTypes,
+		DependencyIndexes: file_pkg_opentelemetry_opentelemetry_proto_depIdxs,
+		EnumInfos:         file_pkg_opentelemetry_opentelemetry_proto_enumTypes,
+		MessageInfos:      file_pkg_opentelemetry_opentelemetry_proto_msgTypes,
 	}.Build()
-	File_opentelemetry_proto = out.File
-	file_opentelemetry_proto_goTypes = nil
-	file_opentelemetry_proto_depIdxs = nil
+	File_pkg_opentelemetry_opentelemetry_proto = out.File
+	file_pkg_opentelemetry_opentelemetry_proto_goTypes = nil
+	file_pkg_opentelemetry_opentelemetry_proto_depIdxs = nil
 }

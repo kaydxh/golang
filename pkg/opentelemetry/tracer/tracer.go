@@ -24,7 +24,9 @@ package tracer
 import (
 	"context"
 	"fmt"
+	"time"
 
+	"github.com/sirupsen/logrus"
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/sdk/resource"
@@ -40,6 +42,8 @@ type TracerOptions struct {
 	serviceNamespace string
 	tracerProvider   *sdktrace.TracerProvider
 	resource         *resource.Resource
+	exporterName     string // for logging
+	exporterEndpoint string // for logging
 }
 
 type Tracer struct {
@@ -90,12 +94,21 @@ func (t *Tracer) Install(ctx context.Context) (err error) {
 		}
 	}
 
+	// Configure BatchSpanProcessor with shorter export interval for better observability
+	batchOpts := []sdktrace.BatchSpanProcessorOption{
+		sdktrace.WithBatchTimeout(5 * time.Second), // Export every 5 seconds
+	}
+
 	tp := sdktrace.NewTracerProvider(
 		// Always be sure to batch in production.
-		sdktrace.WithBatcher(exp),
+		sdktrace.WithBatcher(exp, batchOpts...),
 		// Record information about this application in a Resource.
 		sdktrace.WithResource(res),
+		// Always sample - ensure all spans are recorded
+		sdktrace.WithSampler(sdktrace.AlwaysSample()),
 	)
+
+	logrus.Infof("TracerProvider created with BatchSpanProcessor (batch_timeout=5s, sampler=AlwaysSample)")
 
 	// Register our TracerProvider as the global so any imported
 	// instrumentation in the future will default to using it.
@@ -112,7 +125,17 @@ func (t *Tracer) createExporter(ctx context.Context) (sdktrace.SpanExporter, err
 		return nil, fmt.Errorf("trace exporter builder is nil")
 	}
 
-	return t.opts.builer.Build(ctx)
+	exp, err := t.opts.builer.Build(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	// Wrap with logging exporter if configured
+	if t.opts.exporterName != "" {
+		exp = NewLoggingExporter(exp, t.opts.exporterName, t.opts.exporterEndpoint)
+	}
+
+	return exp, nil
 }
 
 // TracerProvider returns the configured TracerProvider

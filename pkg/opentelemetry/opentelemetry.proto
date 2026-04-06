@@ -23,10 +23,6 @@ message OpenTelemetry {
   // App MeterProvider configuration (separate from global)
   // If enabled, creates an independent MeterProvider for application-level metrics
   AppMeterProvider app_meter_provider = 11;
-
-  // 从旧 Monitor.Prometheus 迁移的配置
-  bool enabled_metric_timer_cost = 20;
-  bool enabled_metric_code_message = 21;
 }
 
 // AppMeterProvider configuration for application-level metrics
@@ -56,6 +52,60 @@ message Resource {
 
   // K8s resource configuration
   K8sResource k8s = 10;
+
+  // APM (Application Performance Management) configuration
+  Apm apm = 11;
+
+  // ZhiYan platform configuration for internal monitoring
+  ZhiYan zhiyan = 12;
+}
+
+// APM configuration for Application Performance Management
+// Token is required for APM data reporting and will be added as resource attribute
+message Apm {
+  // APM Token for authentication, associated with business system
+  string token = 1;
+}
+
+// ZhiYan platform configuration for internal monitoring
+message ZhiYan {
+  // App mark for metric reporting (上报 appMark)
+  // Used for business data reporting
+  string app_mark = 1;
+
+  // Global app mark for modcall and system-level metric reporting
+  // Used for infrastructure/global metrics
+  string global_app_mark = 2;
+
+  // Environment for metric reporting (e.g., "prod", "test", "dev")
+  // If empty, defaults to "prod" for production environment
+  string env = 3;
+
+  // Instance mark for attribute reporting
+  // If empty, uses pod IP or host IP
+  string instance_mark = 4;
+
+  // APM Token for trace reporting to ZhiYan APM
+  string zhiyan_apm_token = 5;
+
+  // Whether to expand resource attributes to metric dimensions
+  // "yes" or "no" (default: "no")
+  string expand_key = 6;
+
+  // Metric group for ZhiYan (指标组)
+  // This is used as the scope name when creating Meter
+  // If empty, defaults to "default"
+  // Common values: "default", "client_report", "server_report"
+  string metric_group = 7;
+
+  // Data granularity for metric reporting (数据粒度)
+  // Valid values: 10, 30, 60 (default: 60, minutes)
+  // For sub-minute reporting, set data_type to "second"
+  int32 data_grain = 8;
+
+  // Data type for metric reporting (数据类型)
+  // Set to "second" for sub-minute granularity data
+  string data_type = 9;
 }
 
 message K8sResource {
@@ -77,16 +127,11 @@ message OtelMetricExporter {
 }
 
 message OtelTraceExporter {
-  Jaeger jaeger = 1;
-  Stdout stdout = 2;
-  OTLP otlp = 3;
+  Stdout stdout = 1;
+  OTLP otlp = 2;
 }
 
 message Prometheus {
-  string url = 1;
-}
-
-message Jaeger {
   string url = 1;
 }
 
@@ -114,14 +159,18 @@ message OTLP {
 
   // URL path for HTTP protocol (default: "/v1/metrics")
   string url_path = 6;
+
+  // Enable gzip compression (ZhiYan requires compression=gzip)
+  bool compression = 7;
+
+  // Use Delta temporality instead of Cumulative (ZhiYan requires temporality_selector=delta)
+  bool temporality_delta = 8;
 }
 
 enum OtelTraceExporterType {
   trace_none = 0;
   trace_stdout = 1;
   trace_otlp = 2;
-  trace_jaeger = 3;
-  trace_zipkin = 4;
 }
 
 enum OtelMetricExporterType {

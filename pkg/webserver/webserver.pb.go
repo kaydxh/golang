@@ -674,9 +674,9 @@ func (x *Web_OpenTelemetry_Resource) GetAttrs() map[string]string {
 }
 
 type Web_OpenTelemetry_OtelMetricExporter struct {
-	state         protoimpl.MessageState                           `protogen:"open.v1"`
-	Prometheus    *Web_OpenTelemetry_OtelMetricExporter_Prometheus `protobuf:"bytes,1,opt,name=prometheus,proto3" json:"prometheus,omitempty"`
-	Stdout        *Web_OpenTelemetry_OtelMetricExporter_Stdout     `protobuf:"bytes,2,opt,name=stdout,proto3" json:"stdout,omitempty"`
+	state         protoimpl.MessageState        `protogen:"open.v1"`
+	Prometheus    *Web_OpenTelemetry_Prometheus `protobuf:"bytes,1,opt,name=prometheus,proto3" json:"prometheus,omitempty"`
+	Stdout        *Web_OpenTelemetry_Stdout     `protobuf:"bytes,2,opt,name=stdout,proto3" json:"stdout,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -711,14 +711,14 @@ func (*Web_OpenTelemetry_OtelMetricExporter) Descriptor() ([]byte, []int) {
 	return file_pkg_webserver_webserver_proto_rawDescGZIP(), []int{0, 4, 1}
 }
 
-func (x *Web_OpenTelemetry_OtelMetricExporter) GetPrometheus() *Web_OpenTelemetry_OtelMetricExporter_Prometheus {
+func (x *Web_OpenTelemetry_OtelMetricExporter) GetPrometheus() *Web_OpenTelemetry_Prometheus {
 	if x != nil {
 		return x.Prometheus
 	}
 	return nil
 }
 
-func (x *Web_OpenTelemetry_OtelMetricExporter) GetStdout() *Web_OpenTelemetry_OtelMetricExporter_Stdout {
+func (x *Web_OpenTelemetry_OtelMetricExporter) GetStdout() *Web_OpenTelemetry_Stdout {
 	if x != nil {
 		return x.Stdout
 	}
@@ -726,9 +726,9 @@ func (x *Web_OpenTelemetry_OtelMetricExporter) GetStdout() *Web_OpenTelemetry_Ot
 }
 
 type Web_OpenTelemetry_OtelTraceExporter struct {
-	state         protoimpl.MessageState                      `protogen:"open.v1"`
-	Jaeger        *Web_OpenTelemetry_OtelTraceExporter_Jaeger `protobuf:"bytes,1,opt,name=jaeger,proto3" json:"jaeger,omitempty"`
-	Stdout        *Web_OpenTelemetry_OtelTraceExporter_Stdout `protobuf:"bytes,2,opt,name=stdout,proto3" json:"stdout,omitempty"`
+	state         protoimpl.MessageState    `protogen:"open.v1"`
+	Jaeger        *Web_OpenTelemetry_Jaeger `protobuf:"bytes,1,opt,name=jaeger,proto3" json:"jaeger,omitempty"`
+	Stdout        *Web_OpenTelemetry_Stdout `protobuf:"bytes,2,opt,name=stdout,proto3" json:"stdout,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -763,147 +763,42 @@ func (*Web_OpenTelemetry_OtelTraceExporter) Descriptor() ([]byte, []int) {
 	return file_pkg_webserver_webserver_proto_rawDescGZIP(), []int{0, 4, 2}
 }
 
-func (x *Web_OpenTelemetry_OtelTraceExporter) GetJaeger() *Web_OpenTelemetry_OtelTraceExporter_Jaeger {
+func (x *Web_OpenTelemetry_OtelTraceExporter) GetJaeger() *Web_OpenTelemetry_Jaeger {
 	if x != nil {
 		return x.Jaeger
 	}
 	return nil
 }
 
-func (x *Web_OpenTelemetry_OtelTraceExporter) GetStdout() *Web_OpenTelemetry_OtelTraceExporter_Stdout {
+func (x *Web_OpenTelemetry_OtelTraceExporter) GetStdout() *Web_OpenTelemetry_Stdout {
 	if x != nil {
 		return x.Stdout
 	}
 	return nil
 }
 
-type Web_OpenTelemetry_OtelMetricExporter_Prometheus struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	Url   string                 `protobuf:"bytes,1,opt,name=url,proto3" json:"url,omitempty"`
-	// 从旧 Monitor.Prometheus 迁移的配置
-	EnabledTimerCost   bool `protobuf:"varint,10,opt,name=enabled_timer_cost,json=enabledTimerCost,proto3" json:"enabled_timer_cost,omitempty"`
-	EnabledCodeMessage bool `protobuf:"varint,11,opt,name=enabled_code_message,json=enabledCodeMessage,proto3" json:"enabled_code_message,omitempty"`
-	unknownFields      protoimpl.UnknownFields
-	sizeCache          protoimpl.SizeCache
-}
-
-func (x *Web_OpenTelemetry_OtelMetricExporter_Prometheus) Reset() {
-	*x = Web_OpenTelemetry_OtelMetricExporter_Prometheus{}
-	mi := &file_pkg_webserver_webserver_proto_msgTypes[10]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *Web_OpenTelemetry_OtelMetricExporter_Prometheus) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*Web_OpenTelemetry_OtelMetricExporter_Prometheus) ProtoMessage() {}
-
-func (x *Web_OpenTelemetry_OtelMetricExporter_Prometheus) ProtoReflect() protoreflect.Message {
-	mi := &file_pkg_webserver_webserver_proto_msgTypes[10]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use Web_OpenTelemetry_OtelMetricExporter_Prometheus.ProtoReflect.Descriptor instead.
-func (*Web_OpenTelemetry_OtelMetricExporter_Prometheus) Descriptor() ([]byte, []int) {
-	return file_pkg_webserver_webserver_proto_rawDescGZIP(), []int{0, 4, 1, 0}
-}
-
-func (x *Web_OpenTelemetry_OtelMetricExporter_Prometheus) GetUrl() string {
-	if x != nil {
-		return x.Url
-	}
-	return ""
-}
-
-func (x *Web_OpenTelemetry_OtelMetricExporter_Prometheus) GetEnabledTimerCost() bool {
-	if x != nil {
-		return x.EnabledTimerCost
-	}
-	return false
-}
-
-func (x *Web_OpenTelemetry_OtelMetricExporter_Prometheus) GetEnabledCodeMessage() bool {
-	if x != nil {
-		return x.EnabledCodeMessage
-	}
-	return false
-}
-
-type Web_OpenTelemetry_OtelMetricExporter_Stdout struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	PrettyPrint   bool                   `protobuf:"varint,1,opt,name=pretty_print,json=prettyPrint,proto3" json:"pretty_print,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *Web_OpenTelemetry_OtelMetricExporter_Stdout) Reset() {
-	*x = Web_OpenTelemetry_OtelMetricExporter_Stdout{}
-	mi := &file_pkg_webserver_webserver_proto_msgTypes[11]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *Web_OpenTelemetry_OtelMetricExporter_Stdout) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*Web_OpenTelemetry_OtelMetricExporter_Stdout) ProtoMessage() {}
-
-func (x *Web_OpenTelemetry_OtelMetricExporter_Stdout) ProtoReflect() protoreflect.Message {
-	mi := &file_pkg_webserver_webserver_proto_msgTypes[11]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use Web_OpenTelemetry_OtelMetricExporter_Stdout.ProtoReflect.Descriptor instead.
-func (*Web_OpenTelemetry_OtelMetricExporter_Stdout) Descriptor() ([]byte, []int) {
-	return file_pkg_webserver_webserver_proto_rawDescGZIP(), []int{0, 4, 1, 1}
-}
-
-func (x *Web_OpenTelemetry_OtelMetricExporter_Stdout) GetPrettyPrint() bool {
-	if x != nil {
-		return x.PrettyPrint
-	}
-	return false
-}
-
-type Web_OpenTelemetry_OtelTraceExporter_Jaeger struct {
+type Web_OpenTelemetry_Prometheus struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Url           string                 `protobuf:"bytes,1,opt,name=url,proto3" json:"url,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *Web_OpenTelemetry_OtelTraceExporter_Jaeger) Reset() {
-	*x = Web_OpenTelemetry_OtelTraceExporter_Jaeger{}
-	mi := &file_pkg_webserver_webserver_proto_msgTypes[12]
+func (x *Web_OpenTelemetry_Prometheus) Reset() {
+	*x = Web_OpenTelemetry_Prometheus{}
+	mi := &file_pkg_webserver_webserver_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *Web_OpenTelemetry_OtelTraceExporter_Jaeger) String() string {
+func (x *Web_OpenTelemetry_Prometheus) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*Web_OpenTelemetry_OtelTraceExporter_Jaeger) ProtoMessage() {}
+func (*Web_OpenTelemetry_Prometheus) ProtoMessage() {}
 
-func (x *Web_OpenTelemetry_OtelTraceExporter_Jaeger) ProtoReflect() protoreflect.Message {
-	mi := &file_pkg_webserver_webserver_proto_msgTypes[12]
+func (x *Web_OpenTelemetry_Prometheus) ProtoReflect() protoreflect.Message {
+	mi := &file_pkg_webserver_webserver_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -914,40 +809,40 @@ func (x *Web_OpenTelemetry_OtelTraceExporter_Jaeger) ProtoReflect() protoreflect
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use Web_OpenTelemetry_OtelTraceExporter_Jaeger.ProtoReflect.Descriptor instead.
-func (*Web_OpenTelemetry_OtelTraceExporter_Jaeger) Descriptor() ([]byte, []int) {
-	return file_pkg_webserver_webserver_proto_rawDescGZIP(), []int{0, 4, 2, 0}
+// Deprecated: Use Web_OpenTelemetry_Prometheus.ProtoReflect.Descriptor instead.
+func (*Web_OpenTelemetry_Prometheus) Descriptor() ([]byte, []int) {
+	return file_pkg_webserver_webserver_proto_rawDescGZIP(), []int{0, 4, 3}
 }
 
-func (x *Web_OpenTelemetry_OtelTraceExporter_Jaeger) GetUrl() string {
+func (x *Web_OpenTelemetry_Prometheus) GetUrl() string {
 	if x != nil {
 		return x.Url
 	}
 	return ""
 }
 
-type Web_OpenTelemetry_OtelTraceExporter_Stdout struct {
+type Web_OpenTelemetry_Jaeger struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	PrettyPrint   bool                   `protobuf:"varint,1,opt,name=pretty_print,json=prettyPrint,proto3" json:"pretty_print,omitempty"`
+	Url           string                 `protobuf:"bytes,1,opt,name=url,proto3" json:"url,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *Web_OpenTelemetry_OtelTraceExporter_Stdout) Reset() {
-	*x = Web_OpenTelemetry_OtelTraceExporter_Stdout{}
-	mi := &file_pkg_webserver_webserver_proto_msgTypes[13]
+func (x *Web_OpenTelemetry_Jaeger) Reset() {
+	*x = Web_OpenTelemetry_Jaeger{}
+	mi := &file_pkg_webserver_webserver_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *Web_OpenTelemetry_OtelTraceExporter_Stdout) String() string {
+func (x *Web_OpenTelemetry_Jaeger) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*Web_OpenTelemetry_OtelTraceExporter_Stdout) ProtoMessage() {}
+func (*Web_OpenTelemetry_Jaeger) ProtoMessage() {}
 
-func (x *Web_OpenTelemetry_OtelTraceExporter_Stdout) ProtoReflect() protoreflect.Message {
-	mi := &file_pkg_webserver_webserver_proto_msgTypes[13]
+func (x *Web_OpenTelemetry_Jaeger) ProtoReflect() protoreflect.Message {
+	mi := &file_pkg_webserver_webserver_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -958,12 +853,56 @@ func (x *Web_OpenTelemetry_OtelTraceExporter_Stdout) ProtoReflect() protoreflect
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use Web_OpenTelemetry_OtelTraceExporter_Stdout.ProtoReflect.Descriptor instead.
-func (*Web_OpenTelemetry_OtelTraceExporter_Stdout) Descriptor() ([]byte, []int) {
-	return file_pkg_webserver_webserver_proto_rawDescGZIP(), []int{0, 4, 2, 1}
+// Deprecated: Use Web_OpenTelemetry_Jaeger.ProtoReflect.Descriptor instead.
+func (*Web_OpenTelemetry_Jaeger) Descriptor() ([]byte, []int) {
+	return file_pkg_webserver_webserver_proto_rawDescGZIP(), []int{0, 4, 4}
 }
 
-func (x *Web_OpenTelemetry_OtelTraceExporter_Stdout) GetPrettyPrint() bool {
+func (x *Web_OpenTelemetry_Jaeger) GetUrl() string {
+	if x != nil {
+		return x.Url
+	}
+	return ""
+}
+
+type Web_OpenTelemetry_Stdout struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	PrettyPrint   bool                   `protobuf:"varint,1,opt,name=pretty_print,json=prettyPrint,proto3" json:"pretty_print,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *Web_OpenTelemetry_Stdout) Reset() {
+	*x = Web_OpenTelemetry_Stdout{}
+	mi := &file_pkg_webserver_webserver_proto_msgTypes[11]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Web_OpenTelemetry_Stdout) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Web_OpenTelemetry_Stdout) ProtoMessage() {}
+
+func (x *Web_OpenTelemetry_Stdout) ProtoReflect() protoreflect.Message {
+	mi := &file_pkg_webserver_webserver_proto_msgTypes[11]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Web_OpenTelemetry_Stdout.ProtoReflect.Descriptor instead.
+func (*Web_OpenTelemetry_Stdout) Descriptor() ([]byte, []int) {
+	return file_pkg_webserver_webserver_proto_rawDescGZIP(), []int{0, 4, 5}
+}
+
+func (x *Web_OpenTelemetry_Stdout) GetPrettyPrint() bool {
 	if x != nil {
 		return x.PrettyPrint
 	}
@@ -974,7 +913,7 @@ var File_pkg_webserver_webserver_proto protoreflect.FileDescriptor
 
 const file_pkg_webserver_webserver_proto_rawDesc = "" +
 	"\n" +
-	"\x1dpkg/webserver/webserver.proto\x12\x10go.pkg.webserver\x1a\x1egoogle/protobuf/duration.proto\"\xa8\x15\n" +
+	"\x1dpkg/webserver/webserver.proto\x12\x10go.pkg.webserver\x1a\x1egoogle/protobuf/duration.proto\"\xd1\x13\n" +
 	"\x03Web\x12<\n" +
 	"\fbind_address\x18\x01 \x01(\v2\x19.go.pkg.webserver.Web.NetR\vbindAddress\x12.\n" +
 	"\x04grpc\x18\x03 \x01(\v2\x1a.go.pkg.webserver.Web.GrpcR\x04grpc\x12.\n" +
@@ -999,7 +938,7 @@ const file_pkg_webserver_webserver_proto_rawDesc = "" +
 	"\x0ftrivial_api_v20\x10\x03\x1aw\n" +
 	"\x05Debug\x12)\n" +
 	"\x10enable_profiling\x18\x01 \x01(\bR\x0fenableProfiling\x12C\n" +
-	"\x1edisable_print_inoutput_methods\x18\x02 \x03(\tR\x1bdisablePrintInoutputMethods\x1a\xba\x0e\n" +
+	"\x1edisable_print_inoutput_methods\x18\x02 \x03(\tR\x1bdisablePrintInoutputMethods\x1a\xe3\f\n" +
 	"\rOpenTelemetry\x12\x18\n" +
 	"\aenabled\x18\x01 \x01(\bR\aenabled\x12Q\n" +
 	"\x17metric_collect_duration\x18\x02 \x01(\v2\x19.google.protobuf.DurationR\x15metricCollectDuration\x12r\n" +
@@ -1016,23 +955,18 @@ const file_pkg_webserver_webserver_proto_rawDesc = "" +
 	"\n" +
 	"AttrsEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\x1a\xfb\x02\n" +
-	"\x12OtelMetricExporter\x12a\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\x1a\xa8\x01\n" +
+	"\x12OtelMetricExporter\x12N\n" +
 	"\n" +
-	"prometheus\x18\x01 \x01(\v2A.go.pkg.webserver.Web.OpenTelemetry.OtelMetricExporter.PrometheusR\n" +
-	"prometheus\x12U\n" +
-	"\x06stdout\x18\x02 \x01(\v2=.go.pkg.webserver.Web.OpenTelemetry.OtelMetricExporter.StdoutR\x06stdout\x1a~\n" +
+	"prometheus\x18\x01 \x01(\v2..go.pkg.webserver.Web.OpenTelemetry.PrometheusR\n" +
+	"prometheus\x12B\n" +
+	"\x06stdout\x18\x02 \x01(\v2*.go.pkg.webserver.Web.OpenTelemetry.StdoutR\x06stdout\x1a\x9b\x01\n" +
+	"\x11OtelTraceExporter\x12B\n" +
+	"\x06jaeger\x18\x01 \x01(\v2*.go.pkg.webserver.Web.OpenTelemetry.JaegerR\x06jaeger\x12B\n" +
+	"\x06stdout\x18\x02 \x01(\v2*.go.pkg.webserver.Web.OpenTelemetry.StdoutR\x06stdout\x1a\x1e\n" +
 	"\n" +
 	"Prometheus\x12\x10\n" +
-	"\x03url\x18\x01 \x01(\tR\x03url\x12,\n" +
-	"\x12enabled_timer_cost\x18\n" +
-	" \x01(\bR\x10enabledTimerCost\x120\n" +
-	"\x14enabled_code_message\x18\v \x01(\bR\x12enabledCodeMessage\x1a+\n" +
-	"\x06Stdout\x12!\n" +
-	"\fpretty_print\x18\x01 \x01(\bR\vprettyPrint\x1a\x88\x02\n" +
-	"\x11OtelTraceExporter\x12T\n" +
-	"\x06jaeger\x18\x01 \x01(\v2<.go.pkg.webserver.Web.OpenTelemetry.OtelTraceExporter.JaegerR\x06jaeger\x12T\n" +
-	"\x06stdout\x18\x02 \x01(\v2<.go.pkg.webserver.Web.OpenTelemetry.OtelTraceExporter.StdoutR\x06stdout\x1a\x1a\n" +
+	"\x03url\x18\x01 \x01(\tR\x03url\x1a\x1a\n" +
 	"\x06Jaeger\x12\x10\n" +
 	"\x03url\x18\x01 \x01(\tR\x03url\x1a+\n" +
 	"\x06Stdout\x12!\n" +
@@ -1067,7 +1001,7 @@ func file_pkg_webserver_webserver_proto_rawDescGZIP() []byte {
 }
 
 var file_pkg_webserver_webserver_proto_enumTypes = make([]protoimpl.EnumInfo, 4)
-var file_pkg_webserver_webserver_proto_msgTypes = make([]protoimpl.MessageInfo, 14)
+var file_pkg_webserver_webserver_proto_msgTypes = make([]protoimpl.MessageInfo, 13)
 var file_pkg_webserver_webserver_proto_goTypes = []any{
 	(Web_Http_ApiFormatter)(0),                    // 0: go.pkg.webserver.Web.Http.ApiFormatter
 	(Web_OpenTelemetry_OtelTraceExporterType)(0),  // 1: go.pkg.webserver.Web.OpenTelemetry.OtelTraceExporterType
@@ -1082,12 +1016,11 @@ var file_pkg_webserver_webserver_proto_goTypes = []any{
 	(*Web_OpenTelemetry_Resource)(nil),           // 10: go.pkg.webserver.Web.OpenTelemetry.Resource
 	(*Web_OpenTelemetry_OtelMetricExporter)(nil), // 11: go.pkg.webserver.Web.OpenTelemetry.OtelMetricExporter
 	(*Web_OpenTelemetry_OtelTraceExporter)(nil),  // 12: go.pkg.webserver.Web.OpenTelemetry.OtelTraceExporter
-	nil, // 13: go.pkg.webserver.Web.OpenTelemetry.Resource.AttrsEntry
-	(*Web_OpenTelemetry_OtelMetricExporter_Prometheus)(nil), // 14: go.pkg.webserver.Web.OpenTelemetry.OtelMetricExporter.Prometheus
-	(*Web_OpenTelemetry_OtelMetricExporter_Stdout)(nil),     // 15: go.pkg.webserver.Web.OpenTelemetry.OtelMetricExporter.Stdout
-	(*Web_OpenTelemetry_OtelTraceExporter_Jaeger)(nil),      // 16: go.pkg.webserver.Web.OpenTelemetry.OtelTraceExporter.Jaeger
-	(*Web_OpenTelemetry_OtelTraceExporter_Stdout)(nil),      // 17: go.pkg.webserver.Web.OpenTelemetry.OtelTraceExporter.Stdout
-	(*durationpb.Duration)(nil),                             // 18: google.protobuf.Duration
+	(*Web_OpenTelemetry_Prometheus)(nil),         // 13: go.pkg.webserver.Web.OpenTelemetry.Prometheus
+	(*Web_OpenTelemetry_Jaeger)(nil),             // 14: go.pkg.webserver.Web.OpenTelemetry.Jaeger
+	(*Web_OpenTelemetry_Stdout)(nil),             // 15: go.pkg.webserver.Web.OpenTelemetry.Stdout
+	nil,                                          // 16: go.pkg.webserver.Web.OpenTelemetry.Resource.AttrsEntry
+	(*durationpb.Duration)(nil),                  // 17: google.protobuf.Duration
 }
 var file_pkg_webserver_webserver_proto_depIdxs = []int32{
 	5,  // 0: go.pkg.webserver.Web.bind_address:type_name -> go.pkg.webserver.Web.Net
@@ -1095,21 +1028,21 @@ var file_pkg_webserver_webserver_proto_depIdxs = []int32{
 	7,  // 2: go.pkg.webserver.Web.http:type_name -> go.pkg.webserver.Web.Http
 	8,  // 3: go.pkg.webserver.Web.debug:type_name -> go.pkg.webserver.Web.Debug
 	9,  // 4: go.pkg.webserver.Web.open_telemetry:type_name -> go.pkg.webserver.Web.OpenTelemetry
-	18, // 5: go.pkg.webserver.Web.Grpc.timeout:type_name -> google.protobuf.Duration
+	17, // 5: go.pkg.webserver.Web.Grpc.timeout:type_name -> google.protobuf.Duration
 	0,  // 6: go.pkg.webserver.Web.Http.api_formatter:type_name -> go.pkg.webserver.Web.Http.ApiFormatter
-	18, // 7: go.pkg.webserver.Web.Http.timeout:type_name -> google.protobuf.Duration
-	18, // 8: go.pkg.webserver.Web.OpenTelemetry.metric_collect_duration:type_name -> google.protobuf.Duration
+	17, // 7: go.pkg.webserver.Web.Http.timeout:type_name -> google.protobuf.Duration
+	17, // 8: go.pkg.webserver.Web.OpenTelemetry.metric_collect_duration:type_name -> google.protobuf.Duration
 	1,  // 9: go.pkg.webserver.Web.OpenTelemetry.otel_trace_exporter_type:type_name -> go.pkg.webserver.Web.OpenTelemetry.OtelTraceExporterType
 	2,  // 10: go.pkg.webserver.Web.OpenTelemetry.otel_metric_exporter_type:type_name -> go.pkg.webserver.Web.OpenTelemetry.OtelMetricExporterType
 	3,  // 11: go.pkg.webserver.Web.OpenTelemetry.otel_log_exporter_type:type_name -> go.pkg.webserver.Web.OpenTelemetry.OtelLogExporterType
 	11, // 12: go.pkg.webserver.Web.OpenTelemetry.otel_metric_exporter:type_name -> go.pkg.webserver.Web.OpenTelemetry.OtelMetricExporter
 	12, // 13: go.pkg.webserver.Web.OpenTelemetry.otel_trace_exporter:type_name -> go.pkg.webserver.Web.OpenTelemetry.OtelTraceExporter
 	10, // 14: go.pkg.webserver.Web.OpenTelemetry.resource:type_name -> go.pkg.webserver.Web.OpenTelemetry.Resource
-	13, // 15: go.pkg.webserver.Web.OpenTelemetry.Resource.attrs:type_name -> go.pkg.webserver.Web.OpenTelemetry.Resource.AttrsEntry
-	14, // 16: go.pkg.webserver.Web.OpenTelemetry.OtelMetricExporter.prometheus:type_name -> go.pkg.webserver.Web.OpenTelemetry.OtelMetricExporter.Prometheus
-	15, // 17: go.pkg.webserver.Web.OpenTelemetry.OtelMetricExporter.stdout:type_name -> go.pkg.webserver.Web.OpenTelemetry.OtelMetricExporter.Stdout
-	16, // 18: go.pkg.webserver.Web.OpenTelemetry.OtelTraceExporter.jaeger:type_name -> go.pkg.webserver.Web.OpenTelemetry.OtelTraceExporter.Jaeger
-	17, // 19: go.pkg.webserver.Web.OpenTelemetry.OtelTraceExporter.stdout:type_name -> go.pkg.webserver.Web.OpenTelemetry.OtelTraceExporter.Stdout
+	16, // 15: go.pkg.webserver.Web.OpenTelemetry.Resource.attrs:type_name -> go.pkg.webserver.Web.OpenTelemetry.Resource.AttrsEntry
+	13, // 16: go.pkg.webserver.Web.OpenTelemetry.OtelMetricExporter.prometheus:type_name -> go.pkg.webserver.Web.OpenTelemetry.Prometheus
+	15, // 17: go.pkg.webserver.Web.OpenTelemetry.OtelMetricExporter.stdout:type_name -> go.pkg.webserver.Web.OpenTelemetry.Stdout
+	14, // 18: go.pkg.webserver.Web.OpenTelemetry.OtelTraceExporter.jaeger:type_name -> go.pkg.webserver.Web.OpenTelemetry.Jaeger
+	15, // 19: go.pkg.webserver.Web.OpenTelemetry.OtelTraceExporter.stdout:type_name -> go.pkg.webserver.Web.OpenTelemetry.Stdout
 	20, // [20:20] is the sub-list for method output_type
 	20, // [20:20] is the sub-list for method input_type
 	20, // [20:20] is the sub-list for extension type_name
@@ -1128,7 +1061,7 @@ func file_pkg_webserver_webserver_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_pkg_webserver_webserver_proto_rawDesc), len(file_pkg_webserver_webserver_proto_rawDesc)),
 			NumEnums:      4,
-			NumMessages:   14,
+			NumMessages:   13,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

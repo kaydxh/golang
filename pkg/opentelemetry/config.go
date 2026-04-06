@@ -26,11 +26,11 @@ import (
 	"fmt"
 
 	"github.com/gin-gonic/gin"
+	middleware_resource "github.com/kaydxh/golang/pkg/middleware/resource"
 	otlpmetric_ "github.com/kaydxh/golang/pkg/opentelemetry/metric/otlp"
 	prometheus_ "github.com/kaydxh/golang/pkg/opentelemetry/metric/prometheus"
 	stdoutmetric_ "github.com/kaydxh/golang/pkg/opentelemetry/metric/stdout"
 	"github.com/kaydxh/golang/pkg/opentelemetry/resource"
-	jaeger_ "github.com/kaydxh/golang/pkg/opentelemetry/tracer/jaeger"
 	otlptrace_ "github.com/kaydxh/golang/pkg/opentelemetry/tracer/otlp"
 	stdouttrace_ "github.com/kaydxh/golang/pkg/opentelemetry/tracer/stdout"
 	viper_ "github.com/kaydxh/golang/pkg/viper"
@@ -59,8 +59,9 @@ type CompletedConfig struct {
 	*completedConfig
 }
 
+// New installs all OpenTelemetry components (Tracer + Meter) together
+// Use this when you don't need to control the initialization order
 func (c *completedConfig) New(ctx context.Context) error {
-
 	logrus.Infof("Installing OpenTelemetry")
 
 	if c.completeError != nil {
@@ -71,44 +72,96 @@ func (c *completedConfig) New(ctx context.Context) error {
 		return nil
 	}
 
-	err := c.install(ctx)
-	if err != nil {
+	// Install tracer first
+	if err := c.InstallTracer(ctx); err != nil {
 		return err
 	}
-	logrus.Infof("Installed OpenTelemetry")
 
+	// Then install meter
+	if err := c.InstallMeter(ctx); err != nil {
+		return err
+	}
+
+	logrus.Infof("Installed OpenTelemetry")
 	return nil
 }
 
-func (c *completedConfig) install(ctx context.Context) error {
+// InstallTracer installs only the TracerProvider
+// This should be called BEFORE webserver creation so that trace interceptors can use the correct TracerProvider
+func (c *completedConfig) InstallTracer(ctx context.Context) error {
+	if c.completeError != nil {
+		return c.completeError
+	}
+
+	if !c.Proto.GetEnabled() {
+		return nil
+	}
+
+	logrus.Infof("======== OpenTelemetry Tracer install starting ========")
 
 	var openTelemetryOpts []OpenTelemetryServiceOption
 
-	// Install resource first (K8s attributes, service info, etc.)
-	resOpts, err := c.installResourceAttributes(ctx)
+	// Install resource for tracer
+	resOpts, err := c.installResourceAttributesForTracer(ctx)
 	if err != nil {
 		return err
 	}
 	openTelemetryOpts = append(openTelemetryOpts, resOpts...)
 
-	opts, err := c.installMeter(ctx)
+	// Install tracer exporter
+	opts, err := c.installTracerExporter(ctx)
+	if err != nil {
+		return err
+	}
+	openTelemetryOpts = append(openTelemetryOpts, opts...)
+
+	if len(opts) > 0 {
+		ot := NewOpenTelemetryService(openTelemetryOpts...)
+		err = ot.Install(ctx)
+		if err != nil {
+			return err
+		}
+		logrus.Infof("Installed OpenTelemetry Tracer")
+	}
+
+	return nil
+}
+
+// InstallMeter installs MeterProvider (Global + App if configured)
+// This can be called after InstallTracer, or independently if tracer is not needed
+func (c *completedConfig) InstallMeter(ctx context.Context) error {
+	if c.completeError != nil {
+		return c.completeError
+	}
+
+	if !c.Proto.GetEnabled() {
+		return nil
+	}
+
+	logrus.Infof("======== OpenTelemetry Meter install starting ========")
+
+	var openTelemetryOpts []OpenTelemetryServiceOption
+
+	// Install resource for meter only
+	resOpts, err := c.installResourceAttributesForMeter(ctx)
+	if err != nil {
+		return err
+	}
+	openTelemetryOpts = append(openTelemetryOpts, resOpts...)
+
+	// Install global meter exporter
+	opts, err := c.installMeterExporter(ctx)
 	if err != nil {
 		return err
 	}
 	openTelemetryOpts = append(openTelemetryOpts, opts...)
 
 	// Install App MeterProvider if configured
-	appOpts, err := c.installAppMeter(ctx)
+	appOpts, err := c.installAppMeterExporter(ctx)
 	if err != nil {
 		return err
 	}
 	openTelemetryOpts = append(openTelemetryOpts, appOpts...)
-
-	opts, err = c.installTracer(ctx)
-	if err != nil {
-		return err
-	}
-	openTelemetryOpts = append(openTelemetryOpts, opts...)
 
 	ot := NewOpenTelemetryService(openTelemetryOpts...)
 	err = ot.Install(ctx)
@@ -116,11 +169,19 @@ func (c *completedConfig) install(ctx context.Context) error {
 		return err
 	}
 
-	_, err = c.installResource(ctx)
-	return err
+	// Install resource stats service
+	_, err = c.installResourceStats(ctx)
+	if err != nil {
+		return err
+	}
+
+	logrus.Infof("Installed OpenTelemetry Meter")
+	return nil
 }
 
-func (c *completedConfig) installResourceAttributes(ctx context.Context) ([]OpenTelemetryServiceOption, error) {
+// installResourceAttributesForTracer creates resource attributes for tracer
+// Uses WithResource which sets both tracer and meter resource options
+func (c *completedConfig) installResourceAttributesForTracer(ctx context.Context) ([]OpenTelemetryServiceOption, error) {
 	var opts []OpenTelemetryServiceOption
 
 	resourceConfig := c.Proto.GetResource()
@@ -142,6 +203,58 @@ func (c *completedConfig) installResourceAttributes(ctx context.Context) ([]Open
 	// Note: After regenerating pb.go, use resourceConfig.GetK8S().GetEnabled()
 	resourceOpts = append(resourceOpts, resource.WithK8s(true))
 
+	// Set meter type as Global for ZhiYan global_app_mark selection
+	resourceOpts = append(resourceOpts, resource.WithMeterType(resource.MeterTypeGlobal))
+
+	// APM Token (Tencent Cloud APM)
+	apmConfig := resourceConfig.GetApm()
+	if apmConfig != nil && apmConfig.GetToken() != "" {
+		resourceOpts = append(resourceOpts, resource.WithApmToken(apmConfig.GetToken()))
+		logrus.Infof("APM Token configured for resource attributes")
+	}
+
+	// ZhiYan platform configuration
+	zhiyanConfig := resourceConfig.GetZhiyan()
+	if zhiyanConfig != nil {
+		if zhiyanConfig.GetAppMark() != "" {
+			resourceOpts = append(resourceOpts, resource.WithZhiYanAppMark(zhiyanConfig.GetAppMark()))
+		}
+		if zhiyanConfig.GetGlobalAppMark() != "" {
+			resourceOpts = append(resourceOpts, resource.WithZhiYanGlobalAppMark(zhiyanConfig.GetGlobalAppMark()))
+		}
+		if zhiyanConfig.GetEnv() != "" {
+			resourceOpts = append(resourceOpts, resource.WithZhiYanEnv(zhiyanConfig.GetEnv()))
+		}
+		if zhiyanConfig.GetInstanceMark() != "" {
+			resourceOpts = append(resourceOpts, resource.WithZhiYanInstanceMark(zhiyanConfig.GetInstanceMark()))
+		}
+		if zhiyanConfig.GetZhiyanApmToken() != "" {
+			resourceOpts = append(resourceOpts, resource.WithZhiYanApmToken(zhiyanConfig.GetZhiyanApmToken()))
+			logrus.Infof("ZhiYan APM Token configured for trace reporting")
+		}
+		if zhiyanConfig.GetExpandKey() != "" {
+			resourceOpts = append(resourceOpts, resource.WithZhiYanExpandKey(zhiyanConfig.GetExpandKey()))
+		}
+		if zhiyanConfig.GetMetricGroup() != "" {
+			resourceOpts = append(resourceOpts, resource.WithZhiYanMetricGroup(zhiyanConfig.GetMetricGroup()))
+			// Set metric group for middleware metrics (must be called before metrics are created)
+			middleware_resource.SetMetricGroup(zhiyanConfig.GetMetricGroup())
+		}
+		// TODO: Uncomment after regenerating pb.go with new proto fields (data_grain, data_type)
+		// if zhiyanConfig.GetDataGrain() > 0 {
+		// 	resourceOpts = append(resourceOpts, resource.WithZhiYanDataGrain(int(zhiyanConfig.GetDataGrain())))
+		// }
+		// if zhiyanConfig.GetDataType() != "" {
+		// 	resourceOpts = append(resourceOpts, resource.WithZhiYanDataType(zhiyanConfig.GetDataType()))
+		// }
+
+		// Log ZhiYan configuration
+		if zhiyanConfig.GetAppMark() != "" || zhiyanConfig.GetGlobalAppMark() != "" {
+			logrus.Infof("ZhiYan platform configured: app_mark=%s, global_app_mark=%s, env=%s, metric_group=%s",
+				zhiyanConfig.GetAppMark(), zhiyanConfig.GetGlobalAppMark(), zhiyanConfig.GetEnv(), zhiyanConfig.GetMetricGroup())
+		}
+	}
+
 	// Create resource with K8s attributes
 	res, err := resource.NewResource(resourceOpts...)
 	if err != nil {
@@ -152,7 +265,65 @@ func (c *completedConfig) installResourceAttributes(ctx context.Context) ([]Open
 	return opts, nil
 }
 
-func (c *completedConfig) installMeter(ctx context.Context) ([]OpenTelemetryServiceOption, error) {
+// installResourceAttributesForMeter creates resource attributes for meter only
+// Uses WithMeterResource to avoid setting tracer options (tracer already initialized)
+func (c *completedConfig) installResourceAttributesForMeter(ctx context.Context) ([]OpenTelemetryServiceOption, error) {
+	var opts []OpenTelemetryServiceOption
+
+	resourceConfig := c.Proto.GetResource()
+
+	// Build resource options
+	var resourceOpts []resource.ResourceOption
+
+	// Service name
+	if resourceConfig.GetServiceName() != "" {
+		resourceOpts = append(resourceOpts, resource.WithServiceName(resourceConfig.GetServiceName()))
+	}
+
+	// Custom attributes
+	if len(resourceConfig.GetAttrs()) > 0 {
+		resourceOpts = append(resourceOpts, resource.WithAttrs(resourceConfig.GetAttrs()))
+	}
+
+	// K8s attributes (enabled by default)
+	resourceOpts = append(resourceOpts, resource.WithK8s(true))
+
+	// Set meter type as Global for ZhiYan global_app_mark selection
+	resourceOpts = append(resourceOpts, resource.WithMeterType(resource.MeterTypeGlobal))
+
+	// ZhiYan platform configuration
+	zhiyanConfig := resourceConfig.GetZhiyan()
+	if zhiyanConfig != nil {
+		if zhiyanConfig.GetAppMark() != "" {
+			resourceOpts = append(resourceOpts, resource.WithZhiYanAppMark(zhiyanConfig.GetAppMark()))
+		}
+		if zhiyanConfig.GetGlobalAppMark() != "" {
+			resourceOpts = append(resourceOpts, resource.WithZhiYanGlobalAppMark(zhiyanConfig.GetGlobalAppMark()))
+		}
+		if zhiyanConfig.GetEnv() != "" {
+			resourceOpts = append(resourceOpts, resource.WithZhiYanEnv(zhiyanConfig.GetEnv()))
+		}
+		if zhiyanConfig.GetInstanceMark() != "" {
+			resourceOpts = append(resourceOpts, resource.WithZhiYanInstanceMark(zhiyanConfig.GetInstanceMark()))
+		}
+		if zhiyanConfig.GetMetricGroup() != "" {
+			resourceOpts = append(resourceOpts, resource.WithZhiYanMetricGroup(zhiyanConfig.GetMetricGroup()))
+		}
+	}
+
+	// Create resource with K8s attributes
+	res, err := resource.NewResource(resourceOpts...)
+	if err != nil {
+		return nil, fmt.Errorf("creating resource: %w", err)
+	}
+
+	// Use WithMeterResource instead of WithResource to avoid setting tracer options
+	opts = append(opts, WithMeterResource(res))
+	return opts, nil
+}
+
+// installMeterExporter configures the global meter exporter
+func (c *completedConfig) installMeterExporter(ctx context.Context) ([]OpenTelemetryServiceOption, error) {
 
 	var opts []OpenTelemetryServiceOption
 	collectDuration := c.Proto.GetMetricCollectDuration().AsDuration()
@@ -161,6 +332,7 @@ func (c *completedConfig) installMeter(ctx context.Context) ([]OpenTelemetryServ
 	}
 
 	metricType := c.Proto.OtelMetricExporterType
+	logrus.Infof("installMeter: metricType=%v (%s)", metricType, metricType.String())
 	switch metricType {
 	case OtelMetricExporterType_metric_prometheus:
 		urlPath := c.Proto.GetOtelMetricExporter().GetPrometheus().GetUrl()
@@ -205,6 +377,16 @@ func (c *completedConfig) installMeter(ctx context.Context) ([]OpenTelemetryServ
 			otlpOpts = append(otlpOpts, otlpmetric_.WithURLPath(otlpConfig.GetUrlPath()))
 		}
 
+		// Set compression (gzip)
+		compression := otlpConfig.GetCompression()
+		otlpOpts = append(otlpOpts, otlpmetric_.WithCompression(compression))
+		logrus.Debugf("OTLP config: compression=%v (from config)", compression)
+
+		// Set temporality (Delta for ZhiYan)
+		temporalityDelta := otlpConfig.GetTemporalityDelta()
+		otlpOpts = append(otlpOpts, otlpmetric_.WithTemporalityDelta(temporalityDelta))
+		logrus.Debugf("OTLP config: temporality_delta=%v (from config)", temporalityDelta)
+
 		// Set headers (including token)
 		headers := make(map[string]string)
 		for k, v := range otlpConfig.GetHeaders() {
@@ -219,6 +401,11 @@ func (c *completedConfig) installMeter(ctx context.Context) ([]OpenTelemetryServ
 
 		builder := otlpmetric_.NewOTLPExporterBuilder(otlpOpts...)
 		opts = append(opts, WithMeterPushExporter(builder))
+		// Enable export logging for OTLP exporter
+		opts = append(opts, WithMeterExporterLogging("OTLP", otlpConfig.GetEndpoint()))
+		logrus.Infof("OTLP metric exporter configured: endpoint=%s, protocol=%s, insecure=%v, compression=%v, temporality_delta=%v",
+			otlpConfig.GetEndpoint(), otlpConfig.GetProtocol(), otlpConfig.GetInsecure(),
+			otlpConfig.GetCompression(), otlpConfig.GetTemporalityDelta())
 
 	case OtelMetricExporterType_metric_none:
 		// not enable metric
@@ -233,7 +420,8 @@ func (c *completedConfig) installMeter(ctx context.Context) ([]OpenTelemetryServ
 }
 
 // installAppMeter installs the App MeterProvider (separate from global)
-func (c *completedConfig) installAppMeter(ctx context.Context) ([]OpenTelemetryServiceOption, error) {
+// installAppMeterExporter configures the App MeterProvider exporter (separate from global)
+func (c *completedConfig) installAppMeterExporter(ctx context.Context) ([]OpenTelemetryServiceOption, error) {
 	appConfig := c.Proto.GetAppMeterProvider()
 	if appConfig == nil || !appConfig.GetEnabled() {
 		return nil, nil
@@ -252,19 +440,50 @@ func (c *completedConfig) installAppMeter(ctx context.Context) ([]OpenTelemetryS
 
 	// Set resource for app meter
 	appResource := appConfig.GetResource()
+	globalResource := c.Proto.GetResource()
+
+	var resourceOpts []resource.ResourceOption
+
+	// Service name
 	if appResource != nil && appResource.GetServiceName() != "" {
-		var resourceOpts []resource.ResourceOption
 		resourceOpts = append(resourceOpts, resource.WithServiceName(appResource.GetServiceName()))
-		if len(appResource.GetAttrs()) > 0 {
-			resourceOpts = append(resourceOpts, resource.WithAttrs(appResource.GetAttrs()))
-		}
-		resourceOpts = append(resourceOpts, resource.WithK8s(true))
-		res, err := resource.NewResource(resourceOpts...)
-		if err != nil {
-			return nil, fmt.Errorf("creating app resource: %w", err)
-		}
-		opts = append(opts, WithAppMeterResource(res))
+	} else if globalResource.GetServiceName() != "" {
+		resourceOpts = append(resourceOpts, resource.WithServiceName(globalResource.GetServiceName()))
 	}
+
+	// Custom attributes
+	if appResource != nil && len(appResource.GetAttrs()) > 0 {
+		resourceOpts = append(resourceOpts, resource.WithAttrs(appResource.GetAttrs()))
+	}
+
+	// K8s attributes
+	resourceOpts = append(resourceOpts, resource.WithK8s(true))
+
+	// Set meter type as App for ZhiYan app mark selection
+	resourceOpts = append(resourceOpts, resource.WithMeterType(resource.MeterTypeApp))
+
+	// ZhiYan configuration from global resource (for App MeterProvider)
+	zhiyanConfig := globalResource.GetZhiyan()
+	if zhiyanConfig != nil {
+		if zhiyanConfig.GetAppMark() != "" {
+			resourceOpts = append(resourceOpts, resource.WithZhiYanAppMark(zhiyanConfig.GetAppMark()))
+		}
+		if zhiyanConfig.GetEnv() != "" {
+			resourceOpts = append(resourceOpts, resource.WithZhiYanEnv(zhiyanConfig.GetEnv()))
+		}
+		if zhiyanConfig.GetInstanceMark() != "" {
+			resourceOpts = append(resourceOpts, resource.WithZhiYanInstanceMark(zhiyanConfig.GetInstanceMark()))
+		}
+		if zhiyanConfig.GetExpandKey() != "" {
+			resourceOpts = append(resourceOpts, resource.WithZhiYanExpandKey(zhiyanConfig.GetExpandKey()))
+		}
+	}
+
+	res, err := resource.NewResource(resourceOpts...)
+	if err != nil {
+		return nil, fmt.Errorf("creating app resource: %w", err)
+	}
+	opts = append(opts, WithAppMeterResource(res))
 
 	// Determine exporter type (use app-specific or fallback to global)
 	exporterType := appConfig.GetExporterType()
@@ -325,6 +544,8 @@ func (c *completedConfig) installAppMeter(ctx context.Context) ([]OpenTelemetryS
 
 		builder := otlpmetric_.NewOTLPExporterBuilder(otlpOpts...)
 		opts = append(opts, WithAppMeterPushExporter(builder))
+		// Enable export logging for App OTLP exporter
+		opts = append(opts, WithAppMeterExporterLogging("AppOTLP", otlpConfig.GetEndpoint()))
 
 	case OtelMetricExporterType_metric_none:
 		return nil, nil
@@ -337,23 +558,21 @@ func (c *completedConfig) installAppMeter(ctx context.Context) ([]OpenTelemetryS
 	return opts, nil
 }
 
-func (c *completedConfig) installTracer(ctx context.Context) ([]OpenTelemetryServiceOption, error) {
+// installTracerExporter configures the tracer exporter
+func (c *completedConfig) installTracerExporter(ctx context.Context) ([]OpenTelemetryServiceOption, error) {
 
 	var opts []OpenTelemetryServiceOption
 	tracerType := c.Proto.OtelTraceExporterType
-	switch tracerType {
-	case OtelTraceExporterType_trace_jaeger:
-		builder, err := jaeger_.NewJaegerExporertBuilder(c.Proto.GetOtelTraceExporter().GetJaeger().GetUrl())
-		if err != nil {
-			return nil, fmt.Errorf("new jaeger exporter builder err: %v", err)
-		}
-		opts = append(opts, WithTracerExporter(builder))
+	logrus.Infof("installTracerExporter: tracerType=%s (%s)", tracerType.String(), tracerType)
 
+	switch tracerType {
 	case OtelTraceExporterType_trace_stdout:
+		prettyPrint := c.Proto.GetOtelTraceExporter().GetStdout().GetPrettyPrint()
 		builder := stdouttrace_.NewStdoutExporterBuilder(
-			stdouttrace_.WithPrettyPrint(c.Proto.GetOtelTraceExporter().GetStdout().GetPrettyPrint()),
+			stdouttrace_.WithPrettyPrint(prettyPrint),
 		)
 		opts = append(opts, WithTracerExporter(builder))
+		logrus.Infof("Stdout trace exporter configured: pretty_print=%v", prettyPrint)
 
 	case OtelTraceExporterType_trace_otlp:
 		otlpConfig := c.Proto.GetOtelTraceExporter().GetOtlp()
@@ -393,9 +612,13 @@ func (c *completedConfig) installTracer(ctx context.Context) ([]OpenTelemetrySer
 
 		builder := otlptrace_.NewOTLPTraceExporterBuilder(otlpOpts...)
 		opts = append(opts, WithTracerExporter(builder))
+		// Enable export logging for OTLP trace exporter
+		opts = append(opts, WithTracerExporterLogging("OTLP", otlpConfig.GetEndpoint()))
+		logrus.Infof("OTLP trace exporter configured: endpoint=%s, protocol=%s, insecure=%v, url_path=%s",
+			otlpConfig.GetEndpoint(), otlpConfig.GetProtocol(), otlpConfig.GetInsecure(), otlpConfig.GetUrlPath())
 
 	case OtelTraceExporterType_trace_none:
-		// not enable tracer
+		logrus.Infof("Trace exporter disabled (trace_none)")
 		return nil, nil
 
 	default:
@@ -405,7 +628,8 @@ func (c *completedConfig) installTracer(ctx context.Context) ([]OpenTelemetrySer
 	return opts, nil
 }
 
-func (c *completedConfig) installResource(ctx context.Context) (*resource.ResourceStatsService, error) {
+// installResourceStats installs the resource stats service for monitoring
+func (c *completedConfig) installResourceStats(ctx context.Context) (*resource.ResourceStatsService, error) {
 
 	var opts []resource.ResourceStatsServiceOption
 	collectDuration := c.Proto.GetMetricCollectDuration().AsDuration()

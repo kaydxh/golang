@@ -89,3 +89,18 @@ func WithURLPath(urlPath string) OTLPExporterBuilderOption {
 		o.opts.URLPath = urlPath
 	})
 }
+
+// WithCompression enables gzip compression
+func WithCompression(compression bool) OTLPExporterBuilderOption {
+	return newFuncOTLPExporterBuilderOption(func(o *OTLPExporterBuilder) {
+		o.opts.Compression = compression
+	})
+}
+
+// WithTemporalityDelta uses Delta temporality instead of Cumulative
+// ZhiYan platform requires Delta temporality
+func WithTemporalityDelta(delta bool) OTLPExporterBuilderOption {
+	return newFuncOTLPExporterBuilderOption(func(o *OTLPExporterBuilder) {
+		o.opts.TemporalityDelta = delta
+	})
+}

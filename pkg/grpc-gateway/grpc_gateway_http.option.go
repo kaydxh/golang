@@ -200,6 +200,13 @@ func WithHttpHandlerInterceptorsMetricOptions() GRPCGatewayOption {
 	})
 }
 
+// WithHttpHandlerInterceptorsTraceOptions adds OpenTelemetry trace interceptor for HTTP requests
+func WithHttpHandlerInterceptorsTraceOptions() GRPCGatewayOption {
+	return WithHttpHandlerInterceptorOptions(http_.HandlerInterceptor{
+		Interceptor: httpinterceptoropentelemetr_.Trace,
+	})
+}
+
 func WithHttpHandlerInterceptorInOutputPrinterOptions(enabled bool) GRPCGatewayOption {
 	if enabled {
 		return WithHttpHandlerInterceptorOptions(http_.HandlerInterceptor{

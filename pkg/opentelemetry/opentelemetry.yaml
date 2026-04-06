@@ -54,8 +54,6 @@ open_telemetry:
   otel_trace_exporter:
     stdout:
       pretty_print: true
-    jaeger:
-      url: http://localhost:14268/api/traces
     # OTLP 配置（用于腾讯云 APM、Jaeger OTLP、Tempo 等）
     otlp:
       endpoint: ""              # e.g., "tempo.example.com:4317" for gRPC
@@ -82,8 +80,33 @@ open_telemetry:
       # pod_ip: ""             # 覆盖 POD_IP 环境变量
       # container_name: ""     # 覆盖 CONTAINER_NAME 环境变量
       # container_platform: "" # 覆盖 CONTAINER_PLATFORM 环境变量 (e.g., STKE, TKE)
+    # APM (Application Performance Management) 配置
+    # 用于腾讯云 APM
+    apm:
+      token: ""                # APM Token，与业务系统关联，从 APM 控制台获取
 
-  # 从旧 monitor.prometheus 迁移的配置
-  enabled_metric_timer_cost: true
-  enabled_metric_code_message: true
+    # (ZhiYan) 平台配置
+    zhiyan:
+      # 业务指标上报 appMark（用于 App MeterProvider）
+      # 平台获取，用于业务数据上报
+      app_mark: ""
+
+      # 全局指标上报 appMark（用于 Global MeterProvider）
+      # 用于模调上报和系统层面监控上报
+      global_app_mark: ""
+
+      # 环境标识：prod / test / dev
+      # 如果为空，默认为 prod
+      env: "prod"
+
+      # 实例标识，用于属性上报
+      # 如果为空，使用 Pod IP 或 Host IP
+      instance_mark: ""
+
+      # APM Token，用于 Trace 上报
+      zhiyan_apm_token: ""
+
+      # 是否将 resource 属性扩展到指标维度
+      # "yes" 或 "no"（默认 "no"）
+      expand_key: "no"
 

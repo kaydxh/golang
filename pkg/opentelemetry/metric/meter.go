@@ -37,6 +37,8 @@ type MeterOptinos struct {
 	PullExporterBuilder PullExporterBuilder
 	collectPeriod       time.Duration
 	resource            *resource.Resource
+	exporterName        string // exporter name for logging (e.g., "OTLP", "stdout")
+	exporterEndpoint    string // endpoint for logging
 }
 
 type Meter struct {
@@ -137,7 +139,17 @@ func (m *Meter) createPushExporter(ctx context.Context) (metric.Exporter, error)
 		return nil, fmt.Errorf("push metric reader builder is nil")
 	}
 
-	return m.opts.PushExporterBuilder.Build(ctx)
+	exporter, err := m.opts.PushExporterBuilder.Build(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	// Wrap with logging exporter if name is provided
+	if m.opts.exporterName != "" {
+		return NewLoggingExporter(exporter, m.opts.exporterName, m.opts.exporterEndpoint), nil
+	}
+
+	return exporter, nil
 }
 
 // Pull Exporter supports Prometheus pulls.  It does not implement the

@@ -25,6 +25,7 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/sirupsen/logrus"
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/sdk/resource"
 	semconv "go.opentelemetry.io/otel/semconv/v1.21.0"
@@ -47,12 +48,59 @@ var (
 	K8SContainerPlatformKey = attribute.Key("k8s.container.platform")
 )
 
+// APM Token key for Tencent Cloud APM
+// https://console.cloud.tencent.com/apm/monitor/access
+var (
+	ApmTokenKey = attribute.Key("token")
+)
+
+// ZhiYan platform attribute keys
+var (
+	// ZhiYanAppMarkKey is the app mark for metric reporting (必填，上报应用标记)
+	ZhiYanAppMarkKey = attribute.Key("__zhiyan_app_mark__")
+
+	// ZhiYanInstanceMarkKey is the instance identifier for attribute reporting (选填，上报实例标识)
+	ZhiYanInstanceMarkKey = attribute.Key("__zhiyan_instance_mark__")
+
+	// ZhiYanEnvKey is the environment for attribute reporting
+	ZhiYanEnvKey = attribute.Key("__zhiyan_env__")
+
+	// ZhiYanExpandKey controls whether to expand resource attributes to metric dimensions
+	ZhiYanExpandKey = attribute.Key("__zhiyan_expand_tag_enable__")
+
+	// ZhiYanDataGrainKey is the data granularity (选填，数据粒度，int类型，默认60，可接受10,30,60)
+	ZhiYanDataGrainKey = attribute.Key("__zhiyan_data_grain__")
+
+	// ZhiYanDataTypeKey is the data type (选填，秒级粒度数据时填写"second")
+	ZhiYanDataTypeKey = attribute.Key("__zhiyan_data_type__")
+
+	// ZhiYanTpsTenantIDKey is the tenant ID for ZhiYan APM trace reporting
+	// Format: "空间ID#日志租户#监控宝租户"
+	ZhiYanTpsTenantIDKey = attribute.Key("tps.tenant.id")
+)
+
 // ResourceOptions holds options for creating a Resource
 type ResourceOptions struct {
 	ServiceName    string
 	ServiceVersion string
 	Attrs          map[string]string
 	EnableK8s      bool
+	ApmToken       string // APM Token for Tencent Cloud APM
+
+	// ZhiYan platform options
+	ZhiYanAppMark       string // App mark for business metric reporting
+	ZhiYanGlobalAppMark string // Global app mark for infrastructure metrics
+	ZhiYanEnv           string // Environment (prod/test/dev)
+	ZhiYanInstanceMark  string // Instance identifier
+	ZhiYanApmToken      string // APM Token for ZhiYan trace reporting
+	ZhiYanExpandKey     string // Expand resource attrs to dimensions (yes/no)
+	ZhiYanMetricGroup   string // Metric group (scope name) for ZhiYan
+	ZhiYanDataGrain     int    // Data granularity: 10, 30, or 60 (default 60, minutes)
+	ZhiYanDataType      string // Data type: "second" for sub-minute granularity
+
+	// MeterType indicates whether this is for global or app metrics
+	// Used to determine which ZhiYan app mark to use
+	MeterType string
 }
 
 // ResourceOption is a function that configures ResourceOptions
@@ -86,6 +134,94 @@ func WithK8s(enable bool) ResourceOption {
 	}
 }
 
+// WithApmToken sets the APM Token for Tencent Cloud APM
+func WithApmToken(token string) ResourceOption {
+	return func(o *ResourceOptions) {
+		o.ApmToken = token
+	}
+}
+
+// ZhiYan platform options
+
+// WithZhiYanAppMark sets the app mark for business metric reporting
+func WithZhiYanAppMark(appMark string) ResourceOption {
+	return func(o *ResourceOptions) {
+		o.ZhiYanAppMark = appMark
+	}
+}
+
+// WithZhiYanGlobalAppMark sets the global app mark for infrastructure metrics
+func WithZhiYanGlobalAppMark(globalAppMark string) ResourceOption {
+	return func(o *ResourceOptions) {
+		o.ZhiYanGlobalAppMark = globalAppMark
+	}
+}
+
+// WithZhiYanEnv sets the ZhiYan environment
+func WithZhiYanEnv(env string) ResourceOption {
+	return func(o *ResourceOptions) {
+		o.ZhiYanEnv = env
+	}
+}
+
+// WithZhiYanInstanceMark sets the instance identifier
+func WithZhiYanInstanceMark(instanceMark string) ResourceOption {
+	return func(o *ResourceOptions) {
+		o.ZhiYanInstanceMark = instanceMark
+	}
+}
+
+// WithZhiYanApmToken sets the APM token for ZhiYan trace reporting
+func WithZhiYanApmToken(token string) ResourceOption {
+	return func(o *ResourceOptions) {
+		o.ZhiYanApmToken = token
+	}
+}
+
+// WithZhiYanExpandKey sets whether to expand resource attrs to dimensions
+func WithZhiYanExpandKey(expand string) ResourceOption {
+	return func(o *ResourceOptions) {
+		o.ZhiYanExpandKey = expand
+	}
+}
+
+// WithZhiYanMetricGroup sets the metric group (scope name) for ZhiYan
+// Common values: "default", "client_report", "server_report"
+func WithZhiYanMetricGroup(group string) ResourceOption {
+	return func(o *ResourceOptions) {
+		o.ZhiYanMetricGroup = group
+	}
+}
+
+// WithZhiYanDataGrain sets the data granularity for ZhiYan
+// Valid values: 10, 30, 60 (default 60, minutes)
+func WithZhiYanDataGrain(grain int) ResourceOption {
+	return func(o *ResourceOptions) {
+		o.ZhiYanDataGrain = grain
+	}
+}
+
+// WithZhiYanDataType sets the data type for ZhiYan
+// Set to "second" for sub-minute granularity data
+func WithZhiYanDataType(dataType string) ResourceOption {
+	return func(o *ResourceOptions) {
+		o.ZhiYanDataType = dataType
+	}
+}
+
+// WithMeterType sets the meter type (global or app)
+func WithMeterType(meterType string) ResourceOption {
+	return func(o *ResourceOptions) {
+		o.MeterType = meterType
+	}
+}
+
+// MeterType constants
+const (
+	MeterTypeGlobal = "global"
+	MeterTypeApp    = "app"
+)
+
 // NewResource creates a new OpenTelemetry Resource with the given options
 func NewResource(opts ...ResourceOption) (*resource.Resource, error) {
 	options := &ResourceOptions{
@@ -116,6 +252,14 @@ func NewResource(opts ...ResourceOption) (*resource.Resource, error) {
 		attrs = append(attrs, k8sAttrs...)
 	}
 
+	// APM Token (Tencent Cloud APM)
+	if options.ApmToken != "" {
+		attrs = append(attrs, ApmTokenKey.String(options.ApmToken))
+	}
+
+	// ZhiYan platform attributes
+	attrs = append(attrs, getZhiYanAttributes(options)...)
+
 	// Custom attributes
 	for k, v := range options.Attrs {
 		attrs = append(attrs, attribute.String(k, v))
@@ -125,6 +269,71 @@ func NewResource(opts ...ResourceOption) (*resource.Resource, error) {
 		semconv.SchemaURL,
 		attrs...,
 	), nil
+}
+
+// getZhiYanAttributes returns ZhiYan-specific resource attributes
+func getZhiYanAttributes(options *ResourceOptions) []attribute.KeyValue {
+	var attrs []attribute.KeyValue
+
+	// Determine which app mark to use based on meter type
+	appMark := ""
+	if options.MeterType == MeterTypeApp && options.ZhiYanAppMark != "" {
+		appMark = options.ZhiYanAppMark
+	} else if options.MeterType == MeterTypeGlobal && options.ZhiYanGlobalAppMark != "" {
+		appMark = options.ZhiYanGlobalAppMark
+	}
+
+	// Debug log for ZhiYan attributes selection
+	logrus.Debugf("getZhiYanAttributes: MeterType=%s, ZhiYanAppMark=%s, ZhiYanGlobalAppMark=%s, selected appMark=%s",
+		options.MeterType, options.ZhiYanAppMark, options.ZhiYanGlobalAppMark, appMark)
+
+	// Only add ZhiYan attributes if app mark is set
+	if appMark != "" {
+		attrs = append(attrs, ZhiYanAppMarkKey.String(appMark))
+		logrus.Infof("ZhiYan resource attribute added: %s=%s", ZhiYanAppMarkKey, appMark)
+
+		// Environment (default to "prod" if not set)
+		env := options.ZhiYanEnv
+		if env == "" {
+			env = "prod"
+		}
+		attrs = append(attrs, ZhiYanEnvKey.String(env))
+
+		// Instance mark
+		if options.ZhiYanInstanceMark != "" {
+			attrs = append(attrs, ZhiYanInstanceMarkKey.String(options.ZhiYanInstanceMark))
+		}
+
+		// Expand key (default to "no")
+		expandKey := options.ZhiYanExpandKey
+		if expandKey != "yes" {
+			expandKey = "no"
+		}
+		attrs = append(attrs, ZhiYanExpandKey.String(expandKey))
+
+		// Data grain (选填，数据粒度，默认60)
+		if options.ZhiYanDataGrain > 0 {
+			attrs = append(attrs, ZhiYanDataGrainKey.Int(options.ZhiYanDataGrain))
+		}
+
+		// Data type (选填，秒级粒度数据时填写"second")
+		if options.ZhiYanDataType != "" {
+			attrs = append(attrs, ZhiYanDataTypeKey.String(options.ZhiYanDataType))
+		}
+	}
+
+	// ZhiYan APM Token for trace reporting
+	if options.ZhiYanApmToken != "" {
+		attrs = append(attrs, ZhiYanTpsTenantIDKey.String(options.ZhiYanApmToken))
+		// Also add service namespace for ZhiYan APM
+		env := options.ZhiYanEnv
+		if env == "" {
+			env = "prod"
+		}
+		attrs = append(attrs, semconv.ServiceNamespace(env))
+	}
+
+	return attrs
 }
 
 // GetK8sAttributes returns K8s-related attributes from environment variables

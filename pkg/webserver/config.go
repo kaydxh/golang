@@ -218,6 +218,9 @@ func (c *Config) installHttpMiddlewareChain() []gw_.GRPCGatewayOption {
 		// http body proto
 		gw_.WithServerInterceptorsHttpBodyProtoOptions(),
 
+		// OpenTelemetry trace interceptor for HTTP
+		gw_.WithHttpHandlerInterceptorsTraceOptions(),
+
 		gw_.WithHttpHandlerInterceptorsTimerOptions(),
 
 		// http metric (total req, fail req, cost time, error code)
@@ -297,6 +300,9 @@ func (c *Config) installGrpcMiddlewareChain() []gw_.GRPCGatewayOption {
 
 		// recovery
 		gw_.WithServerInterceptorsRecoveryOptions(),
+
+		// OpenTelemetry trace interceptor
+		gw_.WithServerUnaryTraceInterceptorOptions(),
 
 		// total req, fail req, cost time metrics, errorcode ip dims
 		gw_.WithServerUnaryMetricInterceptorOptions(),

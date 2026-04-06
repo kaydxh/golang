@@ -109,6 +109,9 @@ func ReportBusinessMetric(ctx context.Context, attrs []attribute.KeyValue) {
 		return
 	}
 
+	// Use GetDefaultMetricMonitor() to ensure lazy initialization
+	monitor := GetDefaultMetricMonitor()
+
 	for key, value := range values {
 
 		var (
@@ -145,7 +148,7 @@ func ReportBusinessMetric(ctx context.Context, attrs []attribute.KeyValue) {
 		}
 
 		if counterType {
-			counter, err := DefaultMetricMonitor.GetOrNewBusinessCounter(key)
+			counter, err := monitor.GetOrNewBusinessCounter(key)
 			if err != nil {
 				otel.Handle(err)
 				continue
@@ -154,7 +157,7 @@ func ReportBusinessMetric(ctx context.Context, attrs []attribute.KeyValue) {
 
 		} else {
 
-			histogram, err := DefaultMetricMonitor.GetOrNewBusinessHistogram(key)
+			histogram, err := monitor.GetOrNewBusinessHistogram(key)
 			if err != nil {
 				otel.Handle(err)
 				continue

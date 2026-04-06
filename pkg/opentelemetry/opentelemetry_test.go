@@ -87,7 +87,6 @@ func metrics(ctx context.Context, n int) {
 	}
 }
 
-// https://github.com/open-telemetry/opentelemetry-go/blob/main/example/jaeger/main.go
 func TestTrace(t *testing.T) {
 	cfgFile := "./opentelemetry.yaml"
 	config := opentelemetry_.NewConfig(opentelemetry_.WithViper(viper_.GetViper(cfgFile, "open_telemetry")))

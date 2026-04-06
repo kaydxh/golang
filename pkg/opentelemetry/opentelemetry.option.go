@@ -62,6 +62,14 @@ func WithResource(res *resource.Resource) OpenTelemetryServiceOption {
 	})
 }
 
+// WithMeterResource sets a custom resource for meter only (not tracer)
+// Use this when tracer is initialized separately
+func WithMeterResource(res *resource.Resource) OpenTelemetryServiceOption {
+	return OpenTelemetryServiceOptionFunc(func(o *OpenTelemetryService) {
+		o.opts.meterOptions = append(o.opts.meterOptions, metric.WithResource(res))
+	})
+}
+
 // ========================================
 // App MeterProvider Options (双 Provider 支持)
 // ========================================
@@ -91,5 +99,30 @@ func WithAppMetricCollectDuration(period time.Duration) OpenTelemetryServiceOpti
 func WithAppMeterResource(res *resource.Resource) OpenTelemetryServiceOption {
 	return OpenTelemetryServiceOptionFunc(func(o *OpenTelemetryService) {
 		o.opts.appMeterOptions = append(o.opts.appMeterOptions, metric.WithResource(res))
+	})
+}
+
+// WithMeterExporterLogging enables logging for metric export operations
+// name: exporter name for logging (e.g., "OTLP", "stdout")
+// endpoint: endpoint address for logging
+func WithMeterExporterLogging(name, endpoint string) OpenTelemetryServiceOption {
+	return OpenTelemetryServiceOptionFunc(func(o *OpenTelemetryService) {
+		o.opts.meterOptions = append(o.opts.meterOptions, metric.WithExporterLogging(name, endpoint))
+	})
+}
+
+// WithAppMeterExporterLogging enables logging for App MeterProvider export operations
+func WithAppMeterExporterLogging(name, endpoint string) OpenTelemetryServiceOption {
+	return OpenTelemetryServiceOptionFunc(func(o *OpenTelemetryService) {
+		o.opts.appMeterOptions = append(o.opts.appMeterOptions, metric.WithExporterLogging(name, endpoint))
+	})
+}
+
+// WithTracerExporterLogging enables logging for trace export operations
+// name: exporter name for logging (e.g., "OTLP", "Jaeger", "stdout")
+// endpoint: endpoint address for logging
+func WithTracerExporterLogging(name, endpoint string) OpenTelemetryServiceOption {
+	return OpenTelemetryServiceOptionFunc(func(o *OpenTelemetryService) {
+		o.opts.tracerOptions = append(o.opts.tracerOptions, tracer.WithExporterLogging(name, endpoint))
 	})
 }

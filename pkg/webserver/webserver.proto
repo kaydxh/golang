@@ -55,10 +55,6 @@ message Web {
 
     Resource resource = 10;
 
-    // 从旧 Monitor.Prometheus 迁移的配置
-    bool enabled_metric_timer_cost = 20;
-    bool enabled_metric_code_message = 21;
-
     message Resource {
       string service_name = 1;
       map<string, string> attrs = 2;

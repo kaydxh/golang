@@ -33,9 +33,6 @@ web:
     resource:
       service_name: ""  # 默认使用进程名
       attrs: {}
-    # 从旧 monitor.prometheus 迁移的配置
-    enabled_metric_timer_cost: true
-    enabled_metric_code_message: true
 
   # QPS限流配置
   qps_limit:

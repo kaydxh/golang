@@ -149,6 +149,18 @@ func WithServerUnaryMetricInterceptorOptions() GRPCGatewayOption {
 	})
 }
 
+// WithServerUnaryTraceInterceptorOptions adds OpenTelemetry trace interceptor
+func WithServerUnaryTraceInterceptorOptions() GRPCGatewayOption {
+	return GRPCGatewayOptionFunc(func(c *GRPCGateway) {
+		WithServerUnaryInterceptorsOptions(
+			interceptoropentelemetry_.UnaryServerTraceInterceptor(),
+		).apply(c)
+		WithServerStreamInterceptorsOptions(
+			interceptoropentelemetry_.StreamServerTraceInterceptor(),
+		).apply(c)
+	})
+}
+
 func WithServerUnaryInterceptorsRequestIdOptions() GRPCGatewayOption {
 	return GRPCGatewayOptionFunc(func(c *GRPCGateway) {
 		WithServerUnaryInterceptorsOptions(interceptordebug_.UnaryServerInterceptorOfRequestId()).apply(c)

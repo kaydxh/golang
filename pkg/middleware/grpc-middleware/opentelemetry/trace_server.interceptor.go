@@ -24,6 +24,7 @@ package interceptoropentelemetry
 import (
 	"context"
 
+	"github.com/sirupsen/logrus"
 	"go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc"
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/trace"
@@ -31,13 +32,28 @@ import (
 )
 
 // UnaryServerTraceInterceptor returns a unary server interceptor that adds OpenTelemetry tracing
+// Note: Uses otel.GetTracerProvider() at request time to get the current global TracerProvider
 func UnaryServerTraceInterceptor(opts ...otelgrpc.Option) grpc.UnaryServerInterceptor {
-	return otelgrpc.UnaryServerInterceptor(opts...)
+	// Get current global TracerProvider and pass it explicitly
+	// This ensures the interceptor uses whatever TracerProvider is set at creation time
+	tp := otel.GetTracerProvider()
+	logrus.Infof("UnaryServerTraceInterceptor: creating trace interceptor, TracerProvider type=%T", tp)
+	defaultOpts := []otelgrpc.Option{
+		otelgrpc.WithTracerProvider(tp),
+	}
+	defaultOpts = append(defaultOpts, opts...)
+	return otelgrpc.UnaryServerInterceptor(defaultOpts...)
 }
 
 // StreamServerTraceInterceptor returns a stream server interceptor that adds OpenTelemetry tracing
 func StreamServerTraceInterceptor(opts ...otelgrpc.Option) grpc.StreamServerInterceptor {
-	return otelgrpc.StreamServerInterceptor(opts...)
+	tp := otel.GetTracerProvider()
+	logrus.Infof("StreamServerTraceInterceptor: creating trace interceptor, TracerProvider type=%T", tp)
+	defaultOpts := []otelgrpc.Option{
+		otelgrpc.WithTracerProvider(tp),
+	}
+	defaultOpts = append(defaultOpts, opts...)
+	return otelgrpc.StreamServerInterceptor(defaultOpts...)
 }
 
 // UnaryServerTraceInterceptorWithTracer returns a unary server interceptor with custom tracer provider

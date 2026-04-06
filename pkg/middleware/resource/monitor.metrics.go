@@ -15,11 +15,45 @@ const (
 )
 
 var (
-	meter = otel.GetMeterProvider().Meter(
-		instrumentationName,
-		metric.WithInstrumentationVersion(instrumentationVersion),
-	)
+	// metricGroup is the scope name for meter, can be overridden by SetMetricGroup
+	// For ZhiYan, common values: "server_report", "client_report", "default"
+	metricGroup   = instrumentationName
+	metricGroupMu sync.RWMutex
+
+	meter     metric.Meter
+	meterOnce sync.Once
 )
+
+// SetMetricGroup sets the metric group (scope name) for meter
+// Should be called before any metrics are created
+// For ZhiYan, use "server_report" or "client_report"
+func SetMetricGroup(group string) {
+	metricGroupMu.Lock()
+	defer metricGroupMu.Unlock()
+	if group != "" {
+		metricGroup = group
+	}
+}
+
+// GetMetricGroup returns the current metric group
+func GetMetricGroup() string {
+	metricGroupMu.RLock()
+	defer metricGroupMu.RUnlock()
+	return metricGroup
+}
+
+func getMeter() metric.Meter {
+	meterOnce.Do(func() {
+		metricGroupMu.RLock()
+		group := metricGroup
+		metricGroupMu.RUnlock()
+		meter = otel.GetMeterProvider().Meter(
+			group,
+			metric.WithInstrumentationVersion(instrumentationVersion),
+		)
+	})
+	return meter
+}
 
 type MetricMonitor struct {
 	TotalReqCounter   metric.Int64Counter
@@ -34,11 +68,19 @@ type MetricMonitor struct {
 }
 
 var (
-	DefaultMetricMonitor = NewMetricMonitor()
+	DefaultMetricMonitor *MetricMonitor
+	defaultMonitorOnce   sync.Once
 )
 
+func GetDefaultMetricMonitor() *MetricMonitor {
+	defaultMonitorOnce.Do(func() {
+		DefaultMetricMonitor = NewMetricMonitor()
+	})
+	return DefaultMetricMonitor
+}
+
 func GlobalMeter() metric.Meter {
-	return meter
+	return getMeter()
 }
 
 func NewMetricMonitor() *MetricMonitor {
@@ -54,13 +96,13 @@ func NewMetricMonitor() *MetricMonitor {
 		f()
 	}
 	call(func() {
-		m.TotalReqCounter, err = meter.Int64Counter("total_req")
+		m.TotalReqCounter, err = getMeter().Int64Counter("total_req")
 	})
 	call(func() {
-		m.FailCntCounter, err = meter.Int64Counter("fail_cnt")
+		m.FailCntCounter, err = getMeter().Int64Counter("fail_cnt")
 	})
 	call(func() {
-		m.CostTimeHistogram, err = meter.Float64Histogram("cost_time")
+		m.CostTimeHistogram, err = getMeter().Float64Histogram("cost_time")
 	})
 	if err != nil {
 		otel.Handle(err)
@@ -72,32 +114,32 @@ func NewMetricMonitor() *MetricMonitor {
 func (m *MetricMonitor) GetOrNewBusinessCounter(key string) (metric.Int64Counter, error) {
 	m.businessCountersMu.Lock()
 	defer m.businessCountersMu.Unlock()
-	counter, ok := DefaultMetricMonitor.BusinessCounters[key]
+	counter, ok := m.BusinessCounters[key]
 	if ok {
 		return counter, nil
 	}
 
-	counter, err := meter.Int64Counter(key)
+	counter, err := getMeter().Int64Counter(key)
 	if err != nil {
 		return nil, err
 	}
-	DefaultMetricMonitor.BusinessCounters[key] = counter
+	m.BusinessCounters[key] = counter
 	return counter, nil
 }
 
 func (m *MetricMonitor) GetOrNewBusinessHistogram(key string) (metric.Float64Histogram, error) {
 	m.businessHistogramMu.Lock()
 	defer m.businessHistogramMu.Unlock()
-	histogram, ok := DefaultMetricMonitor.BusinessHistogram[key]
+	histogram, ok := m.BusinessHistogram[key]
 	if ok {
 		return histogram, nil
 	}
 
-	histogram, err := meter.Float64Histogram(key)
+	histogram, err := getMeter().Float64Histogram(key)
 	if err != nil {
 		return nil, err
 	}
-	DefaultMetricMonitor.BusinessHistogram[key] = histogram
+	m.BusinessHistogram[key] = histogram
 	return histogram, nil
 }
 
@@ -105,10 +147,12 @@ func ReportMetric(ctx context.Context, dim Dimension, costTime time.Duration) {
 	attrs := ExtractAttrsWithContext(ctx)
 	attrs = append(attrs, Attrs(dim)...)
 
-	DefaultMetricMonitor.TotalReqCounter.Add(ctx, 1, metric.WithAttributes(attrs...))
+	// Use GetDefaultMetricMonitor() to ensure lazy initialization
+	monitor := GetDefaultMetricMonitor()
+	monitor.TotalReqCounter.Add(ctx, 1, metric.WithAttributes(attrs...))
 	if dim.Error != nil {
-		DefaultMetricMonitor.FailCntCounter.Add(ctx, 1, metric.WithAttributes(attrs...))
+		monitor.FailCntCounter.Add(ctx, 1, metric.WithAttributes(attrs...))
 	}
-	DefaultMetricMonitor.CostTimeHistogram.Record(ctx, float64(costTime.Milliseconds()), metric.WithAttributes(attrs...))
+	monitor.CostTimeHistogram.Record(ctx, float64(costTime.Milliseconds()), metric.WithAttributes(attrs...))
 	ReportBusinessMetric(ctx, attrs)
 }

@@ -29,6 +29,7 @@ import (
 	"go.opentelemetry.io/otel/exporters/otlp/otlpmetric/otlpmetricgrpc"
 	"go.opentelemetry.io/otel/exporters/otlp/otlpmetric/otlpmetrichttp"
 	"go.opentelemetry.io/otel/sdk/metric"
+	"go.opentelemetry.io/otel/sdk/metric/metricdata"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 )
@@ -59,6 +60,12 @@ type OTLPExporterBuilderOptions struct {
 
 	// URLPath is the URL path for HTTP protocol (default: "/v1/metrics")
 	URLPath string
+
+	// Compression enables gzip compression
+	Compression bool
+
+	// TemporalityDelta uses Delta temporality instead of Cumulative
+	TemporalityDelta bool
 }
 
 type OTLPExporterBuilder struct {
@@ -118,6 +125,14 @@ func (p *OTLPExporterBuilder) buildHTTPExporter(ctx context.Context) (metric.Exp
 		opts = append(opts, otlpmetrichttp.WithURLPath(p.opts.URLPath))
 	}
 
+	if p.opts.Compression {
+		opts = append(opts, otlpmetrichttp.WithCompression(otlpmetrichttp.GzipCompression))
+	}
+
+	if p.opts.TemporalityDelta {
+		opts = append(opts, otlpmetrichttp.WithTemporalitySelector(deltaTemporalitySelector))
+	}
+
 	exporter, err := otlpmetrichttp.New(ctx, opts...)
 	if err != nil {
 		return nil, fmt.Errorf("creating OTLP HTTP metric exporter: %w", err)
@@ -148,10 +163,24 @@ func (p *OTLPExporterBuilder) buildGRPCExporter(ctx context.Context) (metric.Exp
 		opts = append(opts, otlpmetricgrpc.WithTimeout(p.opts.Timeout))
 	}
 
+	if p.opts.Compression {
+		opts = append(opts, otlpmetricgrpc.WithCompressor("gzip"))
+	}
+
+	if p.opts.TemporalityDelta {
+		opts = append(opts, otlpmetricgrpc.WithTemporalitySelector(deltaTemporalitySelector))
+	}
+
 	exporter, err := otlpmetricgrpc.New(ctx, opts...)
 	if err != nil {
 		return nil, fmt.Errorf("creating OTLP gRPC metric exporter: %w", err)
 	}
 
 	return exporter, nil
+}
+
+// deltaTemporalitySelector returns Delta temporality for all instrument kinds
+// ZhiYan platform requires Delta temporality
+func deltaTemporalitySelector(kind metric.InstrumentKind) metricdata.Temporality {
+	return metricdata.DeltaTemporality
 }
