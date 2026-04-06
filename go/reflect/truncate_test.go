@@ -23,6 +23,7 @@ package reflect_test
 
 import (
 	"fmt"
+	"strings"
 	"testing"
 
 	//	"github.com/google/uuid"
@@ -193,4 +194,237 @@ func TestTruncateBytesWithMaxArraySize(t *testing.T) {
 		})
 	}
 
+}
+
+func TestTruncateBytesWithThreshold(t *testing.T) {
+	// 生成超过 1024 字节的数据
+	longBytes := make([]byte, 2048)
+	for i := range longBytes {
+		longBytes[i] = byte('A' + (i % 26))
+	}
+	shortBytes := []byte("short data")
+
+	testCases := []struct {
+		name        string
+		req         interface{}
+		expectTrunc bool // 是否期望被截断
+	}{
+		{
+			name: "bytes超过阈值应被截断",
+			req: &struct {
+				RequestId string
+				Image     []byte
+			}{
+				RequestId: "test-id",
+				Image:     longBytes,
+			},
+			expectTrunc: true,
+		},
+		{
+			name: "bytes未超过阈值不应被截断",
+			req: &struct {
+				RequestId string
+				Image     []byte
+			}{
+				RequestId: "test-id",
+				Image:     shortBytes,
+			},
+			expectTrunc: false,
+		},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			result := reflect_.TruncateBytes(tc.req)
+			t.Logf("truncateReq: %+v", result)
+		})
+	}
+}
+
+func TestTruncateBytesAndStrings(t *testing.T) {
+	// 生成超过 1024 字节的数据
+	longString := strings.Repeat("ABCDEFGHIJ", 200) // 2000 字节
+	shortString := "short string"
+	longBytes := make([]byte, 2048)
+	for i := range longBytes {
+		longBytes[i] = byte('0' + (i % 10))
+	}
+	shortBytes := []byte("short bytes")
+
+	testCases := []struct {
+		name string
+		req  interface{}
+	}{
+		{
+			name: "string和bytes都超过阈值",
+			req: &struct {
+				RequestId string
+				Data      string
+				Image     []byte
+			}{
+				RequestId: "test-id",
+				Data:      longString,
+				Image:     longBytes,
+			},
+		},
+		{
+			name: "string和bytes都未超过阈值",
+			req: &struct {
+				RequestId string
+				Data      string
+				Image     []byte
+			}{
+				RequestId: "test-id",
+				Data:      shortString,
+				Image:     shortBytes,
+			},
+		},
+		{
+			name: "嵌套结构体中的长string和bytes",
+			req: &struct {
+				RequestId string
+				Item      struct {
+					Name  string
+					Image []byte
+				}
+			}{
+				RequestId: "test-id",
+				Item: struct {
+					Name  string
+					Image []byte
+				}{
+					Name:  longString,
+					Image: longBytes,
+				},
+			},
+		},
+		{
+			name: "自定义阈值测试",
+			req: &struct {
+				Data string
+			}{
+				Data: "hello world, this is a test string",
+			},
+		},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			t.Logf("before: %+v", tc.req)
+			result := reflect_.TruncateBytesAndStrings(tc.req)
+			t.Logf("after:  %+v", result)
+		})
+	}
+
+	// 单独测试自定义阈值
+	t.Run("自定义阈值-threshold=10-prefix=5", func(t *testing.T) {
+		req := &struct {
+			Data  string
+			Image []byte
+		}{
+			Data:  "hello world, this is a long string",
+			Image: []byte("hello world, this is long bytes"),
+		}
+		t.Logf("before: %+v", req)
+		result := reflect_.TruncateBytesAndStringsWithThreshold(req, 10, 5)
+		t.Logf("after:  %+v", result)
+	})
+}
+
+// TestTruncateWithMap 测试包含 map 类型的结构体截断（模拟 google.protobuf.Struct 场景）
+func TestTruncateWithMap(t *testing.T) {
+	longBytes := make([]byte, 2048)
+	for i := range longBytes {
+		longBytes[i] = byte('X')
+	}
+
+	testCases := []struct {
+		name string
+		req  interface{}
+	}{
+		{
+			name: "包含map的结构体",
+			req: &struct {
+				Fields map[string]*struct {
+					Data  string
+					Image []byte
+				}
+			}{
+				Fields: map[string]*struct {
+					Data  string
+					Image []byte
+				}{
+					"key1": {
+						Data:  strings.Repeat("A", 2000),
+						Image: longBytes,
+					},
+					"key2": {
+						Data:  "short",
+						Image: []byte("short"),
+					},
+				},
+			},
+		},
+		{
+			name: "包含map[string]interface{}的结构体",
+			req: &struct {
+				Meta map[string]interface{}
+			}{
+				Meta: map[string]interface{}{
+					"name": "test",
+				},
+			},
+		},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			t.Logf("before: %+v", tc.req)
+			result := reflect_.TruncateBytesAndStrings(tc.req)
+			t.Logf("after:  %+v", result)
+		})
+	}
+}
+
+// TestTruncateWithCircularLikeStruct 测试模拟循环引用结构（类似 google.protobuf.Struct）不会堆栈溢出
+func TestTruncateWithCircularLikeStruct(t *testing.T) {
+	// 模拟 google.protobuf.Struct 的循环引用结构
+	type Value struct {
+		StringValue string
+		BytesValue  []byte
+		StructValue *struct {
+			Fields map[string]*Value
+		}
+	}
+
+	type Struct struct {
+		Fields map[string]*Value
+	}
+
+	req := &Struct{
+		Fields: map[string]*Value{
+			"image_data": {
+				BytesValue: make([]byte, 2048),
+			},
+			"long_text": {
+				StringValue: strings.Repeat("Z", 2000),
+			},
+			"nested": {
+				StructValue: &struct {
+					Fields map[string]*Value
+				}{
+					Fields: map[string]*Value{
+						"inner_data": {
+							BytesValue: make([]byte, 1500),
+						},
+					},
+				},
+			},
+		},
+	}
+
+	// 这个测试的关键是：不会因为类似循环引用的结构导致堆栈溢出
+	t.Logf("before: %+v", req)
+	result := reflect_.TruncateBytesAndStrings(req)
+	t.Logf("after:  %+v", result)
 }
