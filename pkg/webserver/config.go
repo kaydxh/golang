@@ -213,7 +213,7 @@ func (c *Config) installHttpMiddlewareChain() []gw_.GRPCGatewayOption {
 		gw_.WithHttpHandlerInterceptorRecoveryOptions(),
 
 		// clean path
-		gw_.WithHttpHandlerInterceptorCleanPathOptions(),
+		// gw_.WithHttpHandlerInterceptorCleanPathOptions(),
 
 		// http body proto
 		gw_.WithServerInterceptorsHttpBodyProtoOptions(),
