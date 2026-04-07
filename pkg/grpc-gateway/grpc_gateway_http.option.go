@@ -181,11 +181,19 @@ func WithHttpPostHandlerInterceptorOptions(
 	})
 }
 
-// WithHttpHandlerInterceptorRequestIDOptions
-func WithHttpHandlerInterceptorRequestIDOptions() GRPCGatewayOption {
+// WithHttpHandlerInterceptorRequestIDAndTraceIDOptions extracts X-Request-ID and X-Traceid
+// from HTTP request into context. If absent, X-Request-ID is auto-generated and X-Traceid
+// defaults to the same value as X-Request-ID.
+func WithHttpHandlerInterceptorRequestIDAndTraceIDOptions() GRPCGatewayOption {
 	return WithHttpHandlerInterceptorOptions(http_.HandlerInterceptor{
-		Interceptor: httpinterceptordebug_.RequestID,
+		Interceptor: httpinterceptordebug_.RequestIDAndTraceID,
 	})
+}
+
+// WithHttpHandlerInterceptorRequestIDOptions is an alias for backward compatibility.
+// Deprecated: Use WithHttpHandlerInterceptorRequestIDAndTraceIDOptions instead.
+func WithHttpHandlerInterceptorRequestIDOptions() GRPCGatewayOption {
+	return WithHttpHandlerInterceptorRequestIDAndTraceIDOptions()
 }
 
 func WithHttpHandlerInterceptorsTimerOptions() GRPCGatewayOption {

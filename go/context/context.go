@@ -31,6 +31,7 @@ import (
 // RequestIdKey is metadata key name for request ID
 const (
 	DefaultHTTPRequestIDKey = "X-Request-ID"
+	DefaultHTTPTraceIDKey   = "X-Traceid"
 )
 
 func WithTimeout(ctx context.Context, timeout time.Duration) (context.Context, context.CancelFunc) {
@@ -109,6 +110,14 @@ func WithContextRequestId(ctx context.Context, id string) context.Context {
 func ExtractRequestIDFromContext(ctx context.Context) string {
 
 	if v, ok := ctx.Value(DefaultHTTPRequestIDKey).(string); ok {
+		return v
+	}
+
+	return ""
+}
+
+func ExtractTraceIDFromContext(ctx context.Context) string {
+	if v, ok := ctx.Value(DefaultHTTPTraceIDKey).(string); ok {
 		return v
 	}
 

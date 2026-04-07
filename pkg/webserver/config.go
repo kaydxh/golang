@@ -206,8 +206,8 @@ func (c *Config) installHttpMiddlewareChain() []gw_.GRPCGatewayOption {
 	var opts []gw_.GRPCGatewayOption
 	opts = append(
 		opts,
-		// request id
-		gw_.WithHttpHandlerInterceptorRequestIDOptions(),
+		// request id and trace id
+		gw_.WithHttpHandlerInterceptorRequestIDAndTraceIDOptions(),
 
 		// http recoverer
 		gw_.WithHttpHandlerInterceptorRecoveryOptions(),

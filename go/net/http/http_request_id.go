@@ -31,10 +31,15 @@ import (
 // RequestIdKey is metadata key name for request ID
 const (
 	DefaultHTTPRequestIDKey = "X-Request-ID"
+	DefaultHTTPTraceIDKey   = "X-Traceid"
 )
 
 func ExtractRequestIdHTTPAndContext(r *http.Request) string {
 	return ExtractHTTPAndContext(r, DefaultHTTPRequestIDKey)
+}
+
+func ExtractTraceIdHTTPAndContext(r *http.Request) string {
+	return ExtractHTTPAndContext(r, DefaultHTTPTraceIDKey)
 }
 
 func ExtractHTTPAndContext(r *http.Request, key string) string {
@@ -99,4 +104,8 @@ func SetPairContext(r *http.Request, key, value string) *http.Request {
 
 func SetRequestIdContext(r *http.Request, requestID string) *http.Request {
 	return SetPairContext(r, DefaultHTTPRequestIDKey, requestID)
+}
+
+func SetTraceIdContext(r *http.Request, traceID string) *http.Request {
+	return SetPairContext(r, DefaultHTTPTraceIDKey, traceID)
 }

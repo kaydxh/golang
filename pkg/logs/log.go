@@ -97,7 +97,12 @@ func WithRotate(log *logrus.Logger, filedir string, redirect Log_Redirct, option
 }
 
 func GetLogger(ctx context.Context) *logrus.Entry {
-	logger := logrus.WithField("request_id", context_.ExtractRequestIDFromContext(ctx))
+	requestId := context_.ExtractRequestIDFromContext(ctx)
+	traceId := context_.ExtractTraceIDFromContext(ctx)
+	if traceId == "" {
+		traceId = requestId
+	}
+	logger := logrus.WithField("request_id", requestId).WithField("trace_id", traceId)
 	return logger
 }
 
@@ -106,6 +111,10 @@ func GetLoggerOrFallback(ctx context.Context, defaultValue string) *logrus.Entry
 	if requestId == "" {
 		requestId = defaultValue
 	}
-	logger := logrus.WithField("request_id", requestId)
+	traceId := context_.ExtractTraceIDFromContext(ctx)
+	if traceId == "" {
+		traceId = requestId
+	}
+	logger := logrus.WithField("request_id", requestId).WithField("trace_id", traceId)
 	return logger
 }

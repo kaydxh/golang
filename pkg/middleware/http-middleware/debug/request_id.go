@@ -28,14 +28,29 @@ import (
 	http_ "github.com/kaydxh/golang/go/net/http"
 )
 
+// RequestID extracts X-Request-ID from HTTP request, generates one if absent, and sets it into context.
+// Deprecated: Use RequestIDAndTraceID instead.
 func RequestID(handler http.Handler) http.Handler {
+	return RequestIDAndTraceID(handler)
+}
+
+// RequestIDAndTraceID extracts X-Request-ID and X-Traceid from HTTP request into context.
+// If X-Request-ID is absent, a new UUID is generated.
+// If X-Traceid is absent, it defaults to the same value as X-Request-ID.
+func RequestIDAndTraceID(handler http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		requestID := http_.ExtractRequestIdHTTPAndContext(r)
 		if requestID == "" {
 			requestID = uuid.New().String()
 		}
-
 		r = http_.SetRequestIdContext(r, requestID)
+
+		traceID := http_.ExtractTraceIdHTTPAndContext(r)
+		if traceID == "" {
+			traceID = requestID
+		}
+		r = http_.SetTraceIdContext(r, traceID)
+
 		handler.ServeHTTP(w, r)
 	})
 }

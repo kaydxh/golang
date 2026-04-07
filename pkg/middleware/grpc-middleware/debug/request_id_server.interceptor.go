@@ -60,6 +60,14 @@ func HandleReuestId[REQ any, RESP any](handler resource_.HandlerWithContext[REQ,
 
 		//set "X-Request-ID" to context
 		ctx = context_.SetPairContext(ctx, http_.DefaultHTTPRequestIDKey, id)
+
+		// extract traceId from context, fallback to requestId
+		traceId := context_.ExtractTraceIDFromContext(ctx)
+		if traceId == "" {
+			traceId = id
+		}
+		ctx = context_.SetPairContext(ctx, http_.DefaultHTTPTraceIDKey, traceId)
+
 		resp, err := handler(ctx, req)
 		// try set requestId to response
 		reflect_.TrySetId(resp, reflect_.FieldNameRequestId, id)
