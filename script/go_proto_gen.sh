@@ -134,7 +134,10 @@ for proto in $(find ${PROTOC_FILE_DIR} -type f -name '*.proto' -print0 | xargs -
   if [[ "${WITH_DOC}" -eq 1 ]]; then
     # output file name
     doc_option="--doc_opt=markdown,${proto_base_name}.md"
-    doc_out_option="--doc_out=${SCRIPT_PATH}/../doc"
+    # docs output directory is created on demand so downstream projects do not need to pre-create it
+    doc_out_dir="${SCRIPT_PATH}/../docs"
+    mkdir -p "${doc_out_dir}"
+    doc_out_option="--doc_out=${doc_out_dir}"
   fi
 
   if [[ "${WITH_CPP}" -eq 1 ]]; then
