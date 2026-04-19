@@ -111,16 +111,59 @@ declare -A TOOL_INSTALL_MAP=(
   ["protoc-gen-doc"]="github.com/pseudomuto/protoc-gen-doc/cmd/protoc-gen-doc@latest"
 )
 
+# 工具名 -> 期望的模块路径前缀（用于版本校验，防止 v1/v2 混装）
+# 通过 go version -m <binary> 检查已安装二进制的来源模块是否匹配
+declare -A TOOL_EXPECTED_MODULE=(
+  ["protoc-gen-grpc-gateway"]="github.com/grpc-ecosystem/grpc-gateway/v2"
+)
+
+# 检查已安装工具的模块路径是否与期望匹配
+# 返回 0 表示匹配，1 表示不匹配
+function check_tool_module() {
+  local tool_name="$1"
+  local expected_module="${TOOL_EXPECTED_MODULE[${tool_name}]:-}"
+  # 没有配置期望模块的工具，跳过校验
+  if [[ -z "${expected_module}" ]]; then
+    return 0
+  fi
+  local tool_path
+  tool_path=$(command -v "${tool_name}" 2>/dev/null || echo "")
+  if [[ -z "${tool_path}" ]]; then
+    return 1
+  fi
+  # 使用 go version -m 获取二进制的构建信息，检查模块路径
+  local build_info
+  build_info=$(go version -m "${tool_path}" 2>/dev/null || echo "")
+  if echo "${build_info}" | grep -q "${expected_module}"; then
+    return 0
+  else
+    echo 1>&2 "WARNING: ${tool_name} at ${tool_path} is not from expected module '${expected_module}', will reinstall"
+    return 1
+  fi
+}
+
 #GEN_PROTO_TOOLS=(protoc protoc-gen-go protoc-gen-grpc-gateway protoc-gen-govalidators)
 GEN_PROTO_TOOLS=(protoc protoc-gen-go protoc-gen-go-grpc protoc-gen-grpc-gateway protoc-gen-doc)
 for tool in "${GEN_PROTO_TOOLS[@]}"; do
+   need_install=false
    if command -v ${tool} &>/dev/null; then
-     echo 1>&2 "${tool}: $(command -v ${tool})"
+     # 工具存在，但需要校验版本/模块是否匹配
+     if check_tool_module "${tool}"; then
+       echo 1>&2 "${tool}: $(command -v ${tool})"
+     else
+       need_install=true
+     fi
    else
+     need_install=true
+   fi
+
+   if [[ "${need_install}" == "true" ]]; then
      install_pkg="${TOOL_INSTALL_MAP[${tool}]:-}"
      if [[ -n "${install_pkg}" ]]; then
-       echo 1>&2 "${tool} not found, installing via: go install ${install_pkg}"
+       echo 1>&2 "${tool} not found or version mismatch, installing via: go install ${install_pkg}"
        go install "${install_pkg}" || die "failed to install ${tool}"
+       # 刷新 hash 缓存，确保 shell 能找到新安装的二进制
+       hash -r 2>/dev/null || true
        echo 1>&2 "${tool}: $(command -v ${tool})"
      else
        die "didn't find ${tool}, please install it manually"
