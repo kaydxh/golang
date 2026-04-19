@@ -112,7 +112,7 @@ declare -A TOOL_INSTALL_MAP=(
 )
 
 #GEN_PROTO_TOOLS=(protoc protoc-gen-go protoc-gen-grpc-gateway protoc-gen-govalidators)
-GEN_PROTO_TOOLS=(protoc protoc-gen-go protoc-gen-go-grpc protoc-gen-grpc-gateway)
+GEN_PROTO_TOOLS=(protoc protoc-gen-go protoc-gen-go-grpc protoc-gen-grpc-gateway protoc-gen-doc)
 for tool in "${GEN_PROTO_TOOLS[@]}"; do
    if command -v ${tool} &>/dev/null; then
      echo 1>&2 "${tool}: $(command -v ${tool})"
