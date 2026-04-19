@@ -107,7 +107,7 @@ fi
 declare -A TOOL_INSTALL_MAP=(
   ["protoc-gen-go"]="google.golang.org/protobuf/cmd/protoc-gen-go@latest"
   ["protoc-gen-go-grpc"]="google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest"
-  ["protoc-gen-grpc-gateway"]="github.com/grpc-ecosystem/grpc-gateway/protoc-gen-grpc-gateway@latest"
+  ["protoc-gen-grpc-gateway"]="github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-grpc-gateway@latest"
   ["protoc-gen-doc"]="github.com/pseudomuto/protoc-gen-doc/cmd/protoc-gen-doc@latest"
 )
 
