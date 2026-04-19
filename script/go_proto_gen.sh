@@ -93,6 +93,16 @@ getopts $@
 
 echo "==> Checking tools..."
 
+# 确保 GOPATH/bin 和 GOBIN 在 PATH 中，go install 安装的二进制文件才能被找到
+GOBIN_DIR="${GOBIN:-$(go env GOBIN)}"
+GOPATH_BIN="$(go env GOPATH)/bin"
+if [[ -n "${GOBIN_DIR}" ]] && [[ ":${PATH}:" != *":${GOBIN_DIR}:"* ]]; then
+  export PATH="${GOBIN_DIR}:${PATH}"
+fi
+if [[ -n "${GOPATH_BIN}" ]] && [[ ":${PATH}:" != *":${GOPATH_BIN}:"* ]]; then
+  export PATH="${GOPATH_BIN}:${PATH}"
+fi
+
 # 工具名 -> go install 路径的映射
 declare -A TOOL_INSTALL_MAP=(
   ["protoc-gen-go"]="google.golang.org/protobuf/cmd/protoc-gen-go@latest"
