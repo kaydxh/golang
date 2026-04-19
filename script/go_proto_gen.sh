@@ -92,11 +92,30 @@ echo `pwd`
 getopts $@
 
 echo "==> Checking tools..."
+
+# 工具名 -> go install 路径的映射
+declare -A TOOL_INSTALL_MAP=(
+  ["protoc-gen-go"]="google.golang.org/protobuf/cmd/protoc-gen-go@latest"
+  ["protoc-gen-go-grpc"]="google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest"
+  ["protoc-gen-grpc-gateway"]="github.com/grpc-ecosystem/grpc-gateway/protoc-gen-grpc-gateway@latest"
+  ["protoc-gen-doc"]="github.com/pseudomuto/protoc-gen-doc/cmd/protoc-gen-doc@latest"
+)
+
 #GEN_PROTO_TOOLS=(protoc protoc-gen-go protoc-gen-grpc-gateway protoc-gen-govalidators)
-GEN_PROTO_TOOLS=(protoc protoc-gen-go protoc-gen-grpc-gateway)
-for tool in ${GEN_PROTO_TOOLS[@]}; do
-   q=$(command -v ${tool}) || die "didn't find ${tool}"
-   echo 1>&2 "${tool}: ${q}"
+GEN_PROTO_TOOLS=(protoc protoc-gen-go protoc-gen-go-grpc protoc-gen-grpc-gateway)
+for tool in "${GEN_PROTO_TOOLS[@]}"; do
+   if command -v ${tool} &>/dev/null; then
+     echo 1>&2 "${tool}: $(command -v ${tool})"
+   else
+     install_pkg="${TOOL_INSTALL_MAP[${tool}]:-}"
+     if [[ -n "${install_pkg}" ]]; then
+       echo 1>&2 "${tool} not found, installing via: go install ${install_pkg}"
+       go install "${install_pkg}" || die "failed to install ${tool}"
+       echo 1>&2 "${tool}: $(command -v ${tool})"
+     else
+       die "didn't find ${tool}, please install it manually"
+     fi
+   fi
 done
 
 
