@@ -57,6 +57,17 @@ func (rww *ResponseWriterWrapper) WriteHeader(statusCode int) {
 	rww.w.WriteHeader(statusCode)
 }
 
+// BodyBytes 返回已写入响应的原始 body 字节切片（不包含 headers 和 status code）。
+// 返回的是底层缓冲区的引用，调用方不应修改；如需长期持有请自行拷贝。
+func (rww *ResponseWriterWrapper) BodyBytes() []byte {
+	return rww.body.Bytes()
+}
+
+// StatusCode 返回当前响应的 HTTP 状态码。
+func (rww *ResponseWriterWrapper) StatusCode() int {
+	return rww.statusCode
+}
+
 //  String function pack respose header, http status code and body
 func (rww *ResponseWriterWrapper) String() string {
 	var buf bytes.Buffer

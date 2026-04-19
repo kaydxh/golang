@@ -95,7 +95,8 @@ func formatBodyForLog(buf []byte) string {
 //   - 对 JSON 里超长的 string 字段（例如 base64 图片数据）做截断，
 //     格式为 `前 N 字节...(string len: 总长度)`，与 gRPC 侧
 //     UnaryServerInterceptorOfInOutputPrinter 的截断输出保持一致；
-//   - 非 JSON 的 body 也会按整体超长做截断，避免日志被一次性刷爆。
+//   - 非 JSON 的 body 也会按整体超长做截断，避免日志被一次性刷爆；
+//   - response 字段仅打印 body（不含 headers），status 作为独立字段输出。
 //
 // 注意：仅影响日志打印，不会修改实际转发给 handler 的 body。
 func InOutputPrinterWithTruncate(handler http.Handler) http.Handler {
@@ -107,7 +108,8 @@ func InOutputPrinterWithTruncate(handler http.Handler) http.Handler {
 
 		defer func() {
 			logger.WithField("method", calleeMethod).
-				WithField("response", formatBodyForLog([]byte(ww.String()))).
+				WithField("status", ww.StatusCode()).
+				WithField("response", formatBodyForLog(ww.BodyBytes())).
 				Info("send")
 		}()
 
