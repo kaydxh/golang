@@ -8,4 +8,4 @@ log:
   rotate_size: 104857600 #100M
   report_caller: true
   enable_goroutine_id: false
-  redirct: file #file, stdout
+  redirect: file #file, stdout

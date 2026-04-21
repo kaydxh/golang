@@ -76,7 +76,7 @@ type Client struct {
 		// proxyHost is host:port, or domain, replace host in proxy
 		proxyHost string
 
-		// targetHost is host:port, redirct to it, like reverse proxy
+		// targetHost is host:port, redirect to it, like reverse proxy
 		targetHost string
 
 		ErrorLog *log.Logger

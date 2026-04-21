@@ -41,7 +41,7 @@ type Rotate struct {
 	suffixName     string
 }
 
-func WithRotate(log *logrus.Logger, filedir string, redirect Log_Redirct, options ...RotateOption) error {
+func WithRotate(log *logrus.Logger, filedir string, redirect Log_Redirect, options ...RotateOption) error {
 	if log == nil {
 		return fmt.Errorf("log is nil")
 	}
