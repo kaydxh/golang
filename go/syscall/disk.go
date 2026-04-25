@@ -23,22 +23,17 @@ package syscall
 
 import (
 	"syscall"
-
-	filesystem_ "github.com/kaydxh/golang/go/filesystem"
 )
 
 type DiskUsage struct {
 	stat *syscall.Statfs_t
 }
 
+// NewDiskUsage 直接对目标路径调用 syscall.Statfs 获取磁盘使用信息，
+// 兼容 Linux 和 macOS（不再依赖 /proc/self/mountinfo）。
 func NewDiskUsage(path string) (*DiskUsage, error) {
 	var stat syscall.Statfs_t
-	mount, err := filesystem_.FindMount(path)
-	if err != nil {
-		return nil, err
-	}
-
-	err = syscall.Statfs(mount.Path, &stat)
+	err := syscall.Statfs(path, &stat)
 	if err != nil {
 		return nil, err
 	}
