@@ -152,6 +152,29 @@ func TestController_Healthz(t *testing.T) {
 	router := gin.New()
 	controller.SetRoutes(router, nil)
 
+	t.Run("root path GET returns ok", func(t *testing.T) {
+		req := httptest.NewRequest(http.MethodGet, "/", nil)
+		w := httptest.NewRecorder()
+		router.ServeHTTP(w, req)
+
+		if w.Code != http.StatusOK {
+			t.Errorf("expected status %d, got %d", http.StatusOK, w.Code)
+		}
+		if w.Body.String() != "ok" {
+			t.Errorf("expected body 'ok', got '%s'", w.Body.String())
+		}
+	})
+
+	t.Run("root path HEAD returns ok", func(t *testing.T) {
+		req := httptest.NewRequest(http.MethodHead, "/", nil)
+		w := httptest.NewRecorder()
+		router.ServeHTTP(w, req)
+
+		if w.Code != http.StatusOK {
+			t.Errorf("expected status %d, got %d", http.StatusOK, w.Code)
+		}
+	})
+
 	t.Run("healthz returns ok", func(t *testing.T) {
 		req := httptest.NewRequest(http.MethodGet, "/healthz", nil)
 		w := httptest.NewRecorder()
@@ -192,6 +215,26 @@ func TestController_NotReady(t *testing.T) {
 
 	router := gin.New()
 	controller.SetRoutes(router, nil)
+
+	t.Run("root path returns service unavailable when not ready", func(t *testing.T) {
+		req := httptest.NewRequest(http.MethodGet, "/", nil)
+		w := httptest.NewRecorder()
+		router.ServeHTTP(w, req)
+
+		if w.Code != http.StatusServiceUnavailable {
+			t.Errorf("expected status %d, got %d", http.StatusServiceUnavailable, w.Code)
+		}
+	})
+
+	t.Run("root path HEAD returns service unavailable when not ready", func(t *testing.T) {
+		req := httptest.NewRequest(http.MethodHead, "/", nil)
+		w := httptest.NewRecorder()
+		router.ServeHTTP(w, req)
+
+		if w.Code != http.StatusServiceUnavailable {
+			t.Errorf("expected status %d, got %d", http.StatusServiceUnavailable, w.Code)
+		}
+	})
 
 	t.Run("readyz returns service unavailable when not ready", func(t *testing.T) {
 		req := httptest.NewRequest(http.MethodGet, "/readyz", nil)

@@ -100,6 +100,10 @@ func NewController(opts ...ControllerOption) *Controller {
 
 // SetRoutes registers health check endpoints.
 func (c *Controller) SetRoutes(ginRouter gin.IRouter, grpcRouter *gw_.GRPCGateway) {
+	// / - root path health check for load balancer probes (supports GET and HEAD)
+	ginRouter.GET("/", c.RootHealthz())
+	ginRouter.HEAD("/", c.RootHealthz())
+
 	// /healthz - general health check (combines livez and readyz)
 	ginRouter.GET("/healthz", c.Healthz())
 
@@ -119,6 +123,19 @@ func (c *Controller) SetRoutes(ginRouter gin.IRouter, grpcRouter *gw_.GRPCGatewa
 
 	// /readyz/verbose - detailed readiness check
 	ginRouter.GET("/readyz/verbose", c.ReadyzVerbose())
+}
+
+// RootHealthz returns a handler for the root path "/" endpoint.
+// This is a lightweight health check designed for load balancer probes
+// that send HEAD or GET requests to the root path.
+func (c *Controller) RootHealthz() gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		if !c.ready.Load() {
+			ctx.Status(http.StatusServiceUnavailable)
+			return
+		}
+		ctx.String(http.StatusOK, "ok")
+	}
 }
 
 // Healthz returns a handler for the /healthz endpoint.
