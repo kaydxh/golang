@@ -106,20 +106,16 @@ func (c *Controller) SetRoutes(ginRouter gin.IRouter, grpcRouter *gw_.GRPCGatewa
 	}
 
 	// SPA 模式：根路径返回 index.html。
-	// 使用 recover 捕获重复注册 panic，因为其他控制器（如 healthz）
-	// 可能已经注册了 GET "/"，Gin 不允许重复注册同一路径。
+	// 注意：使用 SPAMode 时，healthz 控制器应配置 WithDisableRootRoute()，
+	// 避免与此处的 GET "/" 路由冲突。负载均衡器应改用 /healthz 或 /livez 探测。
 	if c.config.SPAMode {
 		indexFile := filepath.Join(c.root, c.config.IndexFile)
-		func() {
-			defer func() {
-				if r := recover(); r != nil {
-					// GET "/" 已被其他控制器注册，跳过 SPA 根路径注册
-				}
-			}()
-			ginRouter.GET("/", func(ctx *gin.Context) {
-				ctx.File(indexFile)
-			})
-		}()
+		ginRouter.GET("/", func(ctx *gin.Context) {
+			ctx.File(indexFile)
+		})
+		ginRouter.HEAD("/", func(ctx *gin.Context) {
+			ctx.File(indexFile)
+		})
 	}
 }
 

@@ -25,6 +25,7 @@ import (
 	"time"
 
 	gw_ "github.com/kaydxh/golang/pkg/grpc-gateway"
+	healthz_ "github.com/kaydxh/golang/pkg/webserver/controller/healthz"
 	"github.com/spf13/viper"
 )
 
@@ -65,5 +66,14 @@ func WithQPSLimit(grpcConfig, httpConfig *QPSLimitConfig) ConfigOption {
 	return ConfigOptionFunc(func(c *Config) {
 		c.opts.grpcQPSLimit = grpcConfig
 		c.opts.httpQPSLimit = httpConfig
+	})
+}
+
+// WithHealthzOptions 设置 healthz 控制器的选项。
+// 例如：WithHealthzOptions(healthz.WithDisableRootRoute()) 可禁用根路径健康检查，
+// 避免与 SPA 前端的 static 控制器冲突。
+func WithHealthzOptions(opts ...healthz_.ControllerOption) ConfigOption {
+	return ConfigOptionFunc(func(c *Config) {
+		c.opts.healthzOptions = opts
 	})
 }

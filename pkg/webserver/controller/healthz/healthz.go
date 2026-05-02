@@ -52,6 +52,12 @@ type Controller struct {
 
 	// checkTimeout is the timeout for health checks.
 	checkTimeout time.Duration
+
+	// disableRootRoute 是否禁用根路径 "/" 的健康检查路由注册。
+	// 当项目使用 SPA 前端（static 控制器的 SPAMode=true）时，应设为 true，
+	// 避免与 static 控制器的 GET "/" 路由冲突。
+	// 禁用后，负载均衡器应使用 /healthz 或 /livez 进行健康探测。
+	disableRootRoute bool
 }
 
 // ControllerOption is a functional option for Controller.
@@ -82,6 +88,15 @@ func WithReadyzCheckers(checkers ...HealthChecker) ControllerOption {
 	}
 }
 
+// WithDisableRootRoute 禁用根路径 "/" 的健康检查路由。
+// 当项目使用 SPA 前端时，根路径应由 static 控制器处理（返回 index.html），
+// 而非返回健康检查结果。负载均衡器应改用 /healthz 或 /livez 进行探测。
+func WithDisableRootRoute() ControllerOption {
+	return func(c *Controller) {
+		c.disableRootRoute = true
+	}
+}
+
 // NewController creates a new health check controller.
 func NewController(opts ...ControllerOption) *Controller {
 	c := &Controller{
@@ -101,8 +116,11 @@ func NewController(opts ...ControllerOption) *Controller {
 // SetRoutes registers health check endpoints.
 func (c *Controller) SetRoutes(ginRouter gin.IRouter, grpcRouter *gw_.GRPCGateway) {
 	// / - root path health check for load balancer probes (supports GET and HEAD)
-	ginRouter.GET("/", c.RootHealthz())
-	ginRouter.HEAD("/", c.RootHealthz())
+	// 当 disableRootRoute=true 时跳过，避免与 SPA 前端的 static 控制器冲突。
+	if !c.disableRootRoute {
+		ginRouter.GET("/", c.RootHealthz())
+		ginRouter.HEAD("/", c.RootHealthz())
+	}
 
 	// /healthz - general health check (combines livez and readyz)
 	ginRouter.GET("/healthz", c.Healthz())

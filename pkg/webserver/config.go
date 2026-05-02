@@ -71,6 +71,8 @@ type Config struct {
 		// QPS限流配置（扩展配置，不依赖proto）
 		grpcQPSLimit *QPSLimitConfig
 		httpQPSLimit *QPSLimitConfig
+		// healthz 控制器选项
+		healthzOptions []healthz_.ControllerOption
 	}
 }
 
@@ -117,7 +119,7 @@ func (c *completedConfig) install(ctx context.Context, opts ...gw_.GRPCGatewayOp
 	ws := &GenericWebServer{
 		ginBackend:        ginBackend,
 		grpcBackend:       grpcBackend,
-		HealthzController: healthz_.NewController(),
+		HealthzController: healthz_.NewController(c.Config.opts.healthzOptions...),
 		postStartHooks:    map[string]postStartHookEntry{},
 		preShutdownHooks:  map[string]preShutdownHookEntry{},
 		readinessStopCh:   make(chan struct{}),
