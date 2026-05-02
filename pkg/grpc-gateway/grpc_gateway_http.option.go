@@ -32,6 +32,7 @@ import (
 	interceptortcloud3_ "github.com/kaydxh/golang/pkg/middleware/api/tcloud/v3.0"
 	interceptortrivialv1_ "github.com/kaydxh/golang/pkg/middleware/api/trivial/v1"
 	interceptortrivialv2_ "github.com/kaydxh/golang/pkg/middleware/api/trivial/v2"
+	httpinterceptorcors_ "github.com/kaydxh/golang/pkg/middleware/http-middleware/cors"
 	httpinterceptordebug_ "github.com/kaydxh/golang/pkg/middleware/http-middleware/debug"
 	httpinterceptorhttp_ "github.com/kaydxh/golang/pkg/middleware/http-middleware/http"
 	httpinterceptoropentelemetr_ "github.com/kaydxh/golang/pkg/middleware/http-middleware/opentelemetry"
@@ -323,5 +324,31 @@ func WithHttpHandlerInterceptorCleanPathOptions() GRPCGatewayOption {
 func WithHttpHandlerInterceptorRecoveryOptions() GRPCGatewayOption {
 	return WithHttpHandlerInterceptorOptions(http_.HandlerInterceptor{
 		Interceptor: httpinterceptordebug_.Recovery,
+	})
+}
+
+// WithHttpHandlerInterceptorCORSOptions 添加 CORS 跨域中间件。
+// 使用指定的 CORSConfig 配置允许的来源、方法、请求头等。
+func WithHttpHandlerInterceptorCORSOptions(config httpinterceptorcors_.CORSConfig) GRPCGatewayOption {
+	return WithHttpHandlerInterceptorOptions(http_.HandlerInterceptor{
+		Interceptor: httpinterceptorcors_.CORS(config),
+	})
+}
+
+// WithHttpHandlerInterceptorCORSAllowAllOptions 添加允许所有来源的 CORS 中间件。
+// 适用于开发环境或内部服务，生产环境建议使用 WithHttpHandlerInterceptorCORSOptions 指定来源。
+func WithHttpHandlerInterceptorCORSAllowAllOptions() GRPCGatewayOption {
+	return WithHttpHandlerInterceptorOptions(http_.HandlerInterceptor{
+		Interceptor: httpinterceptorcors_.CORSAllowAll,
+	})
+}
+
+// WithHttpHandlerInterceptorStripPrefixOptions 添加路径前缀 Strip 中间件。
+// 用于 Kubernetes Ingress / 负载均衡器配置了路径前缀路由时，
+// 后端服务 strip 掉该前缀以正确匹配内部路由。
+// 例如：prefix="/palm-racer"，请求 /palm-racer/api/v1 → /api/v1
+func WithHttpHandlerInterceptorStripPrefixOptions(prefix string) GRPCGatewayOption {
+	return WithHttpHandlerInterceptorOptions(http_.HandlerInterceptor{
+		Interceptor: httpinterceptorhttp_.StripPrefix(prefix),
 	})
 }
