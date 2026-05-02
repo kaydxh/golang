@@ -105,12 +105,21 @@ func (c *Controller) SetRoutes(ginRouter gin.IRouter, grpcRouter *gw_.GRPCGatewa
 		ginRouter.StaticFile(urlPath, absFile)
 	}
 
-	// SPA 模式：根路径返回 index.html
+	// SPA 模式：根路径返回 index.html。
+	// 使用 recover 捕获重复注册 panic，因为其他控制器（如 healthz）
+	// 可能已经注册了 GET "/"，Gin 不允许重复注册同一路径。
 	if c.config.SPAMode {
 		indexFile := filepath.Join(c.root, c.config.IndexFile)
-		ginRouter.GET("/", func(ctx *gin.Context) {
-			ctx.File(indexFile)
-		})
+		func() {
+			defer func() {
+				if r := recover(); r != nil {
+					// GET "/" 已被其他控制器注册，跳过 SPA 根路径注册
+				}
+			}()
+			ginRouter.GET("/", func(ctx *gin.Context) {
+				ctx.File(indexFile)
+			})
+		}()
 	}
 }
 
