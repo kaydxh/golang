@@ -29,11 +29,16 @@ import (
 	"github.com/gin-gonic/gin"
 	context_ "github.com/kaydxh/golang/go/context"
 	syscall_ "github.com/kaydxh/golang/go/syscall"
-	"github.com/kaydxh/golang/pkg/discovery/consul"
 	gw_ "github.com/kaydxh/golang/pkg/grpc-gateway"
 	healthz_ "github.com/kaydxh/golang/pkg/webserver/controller/healthz"
 	"github.com/sirupsen/logrus"
 )
+
+// ServiceRegistry 定义服务注册的通用接口，解耦具体的服务发现实现（如 consul、etcd）。
+type ServiceRegistry interface {
+	Run(ctx context.Context) error
+	Shutdown()
+}
 
 type WebHandler interface {
 	SetRoutes(ginRouter gin.IRouter, grpcRouter *gw_.GRPCGateway)
@@ -41,7 +46,7 @@ type WebHandler interface {
 
 type GenericWebServer struct {
 	// Server Register. The backend is started after the server starts listening.
-	ServiceRegistryBackend *consul.ServiceRegistryServer
+	ServiceRegistryBackend ServiceRegistry
 
 	ginBackend  *gin.Engine
 	grpcBackend *gw_.GRPCGateway
