@@ -42,7 +42,14 @@ func ServerInterceptorOfTimer(next http.Handler) http.Handler {
 
 		logger := logs_.GetLogger(ctx)
 		summary := func() {
-			logger.WithField("method", calleeMethod).Infof("http cost %v", tc.String())
+			// HEAD/OPTIONS 是 health check / CORS 预检，频次高且无业务意义，
+			// 降到 Debug 避免在生产 level=info 部署下刷屏；正常业务请求保持 Info。
+			entry := logger.WithField("method", calleeMethod)
+			if r.Method == http.MethodHead || r.Method == http.MethodOptions {
+				entry.Debugf("http cost %v", tc.String())
+			} else {
+				entry.Infof("http cost %v", tc.String())
+			}
 		}
 		defer summary()
 	})

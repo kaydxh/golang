@@ -99,18 +99,25 @@ func formatBodyForLog(buf []byte) string {
 //   - response 字段仅打印 body（不含 headers），status 作为独立字段输出。
 //
 // 注意：仅影响日志打印，不会修改实际转发给 handler 的 body。
+//
+// 日志级别：业务请求保持 Info；HEAD/OPTIONS 这类探活请求降到 Debug 避免刷屏。
 func InOutputPrinterWithTruncate(handler http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		logger := logs_.GetLogger(r.Context())
 		ww := http_.NewResponseWriterWrapper(w)
 
 		calleeMethod := fmt.Sprintf("%v %v", r.Method, r.URL.Path)
+		probe := isProbeRequest(r.Method)
 
 		defer func() {
-			logger.WithField("method", calleeMethod).
+			entry := logger.WithField("method", calleeMethod).
 				WithField("status", ww.StatusCode()).
-				WithField("response", formatBodyForLog(ww.BodyBytes())).
-				Info("send")
+				WithField("response", formatBodyForLog(ww.BodyBytes()))
+			if probe {
+				entry.Debug("send")
+			} else {
+				entry.Info("send")
+			}
 		}()
 
 		if r != nil && r.Body != nil {
@@ -118,9 +125,13 @@ func InOutputPrinterWithTruncate(handler http.Handler) http.Handler {
 			if err == nil {
 				// 把读出来的 body 再塞回去，不影响下游 handler 读取。
 				r.Body = io.NopCloser(bytes.NewBuffer(buf))
-				logger.WithField("method", calleeMethod).
-					WithField("request", formatBodyForLog(buf)).
-					Info("recv")
+				entry := logger.WithField("method", calleeMethod).
+					WithField("request", formatBodyForLog(buf))
+				if probe {
+					entry.Debug("recv")
+				} else {
+					entry.Info("recv")
+				}
 			}
 		}
 

@@ -31,15 +31,27 @@ import (
 	logs_ "github.com/kaydxh/golang/pkg/logs"
 )
 
+// isProbeRequest 判断是否为 health check / CORS 预检之类的探活请求。
+// 这类请求频次高、无业务体，访问日志降到 Debug 避免刷屏；业务请求保持 Info。
+func isProbeRequest(method string) bool {
+	return method == http.MethodHead || method == http.MethodOptions
+}
+
 func InOutputPrinter(handler http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		logger := logs_.GetLogger(r.Context())
 		ww := http_.NewResponseWriterWrapper(w)
 
 		calleeMethod := fmt.Sprintf("%v %v", r.Method, r.URL.Path)
+		probe := isProbeRequest(r.Method)
 
 		defer func() {
-			logger.WithField("method", calleeMethod).WithField("response", ww.String()).Info("send")
+			entry := logger.WithField("method", calleeMethod).WithField("response", ww.String())
+			if probe {
+				entry.Debug("send")
+			} else {
+				entry.Info("send")
+			}
 		}()
 		if r != nil {
 			buf, err := io.ReadAll(r.Body)
@@ -48,7 +60,12 @@ func InOutputPrinter(handler http.Handler) http.Handler {
 			}
 			rdr := io.NopCloser(bytes.NewBuffer(buf))
 			r.Body = rdr
-			logger.WithField("method", calleeMethod).WithField("request", string(buf)).Info("recv")
+			entry := logger.WithField("method", calleeMethod).WithField("request", string(buf))
+			if probe {
+				entry.Debug("recv")
+			} else {
+				entry.Info("recv")
+			}
 
 		}
 
@@ -60,10 +77,22 @@ func InOutputPrinter(handler http.Handler) http.Handler {
 func InOutputHeaderPrinter(handler http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		logger := logs_.GetLogger(r.Context())
-		logger.WithField("request headers", r.Header).Info("recv")
+		probe := isProbeRequest(r.Method)
+
+		recvEntry := logger.WithField("request headers", r.Header)
+		if probe {
+			recvEntry.Debug("recv")
+		} else {
+			recvEntry.Info("recv")
+		}
 
 		defer func() {
-			logger.WithField("response headers", w.Header()).Info("send")
+			sendEntry := logger.WithField("response headers", w.Header())
+			if probe {
+				sendEntry.Debug("send")
+			} else {
+				sendEntry.Info("send")
+			}
 		}()
 
 		handler.ServeHTTP(w, r)
