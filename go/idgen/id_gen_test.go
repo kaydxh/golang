@@ -1,6 +1,7 @@
 package idgen
 
 import (
+	"regexp"
 	"sync"
 	"testing"
 	"time"
@@ -397,4 +398,145 @@ func BenchmarkParseID(b *testing.B) {
 // 辅助函数：格式化机器ID用于测试名称
 func formatWorkerID(workerID int64) string {
 	return string(rune('0' + workerID%10))
+}
+
+// uuidStdRe 校验标准 v4 UUID 字符串：8-4-4-4-12，且第三段以 4 开头、第四段以 8/9/a/b 开头。
+var uuidStdRe = regexp.MustCompile(`^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$`)
+
+// uuidHexRe 校验去掉连字符的 32 字符 UUID。
+var uuidHexRe = regexp.MustCompile(`^[0-9a-f]{32}$`)
+
+// TestNewUUID 测试标准 UUID 字符串的格式与唯一性。
+func TestNewUUID(t *testing.T) {
+	const n = 1000
+	seen := make(map[string]struct{}, n)
+	for i := 0; i < n; i++ {
+		id, err := NewUUID()
+		if err != nil {
+			t.Fatalf("NewUUID() error: %v", err)
+		}
+		if !uuidStdRe.MatchString(id) {
+			t.Fatalf("NewUUID() = %q, not a valid v4 UUID string", id)
+		}
+		if _, ok := seen[id]; ok {
+			t.Fatalf("NewUUID() collision at i=%d: %s", i, id)
+		}
+		seen[id] = struct{}{}
+	}
+}
+
+// TestMustNewUUID 在正常环境下不应 panic。
+func TestMustNewUUID(t *testing.T) {
+	defer func() {
+		if r := recover(); r != nil {
+			t.Errorf("MustNewUUID() unexpected panic: %v", r)
+		}
+	}()
+	id := MustNewUUID()
+	if !uuidStdRe.MatchString(id) {
+		t.Errorf("MustNewUUID() = %q, not a valid v4 UUID string", id)
+	}
+}
+
+// TestNewUUIDHex 测试紧凑 UUID 的格式与唯一性。
+func TestNewUUIDHex(t *testing.T) {
+	const n = 1000
+	seen := make(map[string]struct{}, n)
+	for i := 0; i < n; i++ {
+		id, err := NewUUIDHex()
+		if err != nil {
+			t.Fatalf("NewUUIDHex() error: %v", err)
+		}
+		if !uuidHexRe.MatchString(id) {
+			t.Fatalf("NewUUIDHex() = %q, not 32-char hex", id)
+		}
+		if _, ok := seen[id]; ok {
+			t.Fatalf("NewUUIDHex() collision at i=%d: %s", i, id)
+		}
+		seen[id] = struct{}{}
+	}
+}
+
+// TestMustNewUUIDHex 在正常环境下不应 panic。
+func TestMustNewUUIDHex(t *testing.T) {
+	defer func() {
+		if r := recover(); r != nil {
+			t.Errorf("MustNewUUIDHex() unexpected panic: %v", r)
+		}
+	}()
+	id := MustNewUUIDHex()
+	if !uuidHexRe.MatchString(id) {
+		t.Errorf("MustNewUUIDHex() = %q, not 32-char hex", id)
+	}
+}
+
+// TestNewUUIDBytes 测试 16 字节 UUID。
+func TestNewUUIDBytes(t *testing.T) {
+	a, err := NewUUIDBytes()
+	if err != nil {
+		t.Fatalf("NewUUIDBytes() error: %v", err)
+	}
+	b, err := NewUUIDBytes()
+	if err != nil {
+		t.Fatalf("NewUUIDBytes() error: %v", err)
+	}
+	if a == b {
+		t.Fatalf("NewUUIDBytes() collision: %x", a)
+	}
+	// v4 版本号在第 7 字节高 4 位为 0100 (=4)
+	if a[6]>>4 != 4 {
+		t.Errorf("NewUUIDBytes() version nibble = %x, want 4", a[6]>>4)
+	}
+	// variant 在第 9 字节高 2 位为 10
+	if a[8]>>6 != 0b10 {
+		t.Errorf("NewUUIDBytes() variant bits = %b, want 10", a[8]>>6)
+	}
+}
+
+// TestUUIDConcurrent 并发生成不应碰撞。
+func TestUUIDConcurrent(t *testing.T) {
+	const goroutines = 50
+	const perG = 200
+	total := goroutines * perG
+
+	idCh := make(chan string, total)
+	var wg sync.WaitGroup
+	for i := 0; i < goroutines; i++ {
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
+			for j := 0; j < perG; j++ {
+				idCh <- MustNewUUID()
+			}
+		}()
+	}
+	wg.Wait()
+	close(idCh)
+
+	seen := make(map[string]struct{}, total)
+	for id := range idCh {
+		if _, ok := seen[id]; ok {
+			t.Fatalf("concurrent UUID collision: %s", id)
+		}
+		seen[id] = struct{}{}
+	}
+	if len(seen) != total {
+		t.Errorf("expected %d unique UUIDs, got %d", total, len(seen))
+	}
+
+	_ = time.Now() // 仅占位，保持 time 包被使用（其它测试需要）
+}
+
+// BenchmarkNewUUID 基准测试：标准 UUID 字符串生成。
+func BenchmarkNewUUID(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		_ = MustNewUUID()
+	}
+}
+
+// BenchmarkNewUUIDHex 基准测试：紧凑 UUID 字符串生成。
+func BenchmarkNewUUIDHex(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		_ = MustNewUUIDHex()
+	}
 }

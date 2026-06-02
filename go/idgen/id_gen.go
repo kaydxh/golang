@@ -15,6 +15,7 @@ package idgen
 
 import (
 	"encoding/binary"
+	"encoding/hex"
 	"errors"
 	"fmt"
 	"sync"
@@ -177,4 +178,62 @@ func UUIDToUint64XOR(id uuid.UUID) uint64 {
 	high := binary.BigEndian.Uint64(id[:8])
 	low := binary.BigEndian.Uint64(id[8:])
 	return high ^ low
+}
+
+// NewUUID 生成一个 v4 UUID 字符串，形如 "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx"（36 字符）。
+//
+// 适用于需要全局唯一、不可猜的标识符（如 trace ID、session ID、请求 ID 等）。
+// 内部使用 crypto/rand，熵源读取失败时返回 error；调用方若希望失败即 panic，
+// 应改用 MustNewUUID。
+func NewUUID() (string, error) {
+	id, err := uuid.NewRandom()
+	if err != nil {
+		return "", fmt.Errorf("idgen: new uuid: %w", err)
+	}
+	return id.String(), nil
+}
+
+// MustNewUUID 生成一个 v4 UUID 字符串；熵源失败时 panic。
+//
+// 适用于初始化阶段或对失败概率不敏感的场景（如本地短期 ID）。
+// 在长期运行的请求路径上，倾向使用 NewUUID 显式处理错误。
+func MustNewUUID() string {
+	s, err := NewUUID()
+	if err != nil {
+		panic(fmt.Sprintf("failed to generate uuid: %v", err))
+	}
+	return s
+}
+
+// NewUUIDHex 生成一个去掉连字符的 v4 UUID 字符串（32 字符，等价 16 字节随机的 hex 表示）。
+//
+// 相比 NewUUID 更紧凑，常用作 URL 路径段、Redis key 后缀、不希望出现 '-' 的场景。
+// 安全强度与 NewUUID 一致（同样 122 bit 熵）。
+func NewUUIDHex() (string, error) {
+	id, err := uuid.NewRandom()
+	if err != nil {
+		return "", fmt.Errorf("idgen: new uuid hex: %w", err)
+	}
+	return hex.EncodeToString(id[:]), nil
+}
+
+// MustNewUUIDHex 生成 32 字符的紧凑 UUID 字符串；熵源失败时 panic。
+func MustNewUUIDHex() string {
+	s, err := NewUUIDHex()
+	if err != nil {
+		panic(fmt.Sprintf("failed to generate uuid hex: %v", err))
+	}
+	return s
+}
+
+// NewUUIDBytes 生成一个 16 字节的 v4 UUID。
+//
+// 适用于需要把 UUID 作为二进制写入存储（如数据库 BINARY(16) 列、二进制协议）的场景，
+// 避免字符串形态的 36 字节开销。
+func NewUUIDBytes() ([16]byte, error) {
+	id, err := uuid.NewRandom()
+	if err != nil {
+		return [16]byte{}, fmt.Errorf("idgen: new uuid bytes: %w", err)
+	}
+	return id, nil
 }
