@@ -65,7 +65,10 @@ func Metric(next http.Handler) http.Handler {
 		logger := logs_.GetLogger(ctx)
 		peerAddr, _ := http_.GetIPFromRequest(r)
 		summary := func() {
-			logger.WithField("cost", tc.String()).WithField("status", statusCode).Infof(
+			// 每个请求都会触发，开发期 sanity check 用，生产期是噪音。
+			// 用 Debug 级别让 level=info 的部署默认屏蔽；OpenTelemetry 已经在
+			// 导出 metric，业务侧不需要再依赖访问日志看 QPS/耗时。
+			logger.WithField("cost", tc.String()).WithField("status", statusCode).Debugf(
 				"called by peer addr: %v",
 				peerAddr.String(),
 			)
