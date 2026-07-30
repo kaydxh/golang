@@ -13,6 +13,7 @@ type Result struct {
 	Status     string // pass/fail/skip
 	Reason     string
 	CurlRepro  string
+	Body       string // 响应体(verbose 模式打印)
 }
 
 // Collector 汇总结果。
@@ -60,10 +61,16 @@ func (c *Collector) PrintConsole(verbose bool, slowMs int64) {
 			if slowMs > 0 && r.DurationMs > slowMs {
 				fmt.Printf("    %s⚠ SLOW%s %dms (>%dms)\n", yel, nc, r.DurationMs, slowMs)
 			}
+			if verbose && r.Body != "" {
+				fmt.Printf("    响应: %s\n", r.Body)
+			}
 		case "skip":
 			fmt.Printf("  %s- SKIP%s [%s/%s] %s\n", yel, nc, r.Suite, r.Name, r.Reason)
 		default:
 			fmt.Printf("  %s✗ FAIL%s [%s/%s] %s\n", red, nc, r.Suite, r.Name, r.Reason)
+			if r.Body != "" {
+				fmt.Printf("    响应: %s\n", r.Body)
+			}
 			fmt.Printf("    复现: %s\n", r.CurlRepro)
 		}
 	}
