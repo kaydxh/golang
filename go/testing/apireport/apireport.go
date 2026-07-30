@@ -61,8 +61,13 @@ func (c *Collector) PrintConsole(verbose bool, slowMs int64) {
 			if slowMs > 0 && r.DurationMs > slowMs {
 				fmt.Printf("    %s⚠ SLOW%s %dms (>%dms)\n", yel, nc, r.DurationMs, slowMs)
 			}
-			if verbose && r.Body != "" {
-				fmt.Printf("    响应: %s\n", r.Body)
+			if verbose {
+				if r.CurlRepro != "" {
+					fmt.Printf("    请求: %s\n", r.CurlRepro)
+				}
+				if r.Body != "" {
+					fmt.Printf("    响应: %s\n", r.Body)
+				}
 			}
 		case "skip":
 			fmt.Printf("  %s- SKIP%s [%s/%s] %s\n", yel, nc, r.Suite, r.Name, r.Reason)
