@@ -22,28 +22,46 @@
 package zip_test
 
 import (
+	archivezip "archive/zip"
+	"os"
+	"path/filepath"
 	"testing"
 
 	zip_ "github.com/kaydxh/golang/go/archive/zip"
 )
 
 func TestExtractZip(t *testing.T) {
-	srcFile := "./新词词典.zip"
-	destDir := "unzip"
-	fileInfos, err := zip_.Zip{}.Extract(srcFile, destDir)
+	root := t.TempDir()
+	srcFile := filepath.Join(root, "新词词典.zip")
+	file, err := os.Create(srcFile)
 	if err != nil {
-		t.Errorf("failed to Extract zip file: [%v], err: [%v]", srcFile, err)
+		t.Fatal(err)
+	}
+	writer := archivezip.NewWriter(file)
+	entry, err := writer.Create("词典/内容.txt")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if _, err := entry.Write([]byte("content")); err != nil {
+		t.Fatal(err)
+	}
+	if err := writer.Close(); err != nil {
+		t.Fatal(err)
+	}
+	if err := file.Close(); err != nil {
+		t.Fatal(err)
 	}
 
-	t.Logf("extract file: [%v], result: [%+v]", srcFile, fileInfos)
-	/*
-
-		for extractMsg := range zip_.Zip{}.Extract(srcFile, destDir) {
-			if extractMsg.Err != nil {
-				fmt.Println(msg.Error)
-			} else {
-			  fmt.Printf("fileInfo:[%v]", *msg.FileInfo)
-			}
-		}
-	*/
+	destDir := filepath.Join(root, "unzip")
+	fileInfos, err := zip_.Zip{}.Extract(srcFile, destDir)
+	if err != nil {
+		t.Fatalf("failed to Extract zip file: [%v], err: [%v]", srcFile, err)
+	}
+	if len(fileInfos) != 1 {
+		t.Fatalf("file infos = %+v", fileInfos)
+	}
+	raw, err := os.ReadFile(filepath.Join(destDir, "词典", "内容.txt"))
+	if err != nil || string(raw) != "content" {
+		t.Fatalf("content = %q err=%v", raw, err)
+	}
 }
