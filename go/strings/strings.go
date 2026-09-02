@@ -39,6 +39,16 @@ func GetStringOrFallback(values ...string) string {
 	return ""
 }
 
+// TruncateRunes truncates s to at most n runes and appends suffix when
+// truncation occurs.
+func TruncateRunes(s string, n int, suffix string) string {
+	runes := []rune(s)
+	if n <= 0 || len(runes) <= n {
+		return s
+	}
+	return string(runes[:n]) + suffix
+}
+
 /*
 func Replace(s string, old string, news []string, n int) string {
 	if len(news) == 0 || n == 0 {

@@ -199,6 +199,16 @@ func TestGetStringOrFallback(t *testing.T) {
 	}
 }
 
+func TestTruncateRunes(t *testing.T) {
+	t.Parallel()
+	if got := strings_.TruncateRunes("你好 world", 3, "…"); got != "你好 …" {
+		t.Fatalf("got %q", got)
+	}
+	if got := strings_.TruncateRunes("short", 10, "…"); got != "short" {
+		t.Fatalf("got %q", got)
+	}
+}
+
 func TestLastIndex(t *testing.T) {
 	tests := []struct {
 		value string
