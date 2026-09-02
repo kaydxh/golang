@@ -56,7 +56,18 @@ func (c *CommandBuilder) Exec(cmdName string,
 	return Exec(c.opts.Timeout, cmdName, args...)
 }
 
-//timout ms
+// CommandContext returns an exec.Cmd whose cancellation terminates the whole
+// child process group instead of only the leading process.
+func CommandContext(ctx context.Context, cmdName string, args ...string) *exec.Cmd {
+	cmd := exec.CommandContext(ctx, cmdName, args...)
+	SetProcessGroup(cmd)
+	cmd.Cancel = func() error {
+		return KillProcessGroup(cmd)
+	}
+	return cmd
+}
+
+// timout ms
 func Exec(
 	timeout time.Duration,
 	cmdName string,
@@ -70,9 +81,8 @@ func Exec(
 
 	var stdout, stderr bytes.Buffer
 	args = append([]string{"-c", cmdName}, args...)
-	cmd := exec.CommandContext(ctx, "/bin/sh", args...)
+	cmd := CommandContext(ctx, "/bin/sh", args...)
 	cmd.Stdout, cmd.Stderr = &stdout, &stderr
-	cmd.SysProcAttr = &syscall.SysProcAttr{Setpgid: true}
 	if err := cmd.Start(); err != nil {
 		return "", "", fmt.Errorf(
 			"error starting %v:\nCommand stdout:\n%v\nstderr:\n%v\nerror:\n%v",
@@ -105,7 +115,6 @@ func Exec(
 				)
 		}
 	case <-ctx.Done():
-		cmd.Process.Kill()
 		return "", "", fmt.Errorf(
 			"timed out waiting for command %v:\nCommand stdout:\n%v\nstderr:\n%v",
 			cmd,
