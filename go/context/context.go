@@ -25,6 +25,7 @@ import (
 	"context"
 	"fmt"
 	"strconv"
+	"sync"
 	"time"
 )
 
@@ -40,6 +41,40 @@ func WithTimeout(ctx context.Context, timeout time.Duration) (context.Context, c
 		return context.WithTimeout(ctx, timeout)
 	}
 	return ctx, func() {}
+}
+
+// WithIdleTimeout cancels the returned context when Touch has not been called
+// for timeout. A non-positive timeout disables the idle deadline.
+func WithIdleTimeout(
+	ctx context.Context,
+	timeout time.Duration,
+) (idleCtx context.Context, cancel context.CancelFunc, touch func()) {
+	idleCtx, cancelContext := context.WithCancel(ctx)
+	if timeout <= 0 {
+		return idleCtx, cancelContext, func() {}
+	}
+
+	var mu sync.Mutex
+	stopped := false
+	timer := time.AfterFunc(timeout, cancelContext)
+	cancel = func() {
+		mu.Lock()
+		if !stopped {
+			stopped = true
+			timer.Stop()
+		}
+		mu.Unlock()
+		cancelContext()
+	}
+	touch = func() {
+		mu.Lock()
+		defer mu.Unlock()
+		if stopped || idleCtx.Err() != nil {
+			return
+		}
+		timer.Reset(timeout)
+	}
+	return idleCtx, cancel, touch
 }
 
 func ExtractStringFromContext(ctx context.Context, key string) string {

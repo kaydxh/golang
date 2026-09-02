@@ -88,6 +88,25 @@ func TestContextTimeout(t *testing.T) {
 	doB(ctx)
 }
 
+func TestWithIdleTimeout(t *testing.T) {
+	t.Parallel()
+	ctx, cancel, touch := context_.WithIdleTimeout(context.Background(), 100*time.Millisecond)
+	defer cancel()
+
+	time.Sleep(60 * time.Millisecond)
+	touch()
+	select {
+	case <-ctx.Done():
+		t.Fatal("idle context canceled before the reset timeout")
+	case <-time.After(60 * time.Millisecond):
+	}
+	select {
+	case <-ctx.Done():
+	case <-time.After(100 * time.Millisecond):
+		t.Fatal("idle context was not canceled")
+	}
+}
+
 func TestExtractIntegerFromContext(t *testing.T) {
 	ctx := context.Background()
 
