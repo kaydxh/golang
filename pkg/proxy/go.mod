@@ -1,6 +1,6 @@
 module github.com/kaydxh/golang/pkg/proxy
 
-go 1.24.0
+go 1.25.0
 
 replace github.com/kaydxh/golang/go => ../../go
 
@@ -38,7 +38,7 @@ require (
 	github.com/kaydxh/golang/pkg/viper v0.0.0-00010101000000-000000000000 // indirect
 	github.com/klauspost/cpuid/v2 v2.3.0 // indirect
 	github.com/leodido/go-urn v1.4.0 // indirect
-	github.com/mattn/go-isatty v0.0.20 // indirect
+	github.com/mattn/go-isatty v0.0.24 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.3-0.20250322232337-35a7c28c31ee // indirect
 	github.com/pelletier/go-toml/v2 v2.2.4 // indirect
@@ -63,7 +63,7 @@ require (
 	golang.org/x/mod v0.30.0 // indirect
 	golang.org/x/net v0.48.0 // indirect
 	golang.org/x/sync v0.19.0 // indirect
-	golang.org/x/sys v0.39.0 // indirect
+	golang.org/x/sys v0.47.0 // indirect
 	golang.org/x/text v0.32.0 // indirect
 	golang.org/x/time v0.14.0 // indirect
 	golang.org/x/tools v0.39.0 // indirect
