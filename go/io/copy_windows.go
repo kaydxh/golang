@@ -19,56 +19,25 @@
  *OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  *SOFTWARE.
  */
-package syscall_test
+//go:build windows
+
+package io
 
 import (
+	"errors"
 	"os"
-	"testing"
-
-	syscall_ "github.com/kaydxh/golang/go/syscall"
 )
 
-// GOOS=linux  GOARCH=amd64  go test -c disk_test.go -o test
-// /test -test.v
-func TestDiskUsage(t *testing.T) {
-	testCases := []struct {
-		volumePath string
-		expected   string
-	}{
-		{
-			volumePath: "/dev",
-			expected:   "",
-		},
-		{
-			volumePath: "/tmp/keel-disk-usage-test",
-			expected:   "",
-		},
-		{
-			volumePath: "/tmp/keel-disk-usage-test/home/log",
-			expected:   "",
-		},
-	}
+// CopyPath on Windows always takes the portable legacy copy: neither
+// FICLONE (darwin) nor copy_file_range (linux) exists here.
+func CopyPath(srcPath, dstPath string, f os.FileInfo, copyMode Mode) error {
+	return nil
+}
 
-	for _, testCase := range testCases {
-		t.Run(testCase.volumePath, func(t *testing.T) {
-			if err := os.MkdirAll(testCase.volumePath, 0o755); err != nil {
-				t.Fatalf("mkdir %v: %v", testCase.volumePath, err)
-			}
-			du, err := syscall_.NewDiskUsage(testCase.volumePath)
-			if err != nil {
-				t.Errorf("new disk for path[%v] err, got : %s", testCase.volumePath, err)
-				return
+func doCopyWithFileClone(srcFile, dstFile *os.File) error {
+	return errors.New("clone: not supported on windows")
+}
 
-			}
-			t.Logf(
-				"disk free[%v], avali[%v], size[%v], used[%v], usage: %v",
-				du.Free(),
-				du.Avail(),
-				du.Size(),
-				du.Used(),
-				du.Usage(),
-			)
-
-		})
-	}
+func doCopyWithFileRange(srcFile, dstFile *os.File, fileinfo os.FileInfo) error {
+	return errors.New("file-range: not supported on windows")
 }

@@ -19,56 +19,15 @@
  *OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  *SOFTWARE.
  */
-package syscall_test
+//go:build windows
 
-import (
-	"os"
-	"testing"
+package syscall
 
-	syscall_ "github.com/kaydxh/golang/go/syscall"
-)
-
-// GOOS=linux  GOARCH=amd64  go test -c disk_test.go -o test
-// /test -test.v
-func TestDiskUsage(t *testing.T) {
-	testCases := []struct {
-		volumePath string
-		expected   string
-	}{
-		{
-			volumePath: "/dev",
-			expected:   "",
-		},
-		{
-			volumePath: "/tmp/keel-disk-usage-test",
-			expected:   "",
-		},
-		{
-			volumePath: "/tmp/keel-disk-usage-test/home/log",
-			expected:   "",
-		},
-	}
-
-	for _, testCase := range testCases {
-		t.Run(testCase.volumePath, func(t *testing.T) {
-			if err := os.MkdirAll(testCase.volumePath, 0o755); err != nil {
-				t.Fatalf("mkdir %v: %v", testCase.volumePath, err)
-			}
-			du, err := syscall_.NewDiskUsage(testCase.volumePath)
-			if err != nil {
-				t.Errorf("new disk for path[%v] err, got : %s", testCase.volumePath, err)
-				return
-
-			}
-			t.Logf(
-				"disk free[%v], avali[%v], size[%v], used[%v], usage: %v",
-				du.Free(),
-				du.Avail(),
-				du.Size(),
-				du.Used(),
-				du.Usage(),
-			)
-
-		})
-	}
-}
+// Windows has no rlimit: handle counts are per-process and managed by the
+// OS. The setters are honest no-ops answering the OS-managed status quo —
+// callers that log the result get a truthful "nothing to raise", not a
+// per-boot error line, and callers that need the unix behaviour compile
+// against the unix build of this package.
+func SetNumFiles(uint64) error                       { return nil }
+func GetNumFiles() (uint64, uint64, error)           { return 0, 0, nil }
+func SetMaxNumFiles() (uint64, error)                { return 0, nil }

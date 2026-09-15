@@ -19,23 +19,36 @@
  *OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  *SOFTWARE.
  */
+//go:build windows
+
 package syscall
 
 import (
 	"syscall"
 
+	"golang.org/x/sys/windows"
+
 	errors_ "github.com/kaydxh/golang/go/errors"
 )
 
-func KillBatch(pids []int, sig syscall.Signal) (errorPids []int, err error) {
+// KillBatch terminates processes by pid. Windows has no POSIX signals: the
+// only cross-process signal is termination, so every call terminates
+// regardless of the requested signal (the signature is preserved for the
+// shared callers; the sig value is ignored).
+func KillBatch(pids []int, _ syscall.Signal) (errorPids []int, err error) {
 	var errs []error
 	for _, pid := range pids {
-		err = syscall.Kill(pid, sig)
+		h, err := windows.OpenProcess(windows.PROCESS_TERMINATE, false, uint32(pid))
 		if err != nil {
 			errorPids = append(errorPids, pid)
 			errs = append(errs, err)
+			continue
 		}
+		if err := windows.TerminateProcess(h, 1); err != nil {
+			errorPids = append(errorPids, pid)
+			errs = append(errs, err)
+		}
+		windows.CloseHandle(h)
 	}
-
 	return errorPids, errors_.NewAggregate(errs)
 }

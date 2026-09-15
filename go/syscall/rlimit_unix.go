@@ -19,56 +19,59 @@
  *OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  *SOFTWARE.
  */
-package syscall_test
+//go:build linux || darwin
+
+package syscall
 
 import (
-	"os"
-	"testing"
+	"fmt"
+	"syscall"
 
-	syscall_ "github.com/kaydxh/golang/go/syscall"
+	"golang.org/x/sys/unix"
 )
 
-// GOOS=linux  GOARCH=amd64  go test -c disk_test.go -o test
-// /test -test.v
-func TestDiskUsage(t *testing.T) {
-	testCases := []struct {
-		volumePath string
-		expected   string
-	}{
-		{
-			volumePath: "/dev",
-			expected:   "",
-		},
-		{
-			volumePath: "/tmp/keel-disk-usage-test",
-			expected:   "",
-		},
-		{
-			volumePath: "/tmp/keel-disk-usage-test/home/log",
-			expected:   "",
-		},
+// SetNumFiles sets the linux rlimit for the maximum open files.
+func SetNumFiles(maxOpenFiles uint64) error {
+	return unix.Setrlimit(unix.RLIMIT_NOFILE, &unix.Rlimit{Max: maxOpenFiles, Cur: maxOpenFiles})
+}
+
+func GetNumFiles() (uint64, uint64, error) {
+	var (
+		rlimit unix.Rlimit
+		zero   unix.Rlimit
+	)
+
+	err := unix.Getrlimit(syscall.RLIMIT_NOFILE, &rlimit)
+	if err != nil {
+		return 0, 0, err
+	}
+	if rlimit == zero {
+		return 0, 0, fmt.Errorf("failed to get rlimit, got zero value: %#v", rlimit)
 	}
 
-	for _, testCase := range testCases {
-		t.Run(testCase.volumePath, func(t *testing.T) {
-			if err := os.MkdirAll(testCase.volumePath, 0o755); err != nil {
-				t.Fatalf("mkdir %v: %v", testCase.volumePath, err)
-			}
-			du, err := syscall_.NewDiskUsage(testCase.volumePath)
-			if err != nil {
-				t.Errorf("new disk for path[%v] err, got : %s", testCase.volumePath, err)
-				return
+	return rlimit.Cur, rlimit.Max, nil
+}
 
-			}
-			t.Logf(
-				"disk free[%v], avali[%v], size[%v], used[%v], usage: %v",
-				du.Free(),
-				du.Avail(),
-				du.Size(),
-				du.Used(),
-				du.Usage(),
-			)
+func SetMaxNumFiles() (uint64, error) {
 
-		})
+	_, maxOpenFiles, err := GetNumFiles()
+	if err != nil {
+		return 0, err
 	}
+
+	err = SetNumFiles(maxOpenFiles)
+	if err != nil {
+		return 0, err
+	}
+
+	newCurOpenFiles, _, err := GetNumFiles()
+	if err != nil {
+		return 0, err
+	}
+	if newCurOpenFiles != maxOpenFiles {
+		return 0, fmt.Errorf("failed to set %d files, current open %v files", maxOpenFiles, newCurOpenFiles)
+
+	}
+
+	return newCurOpenFiles, nil
 }
