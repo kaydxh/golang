@@ -96,6 +96,7 @@ func TestNextID(t *testing.T) {
 		if ids[i] <= ids[i-1] {
 			t.Errorf("IDs not increasing: ids[%d]=%d, ids[%d]=%d", i-1, ids[i-1], i, ids[i])
 		}
+		t.Logf("ids[%d]=%d", i, ids[i])
 	}
 }
 

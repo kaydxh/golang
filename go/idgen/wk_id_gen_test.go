@@ -66,7 +66,7 @@ func TestGenerateFromIP(t *testing.T) {
 		wantErr bool
 	}{
 		{"valid IPv4", "192.168.1.100", false},
-		{"valid IPv4 2", "10.0.0.50", false},
+		{"valid IPv4 2", "10.0.1.50", false},
 		{"valid IPv4 3", "172.16.5.200", false},
 		{"invalid IP", "256.1.1.1", true},
 		{"invalid format", "not-an-ip", true},
@@ -191,7 +191,7 @@ func TestGenerateFromStringUniqueness(t *testing.T) {
 		len(seen), len(strings), collisions)
 
 	// 碰撞率应该很低（对于10个字符串，期望0-1个碰撞）
-	if collisions > 2 {
+	if collisions > 0 {
 		t.Errorf("Too many collisions: %d", collisions)
 	}
 }
