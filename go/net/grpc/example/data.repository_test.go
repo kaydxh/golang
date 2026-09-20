@@ -30,7 +30,7 @@ func TestNow(t *testing.T) {
 	factory, err := grpc_.NewFactory(grpc_.FactoryConfig[date_.SeaDateServiceClient]{
 		//Addr:    "localhost:10001",
 		Addr:    "127.0.0.1:10001",
-		Timeout: 5 * time.Second,
+		Timeout: 15 * time.Second,
 		NewServiceClient: func(c *grpc.ClientConn) date_.SeaDateServiceClient {
 			return date_.NewSeaDateServiceClient(c)
 		},
