@@ -24,6 +24,7 @@ package mysql
 import (
 	"context"
 	"database/sql"
+	"errors"
 	"fmt"
 
 	"github.com/jmoiron/sqlx"
@@ -82,21 +83,26 @@ func TxPipelined(ctx context.Context, db *sqlx.DB, fn func(*sqlx.Tx) error) (err
 		return err
 	}
 
+	committed := false
 	defer func() {
-		if err != nil {
-			if txErr := tx.Rollback(); txErr != nil {
+		if !committed {
+			if txErr := tx.Rollback(); txErr != nil && !errors.Is(txErr, sql.ErrTxDone) {
 				logrus.WithError(err).Errorf("failed to rollback, err: %v", txErr)
 				return
 			}
 			return
 		}
-
-		if err = tx.Commit(); err != nil {
-			logrus.WithError(err).Errorf("failed to commit")
-			return
-		}
-
 	}()
 
-	return fn(tx.Tx)
+	if err = fn(tx.Tx); err != nil {
+		return err
+	}
+
+	if err = tx.Commit(); err != nil {
+		logrus.WithError(err).Errorf("failed to commit")
+		return err
+	}
+	committed = true
+
+	return nil
 }
