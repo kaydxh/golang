@@ -23,12 +23,23 @@
  */
 package exec
 
-import "os/exec"
+import (
+	"os/exec"
+	"syscall"
+)
 
-// SetProcessGroup configures cmd for later group termination when supported.
-func SetProcessGroup(cmd *exec.Cmd) {}
+// SetProcessGroup detaches cmd from the parent console's Ctrl+C group. This
+// is the Windows analogue of a new POSIX process group; later termination
+// targets the leader and relies on it to clean up descendants.
+func SetProcessGroup(cmd *exec.Cmd) {
+	if cmd.SysProcAttr == nil {
+		cmd.SysProcAttr = &syscall.SysProcAttr{}
+	}
+	cmd.SysProcAttr.CreationFlags |= syscall.CREATE_NEW_PROCESS_GROUP
+}
 
-// KillProcessGroup terminates cmd. Windows process groups are not configured.
+// KillProcessGroup terminates cmd. Windows does not expose a POSIX group kill;
+// descendants are expected to follow their leader.
 func KillProcessGroup(cmd *exec.Cmd) error {
 	if cmd == nil || cmd.Process == nil {
 		return nil
