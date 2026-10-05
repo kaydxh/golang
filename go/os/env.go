@@ -27,6 +27,7 @@ package os
 import (
 	"os"
 	"strconv"
+	"strings"
 )
 
 // GetEnvAsStringOrFallback returns the env variable for the given key
@@ -62,4 +63,47 @@ func GetEnvAsFloat64OrFallback(key string, defaultValue float64) (float64, error
 		return value, nil
 	}
 	return defaultValue, nil
+}
+
+// FillEnvironment adds non-empty overrides only where the base environment has
+// no non-empty value. The input slice is never modified; duplicate base keys
+// are preserved except for the key being filled.
+func FillEnvironment(environ []string, overrides map[string]string) ([]string, bool) {
+	out := append([]string(nil), environ...)
+	changed := false
+	for name, value := range overrides {
+		if name == "" || value == "" {
+			continue
+		}
+		if existing, ok := lookupEnvironment(out, name); ok && existing != "" {
+			continue
+		}
+		out = SetEnvironment(out, name, value)
+		changed = true
+	}
+	return out, changed
+}
+
+// SetEnvironment removes every existing entry for name and appends one
+// authoritative entry. Empty values are allowed; callers that need a stricter
+// policy should validate before calling.
+func SetEnvironment(environ []string, name, value string) []string {
+	prefix := name + "="
+	out := make([]string, 0, len(environ)+1)
+	for _, entry := range environ {
+		if !strings.HasPrefix(entry, prefix) {
+			out = append(out, entry)
+		}
+	}
+	return append(out, prefix+value)
+}
+
+func lookupEnvironment(environ []string, name string) (string, bool) {
+	prefix := name + "="
+	for _, entry := range environ {
+		if strings.HasPrefix(entry, prefix) {
+			return strings.TrimPrefix(entry, prefix), true
+		}
+	}
+	return "", false
 }

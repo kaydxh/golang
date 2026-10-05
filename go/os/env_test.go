@@ -23,6 +23,7 @@ package os_test
 
 import (
 	"os"
+	"slices"
 	"testing"
 
 	"github.com/google/uuid"
@@ -44,8 +45,8 @@ func TestGetEnvAsStringOrFallback(t *testing.T) {
 	assert.NotEqual(expected, os_.GetEnvAsStringOrFallback(key, "~"+expected))
 }
 
-//gotests -w  -all go/os/env.go
-//gotests -only GetEnvAsIntOrFallback go/os/env.go
+// gotests -w  -all go/os/env.go
+// gotests -only GetEnvAsIntOrFallback go/os/env.go
 func TestUUID(t *testing.T) {
 	id := uuid.New().String()
 	t.Logf("uuid: %v ", id)
@@ -120,5 +121,39 @@ func TestGetEnvAsFloat64OrFallback(t *testing.T) {
 				t.Errorf("GetEnvAsFloat64OrFallback() = %v, want %v", got, tt.want)
 			}
 		})
+	}
+}
+
+func TestFillEnvironmentPreservesNonEmptyBase(t *testing.T) {
+	base := []string{"FROM_PROCESS=process", "EMPTY=", "CODEX_HOME=/internal"}
+	got, changed := os_.FillEnvironment(base, map[string]string{
+		"FROM_PROCESS": "stored",
+		"EMPTY":        "filled",
+		"CODEX_HOME":   "/stored",
+		"NEW_KEY":      "new",
+		"EMPTY_NAME":   "",
+	})
+	if !changed {
+		t.Fatal("expected environment change")
+	}
+	for _, want := range []string{
+		"FROM_PROCESS=process", "EMPTY=filled", "CODEX_HOME=/internal", "NEW_KEY=new",
+	} {
+		if !slices.Contains(got, want) {
+			t.Fatalf("missing %q in %#v", want, got)
+		}
+	}
+	if slices.Contains(got, "FROM_PROCESS=stored") || slices.Contains(got, "CODEX_HOME=/stored") {
+		t.Fatalf("stored value overrode base: %#v", got)
+	}
+	if !slices.Equal(base, []string{"FROM_PROCESS=process", "EMPTY=", "CODEX_HOME=/internal"}) {
+		t.Fatalf("input environment changed: %#v", base)
+	}
+}
+
+func TestSetEnvironmentReplacesAllDuplicates(t *testing.T) {
+	got := os_.SetEnvironment([]string{"PORT=3000", "X=1", "PORT=4000"}, "PORT", "5000")
+	if !slices.Equal(got, []string{"X=1", "PORT=5000"}) {
+		t.Fatalf("got %#v", got)
 	}
 }
